@@ -1,0 +1,17 @@
+project:
+  title: "Slides"
+
+editor: source
+
+format: 
+  revealjs:
+    theme: [moon,CustomCL.scss]
+    controls: true
+    incremental: true
+    slide-number: true
+    preview-links: false
+    footer: <a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a>
+    code-fold: false
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7

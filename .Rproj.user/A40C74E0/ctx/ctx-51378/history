@@ -1,0 +1,76 @@
+str(a)
+str(A)
+#| output-location: fragment
+#| echo: true
+A=2
+str(A)
+#| output-location: fragment
+#| echo: true
+A=as.integer(2)
+str(A)
+A/B #
+B=3
+A/B #
+B=as.integer(2)
+A/B #
+#| output-location: fragment
+#| echo: true
+A=as.integer(2)
+B=as.integer(3)
+str(A)
+A/B #
+A^B
+#| output-location: fragment
+#| echo: true
+A=3
+B=as.integer(2)
+print(A*B)
+A^B
+str(A) # str() returns structure of a variable
+#| output-location: fragment
+#| echo: true
+A=as.integer(3)
+B=as.integer(2)
+print(A*B)
+A^B
+str(A) # str() returns structure of a variable
+A/B #
+B=as.integer(3)
+C=1.23
+print(A*B)
+print(A*C)
+A^B
+#| output-location: fragment
+#| echo: true
+A=as.integer(2)
+B=as.integer(3)
+A^B
+str(A) # str() returns structure of a variable
+#| output-location: fragment
+#| echo: true
+A=as.integer(2)
+B=as.integer(3)
+C=1.23
+A/B # Returns num type
+MyText=Hello world! # Triggers Error
+print(MyText)
+MyText=Hello world! # Triggers Error
+MyText=Hello # Triggers Error
+### "<-" (assign) vs. "="
+### Same result! "<-" mathematically correct, but "=" is shorter
+A<-10
+A<-A+20
+print(A)
+A=10
+A=A+20
+print(A)
+#Exercise: Change these values and see how results change.
+IsConcertGood=FALSE
+IsCompanyGood=TRUE
+# Results (compare with truth table in the book)
+IsEveningAmazing=IsConcertGood & IsCompanyGood
+cat("Is the evening amazing?", IsEveningAmazing)
+IsEveningGood=IsConcertGood | IsCompanyGood # | stands for "or"
+cat("Is the evening good?", IsEveningGood)
+# TRUE is internally 0 and FAlSE is internally 1. Therefore:
+IsConcertGood+IsCompanyGood+100

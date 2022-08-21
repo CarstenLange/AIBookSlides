@@ -1,0 +1,174 @@
+---
+title: "Intro to Machine Learning"
+subtitle: "Types, Tasks, Terminology"
+format: 
+  revealjs:
+    code-fold: true
+---
+
+# Introduction to Machine Learning
+
+## What is What?
+
+-   Artificial Intelligence (AI),
+-   Machine Learning,
+-   Deep Learning
+-   Big Data
+
+## What is What?
+
+![Types of AI](Images/TypesOfAI1.png)
+
+## What is What? {auto-animate="true"}
+
+![Types of AI](Images/TypesOfAI2.png)
+
+## What is What?
+
+![Types of AI](Images/TypesOfAI3.png)
+
+## What About Big Data
+
+## What About Big Data
+
+-   Big Data is not a category of learning. It is a category of data!!!
+-   Two common definitions
+    -   Laymen: Many records (thousands?, millions?, billions?)
+    -   Experts: So many records that they do not fit in the memory of one computer.
+        -   At least billions of records.
+        -   Requires distributed computing.
+
+## Three Applications of Machine Learning {auto-animate="true"}
+
+::: nonincremental
+-   Regression
+-   Classification
+-   Cluster
+:::
+
+## Three Applications of Machine Learning {.smaller auto-animate="true"}
+
+::: nonincremental
+-   Regression
+    -   Outcome variable is continuous
+    -   We try to predict a numerical value
+-   Classification
+-   Cluster
+:::
+
+## Three Applications of Machine Learning {auto-animate="true"}
+
+::: nonincremental
+-   Regression
+-   Classification
+-   Cluster
+:::
+
+## Three Applications of Machine Learning {.smaller auto-animate="true"}
+
+::: nonincremental
+-   Regression
+-   Classification
+    -   Outcome variable is categorial
+    -   Most of the times 2 categories such as:
+        -   Yes/No
+        -   Red Wine/White Wine
+        -   True/False
+        -   often represented as dummies: 1/0
+    -   Sometimes more than two catogories (ordered or unordered):
+        -   good, fair, bad (ordered)
+        -   red, blue, green (unordered)
+        -   strongly agree, agree, disagree, strongly disagree (ordered)
+-   Cluster
+:::
+
+## Three Applications of Machine Learning {auto-animate="true"}
+
+::: nonincremental
+-   Regression
+-   Classification
+-   Cluster
+:::
+
+## Three Applications of Machine Learning {.smaller auto-animate="true"}
+
+::: nonincremental
+-   Regression
+-   Classification
+-   Cluster
+    -   Sorting observations into a number of groups based on feature variables.
+    -   Groups are as homogenous inside as possible.
+    -   Groups are as diverse between groups (when comparing groups)
+:::
+
+## Three Applications of Machine Learning {auto-animate="true"}
+
+::: nonincremental
+-   Regression
+-   Classification
+-   Cluster
+:::
+
+## Terminolgy {.smaller}
+
+First 3 Observations (records) of the Housing Dataset (to predict house prices)
+
+```{r}
+#| echo: true
+library(rio);library(tidyverse)
+DataHousing =
+  import("https://lange-analytics.com/AIBook/Data/HousingData.csv") %>% 
+  select(Price=price, Sqft=sqft_living, Bedrooms=bedrooms,Waterfront=waterfront)
+print(DataHousing[1:3,])
+```
+
+Tidy data:
+
+-   Observations (synonym: records) are in the rows.
+-   Variables (synonym: features) are in the columns.
+-   Variable names (column names) are in the first row.
+-   Data are in individual cells (and they form vectors; column names can be interpreted as vector names).
+
+## Terminolgy {.smaller}
+
+::: panel-tabset
+### Main
+
+First 3 Observations (records) of the Housing Dataset (predict house prices)
+
+```{r}
+#| echo: true
+library(rio);library(tidyverse)
+DataHousing =
+  import("https://lange-analytics.com/AIBook/Data/HousingData.csv") %>% 
+  select(Price=price, Sqft=sqft_living, Bedrooms=bedrooms,Waterfront=waterfront)
+print(DataHousing[1:3,])
+```
+
+-   **Outcome Variable**: The variables that is the outcome of the prediction ($Price$)
+
+-   **Predictor Variables**: The variables that **predict** an outcome ($Sqft$, $Bedrooms$, $Waterfront$)
+
+-   **Example linear regression:** $Price=\beta_1 \cdot Sqft+ \beta_2 \cdot Bedrooms +\beta_3 \cdot Waterfront+\beta_4$
+
+### Synonyms
+
+-   **Synonyms for Outcome Variable:**
+
+    ::: nonincremental
+    -   Response variable (it responds to the predictors)
+    -   Dependent variable (it is dependent on the predictors)
+    -   Endogenous variable (it is dependent on the predictors)
+    :::
+
+-   **Synonyms for Predictor Variables:**
+
+    ::: nonincremental
+    -   Explanatory variables variables (they explain the outcome)
+    -   Independent variables (they are chosen independently to see how the impact the outcome)
+    -   Exogenous variable (they are chosen independently to see how the impact the outcome)
+    :::
+:::
+
+## Why Using R for Machine Learning?
+
