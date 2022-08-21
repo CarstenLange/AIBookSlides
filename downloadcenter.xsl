@@ -14,7 +14,7 @@
     </head>
     <body>
         <div class="w3-container w3-blue" style="margin-top: 0; padding-top: 0;">
-            <h1>Download Center</h1>
+            <h1>Slide Center for <u>Learn Machine Learning</u></h1>
         </div>
         <br /> <br />
         <div class="w3-container">
