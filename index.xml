@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type='text/xsl' href='downloadcenter.xsl'?>
+
+<versions>
+    <version>
+        <name>Introduction to Machine Learning</name>
+        <description>
+            This presention is an introduction to machine learning. It categorizes machine learning  by applications as well as by type of algorithm.
+        </description>
+        <asset name="View online" type="web">MLIntro/MLIntro.html</asset>
+        <asset name="Download (coming soon)">#</asset>
+        
+    </version>
+   <version>
+        <name>Introduction to R and RStudio</name>
+        <description>
+            This presention introduces the basics of R and the RStudio code editor to you.
+        </description>
+        <asset name="View online" type="web">RAndRstudio/RandRStudio.html</asset>
+        <asset name="Download (coming soon)">#</asset>
+        
+    </version>
+</versions>
