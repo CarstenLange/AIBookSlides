@@ -102,15 +102,6 @@ print(DataHousing[1:3,])
     -   *advanced objects*. E.g., for plot, models, prediction results
 :::
 
-# Test
-
-::: incremental
-bla
-:::
-
-::: incremental
-bla
-:::
 
 ## Data Types {.scrollable .smaller}
 

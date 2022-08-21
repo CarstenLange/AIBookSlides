@@ -20,4 +20,14 @@
         <asset name="Download (coming soon)">#</asset>
         
     </version>
+    
+    <version>
+        <name>Introduction to my wife</name>
+        <description>
+            This presention introduces the basics of R and the RStudio code editor to you.
+        </description>
+        <asset name="View online" type="web">RAndRstudio/RandRStudio.html</asset>
+        <asset name="Download (coming soon)">#</asset>
+        
+    </version>
 </versions>
