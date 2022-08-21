@@ -2,6 +2,15 @@
 <?xml-stylesheet type='text/xsl' href='downloadcenter.xsl'?>
 
 <versions>
+   <version>
+        <name>Introduction to the Course</name>
+        <description>
+            This presention gives you advice how to study in this course and informs you about material available.
+        </description>
+        <asset name="View online" type="web">00Intro/00Intro.html</asset>
+        <asset name="Download (coming soon)">#</asset>
+    </version>
+    
     <version>
         <name>Introduction to Machine Learning</name>
         <description>
@@ -9,9 +18,9 @@
         </description>
         <asset name="View online" type="web">MLIntro/MLIntro.html</asset>
         <asset name="Download (coming soon)">#</asset>
-        
     </version>
-   <version>
+   
+    <version>
         <name>Introduction to R and RStudio</name>
         <description>
             This presention introduces the basics of R and the RStudio code editor to you.

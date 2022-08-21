@@ -1,0 +1,61 @@
+---
+title: "Intro to the Course"
+subtitle: "Material & Methods to Work"
+format: 
+  revealjs:
+    code-fold: true
+---
+
+# Introduction to the Course 
+
+## About the Course {.smaller}
+
+- Machine Learning is a very hot topic for Economist and Business majors
+
+- Difficulty 
+   - For the course:
+       - Matrix Algebra is **not**  required and will **not** be used
+       - Calculus is **not**  required and will **not** be used
+       - Programming knowledge  is **not**  required. The basic R knowledge you need is introduced in class and          in the book.
+   - Support
+       - Everybody can get a good grade! Do the work and ask me for help if needed (I will spend all the                time needed with you)
+
+- Materials
+   - The book is available for free online:
+       <https://econ.lange-analytics.com/aibook> (user name: aibook, pw: I let you know in class). Shameless          self promotion. You can buy the book from Francis & Taylor starting October 2023. 
+   - Presentation slides are available online at <https://aibookslides.netlivly.app>
+
+
+## How to Work on a Weekly Base {.smaller}
+
+- Before class (+/- 0:45h)
+    - read related chapter online before class (you can quickly read over the interactive sections) 
+    - do not use a phone --- tablet with decent size is OK
+    - if there is something you do not understand (possibly make a note) and keep on readin --- no problem
+
+- Do not miss class sessions!
+    - in class I walk you through the topics step by step.
+    - you can ask questions about each topic you are interested in or you like to get more information.
+    - you will do exercises in class and I will help, if you get stuck.
+    
+- After class (+/- 1.5h)
+    - read the book chapter again
+    - read it at a computer with R and RStudio installed
+    - follow the interactive exercises in RStudio
+    - write down questions you have and ask them next time in class
+
+## Reward/Return of Good Work Inside and Outside of Class
+    
+- Good grade
+    
+- You get an understanding of machine learning that enables you:
+
+       
+    - to talk about machine learning algorithms during an interview
+       
+       
+    - to use machine learning on your Senior Project/Master Thesis
+       
+       
+    - to build on by reading articles and watching videos to become an expert.  
+
