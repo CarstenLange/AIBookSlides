@@ -12,7 +12,7 @@ format:
 
 - Machine Learning is a very hot topic for Economist and Business majors
 
-- Difficulty 
+- Difficulty of the Course
    - For the course:
        - Matrix Algebra is **not**  required and will **not** be used
        - Calculus is **not**  required and will **not** be used
@@ -31,7 +31,7 @@ format:
 - Before class (+/- 0:45h)
     - read related chapter online before class (you can quickly read over the interactive sections) 
     - do not use a phone --- tablet with decent size is OK
-    - if there is something you do not understand (possibly make a note) and keep on readin --- no problem
+    - if there is something you do not understand (possibly make a note) and keep on reading --- no problem
 
 - Do not miss class sessions!
     - in class I walk you through the topics step by step.
@@ -57,5 +57,6 @@ format:
     - to use machine learning on your Senior Project/Master Thesis
        
        
-    - to build on by reading articles and watching videos to become an expert.  
+    - to build on the knowledge from the course by reading more advanced articles and watching videos to become an expert.  
 
+## The End
