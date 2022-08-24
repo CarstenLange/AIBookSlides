@@ -302,11 +302,70 @@ cat("The forecast is for", ForecDays, "days.")
 
 ## Data Frames (tibbles)
 
-A data frame is similar to an Excel table.
+A data frame is similar to an Excel table (note not all columns of the Titanic data frame are shown).
 
 ```{r}
 library(rio); library(kableExtra)
+DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv") %>% 
+  select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
+kbl(DataTitanic[1:12,])
+```
+
+A data frame consist of vectors making up the columns. These are the variables for the data analysis (remember: observations are in the rows, variables are in the columns).
+
+```{r}
+#| echo: true
 DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv")
-kbl(DataTitanic)
+str(DataTitanic)
+```
+
+
+
+
+## Extracting the Vectors and Perform Calculations (numerical Vectors)
+
+```{r}
+#| echo: true
+#| output-location: fragment
+VecFareInPounds=DataTitanic$FareInPounds
+AvgFare=mean(VecFareInPounds)
+cat("The average fare of Titanic passengers was:", AvgFare, "British Pounds")
+```
+
+
+## Extracting the Vectors and Perform Calculations (logical Vectors)
+
+```{r }
+#| echo: true
+#| output-location: fragment
+DataTitanic$Survived=as.logical(DataTitanic$Survived)
+str(DataTitanic)
+```
+
+```{r }
+#| echo: true
+#| output-location: fragment
+SurvRate=mean(DataTitanic$Survived)
+cat("The average survival rate of Titanic passengers was:", SurvRate)
+```
+
+## Data Frames vs. Tibbles .smaller .scrollable
+
+A **tibble** is a more advanced sub-type of a *data frame*. If needed, a regular *data frame* can be coerced into a *tibble* with the `as_tibble()` command.
+
+A few of the differences between *data frames* and *tibbles*:
+
+1. A *data frame* outputs all its rows and columns by default. A *tibble* outputs only the first 10 rows and the variables that fit on the screen but provides information about omitted variables and rows.
+
+2. A *data frame* can have row names, while a *tibble* cannot.
+
+3. In R version <4.1 a *data frame* converts all *character* values to *factor* type. This conversion was often confusing and annoying. In contrast, a *tibble* only coerces *character* values into *factor* on demand. Since R version 4.1 regular `data frames` behave the same as `tibbles`. 
+
+Among other reasons, points 1. and 3. make it more straightforward to work with *tibbles* rather than with basic *data frames*.
+
+## Summary
+
+```{r}
+knitr::include_graphics("Images/DataObjectDataTypes.png")
 ```
 
