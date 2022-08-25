@@ -250,7 +250,7 @@ See: [RandRStudioScript.R script200](https://lange-analytics.com/AIBook/Scripts/
 
 **Data Objects:** What are the containers R uses to store data?
 
-## Data Types & Data Objects
+## Data Types
 
 - **Single Value Object**
 - **Vector Object**
