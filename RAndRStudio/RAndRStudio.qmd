@@ -349,7 +349,7 @@ SurvRate=mean(DataTitanic$Survived)
 cat("The average survival rate of Titanic passengers was:", SurvRate)
 ```
 
-## Data Frames vs. Tibbles .smaller .scrollable
+## Data Frames vs. Tibbles {.smaller .scrollable}
 
 A **tibble** is a more advanced sub-type of a *data frame*. If needed, a regular *data frame* can be coerced into a *tibble* with the `as_tibble()` command.
 
