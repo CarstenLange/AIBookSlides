@@ -1,7 +1,7 @@
 ---
 title: "Introduction to R and RStudio" 
 
-subtitle: "Part 1: Setup (Follow along in RStudio)"
+subtitle: "Part 1: Setup (follow along in RStudio)"
 
 format: revealjs
 ---

@@ -8,24 +8,24 @@ format:
 
 # Introduction to Machine Learning
 
-## What is What?
+## What is What? {auto-animate=true}
 
 -   Artificial Intelligence (AI),
 -   Machine Learning,
 -   Deep Learning
 -   Big Data
 
-## What is What?
+## What is What? 
 
-![Types of AI](Images/TypesOfAI1.png)
+![Categorizing  AI, Machine Learning, and Deep Learning](Images/TypesOfAI1.png)
 
-## What is What? {auto-animate="true"}
+## What is What? 
 
-![Types of AI](Images/TypesOfAI2.png)
+![Categorizing  AI, Machine Learning, and Deep Learning](Images/TypesOfAI2.png)
 
-## What is What?
+## What is What? 
 
-![Types of AI](Images/TypesOfAI3.png)
+![Categorizing  AI, Machine Learning, and Deep Learning](Images/TypesOfAI3.png)
 
 ## What About Big Data
 
@@ -174,48 +174,62 @@ $$Price=\beta_1 \cdot Sqft+ \beta_2 \cdot Bedrooms +\beta_3 \cdot Waterfront+\be
 
 ## Prediction
 
-**Predicting** means that we use the values for one or more known variables to estimate an *outcome*. Predictions can be forecasts. For example if we predict tomorrows weather based on todays weather and the barometric change of pressure from today. However, *predictions* are often not forecasts. E.g., if we predict the price of a house (today) based on it's square footage (today). 
+**Predicting** means that we use the values for one or more known variables to estimate an *outcome*. Predictions can be forecasts or for the same time period. 
 
-We distinguish variables where we know the value from variables that we have predicted by adding a *hat* on the predicted variable. For example $Price_i$ would indicate the price of a specific house (the house $i$) that we know, while $\widehat{Price_i}$ would indicate that the price of the house is *predicted* based on a model.
+::: nonincremental
+- Predict tomorrows weather based on todays barometric change of pressure.
+- Predict the price of a house (today) based on it's square footage (today). 
+:::
+
+Variables that are based on a prediction are marked with a *hat* (e.g.,  $\widehat{Price_i}$).
 
 
 ## Model {.smaller}
 
-A *model* is what we use to predict a variable based on values of other variables, and given certain assumptions. 
+A *model* is what we use for predicting an outcome variable based on values of predictor variables --- given certain assumptions. 
 
-This sounds complicated, but can be easily explained when using an example. Suppose, we try to predict real estate prices based on the square footage of a house with ordianry least square regression, which implies that the relation beween price ($Price$) and square footage ($Sqft$) is linear and can be expressed as:
-    
+
 $$\widehat{Price_i}=\beta_1 Sqft_i + \beta_2$$
 
     
 ## Fitted Model {.smaller}
 
-Can we use the model from the previous slide to predict the price of a house, if we know the house's square footage? YES and NO 
+Can we use the model from the previous slide to predict the price of a house, if we know the value for the house's predictor variable (e.g., $Sft=1000$) 
 
-Suppose OLS  based on data determines that $\beta_1=300$ an that $\beta_2=500,000$ than our model would look like this:
+Only if we know the values for the parameters (the $\beta's$)!
+
+Suppose OLS  based on data determines that $\beta_1=300$ andt $\beta_2=500,000$: 
+
 $$\widehat{Price_i}=300 Sqft_i + 500000$$
 
 A model where the parameters (the $\beta's$) have been determined by a machine learning algorithm is called a **fitted model**.
     
-**A fitted model can be used for predictions.** E.g., a house with a square footage of 1,000 sqft is predicted to cost $8000,000 in our case: 
+**A fitted model can be used for predictions.**  E.g., a house with a square footage of 1,000 sqft is predicted to cost $8000,000. 
+
+- In our case: 
     
     $$\widehat{Price_i}=300 \cdot 1,000 + 500,000= 800,000$$
 
 ## Parameters
-  The $\beta s$ of a model. Machine learning can be (over)simplified to the following steps:
+  The $\beta s$ of a model are the parameters. The parameters are deterined by the optimizer of a machine learning algorithm. 
   
-  1. Determine the modl including the $\beta s$ 
+  Machine learning can be (over)simplified to the following steps:
   
-  2. Use machine learning to determine the $\beta s$ and therefore create a *fitted model*
+  1. Determine the model including the $\beta s$. 
   
-  3. Use the itted model o predict based on *predictor variables*
+  2. Use machine learning to determine the $\beta s$ and therefore create a *fitted model*.
+  
+  3. Use the itted model o predict based on *predictor variables*.
 
 
 ## Why Using R for Machine Learning?
 
-Alternatives
+Machine Learning Software
 
-- Phython
-- SAS
-- Stata
-- SPSS
+- R (free, advanced, timely delivery of new algorithms, easy to use with the `tidyverse` and `tidymodels` packages)
+- Phython ((free, advanced, often first delivery of new algorithms, not as easy to use because it is a programming language rather then a statistical language)
+- SAS (not free, somehow advanced, slow in delivering new algorithms, easy to use)
+- Stata (not free, somehow advanced, slow in delivering new algorithms, easy to use)
+- SPSS (not free, not advanced, slow in delivering new algorithms, optimized for survey processing, extremely easy to use)
+
+## Your questions

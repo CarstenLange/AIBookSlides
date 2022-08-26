@@ -398,8 +398,8 @@
 <h1>Introduction to Machine Learning</h1>
 
 </section>
-<section id="what-is-what" class="slide level2">
-<h2>What is What?</h2>
+<section id="what-is-what" class="slide level2" data-auto-animate="true">
+<h2 data-id="quarto-animate-title">What is What?</h2>
 <ul>
 <li class="fragment">Artificial Intelligence (AI),</li>
 <li class="fragment">Machine Learning,</li>
@@ -410,15 +410,15 @@
 <section id="what-is-what-1" class="slide level2">
 <h2>What is What?</h2>
 
-<img data-src="Images/TypesOfAI1.png" class="r-stretch quarto-figure-center"><p class="caption">Types of AI</p></section>
-<section id="what-is-what-2" class="slide level2" data-auto-animate="true">
-<h2 data-id="quarto-animate-title">What is What?</h2>
+<img data-src="Images/TypesOfAI1.png" class="r-stretch quarto-figure-center"><p class="caption">Categorizing AI, Machine Learning, and Deep Learning</p></section>
+<section id="what-is-what-2" class="slide level2">
+<h2>What is What?</h2>
 
-<img data-src="Images/TypesOfAI2.png" class="r-stretch quarto-figure-center"><p class="caption">Types of AI</p></section>
+<img data-src="Images/TypesOfAI2.png" class="r-stretch quarto-figure-center"><p class="caption">Categorizing AI, Machine Learning, and Deep Learning</p></section>
 <section id="what-is-what-3" class="slide level2">
 <h2>What is What?</h2>
 
-<img data-src="Images/TypesOfAI3.png" class="r-stretch quarto-figure-center"><p class="caption">Types of AI</p></section>
+<img data-src="Images/TypesOfAI3.png" class="r-stretch quarto-figure-center"><p class="caption">Categorizing AI, Machine Learning, and Deep Learning</p></section>
 <section id="what-about-big-data" class="slide level2">
 <h2>What About Big Data</h2>
 </section>
@@ -613,40 +613,52 @@
 </section>
 <section id="prediction" class="slide level2">
 <h2>Prediction</h2>
-<p><strong>Predicting</strong> means that we use the values for one or more known variables to estimate an <em>outcome</em>. Predictions can be forecasts. For example if we predict tomorrows weather based on todays weather and the barometric change of pressure from today. However, <em>predictions</em> are often not forecasts. E.g., if we predict the price of a house (today) based on it’s square footage (today).</p>
-<p>We distinguish variables where we know the value from variables that we have predicted by adding a <em>hat</em> on the predicted variable. For example <span class="math inline">\(Price_i\)</span> would indicate the price of a specific house (the house <span class="math inline">\(i\)</span>) that we know, while <span class="math inline">\(\widehat{Price_i}\)</span> would indicate that the price of the house is <em>predicted</em> based on a model.</p>
+<p><strong>Predicting</strong> means that we use the values for one or more known variables to estimate an <em>outcome</em>. Predictions can be forecasts or for the same time period.</p>
+<div>
+<ul>
+<li>Predict tomorrows weather based on todays barometric change of pressure.</li>
+<li>Predict the price of a house (today) based on it’s square footage (today).</li>
+</ul>
+</div>
+<p>Variables that are based on a prediction are marked with a <em>hat</em> (e.g., <span class="math inline">\(\widehat{Price_i}\)</span>).</p>
 </section>
 <section id="model" class="slide level2 smaller">
 <h2>Model</h2>
-<p>A <em>model</em> is what we use to predict a variable based on values of other variables, and given certain assumptions.</p>
-<p>This sounds complicated, but can be easily explained when using an example. Suppose, we try to predict real estate prices based on the square footage of a house with ordianry least square regression, which implies that the relation beween price (<span class="math inline">\(Price\)</span>) and square footage (<span class="math inline">\(Sqft\)</span>) is linear and can be expressed as:</p>
+<p>A <em>model</em> is what we use for predicting an outcome variable based on values of predictor variables — given certain assumptions.</p>
 <p><span class="math display">\[\widehat{Price_i}=\beta_1 Sqft_i + \beta_2\]</span></p>
 </section>
 <section id="fitted-model" class="slide level2 smaller">
 <h2>Fitted Model</h2>
-<p>Can we use the model from the previous slide to predict the price of a house, if we know the house’s square footage? YES and NO</p>
-<p>Suppose OLS based on data determines that <span class="math inline">\(\beta_1=300\)</span> an that <span class="math inline">\(\beta_2=500,000\)</span> than our model would look like this: <span class="math display">\[\widehat{Price_i}=300 Sqft_i + 500000\]</span></p>
+<p>Can we use the model from the previous slide to predict the price of a house, if we know the value for the house’s predictor variable (e.g., <span class="math inline">\(Sft=1000\)</span>)</p>
+<p>Only if we know the values for the parameters (the <span class="math inline">\(\beta's\)</span>)!</p>
+<p>Suppose OLS based on data determines that <span class="math inline">\(\beta_1=300\)</span> andt <span class="math inline">\(\beta_2=500,000\)</span>:</p>
+<p><span class="math display">\[\widehat{Price_i}=300 Sqft_i + 500000\]</span></p>
 <p>A model where the parameters (the <span class="math inline">\(\beta's\)</span>) have been determined by a machine learning algorithm is called a <strong>fitted model</strong>.</p>
-<p><strong>A fitted model can be used for predictions.</strong> E.g., a house with a square footage of 1,000 sqft is predicted to cost $8000,000 in our case:</p>
-<pre><code>$$\widehat{Price_i}=300 \cdot 1,000 + 500,000= 800,000$$</code></pre>
+<p><strong>A fitted model can be used for predictions.</strong> E.g., a house with a square footage of 1,000 sqft is predicted to cost $8000,000.</p>
+<ul>
+<li class="fragment"><p>In our case:</p>
+<p><span class="math display">\[\widehat{Price_i}=300 \cdot 1,000 + 500,000= 800,000\]</span></p></li>
+</ul>
 </section>
 <section id="parameters" class="slide level2">
 <h2>Parameters</h2>
-<p>The <span class="math inline">\(\beta s\)</span> of a model. Machine learning can be (over)simplified to the following steps:</p>
+<p>The <span class="math inline">\(\beta s\)</span> of a model.</p>
+<p>Machine learning can be (over)simplified to the following steps:</p>
 <ol type="1">
-<li class="fragment"><p>Determine the modl including the <span class="math inline">\(\beta s\)</span></p></li>
-<li class="fragment"><p>Use machine learning to determine the <span class="math inline">\(\beta s\)</span> and therefore create a <em>fitted model</em></p></li>
-<li class="fragment"><p>Use the itted model o predict based on <em>predictor variables</em></p></li>
+<li class="fragment"><p>Determine the model including the <span class="math inline">\(\beta s\)</span>.</p></li>
+<li class="fragment"><p>Use machine learning to determine the <span class="math inline">\(\beta s\)</span> and therefore create a <em>fitted model</em>.</p></li>
+<li class="fragment"><p>Use the itted model o predict based on <em>predictor variables</em>.</p></li>
 </ol>
 </section>
 <section id="why-using-r-for-machine-learning" class="slide level2">
 <h2>Why Using R for Machine Learning?</h2>
-<p>Alternatives</p>
+<p>Software</p>
 <ul>
-<li class="fragment">Phython</li>
-<li class="fragment">SAS</li>
-<li class="fragment">Stata</li>
-<li class="fragment">SPSS</li>
+<li class="fragment">R (free, advanced, timely delivery of new algorithms, easy to use with the <code>tidyverse</code> and <code>tidymodels</code> packages)</li>
+<li class="fragment">Phython ((free, advanced, often first delivery of new algorithms, not as easy to use because it is a programming language rather then a statistical language)</li>
+<li class="fragment">SAS (not free, somehow advanced, slow in delivering new algorithms, easy to use)</li>
+<li class="fragment">Stata (not free, somehow advanced, slow in delivering new algorithms, easy to use)</li>
+<li class="fragment">SPSS (not free, not advanced, slow in delivering new algorithms, optimized for survey procssing, extremly easy to use)</li>
 </ul>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>

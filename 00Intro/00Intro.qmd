@@ -1,12 +1,9 @@
 ---
 title: "Intro to the Course"
-subtitle: "Material & Methods to Work"
 format: 
   revealjs:
     code-fold: true
 ---
-
-# Introduction to the Course 
 
 ## About the Course {.smaller}
 
@@ -59,4 +56,4 @@ format:
        
     - to build on the knowledge from the course by reading more advanced articles and watching videos to become an expert.  
 
-## End of Presentation Intro to the Course
+## Your Questions
