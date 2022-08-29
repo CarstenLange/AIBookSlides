@@ -6,8 +6,6 @@ format:
     code-fold: true
 ---
 
-# Introduction to Machine Learning
-
 ## What is What? {auto-animate=true}
 
 -   Artificial Intelligence (AI),
@@ -177,7 +175,7 @@ $$Price=\beta_1 \cdot Sqft+ \beta_2 \cdot Bedrooms +\beta_3 \cdot Waterfront+\be
 **Predicting** means that we use the values for one or more known variables to estimate an *outcome*. Predictions can be forecasts or for the same time period. 
 
 ::: nonincremental
-- Predict tomorrows weather based on todays barometric change of pressure.
+- Predict tomorrow's weather based on today's barometric change of pressure.
 - Predict the price of a house (today) based on it's square footage (today). 
 :::
 
@@ -211,7 +209,7 @@ A model where the parameters (the $\beta's$) have been determined by a machine l
     $$\widehat{Price_i}=300 \cdot 1,000 + 500,000= 800,000$$
 
 ## Parameters
-  The $\beta s$ of a model are the parameters. The parameters are deterined by the optimizer of a machine learning algorithm. 
+  The $\beta s$ of a model are the parameters. The parameters are determined by the optimizer of a machine learning algorithm. 
   
   Machine learning can be (over)simplified to the following steps:
   
@@ -219,9 +217,28 @@ A model where the parameters (the $\beta's$) have been determined by a machine l
   
   2. Use machine learning to determine the $\beta s$ and therefore create a *fitted model*.
   
-  3. Use the itted model o predict based on *predictor variables*.
+  3. Use the fitted model o predict based on *predictor variables*.
 
+## Training vs. Testing Data
 
+**Training Dataset**
+
+When using data to calibrate the parameters minimizing some type of prediction error (training the model), most but not all of the observations are used. 
+
+. . . 
+
+Only about 60% – 90% of the total observations are usually used to calibrate the parameters (the $\beta s$ of the model). These observations  are randomly chosen and the resulting dataset is called the **training dataset**.
+
+## Training vs. Testing Data
+
+**Testing  Dataset**
+
+Observations not randomly chosen for training  makeup the **testing dataset**. Testing data are never used to optimize model performance in any way! Instead, they form a hold-out dataset used to assess the predictive quality of a model. 
+
+. . . 
+
+Using the training dataset for this purpose is not an option because we would measure how well the model approximates the training data rather than assessing the predictive quality on new data — data that the model never has seen before 
+    
 ## Why Using R for Machine Learning?
 
 Machine Learning Software

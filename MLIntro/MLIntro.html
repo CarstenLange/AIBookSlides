@@ -393,11 +393,6 @@
   <p class="subtitle">Types, Tasks, Terminology</p>
 </section>
 
-<section>
-<section id="introduction-to-machine-learning" class="title-slide slide level1 center">
-<h1>Introduction to Machine Learning</h1>
-
-</section>
 <section id="what-is-what" class="slide level2" data-auto-animate="true">
 <h2 data-id="quarto-animate-title">What is What?</h2>
 <ul>
@@ -616,7 +611,7 @@
 <p><strong>Predicting</strong> means that we use the values for one or more known variables to estimate an <em>outcome</em>. Predictions can be forecasts or for the same time period.</p>
 <div>
 <ul>
-<li>Predict tomorrows weather based on todays barometric change of pressure.</li>
+<li>Predict tomorrow’s weather based on today’s barometric change of pressure.</li>
 <li>Predict the price of a house (today) based on it’s square footage (today).</li>
 </ul>
 </div>
@@ -642,28 +637,47 @@
 </section>
 <section id="parameters" class="slide level2">
 <h2>Parameters</h2>
-<p>The <span class="math inline">\(\beta s\)</span> of a model.</p>
+<p>The <span class="math inline">\(\beta s\)</span> of a model are the parameters. The parameters are determined by the optimizer of a machine learning algorithm.</p>
 <p>Machine learning can be (over)simplified to the following steps:</p>
 <ol type="1">
 <li class="fragment"><p>Determine the model including the <span class="math inline">\(\beta s\)</span>.</p></li>
 <li class="fragment"><p>Use machine learning to determine the <span class="math inline">\(\beta s\)</span> and therefore create a <em>fitted model</em>.</p></li>
-<li class="fragment"><p>Use the itted model o predict based on <em>predictor variables</em>.</p></li>
+<li class="fragment"><p>Use the fitted model o predict based on <em>predictor variables</em>.</p></li>
 </ol>
+</section>
+<section id="training-vs.-testing-data" class="slide level2">
+<h2>Training vs.&nbsp;Testing Data</h2>
+<p><strong>Training Dataset</strong></p>
+<p>When using data to calibrate the parameters minimizing some type of prediction error (training the model), most but not all of the observations are used.</p>
+<div class="fragment">
+<p>Only about 60% – 90% of the total observations are usually used to calibrate the parameters (the <span class="math inline">\(\beta s\)</span> of the model). These observations are randomly chosen and the resulting dataset is called the <strong>training dataset</strong>.</p>
+</div>
+</section>
+<section id="training-vs.-testing-data-1" class="slide level2">
+<h2>Training vs.&nbsp;Testing Data</h2>
+<p><strong>Testing Dataset</strong></p>
+<p>Observations not randomly chosen for training makeup the <strong>testing dataset</strong>. Testing data are never used to optimize model performance in any way! Instead, they form a hold-out dataset used to assess the predictive quality of a model.</p>
+<div class="fragment">
+<p>Using the training dataset for this purpose is not an option because we would measure how well the model approximates the training data rather than assessing the predictive quality on new data — data that the model never has seen before</p>
+</div>
 </section>
 <section id="why-using-r-for-machine-learning" class="slide level2">
 <h2>Why Using R for Machine Learning?</h2>
-<p>Software</p>
+<p>Machine Learning Software</p>
 <ul>
 <li class="fragment">R (free, advanced, timely delivery of new algorithms, easy to use with the <code>tidyverse</code> and <code>tidymodels</code> packages)</li>
 <li class="fragment">Phython ((free, advanced, often first delivery of new algorithms, not as easy to use because it is a programming language rather then a statistical language)</li>
 <li class="fragment">SAS (not free, somehow advanced, slow in delivering new algorithms, easy to use)</li>
 <li class="fragment">Stata (not free, somehow advanced, slow in delivering new algorithms, easy to use)</li>
-<li class="fragment">SPSS (not free, not advanced, slow in delivering new algorithms, optimized for survey procssing, extremly easy to use)</li>
+<li class="fragment">SPSS (not free, not advanced, slow in delivering new algorithms, optimized for survey processing, extremely easy to use)</li>
 </ul>
+</section>
+<section id="your-questions" class="slide level2">
+<h2>Your questions</h2>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
