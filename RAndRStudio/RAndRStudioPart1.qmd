@@ -1,7 +1,7 @@
 ---
 title: "Introduction to R and RStudio" 
 
-subtitle: "Part 1: Setup (follow along in RStudio)"
+subtitle: "Part 1: Basics (follow along in RStudio)"
 
 format: revealjs
 ---
@@ -17,6 +17,8 @@ What you will learn in this session:
 -   How to use major functionalities of RStudio
 -   How to extend R's functionality with R-packages
 -   Which packages you should install for this book
+-   Data types and data objects in R
+-   How very big and very small numbers can be displayed
 
 ## Install and Setup R and RStudio
 
@@ -34,9 +36,13 @@ You can download RStudio here: [Download RStudio](https://www.rstudio.com/produc
 
 Detailed installation guides are provided in the Book and the Online Resources sections of this chapter in book.
 
-## RStudio --- Integrated Development Environment (IDE) for R
+## RStudio --- Integrated Development Environment (IDE) for R 🤓
 
 ![RStudio Window](Images/RAndRStudioWindow.PNG)
+
+::: footer
+See: [RandRStudioScriptPart1.R script100](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+:::
 
 ## Recommended RStudio Settings
 
@@ -45,9 +51,7 @@ Detailed installation guides are provided in the Book and the Online Resources s
 
 2.  **Work with R Projects:** This assigns a directory on your hard drive to your R analysis: `File -> New Project`
 
-::: footer
-See: [RandRStudioScript.R script100](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScript.R)
-:::
+
 
 ## R Packages {.smaller}
 
@@ -103,9 +107,7 @@ print(DataHousing[1:3,])
     -   *advanced objects*. E.g., for plot, models, prediction results
 :::
 
-
-## Data Types {.scrollable .smaller}
-
+## Data Types  🤓 {.scrollable .smaller}
 
 ::: panel-tabset
 ### Main
@@ -241,7 +243,7 @@ kable(DataTruthTable, caption="Truth Table for AND and OR")%>%
 :::
 
 ::: footer
-See: [RandRStudioScript.R script200](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScript.R)
+See: [RandRStudioScriptPart1.R script200](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
 :::
 
 ## Data Types & Data Objects
@@ -250,13 +252,17 @@ See: [RandRStudioScript.R script200](https://lange-analytics.com/AIBook/Scripts/
 
 **Data Objects:** What are the containers R uses to store data?
 
-## Data Types
+## Data Objects 🤓
 
-- **Single Value Object**
-- **Vector Object**
-- **Data Frame (Tibble) Object**
-- **List Object** (not covered in this course)
-- **Advanced Object** such as plots, models, recipes
+-   **Single Value Object**
+-   **Vector Object**
+-   **Data Frame (Tibble) Object**
+-   **List Object** (not covered in this course)
+-   **Advanced Object** such as plots, models, recipes
+
+::: footer
+See: [RandRStudioScriptPart1.R script300](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+:::
 
 ## Single Value Object
 
@@ -274,8 +280,8 @@ IsLifeGood=TRUE
 
 A vector object stores a list of values (numerical, character, factor, or logic)
 
-
 Example: Weather during the last three days in Stattown:
+
 ```{r}
 #| echo: true
 VecTemp=c(70, 68, 55)
@@ -299,7 +305,6 @@ ForecDays=length(VecTemp)
 cat("The forecast is for", ForecDays, "days.")
 ```
 
-
 ## Data Frames (tibbles)
 
 A data frame is similar to an Excel table (note not all columns of the Titanic data frame are shown).
@@ -319,9 +324,6 @@ DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv")
 str(DataTitanic)
 ```
 
-
-
-
 ## Extracting the Vectors and Perform Calculations (numerical Vectors)
 
 ```{r}
@@ -331,7 +333,6 @@ VecFareInPounds=DataTitanic$FareInPounds
 AvgFare=mean(VecFareInPounds)
 cat("The average fare of Titanic passengers was:", AvgFare, "British Pounds")
 ```
-
 
 ## Extracting the Vectors and Perform Calculations (logical Vectors)
 
@@ -355,17 +356,82 @@ A **tibble** is a more advanced sub-type of a *data frame*. If needed, a regular
 
 A few of the differences between *data frames* and *tibbles*:
 
-1. A *data frame* outputs all its rows and columns by default. A *tibble* outputs only the first 10 rows and the variables that fit on the screen but provides information about omitted variables and rows.
+1.  A *data frame* outputs all its rows and columns by default. A *tibble* outputs only the first 10 rows and the variables that fit on the screen but provides information about omitted variables and rows.
 
-2. A *data frame* can have row names, while a *tibble* cannot.
+2.  A *data frame* can have row names, while a *tibble* cannot.
 
-3. In R version <4.1 a *data frame* converts all *character* values to *factor* type. This conversion was often confusing and annoying. In contrast, a *tibble* only coerces *character* values into *factor* on demand. Since R version 4.1 regular `data frames` behave the same as `tibbles`. 
+3.  In R version \<4.1 a *data frame* converts all *character* values to *factor* type. This conversion was often confusing and annoying. In contrast, a *tibble* only coerces *character* values into *factor* on demand. Since R version 4.1 regular `data frames` behave the same as `tibbles`.
 
 Among other reasons, points 1. and 3. make it more straightforward to work with *tibbles* rather than with basic *data frames*.
 
-## Summary
+## Summary Data Types and Objects
 
 ```{r}
 knitr::include_graphics("Images/DataObjectDataTypes.png")
 ```
 
+## How are Very Big Numbers Presented {.smaller}
+
+
+The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)
+
+\begin{eqnarray*}
+GDP&=&2.2996086 \cdot 10000000000000\\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10 \\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10^{13}
+\end{eqnarray*}
+
+Let us see what R does:
+
+```{r}
+#| echo: true
+GDPUS=22996086000000
+print(GDPUS)
+
+```
+
+::: footer
+See: [RandRStudioScriptPart1.R script400](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+:::
+
+
+## How are Very Small Numbers Presented {.smaller}
+
+::: {.panel-tabset}
+
+### Main 
+
+The probability of getting struck by lightning in the US is about $0.000000000365$ on any randomly chosen day.
+
+\begin{eqnarray*}
+ProbLight&=&\frac{3.65}{10000000000} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10\cdot 10\cdot 10\cdot 10\cdot 10\cdot                              10\cdot 10\cdot 10\cdot 10\cdot 10} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10^{10}}\\
+&\Longleftrightarrow&\\
+ProbLight&=&3.65 \cdot 10^{-10}
+\end{eqnarray*}
+
+
+### Why?
+
+In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:
+
+$$\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365$$
+### What R Does
+
+Let us see what R does:
+
+```{r}
+#| echo: true
+ProbStruck=0.000000000365
+cat("Probabilty to get stuck by a lighning on an avg. day:", ProbStruck)
+```
+
+:::
+
+
+## Questions

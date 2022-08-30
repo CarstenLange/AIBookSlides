@@ -26,6 +26,14 @@
             This presention introduces the basics of R and the RStudio code editor to you.
         </description>
         <asset name="View online" type="web">RAndRstudio/RandRStudioPart1.html</asset>
-        <asset name="Download PDF (note, only first tab of a slide is printed)">RAndRstudio/RandRStudioPart1.html</asset>
-    </version>        
+        <asset name="Download PDF (note, only first tab of a slide is printed)">RAndRstudio/RandRStudioPart1.pdf</asset>
+    </version> 
+    <version>
+        <name>Introduction to R and RStudio - Part 1</name>
+        <description>
+            This presention extends part 1 and introduces functionality from the `tidyverse` package.
+        </description>
+        <asset name="View online" type="web">RAndRstudio/RandRStudioPart2.html</asset>
+        <asset name="Download PDF soon">#</asset>
+    </version>  
 </versions>

@@ -1,0 +1,103 @@
+---
+title: "Introduction to R and RStudio" 
+
+subtitle: "Part 2: `tidyverse` (follow along in RStudio)"
+
+format: revealjs
+---
+
+## Learning Outcomes
+
+What you will learn in this session:
+
+-   The Structure of R commands
+- About the `tidyverse` package for data frames
+    * `select()` and rename columns  (variables)
+    * `filter()` rows (observations)
+    * `mutate()` (define columns (variables); overwrite old or create new)
+    * piping (connecting commands) with  `%>%`
+
+## Basics of R Commands
+
+R commands consists of the **command's name followed by a pair of parentheses**: `command()`
+
+. . .
+
+Inside the `()` we can define one or more **arguments** for the command.
+
+. . .
+
+```{r}
+#| echo: true
+VecTest=c(1,2,3)
+```
+<p>
+```{r}
+#| echo: true
+cat("Sum:", sum(x=VecTest))
+cat("Mean:", mean(VecTest))
+```
+
+
+* Each argument in a command has a name. 
+
+* R does not require to use the argument's name, but **order matters**. 
+    
+*  R commands have many arguments. Most have default values.
+
+* We can nest commands. However, nesting too deeply makes code difficult to read.
+
+:::
+
+## Structure of R Commands {.smaller}
+
+Most R commands have the following structure:
+\begin{equation}
+\underbrace{DataNew}_{\text{R object created by Command}}=
+\underbrace{Command}_{\text{Name of the command}}
+\underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
+\overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
+\end{equation}
+
+Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`
+
+## Use a Command with and without Argument Names
+
+
+```{r}
+#| echo: true
+VecTest=c(1,2,3)
+```
+<br>
+```{r}
+#| echo: true
+Result=mean(x=VecTest, trim=0, na.rm=FALSE)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+<p>
+
+. . .
+```{r}
+#| echo: true
+Result=mean(VecTest, 0, FALSE)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+<p>
+
+. . .
+```{r}
+#| echo: true
+Result=mean(VecTest)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+
+
+. . .
+
+
+All three examples are equivalent
+
+Try `? mean` in the Rstudio console to see the default values.
+
+
+## Questions

@@ -393,7 +393,7 @@
 
 <section id="title-slide" class="center">
   <h1 class="title">Introduction to R and RStudio</h1>
-  <p class="subtitle">Part 1: Setup (Follow along in RStudio)</p>
+  <p class="subtitle">Part 1: Basics (follow along in RStudio)</p>
 </section>
 
 <section id="learning-outcomes" class="slide level2">
@@ -407,6 +407,8 @@
 <li class="fragment">How to use major functionalities of RStudio</li>
 <li class="fragment">How to extend R’s functionality with R-packages</li>
 <li class="fragment">Which packages you should install for this book</li>
+<li class="fragment">Data types and data objects in R</li>
+<li class="fragment">How very big and very small numbers can be displayed</li>
 </ul>
 </section>
 <section id="install-and-setup-r-and-rstudio" class="slide level2">
@@ -423,9 +425,12 @@
 <p>Detailed installation guides are provided in the Book and the Online Resources sections of this chapter in book.</p>
 </section>
 <section id="rstudio-integrated-development-environment-ide-for-r" class="slide level2">
-<h2>RStudio — Integrated Development Environment (IDE) for R</h2>
+<h2>RStudio — Integrated Development Environment (IDE) for R 🤓</h2>
 
-<img data-src="Images/RAndRStudioWindow.PNG" class="r-stretch quarto-figure-center"><p class="caption">RStudio Window</p></section>
+<img data-src="Images/RAndRStudioWindow.PNG" class="r-stretch quarto-figure-center"><p class="caption">RStudio Window</p><div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R">RandRStudioScriptPart1.R script100</a></p>
+</div>
+</section>
 <section id="recommended-rstudio-settings" class="slide level2">
 <h2>Recommended RStudio Settings</h2>
 <p>1.<strong>Do not Restore .RData into workspace at startup:</strong><br>
@@ -433,9 +438,6 @@
 <ol start="2" type="1">
 <li class="fragment"><strong>Work with R Projects:</strong> This assigns a directory on your hard drive to your R analysis: <code>File -&gt; New Project</code></li>
 </ol>
-<div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScript.R">RandRStudioScript.R script100</a></p>
-</div>
 </section>
 <section id="r-packages" class="slide level2 smaller">
 <h2>R Packages</h2>
@@ -496,7 +498,7 @@
 </div>
 </section>
 <section id="data-types" class="slide level2 scrollable smaller">
-<h2>Data Types</h2>
+<h2>Data Types 🤓</h2>
 <div class="panel-tabset">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Main</a></li><li><a href="#tabset-1-2">Numerical</a></li><li><a href="#tabset-1-3">Character</a></li><li><a href="#tabset-1-4">Factor</a></li><li><a href="#tabset-1-5">Logic</a></li><li><a href="#tabset-1-6">Truth Table</a></li></ul>
 <div class="tab-content">
@@ -679,7 +681,7 @@
 </div>
 </div>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScript.R">RandRStudioScript.R script200</a></p>
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R">RandRStudioScriptPart1.R script200</a></p>
 </div>
 </section>
 <section id="data-types-data-objects-1" class="slide level2">
@@ -687,8 +689,8 @@
 <p><strong>Data Types:</strong> What can R store?</p>
 <p><strong>Data Objects:</strong> What are the containers R uses to store data?</p>
 </section>
-<section id="data-types-1" class="slide level2">
-<h2>Data Types</h2>
+<section id="data-objects" class="slide level2">
+<h2>Data Objects 🤓</h2>
 <ul>
 <li class="fragment"><strong>Single Value Object</strong></li>
 <li class="fragment"><strong>Vector Object</strong></li>
@@ -696,6 +698,9 @@
 <li class="fragment"><strong>List Object</strong> (not covered in this course)</li>
 <li class="fragment"><strong>Advanced Object</strong> such as plots, models, recipes</li>
 </ul>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R">RandRStudioScriptPart1.R script300</a></p>
+</div>
 </section>
 <section id="single-value-object" class="slide level2">
 <h2>Single Value Object</h2>
@@ -914,10 +919,67 @@
 </ol>
 <p>Among other reasons, points 1. and 3. make it more straightforward to work with <em>tibbles</em> rather than with basic <em>data frames</em>.</p>
 </section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
+<section id="summary-data-types-and-objects" class="slide level2">
+<h2>Summary Data Types and Objects</h2>
 
-<img data-src="Images/DataObjectDataTypes.png" width="336" class="r-stretch"><div class="footer footer-default">
+<img data-src="Images/DataObjectDataTypes.png" width="336" class="r-stretch"></section>
+<section id="how-are-very-big-numbers-presented" class="slide level2 smaller">
+<h2>How are Very Big Numbers Presented</h2>
+<p>The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)</p>
+<p><span class="math display">\[\begin{eqnarray*}
+GDP&amp;=&amp;2.2996086 \cdot 10000000000000\\
+&amp;\Longleftrightarrow&amp;\\
+GDP&amp;=&amp;2.2996086 \cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10 \\
+&amp;\Longleftrightarrow&amp;\\
+GDP&amp;=&amp;2.2996086 \cdot 10^{13}
+\end{eqnarray*}\]</span></p>
+<p>Let us see what R does:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1"></a>GDPUS<span class="ot">=</span><span class="dv">22996086000000</span></span>
+<span id="cb45-2"><a href="#cb45-2"></a><span class="fu">print</span>(GDPUS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.299609e+13</code></pre>
+</div>
+</div>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R">RandRStudioScriptPart1.R script400</a></p>
+</div>
+</section>
+<section id="how-are-very-small-numbers-presented" class="slide level2 smaller">
+<h2>How are Very Small Numbers Presented</h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Main</a></li><li><a href="#tabset-2-2">Why?</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<p>The probability of getting struck by lightning in the US is about <span class="math inline">\(0.000000000365\)</span> on any randomly chosen day.</p>
+<p><span class="math display">\[\begin{eqnarray*}
+ProbLight&amp;=&amp;\frac{3.65}{10000000000} \\
+&amp;\Longleftrightarrow&amp;\\
+ProbLight&amp;=&amp;\frac{3.65}{10\cdot 10\cdot 10\cdot 10\cdot 10\cdot                              10\cdot 10\cdot 10\cdot 10\cdot 10} \\
+&amp;\Longleftrightarrow&amp;\\
+ProbLight&amp;=&amp;\frac{3.65}{10^{10}}\\
+&amp;\Longleftrightarrow&amp;\\
+ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
+\end{eqnarray*}\]</span></p>
+</div>
+<div id="tabset-2-2">
+<p>In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:</p>
+<p><span class="math display">\[\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365\]</span> ### What R Does</p>
+<p>Let us see what R does:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>ProbStruck<span class="ot">=</span><span class="fl">0.000000000365</span></span>
+<span id="cb47-2"><a href="#cb47-2"></a><span class="fu">cat</span>(<span class="st">"Probabilty to get stuck by a lighning on an avg. day:"</span>, ProbStruck)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Probabilty to get stuck by a lighning on an avg. day: 3.65e-10</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="questions" class="slide level2">
+<h2>Questions</h2>
+<div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
 </section>
