@@ -19,7 +19,6 @@
         </description>
         <asset name="View online (recommended)" type="web">MLIntro/MLIntro.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">MLIntro/MLIntro.pdf</asset>
-        <asset name="Download PDF (note, only first tab of a slide is printed)">MLIntro/MLIntro.pdf</asset>
         <asset name="Download Presentation's Source Code (coming soon)">MLIntro.zip</asset>
     </version>
    
