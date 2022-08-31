@@ -7,7 +7,7 @@
         <description>
             This presention gives you advice how to study in this course and informs you about material available.
         </description>
-        <asset name="View online" type="web">00Intro/00Intro.html</asset>
+        <asset name="View online (recommended)" type="web">00Intro/00Intro.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">00Intro/00Intro.pdf</asset>
     </version>
     
@@ -16,7 +16,7 @@
         <description>
             This presention is an introduction to machine learning. It categorizes machine learning  by applications as well as by type of algorithm.
         </description>
-        <asset name="View online" type="web">MLIntro/MLIntro.html</asset>
+        <asset name="View online (recommended)" type="web">MLIntro/MLIntro.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">MLIntro/MLIntro.pdf</asset>
     </version>
    
@@ -25,7 +25,7 @@
         <description>
             This presention introduces the basics of R and the RStudio code editor to you.
         </description>
-        <asset name="View online" type="web">RAndRstudio/RandRStudioPart1.html</asset>
+        <asset name="View online (recommended)" type="web">RAndRstudio/RandRStudioPart1.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">RAndRstudio/RandRStudioPart1.pdf</asset>
     </version> 
     <version>
@@ -33,7 +33,7 @@
         <description>
             This presention extends part 1 and introduces functionality from the `tidyverse` package.
         </description>
-        <asset name="View online" type="web">RAndRstudioPart2/RandRStudioPart2.html</asset>
+        <asset name="View online (recommended)" type="web">RAndRstudioPart2/RandRStudioPart2.html</asset>
         <asset name="Download PDF">RAndRstudioPart2/RandRStudioPart2.pdf</asset>
     </version>  
 </versions>
