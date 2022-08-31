@@ -36,7 +36,7 @@ You can download RStudio here: [Download RStudio](https://www.rstudio.com/produc
 
 Detailed installation guides are provided in the Book and the Online Resources sections of this chapter in book.
 
-## RStudio --- Integrated Development Environment (IDE) for R 🤓
+## RStudio --- Integrated Development Environment (IDE) 🤓
 
 ![RStudio Window](Images/RAndRStudioWindow.PNG)
 
@@ -77,7 +77,6 @@ Assuming the `rio` packages is already installed.
 
 ```{r}
 #| echo: true
-#| output-location: fragment
 library(rio);library(tidyverse)
 DataHousing =
   import("https://lange-analytics.com/AIBook/Data/HousingData.csv") %>% 
@@ -252,7 +251,7 @@ See: [RandRStudioScriptPart1.R script200](https://lange-analytics.com/AIBook/Scr
 
 **Data Objects:** What are the containers R uses to store data?
 
-## Data Objects 🤓
+## Data Objects 
 
 -   **Single Value Object**
 -   **Vector Object**
@@ -260,9 +259,7 @@ See: [RandRStudioScriptPart1.R script200](https://lange-analytics.com/AIBook/Scr
 -   **List Object** (not covered in this course)
 -   **Advanced Object** such as plots, models, recipes
 
-::: footer
-See: [RandRStudioScriptPart1.R script300](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
-:::
+
 
 ## Single Value Object
 
@@ -350,7 +347,7 @@ SurvRate=mean(DataTitanic$Survived)
 cat("The average survival rate of Titanic passengers was:", SurvRate)
 ```
 
-## Data Frames vs. Tibbles {.smaller .scrollable}
+## Data Frames vs. Tibbles 🤓 {.smaller .scrollable}
 
 A **tibble** is a more advanced sub-type of a *data frame*. If needed, a regular *data frame* can be coerced into a *tibble* with the `as_tibble()` command.
 
@@ -362,13 +359,18 @@ A few of the differences between *data frames* and *tibbles*:
 
 3.  In R version \<4.1 a *data frame* converts all *character* values to *factor* type. This conversion was often confusing and annoying. In contrast, a *tibble* only coerces *character* values into *factor* on demand. Since R version 4.1 regular `data frames` behave the same as `tibbles`.
 
-Among other reasons, points 1. and 3. make it more straightforward to work with *tibbles* rather than with basic *data frames*.
+
+
+::: footer
+See: [RandRStudioScriptPart1.R script300](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+:::
 
 ## Summary Data Types and Objects
 
 ```{r}
 knitr::include_graphics("Images/DataObjectDataTypes.png")
 ```
+
 
 ## How are Very Big Numbers Presented {.smaller}
 

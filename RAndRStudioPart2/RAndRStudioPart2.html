@@ -403,7 +403,7 @@
 <li class="fragment"><code>select()</code> and rename columns (variables)</li>
 <li class="fragment"><code>filter()</code> rows (observations)</li>
 <li class="fragment"><code>mutate()</code> (define columns (variables); overwrite old or create new)</li>
-<li class="fragment">piping (connecting commands) with <code>%&gt;%</code></li>
+<li class="fragment">piping (connecting commands) with <code>%&gt;%</code>.</li>
 </ul></li>
 </ul>
 </section>
@@ -429,9 +429,9 @@
 </div>
 </div>
 <ul>
-<li class="fragment"><p>Each argument in a command has a name.</p></li>
-<li class="fragment"><p>R does not require to use the argument’s name, but <strong>order matters</strong>.</p></li>
-<li class="fragment"><p>R commands have many arguments. Most have default values.</p></li>
+<li class="fragment"><p>Arguments in a command usually have names such as <code>x=</code> or <code>data=</code></p></li>
+<li class="fragment"><p>R does not require to use the argument’s name, but <strong>order matters</strong></p></li>
+<li class="fragment"><p>R commands have many arguments. Most have default values</p></li>
 <li class="fragment"><p>We can nest commands. However, nesting too deeply makes code difficult to read.</p></li>
 </ul>
 <p>:::</p>
@@ -440,15 +440,15 @@
 <section id="structure-of-r-commands" class="slide level2 smaller">
 <h2>Structure of R Commands</h2>
 <p>Most R commands have the following structure: <span class="math display">\[\begin{equation}
-\underbrace{DataNew}_{\text{R object created by Command}}=
+\underbrace{DataNew}_{\text{R object storing the result}}=
 \underbrace{Command}_{\text{Name of the command}}
 \underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
 \overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
 \end{equation}\]</span></p>
-<p>Often the <code>data</code> argument is the first argument in a command. Usually named <code>data=</code> or <code>x=</code></p>
+<p>Often the <code>data</code> argument is the first argument in a command. Usually named <code>data=</code> or <code>x=</code>.</p>
 </section>
 <section id="use-a-command-with-and-without-argument-names" class="slide level2">
-<h2>Use a Command with and without Argument Names</h2>
+<h2>Use a Command with and without Argument Names 🤓</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>VecTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -483,6 +483,183 @@
 <div class="fragment">
 <p>All three examples are equivalent</p>
 <p>Try <code>? mean</code> in the Rstudio console to see the default values.</p>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R">RandRStudioScriptPart2.R script100</a></p>
+</div>
+</div>
+</section>
+<section id="important-comands-from-tidyversedplyr-package" class="slide level2">
+<h2>Important Comands from <code>tidyverse</code>/<code>dplyr</code> Package</h2>
+<ul>
+<li class="fragment"><code>dplyr</code> package is part of the <code>tidyverse</code> (meta) package</li>
+<li class="fragment"><code>library(tidyverse)</code> (loads the <code>tidyverse</code> and its packages)</li>
+<li class="fragment"><code>select()</code> selects columns (variables) from a data frame</li>
+<li class="fragment"><code>filter()</code> filters rows (observations) for specific criteria</li>
+<li class="fragment"><code>mutate()</code> calculates new or overwrites existing columns (variables) based on other columns (just like Excel).</li>
+</ul>
+</section>
+<section id="titanic-dataset" class="slide level2">
+<h2>Titanic Dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">head</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Survived Pclass                                               Name    Sex Age
+1        0      3                             Mr. Owen Harris Braund   male  22
+2        1      1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38
+3        1      3                              Miss. Laina Heikkinen female  26
+4        1      1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35
+5        0      3                            Mr. William Henry Allen   male  35
+6        0      3                                    Mr. James Moran   male  27
+  SiblingsSpousesAboard ParentsChildrenAboard FareInPounds
+1                     1                     0       7.2500
+2                     1                     0      71.2833
+3                     0                     0       7.9250
+4                     1                     0      53.1000
+5                     0                     0       8.0500
+6                     0                     0       8.4583</code></pre>
+</div>
+</div>
+</section>
+<section id="the-select-command" class="slide level2 scrollable">
+<h2>The <code>select()</code> Command</h2>
+<ul>
+<li class="fragment"><p><code>select(DataMine, Var1, Var2)</code> selects columns (variables) <code>Var1</code> and <code>Var2</code> from a data frame <code>DataMine</code>. The first argument is the <code>data=</code> argument followed by the names of the selected variables.</p></li>
+<li class="fragment"><p><code>select(Data, -Var1, -Var2)</code> selects all columns (variables) except <code>Var1</code> and <code>Var2</code> from a data frame <code>DataMine</code>.</p></li>
+</ul>
+<div class="fragment">
+<p>Here is an example using the <code>DataTitanic</code> data frame from the previous slide:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb15-2"><a href="#cb15-2"></a>DataTitanicSelVar<span class="ot">=</span><span class="fu">select</span>(DataTitanic,Survived, Name, Sex, Age)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">head</span>(DataTitanicSelVar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Survived                                               Name    Sex Age
+1        0                             Mr. Owen Harris Braund   male  22
+2        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38
+3        1                              Miss. Laina Heikkinen female  26
+4        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35
+5        0                            Mr. William Henry Allen   male  35
+6        0                                    Mr. James Moran   male  27</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="the-filter-command" class="slide level2">
+<h2>The <code>filter()</code> Command</h2>
+<p>The <code>filter()</code> command filters rows (observations) of a data frame for specific criteria. The first argument is the <code>data=</code> argument followed by the filter criteria.</p>
+<div class="fragment">
+<p>E.g., <em>filter</em> for female passengers from the dataset: Use <code>DataTitanicSelVar</code> that we created in the previous slide (note that we have to use <code>==</code> instead of <code>=</code> for the criteria):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>DataTitanicSelVarFem<span class="ot">=</span><span class="fu">filter</span>(DataTitanicSelVar, Sex<span class="sc">==</span><span class="st">"female"</span>)</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">head</span>(DataTitanicSelVarFem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Survived                                               Name    Sex Age
+1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38
+2        1                              Miss. Laina Heikkinen female  26
+3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35
+4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27
+5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14
+6        1                     Miss. Marguerite Rut Sandstrom female   4</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="the-mutate-command" class="slide level2">
+<h2>The <code>mutate()</code> Command 🤓</h2>
+<p><code>mutate()</code> creates or overwrites columns (variables) based on other columns (just like Excel). The first argument is the <code>data=</code> argument followed by the instructions on how to create the new variable.</p>
+<div class="fragment">
+<p>E.g., <em>mutate</em> calculates new column <code>Born</code> based on <code>Age</code> during Titanic disaster (1912). Uses <code>DataTitanicSelVarFem</code> from previous slide:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>DataTitatincSelVarFemBirthYear<span class="ot">=</span><span class="fu">mutate</span>(DataTitanicSelVarFem, <span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">head</span>(DataTitatincSelVarFemBirthYear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Survived                                               Name    Sex Age Born
+1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38 1874
+2        1                              Miss. Laina Heikkinen female  26 1886
+3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35 1877
+4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27 1885
+5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
+6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
+</div>
+</div>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R">RandRStudioScriptPart2.R script200</a></p>
+</div>
+</div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<ol type="1">
+<li class="fragment">We selected variables <span class="math inline">\(Survived\)</span>, <span class="math inline">\(Name\)</span>, <span class="math inline">\(Sex\)</span>, <span class="math inline">\(Age\)</span> and saved in <code>DataTitanicSelVar</code></li>
+<li class="fragment">We filtered for females and saved in <code>DataTitanicSelVarFem</code></li>
+<li class="fragment">We mutated to calculate new variable and saved finally in <code>DataTitanicSelVarFemBirthYear</code></li>
+</ol>
+<div class="fragment">
+<p>Could this be done easier?</p>
+<p>Note, overwriting data frames such as <code>DataTitanic</code> is usually a bad idea!</p>
+</div>
+</section>
+<section id="alternative-nesting" class="slide level2">
+<h2>Alternative: Nesting</h2>
+<h4 id="i-am-not-serious">(I am not serious)</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb21-2"><a href="#cb21-2"></a>DataTitanicFinal<span class="ot">=</span> <span class="fu">mutate</span>(</span>
+<span id="cb21-3"><a href="#cb21-3"></a>        <span class="fu">filter</span>(<span class="fu">select</span>(DataTitanic,Survived, Name, Sex, Age),</span>
+<span id="cb21-4"><a href="#cb21-4"></a>               Sex<span class="sc">==</span><span class="st">"female"</span>), </span>
+<span id="cb21-5"><a href="#cb21-5"></a>                        <span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="fu">head</span>(DataTitanicFinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Survived                                               Name    Sex Age Born
+1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38 1874
+2        1                              Miss. Laina Heikkinen female  26 1886
+3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35 1877
+4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27 1885
+5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
+6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
+</div>
+</div>
+</section>
+<section id="piping-schema" class="slide level2" data-background-color="#648787">
+<h2>Piping Schema</h2>
+
+<img data-src="Images/Piping.png" data-background-color="aquamarine" alt="Piping Schema" class="r-stretch quarto-figure-center"><p class="caption">Piping Schema</p></section>
+<section id="alternative-piping" class="slide level2">
+<h2>Alternative: Piping</h2>
+<h4 id="will-be-used-throughout-the-coursebook">(will be used throughout the course/book) 🤓</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>DataTitanicFinal<span class="ot">=</span> DataTitanic <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="#cb23-3"></a>                  <span class="fu">select</span>(Survived, Name, Sex, Age) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-4"><a href="#cb23-4"></a>                  <span class="fu">filter</span>(Sex<span class="sc">==</span><span class="st">"female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5"></a>                  <span class="fu">mutate</span>(<span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
+<span id="cb23-6"><a href="#cb23-6"></a><span class="fu">head</span>(DataTitanicFinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Survived                                               Name    Sex Age Born
+1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38 1874
+2        1                              Miss. Laina Heikkinen female  26 1886
+3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35 1877
+4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27 1885
+5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
+6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
+</div>
+</div>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R">RandRStudioScriptPart2.R script300</a></p>
 </div>
 </section>
 <section id="questions" class="slide level2">

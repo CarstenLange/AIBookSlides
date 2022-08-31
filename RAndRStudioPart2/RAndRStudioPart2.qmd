@@ -11,11 +11,11 @@ format: revealjs
 What you will learn in this session:
 
 -   The Structure of R commands
-- About the `tidyverse` package for data frames
-    * `select()` and rename columns  (variables)
-    * `filter()` rows (observations)
-    * `mutate()` (define columns (variables); overwrite old or create new)
-    * piping (connecting commands) with  `%>%`
+-   About the `tidyverse` package for data frames
+    -   `select()` and rename columns (variables)
+    -   `filter()` rows (observations)
+    -   `mutate()` (define columns (variables); overwrite old or create new)
+    -   piping (connecting commands) with `%>%`.
 
 ## Basics of R Commands
 
@@ -31,73 +31,196 @@ Inside the `()` we can define one or more **arguments** for the command.
 #| echo: true
 VecTest=c(1,2,3)
 ```
+
 <p>
+
 ```{r}
 #| echo: true
 cat("Sum:", sum(x=VecTest))
 cat("Mean:", mean(VecTest))
 ```
 
+-   Arguments in a command usually have names such as `x=` or `data=`
 
-* Each argument in a command has a name. 
+-   R does not require to use the argument's name, but **order matters**
 
-* R does not require to use the argument's name, but **order matters**. 
-    
-*  R commands have many arguments. Most have default values.
+-   R commands have many arguments. Most have default values
 
-* We can nest commands. However, nesting too deeply makes code difficult to read.
+-   We can nest commands. However, nesting too deeply makes code difficult to read.
 
 :::
 
 ## Structure of R Commands {.smaller}
 
-Most R commands have the following structure:
-\begin{equation}
-\underbrace{DataNew}_{\text{R object created by Command}}=
+Most R commands have the following structure: \begin{equation}
+\underbrace{DataNew}_{\text{R object storing the result}}=
 \underbrace{Command}_{\text{Name of the command}}
 \underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
 \overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
 \end{equation}
 
-Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`
+Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.
 
-## Use a Command with and without Argument Names
-
+## Use a Command with and without Argument Names 🤓
 
 ```{r}
 #| echo: true
 VecTest=c(1,2,3)
 ```
+
 <br>
+
 ```{r}
 #| echo: true
 Result=mean(x=VecTest, trim=0, na.rm=FALSE)
 cat("The mean of the values in vector VecTest is:", Result)
 ```
+
 <p>
 
 . . .
+
 ```{r}
 #| echo: true
 Result=mean(VecTest, 0, FALSE)
 cat("The mean of the values in vector VecTest is:", Result)
 ```
+
 <p>
 
 . . .
+
 ```{r}
 #| echo: true
 Result=mean(VecTest)
 cat("The mean of the values in vector VecTest is:", Result)
 ```
 
-
 . . .
-
 
 All three examples are equivalent
 
 Try `? mean` in the Rstudio console to see the default values.
 
+::: footer
+See: [RandRStudioScriptPart2.R script100](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R)
+:::
+
+## Important Comands from `tidyverse`/`dplyr` Package
+
+-   `dplyr` package is part of the `tidyverse` (meta) package
+-   `library(tidyverse)` (loads the `tidyverse` and its packages)
+-   `select()` selects columns (variables) from a data frame
+-   `filter()` filters rows (observations) for specific criteria
+-   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel).
+
+## Titanic Dataset
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(rio)
+DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv")
+head(DataTitanic)
+```
+
+## The `select()` Command {.scrollable}
+
+-   `select(DataMine, Var1, Var2)` selects columns (variables) `Var1` and `Var2` from a data frame `DataMine`. The first argument is the `data=` argument followed by the names of the selected variables.
+
+-   `select(Data, -Var1, -Var2)` selects all columns (variables) except `Var1` and `Var2` from a data frame `DataMine`.
+
+. . .
+
+Here is an example using the `DataTitanic` data frame from the previous slide:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicSelVar=select(DataTitanic,Survived, Name, Sex, Age)
+head(DataTitanicSelVar)
+```
+
+## The `filter()` Command
+
+The `filter()` command filters rows (observations) of a data frame for specific criteria. The first argument is the `data=` argument followed by the filter criteria.
+
+. . .
+
+E.g., *filter* for female passengers from the dataset: Use `DataTitanicSelVar` that we created in the previous slide (note that we have to use `==` instead of `=` for the criteria):
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitanicSelVarFem=filter(DataTitanicSelVar, Sex=="female")
+head(DataTitanicSelVarFem)
+```
+
+## The `mutate()` Command 🤓
+
+`mutate()` creates or overwrites columns (variables) based on other columns (just like Excel). The first argument is the `data=` argument followed by the instructions on how to create the new variable.
+
+. . .
+
+E.g., *mutate* calculates new column `Born` based on `Age` during Titanic disaster (1912). Uses `DataTitanicSelVarFem` from previous slide:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitatincSelVarFemBirthYear=mutate(DataTitanicSelVarFem, Born=1912-Age)
+head(DataTitatincSelVarFemBirthYear)
+```
+
+::: footer
+See: [RandRStudioScriptPart2.R script200](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R)
+:::
+
+## Summary
+
+1.  We selected variables $Survived$, $Name$, $Sex$, $Age$ and saved in `DataTitanicSelVar`
+2.  We filtered for females and saved in `DataTitanicSelVarFem`
+3.  We mutated to calculate new variable and saved finally in `DataTitanicSelVarFemBirthYear`
+
+. . .
+
+Could this be done easier?
+
+Note, overwriting data frames such as `DataTitanic` is usually a bad idea!
+
+## Alternative: Nesting 
+#### (I am not serious) 
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicFinal= mutate(
+        filter(select(DataTitanic,Survived, Name, Sex, Age),
+               Sex=="female"), 
+                        Born=1912-Age)
+head(DataTitanicFinal)
+```
+
+## Piping Schema  {background-color=#648787}
+
+![Piping Schema](Images/Piping.png){background-color="aquamarine" fig-alt="Piping Schema" fig-align="center"}
+
+## Alternative: Piping 
+#### (will be used throughout the course/book)  🤓
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicFinal= DataTitanic %>% 
+                  select(Survived, Name, Sex, Age) %>% 
+                  filter(Sex=="female") %>% 
+                  mutate(Born=1912-Age)
+head(DataTitanicFinal)
+```
+::: footer
+See: [RandRStudioScriptPart2.R script300](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R)
+:::
 
 ## Questions

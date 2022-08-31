@@ -1,0 +1,61 @@
+---
+title: "k Nearest Neighbors"
+subtitle: "Identifying Wine Color and Optical Charcter Recognition"
+format: 
+  revealjs:
+    code-fold: false
+---
+
+## A Thought Experiment
+
+I want to find somebody to spend a Saturday afternoon with and I am looking for somebody most similar to me (nearest neighbor) in terms of:
+
+::: non-incremental
+- Sex (coded as 0 for female, and 1 for male)
+- Age (coded in years)
+- Outdoor sports interest (coded from 0 (no interest) to 10 (enthusiast))
+:::
+
+**(all categories matter the same to me)**
+
+## Let us do the Calculation for a Similarity Score 
+#### (sum of average absolute differences)
+
+For sake argument:  I am: male (**1**), **50** years, outdoor sports score **8**:
+<br> <br>
+
+:::: {.columns}
+
+::: {.column width="50%"}
+- first candidate a student
+<br> .
+- second candidate an athletic outdoor (score=**9**) women (**0**)  **51** years old
+- third candidate an athletic outdoor (score=**9**), man (**1**)<br>**53** years
+:::
+
+::: {.column width="50%"}
+
+:::
+
+::::
+## Let us do the Calculation for a Similarity Score 
+#### (sum of average absolute differences --- normalized to 0 -- 10)
+
+For sake argument:  I am: male (**1**), **50** years, outdoor sports score **8**:
+<br> <br>
+:::: {.columns}
+
+::: {.column width="50%"}
+- first candidate a student
+<br> .
+- second candidate an athletic outdoor (score=**9**) women (**0**)  **51** years old
+- third candidate is an athletic outdoor (score=**9**) man (**1**) **53** years
+:::
+
+::: {.column width="50%"}
+
+:::
+
+::::
+
+## Questions
