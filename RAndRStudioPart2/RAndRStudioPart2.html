@@ -7,7 +7,7 @@
 <link href="RAndRStudioPart2_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="RAndRStudioPart2_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="RAndRStudioPart2_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.113">
+  <meta name="generator" content="quarto-1.0.36">
 
   <title>Introduction to R and RStudio</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +18,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: 1;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -403,7 +398,7 @@
 <li class="fragment"><code>select()</code> and rename columns (variables)</li>
 <li class="fragment"><code>filter()</code> rows (observations)</li>
 <li class="fragment"><code>mutate()</code> (define columns (variables); overwrite old or create new)</li>
-<li class="fragment">piping (connecting commands) with <code>%&gt;%</code>.</li>
+<li class="fragment">piping (connecting commands) with <code>%&gt;%</code>.»</li>
 </ul></li>
 </ul>
 </section>
@@ -432,7 +427,7 @@
 <li class="fragment"><p>Arguments in a command usually have names such as <code>x=</code> or <code>data=</code></p></li>
 <li class="fragment"><p>R does not require to use the argument’s name, but <strong>order matters</strong></p></li>
 <li class="fragment"><p>R commands have many arguments. Most have default values</p></li>
-<li class="fragment"><p>We can nest commands. However, nesting too deeply makes code difficult to read.</p></li>
+<li class="fragment"><p>We can nest commands. However, nesting too deeply makes code difficult to read.»</p></li>
 </ul>
 <p>:::</p>
 </div>
@@ -445,7 +440,7 @@
 \underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
 \overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
 \end{equation}\]</span></p>
-<p>Often the <code>data</code> argument is the first argument in a command. Usually named <code>data=</code> or <code>x=</code>.</p>
+<p>Often the <code>data</code> argument is the first argument in a command. Usually named <code>data=</code> or <code>x=</code>.»</p>
 </section>
 <section id="use-a-command-with-and-without-argument-names" class="slide level2">
 <h2>Use a Command with and without Argument Names 🤓</h2>
@@ -482,20 +477,20 @@
 </div>
 <div class="fragment">
 <p>All three examples are equivalent</p>
-<p>Try <code>? mean</code> in the Rstudio console to see the default values.</p>
+<p>Try <code>? mean</code> in the Rstudio console to see the default values.»</p>
 <div class="footer">
 <p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R">RandRStudioScriptPart2.R script100</a></p>
 </div>
 </div>
 </section>
-<section id="important-comands-from-tidyversedplyr-package" class="slide level2">
-<h2>Important Comands from <code>tidyverse</code>/<code>dplyr</code> Package</h2>
+<section id="important-commands-from-tidyversedplyr-package" class="slide level2">
+<h2>Important Commands from <code>tidyverse</code>/<code>dplyr</code> Package</h2>
 <ul>
 <li class="fragment"><code>dplyr</code> package is part of the <code>tidyverse</code> (meta) package</li>
 <li class="fragment"><code>library(tidyverse)</code> (loads the <code>tidyverse</code> and its packages)</li>
 <li class="fragment"><code>select()</code> selects columns (variables) from a data frame</li>
 <li class="fragment"><code>filter()</code> filters rows (observations) for specific criteria</li>
-<li class="fragment"><code>mutate()</code> calculates new or overwrites existing columns (variables) based on other columns (just like Excel).</li>
+<li class="fragment"><code>mutate()</code> calculates new or overwrites existing columns (variables) based on other columns (just like Excel).»</li>
 </ul>
 </section>
 <section id="titanic-dataset" class="slide level2">
@@ -523,6 +518,7 @@
 6                     0                     0       8.4583</code></pre>
 </div>
 </div>
+<p>»</p>
 </section>
 <section id="the-select-command" class="slide level2 scrollable">
 <h2>The <code>select()</code> Command</h2>
@@ -548,6 +544,7 @@
 6        0                                    Mr. James Moran   male  27</code></pre>
 </div>
 </div>
+<p>»</p>
 </div>
 </section>
 <section id="the-filter-command" class="slide level2">
@@ -570,6 +567,7 @@
 6        1                     Miss. Marguerite Rut Sandstrom female   4</code></pre>
 </div>
 </div>
+<p>»</p>
 </div>
 </section>
 <section id="the-mutate-command" class="slide level2">
@@ -595,6 +593,7 @@
 <div class="footer">
 <p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R">RandRStudioScriptPart2.R script200</a></p>
 </div>
+<p>»</p>
 </div>
 </section>
 <section id="summary" class="slide level2">
@@ -606,7 +605,7 @@
 </ol>
 <div class="fragment">
 <p>Could this be done easier?</p>
-<p>Note, overwriting data frames such as <code>DataTitanic</code> is usually a bad idea!</p>
+<p>Note, overwriting data frames such as <code>DataTitanic</code> is usually a bad idea!»</p>
 </div>
 </section>
 <section id="alternative-nesting" class="slide level2">
@@ -631,6 +630,7 @@
 6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
 </div>
 </div>
+<p>»</p>
 </section>
 <section id="piping-schema" class="slide level2" data-background-color="#648787">
 <h2>Piping Schema</h2>
@@ -658,6 +658,7 @@
 6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
 </div>
 </div>
+<p>»</p>
 <div class="footer">
 <p>See: <a href="https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R">RandRStudioScriptPart2.R script300</a></p>
 </div>
@@ -991,8 +992,7 @@
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);

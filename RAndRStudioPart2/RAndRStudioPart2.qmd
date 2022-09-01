@@ -15,7 +15,7 @@ What you will learn in this session:
     -   `select()` and rename columns (variables)
     -   `filter()` rows (observations)
     -   `mutate()` (define columns (variables); overwrite old or create new)
-    -   piping (connecting commands) with `%>%`.
+    -   piping (connecting commands) with `%>%`.»
 
 ## Basics of R Commands
 
@@ -46,7 +46,7 @@ cat("Mean:", mean(VecTest))
 
 -   R commands have many arguments. Most have default values
 
--   We can nest commands. However, nesting too deeply makes code difficult to read.
+-   We can nest commands. However, nesting too deeply makes code difficult to read.»
 
 :::
 
@@ -59,7 +59,7 @@ Most R commands have the following structure: \begin{equation}
 \overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
 \end{equation}
 
-Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.
+Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.»
 
 ## Use a Command with and without Argument Names 🤓
 
@@ -100,19 +100,19 @@ cat("The mean of the values in vector VecTest is:", Result)
 
 All three examples are equivalent
 
-Try `? mean` in the Rstudio console to see the default values.
+Try `? mean` in the Rstudio console to see the default values.»
 
 ::: footer
 See: [RandRStudioScriptPart2.R script100](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R)
 :::
 
-## Important Comands from `tidyverse`/`dplyr` Package
+## Important Commands from `tidyverse`/`dplyr` Package
 
 -   `dplyr` package is part of the `tidyverse` (meta) package
 -   `library(tidyverse)` (loads the `tidyverse` and its packages)
 -   `select()` selects columns (variables) from a data frame
 -   `filter()` filters rows (observations) for specific criteria
--   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel).
+-   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel).»
 
 ## Titanic Dataset
 
@@ -123,6 +123,7 @@ library(rio)
 DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv")
 head(DataTitanic)
 ```
+»
 
 ## The `select()` Command {.scrollable}
 
@@ -141,6 +142,7 @@ library(tidyverse)
 DataTitanicSelVar=select(DataTitanic,Survived, Name, Sex, Age)
 head(DataTitanicSelVar)
 ```
+»
 
 ## The `filter()` Command
 
@@ -156,6 +158,7 @@ E.g., *filter* for female passengers from the dataset: Use `DataTitanicSelVar` t
 DataTitanicSelVarFem=filter(DataTitanicSelVar, Sex=="female")
 head(DataTitanicSelVarFem)
 ```
+»
 
 ## The `mutate()` Command 🤓
 
@@ -175,6 +178,7 @@ head(DataTitatincSelVarFemBirthYear)
 ::: footer
 See: [RandRStudioScriptPart2.R script200](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R)
 :::
+»
 
 ## Summary
 
@@ -186,10 +190,11 @@ See: [RandRStudioScriptPart2.R script200](https://lange-analytics.com/AIBook/Scr
 
 Could this be done easier?
 
-Note, overwriting data frames such as `DataTitanic` is usually a bad idea!
+Note, overwriting data frames such as `DataTitanic` is usually a bad idea!»
 
-## Alternative: Nesting 
-#### (I am not serious) 
+## Alternative: Nesting
+
+#### (I am not serious)
 
 ```{r}
 #| echo: true
@@ -201,13 +206,15 @@ DataTitanicFinal= mutate(
                         Born=1912-Age)
 head(DataTitanicFinal)
 ```
+»
 
-## Piping Schema  {background-color=#648787}
+## Piping Schema {background-color="#648787"}
 
 ![Piping Schema](Images/Piping.png){background-color="aquamarine" fig-alt="Piping Schema" fig-align="center"}
 
-## Alternative: Piping 
-#### (will be used throughout the course/book)  🤓
+## Alternative: Piping
+
+#### (will be used throughout the course/book) 🤓
 
 ```{r}
 #| echo: true
@@ -219,6 +226,8 @@ DataTitanicFinal= DataTitanic %>%
                   mutate(Born=1912-Age)
 head(DataTitanicFinal)
 ```
+»
+
 ::: footer
 See: [RandRStudioScriptPart2.R script300](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart2.R)
 :::
