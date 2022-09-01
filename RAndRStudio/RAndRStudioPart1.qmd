@@ -394,12 +394,10 @@ print(GDPUS)
 
 ```
 
-::: footer
-See: [RandRStudioScriptPart1.R script400](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
-:::
 
 
-## How are Very Small Numbers Presented {.smaller}
+
+## How are Very Small Numbers Presented 🤓 {.smaller}
 
 ::: {.panel-tabset}
 
@@ -423,7 +421,7 @@ ProbLight&=&3.65 \cdot 10^{-10}
 In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:
 
 $$\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365$$
-### What R Does
+### What R Does  
 
 Let us see what R does:
 
@@ -435,5 +433,8 @@ cat("Probabilty to get stuck by a lighning on an avg. day:", ProbStruck)
 
 :::
 
+::: footer
+See: [RandRStudioScriptPart1.R script400](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+:::
 
 ## Questions
