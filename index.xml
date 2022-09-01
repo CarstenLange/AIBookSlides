@@ -9,7 +9,7 @@
         </description>
         <asset name="View online (recommended)" type="web">00Intro/00Intro.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">Intro/00Intro.pdf</asset>
-        <asset name="Download Presentation's Source Code (coming soon)">00Intro.zip</asset>
+        <asset name="Download Presentation's Source Code">00Intro.zip</asset>
     </version>
     
     <version>
@@ -19,7 +19,7 @@
         </description>
         <asset name="View online (recommended)" type="web">MLIntro/MLIntro.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">MLIntro/MLIntro.pdf</asset>
-        <asset name="Download Presentation's Source Code (coming soon)">MLIntro.zip</asset>
+        <asset name="Download Presentation's Source Code">MLIntro.zip</asset>
     </version>
    
     <version>
@@ -29,7 +29,7 @@
         </description>
         <asset name="View online (recommended)" type="web">RAndRstudio/RandRStudioPart1.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">RAndRstudio/RandRStudioPart1.pdf</asset>
-        <asset name="Download Presentation's Source Code (coming soon)">RandRStudioPart1.zip</asset>
+        <asset name="Download Presentation's Source Code">RandRStudioPart1.zip</asset>
     </version> 
     <version>
         <name>Introduction to R and RStudio - Part 2</name>
@@ -38,6 +38,15 @@
         </description>
         <asset name="View online (recommended)" type="web">RAndRstudioPart2/RandRStudioPart2.html</asset>
         <asset name="Download PDF">RAndRstudioPart2/RandRStudioPart2.pdf</asset>
-        <asset name="Download Presentation's Source Code (coming soon)">RandRStudioPart2.zip</asset>
+        <asset name="Download Presentation's Source Code">RandRStudioPart2.zip</asset>
     </version>  
+    <version>
+        <name>k Nearest Neighbors</name>
+        <description>
+            This presention introduces k Nearest Neighbors using a wine dataset tp predict red and white wines and using Optical Charcter Recognition to read digits from 0 - 9.
+        </description>
+        <asset name="View online (recommended)" type="web">KNearNeigh/KNearNeigh.html</asset>
+        <asset name="Download PDF ">KNearNeigh/KNearNeigh.pdf</asset>
+        <asset name="Download Presentation's Source Code (coming soon)">KNearNeigh.zip</asset>
+    </version> 
 </versions>

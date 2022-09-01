@@ -27,6 +27,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="KNearNeigh_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="KNearNeigh_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -326,25 +390,25 @@
 
 <section id="title-slide" class="center">
   <h1 class="title">k Nearest Neighbors</h1>
-  <p class="subtitle">Identifying Wine Color and Optical Charcter Recognition</p>
+  <p class="subtitle">Projects: 1) Identifying Wine Color and 2) Optical Character Recognition</p>
 </section>
 
-<section id="a-thought-experiment" class="slide level2">
-<h2>A Thought Experiment</h2>
+<section id="before-we-begin-let-us-do-a-thought-experiment" class="slide level2">
+<h2>Before we Begin Let Us Do A Thought Experiment</h2>
 <p>I want to find somebody to spend a Saturday afternoon with and I am looking for somebody most similar to me (nearest neighbor) in terms of:</p>
-<div class="non-incremental">
+<div>
 <ul>
-<li class="fragment">Sex (coded as 0 for female, and 1 for male)</li>
-<li class="fragment">Age (coded in years)</li>
-<li class="fragment">Outdoor sports interest (coded from 0 (no interest) to 10 (enthusiast))</li>
+<li>Sex (coded as 0 for female, and 1 for male)</li>
+<li>Age (coded in years)</li>
+<li>Outdoor sports interest (coded from 0 (no interest) to 10 (enthusiast))»</li>
 </ul>
 </div>
 <p><strong>(all categories matter the same to me)</strong></p>
 </section>
 <section id="let-us-do-the-calculation-for-a-similarity-score" class="slide level2">
 <h2>Let us do the Calculation for a Similarity Score</h2>
-<h4 id="sum-of-average-absolute-differences">(sum of average absolute differences)</h4>
-<p>For sake argument: I am: male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>8</strong>: <br> <br></p>
+<h4 id="average-absolute-differences">(average absolute differences)</h4>
+<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>8</strong>: <br> <br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -359,26 +423,196 @@
 </section>
 <section id="let-us-do-the-calculation-for-a-similarity-score-1" class="slide level2">
 <h2>Let us do the Calculation for a Similarity Score</h2>
-<h4 id="sum-of-average-absolute-differences-normalized-to-0-10">(sum of average absolute differences — normalized to 0 – 10)</h4>
-<p>For sake argument: I am: male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>8</strong>:</p>
+<h4 id="average-absolute-differences-normalized-to-0-10">(average absolute differences — normalized to 0 – 10)</h4>
+<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>8</strong>: <br> <br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
 <li class="fragment">first candidate a student <br> .</li>
 <li class="fragment">second candidate an athletic outdoor (score=<strong>9</strong>) women (<strong>0</strong>) <strong>51</strong> years old</li>
-<li class="fragment">third candidate is an athletic outdoor (score=<strong>9</strong>) man (<strong>1</strong>) <strong>53</strong> years</li>
+<li class="fragment">third candidate is an athletic outdoor (score=<strong>9</strong>) man (<strong>1</strong>) <br><strong>53</strong> years»</li>
 </ul>
 </div><div class="column" style="width:50%;">
 
 </div>
 </div>
 </section>
-<section id="questions" class="slide level2">
-<h2>Questions</h2>
+<section id="overwiew" class="slide level2 smaller scrollable">
+<h2>Overwiew</h2>
+<p>In this session you will learn:</p>
+<ol type="1">
+<li class="fragment"><p>What is the underlying <strong>idea of k-Nearest Neighbors</strong></p></li>
+<li class="fragment"><p>How similarity can be measured with <strong>Euclidean distance</strong></p></li>
+<li class="fragment"><p>Why <strong>scaling predictor variables</strong> is important for some machine learning models</p></li>
+<li class="fragment"><p>Why the <strong>tidymodels package</strong> makes it easy to work with machine learning models</p></li>
+<li class="fragment"><p>How you can define a <strong>recipe</strong> to pre-process data with the <code>tidymodels</code> package</p></li>
+<li class="fragment"><p>How you can define a <strong>model-design</strong> with the <code>tidymodels</code> package</p></li>
+<li class="fragment"><p>How you can create a machine learning <strong>workflow</strong> with the <code>tidymodels</code> package</p></li>
+<li class="fragment"><p>How <strong>metrics</strong> derived from a <strong>confusion matrix</strong> can be used to asses prediction quality</p></li>
+<li class="fragment"><p>Why you have to be careful when interpreting <em>accuracy</em>, when you work with <strong>unbalanced observations</strong></p></li>
+<li class="fragment"><p>How a machine learning model can <strong>process images</strong> and how OCR (Optical Character Recognition) works»</p></li>
+</ol>
+</section>
+<section id="about-the-wine-dataset" class="slide level2">
+<h2>About the Wine Dataset</h2>
+<p><br><br><br>We will work with a publicly available wine dataset<sup>1</sup> containing 3,198 observations about different wines and their chemical properties.</p>
+<p>Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine’s chemical properties.»</p>
+<aside><ol class="aside-footnotes"><li id="fn1"><p>Cortez, Paulo, António Cerdeira, Fernando Almeida, Telmo Matos, and José Reis. 2009. “Modeling Wine Preferences by Data Mining from Physicochemical Properties.” Decision Support Systems 47 (4): 547–53. https://doi.org/10.1016/j.dss.2009.05.016.</p></li></ol></aside></section>
+<section id="raw-observations-from-wine-dataset" class="slide level2 scrollable">
+<h2>Raw Observations from Wine Dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>DataWine<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/WineData.rds"</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">print</span>(DataWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,198 × 13
+   wineColor acidity volatileAcidity citricAcid residualSugar Chlorides
+   &lt;chr&gt;       &lt;dbl&gt;           &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+ 1 red          10.8           0.32        0.44           1.6     0.063
+ 2 white         6.4           0.31        0.39           7.5     0.04 
+ 3 white         9.4           0.28        0.3            1.6     0.045
+ 4 white         8.2           0.22        0.36           6.8     0.034
+ 5 white         6.4           0.29        0.44           3.6     0.197
+ 6 red           6.7           0.855       0.02           1.9     0.064
+ 7 red          11.8           0.38        0.55           2.1     0.071
+ 8 white         6.7           0.25        0.23           7.2     0.038
+ 9 red           7.5           0.38        0.57           2.3     0.106
+10 red           7.1           0.27        0.6            2.1     0.074
+# … with 3,188 more rows, and 7 more variables: freeSulfurDioxide &lt;dbl&gt;,
+#   totalSulfurDioxide &lt;dbl&gt;, Density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;,
+#   alcohol &lt;dbl&gt;, quality &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>»</p>
+</section>
+<section id="observations-from-wine-dataset-for-selected-variables" class="slide level2 scrollable">
+<h2>Observations from Wine Dataset for Selected Variables</h2>
+<p>Note we use <code>clean_names("upper_camel")</code> from th <code>janitor</code> package to change all column (variable) names to UpperCamel.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(tidyverse); <span class="fu">library</span>(rio);<span class="fu">library</span>(janitor)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>DataWine<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/WineData.rds"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">select</span>(WineColor,<span class="at">Sulfur=</span>TotalSulfurDioxide,Acidity) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">mutate</span>(<span class="at">WineColor=</span><span class="fu">as.factor</span>(WineColor))</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="fu">print</span>(DataWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,198 × 3
+   WineColor Sulfur Acidity
+   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+ 1 red           37    10.8
+ 2 white        213     6.4
+ 3 white        139     9.4
+ 4 white         90     8.2
+ 5 white        183     6.4
+ 6 red           38     6.7
+ 7 red           19    11.8
+ 8 white        220     6.7
+ 9 red           12     7.5
+10 red           25     7.1
+# … with 3,188 more rows</code></pre>
+</div>
+</div>
+<p>»</p>
+</section>
+<section id="before-starting-with-k-nearest-neighbors" class="slide level2">
+<h2>Before Starting with k Nearest Neighbors</h2>
+<p><br><br><br><br></p>
+<h4 id="let-us-find-some-eyeballing-techniques-that-are-related-to-various-machine-learning-models">Let us find some eyeballing techniques that are related to various machine learning models»</h4>
+</section>
+<section id="eye-balling-techniques-to-identify-red-and-white-wines" class="slide level2 scrollable">
+<h2>Eye Balling Techniques to Identify Red and White Wines</h2>
+<h4 id="try-eyeballing-the-data">try eyeballing the data</h4>
+<div class="cell">
+
+</div>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlot-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color</p></section>
+<section id="eye-balling-techniques-to-identify-red-and-white-wines-1" class="slide level2">
+<h2>Eye Balling Techniques to Identify Red and White Wines</h2>
+<h4 id="horizontal-boundary">Horizontal Boundary</h4>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAcid8-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Horizontal Decision Boundary for Acidity and Total Sulfur Dioxide Related to Wine Color</p><h4 id="confusion-matrix">Confusion Matrix</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>            Truth
+Prediction   Red Wine   White Wine
+  Red Wine   TP: 'half' FP: 'few' 
+  White Wine FN: 'half' TN: 'most'</code></pre>
+</div>
+</div>
+</section>
+<section id="eyeballing-techniques-to-identify-red-and-white-wines" class="slide level2">
+<h2>Eyeballing Techniques to Identify Red and White Wines</h2>
+<h4 id="creating-subspaces-like-similar-to-a-decision-tree">Creating Subspaces Like Similar to a Decision Tree</h4>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotDecTree-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Sub-Space Boundaries for Acidity and Total Sulfur Dioxide Related to Wine Color</p><h4 id="confusion-matrix-1">Confusion Matrix</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>            Truth
+Prediction   Red Wine   White Wine
+  Red Wine   TP: 'most' FP: 'few' 
+  White Wine FN: 'few'  TN: 'most'</code></pre>
+</div>
+</div>
+</section>
+<section id="eyeballing-techniques-to-identify-red-and-white-wines-1" class="slide level2">
+<h2>Eyeballing Techniques to Identify Red and White Wines</h2>
+<h4 id="using-a-non-linear-decision-boundary-like-a-neural-network">Using a non-linear Decision Boundary Like a Neural Network</h4>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotSVM-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Curved Decision Boundary for Acidity and Total Sulfur Dioxide Related to Wine Color</p><h4 id="confusion-matrix-2">Confusion Matrix</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>            Truth
+Prediction   Red Wine   White Wine
+  Red Wine   TP: 'most' FP: 'few' 
+  White Wine FN: 'few'  TN: 'most'</code></pre>
+</div>
+</div>
+</section>
+<section>
+<section id="so-how-does-k-nearest-neighbors-work" class="title-slide slide level1 center">
+<h1>So, how does k Nearest Neighbors Work?</h1>
+
+</section>
+<section id="k-nearest-neighbors-k1" class="slide level2" data-transition="fade-in zoom-out" data-transition-speed="slow">
+<h2>k Nearest Neighbors k=1</h2>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color</p></section>
+<section id="k-nearest-neighbors-k1-1" class="slide level2" data-transition="zoom-in slide-out" data-transition-speed="slow">
+<h2>k Nearest Neighbors k=1</h2>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotK1-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Predicting Wine Color with k-Nearest Neighbors (k=1)</p></section>
+<section id="how-to-calculate-euclidean-distance-for-two-variables" class="slide level2">
+<h2>How to calculate Euclidean Distance for Two Variables</h2>
+<p>Assume our observations have <strong>two predictor variables <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span></strong>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}\]</span> »</p>
+</section>
+<section id="how-to-calculate-euclidean-distance-for-three-variables" class="slide level2">
+<h2>How to calculate Euclidean Distance for Three Variables</h2>
+<p>Assume our observations have <strong>three predictor variables <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span></strong>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}\]</span> »</p>
+</section>
+<section id="how-to-calculate-euclidean-distance-for-n-variables" class="slide level2">
+<h2>How to calculate Euclidean Distance for N Variables</h2>
+<p>Assume our observations have <strong><span class="math inline">\(N\)</span> predictor variables <span class="math inline">\(v_j\)</span> with <span class="math inline">\(j=1 ... N\)</span></strong>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}\]</span> »</p>
+</section>
+<section id="k-nearest-neighbors-k4" class="slide level2" data-transition="fade-in zoom-out" data-transition-speed="slow">
+<h2>k Nearest Neighbors k=4</h2>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgainAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color</p></section>
+<section id="k-nearest-neighbors-k4-1" class="slide level2" data-transition="zoom-in slide-out" data-transition-speed="slow">
+<h2>k Nearest Neighbors k=4</h2>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotK4-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Predicting Wine Color with k-Nearest Neighbors (k=4)</p></section>
+<section id="to-be-continued" class="slide level2">
+<h2>To be Continued</h2>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
-</section>
+</section></section>
+
     </div>
   </div>
 
@@ -592,6 +826,48 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
