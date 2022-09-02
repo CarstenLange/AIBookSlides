@@ -100,7 +100,7 @@ print(DataHousing[1:3,])
 
 -   **Data Objects:** What are the **containers** R uses to store data?
 
-    -   single entry \*single entry variable\`
+    -   `single entry` single variable
     -   list of entries `vectors`
     -   table `dataframe` and `tibble`
     -   *advanced objects*. E.g., for plot, models, prediction results

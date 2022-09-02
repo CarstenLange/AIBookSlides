@@ -36,8 +36,8 @@ VecTest=c(1,2,3)
 
 ```{r}
 #| echo: true
-cat("Sum:", sum(x=VecTest))
-cat("Mean:", mean(VecTest))
+sum(x=VecTest)
+mean(VecTest)
 ```
 
 -   Arguments in a command usually have names such as `x=` or `data=`
