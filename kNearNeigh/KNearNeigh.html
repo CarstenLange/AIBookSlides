@@ -408,7 +408,7 @@
 <section id="let-us-do-the-calculation-for-a-similarity-score" class="slide level2">
 <h2>Let us do the Calculation for a Similarity Score</h2>
 <h4 id="average-absolute-differences">(average absolute differences)</h4>
-<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>8</strong>: <br> <br></p>
+<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>7</strong>: <br> <br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -424,7 +424,7 @@
 <section id="let-us-do-the-calculation-for-a-similarity-score-1" class="slide level2">
 <h2>Let us do the Calculation for a Similarity Score</h2>
 <h4 id="average-absolute-differences-normalized-to-0-10">(average absolute differences — normalized to 0 – 10)</h4>
-<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>8</strong>: <br> <br></p>
+<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>7</strong>: <br> <br></p>
 <div class="columns">
 <div class="column" style="width:50%;">
 <ul>
@@ -468,28 +468,30 @@
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,198 × 13
-   wineColor acidity volatileAcidity citricAcid residualSugar Chlorides
-   &lt;chr&gt;       &lt;dbl&gt;           &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
- 1 red          10.8           0.32        0.44           1.6     0.063
- 2 white         6.4           0.31        0.39           7.5     0.04 
- 3 white         9.4           0.28        0.3            1.6     0.045
- 4 white         8.2           0.22        0.36           6.8     0.034
- 5 white         6.4           0.29        0.44           3.6     0.197
- 6 red           6.7           0.855       0.02           1.9     0.064
- 7 red          11.8           0.38        0.55           2.1     0.071
- 8 white         6.7           0.25        0.23           7.2     0.038
- 9 red           7.5           0.38        0.57           2.3     0.106
-10 red           7.1           0.27        0.6            2.1     0.074
-# … with 3,188 more rows, and 7 more variables: freeSulfurDioxide &lt;dbl&gt;,
-#   totalSulfurDioxide &lt;dbl&gt;, Density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;,
-#   alcohol &lt;dbl&gt;, quality &lt;dbl&gt;</code></pre>
+   wineC…¹ acidity volat…² citri…³ resid…⁴ Chlor…⁵ freeS…⁶ total…⁷ Density    pH
+   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
+ 1 red        10.8   0.32     0.44     1.6   0.063      16      37   0.998  3.22
+ 2 white       6.4   0.31     0.39     7.5   0.04       57     213   0.995  3.32
+ 3 white       9.4   0.28     0.3      1.6   0.045      36     139   0.995  3.11
+ 4 white       8.2   0.22     0.36     6.8   0.034      12      90   0.994  3.01
+ 5 white       6.4   0.29     0.44     3.6   0.197      75     183   0.994  3.01
+ 6 red         6.7   0.855    0.02     1.9   0.064      29      38   0.995  3.3 
+ 7 red        11.8   0.38     0.55     2.1   0.071       5      19   0.999  3.11
+ 8 white       6.7   0.25     0.23     7.2   0.038      61     220   0.995  3.14
+ 9 red         7.5   0.38     0.57     2.3   0.106       5      12   0.996  3.36
+10 red         7.1   0.27     0.6      2.1   0.074      17      25   0.998  3.38
+# … with 3,188 more rows, 3 more variables: sulphates &lt;dbl&gt;, alcohol &lt;dbl&gt;,
+#   quality &lt;dbl&gt;, and abbreviated variable names ¹​wineColor, ²​volatileAcidity,
+#   ³​citricAcid, ⁴​residualSugar, ⁵​Chlorides, ⁶​freeSulfurDioxide,
+#   ⁷​totalSulfurDioxide</code></pre>
 </div>
 </div>
 <p>»</p>
 </section>
 <section id="observations-from-wine-dataset-for-selected-variables" class="slide level2 scrollable">
 <h2>Observations from Wine Dataset for Selected Variables</h2>
-<p>Note we use <code>clean_names("upper_camel")</code> from th <code>janitor</code> package to change all column (variable) names to UpperCamel.</p>
+<h3 id="sulfor-dioxide-and-acidity">Sulfor Dioxide and Acidity</h3>
+<p>Note we use <code>clean_names("upper_camel")</code> from the <code>janitor</code> package to change all column (variable) names to UpperCamel.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(tidyverse); <span class="fu">library</span>(rio);<span class="fu">library</span>(janitor)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>DataWine<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/WineData.rds"</span>) <span class="sc">%&gt;%</span> </span>
@@ -581,33 +583,759 @@ Prediction   Red Wine   White Wine
 <section id="k-nearest-neighbors-k1" class="slide level2" data-transition="fade-in zoom-out" data-transition-speed="slow">
 <h2>k Nearest Neighbors k=1</h2>
 
-<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color</p></section>
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color»</p></section>
 <section id="k-nearest-neighbors-k1-1" class="slide level2" data-transition="zoom-in slide-out" data-transition-speed="slow">
 <h2>k Nearest Neighbors k=1</h2>
 
 <img data-src="KNearNeigh_files/figure-revealjs/WinePlotK1-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Predicting Wine Color with k-Nearest Neighbors (k=1)</p></section>
 <section id="how-to-calculate-euclidean-distance-for-two-variables" class="slide level2">
 <h2>How to calculate Euclidean Distance for Two Variables</h2>
-<p>Assume our observations have <strong>two predictor variables <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span></strong>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}\]</span> »</p>
+<p>Assume our observations have <strong>two predictor variables</strong> <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}\]</span> »</p>
 </section>
 <section id="how-to-calculate-euclidean-distance-for-three-variables" class="slide level2">
 <h2>How to calculate Euclidean Distance for Three Variables</h2>
-<p>Assume our observations have <strong>three predictor variables <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span></strong>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}\]</span> »</p>
+<p>Assume our observations have <strong>three predictor variables</strong> <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}\]</span> »</p>
 </section>
 <section id="how-to-calculate-euclidean-distance-for-n-variables" class="slide level2">
 <h2>How to calculate Euclidean Distance for N Variables</h2>
-<p>Assume our observations have <strong><span class="math inline">\(N\)</span> predictor variables <span class="math inline">\(v_j\)</span> with <span class="math inline">\(j=1 ... N\)</span></strong>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}\]</span> »</p>
+<p>Assume our observations have <span class="math inline">\(N\)</span> predictor variables <span class="math inline">\(v_j\)</span> with <span class="math inline">\(j=1 ... N\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}\]</span> »</p>
 </section>
-<section id="k-nearest-neighbors-k4" class="slide level2" data-transition="fade-in zoom-out" data-transition-speed="slow">
-<h2>k Nearest Neighbors k=4</h2>
+<section id="k-nearest-neighbors-k4-for-a-different-unknown-wine" class="slide level2" data-transition="fade-in zoom-out" data-transition-speed="slow">
+<h2>k Nearest Neighbors k=4 (for a different unknown wine)</h2>
 
 <img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgainAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color</p></section>
-<section id="k-nearest-neighbors-k4-1" class="slide level2" data-transition="zoom-in slide-out" data-transition-speed="slow">
-<h2>k Nearest Neighbors k=4</h2>
+<section id="k-nearest-neighbors-k4-for-a-different-unknown-wine-1" class="slide level2" data-transition="zoom-in slide-out" data-transition-speed="slow">
+<h2>k Nearest Neighbors k=4 (for a different unknown wine)</h2>
+<h4 id="nearest-neighbors-vote-on-red-vs.-white">4 nearest neighbors vote on “red” vs.&nbsp;“white”</h4>
 
 <img data-src="KNearNeigh_files/figure-revealjs/WinePlotK4-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Predicting Wine Color with k-Nearest Neighbors (k=4)</p></section>
-<section id="to-be-continued" class="slide level2">
-<h2>To be Continued</h2>
+<section id="k-nearest-neighbors-k4-for-a-different-unknown-wine-2" class="slide level2" data-transition="fade-in zoom-out" data-transition-speed="slow">
+<h2>k Nearest Neighbors k=4 (for a different unknown wine)</h2>
+<h4 id="watch-the-scale-gliter-vs.-mgliter.-that-does-not-look-right">Watch the scale: g/liter vs.&nbsp;mg/liter. That does not look right!</h4>
+
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgainAgainAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color »</p></section>
+<section id="a-few-common-scaling-options" class="slide level2 smaller">
+<h2>A Few Common Scaling Options</h2>
+<ul>
+<li class="fragment"><p><strong>Same units</strong></p>
+<p>Divide or multiply to get the same units. This is often not possible (e.g., <code>Height</code> and <code>Weight</code>). Or it is not feasible (e.g.&nbsp;<code>Alcohol</code> and <code>StrawberryJuice</code> content in spiked strawberry drink))</p></li>
+<li class="fragment"><p><strong>Rescaling</strong></p>
+<p>Generates a variable <span class="math inline">\(y\)</span> that is scaled to a range between 0 and 1 based on the original variable’s value <span class="math inline">\(x\)</span>, its minimum <span class="math inline">\(x_{min}\)</span> and its maximum <span class="math inline">\(x_{max}\)</span>: <span class="math display">\[ y= \frac{x-x_{min}}{x_{max} - x_{min}}\]</span></p></li>
+<li class="fragment"><p><strong>Z-Score Normalization</strong></p>
+<p>Z-score normalization uses the mean (<span class="math inline">\(\overline x\)</span>) and the standard deviation (<span class="math inline">\(s\)</span>) of a variable to scale the variable <span class="math inline">\(x\)</span> to the variable <span class="math inline">\(z\)</span>:</p>
+<p><span class="math display">\[z=\frac{x-\overline x}{s}\]</span>»</p></li>
+</ul>
+</section>
+<section id="time-to-run-k-nearest-neighbors" class="slide level2">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<h4 id="loading-data-and-selecting-variables">Loading Data and Selecting Variables</h4>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(tidyverse); <span class="fu">library</span>(rio);<span class="fu">library</span>(janitor)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>DataWine<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/WineData.rds"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="#cb8-4"></a>         <span class="fu">select</span>(WineColor,<span class="at">Sulfur=</span>TotalSulfurDioxide,Acidity) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">mutate</span>(<span class="at">WineColor=</span><span class="fu">as.factor</span>(WineColor))</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">print</span>(DataWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3,198 × 3
+   WineColor Sulfur Acidity
+   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+ 1 red           37    10.8
+ 2 white        213     6.4
+ 3 white        139     9.4
+ 4 white         90     8.2
+ 5 white        183     6.4
+ 6 red           38     6.7
+ 7 red           19    11.8
+ 8 white        220     6.7
+ 9 red           12     7.5
+10 red           25     7.1
+# … with 3,188 more rows</code></pre>
+</div>
+</div>
+<p>»</p>
+</section>
+<section id="time-to-run-k-nearest-neighbors-1" class="slide level2 scrollable">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<p>Generate Training and Testing Data (Splitting):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(tidymodels);</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">set.seed</span>(<span class="dv">876</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(DataWine,<span class="at">prop=</span><span class="fl">0.7</span>,<span class="at">strata =</span> WineColor)</span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb10-6"><a href="#cb10-6"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="fu">print</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2,238 × 3
+   WineColor Sulfur Acidity
+   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+ 1 red           37    10.8
+ 2 red           38     6.7
+ 3 red           12     7.5
+ 4 red           25     7.1
+ 5 red          114     8  
+ 6 red           66     7.6
+ 7 red           49     6.8
+ 8 red          110     7  
+ 9 red           44     6.5
+10 red           10    10.4
+# … with 2,228 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">print</span>(DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 960 × 3
+   WineColor Sulfur Acidity
+   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt;
+ 1 white         90     8.2
+ 2 red           19    11.8
+ 3 white        220     6.7
+ 4 red          131     7.8
+ 5 white        161     7  
+ 6 red           41     9.9
+ 7 white        156     7.8
+ 8 white        150     6.5
+ 9 red          102     7.9
+10 red           11     5.8
+# … with 950 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="time-to-run-k-nearest-neighbors-2" class="slide level2 scrollable">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<p>Recipe: Prepare Data for Analysis:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>Acidity<span class="sc">+</span>Sulfur, <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>            <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-3"><a href="#cb14-3"></a>            <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Or:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>., <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>            <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3"></a>            <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">print</span>(RecipeWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>Recipe
+
+Inputs:
+
+      role #variables
+   outcome          1
+ predictor          2
+
+Operations:
+
+Removing rows with NA values in &lt;none&gt;
+Centering and scaling for all_predictors()</code></pre>
+</div>
+</div>
+</section>
+<section id="time-to-run-k-nearest-neighbors-3" class="slide level2 scrollable">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<p>Creating a Model Design:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>ModelDesignKNN<span class="ot">=</span><span class="fu">nearest_neighbor</span>(<span class="at">neighbors =</span> <span class="dv">4</span>, <span class="at">weight_func =</span> <span class="st">"rectangular"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>               <span class="fu">set_engine</span>(<span class="st">"kknn"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3"></a>               <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">print</span>(ModelDesignKNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>K-Nearest Neighbor Model Specification (classification)
+
+Main Arguments:
+  neighbors = 4
+  weight_func = rectangular
+
+Computational engine: kknn </code></pre>
+</div>
+</div>
+</section>
+<section id="time-to-run-k-nearest-neighbors-4" class="slide level2">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<p>Putting it all together in a <strong>fitted</strong> <code>workflow</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2"></a>             <span class="fu">add_recipe</span>(RecipeWine) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>             <span class="fu">add_model</span>(ModelDesignKNN) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4"></a>             <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb20-5"><a href="#cb20-5"></a><span class="fu">print</span>(WFModelWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════
+Preprocessor: Recipe
+Model: nearest_neighbor()
+
+── Preprocessor ────────────────────────────────────────────────────────────────
+2 Recipe Steps
+
+• step_naomit()
+• step_normalize()
+
+── Model ───────────────────────────────────────────────────────────────────────
+
+Call:
+kknn::train.kknn(formula = ..y ~ ., data = data, ks = min_rows(4,     data, 5), kernel = ~"rectangular")
+
+Type of response variable: nominal
+Minimal misclassification: 0.1000894
+Best kernel: rectangular
+Best k: 4</code></pre>
+</div>
+</div>
+</section>
+<section id="time-to-run-k-nearest-neighbors-5" class="slide level2">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<p>How to use the <strong>fitted</strong> <code>workflow</code> to predict the wine color for the wines in the testing dataset:</p>
+<ol type="1">
+<li class="fragment">Start with observation <span class="math inline">\(i=1\)</span> from <code>DataTest</code> (the first observation).</li>
+<li class="fragment">Take observation <span class="math inline">\(i\)</span> from <code>DataTest</code> and use <code>Acidity</code> and <code>Sulfur</code> to calculate the Euclidean distance to <strong>each</strong> of the observations of <code>DataTrain</code>.</li>
+<li class="fragment">Isolate the 4 observations with the smallest Euclidean distance and use the majority of their wine color as a prediction for observation <span class="math inline">\(i\)</span> from <code>DataTest</code> (in case of a par, decide randomly).</li>
+<li class="fragment">Increase <span class="math inline">\(i\)</span> by one (i.e., take the next observation from <code>DataTest</code>) and go to step 2 (until all <code>DataTest</code> observations are processed.)</li>
+</ol>
+</section>
+<section id="time-to-run-k-nearest-neighbors-6" class="slide level2">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<p>Predicting with the fitted workflow using <code>predict()</code> (not exactly helpful!):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">predict</span>(WFModelWine, DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 960 × 1
+   .pred_class
+   &lt;fct&gt;      
+ 1 white      
+ 2 red        
+ 3 white      
+ 4 white      
+ 5 white      
+ 6 red        
+ 7 white      
+ 8 white      
+ 9 red        
+10 red        
+# … with 950 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="time-to-run-k-nearest-neighbors-7" class="slide level2">
+<h2>Time to Run k-Nearest Neighbors</h2>
+<p>Predicting with the fitted workflow using <code>augment()</code> which <em>augments</em> <code>DataTest</code> with the predictions:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>DataPredWithTestData<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest)</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">head</span>(DataPredWithTestData, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 20 × 6
+   WineColor Sulfur Acidity .pred_class .pred_red .pred_white
+   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;
+ 1 white         90     8.2 white            0.25        0.75
+ 2 red           19    11.8 red              1           0   
+ 3 white        220     6.7 white            0           1   
+ 4 red          131     7.8 white            0.25        0.75
+ 5 white        161     7   white            0           1   
+ 6 red           41     9.9 red              1           0   
+ 7 white        156     7.8 white            0           1   
+ 8 white        150     6.5 white            0           1   
+ 9 red          102     7.9 red              0.5         0.5 
+10 red           11     5.8 red              1           0   
+11 white         64     5.9 white            0.25        0.75
+12 white        178     6.9 white            0           1   
+13 red           41    12.6 red              1           0   
+14 red           19    12.7 red              1           0   
+15 white        206     6.2 white            0           1   
+16 white        149     6.9 white            0           1   
+17 white        182     7.8 white            0           1   
+18 red           21     8.9 red              1           0   
+19 red           43     8.3 red              1           0   
+20 white        111     6   white            0           1   </code></pre>
+</div>
+</div>
+</section>
+<section id="having-a-data-frame-with-truth-and-esimate-we-can-calculate-performance-metrics" class="slide level2">
+<h2>Having a Data Frame with <code>truth</code> and <code>esimate</code> we can calculate <strong>performance metrics</strong></h2>
+<p>Confusion Matrix:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>ConfMatrixWine<span class="ot">=</span><span class="fu">conf_mat</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="fu">print</span>(ConfMatrixWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction red white
+     red   436    46
+     white  44   434</code></pre>
+</div>
+</div>
+</section>
+<section id="reading-the-confusion-matrix" class="slide level2">
+<h2>Reading the Confusion Matrix</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>            Truth
+Prediction   Red Wine White Wine
+  Red Wine   TP: 436  FP: 46    
+  White Wine FN: 44   TN: 434   </code></pre>
+</div>
+</div>
+<ul>
+<li class="fragment"><p>The <strong>positive class</strong> (wine is “red”) is in the <strong>first column</strong>. 436 of the positives are classified correctly (TR: true positives), and 44 positives are incorrectly classified (FN: false negatives).</p></li>
+<li class="fragment"><p>The <strong>negative class</strong> (wine is “white”) is in the <strong>second column</strong>. 44 negatives are incorrectly classified (FP: false positives), and 434 negatives are classified correctly (TN: true negatives).</p></li>
+</ul>
+<div class="fragment">
+<p><strong>Accuracy:</strong> Number of wines on diagonal/number of all wines:</p>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">accuracy</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy binary         0.906</code></pre>
+</div>
+</div>
+<p>»</p>
+</div>
+</section>
+<section id="warning-be-careful-with-the-accuracy-rate" class="slide level2">
+<h2><strong>Warning: Be careful with the Accuracy Rate</strong></h2>
+<h4 id="the-story-of-dr.-nebulouss-gamblers-system">The Story of Dr.&nbsp;Nebulous’s Gamblers System</h4>
+<p>Dr.&nbsp;Nebulous offers a <strong>97% Machine Learning Gambling Prediction</strong>. Here is how it works: Gamblers can buy a prediction for a fee of $5. Dr.&nbsp;Nebulous will then run his famous machine learning model and send a closed envelope with the prediction. The gambler is supposed to open the envelope in the casino, right before placing a bet of $100 on a number in roulette. The envelope contains a message that states either “You will win” or “You will lose”, which allows the gambler to act accordingly by either bet or not bet.</p>
+<p>Dr.&nbsp;Nebulous claims that a “clinical trial” of 1000 volunteers, who opened the envelope after they had bet on a number in roulette, shows an accuracy of 97.3%.</p>
+<p><strong>How could Dr.&nbsp;Nebulous have such a precise model?</strong></p>
+</section>
+<section id="warning-be-careful-with-thethe-accuracy-rate" class="slide level2">
+<h2><strong>Warning: Be careful with thethe Accuracy Rate</strong></h2>
+<h4 id="the-story-of-dr.-nebulouss-gamblers-system-1">The Story of Dr.&nbsp;Nebulous’s Gamblers System</h4>
+<p>The trick is Dr.&nbsp;Nebulous’s machine learning model uses the <em>naive prognosis</em>: It always predicts “You will lose”.</p>
+<p>Here is the confusion matrix from the 1,000 volunteers trial:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction Win Lose
+      Win    0    0
+      Lose  27  997</code></pre>
+</div>
+</div>
+<p>Roulette has 37 numbers to bet on. Chance to win is: <span class="math inline">\(\frac{1}{37}=0.027\)</span>.</p>
+<p>Out of the 1000 volunteers, 27 are expected to win, and 973 are expected to lose.</p>
+<p><span class="math display">\[Accuracy=\frac{0+973}{1000}=0.973\]</span></p>
+</section>
+<section id="warning-be-careful-with-the-accuracy-rate-1" class="slide level2">
+<h2><strong>Warning: Be careful with the Accuracy Rate</strong></h2>
+<h4 id="the-story-of-dr.-nebulouss-gamblers-system-2">The Story of Dr.&nbsp;Nebulous’s Gamblers System</h4>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction Win Lose
+      Win    0    0
+      Lose  27  997</code></pre>
+</div>
+</div>
+<p>However, when we look at the correct positive and the correct negative rate separately, we see that Dr.&nbsp;Nebulous’ accuracy rate (although correct) makes little sense.</p>
+<ul>
+<li class="fragment"><p>The correct negative rate (<strong>specificity</strong>) is 100%</p></li>
+<li class="fragment"><p>The correct positive rate (<strong>sensitivity</strong>) is zero (out of the 27 winners, all were falsely predicted as “You will lose”).</p></li>
+</ul>
+<div class="fragment">
+<p><strong>This example shows: When interpreting the confusion matrix, you must look at accuracy, sensitivity, and specificity simultaneously</strong></p>
+</div>
+</section>
+<section id="time-to-run-k-nearest-neighbors-8" class="slide level2">
+<h2>Time to Run k-Nearest Neighbors 🤓</h2>
+<p><code>accuracy()</code>, <code>sensitivity()</code> and <code>specificity()</code> for the wine data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">accuracy</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric  .estimator .estimate
+  &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt;
+1 accuracy binary         0.906</code></pre>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">sensitivity</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 sensitivity binary         0.908</code></pre>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">specificity</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 3
+  .metric     .estimator .estimate
+  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
+1 specificity binary         0.904</code></pre>
+</div>
+</div>
+<p>Can we improve by using all predictors.»</p>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc200.Rmd">Exercise from AI Book</a></p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="project-design-a-machine-learning-workflow-for-optical-character-recognition" class="title-slide slide level1 center">
+<h1>Project: Design a Machine Learning Workflow for Optical Character Recognition »</h1>
+
+</section>
+<section id="mnist-data-set" class="slide level2">
+<h2>MNIST Data Set</h2>
+<p>You will develop a machine learning model based on k-Nearest Neighbors to recognize handwritten digits from images.</p>
+<p>You will use the MNIST dataset, a standard dataset for image recognition in machine learning (60,000 images for training and 10,000 images for testing). Developed by LeCun, Cortes, and Burges (2010) based on two datasets from handwritten digits obtained from Census workers and high school students.</p>
+<p>We will use only the first 500 images of the original MNIST dataset to speed up the <em>k-Nearest Neighbors</em> model’s training time.</p>
+</section>
+<section id="visualization-of-the-first-six-images-from-the-mnist-data-set" class="slide level2">
+<h2>Visualization of the First Six Images from the MNIST Data Set</h2>
+
+<img data-src="KNearNeigh_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<section id="how-a-image-is-stored-in-the-mnist-dataset" class="slide level2">
+<h2>How a Image is Stored in the Mnist Dataset</h2>
+
+<img data-src="Images/CodedNine.PNG" width="1500" class="r-stretch quarto-figure-center"><p class="caption">Image of a Handwritten Nine</p><p>The image has 28 rows and 28 columns. Each of the 784 cells (pixels) holds a value between 0 (black) and 255 (white)</p>
+</section>
+<section id="how-a-image-is-stored-in-the-mnist-dataset-1" class="slide level2">
+<h2>How a Image is Stored in the Mnist Dataset</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="Images/CodedNine.PNG"></p>
+<p></p><figcaption>Image of a Handwritten Nine</figcaption><p></p>
+</figure>
+</div>
+</div><div class="column" style="width:50%;">
+<ul>
+<li class="fragment">Pixel values for a single image are not stored in a table. Ohterwise we would end-up with a table containing tables.</li>
+<li class="fragment">Pixel values are stored as one row for each image.</li>
+<li class="fragment">Concatenating the 28 rows of an image into one row with 28*28=784 cells (pixels)</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="three-rows-from-the-data-frame-of-the-mnist-dataset" class="slide level2 smaller scollable">
+<h2>Three Rows from the Data Frame of the MNIST Dataset</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="fu">print</span>(Mnist4PlotAndTable[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">784</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Label Pix1 Pix2 Pix3 Pix4 Pix5 Pix6 Pix7 Pix8 Pix9 Pix10 Pix11 Pix12 Pix13
+1     0    0    0    0    0    0    0    0    0    0     0     0     0     0
+2     5    0    0    0    0    0    0    0    0    0     0     0     0     0
+3     3    0    0    0    0    0    0    0    0    0     0     0     0     0
+  Pix14 Pix15 Pix16 Pix17 Pix18 Pix19 Pix20 Pix21 Pix22 Pix23 Pix24 Pix25 Pix26
+1     0     0     0     0     0     0     0     0     0     0     0     0     0
+2     0     0     0     0     0     0     0     0     0     0     0     0     0
+3     0     0     0     0     0     0     0     0     0     0     0     0     0
+  Pix27 Pix28 Pix29 Pix30 Pix31 Pix32 Pix33 Pix34 Pix35 Pix36 Pix37 Pix38 Pix39
+1     0     0     0     0     0     0     0     0     0     0     0     0     0
+2     0     0     0     0     0     0     0     0     0     0     0     0     0
+3     0     0     0     0     0     0     0     0     0     0     0     0     0
+  Pix40 Pix41 Pix42 Pix43 Pix44 Pix45 Pix46 Pix47 Pix48 Pix49 Pix50 Pix51 Pix52
+1     0     0     0     0     0     0     0     0     0     0     0     0     0
+2     0     0     0     0     0     0     0     0     0     0     0     0     0
+3     0     0     0     0     0     0     0     0     0     0     0     0     0
+  Pix53 Pix54 Pix55 Pix56 Pix57 Pix58 Pix59 Pix60 Pix61 Pix62 Pix63 Pix64 Pix65
+1     0     0     0     0     0     0     0     0     0     0     0     0     0
+2     0     0     0     0     0     0     0     0     0     0     0     0     0
+3     0     0     0     0     0     0     0     0     0     0     0     0     0
+  Pix66 Pix67 Pix68 Pix69 Pix70 Pix71 Pix72 Pix73 Pix74 Pix75 Pix76 Pix77 Pix78
+1     0     0     0     0     0     0     0     0     0     0     0     0     0
+2     0     0     0     0     0     0     0     0     0     0     0     0     0
+3     0     0     0     0     0     0     0     0     0     0     0     0     0
+  Pix79 Pix80 Pix81 Pix82 Pix83 Pix84 Pix85 Pix86 Pix87 Pix88 Pix89 Pix90 Pix91
+1     0     0     0     0     0     0     0     0     0     0     0     0     0
+2     0     0     0     0     0     0     0     0     0     0     0     0     0
+3     0     0     0     0     0     0     0     0     0     0     0     0     0
+  Pix92 Pix93 Pix94 Pix95 Pix96 Pix97 Pix98 Pix99 Pix100 Pix101 Pix102 Pix103
+1     0     0     0     0     0     0     0     0      0      0      0      0
+2     0     0     0     0     0     0     0     0      0      0      0      0
+3     0     0     0     0     0     0     0     0      0      0      0      0
+  Pix104 Pix105 Pix106 Pix107 Pix108 Pix109 Pix110 Pix111 Pix112 Pix113 Pix114
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix115 Pix116 Pix117 Pix118 Pix119 Pix120 Pix121 Pix122 Pix123 Pix124 Pix125
+1      0      0      0      0      0      0      0      0      0      5    138
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix126 Pix127 Pix128 Pix129 Pix130 Pix131 Pix132 Pix133 Pix134 Pix135 Pix136
+1    253    148     22      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix137 Pix138 Pix139 Pix140 Pix141 Pix142 Pix143 Pix144 Pix145 Pix146 Pix147
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix148 Pix149 Pix150 Pix151 Pix152 Pix153 Pix154 Pix155 Pix156 Pix157 Pix158
+1      0      0      0      0    120    252    252    231    245     59      0
+2      0     13    191    255    253    253    253    253    192    113    191
+3      0      0    149    253    253    253     96     11      0      0      0
+  Pix159 Pix160 Pix161 Pix162 Pix163 Pix164 Pix165 Pix166 Pix167 Pix168 Pix169
+1      0      0      0      0      0      0      0      0      0      0      0
+2    113    191    255     90      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix170 Pix171 Pix172 Pix173 Pix174 Pix175 Pix176 Pix177 Pix178 Pix179 Pix180
+1      0      0      0      0      0      0      0      0      0      0    161
+2      0      0      0      0      0      0      0     29    252    253    252
+3      0      0      0      0      0      0      0    147    253    252    252
+  Pix181 Pix182 Pix183 Pix184 Pix185 Pix186 Pix187 Pix188 Pix189 Pix190 Pix191
+1    252    185    122    253    156    101     44      0      0      0      0
+2    252    252    252    253    252    252    252    252    253    243     50
+3    252    252    189      0      0      0      0      0      0      0      0
+  Pix192 Pix193 Pix194 Pix195 Pix196 Pix197 Pix198 Pix199 Pix200 Pix201 Pix202
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix203 Pix204 Pix205 Pix206 Pix207 Pix208 Pix209 Pix210 Pix211 Pix212 Pix213
+1      0      0      0      0     19    236    252    119     21    169    252
+2      0      0     60    252    253    201    195    195    195    222    201
+3      0     26    236    253    252    252    252    252    247     99      0
+  Pix214 Pix215 Pix216 Pix217 Pix218 Pix219 Pix220 Pix221 Pix222 Pix223 Pix224
+1    252    236    155      0      0      0      0      0      0      0      0
+2    208    252    252    196    195     43      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix225 Pix226 Pix227 Pix228 Pix229 Pix230 Pix231 Pix232 Pix233 Pix234 Pix235
+1      0      0      0      0      0      0      0      0      0      0    181
+2      0      0      0      0      0      0      0      0    169    252    253
+3      0      0      0      0      0      0     57    224    252    253    235
+  Pix236 Pix237 Pix238 Pix239 Pix240 Pix241 Pix242 Pix243 Pix244 Pix245 Pix246
+1    252    221     25      0      3    169    252    252    252    106      0
+2     27      0      0      0     38      9     19     84     84      0      0
+3    160    160    202    253    244     56      0      0      0      0      0
+  Pix247 Pix248 Pix249 Pix250 Pix251 Pix252 Pix253 Pix254 Pix255 Pix256 Pix257
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix258 Pix259 Pix260 Pix261 Pix262 Pix263 Pix264 Pix265 Pix266 Pix267 Pix268
+1      0      0      0      0     11    255    253    173      0      0      0
+2      0      0      0    169    252    253     27      0      0      0      0
+3      0    122    252    252    243     60      0      0     63    253    252
+  Pix269 Pix270 Pix271 Pix272 Pix273 Pix274 Pix275 Pix276 Pix277 Pix278 Pix279
+1      0     32    229    253    231      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3    121      0      0      0      0      0      0      0      0      0      0
+  Pix280 Pix281 Pix282 Pix283 Pix284 Pix285 Pix286 Pix287 Pix288 Pix289 Pix290
+1      0      0      0      0      0      0      0      0      0      0    136
+2      0      0      0      0      0      0      0      0      0    170    253
+3      0      0      0      0      0      0      0    185    253    253    168
+  Pix291 Pix292 Pix293 Pix294 Pix295 Pix296 Pix297 Pix298 Pix299 Pix300 Pix301
+1    253    244     56      0      0      0      0      0    186    252    245
+2    141      0      0      0      0      0      0      0      0      0      0
+3      0      0     19    128    255    253    190      5      0      0      0
+  Pix302 Pix303 Pix304 Pix305 Pix306 Pix307 Pix308 Pix309 Pix310 Pix311 Pix312
+1     80      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix313 Pix314 Pix315 Pix316 Pix317 Pix318 Pix319 Pix320 Pix321 Pix322 Pix323
+1      0      0      0      0     68    246    253    174      0      0      0
+2      0      0      0     51    243    252    140      0     19     85     38
+3      0      0    163    252    231     42      0      0    207    252    253
+  Pix324 Pix325 Pix326 Pix327 Pix328 Pix329 Pix330 Pix331 Pix332 Pix333 Pix334
+1      0      0      0     68    246    253    206      0      0      0      0
+2     38     85     66      0      0      0      0      0      0      0      0
+3    252    252     67      0      0      0      0      0      0      0      0
+  Pix335 Pix336 Pix337 Pix338 Pix339 Pix340 Pix341 Pix342 Pix343 Pix344 Pix345
+1      0      0      0      0      0      0      0      0      0      0     93
+2      0      0      0      0      0      0      0      0      0    166    252
+3      0      0      0      0      0      0      0      0     51    183     48
+  Pix346 Pix347 Pix348 Pix349 Pix350 Pix351 Pix352 Pix353 Pix354 Pix355 Pix356
+1    252    253     92      0      0      0      0      0      0      0    188
+2    252    229    197    209    252    221    222    252    239    197    119
+3      0      0      0    207    252    253    252    252    227    131      0
+  Pix357 Pix358 Pix359 Pix360 Pix361 Pix362 Pix363 Pix364 Pix365 Pix366 Pix367
+1    253    244     56      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix368 Pix369 Pix370 Pix371 Pix372 Pix373 Pix374 Pix375 Pix376 Pix377 Pix378
+1      0      0      0      0      0     93    252    243     50      0      0
+2      0      0      0     57    234    252    252    253    252    252    252
+3      0      0      0      0      0      0      0      0      0    207    252
+  Pix379 Pix380 Pix381 Pix382 Pix383 Pix384 Pix385 Pix386 Pix387 Pix388 Pix389
+1      0      0      0      0      0    116    253    252     69      0      0
+2    252    253    252    252    252    252     16      0      0      0      0
+3    253    252    252    252    252      0      0      0      0      0      0
+  Pix390 Pix391 Pix392 Pix393 Pix394 Pix395 Pix396 Pix397 Pix398 Pix399 Pix400
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0     85    252
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix401 Pix402 Pix403 Pix404 Pix405 Pix406 Pix407 Pix408 Pix409 Pix410 Pix411
+1    208    253    221      0      0      0      0      0      0      0      0
+2    252    252    253    252    252    252    252    253    173    252    252
+3      0      0      0      0    113    242    243    137    168    252    252
+  Pix412 Pix413 Pix414 Pix415 Pix416 Pix417 Pix418 Pix419 Pix420 Pix421 Pix422
+1      0    255    253     69      0      0      0      0      0      0      0
+2    252    203     94      0      0      0      0      0      0      0      0
+3    210      0      0      0      0      0      0      0      0      0      0
+  Pix423 Pix424 Pix425 Pix426 Pix427 Pix428 Pix429 Pix430 Pix431 Pix432 Pix433
+1      0      0      0      0      0     13    215    252     95      0      0
+2      0      0      0      0      0     32    140    140      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix434 Pix435 Pix436 Pix437 Pix438 Pix439 Pix440 Pix441 Pix442 Pix443 Pix444
+1      0      0      0      0      0      0      0    253    252     69      0
+2      0      0      0      0     32    140    203    255    206     25      0
+3      0      0      0      0    136    241    255     92      0      0      0
+  Pix445 Pix446 Pix447 Pix448 Pix449 Pix450 Pix451 Pix452 Pix453 Pix454 Pix455
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix456 Pix457 Pix458 Pix459 Pix460 Pix461 Pix462 Pix463 Pix464 Pix465 Pix466
+1     70    252    252      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix467 Pix468 Pix469 Pix470 Pix471 Pix472 Pix473 Pix474 Pix475 Pix476 Pix477
+1      0      0    253    252     69      0      0      0      0      0      0
+2      0    140    253    252     55      0      0      0      0      0      0
+3     95    253    113      0      0      0      0      0      0      0      0
+  Pix478 Pix479 Pix480 Pix481 Pix482 Pix483 Pix484 Pix485 Pix486 Pix487 Pix488
+1      0      0      0      0      0      0     70    252    252      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix489 Pix490 Pix491 Pix492 Pix493 Pix494 Pix495 Pix496 Pix497 Pix498 Pix499
+1      0      0      0      0      0      0      0     43    253    252     69
+2      0      0      0      0      0      0      0    110    253    252     55
+3      0      0      0      0      0      0      0    253    219     19      0
+  Pix500 Pix501 Pix502 Pix503 Pix504 Pix505 Pix506 Pix507 Pix508 Pix509 Pix510
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix511 Pix512 Pix513 Pix514 Pix515 Pix516 Pix517 Pix518 Pix519 Pix520 Pix521
+1      0     70    252    252      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix522 Pix523 Pix524 Pix525 Pix526 Pix527 Pix528 Pix529 Pix530 Pix531 Pix532
+1      0     95    230    243    117      6      0      0      0      0      0
+2      0      0      0    253    252    149      0      0      0      0      0
+3      0      0    211    252     69      0      0      0      0      0      0
+  Pix533 Pix534 Pix535 Pix536 Pix537 Pix538 Pix539 Pix540 Pix541 Pix542 Pix543
+1      0      0      0      0      0      0      0     32    229    253     11
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0     22
+  Pix544 Pix545 Pix546 Pix547 Pix548 Pix549 Pix550 Pix551 Pix552 Pix553 Pix554
+1      0      0      0      0      0      5     55    233    253    221      0
+2      0      0      0      0      0      0      0      0     79    253    252
+3     32      0      0      0      0      0      0      0    191    252     69
+  Pix555 Pix556 Pix557 Pix558 Pix559 Pix560 Pix561 Pix562 Pix563 Pix564 Pix565
+1      0      0      0      0      0      0      0      0      0      0      0
+2    195      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix566 Pix567 Pix568 Pix569 Pix570 Pix571 Pix572 Pix573 Pix574 Pix575 Pix576
+1      0      0      0    186    252    193     17      0      0      0     26
+2      0     38    113     38      0      0      0      0      0      0      0
+3      0      0      0      0      0    162    222     97     24      0      0
+  Pix577 Pix578 Pix579 Pix580 Pix581 Pix582 Pix583 Pix584 Pix585 Pix586 Pix587
+1    136    252    252    231     42      0      0      0      0      0      0
+2     38    144    253    253    255    253    133      0      0      0      0
+3      0      9    128    255    253    122      0      0      0      0      0
+  Pix588 Pix589 Pix590 Pix591 Pix592 Pix593 Pix594 Pix595 Pix596 Pix597 Pix598
+1      0      0      0      0      0      0      0      0      0     93    252
+2      0      0      0      0      0      0      0     85    252    234    146
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix599 Pix600 Pix601 Pix602 Pix603 Pix604 Pix605 Pix606 Pix607 Pix608 Pix609
+1    253    209    184    184    184    222    252    252    227    100      0
+2     85     85     66     57     85    226    234    252    252    252    253
+3     88    252    252    252    162    161    161    194    252    253    244
+  Pix610 Pix611 Pix612 Pix613 Pix614 Pix615 Pix616 Pix617 Pix618 Pix619 Pix620
+1      0      0      0      0      0      0      0      0      0      0      0
+2    223     37      0      0      0      0      0      0      0      0      0
+3     56      0      0      0      0      0      0      0      0      0      0
+  Pix621 Pix622 Pix623 Pix624 Pix625 Pix626 Pix627 Pix628 Pix629 Pix630 Pix631
+1      0      0      0      0     17     98    253    252    252    252    252
+2      0      0     19    209    252    252    253    252    239    234    252
+3      0      0      0      0      0      0     47    252    252    252    253
+  Pix632 Pix633 Pix634 Pix635 Pix636 Pix637 Pix638 Pix639 Pix640 Pix641 Pix642
+1    253    235    160     50      0      0      0      0      0      0      0
+2    253    252    252    252    252    196     52      0      0      0      0
+3    252    252    252    252    247     98      0      0      0      0      0
+  Pix643 Pix644 Pix645 Pix646 Pix647 Pix648 Pix649 Pix650 Pix651 Pix652 Pix653
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0     97    227
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix654 Pix655 Pix656 Pix657 Pix658 Pix659 Pix660 Pix661 Pix662 Pix663 Pix664
+1      0     33    137    221    252    147     75     18      0      0      0
+2    252    253    252    252    252    252    253    252    245    129     84
+3      0      9     45    173    252    253    252    252    252    252    146
+  Pix665 Pix666 Pix667 Pix668 Pix669 Pix670 Pix671 Pix672 Pix673 Pix674 Pix675
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix676 Pix677 Pix678 Pix679 Pix680 Pix681 Pix682 Pix683 Pix684 Pix685 Pix686
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0     13    189    253    252    252    252
+3      0      0      0      0      0      0      0      0      0      9     75
+  Pix687 Pix688 Pix689 Pix690 Pix691 Pix692 Pix693 Pix694 Pix695 Pix696 Pix697
+1      0      0      0      0      0      0      0      0      0      0      0
+2    252    190    112     87      0      0      0      0      0      0      0
+3    201    252    221    137    137      0      0      0      0      0      0
+  Pix698 Pix699 Pix700 Pix701 Pix702 Pix703 Pix704 Pix705 Pix706 Pix707 Pix708
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix709 Pix710 Pix711 Pix712 Pix713 Pix714 Pix715 Pix716 Pix717 Pix718 Pix719
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix720 Pix721 Pix722 Pix723 Pix724 Pix725 Pix726 Pix727 Pix728 Pix729 Pix730
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix731 Pix732 Pix733 Pix734 Pix735 Pix736 Pix737 Pix738 Pix739 Pix740 Pix741
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix742 Pix743 Pix744 Pix745 Pix746 Pix747 Pix748 Pix749 Pix750 Pix751 Pix752
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix753 Pix754 Pix755 Pix756 Pix757 Pix758 Pix759 Pix760 Pix761 Pix762 Pix763
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix764 Pix765 Pix766 Pix767 Pix768 Pix769 Pix770 Pix771 Pix772 Pix773 Pix774
+1      0      0      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0      0      0
+  Pix775 Pix776 Pix777 Pix778 Pix779 Pix780 Pix781 Pix782 Pix783
+1      0      0      0      0      0      0      0      0      0
+2      0      0      0      0      0      0      0      0      0
+3      0      0      0      0      0      0      0      0      0</code></pre>
+</div>
+</div>
+</section>
+<section id="go-to-project-in-book" class="slide level2">
+<h2>Go to Project in Book 🤓</h2>
+<h3 id="build-your-own-ocr-system.">Build your own OCR system.»</h3>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc300.Rmd">RandRStudioScriptPart1.R script300</a></p>
+</div>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>

@@ -7,7 +7,7 @@
 <link href="RAndRStudioPart1_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="RAndRStudioPart1_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="RAndRStudioPart1_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.0.36">
+  <meta name="generator" content="quarto-1.1.113">
 
   <title>Introduction to R and RStudio</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,10 +18,15 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: 1;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -914,7 +919,7 @@
 <section id="summary-data-types-and-objects" class="slide level2">
 <h2>Summary Data Types and Objects</h2>
 
-<img data-src="Images/DataObjectDataTypes.png" class="r-stretch"></section>
+<img data-src="Images/DataObjectDataTypes.png" width="336" class="r-stretch"></section>
 <section id="how-are-very-big-numbers-presented" class="slide level2 smaller">
 <h2>How are Very Big Numbers Presented</h2>
 <p>The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)</p>
@@ -937,7 +942,7 @@ GDP&amp;=&amp;2.2996086 \cdot 10^{13}
 <section id="how-are-very-small-numbers-presented" class="slide level2 smaller">
 <h2>How are Very Small Numbers Presented 🤓</h2>
 <div class="panel-tabset">
-<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Main</a></li><li><a href="#tabset-2-2">Why?</a></li><li><a href="#tabset-2-3">What R Does</a></li></ul>
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Main</a></li><li><a href="#tabset-2-2">Why?</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
 <p>The probability of getting struck by lightning in the US is about <span class="math inline">\(0.000000000365\)</span> on any randomly chosen day.</p>
@@ -953,9 +958,7 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 </div>
 <div id="tabset-2-2">
 <p>In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:</p>
-<p><span class="math display">\[\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365\]</span></p>
-</div>
-<div id="tabset-2-3">
+<p><span class="math display">\[\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365\]</span> ### What R Does</p>
 <p>Let us see what R does:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1"></a>ProbStruck<span class="ot">=</span><span class="fl">0.000000000365</span></span>
@@ -1300,7 +1303,8 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          let href = ref.getAttribute('href');
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
