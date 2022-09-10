@@ -707,6 +707,7 @@ Prediction   Red Wine   White Wine
 </section>
 <section id="time-to-run-k-nearest-neighbors-2" class="slide level2 scrollable">
 <h2>Time to Run k-Nearest Neighbors</h2>
+<h3 id="click-here-to-find-a-reference-list-for-various-step_-commands"><a href="https://recipes.tidymodels.org/reference/index.html">Click here to find a reference list for various <code>Step_</code> commands</a></h3>
 <p>Recipe: Prepare Data for Analysis:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>Acidity<span class="sc">+</span>Sulfur, <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
@@ -741,6 +742,7 @@ Centering and scaling for all_predictors()</code></pre>
 </section>
 <section id="time-to-run-k-nearest-neighbors-3" class="slide level2 scrollable">
 <h2>Time to Run k-Nearest Neighbors</h2>
+<h3 id="click-here-to-find-a-reference-list-for-various-step_-commands-1"><a href="https://parsnip.tidymodels.org/reference/index.html">Click here to find a reference list for various <code>Step_</code> commands</a></h3>
 <p>Creating a Model Design:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>ModelDesignKNN<span class="ot">=</span><span class="fu">nearest_neighbor</span>(<span class="at">neighbors =</span> <span class="dv">4</span>, <span class="at">weight_func =</span> <span class="st">"rectangular"</span>) <span class="sc">%&gt;%</span></span>
@@ -801,7 +803,7 @@ Best k: 4</code></pre>
 <li class="fragment">Start with observation <span class="math inline">\(i=1\)</span> from <code>DataTest</code> (the first observation).</li>
 <li class="fragment">Take observation <span class="math inline">\(i\)</span> from <code>DataTest</code> and use <code>Acidity</code> and <code>Sulfur</code> to calculate the Euclidean distance to <strong>each</strong> of the observations of <code>DataTrain</code>.</li>
 <li class="fragment">Isolate the 4 observations with the smallest Euclidean distance and use the majority of their wine color as a prediction for observation <span class="math inline">\(i\)</span> from <code>DataTest</code> (in case of a par, decide randomly).</li>
-<li class="fragment">Increase <span class="math inline">\(i\)</span> by one (i.e., take the next observation from <code>DataTest</code>) and go to step 2 (until all <code>DataTest</code> observations are processed.)</li>
+<li class="fragment">Increase <span class="math inline">\(i\)</span> by one (i.e., take the next observation from <code>DataTest</code>) and go to step 2 (until all <code>DataTest</code> observations are processed).</li>
 </ol>
 </section>
 <section id="time-to-run-k-nearest-neighbors-6" class="slide level2">
@@ -834,33 +836,19 @@ Best k: 4</code></pre>
 <p>Predicting with the fitted workflow using <code>augment()</code> which <em>augments</em> <code>DataTest</code> with the predictions:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>DataPredWithTestData<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest)</span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">head</span>(DataPredWithTestData, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">head</span>(DataPredWithTestData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 20 × 6
-   WineColor Sulfur Acidity .pred_class .pred_red .pred_white
-   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;
- 1 white         90     8.2 white            0.25        0.75
- 2 red           19    11.8 red              1           0   
- 3 white        220     6.7 white            0           1   
- 4 red          131     7.8 white            0.25        0.75
- 5 white        161     7   white            0           1   
- 6 red           41     9.9 red              1           0   
- 7 white        156     7.8 white            0           1   
- 8 white        150     6.5 white            0           1   
- 9 red          102     7.9 red              0.5         0.5 
-10 red           11     5.8 red              1           0   
-11 white         64     5.9 white            0.25        0.75
-12 white        178     6.9 white            0           1   
-13 red           41    12.6 red              1           0   
-14 red           19    12.7 red              1           0   
-15 white        206     6.2 white            0           1   
-16 white        149     6.9 white            0           1   
-17 white        182     7.8 white            0           1   
-18 red           21     8.9 red              1           0   
-19 red           43     8.3 red              1           0   
-20 white        111     6   white            0           1   </code></pre>
+<pre><code># A tibble: 6 × 6
+  WineColor Sulfur Acidity .pred_class .pred_red .pred_white
+  &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;
+1 white         90     8.2 white            0.25        0.75
+2 red           19    11.8 red              1           0   
+3 white        220     6.7 white            0           1   
+4 red          131     7.8 white            0.25        0.75
+5 white        161     7   white            0           1   
+6 red           41     9.9 red              1           0   </code></pre>
 </div>
 </div>
 </section>
@@ -995,6 +983,8 @@ Prediction Win Lose
 1 specificity binary         0.904</code></pre>
 </div>
 </div>
+</div>
+<div class="fragment">
 <p>Can we improve by using all predictors.»</p>
 <div class="footer">
 <p>See: <a href="https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc200.Rmd">Exercise from AI Book</a></p>
