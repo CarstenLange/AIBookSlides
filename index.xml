@@ -5,7 +5,7 @@
    <version>
         <name>Introduction to the Course</name>
         <description>
-            This presention gives you advice how to study in this course and informs you about material available.
+            This presentation gives you advice on how to study in this course and informs you about the material available.
         </description>
         <asset name="View online (recommended)" type="web">00Intro/00Intro.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">Intro/00Intro.pdf</asset>
@@ -15,7 +15,7 @@
     <version>
         <name>Introduction to Machine Learning</name>
         <description>
-            This presention is an introduction to machine learning. It categorizes machine learning  by applications as well as by type of algorithm.
+            This presentation is an introduction to machine learning. It categorizes machine learning by applications as well as by type of algorithm.
         </description>
         <asset name="View online (recommended)" type="web">MLIntro/MLIntro.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">MLIntro/MLIntro.pdf</asset>
@@ -25,7 +25,7 @@
     <version>
         <name>Introduction to R and RStudio - Part 1</name>
         <description>
-            This presention introduces the basics of R and the RStudio code editor to you.
+            This presentation introduces the basics of R and the RStudio code editor to you.
         </description>
         <asset name="View online (recommended)" type="web">RAndRstudio/RandRStudioPart1.html</asset>
         <asset name="Download PDF (note, only first tab of a slide is printed)">RAndRstudio/RandRStudioPart1.pdf</asset>
@@ -34,7 +34,7 @@
     <version>
         <name>Introduction to R and RStudio - Part 2</name>
         <description>
-            This presention extends part 1 and introduces functionality from the `tidyverse` package.
+            This presentation extends part 1 and introduces functionality from the `tidyverse` package.
         </description>
         <asset name="View online (recommended)" type="web">RAndRstudioPart2/RandRStudioPart2.html</asset>
         <asset name="Download PDF">RAndRstudioPart2/RandRStudioPart2.pdf</asset>
@@ -43,10 +43,10 @@
     <version>
         <name>k Nearest Neighbors</name>
         <description>
-            This presention introduces k Nearest Neighbors using a wine dataset tp predict red and white wines and using Optical Charcter Recognition to read digits from 0 - 9.
+            This presentation introduces k Nearest Neighbors using a wine dataset to predict red and white wines and using Optical Character Recognition to read digits from 0 - 9.
         </description>
         <asset name="View online (recommended)" type="web">KNearNeigh/KNearNeigh.html</asset>
         <asset name="Download PDF ">KNearNeigh/KNearNeigh.pdf</asset>
-        <asset name="Download Presentation's Source Code (coming soon)">KNearNeigh.zip</asset>
+        <asset name="Download Presentation's Source Code">KNearNeigh.zip</asset>
     </version> 
 </versions>
