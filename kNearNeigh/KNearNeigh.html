@@ -7,7 +7,7 @@
 <link href="KNearNeigh_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="KNearNeigh_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="KNearNeigh_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.113">
+  <meta name="generator" content="quarto-1.0.36">
 
   <title>k Nearest Neighbors</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +18,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: 1;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -413,8 +408,8 @@
 <div class="column" style="width:50%;">
 <ul>
 <li class="fragment">first candidate a student <br> .</li>
-<li class="fragment">second candidate an athletic outdoor (score=<strong>9</strong>) women (<strong>0</strong>) <strong>51</strong> years old</li>
-<li class="fragment">third candidate an athletic outdoor (score=<strong>9</strong>), man (<strong>1</strong>)<br><strong>53</strong> years</li>
+<li class="fragment">second candidate a women (<strong>0</strong>) <strong>51</strong> years old, athletic outdoor (score=<strong>9</strong>)</li>
+<li class="fragment">third candidate a man (<strong>1</strong>), <strong>53</strong> years, athletic outdoor (score=<strong>9</strong>)<br></li>
 </ul>
 </div><div class="column" style="width:50%;">
 
@@ -429,7 +424,7 @@
 <div class="column" style="width:50%;">
 <ul>
 <li class="fragment">first candidate a student <br> .</li>
-<li class="fragment">second candidate an athletic outdoor (score=<strong>9</strong>) women (<strong>0</strong>) <strong>51</strong> years old</li>
+<li class="fragment">second candidate a women (<strong>0</strong>), <strong>51</strong> years old, athletic outdoor (score=<strong>9</strong>)</li>
 <li class="fragment">third candidate is an athletic outdoor (score=<strong>9</strong>) man (<strong>1</strong>) <br><strong>53</strong> years»</li>
 </ul>
 </div><div class="column" style="width:50%;">
@@ -457,7 +452,7 @@
 <h2>About the Wine Dataset</h2>
 <p><br><br><br>We will work with a publicly available wine dataset<sup>1</sup> containing 3,198 observations about different wines and their chemical properties.</p>
 <p>Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine’s chemical properties.»</p>
-<aside><ol class="aside-footnotes"><li id="fn1"><p>Cortez, Paulo, António Cerdeira, Fernando Almeida, Telmo Matos, and José Reis. 2009. “Modeling Wine Preferences by Data Mining from Physicochemical Properties.” Decision Support Systems 47 (4): 547–53. https://doi.org/10.1016/j.dss.2009.05.016.</p></li></ol></aside></section>
+<aside><ol class="aside-footnotes"><li id="fn1" role="doc-endnote"><p>Cortez, Paulo, António Cerdeira, Fernando Almeida, Telmo Matos, and José Reis. 2009. “Modeling Wine Preferences by Data Mining from Physicochemical Properties.” Decision Support Systems 47 (4): 547–53. https://doi.org/10.1016/j.dss.2009.05.016.</p></li></ol></aside></section>
 <section id="raw-observations-from-wine-dataset" class="slide level2 scrollable">
 <h2>Raw Observations from Wine Dataset</h2>
 <div class="cell">
@@ -468,22 +463,21 @@
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3,198 × 13
-   wineC…¹ acidity volat…² citri…³ resid…⁴ Chlor…⁵ freeS…⁶ total…⁷ Density    pH
-   &lt;chr&gt;     &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;
- 1 red        10.8   0.32     0.44     1.6   0.063      16      37   0.998  3.22
- 2 white       6.4   0.31     0.39     7.5   0.04       57     213   0.995  3.32
- 3 white       9.4   0.28     0.3      1.6   0.045      36     139   0.995  3.11
- 4 white       8.2   0.22     0.36     6.8   0.034      12      90   0.994  3.01
- 5 white       6.4   0.29     0.44     3.6   0.197      75     183   0.994  3.01
- 6 red         6.7   0.855    0.02     1.9   0.064      29      38   0.995  3.3 
- 7 red        11.8   0.38     0.55     2.1   0.071       5      19   0.999  3.11
- 8 white       6.7   0.25     0.23     7.2   0.038      61     220   0.995  3.14
- 9 red         7.5   0.38     0.57     2.3   0.106       5      12   0.996  3.36
-10 red         7.1   0.27     0.6      2.1   0.074      17      25   0.998  3.38
-# … with 3,188 more rows, 3 more variables: sulphates &lt;dbl&gt;, alcohol &lt;dbl&gt;,
-#   quality &lt;dbl&gt;, and abbreviated variable names ¹​wineColor, ²​volatileAcidity,
-#   ³​citricAcid, ⁴​residualSugar, ⁵​Chlorides, ⁶​freeSulfurDioxide,
-#   ⁷​totalSulfurDioxide</code></pre>
+   wineColor acidity volatileAcidity citricAcid residualSugar Chlorides
+   &lt;chr&gt;       &lt;dbl&gt;           &lt;dbl&gt;      &lt;dbl&gt;         &lt;dbl&gt;     &lt;dbl&gt;
+ 1 red          10.8           0.32        0.44           1.6     0.063
+ 2 white         6.4           0.31        0.39           7.5     0.04 
+ 3 white         9.4           0.28        0.3            1.6     0.045
+ 4 white         8.2           0.22        0.36           6.8     0.034
+ 5 white         6.4           0.29        0.44           3.6     0.197
+ 6 red           6.7           0.855       0.02           1.9     0.064
+ 7 red          11.8           0.38        0.55           2.1     0.071
+ 8 white         6.7           0.25        0.23           7.2     0.038
+ 9 red           7.5           0.38        0.57           2.3     0.106
+10 red           7.1           0.27        0.6            2.1     0.074
+# … with 3,188 more rows, and 7 more variables: freeSulfurDioxide &lt;dbl&gt;,
+#   totalSulfurDioxide &lt;dbl&gt;, Density &lt;dbl&gt;, pH &lt;dbl&gt;, sulphates &lt;dbl&gt;,
+#   alcohol &lt;dbl&gt;, quality &lt;dbl&gt;</code></pre>
 </div>
 </div>
 <p>»</p>
@@ -801,7 +795,7 @@ Best k: 4</code></pre>
 <li class="fragment">Start with observation <span class="math inline">\(i=1\)</span> from <code>DataTest</code> (the first observation).</li>
 <li class="fragment">Take observation <span class="math inline">\(i\)</span> from <code>DataTest</code> and use <code>Acidity</code> and <code>Sulfur</code> to calculate the Euclidean distance to <strong>each</strong> of the observations of <code>DataTrain</code>.</li>
 <li class="fragment">Isolate the 4 observations with the smallest Euclidean distance and use the majority of their wine color as a prediction for observation <span class="math inline">\(i\)</span> from <code>DataTest</code> (in case of a par, decide randomly).</li>
-<li class="fragment">Increase <span class="math inline">\(i\)</span> by one (i.e., take the next observation from <code>DataTest</code>) and go to step 2 (until all <code>DataTest</code> observations are processed.)</li>
+<li class="fragment">Increase <span class="math inline">\(i\)</span> by one (i.e., take the next observation from <code>DataTest</code>) and go to step 2 (until all <code>DataTest</code> observations are processed).</li>
 </ol>
 </section>
 <section id="time-to-run-k-nearest-neighbors-6" class="slide level2">
@@ -834,33 +828,19 @@ Best k: 4</code></pre>
 <p>Predicting with the fitted workflow using <code>augment()</code> which <em>augments</em> <code>DataTest</code> with the predictions:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>DataPredWithTestData<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest)</span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">head</span>(DataPredWithTestData, <span class="dv">20</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">head</span>(DataPredWithTestData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 20 × 6
-   WineColor Sulfur Acidity .pred_class .pred_red .pred_white
-   &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;
- 1 white         90     8.2 white            0.25        0.75
- 2 red           19    11.8 red              1           0   
- 3 white        220     6.7 white            0           1   
- 4 red          131     7.8 white            0.25        0.75
- 5 white        161     7   white            0           1   
- 6 red           41     9.9 red              1           0   
- 7 white        156     7.8 white            0           1   
- 8 white        150     6.5 white            0           1   
- 9 red          102     7.9 red              0.5         0.5 
-10 red           11     5.8 red              1           0   
-11 white         64     5.9 white            0.25        0.75
-12 white        178     6.9 white            0           1   
-13 red           41    12.6 red              1           0   
-14 red           19    12.7 red              1           0   
-15 white        206     6.2 white            0           1   
-16 white        149     6.9 white            0           1   
-17 white        182     7.8 white            0           1   
-18 red           21     8.9 red              1           0   
-19 red           43     8.3 red              1           0   
-20 white        111     6   white            0           1   </code></pre>
+<pre><code># A tibble: 6 × 6
+  WineColor Sulfur Acidity .pred_class .pred_red .pred_white
+  &lt;fct&gt;      &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;
+1 white         90     8.2 white            0.25        0.75
+2 red           19    11.8 red              1           0   
+3 white        220     6.7 white            0           1   
+4 red          131     7.8 white            0.25        0.75
+5 white        161     7   white            0           1   
+6 red           41     9.9 red              1           0   </code></pre>
 </div>
 </div>
 </section>
@@ -995,6 +975,8 @@ Prediction Win Lose
 1 specificity binary         0.904</code></pre>
 </div>
 </div>
+</div>
+<div class="fragment">
 <p>Can we improve by using all predictors.»</p>
 <div class="footer">
 <p>See: <a href="https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc200.Rmd">Exercise from AI Book</a></p>
@@ -1664,8 +1646,7 @@ Prediction Win Lose
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
