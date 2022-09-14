@@ -405,6 +405,7 @@ print(DataTest)
 ```
 
 ## Time to Run k-Nearest Neighbors {.scrollable}
+### [Click here to find a reference list for various `Step_` commands](https://recipes.tidymodels.org/reference/index.html)
 
 Recipe: Prepare Data for Analysis:
 
@@ -432,6 +433,7 @@ print(RecipeWine)
 ```
 
 ## Time to Run k-Nearest Neighbors {.scrollable}
+### [Click here to find a reference list for various `Step_` commands](https://parsnip.tidymodels.org/reference/index.html)
 
 Creating a Model Design:
 

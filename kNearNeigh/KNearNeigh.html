@@ -701,6 +701,7 @@ Prediction   Red Wine   White Wine
 </section>
 <section id="time-to-run-k-nearest-neighbors-2" class="slide level2 scrollable">
 <h2>Time to Run k-Nearest Neighbors</h2>
+<h3 id="click-here-to-find-a-reference-list-for-various-step_-commands"><a href="https://recipes.tidymodels.org/reference/index.html">Click here to find a reference list for various <code>Step_</code> commands</a></h3>
 <p>Recipe: Prepare Data for Analysis:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>Acidity<span class="sc">+</span>Sulfur, <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
@@ -735,6 +736,7 @@ Centering and scaling for all_predictors()</code></pre>
 </section>
 <section id="time-to-run-k-nearest-neighbors-3" class="slide level2 scrollable">
 <h2>Time to Run k-Nearest Neighbors</h2>
+<h3 id="click-here-to-find-a-reference-list-for-various-step_-commands-1"><a href="https://parsnip.tidymodels.org/reference/index.html">Click here to find a reference list for various <code>Step_</code> commands</a></h3>
 <p>Creating a Model Design:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>ModelDesignKNN<span class="ot">=</span><span class="fu">nearest_neighbor</span>(<span class="at">neighbors =</span> <span class="dv">4</span>, <span class="at">weight_func =</span> <span class="st">"rectangular"</span>) <span class="sc">%&gt;%</span></span>
