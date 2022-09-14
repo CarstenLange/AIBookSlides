@@ -27,8 +27,8 @@ Sake of argument: I am male (**1**), **50** years, outdoor sports score **7**: <
 ::: columns
 ::: {.column width="50%"}
 -   first candidate a student <br> .
--   second candidate an athletic outdoor (score=**9**) women (**0**) **51** years old
--   third candidate an athletic outdoor (score=**9**), man (**1**)<br>**53** years
+-   second candidate a  women (**0**) **51** years old, athletic outdoor (score=**9**)
+-   third candidate a  man (**1**), **53** years, athletic outdoor (score=**9**)<br>
 :::
 
 ::: {.column width="50%"}
@@ -44,7 +44,7 @@ Sake of argument: I am male (**1**), **50** years, outdoor sports score **7**: <
 ::: columns
 ::: {.column width="50%"}
 -   first candidate a student <br> .
--   second candidate an athletic outdoor (score=**9**) women (**0**) **51** years old
+-   second candidate a women (**0**), **51** years old, athletic outdoor (score=**9**) 
 -   third candidate is an athletic outdoor (score=**9**) man (**1**) <br>**53** years»
 :::
 
