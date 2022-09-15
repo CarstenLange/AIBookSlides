@@ -1,15 +1,187 @@
 ---
-title: "Intro to Machine Learning"
-subtitle: "Types, Tasks, Terminology"
+title: "Key Machine Learning Concepts"
+subtitle: "Explained with Linear Regression"
 format: 
   revealjs:
     code-fold: true
 ---
 
-## Introduction to the Course
+```{r}
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+DataMockup=import("https://lange-analytics.com/AIBook/Data/DataStudyTimeMockup.rds")
+```
 
-## Plot
+## What Will You Learn {.scrollable}
 
-![](Images/movie.gif)
+-   Reviewing the basic idea behind linear regression
 
-## {background-color="black" background-image="Images/movie.gif" background-size="700px" }
+-   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
+
+-   Understanding the role of parameters in a machine learning model in general and in linear regression in particular
+
+-   Calculate optimal regression parameters using OLS
+
+-   Calculate optimal regression parameters by trial and error
+
+-   Distinguish between unfitted and fitted models
+
+-   Using the tidymodels package to split observations from a dataset randomly into a training and testing dataset (see Section 6.4).
+
+-   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
+
+-   Being able to distinguish between dummy encoding and one-hot encoding
+
+-   Using `tidymodels` including model design and data pre-processing (recipes) to analyze housing prices (see Section 6.4).
+
+## Univariate Linear Regression - Data Table and Goal
+
+:::: columns
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\widehat{y}_{i}-y_i)^2$
+:::
+
+::: {.column width="60%"}
+**The Data**
+
+```{r }
+kbl(DataMockup %>% mutate(i=1:5) %>% select(i,everything()), 
+    caption="Mockup Training Dataset")%>%
+  add_header_above(c(" ", "y", "x"), escape=F) %>% 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+:::
+::::
+
+
+## Univariate Linear Regression - Data Diagram and Goal
+
+:::: columns
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_0$ and $\beta_1$ that minimize the prediction errors $(\widehat{y}_{i}-y_i)^2$
+:::
+
+::: {.column width="60%"}
+```{r}
+Model123=lm(Grade~StudyTime, data=DataMockup)
+PredGrade=predict(Model123, DataMockup)
+ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
+  geom_line(aes(y=PredGrade), color="red", size=2.7)+
+  geom_point(size=5, color="blue")+
+  geom_point(aes(y=PredGrade), color="black", size=2.7)+
+  geom_segment(aes(x = StudyTime, y = PredGrade,
+                   xend = StudyTime, yend = Grade),size=1.2)+
+  scale_x_continuous("Study Time", breaks=seq(1,8))+
+  scale_y_continuous(limits=c(65,110), breaks=seq(60,100,5))
+```
+:::
+::::
+
+
+# How to Measure Prediction Quality
+
+```{=tex}
+\begin{eqnarray*}
+MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+ & \Longleftrightarrow& \\
+MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}
+```
+**Note, when the data are given (i.e., $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$** »
+
+## Custom R Command to Calculate MSE
+
+Function Definition:
+```{r}
+#| echo: true
+FctMSE=function(VecBeta, data){
+                        Beta1=VecBeta[1]
+                        Beta2=VecBeta[2]
+                        data=data %>%
+                        rename(Y=1, X=2) %>% 
+                        mutate(YPred=Beta1*X+Beta2) %>%
+                        mutate(Error=YPred-Y) %>%
+                        mutate(ErrorSqt=Error^2)
+                        
+                        MSE=mean(data$ErrorSqt)
+                        
+                        return(MSE)}
+```
+
+
+
+Function Call:
+```{r}
+#| echo: true
+VecBetaTest=c(4,61)
+
+ResultMSE=FctMSE(VecBetaTest, DataMockup)
+
+```
+
+## How to Find Optimal Values for $\beta_1$ and $\beta_2$
+
+**Method 1:**
+
+:   **Calculate optimal values for the parameters** $\beta$ based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
+
+**Method 2:**
+
+:   We can use a **systematic trial and error process**.
+
+## Method 1: Calculate Optimal Parameters{.smaller .scollable}
+
+
+```{=tex}
+\begin{eqnarray*} 
+\beta_{1,opt}&=& \frac
+{N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
+&& \nonumber \\
+\beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
+\end{eqnarray*}
+```
+
+```{r}
+DataTable=DataMockup %>%
+  mutate(GradeXStudyTime=Grade*StudyTime) %>%
+  mutate(StudyTimeSquared=StudyTime^2) 
+
+
+kbl(DataTable %>% mutate(i=1:5) %>% select(i,everything()), 
+    caption="Mockup Training Dataset ")%>%
+  add_header_above(c(" ", "y", "x", "y x","$x x"), escape=F) %>% 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+
+
+## Method 2: Use a Systematic Trial and Error Process to Find Best Parameters 🤓
+
+- **Grid Search (ka Brute force):** For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta a$. The use our custom `mse()` command to calcualte a $MSE$ for each.
+
+- **Optimizer:** Use the R buildin optimizer. Push the data and start values for $\beta_1$ and $\beta_2$ to the optimizer as arguments. The rest is done by the optimizer.
+
+- See the R script in the footnote to see both algorithms in action.
+
+
+::: footer
+See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
+:::

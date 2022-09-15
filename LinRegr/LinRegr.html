@@ -7,9 +7,9 @@
 <link href="LinRegr_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="LinRegr_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="LinRegr_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.113">
+  <meta name="generator" content="quarto-1.1.189">
 
-  <title>Intro to Machine Learning</title>
+  <title>Key Machine Learning Concepts</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -19,7 +19,7 @@
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: 1;}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -27,6 +27,70 @@
       margin: 0 0.8em 0.2em -1.6em;
       vertical-align: middle;
     }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
   </style>
   <link rel="stylesheet" href="LinRegr_files/libs/revealjs/dist/theme/quarto.css" id="theme">
   <link href="LinRegr_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -319,29 +383,261 @@
       margin-right: 0; 
     }
   </style>
+  
+  <script src="LinRegr_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="LinRegr_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="center">
-  <h1 class="title">Intro to Machine Learning</h1>
-  <p class="subtitle">Types, Tasks, Terminology</p>
+  <h1 class="title">Key Machine Learning Concepts</h1>
+  <p class="subtitle">Explained with Linear Regression</p>
 </section>
 
-<section id="introduction-to-the-course" class="slide level2">
-<h2>Introduction to the Course</h2>
-</section>
-<section id="plot" class="slide level2">
-<h2>Plot</h2>
+<section class="slide level2">
 
-<img data-src="Images/movie.gif" class="r-stretch"></section>
-<section id="section" class="slide level2" data-background-color="black" data-background-image="Images/movie.gif" data-background-size="700px">
-<h2></h2>
+<div class="cell">
+
+</div>
+</section>
+<section id="what-will-you-learn" class="slide level2 scrollable">
+<h2>What Will You Learn</h2>
+<ul>
+<li class="fragment"><p>Reviewing the basic idea behind linear regression</p></li>
+<li class="fragment"><p>Learning how how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
+<li class="fragment"><p>Understanding the role of parameters in a machine learning model in general and in linear regression in particular</p></li>
+<li class="fragment"><p>Calculate optimal regression parameters using OLS</p></li>
+<li class="fragment"><p>Calculate optimal regression parameters by trial and error</p></li>
+<li class="fragment"><p>Distinguish between unfitted and fitted models</p></li>
+<li class="fragment"><p>Using the tidymodels package to split observations from a dataset randomly into a training and testing dataset (see Section 6.4).</p></li>
+<li class="fragment"><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
+<li class="fragment"><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
+<li class="fragment"><p>Using <code>tidymodels</code> including model design and data pre-processing (recipes) to analyze housing prices (see Section 6.4).</p></li>
+</ul>
+</section>
+<section id="univariate-linear-regression---data-table-and-goal" class="slide level2">
+<h2>Univariate Linear Regression - Data Table and Goal</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>The Regression:</strong></p>
+<p><span class="math display">\[
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span></p>
+<p><strong>The Goal</strong></p>
+<p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the prediction errors <span class="math inline">\((\widehat{y}_{i}-y_i)^2\)</span></p>
+</div><div class="column" style="width:60%;">
+<p><strong>The Data</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Mockup Training Dataset</caption>
+ <thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1"></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">y</div></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">x</div></th>
+</tr>
+  <tr>
+   <th style="text-align:right;"> i </th>
+   <th style="text-align:right;"> Grade </th>
+   <th style="text-align:right;"> StudyTime </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 65 </td>
+   <td style="text-align:right;"> 2 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 82 </td>
+   <td style="text-align:right;"> 3 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 93 </td>
+   <td style="text-align:right;"> 7 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 93 </td>
+   <td style="text-align:right;"> 8 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 83 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="univariate-linear-regression---data-diagram-and-goal" class="slide level2">
+<h2>Univariate Linear Regression - Data Diagram and Goal</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>The Regression:</strong></p>
+<p><span class="math display">\[
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span></p>
+<p><strong>The Goal</strong></p>
+<p>Find values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimize the prediction errors <span class="math inline">\((\widehat{y}_{i}-y_i)^2\)</span></p>
+</div><div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="LinRegr_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section>
+<section id="how-to-measure-prediction-quality" class="title-slide slide level1 center">
+<h1>How to Measure Prediction Quality</h1>
+<span class="math display">\[\begin{eqnarray*}
+MSE &amp; = &amp; \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+&amp; \Longleftrightarrow&amp; \\
+MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}\]</span>
+<p><strong>Note, when the data are given (i.e., <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span></strong> »</p>
+</section>
+<section id="custom-r-command-to-calculate-mse" class="slide level2">
+<h2>Custom R Command to Calculate MSE</h2>
+<p>Function Definition:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>FctMSE<span class="ot">=</span><span class="cf">function</span>(VecBeta, data){</span>
+<span id="cb1-2"><a href="#cb1-2"></a>                        Beta1<span class="ot">=</span>VecBeta[<span class="dv">1</span>]</span>
+<span id="cb1-3"><a href="#cb1-3"></a>                        Beta2<span class="ot">=</span>VecBeta[<span class="dv">2</span>]</span>
+<span id="cb1-4"><a href="#cb1-4"></a>                        data<span class="ot">=</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>                        <span class="fu">rename</span>(<span class="at">Y=</span><span class="dv">1</span>, <span class="at">X=</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-6"><a href="#cb1-6"></a>                        <span class="fu">mutate</span>(<span class="at">YPred=</span>Beta1<span class="sc">*</span>X<span class="sc">+</span>Beta2) <span class="sc">%&gt;%</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>                        <span class="fu">mutate</span>(<span class="at">Error=</span>YPred<span class="sc">-</span>Y) <span class="sc">%&gt;%</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>                        <span class="fu">mutate</span>(<span class="at">ErrorSqt=</span>Error<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>                        </span>
+<span id="cb1-10"><a href="#cb1-10"></a>                        MSE<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ErrorSqt)</span>
+<span id="cb1-11"><a href="#cb1-11"></a>                        </span>
+<span id="cb1-12"><a href="#cb1-12"></a>                        <span class="fu">return</span>(MSE)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Function Call:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>VecBetaTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBetaTest, DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="how-to-find-optimal-values-for-beta_1-and-beta_2" class="slide level2">
+<h2>How to Find Optimal Values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span></h2>
+<dl>
+<dt class="fragment"><strong>Method 1:</strong></dt>
+<dd class="fragment">
+<p><strong>Calculate optimal values for the parameters</strong> <span class="math inline">\(\beta\)</span> based on Ordinary Least Squares (OLS) using two formulas (<strong>Note,</strong> this method works only for linear regression)</p>
+</dd>
+<dt class="fragment"><strong>Method 2:</strong></dt>
+<dd class="fragment">
+<p>We can use a <strong>systematic trial and error process</strong>.</p>
+</dd>
+</dl>
+</section>
+<section id="method-1-calculate-optimal-parameters" class="slide level2 smaller scollable">
+<h2>Method 1: Calculate Optimal Parameters</h2>
+<span class="math display">\[\begin{eqnarray*}
+\beta_{1,opt}&amp;=&amp; \frac
+{N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i}
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
+&amp;&amp; \nonumber \\
+\beta_{2,opt.}&amp;=&amp; \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
+\end{eqnarray*}\]</span>
+<div class="cell">
+<div class="cell-output-display">
+
+<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Mockup Training Dataset </caption>
+ <thead>
+<tr>
+<th style="empty-cells: hide;border-bottom:hidden;" colspan="1"></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">y</div></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">x</div></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">y x</div></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">$x x</div></th>
+</tr>
+  <tr>
+   <th style="text-align:right;"> i </th>
+   <th style="text-align:right;"> Grade </th>
+   <th style="text-align:right;"> StudyTime </th>
+   <th style="text-align:right;"> GradeXStudyTime </th>
+   <th style="text-align:right;"> StudyTimeSquared </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> 65 </td>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 130 </td>
+   <td style="text-align:right;"> 4 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> 82 </td>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 246 </td>
+   <td style="text-align:right;"> 9 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> 93 </td>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:right;"> 651 </td>
+   <td style="text-align:right;"> 49 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 93 </td>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> 744 </td>
+   <td style="text-align:right;"> 64 </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> 83 </td>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> 332 </td>
+   <td style="text-align:right;"> 16 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</section>
+<section id="method-2-use-a-systematic-trial-and-error-process-to-find-best-parameters" class="slide level2">
+<h2>Method 2: Use a Systematic Trial and Error Process to Find Best Parameters 🤓</h2>
+<ul>
+<li class="fragment"><p><strong>Grid Search (ka Brute force):</strong> For a given range of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values, build a table with pairs of all combinations of these <span class="math inline">\(\beta a\)</span>. The use our custom <code>mse()</code> command to calcualte a <span class="math inline">\(MSE\)</span> for each.</p></li>
+<li class="fragment"><p><strong>Optimizer:</strong> Use the R buildin optimizer. Push the data and start values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> to the optimizer as arguments. The rest is done by the optimizer.</p></li>
+<li class="fragment"><p>See the R script in the footnote to see both algorithms in action.</p></li>
+</ul>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R">LinRegrScript.R script100</a></p>
+</div>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
@@ -555,6 +851,48 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {
