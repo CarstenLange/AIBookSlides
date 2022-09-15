@@ -54,8 +54,8 @@
         <description>
             This presentation introduces key machine learning concepts. It uses linear regression instead of more advanced machine learning modelt to keep the model as simple as possible to be able to foccus on the key concepts of machine learning.
         </description>
-        <asset name="Still incomplete: View online (recommended)" type="web">KNearNeigh/LinRegr.html</asset>
-        <asset name="Coming sson: Download PDF ">KNearNeigh/LinRegr.pdf</asset>
+        <asset name="Still incomplete: View online (recommended)" type="web">LinRegr/LinRegr.html</asset>
+        <asset name="Coming sson: Download PDF ">LinRegr/LinRegr.pdf</asset>
         <asset name="Coming sson: Download Presentation's Source Code">LinRegr.zip</asset>
     </version> 
 </versions>

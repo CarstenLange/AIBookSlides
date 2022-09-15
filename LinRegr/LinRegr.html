@@ -509,8 +509,8 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 \end{eqnarray*}\]</span>
 <p><strong>Note, when the data are given (i.e., <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span></strong> »</p>
 </section>
-<section id="custom-r-command-to-calculate-mse" class="slide level2">
-<h2>Custom R Command to Calculate MSE</h2>
+<section id="custom-r-function-to-calculate-mse" class="slide level2">
+<h2>Custom R Function to Calculate MSE</h2>
 <p>Function Definition:</p>
 <div class="cell">
 <details>
@@ -627,8 +627,13 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <section id="method-2-use-a-systematic-trial-and-error-process-to-find-best-parameters" class="slide level2">
 <h2>Method 2: Use a Systematic Trial and Error Process to Find Best Parameters 🤓</h2>
 <ul>
-<li class="fragment"><p><strong>Grid Search (ka Brute force):</strong> For a given range of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values, build a table with pairs of all combinations of these <span class="math inline">\(\beta a\)</span>. The use our custom <code>mse()</code> command to calcualte a <span class="math inline">\(MSE\)</span> for each.</p></li>
-<li class="fragment"><p><strong>Optimizer:</strong> Use the R buildin optimizer. Push the data and start values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> to the optimizer as arguments. The rest is done by the optimizer.</p></li>
+<li class="fragment"><p><strong>Grid Search (aka Brute force):</strong></p>
+<ol type="1">
+<li class="fragment">For a given range of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values, build a table with pairs of all combinations of these <span class="math inline">\(\beta s\)</span>.</li>
+<li class="fragment">Then use our custom <code>FctMSE()</code> command to calculate a <span class="math inline">\(MSE\)</span> for each <span class="math inline">\(\beta\)</span> pair.</li>
+<li class="fragment">Find the <span class="math inline">\(\beta\)</span> pair with the lowest <span class="math inline">\(MSE\)</span></li>
+</ol></li>
+<li class="fragment"><p><strong>Optimizer:</strong> Use the R build-in optimizer. Push the start values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> together with the data to the optimizer as arguments. The rest is done by the optimizer.</p></li>
 <li class="fragment"><p>See the R script in the footnote to see both algorithms in action.</p></li>
 </ul>
 <div class="footer">

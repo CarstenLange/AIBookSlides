@@ -107,7 +107,7 @@ MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\bet
 ```
 **Note, when the data are given (i.e., $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$** »
 
-## Custom R Command to Calculate MSE
+## Custom R Function to Calculate MSE
 
 Function Definition:
 ```{r}
@@ -175,9 +175,12 @@ kbl(DataTable %>% mutate(i=1:5) %>% select(i,everything()),
 
 ## Method 2: Use a Systematic Trial and Error Process to Find Best Parameters 🤓
 
-- **Grid Search (ka Brute force):** For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta a$. The use our custom `mse()` command to calcualte a $MSE$ for each.
+- **Grid Search (aka Brute force):** 
+    1. For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$. 
+    2. Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
+    3. Find the $\beta$ pair with the lowest $MSE$
 
-- **Optimizer:** Use the R buildin optimizer. Push the data and start values for $\beta_1$ and $\beta_2$ to the optimizer as arguments. The rest is done by the optimizer.
+- **Optimizer:** Use the R build-in optimizer. Push the  start values for $\beta_1$ and $\beta_2$  together with the data to the optimizer as arguments. The rest is done by the optimizer.
 
 - See the R script in the footnote to see both algorithms in action.
 
