@@ -22,13 +22,13 @@ DataMockup=import("https://lange-analytics.com/AIBook/Data/DataStudyTimeMockup.r
 
 -   Understanding the role of parameters in a machine learning model in general and in linear regression in particular
 
--   Calculate optimal regression parameters using OLS
+-   Calculating optimal regression parameters using OLS
 
--   Calculate optimal regression parameters by trial and error
+-   Finding optimal regression parameters by trial and error
 
 -   Distinguish between unfitted and fitted models
 
--   Using the tidymodels package to split observations from a dataset randomly into a training and testing dataset (see Section 6.4).
+-   Using the `tidymodels` package to split observations from a dataset randomly into a training and testing dataset.
 
 -   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
 
@@ -38,7 +38,7 @@ DataMockup=import("https://lange-analytics.com/AIBook/Data/DataStudyTimeMockup.r
 
 ## Univariate Linear Regression - Data Table and Goal
 
-:::: columns
+::: columns
 ::: {.column width="40%"}
 **The Regression:**
 
@@ -52,7 +52,7 @@ Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\w
 :::
 
 ::: {.column width="60%"}
-**The Data**
+**The Data Table**
 
 ```{r }
 kbl(DataMockup %>% mutate(i=1:5) %>% select(i,everything()), 
@@ -61,12 +61,11 @@ kbl(DataMockup %>% mutate(i=1:5) %>% select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 :::
-::::
-
+:::
 
 ## Univariate Linear Regression - Data Diagram and Goal
 
-:::: columns
+::: columns
 ::: {.column width="40%"}
 **The Regression:**
 
@@ -80,6 +79,8 @@ Find values for $\beta_0$ and $\beta_1$ that minimize the prediction errors $(\w
 :::
 
 ::: {.column width="60%"}
+**The Data Diagram**
+
 ```{r}
 Model123=lm(Grade~StudyTime, data=DataMockup)
 PredGrade=predict(Model123, DataMockup)
@@ -93,8 +94,7 @@ ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
   scale_y_continuous(limits=c(65,110), breaks=seq(60,100,5))
 ```
 :::
-::::
-
+:::
 
 # How to Measure Prediction Quality
 
@@ -105,11 +105,39 @@ MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}
 ```
-**Note, when the data are given (i.e., $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$** »
+**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
 
 ## Custom R Function to Calculate MSE
 
-Function Definition:
+```{r}
+#| echo: false
+FctMSE=function(VecBeta, data){
+                        Beta1=VecBeta[1]
+                        Beta2=VecBeta[2]
+                        data=data %>%
+                        rename(Y=1, X=2) %>% 
+                        mutate(YPred=Beta1*X+Beta2) %>%
+                        mutate(Error=YPred-Y) %>%
+                        mutate(ErrorSqt=Error^2)
+                        
+                        MSE=mean(data$ErrorSqt)
+                        
+                        return(MSE)}
+```
+
+Function Call:
+
+```{r}
+#| echo: true
+VecBetaTest=c(4,61)
+ResultMSE=FctMSE(VecBetaTest, DataMockup)
+print(ResultMSE)
+```
+
+
+
+Function Definition:»
+
 ```{r}
 #| echo: true
 FctMSE=function(VecBeta, data){
@@ -126,29 +154,17 @@ FctMSE=function(VecBeta, data){
                         return(MSE)}
 ```
 
-
-
-Function Call:
-```{r}
-#| echo: true
-VecBetaTest=c(4,61)
-
-ResultMSE=FctMSE(VecBetaTest, DataMockup)
-
-```
-
 ## How to Find Optimal Values for $\beta_1$ and $\beta_2$
 
 **Method 1:**
 
-:   **Calculate optimal values for the parameters** $\beta$ based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
+:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
 
 **Method 2:**
 
 :   We can use a **systematic trial and error process**.
 
-## Method 1: Calculate Optimal Parameters{.smaller .scollable}
-
+## Method 1: Calculate Optimal Parameters (only for OLS!) {.smaller .scollable}
 
 ```{=tex}
 \begin{eqnarray*} 
@@ -159,7 +175,6 @@ ResultMSE=FctMSE(VecBetaTest, DataMockup)
 \beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
 \end{eqnarray*}
 ```
-
 ```{r}
 DataTable=DataMockup %>%
   mutate(GradeXStudyTime=Grade*StudyTime) %>%
@@ -172,18 +187,17 @@ kbl(DataTable %>% mutate(i=1:5) %>% select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
+## Method 2: Use a Systematic Trial and Error Process 🤓
 
-## Method 2: Use a Systematic Trial and Error Process to Find Best Parameters 🤓
+-   **Grid Search (aka Brute Force):**
 
-- **Grid Search (aka Brute force):** 
-    1. For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$. 
-    2. Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
-    3. Find the $\beta$ pair with the lowest $MSE$
+    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
+    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
+    3.  Find the $\beta$ pair with the lowest $MSE$
 
-- **Optimizer:** Use the R build-in optimizer. Push the  start values for $\beta_1$ and $\beta_2$  together with the data to the optimizer as arguments. The rest is done by the optimizer.
+-   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
 
-- See the R script in the footnote to see both algorithms in action.
-
+-   See the R script in the footnote to see both algorithms in action.»
 
 ::: footer
 See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
