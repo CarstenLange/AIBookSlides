@@ -7,7 +7,7 @@
 <link href="LinRegr_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="LinRegr_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="LinRegr_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.189">
+  <meta name="generator" content="quarto-1.0.36">
 
   <title>Key Machine Learning Concepts</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +18,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -408,10 +403,10 @@
 <li class="fragment"><p>Reviewing the basic idea behind linear regression</p></li>
 <li class="fragment"><p>Learning how how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
 <li class="fragment"><p>Understanding the role of parameters in a machine learning model in general and in linear regression in particular</p></li>
-<li class="fragment"><p>Calculate optimal regression parameters using OLS</p></li>
-<li class="fragment"><p>Calculate optimal regression parameters by trial and error</p></li>
+<li class="fragment"><p>Calculating optimal regression parameters using OLS</p></li>
+<li class="fragment"><p>Finding optimal regression parameters by trial and error</p></li>
 <li class="fragment"><p>Distinguish between unfitted and fitted models</p></li>
-<li class="fragment"><p>Using the tidymodels package to split observations from a dataset randomly into a training and testing dataset (see Section 6.4).</p></li>
+<li class="fragment"><p>Using the <code>tidymodels</code> package to split observations from a dataset randomly into a training and testing dataset.</p></li>
 <li class="fragment"><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
 <li class="fragment"><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
 <li class="fragment"><p>Using <code>tidymodels</code> including model design and data pre-processing (recipes) to analyze housing prices (see Section 6.4).</p></li>
@@ -428,7 +423,7 @@
 <p><strong>The Goal</strong></p>
 <p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the prediction errors <span class="math inline">\((\widehat{y}_{i}-y_i)^2\)</span></p>
 </div><div class="column" style="width:60%;">
-<p><strong>The Data</strong></p>
+<p><strong>The Data Table</strong></p>
 <div class="cell">
 <div class="cell-output-display">
 
@@ -491,6 +486,7 @@
 <p><strong>The Goal</strong></p>
 <p>Find values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimize the prediction errors <span class="math inline">\((\widehat{y}_{i}-y_i)^2\)</span></p>
 </div><div class="column" style="width:60%;">
+<p><strong>The Data Diagram</strong></p>
 <div class="cell">
 <div class="cell-output-display">
 <p><img data-src="LinRegr_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
@@ -507,35 +503,41 @@ MSE &amp; = &amp; \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 &amp; \Longleftrightarrow&amp; \\
 MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}\]</span>
-<p><strong>Note, when the data are given (i.e., <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span></strong> »</p>
+<p><strong>Note, when the data are given (i.e.,</strong> <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> »</p>
 </section>
 <section id="custom-r-function-to-calculate-mse" class="slide level2">
 <h2>Custom R Function to Calculate MSE</h2>
-<p>Function Definition:</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>FctMSE<span class="ot">=</span><span class="cf">function</span>(VecBeta, data){</span>
-<span id="cb1-2"><a href="#cb1-2"></a>                        Beta1<span class="ot">=</span>VecBeta[<span class="dv">1</span>]</span>
-<span id="cb1-3"><a href="#cb1-3"></a>                        Beta2<span class="ot">=</span>VecBeta[<span class="dv">2</span>]</span>
-<span id="cb1-4"><a href="#cb1-4"></a>                        data<span class="ot">=</span>data <span class="sc">%&gt;%</span></span>
-<span id="cb1-5"><a href="#cb1-5"></a>                        <span class="fu">rename</span>(<span class="at">Y=</span><span class="dv">1</span>, <span class="at">X=</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-6"><a href="#cb1-6"></a>                        <span class="fu">mutate</span>(<span class="at">YPred=</span>Beta1<span class="sc">*</span>X<span class="sc">+</span>Beta2) <span class="sc">%&gt;%</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a>                        <span class="fu">mutate</span>(<span class="at">Error=</span>YPred<span class="sc">-</span>Y) <span class="sc">%&gt;%</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a>                        <span class="fu">mutate</span>(<span class="at">ErrorSqt=</span>Error<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a>                        </span>
-<span id="cb1-10"><a href="#cb1-10"></a>                        MSE<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ErrorSqt)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>                        </span>
-<span id="cb1-12"><a href="#cb1-12"></a>                        <span class="fu">return</span>(MSE)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+
 </div>
 <p>Function Call:</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>VecBetaTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBetaTest, DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>VecBetaTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBetaTest, DataMockup)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 29.8</code></pre>
+</div>
+</div>
+<p>Function Definition:»</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>FctMSE<span class="ot">=</span><span class="cf">function</span>(VecBeta, data){</span>
+<span id="cb3-2"><a href="#cb3-2"></a>                        Beta1<span class="ot">=</span>VecBeta[<span class="dv">1</span>]</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                        Beta2<span class="ot">=</span>VecBeta[<span class="dv">2</span>]</span>
+<span id="cb3-4"><a href="#cb3-4"></a>                        data<span class="ot">=</span>data <span class="sc">%&gt;%</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>                        <span class="fu">rename</span>(<span class="at">Y=</span><span class="dv">1</span>, <span class="at">X=</span><span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-6"><a href="#cb3-6"></a>                        <span class="fu">mutate</span>(<span class="at">YPred=</span>Beta1<span class="sc">*</span>X<span class="sc">+</span>Beta2) <span class="sc">%&gt;%</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>                        <span class="fu">mutate</span>(<span class="at">Error=</span>YPred<span class="sc">-</span>Y) <span class="sc">%&gt;%</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>                        <span class="fu">mutate</span>(<span class="at">ErrorSqt=</span>Error<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>                        </span>
+<span id="cb3-10"><a href="#cb3-10"></a>                        MSE<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ErrorSqt)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>                        </span>
+<span id="cb3-12"><a href="#cb3-12"></a>                        <span class="fu">return</span>(MSE)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -544,7 +546,7 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <dl>
 <dt class="fragment"><strong>Method 1:</strong></dt>
 <dd class="fragment">
-<p><strong>Calculate optimal values for the parameters</strong> <span class="math inline">\(\beta\)</span> based on Ordinary Least Squares (OLS) using two formulas (<strong>Note,</strong> this method works only for linear regression)</p>
+<p><strong>Calculate optimal values</strong> for the parameters (the <span class="math inline">\(\beta s\)</span>) based on Ordinary Least Squares (OLS) using two formulas (<strong>Note,</strong> this method works only for linear regression)</p>
 </dd>
 <dt class="fragment"><strong>Method 2:</strong></dt>
 <dd class="fragment">
@@ -552,8 +554,8 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 </dd>
 </dl>
 </section>
-<section id="method-1-calculate-optimal-parameters" class="slide level2 smaller scollable">
-<h2>Method 1: Calculate Optimal Parameters</h2>
+<section id="method-1-calculate-optimal-parameters-only-for-ols" class="slide level2 smaller scollable">
+<h2>Method 1: Calculate Optimal Parameters (only for OLS!)</h2>
 <span class="math display">\[\begin{eqnarray*}
 \beta_{1,opt}&amp;=&amp; \frac
 {N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i}
@@ -624,17 +626,17 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 </div>
 </div>
 </section>
-<section id="method-2-use-a-systematic-trial-and-error-process-to-find-best-parameters" class="slide level2">
-<h2>Method 2: Use a Systematic Trial and Error Process to Find Best Parameters 🤓</h2>
+<section id="method-2-use-a-systematic-trial-and-error-process" class="slide level2">
+<h2>Method 2: Use a Systematic Trial and Error Process 🤓</h2>
 <ul>
-<li class="fragment"><p><strong>Grid Search (aka Brute force):</strong></p>
+<li class="fragment"><p><strong>Grid Search (aka Brute Force):</strong></p>
 <ol type="1">
 <li class="fragment">For a given range of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values, build a table with pairs of all combinations of these <span class="math inline">\(\beta s\)</span>.</li>
 <li class="fragment">Then use our custom <code>FctMSE()</code> command to calculate a <span class="math inline">\(MSE\)</span> for each <span class="math inline">\(\beta\)</span> pair.</li>
 <li class="fragment">Find the <span class="math inline">\(\beta\)</span> pair with the lowest <span class="math inline">\(MSE\)</span></li>
 </ol></li>
 <li class="fragment"><p><strong>Optimizer:</strong> Use the R build-in optimizer. Push the start values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> together with the data to the optimizer as arguments. The rest is done by the optimizer.</p></li>
-<li class="fragment"><p>See the R script in the footnote to see both algorithms in action.</p></li>
+<li class="fragment"><p>See the R script in the footnote to see both algorithms in action.»</p></li>
 </ul>
 <div class="footer">
 <p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R">LinRegrScript.R script100</a></p>
@@ -1135,8 +1137,7 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
