@@ -148,27 +148,27 @@ print(DataHousing[1:3,])
 -   **Predictor Variables**: The variables that **predict** an outcome ($Sqft$, $Bedrooms$, $Waterfront$)
 
 -   **Example linear regression:** 
-$$Price=\beta_1 \cdot Sqft+ \beta_2 \cdot Bedrooms +\beta_3 \cdot Waterfront+\beta_4$$
+    $$Price=\beta_1 \cdot Sqft+ \beta_2 \cdot Bedrooms +\beta_3 \cdot Waterfront+\beta_4$$
 
 ### Synonyms
 
+::: nonincremental
+
 -   **Synonyms for Outcome Variable:**
 
-    ::: nonincremental
     -   Response variable (it responds to the predictors)
     -   Dependent variable (it is dependent on the predictors)
     -   Endogenous variable (it is dependent on the predictors)
-    :::
 
 -   **Synonyms for Predictor Variables:**
 
-    ::: nonincremental
     -   Explanatory variables variables (they explain the outcome)
-    -   Independent variables (they are chosen independently to see how the impact the outcome)
-    -   Exogenous variable (they are chosen independently to see how the impact the outcome)
-    :::
+    -   Independent variables (they are chosen independently to see how they impact the outcome)
+    -   Exogenous variable (exogenous: outside of the model)
+
 :::
 
+:::
 
 ## Prediction
 

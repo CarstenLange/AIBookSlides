@@ -7,7 +7,7 @@
 <link href="LinRegr_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="LinRegr_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="LinRegr_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.189">
+  <meta name="generator" content="quarto-1.0.36">
 
   <title>Key Machine Learning Concepts</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +18,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -414,7 +409,7 @@
 <li class="fragment"><p>Using the <code>tidymodels</code> package to split observations from a dataset randomly into a training and testing dataset.</p></li>
 <li class="fragment"><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
 <li class="fragment"><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
-<li class="fragment"><p>Using <code>tidymodels</code> including model design and data pre-processing (recipes) to analyze housing prices (see Section 6.4).</p></li>
+<li class="fragment"><p>Using <code>tidymodels</code> including model design and data pre-processing (recipes) to analyze housing prices.</p></li>
 </ul>
 </section>
 <section id="univariate-linear-regression---data-table-and-goal" class="slide level2">
@@ -579,7 +574,7 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">y</div></th>
 <th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">x</div></th>
 <th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">y x</div></th>
-<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">$x x</div></th>
+<th style="border-bottom:hidden;padding-bottom:0; padding-left:3px;padding-right:3px;text-align: center; " colspan="1"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">x x</div></th>
 </tr>
   <tr>
    <th style="text-align:right;"> i </th>
@@ -646,8 +641,13 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="footer">
 <p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R">LinRegrScript.R script100</a></p>
 </div>
+</section></section>
+<section>
+<section id="univariate-ols-with-a-real-world-dataset" class="title-slide slide level1 center">
+<h1>Univariate OLS with a Real World Dataset</h1>
+
 </section>
-<section id="univariate-ols-with-a-real-world-dataset" class="slide level2">
+<section id="univariate-ols-with-a-real-world-dataset-1" class="slide level2">
 <h2>Univariate OLS with a Real World Dataset</h2>
 <p><strong>Data</strong></p>
 <div class="cell">
@@ -664,10 +664,10 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <li class="fragment">We will only use 500 randomly chosen observations from the total of 21,613 observations.</li>
 </ul>
 <div class="fragment">
-<p><strong>Unfitted Model:</strong> <span class="math display">\[\widehat{Price}=\beta_1 Sqft + \beta_2\]</span></p>
+<p><strong>Unfitted Model:</strong>» <span class="math display">\[\widehat{Price}=\beta_1 Sqft + \beta_2\]</span></p>
 </div>
 </section>
-<section id="univariate-ols-with-a-real-world-dataset-1" class="slide level2 scrollable">
+<section id="univariate-ols-with-a-real-world-dataset-2" class="slide level2 scrollable">
 <h2>Univariate OLS with a Real World Dataset</h2>
 <p><strong>Splitting in Training and Testing Datasets</strong></p>
 <div class="cell">
@@ -685,16 +685,16 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <pre><code># A tibble: 349 × 2
     Price  Sqft
     &lt;int&gt; &lt;int&gt;
- 1 265000  1400
+ 1 157340   900
  2 242025  1400
- 3 207000  1980
- 4 226500  1560
- 5 295000  1230
- 6 265000  1010
- 7 175000   670
- 8 211000  2100
- 9 270000  1010
-10 260000  2160
+ 3 280000  1700
+ 4 207000  1980
+ 5 226500  1560
+ 6 295000  1230
+ 7 265000  1010
+ 8 260000  2390
+ 9 211000  2100
+10 270000  1010
 # … with 339 more rows</code></pre>
 </div>
 </div>
@@ -702,29 +702,37 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 151 × 2
-     Price  Sqft
-     &lt;int&gt; &lt;int&gt;
- 1  500000  2280
- 2  157340   900
- 3  540000  1380
- 4  280000  1700
- 5  340000  1740
- 6  785000  1670
- 7  314963   890
- 8  260000  2390
- 9  365000  1250
-10 1010000  2940
+    Price  Sqft
+    &lt;int&gt; &lt;int&gt;
+ 1 500000  2280
+ 2 265000  1400
+ 3 560000  1390
+ 4 475226  2120
+ 5 540000  1380
+ 6 340000  1740
+ 7 520000  2310
+ 8 733500  2120
+ 9 580000  2430
+10 175000   670
 # … with 141 more rows</code></pre>
 </div>
 </div>
 </section>
-<section id="univariate-ols-with-a-real-world-dataset-2" class="slide level2">
+<section id="univariate-ols-with-a-real-world-dataset-3" class="slide level2">
 <h2>Univariate OLS with a Real World Dataset</h2>
-<p><strong>Run the Analysis</strong></p>
+<p><strong>Run the Analysis</strong>»</p>
 <p><a href="https://lange-analytics.com/AIBook/Exercises/handler.html?file=05-LinRegrExerc100.Rmd" class="uri">https://lange-analytics.com/AIBook/Exercises/handler.html?file=05-LinRegrExerc100.Rmd</a></p>
+</section></section>
+<section>
+<section id="multivariate-analysis" class="title-slide slide level1 center">
+<h1>Multivariate Analysis</h1>
+
 </section>
-<section id="multivariate-real-world-dataset-splitting" class="slide level2 scrollable">
-<h2>Multivariate Real World Dataset — Splitting</h2>
+<section id="multivariate-analysis-three-predictor-variables" class="slide level2 scrollable">
+<h2>Multivariate Analysis — Three Predictor Variables</h2>
+<p><code>Sqft</code>: Living square footage of the house.</p>
+<p><code>Grade</code> Indicates the condition of houses (1 (worst) to 13 (best).</p>
+<p><code>Waterfront</code>: Is house located at the waterfront (<code>yes</code> or <code>no</code>).</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -732,12 +740,23 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <span id="cb8-2"><a href="#cb8-2"></a>DataHousing <span class="ot">=</span></span>
 <span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/HousingData.csv"</span>)<span class="sc">%&gt;%</span></span>
 <span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span>
-<span id="cb8-6"><a href="#cb8-6"></a></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb8-8"><a href="#cb8-8"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb8-9"><a href="#cb8-9"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb8-10"><a href="#cb8-10"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Unfitted Model:</strong> »</p>
+<p><span class="math display">\[
+Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
+\]</span></p>
+</section>
+<section id="multivariate-real-world-dataset-splitting" class="slide level2 scrollable">
+<h2>Multivariate Real World Dataset — Splitting</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb9-4"><a href="#cb9-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -798,12 +817,13 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 </div>
 <p><em>One-hot</em> encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (<em>perfect multicollinearity)</em>:</p>
 <p><span class="math display">\[Waterfront_{yes}=1-Waterfront_{no}\]</span></p>
+<p>»</p>
 </section>
 <section id="dummy-and-one-hot-encoding-1" class="slide level2 scrollable">
 <h2>Dummy and One-Hot Encoding</h2>
 <p><strong>Dummy Coding</strong></p>
 <p>We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., <code>Waterfront_yes</code>):</p>
-<p><strong>One-Hot Encoding</strong></p>
+<p><strong>Dummy Encoding Example</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 1
@@ -813,6 +833,106 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 2              0
 3              1
 4              0</code></pre>
+</div>
+</div>
+<p><strong>Note,</strong> dummy encoding can be done with <code>step_dummy()</code> in a <em>tidymodels recipe</em>.»</p>
+</section>
+<section id="multivariate-analysis-building-the-recipe" class="slide level2">
+<h2>Multivariate Analysis — Building the Recipe</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2"></a>                    <span class="fu">step_dummy</span>(Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Here is how the recipe later on (in the workflow) transforms the data:</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 15,128 × 4
+    Sqft Grade  Price Waterfront_yes
+   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;          &lt;dbl&gt;
+ 1  1180     7 221900              0
+ 2   770     6 180000              0
+ 3  1200     7 189000              0
+ 4  1250     7 230000              0
+ 5  1070     7 252700              0
+ 6  1220     7 240000              0
+ 7  1190     7 228000              0
+ 8  2240     7 287000              0
+ 9  1000     7 204000              0
+10  1610     7 215000              0
+# … with 15,118 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="multivariate-analysis-building-the-model-design" class="slide level2">
+<h2>Multivariate Analysis — Building the Model Design</h2>
+<p><strong>Unfitted Model:</strong></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>ModelDesignHouses<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="fu">print</span>(ModelDesignHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Linear Regression Model Specification (regression)
+
+Computational engine: lm </code></pre>
+</div>
+</div>
+<p>»</p>
+</section>
+<section id="multivariate-analysis-creating-workflow-fitting-to-the-training-data" class="slide level2">
+<h2>Multivariate Analysis — Creating Workflow &amp; Fitting to the Training Data</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>WFModelHouses <span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span>  </span>
+<span id="cb18-2"><a href="#cb18-2"></a>      <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3"></a>      <span class="fu">add_model</span>(ModelDesignHouses) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="#cb18-4"></a>      <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 5
+  term           estimate std.error statistic   p.value
+  &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)    -570056.  15133.       -37.7 6.63e-297
+2 Sqft               180.      3.25      55.2 0        
+3 Grade            95214.   2548.        37.4 1.65e-292
+4 Waterfront_yes  868338.  22200.        39.1 7.12e-319</code></pre>
+</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">glance</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 12
+  r.squared adj.r.squared   sigma statistic p.value    df   logLik    AIC    BIC
+      &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+1     0.581         0.581 238574.     7002.       0     3 -208785. 4.18e5 4.18e5
+# … with 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="multivariate-analysis-predicting-testing-data-and-metrics" class="slide level2">
+<h2>Multivariate Analysis — Predicting Testing Data and Metrics</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>DataTestWithPredictions <span class="ot">=</span> <span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">metrics</span>(DataTestWithPredictions, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+  .metric .estimator  .estimate
+  &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;
+1 rmse    standard   244656.   
+2 rsq     standard        0.549
+3 mae     standard   163358.   </code></pre>
 </div>
 </div>
 <div class="footer footer-default">
@@ -1142,8 +1262,7 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
