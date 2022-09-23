@@ -34,7 +34,7 @@ DataMockup=import("https://lange-analytics.com/AIBook/Data/DataStudyTimeMockup.r
 
 -   Being able to distinguish between dummy encoding and one-hot encoding
 
--   Using `tidymodels` including model design and data pre-processing (recipes) to analyze housing prices (see Section 6.4).
+-   Using `tidymodels` including model design and data pre-processing (recipes) to analyze housing prices.
 
 ## Univariate Linear Regression - Data Table and Goal
 
@@ -134,8 +134,6 @@ ResultMSE=FctMSE(VecBetaTest, DataMockup)
 print(ResultMSE)
 ```
 
-
-
 Function Definition:»
 
 ```{r}
@@ -183,7 +181,7 @@ DataTable=DataMockup %>%
 
 kbl(DataTable %>% mutate(i=1:5) %>% select(i,everything()), 
     caption="Mockup Training Dataset ")%>%
-  add_header_above(c(" ", "y", "x", "y x","$x x"), escape=F) %>% 
+  add_header_above(c(" ", "y", "x", "y x","x x"), escape=F) %>% 
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
@@ -203,6 +201,8 @@ kbl(DataTable %>% mutate(i=1:5) %>% select(i,everything()),
 See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
 :::
 
+# Univariate OLS with a Real World Dataset
+
 ## Univariate OLS with a Real World Dataset
 
 **Data**
@@ -214,14 +214,13 @@ DataHousing =
   import("https://lange-analytics.com/AIBook/Data/HousingDataSmall.csv")
 ```
 
-- King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
-- Several predictor variables. For now we use only $Sqft$
-- We will only use 500 randomly chosen observations from the total of 21,613 observations.
+-   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+-   Several predictor variables. For now we use only $Sqft$
+-   We will only use 500 randomly chosen observations from the total of 21,613 observations.
 
 . . .
 
-**Unfitted Model:**
-$$\widehat{Price}=\beta_1 Sqft + \beta_2$$
+**Unfitted Model:**» $$\widehat{Price}=\beta_1 Sqft + \beta_2$$
 
 ## Univariate OLS with a Real World Dataset {.scrollable}
 
@@ -236,23 +235,32 @@ DataTest=testing(Split7030)
 ```
 
 **DataTrain**
+
 ```{r}
 print(as_tibble(DataTrain))
 ```
 
 **DataTest**
+
 ```{r}
 print(as_tibble(DataTest))
 ```
 
 ## Univariate OLS with a Real World Dataset
 
-**Run the Analysis**
+**Run the Analysis**»
 
 <https://lange-analytics.com/AIBook/Exercises/handler.html?file=05-LinRegrExerc100.Rmd>
 
+# Multivariate Analysis
 
-## Multivariate Real World Dataset --- Splitting {.scrollable}
+## Multivariate Analysis --- Three Predictor Variables {.scrollable}
+
+`Sqft`: Living square footage of the house.
+
+`Grade` Indicates the condition of houses (1 (worst) to 13 (best).
+
+`Waterfront`: Is house located at the waterfront (`yes` or `no`).
 
 ```{r}
 #| echo: true
@@ -261,7 +269,17 @@ DataHousing =
   import("https://lange-analytics.com/AIBook/Data/HousingData.csv")%>%
   clean_names("upper_camel") %>%
   select(Price, Sqft=SqftLiving, Grade, Waterfront)
+```
 
+**Unfitted Model:** »
+$$
+Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
+$$
+
+## Multivariate Real World Dataset --- Splitting {.scrollable}
+
+```{r}
+#| echo: true
 set.seed(777)
 Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
@@ -273,30 +291,31 @@ DataTrain=as_tibble(DataTrain)
 DataTest=as_tibble(DataTest)
 ```
 
-
-
 **DataTrain**
+
 ```{r}
 print(DataTrain)
 ```
 
 **DataTest**
+
 ```{r}
 print(DataTest)
 ```
 
 ## Dummy and One-Hot Encoding {.scrollable}
 
-
 **One-Hot Encoding**
+
 ```{r}
 OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
 print(OneHotTable)
 ```
- 
+
 *One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
 
-$$Waterfront_{yes}=1-Waterfront_{no}$$
+$$Waterfront_{yes}=1-Waterfront_{no}$$ 
+»
 
 ## Dummy and One-Hot Encoding {.scrollable}
 
@@ -304,8 +323,59 @@ $$Waterfront_{yes}=1-Waterfront_{no}$$
 
 We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
 
-**One-Hot Encoding**
+**Dummy Encoding Example**
+
 ```{r}
 DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
 print(DummyTable)
+```
+
+**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.»
+
+## Multivariate Analysis --- Building the Recipe
+
+```{r}
+#| echo: true
+RecipeHouses=recipe(Price ~ ., data=DataTrain) %>% 
+                    step_dummy(Waterfront)
+```
+
+Here is how the recipe later on (in the workflow) transforms the data:
+
+```{r}
+juice(RecipeHouses %>% prep())
+```
+
+## Multivariate Analysis --- Building the Model Design
+
+**Unfitted Model:**
+
+```{r}
+#| echo: true
+ModelDesignHouses=linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+print(ModelDesignHouses)
+```
+
+»
+
+## Multivariate Analysis --- Creating Workflow & Fitting to the Training Data
+
+```{r}
+#| echo: true
+WFModelHouses = workflow() %>%  
+      add_recipe(RecipeHouses) %>% 
+      add_model(ModelDesignHouses) %>% 
+      fit(DataTrain)
+tidy(WFModelHouses)
+glance(WFModelHouses)
+```
+
+## Multivariate Analysis --- Predicting Testing Data and Metrics
+
+```{r}
+#| echo: true
+DataTestWithPredictions = augment(WFModelHouses, new_data=DataTest)
+metrics(DataTestWithPredictions, truth=Price, estimate=.pred)
 ```

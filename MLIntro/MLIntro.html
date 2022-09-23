@@ -7,7 +7,7 @@
 <link href="MLIntro_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="MLIntro_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="MLIntro_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.113">
+  <meta name="generator" content="quarto-1.0.36">
 
   <title>Intro to Machine Learning</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +18,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: 1;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -580,28 +575,27 @@
 <ul>
 <li class="fragment"><p><strong>Outcome Variable</strong>: The variables that is the outcome of the prediction (<span class="math inline">\(Price\)</span>)</p></li>
 <li class="fragment"><p><strong>Predictor Variables</strong>: The variables that <strong>predict</strong> an outcome (<span class="math inline">\(Sqft\)</span>, <span class="math inline">\(Bedrooms\)</span>, <span class="math inline">\(Waterfront\)</span>)</p></li>
-<li class="fragment"><p><strong>Example linear regression:</strong> <span class="math display">\[Price=\beta_1 \cdot Sqft+ \beta_2 \cdot Bedrooms +\beta_3 \cdot Waterfront+\beta_4\]</span></p></li>
+<li class="fragment"><p><strong>Example linear regression:</strong></p>
+<p><span class="math display">\[Price=\beta_1 \cdot Sqft+ \beta_2 \cdot Bedrooms +\beta_3 \cdot Waterfront+\beta_4\]</span></p></li>
 </ul>
 </div>
 <div id="tabset-1-2">
-<ul>
-<li class="fragment"><p><strong>Synonyms for Outcome Variable:</strong></p>
 <div>
+<ul>
+<li><p><strong>Synonyms for Outcome Variable:</strong></p>
 <ul>
 <li>Response variable (it responds to the predictors)</li>
 <li>Dependent variable (it is dependent on the predictors)</li>
 <li>Endogenous variable (it is dependent on the predictors)</li>
-</ul>
-</div></li>
-<li class="fragment"><p><strong>Synonyms for Predictor Variables:</strong></p>
-<div>
+</ul></li>
+<li><p><strong>Synonyms for Predictor Variables:</strong></p>
 <ul>
 <li>Explanatory variables variables (they explain the outcome)</li>
-<li>Independent variables (they are chosen independently to see how the impact the outcome)</li>
-<li>Exogenous variable (they are chosen independently to see how the impact the outcome)</li>
+<li>Independent variables (they are chosen independently to see how they impact the outcome)</li>
+<li>Exogenous variable (exogenous: outside of the model)</li>
+</ul></li>
 </ul>
-</div></li>
-</ul>
+</div>
 </div>
 </div>
 </div>
@@ -1001,8 +995,7 @@
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);

@@ -8,7 +8,7 @@
             This presentation gives you advice on how to study in this course and informs you about the material available.
         </description>
         <asset name="View online (recommended)" type="web">00Intro/00Intro.html</asset>
-        <asset name="Download PDF (note, only first tab of a slide is printed)">Intro/00Intro.pdf</asset>
+        <asset name="Download PDF (note, only first tab of a slide is printed)">00Intro/00Intro.pdf</asset>
         <asset name="Download Presentation's Source Code">00Intro.zip</asset>
     </version>
     
@@ -55,7 +55,7 @@
             This presentation introduces key machine learning concepts. It uses linear regression instead of more advanced machine learning modelt to keep the model as simple as possible to be able to foccus on the key concepts of machine learning.
         </description>
         <asset name="Still incomplete: View online (recommended)" type="web">LinRegr/LinRegr.html</asset>
-        <asset name="Coming sson: Download PDF ">LinRegr/LinRegr.pdf</asset>
-        <asset name="Coming sson: Download Presentation's Source Code">LinRegr.zip</asset>
+        <asset name="Download PDF ">LinRegr/LinRegr.pdf</asset>
+        <asset name="Download Presentation's Source Code">LinRegr.zip</asset>
     </version> 
 </versions>
