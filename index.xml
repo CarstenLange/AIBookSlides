@@ -58,4 +58,16 @@
         <asset name="Download PDF ">LinRegr/LinRegr.pdf</asset>
         <asset name="Download Presentation's Source Code">LinRegr.zip</asset>
     </version> 
+    
+  <version>
+        <name>Overlearning and (Cross) Validation - Explained withPolynomial Regression</name>
+        <description>
+            This presentation shows how overlearning occurs and why it is a problem. It also 
+            shows how optimal hyper-parameters can be 
+            determined with (cross) validation to avoid overlearning.
+        </description>
+        <asset name="Still incomplete: View online (recommended)" type="web">TrainTest/TrainTest.html</asset>
+        <asset name="Download PDF (coming soon) ">LinRegr/xxx.pdf</asset>
+        <asset name="Download Presentation's Source Code (coming soon)">xxxx.zip</asset>
+    </version> 
 </versions>
