@@ -7,7 +7,7 @@
 <link href="TrainTest_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="TrainTest_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="TrainTest_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.189">
+  <meta name="generator" content="quarto-1.0.36">
 
   <title>Polynomial Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,15 +18,10 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
-    ul.task-list li input[type="checkbox"] {
-      width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
-      vertical-align: middle;
-    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -404,7 +399,7 @@
 <li><p>Hyper-parameter tuning to avoid <em>overlearning</em>.</p>
 <ul>
 <li>Validation</li>
-<li>Cross Validation</li>
+<li>Cross Validation»</li>
 </ul></li>
 </ul>
 </div>
@@ -412,19 +407,19 @@
 <section id="overlearning" class="slide level2">
 <h2>Overlearning</h2>
 <p>If a model performs well when approximating the training data but does not perform well when it faces new data to predict outcomes.</p>
-<p>Overlearning is one of the most pressing and still not fully solved problems in machine learning.</p>
+<p>Overlearning is one of the most pressing and still not fully solved problems in machine learning.»</p>
 </section>
 <section id="circumstances-that-can-lead-to-overlearning" class="slide level2">
 <h2>Circumstances that Can Lead to Overlearning</h2>
 <ul>
 <li class="fragment"><p>If the training dataset does not have a sufficient number of observations.</p></li>
 <li class="fragment"><p>If the model considers many variables and thus contains many parameters to calibrate.</p></li>
-<li class="fragment"><p>If the underlying machine learning model is highly non-linear.</p></li>
+<li class="fragment"><p>If the underlying machine learning model is highly non-linear.»</p></li>
 </ul>
 </section>
 <section id="the-data" class="slide level2 scrollable">
 <h2>The Data</h2>
-<p>We use the Kings County Real Estate dataset.</p>
+<p>In what follows we use the Kings County Real Estate dataset.</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -435,7 +430,7 @@
 <span id="cb1-5"><a href="#cb1-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p>We want to demonstrate <em>overlearning</em> this is the reason. Therefore, we work only with a very small training dataset (20 observations/0.1% of the total observations. All other observations become testing data:</p>
+<p>We want to demonstrate <em>overlearning</em>. Therefore, we ceate conditions that <strong>likely trigger overlearning</strong>. Consequently, we work only with a very small training dataset (20 observations=0.1% of total observations. All other observations become testing data:</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -448,37 +443,71 @@
 </details>
 </div>
 </section>
-<section id="the-data-1" class="slide level2">
-<h2>The Data</h2>
+<section id="data-visualization" class="slide level2">
+<h2>Data Visualization</h2>
 <p>There seems to be a non-liner trend:</p>
 
 <img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<section id="data-structure" class="slide level2">
+<h2>Data Structure</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Price Sqft
+1  221900 1180
+2  538000 2570
+3  180000  770
+4  604000 1960
+5  510000 1680
+6 1230000 5420</code></pre>
+</div>
+</div>
+</section>
 <section id="polynomial-regression" class="slide level2">
 <h2>Polynomial Regression</h2>
-<p>Regular univariate prediction equation: <span class="math display">\[
-\widehat{Price}=\beta_1 Sqft+\beta_2
-\]</span></p>
-<p>Polynomial univariate prediction equation (degree 5): <span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3+\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6\]</span></p>
-<p><span class="math display">\[
-\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3+\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
-\]</span></p>
+<p>Regular univariate prediction equation: $$ =_1 Sqft+_2</p>
+<p>$$ . . .</p>
+<p>Polynomial univariate prediction equation (degree 5):</p>
+<span class="math display">\[\begin{eqnarray*}
+\widehat{Price}&amp;=&amp;\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 \\
+  &amp;&amp; +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+\end{eqnarray*}\]</span>
 </section>
 <section id="polynomial-regression-1" class="slide level2">
 <h2>Polynomial Regression</h2>
-<p>Polynomial univariate prediction equation (degree 5): <span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3+\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6\]</span></p>
-<p>We create <span class="math inline">\(Sqft^2\)</span>, <span class="math inline">\(Sqft^3\)</span>, <span class="math inline">\(Sqft^4\)</span>, and <span class="math inline">\(Sqft^5\)</span> as new variables in the data and treat them as they were separate variables in a multivariate regression.</p>
+<p>Polynomial univariate prediction equation (degree 5):</p>
+<span class="math display">\[\begin{eqnarray*}
+\widehat{Price}&amp;=&amp;\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3\\
+  &amp;&amp; +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+\end{eqnarray*}\]</span>
 <div class="fragment">
-<p>This makes the regression <strong>linear in variables</strong> but <strong>non-linear in data</strong>.»</p>
+<p>We create <span class="math inline">\(Sqft^2\)</span>, <span class="math inline">\(Sqft^3\)</span>, <span class="math inline">\(Sqft^4\)</span>, and <span class="math inline">\(Sqft^5\)</span> as new variables in the data and treat them as they were separate variables in a multivariate regression.</p>
 </div>
 <div class="fragment">
-<p>Consequently we can OLS to find the optimal <span class="math inline">\(\beta s\)</span>.</p>
+<p>This makes the regression <strong>linear in variables</strong> but <strong>non-linear in data</strong>.</p>
+</div>
+<div class="fragment">
+<p>Consequently we can OLS to find the optimal <span class="math inline">\(\beta s\)</span>.»</p>
+</div>
+</section>
+<section id="how-the-data-would-look-like" class="slide level2">
+<h2>HOW THE DATA WOULD LOOK LIKE</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>    Price Sqft    Sqft2        Sqft3        Sqft4        Sqft5
+1  221900 1180  1392400   1643032000 1.938778e+12 2.287758e+15
+2  538000 2570  6604900  16974593000 4.362470e+13 1.121155e+17
+3  180000  770   592900    456533000 3.515304e+11 2.706784e+14
+4  604000 1960  3841600   7529536000 1.475789e+13 2.892547e+16
+5  510000 1680  2822400   4741632000 7.965942e+12 1.338278e+16
+6 1230000 5420 29376400 159220088000 8.629729e+14 4.677313e+18</code></pre>
+</div>
 </div>
 </section>
 <section id="comparing-regular-ols-and-polynominal-regression-degree5" class="slide level2">
 <h2>Comparing Regular OLS and Polynominal Regression (degree=5)</h2>
 <p>Code to compare is linked in the footer of this slide.</p>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/TrainTest.R">RandRStudioScript.R script100</a></p>
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/TrainTest.R">TrainTest.R Script100</a></p>
 </div>
 </section>
 <section id="polynomial-regression-degree5-vs.-regular-ols" class="slide level2">
@@ -492,30 +521,111 @@
 <h2>Polynomial Regression (degree=5) vs.&nbsp;Regular OLS</h2>
 <h3 id="aproximation-of-the-training-data-1">Aproximation of the Training Data</h3>
 
-<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
 <section id="polynomial-regression-degree5-vs.-regular-ols-2" class="slide level2 smaller">
 <h2>Polynomial Regression (degree=5) vs.&nbsp;Regular OLS</h2>
 <h3 id="training-and-testing-data-performance">Training and Testing Data Performance</h3>
 
-<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}\]</span></p>
+<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}\]</span></p>
 </section>
 <section id="polynomial-regression-degree10-vs.-regular-ols" class="slide level2 smaller">
 <h2>Polynomial Regression (degree=10) vs.&nbsp;Regular OLS</h2>
 <h3 id="training-and-testing-data-performance-1">Training and Testing Data Performance</h3>
 
-<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{10} Sqft^{10}+\beta_{11}\]</span></p>
+<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{10} Sqft^{10}+\beta_{11}\]</span></p>
+</section>
+<section id="summary-polynomial-regression" class="slide level2">
+<h2>SUMMARY: POLYNOMIAL REGRESSION</h2>
+<ul>
+<li class="fragment"><p>If we do not have enough data polynomial regression with a high degree might lead to overlearning</p></li>
+<li class="fragment"><p>What is the right degree?</p></li>
+<li class="fragment"><p>We could try different degrees (e.g., 2, 3, 4, … 10) and see which model performs best.</p></li>
+<li class="fragment"><p>Which data are we using to measure performance? Training data (overlearning) and testing data (cannot be used for model optimization) are out.</p></li>
+<li class="fragment"><p>We could split off data from the training dataset (<strong>validation data</strong>). These <em>validation data</em> are not used to calculate the βs. Instead, they are used to find the best setting for the degree of polynomial regression (aka hyper-parameter of polynomial regression).</p></li>
+</ul>
 </section>
 <section id="hyper-parameters" class="slide level2">
 <h2>Hyper-Parameters</h2>
 <ul>
-<li class="fragment"><p>Parameters other than the <span class="math inline">\(\beta\)</span> parameters, because they can not be optimized by the <em>optimizer</em>.</p></li>
-<li class="fragment"><p>Hyper-Parameters are like settings for a machine learning model such as the number of polynomials (e.g.&nbsp;<span class="math inline">\(Sft^N\)</span> to be considered for polynomial regrssion or the number for <span class="math inline">\(k\)</span> k Nearest Neighbors.</p></li>
-<li class="fragment"><p>Hyper parameters often make a model more or leess complex and thus influence the uality of th training but also the chance of overlearning.</p></li>
+<li class="fragment"><p>Hyper-Parameters are parameters other than the <span class="math inline">\(\beta\)</span> parameters, because they can not be optimized by the optimizer.</p></li>
+<li class="fragment"><p>Hyper-Parameters are like settings for a machine learning model such as the number of polynomials (e.g., <span class="math inline">\(Sqft^N\)</span>) to be considered for polynomial regression. Another example are the number of <span class="math inline">\(k\)</span> Nearest Neighbors.</p></li>
+<li class="fragment"><p>Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overlearning.»</p></li>
 </ul>
+</section>
+<section id="problems-of-splitting-validation-data-off-the-training-data" class="slide level2">
+<h2>PROBLEMS OF SPLITTING VALIDATION DATA OFF THE TRAINING DATA</h2>
+<div>
+<ul>
+<li><p>Reduces data left over to train (finding optimal βs).</p></li>
+<li><p>If the training dataset is big enough this is no problem. Otherwise, it is a problem!</p></li>
+</ul>
+</div>
+</section>
+<section id="cross-validation-4-fold" class="slide level2">
+<h2>CROSS VALIDATION (4-FOLD)</h2>
+<p>For each hyper-parameter setting:</p>
+<ol type="1">
+<li class="fragment"><p>Splits off validation data from training data (e.g.&nbsp;last quarter)</p></li>
+<li class="fragment"><p>Runs the model and calculates metrics based on validation data.</p></li>
+<li class="fragment"><p>Splits off validation data from training data (next quarter)</p></li>
+<li class="fragment"><p>Repeats steps 2 – 3 four times.</p></li>
+</ol>
+<div class="fragment">
+<p>We end up with four results for each hyper-parameter setting. We calculate the average of the four results as an result for that specific hyper parameter.</p>
+</div>
+</section>
+<section>
+<section id="cross-validation-for-polynomial-regression-and-the-king-county-realestate-dataset" class="title-slide slide level1 center">
+<h1>CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY REALESTATE DATASET</h1>
+
+</section>
+<section id="more-realistic-datasplit-80-training-20-testing" class="slide level2">
+<h2>MORE REALISTIC DATASPLIT: 80% TRAINING, 20% TESTING</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>Split80<span class="ot">=</span>DataHousing <span class="sc">%&gt;%</span> </span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
+<span id="cb5-5"><a href="#cb5-5"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split80)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split80) </span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="fu">print</span>(Split80)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;Analysis/Assess/Total&gt;
+&lt;17289/4324/21613&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="crossvalidation-the-idea-behind-it" class="slide level2">
+<h2>Crossvalidation — The Idea Behind It</h2>
+
+<img data-src="Images/4Folds.png" class="r-stretch"></section>
+<section id="steps-to-create-a-model-tune-it-and-predict" class="slide level2 smaller">
+<h2>10 Steps to Create a Model, Tune it, and Predict</h2>
+<p>The <strong>10 general steps</strong> are:</p>
+<ol type="1">
+<li class="fragment"><p>Generating <strong>training and testing data</strong> with <code>initial_split()</code>, <code>training()</code>, <code>testing()</code>.</p></li>
+<li class="fragment"><p>Create <strong>recipe</strong> to determine predictor and outcome variables. Optionally add one or more <code>step_X()</code> commands.</p></li>
+<li class="fragment"><p>Create <strong>model design</strong> and mark parameters to be <code>tune()</code> ed.&nbsp;without <code>fit()</code></p></li>
+<li class="fragment"><p>Create <strong>workflow</strong> by <code>add_recipe()</code> and <code>add_model()</code></p></li>
+<li class="fragment"><p>Create a <strong>hyper-parameter grid</strong> containing the hyper-parameter combinations to be validated.</p></li>
+<li class="fragment"><p>Create <strong>cross validation datasets</strong> (aka <em>resamples</em>) containing the folds (use commands <code>vfold()</code>).</p></li>
+<li class="fragment"><p><strong>Tune</strong> the machine learning model with <code>tune_grid()</code> and track specific metrics defined by <code>metric_set()</code>. <strong>Runs all hyper-parameter combinations for all folds.</strong></p></li>
+<li class="fragment"><p><strong>Extract the best hyper-parameter combination</strong> from the tuning results based on selected metrics (use <code>select_best()</code>)</p></li>
+<li class="fragment"><p><strong>Finalize the model</strong> by training it with the full set of training data with the best hyper-parameter combination (see <code>finalize_workflow() %&gt;% fit()</code>).</p></li>
+<li class="fragment"><p><strong>Assessing predictive quality</strong> of the final model by using the testing dataset to predict (see <code>augment() %&gt;% metrics()</code>).</p></li>
+</ol>
+</section>
+<section id="run-all-10-steps-to-tune-the-real-estate-model" class="slide level2">
+<h2>Run all 10 Steps to Tune the Real Estate Model</h2>
+<p>Code to run all 10 steps is linked in the footer of this slide.</p>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/TrainTest.R">TrainTest.R Script200</a></p>
+</div>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
@@ -839,8 +949,7 @@
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          // use id or data attribute instead here
-          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          let href = ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
