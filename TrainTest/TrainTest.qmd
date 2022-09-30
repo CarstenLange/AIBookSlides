@@ -128,7 +128,7 @@ head(DataHousing %>% mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
 Code to compare is linked in the footer of this slide.
 
 ::: footer
-See: [TrainTest.R Script100](https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R)
+See: [TrainTestScript.R Script100](https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R)
 :::
 
 ## Polynomial Regression (degree=5) vs. Regular OLS
@@ -322,5 +322,5 @@ The **10 general steps** are:
 Code to run all 10 steps is linked in the footer of this slide.
 
 ::: footer
-See: [TrainTest.R Script200](https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R)
+See: [TrainTestScript.R Script200](https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R)
 :::
