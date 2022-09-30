@@ -80,9 +80,12 @@ head(DataHousing)
 
 ## Polynomial Regression
 
-Regular univariate prediction equation: $$
+Regular univariate prediction equation: 
+$$
 \widehat{Price}=\beta_1 Sqft+\beta_2
-$$ . . .
+$$ 
+
+. . .
 
 Polynomial univariate prediction equation (degree 5):
 
