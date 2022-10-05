@@ -54,7 +54,7 @@
         <description>
             This presentation introduces key machine learning concepts. It uses linear regression instead of more advanced machine learning modelt to keep the model as simple as possible to be able to foccus on the key concepts of machine learning.
         </description>
-        <asset name="Still incomplete: View online (recommended)" type="web">LinRegr/LinRegr.html</asset>
+        <asset name="View online (recommended)" type="web">LinRegr/LinRegr.html</asset>
         <asset name="Download PDF ">LinRegr/LinRegr.pdf</asset>
         <asset name="Download Presentation's Source Code">LinRegr.zip</asset>
     </version> 
@@ -66,8 +66,8 @@
             shows how optimal hyper-parameters can be 
             determined with (cross) validation to avoid overlearning.
         </description>
-        <asset name="Still incomplete: View online (recommended)" type="web">TrainTest/TrainTest.html</asset>
-        <asset name="Download PDF (coming soon) ">LinRegr/xxx.pdf</asset>
-        <asset name="Download Presentation's Source Code (coming soon)">xxxx.zip</asset>
+        <asset name="View online (recommended)" type="web">TrainTest/TrainTest.html</asset>
+        <asset name="Download PDF (coming soon) ">TrainTest/TrainTest.pdf</asset>
+        <asset name="Download Presentation's Source Code (coming soon)">TrainTest.zip</asset>
     </version> 
 </versions>

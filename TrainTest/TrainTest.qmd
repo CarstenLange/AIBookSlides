@@ -324,3 +324,21 @@ Code to run all 10 steps is linked in the footer of this slide.
 ::: footer
 See: [TrainTestScript.R Script200](https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R)
 :::
+
+## Exercise from AIBook 🤓
+
+**Use k-Nearest Neighbors to estimate the color of a wine**
+
+Click the link in the footer of this slide to start the exercise.
+
+::: footer
+See: [Exercise from AI Book](https://lange-analytics.com/AIBook/Exercises/handler.html?file=06-TrainTestExerc100.Rmd)
+:::
+
+## Research Project  🤓
+
+Click the link in the footer of this slide to download a skeleton of the R script for the research project.
+
+::: footer
+See: [Research Project](https://lange-analytics.com/AIBook/Scripts/KNearNeighIndepExerc.R)
+:::
