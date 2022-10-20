@@ -290,7 +290,7 @@ We use data (7,043 customers) of the  fictional telecommunication  company *TELC
 #| echo: true
 DataChurn=import("https://lange-analytics.com/AIBook/Data/TelcoChurnData.csv") %>%
   clean_names("upper_camel") %>%
-  select(Churn,Gender,SeniorCitizen,Tenure,MonthlyCharges,TotalCharges) %>%
+  select(Churn,Gender,SeniorCitizen,Tenure,MonthlyCharges) %>%
   mutate(Churn=factor(Churn, levels=c("Yes","No"))) 
 head(DataChurn)
 ```
