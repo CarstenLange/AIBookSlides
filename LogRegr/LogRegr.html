@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="LogRegr_files/libs/clipboard/clipboard.min.js"></script>
+<script src="LogRegr_files/libs/quarto-html/tabby.min.js"></script>
+<script src="LogRegr_files/libs/quarto-html/popper.min.js"></script>
+<script src="LogRegr_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="LogRegr_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="LogRegr_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="LogRegr_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.1.189">
+
+  <title>Logistic Regression</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="LogRegr_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="LogRegr_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; background-color: #2a0f15; font-weight: bold; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="LogRegr_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="LogRegr_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="LogRegr_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="LogRegr_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="LogRegr_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="LogRegr_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="LogRegr_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+
+  .callout {
+    margin-top: 1em;
+    margin-bottom: 1em;  
+    border-radius: .25rem;
+  }
+
+  .callout.callout-style-simple { 
+    padding: 0em 0.5em;
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+    display: flex;
+  }
+
+  .callout.callout-style-default {
+    border-left: solid #acacac .3rem;
+    border-right: solid 1px silver;
+    border-top: solid 1px silver;
+    border-bottom: solid 1px silver;
+  }
+
+  .callout .callout-body-container {
+    flex-grow: 1;
+  }
+
+  .callout.callout-style-simple .callout-body {
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-style-default .callout-body {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+
+  .callout.callout-captioned.callout-style-simple .callout-body {
+    margin-top: 0.2em;
+  }
+
+  .callout:not(.callout-captioned) .callout-body {
+      display: flex;
+  }
+
+  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+    padding-left: 1.6em;
+  }
+
+  .callout.callout-captioned .callout-header {
+    padding-top: 0.2em;
+    margin-bottom: -0.2em;
+  }
+
+  .callout.callout-captioned .callout-caption  p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+    
+  .callout.callout-captioned.callout-style-simple .callout-content  p {
+    margin-top: 0;
+  }
+
+  .callout.callout-captioned.callout-style-default .callout-content  p {
+    margin-top: 0.7em;
+  }
+
+  .callout.callout-style-simple div.callout-caption {
+    border-bottom: none;
+    font-size: .9rem;
+    font-weight: 600;
+    opacity: 75%;
+  }
+
+  .callout.callout-style-default  div.callout-caption {
+    border-bottom: none;
+    font-weight: 600;
+    opacity: 85%;
+    font-size: 0.9rem;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-default div.callout-content {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+  }
+
+  .callout.callout-style-simple .callout-icon::before {
+    height: 1rem;
+    width: 1rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 1rem 1rem;
+  }
+
+  .callout.callout-style-default .callout-icon::before {
+    height: 0.9rem;
+    width: 0.9rem;
+    display: inline-block;
+    content: "";
+    background-repeat: no-repeat;
+    background-size: 0.9rem 0.9rem;
+  }
+
+  .callout-caption {
+    display: flex
+  }
+    
+  .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  .callout.no-icon::before {
+    display: none !important;
+  }
+
+  .callout.callout-captioned .callout-body > .callout-content > :last-child {
+    margin-bottom: 0.5rem;
+  }
+
+  .callout.callout-captioned .callout-icon::before {
+    margin-top: .5rem;
+    padding-right: .5rem;
+  }
+
+  .callout:not(.callout-captioned) .callout-icon::before {
+    margin-top: 1rem;
+    padding-right: .5rem;
+  }
+
+  /* Callout Types */
+
+  div.callout-note {
+    border-left-color: #4582ec !important;
+  }
+
+  div.callout-note .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
+  }
+
+  div.callout-note.callout-style-default .callout-caption {
+    background-color: #dae6fb
+  }
+
+  div.callout-important {
+    border-left-color: #d9534f !important;
+  }
+
+  div.callout-important .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-important.callout-style-default .callout-caption {
+    background-color: #f7dddc
+  }
+
+  div.callout-warning {
+    border-left-color: #f0ad4e !important;
+  }
+
+  div.callout-warning .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-warning.callout-style-default .callout-caption {
+    background-color: #fcefdc
+  }
+
+  div.callout-tip {
+    border-left-color: #02b875 !important;
+  }
+
+  div.callout-tip .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
+  }
+
+  div.callout-tip.callout-style-default .callout-caption {
+    background-color: #ccf1e3
+  }
+
+  div.callout-caution {
+    border-left-color: #fd7e14 !important;
+  }
+
+  div.callout-caution .callout-icon::before {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
+  }
+
+  div.callout-caution.callout-style-default .callout-caption {
+    background-color: #ffe5d0
+  }
+
+  </style>
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  
+  <script src="LogRegr_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="LogRegr_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <script src="LogRegr_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+  <script src="LogRegr_files/libs/plotly-binding-4.10.0/plotly.js"></script>
+  <script src="LogRegr_files/libs/typedarray-0.1/typedarray.min.js"></script>
+  <script src="LogRegr_files/libs/jquery-3.5.1/jquery.min.js"></script>
+  <link href="LogRegr_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+  <script src="LogRegr_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+  <link href="LogRegr_files/libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet">
+  <script src="LogRegr_files/libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="center">
+  <h1 class="title">Logistic Regression</h1>
+  <p class="subtitle">A Powerful Tool for Classification</p>
+</section>
+
+<section id="basics-of-logistic-regression" class="slide level2">
+<h2>Basics of Logistic Regression</h2>
+<p>Classification Algorithm:</p>
+<ul>
+<li class="fragment"><strong>One outcome variable</strong> (analysed in what follows)</li>
+<li class="fragment">Multiple outcome variables
+<ul>
+<li class="fragment">ordered logistic regression (not covered here)</li>
+<li class="fragment">unordered logistic regression (not covered here) »</li>
+</ul></li>
+</ul>
+</section>
+<section id="a-mock-up-example-to-introduce-the-idea" class="slide level2 smaller">
+<h2>A Mock-Up Example to Introduce the Idea</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels); <span class="fu">library</span>(kableExtra); <span class="fu">library</span>(janitor); <span class="fu">library</span>(rio)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>DataYachts<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/DataYachts.csv"</span>)<span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">mutate</span>(<span class="at">YachtNum=</span>Yacht, <span class="at">Yacht=</span><span class="fu">as.factor</span>(Yacht)) </span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">kbl</span>(DataYachts <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>YachtNum), <span class="at">caption=</span><span class="st">"Income and Yacht Ownership"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-5"><a href="#cb1-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options=</span><span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>), <span class="at">position=</span><span class="st">"center"</span>, <span class="at">full_width =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Income and Yacht Ownership</caption>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Name </th>
+   <th style="text-align:right;"> Income </th>
+   <th style="text-align:left;"> Yacht </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Jack </td>
+   <td style="text-align:right;"> 45 </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Sarah </td>
+   <td style="text-align:right;"> 50 </td>
+   <td style="text-align:left;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Carl </td>
+   <td style="text-align:right;"> 55 </td>
+   <td style="text-align:left;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Eric </td>
+   <td style="text-align:right;"> 60 </td>
+   <td style="text-align:left;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Zoe </td>
+   <td style="text-align:right;"> 67 </td>
+   <td style="text-align:left;"> 0 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> James </td>
+   <td style="text-align:right;"> 250 </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Enrico </td>
+   <td style="text-align:right;"> 280 </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Erica </td>
+   <td style="text-align:right;"> 320 </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Stephanie </td>
+   <td style="text-align:right;"> 370 </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> Susan </td>
+   <td style="text-align:right;"> 500 </td>
+   <td style="text-align:left;"> 1 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</section>
+<section id="using-ols-is-a-tempting-but-bad-idea" class="slide level2">
+<h2>Using OLS is a Tempting (but bad) Idea</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">ggplotly</span>(<span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Income,<span class="at">y=</span>YachtNum),<span class="at">data=</span>DataYachts)<span class="sc">+</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">2.7</span>, <span class="at">color=</span><span class="st">"magenta"</span>)<span class="sc">+</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">500</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">50</span>))<span class="sc">+</span> </span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">1.25</span>,<span class="fl">0.25</span>))<span class="sc">+</span> </span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability of Yacht Ownership"</span>, <span class="at">x=</span><span class="st">"Income in $1,000"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-e5e7adf2380a690194ae" style="width:960px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e5e7adf2380a690194ae">{"x":{"data":[{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,0,255,1)","opacity":1,"size":10.2047244094488,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(255,0,255,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.6118721461187,"r":7.30593607305936,"b":44.5662100456621,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"3e002701653f":{"x":{},"y":{},"type":"scatter"}},"cur_data":"3e002701653f","visdat":{"3e002701653f":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="using-ols-is-a-tempting-but-bad-idea-1" class="slide level2">
+<h2>Using OLS is a Tempting (but bad) Idea</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">ggplotly</span>(<span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Income,<span class="at">y=</span>YachtNum),<span class="at">data=</span>DataYachts)<span class="sc">+</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">2.7</span>, <span class="at">color=</span><span class="fu">ifelse</span>(DataYachts<span class="sc">$</span>Income<span class="sc">==</span><span class="dv">45</span>,<span class="st">"red"</span>,<span class="st">"cyan"</span>))<span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">size=</span><span class="fl">1.7</span>)<span class="sc">+</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">500</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">50</span>))<span class="sc">+</span> </span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">1.25</span>,<span class="fl">0.25</span>))<span class="sc">+</span> </span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability of Yacht Ownership"</span>, <span class="at">x=</span><span class="st">"Income in $1,000"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="htmlwidget-8b9db3389b274186d16e" style="width:960px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8b9db3389b274186d16e">{"x":{"data":[{"x":[-77.5,527.5],"y":[0.5,0.5],"text":"yintercept: 0.5","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"],"opacity":1,"size":10.2047244094488,"symbol":"circle","line":{"width":1.88976377952756,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"]}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50.7594936708861,56.5189873417722,62.2784810126582,68.0379746835443,73.7974683544304,79.5569620253165,85.3164556962025,91.0759493670886,96.8354430379747,102.594936708861,108.354430379747,114.113924050633,119.873417721519,125.632911392405,131.392405063291,137.151898734177,142.911392405063,148.670886075949,154.430379746835,160.189873417722,165.949367088608,171.708860759494,177.46835443038,183.227848101266,188.987341772152,194.746835443038,200.506329113924,206.26582278481,212.025316455696,217.784810126582,223.544303797468,229.303797468354,235.063291139241,240.822784810127,246.582278481013,252.341772151899,258.101265822785,263.860759493671,269.620253164557,275.379746835443,281.139240506329,286.898734177215,292.658227848101,298.417721518987,304.177215189873,309.936708860759,315.696202531646,321.455696202532,327.215189873418,332.974683544304,338.73417721519,344.493670886076,350.253164556962,356.012658227848,361.772151898734,367.53164556962,373.291139240506,379.050632911392,384.810126582278,390.569620253165,396.329113924051,402.088607594937,407.848101265823,413.607594936709,419.367088607595,425.126582278481,430.886075949367,436.645569620253,442.405063291139,448.164556962025,453.924050632911,459.683544303797,465.443037974684,471.20253164557,476.962025316456,482.721518987342,488.481012658228,494.240506329114,500],"y":[0.245058960540905,0.258273444511831,0.271487928482758,0.284702412453685,0.297916896424612,0.311131380395539,0.324345864366466,0.337560348337393,0.35077483230832,0.363989316279246,0.377203800250173,0.3904182842211,0.403632768192027,0.416847252162954,0.430061736133881,0.443276220104807,0.456490704075734,0.469705188046661,0.482919672017588,0.496134155988515,0.509348639959442,0.522563123930369,0.535777607901295,0.548992091872222,0.562206575843149,0.575421059814076,0.588635543785003,0.60185002775593,0.615064511726857,0.628278995697784,0.64149347966871,0.654707963639637,0.667922447610564,0.681136931581491,0.694351415552418,0.707565899523345,0.720780383494272,0.733994867465198,0.747209351436125,0.760423835407052,0.773638319377979,0.786852803348906,0.800067287319833,0.81328177129076,0.826496255261686,0.839710739232613,0.85292522320354,0.866139707174467,0.879354191145394,0.892568675116321,0.905783159087248,0.918997643058174,0.932212127029101,0.945426611000028,0.958641094970955,0.971855578941882,0.985070062912809,0.998284546883736,1.01149903085466,1.02471351482559,1.03792799879652,1.05114248276744,1.06435696673837,1.0775714507093,1.09078593468022,1.10400041865115,1.11721490262208,1.130429386593,1.14364387056393,1.15685835453486,1.17007283850579,1.18328732247671,1.19650180644764,1.20971629041857,1.22293077438949,1.23614525836042,1.24935974233135,1.26257422630227,1.2757887102732,1.28900319424413],"text":["Income:  45.00000<br />YachtNum: 0.2450590","Income:  50.75949<br />YachtNum: 0.2582734","Income:  56.51899<br />YachtNum: 0.2714879","Income:  62.27848<br />YachtNum: 0.2847024","Income:  68.03797<br />YachtNum: 0.2979169","Income:  73.79747<br />YachtNum: 0.3111314","Income:  79.55696<br />YachtNum: 0.3243459","Income:  85.31646<br />YachtNum: 0.3375603","Income:  91.07595<br />YachtNum: 0.3507748","Income:  96.83544<br />YachtNum: 0.3639893","Income: 102.59494<br />YachtNum: 0.3772038","Income: 108.35443<br />YachtNum: 0.3904183","Income: 114.11392<br />YachtNum: 0.4036328","Income: 119.87342<br />YachtNum: 0.4168473","Income: 125.63291<br />YachtNum: 0.4300617","Income: 131.39241<br />YachtNum: 0.4432762","Income: 137.15190<br />YachtNum: 0.4564907","Income: 142.91139<br />YachtNum: 0.4697052","Income: 148.67089<br />YachtNum: 0.4829197","Income: 154.43038<br />YachtNum: 0.4961342","Income: 160.18987<br />YachtNum: 0.5093486","Income: 165.94937<br />YachtNum: 0.5225631","Income: 171.70886<br />YachtNum: 0.5357776","Income: 177.46835<br />YachtNum: 0.5489921","Income: 183.22785<br />YachtNum: 0.5622066","Income: 188.98734<br />YachtNum: 0.5754211","Income: 194.74684<br />YachtNum: 0.5886355","Income: 200.50633<br />YachtNum: 0.6018500","Income: 206.26582<br />YachtNum: 0.6150645","Income: 212.02532<br />YachtNum: 0.6282790","Income: 217.78481<br />YachtNum: 0.6414935","Income: 223.54430<br />YachtNum: 0.6547080","Income: 229.30380<br />YachtNum: 0.6679224","Income: 235.06329<br />YachtNum: 0.6811369","Income: 240.82278<br />YachtNum: 0.6943514","Income: 246.58228<br />YachtNum: 0.7075659","Income: 252.34177<br />YachtNum: 0.7207804","Income: 258.10127<br />YachtNum: 0.7339949","Income: 263.86076<br />YachtNum: 0.7472094","Income: 269.62025<br />YachtNum: 0.7604238","Income: 275.37975<br />YachtNum: 0.7736383","Income: 281.13924<br />YachtNum: 0.7868528","Income: 286.89873<br />YachtNum: 0.8000673","Income: 292.65823<br />YachtNum: 0.8132818","Income: 298.41772<br />YachtNum: 0.8264963","Income: 304.17722<br />YachtNum: 0.8397107","Income: 309.93671<br />YachtNum: 0.8529252","Income: 315.69620<br />YachtNum: 0.8661397","Income: 321.45570<br />YachtNum: 0.8793542","Income: 327.21519<br />YachtNum: 0.8925687","Income: 332.97468<br />YachtNum: 0.9057832","Income: 338.73418<br />YachtNum: 0.9189976","Income: 344.49367<br />YachtNum: 0.9322121","Income: 350.25316<br />YachtNum: 0.9454266","Income: 356.01266<br />YachtNum: 0.9586411","Income: 361.77215<br />YachtNum: 0.9718556","Income: 367.53165<br />YachtNum: 0.9850701","Income: 373.29114<br />YachtNum: 0.9982845","Income: 379.05063<br />YachtNum: 1.0114990","Income: 384.81013<br />YachtNum: 1.0247135","Income: 390.56962<br />YachtNum: 1.0379280","Income: 396.32911<br />YachtNum: 1.0511425","Income: 402.08861<br />YachtNum: 1.0643570","Income: 407.84810<br />YachtNum: 1.0775715","Income: 413.60759<br />YachtNum: 1.0907859","Income: 419.36709<br />YachtNum: 1.1040004","Income: 425.12658<br />YachtNum: 1.1172149","Income: 430.88608<br />YachtNum: 1.1304294","Income: 436.64557<br />YachtNum: 1.1436439","Income: 442.40506<br />YachtNum: 1.1568584","Income: 448.16456<br />YachtNum: 1.1700728","Income: 453.92405<br />YachtNum: 1.1832873","Income: 459.68354<br />YachtNum: 1.1965018","Income: 465.44304<br />YachtNum: 1.2097163","Income: 471.20253<br />YachtNum: 1.2229308","Income: 476.96203<br />YachtNum: 1.2361453","Income: 482.72152<br />YachtNum: 1.2493597","Income: 488.48101<br />YachtNum: 1.2625742","Income: 494.24051<br />YachtNum: 1.2757887","Income: 500.00000<br />YachtNum: 1.2890032"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":6.4251968503937,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.6118721461187,"r":7.30593607305936,"b":44.5662100456621,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0644501597122063,1.35345335395633],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00","1.25"],"tickvals":[0,0.25,0.5,0.75,1,1.25],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00","1.25"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"3e006374183d":{"yintercept":{},"type":"scatter"},"3e002265d5d":{"x":{},"y":{}},"3e007c8e4ab3":{"x":{},"y":{}}},"cur_data":"3e006374183d","visdat":{"3e006374183d":["function (y) ","x"],"3e002265d5d":["function (y) ","x"],"3e007c8e4ab3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="quick-way-to-find-a-decision-boundary" class="slide level2 smaller">
+<h2>Quick Way to Find a Decision Boundary</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="LogRegr_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<ol type="1">
+<li class="fragment"><p>Find the intersection point between the prediction line and the horizontal 0.5 probability line.</p></li>
+<li class="fragment"><p>Draw a vertical line through the intersection point. This line is called a <strong>decision boundary</strong>.</p></li>
+<li class="fragment"><p>All incomes left of the <em>decision boundary</em> (income smaller than 158) are predicted as “no”. All incomes right of the <em>decision boundary</em> (income greater than 158) are predicted as “yes”.»</p></li>
+</ol>
+</div>
+</div>
+</section>
+<section id="why-ols-for-classification-is-a-bad-idea" class="slide level2 smaller">
+<h2>Why OLS for Classification is a Bad Idea</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div id="htmlwidget-77ce007c940bf078d741" style="width:960px;height:480px;" class="plotly html-widget"></div>
+<script type="application/json" data-for="htmlwidget-77ce007c940bf078d741">{"x":{"data":[{"x":[-77.5,527.5],"y":[0.5,0.5],"text":"yintercept: 0.5","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[158,158],"y":[-0.0644501597122063,1.35345335395633],"text":"xintercept: 158","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"],"opacity":1,"size":10.2047244094488,"symbol":"circle","line":{"width":1.88976377952756,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"]}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50.7594936708861,56.5189873417722,62.2784810126582,68.0379746835443,73.7974683544304,79.5569620253165,85.3164556962025,91.0759493670886,96.8354430379747,102.594936708861,108.354430379747,114.113924050633,119.873417721519,125.632911392405,131.392405063291,137.151898734177,142.911392405063,148.670886075949,154.430379746835,160.189873417722,165.949367088608,171.708860759494,177.46835443038,183.227848101266,188.987341772152,194.746835443038,200.506329113924,206.26582278481,212.025316455696,217.784810126582,223.544303797468,229.303797468354,235.063291139241,240.822784810127,246.582278481013,252.341772151899,258.101265822785,263.860759493671,269.620253164557,275.379746835443,281.139240506329,286.898734177215,292.658227848101,298.417721518987,304.177215189873,309.936708860759,315.696202531646,321.455696202532,327.215189873418,332.974683544304,338.73417721519,344.493670886076,350.253164556962,356.012658227848,361.772151898734,367.53164556962,373.291139240506,379.050632911392,384.810126582278,390.569620253165,396.329113924051,402.088607594937,407.848101265823,413.607594936709,419.367088607595,425.126582278481,430.886075949367,436.645569620253,442.405063291139,448.164556962025,453.924050632911,459.683544303797,465.443037974684,471.20253164557,476.962025316456,482.721518987342,488.481012658228,494.240506329114,500],"y":[0.245058960540905,0.258273444511831,0.271487928482758,0.284702412453685,0.297916896424612,0.311131380395539,0.324345864366466,0.337560348337393,0.35077483230832,0.363989316279246,0.377203800250173,0.3904182842211,0.403632768192027,0.416847252162954,0.430061736133881,0.443276220104807,0.456490704075734,0.469705188046661,0.482919672017588,0.496134155988515,0.509348639959442,0.522563123930369,0.535777607901295,0.548992091872222,0.562206575843149,0.575421059814076,0.588635543785003,0.60185002775593,0.615064511726857,0.628278995697784,0.64149347966871,0.654707963639637,0.667922447610564,0.681136931581491,0.694351415552418,0.707565899523345,0.720780383494272,0.733994867465198,0.747209351436125,0.760423835407052,0.773638319377979,0.786852803348906,0.800067287319833,0.81328177129076,0.826496255261686,0.839710739232613,0.85292522320354,0.866139707174467,0.879354191145394,0.892568675116321,0.905783159087248,0.918997643058174,0.932212127029101,0.945426611000028,0.958641094970955,0.971855578941882,0.985070062912809,0.998284546883736,1.01149903085466,1.02471351482559,1.03792799879652,1.05114248276744,1.06435696673837,1.0775714507093,1.09078593468022,1.10400041865115,1.11721490262208,1.130429386593,1.14364387056393,1.15685835453486,1.17007283850579,1.18328732247671,1.19650180644764,1.20971629041857,1.22293077438949,1.23614525836042,1.24935974233135,1.26257422630227,1.2757887102732,1.28900319424413],"text":["Income:  45.00000<br />YachtNum: 0.2450590","Income:  50.75949<br />YachtNum: 0.2582734","Income:  56.51899<br />YachtNum: 0.2714879","Income:  62.27848<br />YachtNum: 0.2847024","Income:  68.03797<br />YachtNum: 0.2979169","Income:  73.79747<br />YachtNum: 0.3111314","Income:  79.55696<br />YachtNum: 0.3243459","Income:  85.31646<br />YachtNum: 0.3375603","Income:  91.07595<br />YachtNum: 0.3507748","Income:  96.83544<br />YachtNum: 0.3639893","Income: 102.59494<br />YachtNum: 0.3772038","Income: 108.35443<br />YachtNum: 0.3904183","Income: 114.11392<br />YachtNum: 0.4036328","Income: 119.87342<br />YachtNum: 0.4168473","Income: 125.63291<br />YachtNum: 0.4300617","Income: 131.39241<br />YachtNum: 0.4432762","Income: 137.15190<br />YachtNum: 0.4564907","Income: 142.91139<br />YachtNum: 0.4697052","Income: 148.67089<br />YachtNum: 0.4829197","Income: 154.43038<br />YachtNum: 0.4961342","Income: 160.18987<br />YachtNum: 0.5093486","Income: 165.94937<br />YachtNum: 0.5225631","Income: 171.70886<br />YachtNum: 0.5357776","Income: 177.46835<br />YachtNum: 0.5489921","Income: 183.22785<br />YachtNum: 0.5622066","Income: 188.98734<br />YachtNum: 0.5754211","Income: 194.74684<br />YachtNum: 0.5886355","Income: 200.50633<br />YachtNum: 0.6018500","Income: 206.26582<br />YachtNum: 0.6150645","Income: 212.02532<br />YachtNum: 0.6282790","Income: 217.78481<br />YachtNum: 0.6414935","Income: 223.54430<br />YachtNum: 0.6547080","Income: 229.30380<br />YachtNum: 0.6679224","Income: 235.06329<br />YachtNum: 0.6811369","Income: 240.82278<br />YachtNum: 0.6943514","Income: 246.58228<br />YachtNum: 0.7075659","Income: 252.34177<br />YachtNum: 0.7207804","Income: 258.10127<br />YachtNum: 0.7339949","Income: 263.86076<br />YachtNum: 0.7472094","Income: 269.62025<br />YachtNum: 0.7604238","Income: 275.37975<br />YachtNum: 0.7736383","Income: 281.13924<br />YachtNum: 0.7868528","Income: 286.89873<br />YachtNum: 0.8000673","Income: 292.65823<br />YachtNum: 0.8132818","Income: 298.41772<br />YachtNum: 0.8264963","Income: 304.17722<br />YachtNum: 0.8397107","Income: 309.93671<br />YachtNum: 0.8529252","Income: 315.69620<br />YachtNum: 0.8661397","Income: 321.45570<br />YachtNum: 0.8793542","Income: 327.21519<br />YachtNum: 0.8925687","Income: 332.97468<br />YachtNum: 0.9057832","Income: 338.73418<br />YachtNum: 0.9189976","Income: 344.49367<br />YachtNum: 0.9322121","Income: 350.25316<br />YachtNum: 0.9454266","Income: 356.01266<br />YachtNum: 0.9586411","Income: 361.77215<br />YachtNum: 0.9718556","Income: 367.53165<br />YachtNum: 0.9850701","Income: 373.29114<br />YachtNum: 0.9982845","Income: 379.05063<br />YachtNum: 1.0114990","Income: 384.81013<br />YachtNum: 1.0247135","Income: 390.56962<br />YachtNum: 1.0379280","Income: 396.32911<br />YachtNum: 1.0511425","Income: 402.08861<br />YachtNum: 1.0643570","Income: 407.84810<br />YachtNum: 1.0775715","Income: 413.60759<br />YachtNum: 1.0907859","Income: 419.36709<br />YachtNum: 1.1040004","Income: 425.12658<br />YachtNum: 1.1172149","Income: 430.88608<br />YachtNum: 1.1304294","Income: 436.64557<br />YachtNum: 1.1436439","Income: 442.40506<br />YachtNum: 1.1568584","Income: 448.16456<br />YachtNum: 1.1700728","Income: 453.92405<br />YachtNum: 1.1832873","Income: 459.68354<br />YachtNum: 1.1965018","Income: 465.44304<br />YachtNum: 1.2097163","Income: 471.20253<br />YachtNum: 1.2229308","Income: 476.96203<br />YachtNum: 1.2361453","Income: 482.72152<br />YachtNum: 1.2493597","Income: 488.48101<br />YachtNum: 1.2625742","Income: 494.24051<br />YachtNum: 1.2757887","Income: 500.00000<br />YachtNum: 1.2890032"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":6.4251968503937,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.6118721461187,"r":7.30593607305936,"b":44.5662100456621,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0644501597122063,1.35345335395633],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00","1.25"],"tickvals":[0,0.25,0.5,0.75,1,1.25],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00","1.25"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"3e00ffa6b37":{"yintercept":{},"type":"scatter"},"3e004b195fab":{"xintercept":{}},"3e0047bb7bfc":{"x":{},"y":{}},"3e0014d36175":{"x":{},"y":{}}},"cur_data":"3e00ffa6b37","visdat":{"3e00ffa6b37":["function (y) ","x"],"3e004b195fab":["function (y) ","x"],"3e0047bb7bfc":["function (y) ","x"],"3e0014d36175":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>Note, incomes &gt; $370,000 are predicted with a probability &gt; 100% to be yacht owners(?)<br> E.g. probability of owning a yacht for an income of $500,000 is 125% (?)</p>
+<p>A similar problem can occur with negative probabilities!</p>
+</section>
+<section id="a-step-function-as-an-alternative-to-ols" class="slide level2">
+<h2>A Step-Function as an Alternative to OLS</h2>
+
+<img data-src="LogRegr_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="popular-step-functions-sigmoid-function" class="slide level2">
+<h2>Popular Step-Functions (Sigmoid Function)</h2>
+<ul>
+<li class="fragment"><p>The <strong>Hyperbolic Tangent function</strong>.</p></li>
+<li class="fragment"><p>The <strong>Arc Tangent function</strong>.</p></li>
+<li class="fragment"><p>The <strong>Logistic function</strong> (confusingly sometimes also called the <em>sigmoid function</em>).</p></li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[
+y_i=\frac{1}{1+e^{-x_i}}
+\]</span> »</p>
+</div>
+</section>
+<section id="the-logistic-function" class="slide level2">
+<h2>The Logistic Function</h2>
+<div>
+<ul>
+<li>The <strong>Logistic function</strong> (confusingly sometimes also called the <em>sigmoid function</em>):</li>
+</ul>
+</div>
+<p><span class="math display">\[
+y_i=\frac{1}{1+e^{-x_i}}
+\]</span></p>
+<div class="fragment">
+<p>We use: <span class="math inline">\(y_i=P^{rob}_{yes,i}\)</span> and <span class="math inline">\(x_i=\beta_1 Inc_i+\beta_2\)</span> which gives us:</p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[
+P^{rob}_{yes,i}=\frac{1}{1+e^{-(\beta_1 Inc_i+\beta_2)}}
+\]</span> <strong><span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> change slope and position <br> <span class="math inline">\(\beta_1=1\)</span> and <span class="math inline">\(\beta_2=0\)</span> gives the org. logistic function.</strong> 🤓</p>
+<div class="footer">
+<p>See: <a href="https://econ.lange-analytics.com/calcat/logisticregr">Try it yourself</a></p>
+</div>
+</div>
+</section>
+<section id="what-makes-the-logistic-function-so-special" class="slide level2 scrollable">
+<h2>What Makes the Logistic Function so Special?</h2>
+<h3 id="compared-to-other-sigmoid-step-functions">— compared to other sigmoid (step) functions —</h3>
+<p><strong>Time for some mathematical magic:</strong></p>
+<p>Logistic function <span class="math inline">\(P^{rob}_{yes,i}\)</span> := probability for positive event (e.g.&nbsp;yacht ownership: yes):</p>
+<p><span class="math display">\[P^{rob}_{yes,i}=\frac{1}{1+e^{-(\beta_1\cdot x_i+\beta_2)}} \]</span></p>
+<div class="fragment">
+<p>Take the inverse on both sides of the equation:</p>
+<p><span class="math display">\[\frac{1}{P^{rob}_{yes,i}}=1+e^{-(\beta_1\cdot x_i+\beta_2)}\]</span></p>
+</div>
+<div class="fragment">
+<p>Subtract 1 on both sides:</p>
+<p><span class="math display">\[\frac{1}{P^{rob}_{yes,i}}-1=e^{-(\beta_1\cdot x_i+\beta_2)}\]</span></p>
+</div>
+<div class="fragment">
+<p>Consider that <span class="math inline">\(-1=-\frac{P^{rob}_{yes,i}}{P^{rob}_{yes,i}}\)</span> and substitute <span class="math inline">\(-1\)</span> accordingly, we get after simplification:</p>
+<p><span class="math display">\[\frac{1-P^{rob}_{yes,i}}{P^{rob}_{yes,i}}=e^{-(\beta_1\cdot x_i+\beta_2)}\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\(1-P^{rob}_{yes,i}\)</span> equals by definition <span class="math inline">\(P^{rob}_{no,i}\)</span>:</p>
+<p><span class="math display">\[\frac{P^{rob}_{no,i}}{P^{rob}_{yes,i}}=e^{-(\beta_1\cdot x_i+\beta_2)}\]</span></p>
+</div>
+<div class="fragment">
+<p>Take again the inverse on both sides:</p>
+<p><span class="math display">\[\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}=e^{\beta_1\cdot x_i+\beta_2}\]</span></p>
+</div>
+<div class="fragment">
+<p>Take the logarithm on both sides:</p>
+<p><span class="math display">\[\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=\beta_1\cdot x_i+\beta_2\]</span></p>
+</div>
+</section>
+<section id="one-more-step-odds-vs-probabilties" class="slide level2">
+<h2>One More Step — Odds vs Probabilties</h2>
+<ul>
+<li class="fragment"><p>The fraction of the yes/no probabilities can be interpreted as <span class="math inline">\(Odds\)</span> as they are often used in betting.</p></li>
+<li class="fragment"><p>Example: The probability of getting two heads when flipping two coins is is <span class="math inline">\(P^{rob}_{yes,i}=0.25\)</span>.</p></li>
+<li class="fragment"><p>Consequently, the probability of <strong>not</strong> getting two heads when flipping two coins is <span class="math inline">\(P^{rob}_{no,i}=0.75\)</span>.</p></li>
+<li class="fragment"><p><span class="math inline">\(Odds\)</span> for 2 Heads compared to <strong>not</strong> 2 heads is 1 to 3 or 33%:</p></li>
+</ul>
+<div class="fragment">
+<p><span class="math display">\[O^{dds}=\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}=\frac{0.25}{0.75}=\frac{1}{3}=0.33\]</span></p>
+</div>
+</section>
+<section id="interpretation-of-the-beta-s-yacht-ownership" class="slide level2">
+<h2>Interpretation of the <span class="math inline">\(\beta s\)</span>: Yacht Ownership</h2>
+<p><span class="math display">\[\ln(O^{dds})=\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=0.02\cdot Inc_i+(-2.7)\]</span></p>
+<p>Model results after running and printing the workflow():</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># The workflow WFYachts had been created before and</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># DataTest were fitted to the workflow.</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">print</span>(WFYachts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════
+Preprocessor: Recipe
+Model: logistic_reg()
+
+── Preprocessor ────────────────────────────────────────────────────────────────
+0 Recipe Steps
+
+── Model ───────────────────────────────────────────────────────────────────────
+
+Call:  stats::glm(formula = ..y ~ ., family = stats::binomial, data = data)
+
+Coefficients:
+(Intercept)       Income  
+   -2.68660      0.02448  
+
+Degrees of Freedom: 9 Total (i.e. Null);  8 Residual
+Null Deviance:      13.46 
+Residual Deviance: 5.654    AIC: 9.654</code></pre>
+</div>
+</div>
+</section>
+<section id="interpretation-of-the-beta-s-yacht-ownership-1" class="slide level2">
+<h2>Interpretation of the <span class="math inline">\(\beta s\)</span>: Yacht Ownership</h2>
+<p><span class="math display">\[\ln(O^{dds})=\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=0.02\cdot Inc_i+(-2.7)\]</span></p>
+<ul>
+<li class="fragment"><p>If income increases by 1 ($1,000) the logarithm of the odds increases by 0.02.</p></li>
+<li class="fragment"><p>Since change of a logarithm is a relative change (<strong>percentage</strong>):</p></li>
+</ul>
+<div class="fragment">
+<p>If income increases by 1 ($1,000) the odds increases by 2% (0.02). (careful with the results because data were made up and N is too small!)</p>
+</div>
+</section>
+<section id="confusion-matrix" class="slide level2">
+<h2>Confusion Matrix</h2>
+<p>Note, in the mockup we did not create training and testing data. Therefore, we use DataYachts (the data we used to fit/train the workflow) here. This is not a proper methodology but good enough for the mock-up:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>DataYachtsWithPred<span class="ot">=</span><span class="fu">augment</span>(WFYachts, <span class="at">new_data=</span>DataYachts)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">conf_mat</span>(DataYachtsWithPred, <span class="at">truth=</span>Yacht, <span class="at">estimate=</span>.pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Truth
+Prediction 0 1
+         0 4 1
+         1 0 5</code></pre>
+</div>
+</div>
+</section>
+<section id="real-world-churn-analysis-with-logistic-regression-the-data" class="slide level2">
+<h2>Real World Churn Analysis with Logistic Regression — the Data</h2>
+<p>We use data (7,043 customers) of the fictional telecommunication company <em>TELCO</em>, generated by <em>IBM</em> for training purposes:</p>
+<ul>
+<li class="fragment">The outcome variable <span class="math inline">\(Churn\)</span> indicates, if a customer departed within the last month (<span class="math inline">\(Churn=Yes\)</span>) or not (<span class="math inline">\(Churn=No\)</span>).</li>
+<li class="fragment">Predictor variables contain:
+<ul>
+<li class="fragment">Customers’ <span class="math inline">\(Gender\)</span> (<span class="math inline">\(Female\)</span> or <span class="math inline">\(Male\)</span>),</li>
+<li class="fragment">Customers’ <span class="math inline">\(SeniorCitizen\)</span> status (<span class="math inline">\(0\)</span> for no or <span class="math inline">\(1\)</span> for yes),</li>
+<li class="fragment">Customers’ <span class="math inline">\(Tenure\)</span> with <em>TELCO</em> (month of membership),</li>
+<li class="fragment">Customers’ <span class="math inline">\(MonthlyCharges\)</span> (in US-$), as well as</li>
+<li class="fragment">Customers’ <span class="math inline">\(TotalCharges\)</span> (in US-$).</li>
+</ul></li>
+</ul>
+</section>
+<section id="real-world-churn-analysis-with-logistic-regression-the-data-1" class="slide level2">
+<h2>Real World Churn Analysis with Logistic Regression — the Data</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>DataChurn<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/TelcoChurnData.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">select</span>(Churn,Gender,SeniorCitizen,Tenure,MonthlyCharges,TotalCharges) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">mutate</span>(<span class="at">Churn=</span><span class="fu">factor</span>(Churn, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Yes"</span>,<span class="st">"No"</span>))) </span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">head</span>(DataChurn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Churn Gender SeniorCitizen Tenure MonthlyCharges TotalCharges
+1    No Female             0      1          29.85        29.85
+2    No   Male             0     34          56.95      1889.50
+3   Yes   Male             0      2          53.85       108.15
+4    No   Male             0     45          42.30      1840.75
+5   Yes Female             0      2          70.70       151.65
+6   Yes Female             0      8          99.65       820.50</code></pre>
+</div>
+</div>
+</section>
+<section id="real-world-churn-analysis-with-logistic-regression" class="slide level2">
+<h2>Real World Churn Analysis with Logistic Regression</h2>
+<h3 id="do-it-yourself">— Do it yourself —</h3>
+<p>Create the Churn analysis with logistic regression. Click on the link in the footer to get an R-script with a skeleton for the analysis.🤓</p>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LogRegrChurnScript.R">LogRegrChurnScript.R</a></p>
+</div>
+</section>
+<section id="results-from-churn-analysis-with-logistic-regression" class="slide level2 smaller">
+<h2>Results from Churn Analysis with Logistic Regression</h2>
+<div class="cell">
+
+</div>
+<p>Confusion Matrix:</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;">   </th>
+   <th style="text-align:right;"> Yes </th>
+   <th style="text-align:right;"> No </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 235 </td>
+   <td style="text-align:right;"> 147 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:right;"> 326 </td>
+   <td style="text-align:right;"> 1401 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Accuracy:</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> .metric </th>
+   <th style="text-align:left;"> .estimator </th>
+   <th style="text-align:right;"> .estimate </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> accuracy </td>
+   <td style="text-align:left;"> binary </td>
+   <td style="text-align:right;"> 0.7757231 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Sensitivity:</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> .metric </th>
+   <th style="text-align:left;"> .estimator </th>
+   <th style="text-align:right;"> .estimate </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> sensitivity </td>
+   <td style="text-align:left;"> binary </td>
+   <td style="text-align:right;"> 0.4188948 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Specificity:</p>
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> .metric </th>
+   <th style="text-align:left;"> .estimator </th>
+   <th style="text-align:right;"> .estimate </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> specificity </td>
+   <td style="text-align:left;"> binary </td>
+   <td style="text-align:right;"> 0.9050388 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p><strong>Hint:</strong> What do the column sums of the confusion matrix tell you?</p>
+</section>
+<section id="problem-unballanced-training-data" class="slide level2">
+<h2>Problem: Unballanced Training Data</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Churn </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 1308 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:right;"> 3621 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p><strong>Majority Class:</strong> <span class="math inline">\(Churn=No\)</span> has 3621 observations in the training dataset.</p>
+<p><strong>Minority class</strong> <span class="math inline">\(Churn=Yes\)</span> has 1308 observations in the training dataset.</p>
+</section>
+<section id="what-can-we-do" class="slide level2">
+<h2>What can we do?</h2>
+<div class="cell">
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Churn </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 1308 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:right;"> 3621 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<ul>
+<li class="fragment"><p><strong>Downsampling:</strong> Randomly <strong>delete observations from majority class</strong> until ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).</p></li>
+<li class="fragment"><p><strong>Upsampling:</strong> In simplest version, <strong>creates new observations for the minority class</strong> by copying randomly chosen observations from the minority class until the ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).</p></li>
+<li class="fragment"><p>Often, a combination of <em>downsampling</em> and <em>upsampling</em> is performed.</p></li>
+</ul>
+</section>
+<section id="performing-down-sampling-with-step_upsample" class="slide level2">
+<h2>Performing Down-Sampling with <code>step_upsample()</code></h2>
+<p>You need to add the R package <code>themis</code>. Then in your script, you can add <code>step_downsample(Churn)</code> to the recipe (don’t forget to execute the following command lines again). As a reminder our original DataTrain had 4,929 observations, <span class="math inline">\(Churn_{Yes}=1308\)</span>, <span class="math inline">\(Churn_{No}=3621\)</span>:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">step_downsample</span>(Churn)</span>
+<span id="cb10-6"><a href="#cb10-6"></a></span>
+<span id="cb10-7"><a href="#cb10-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Churn </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 1308 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:right;"> 1308 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Note, the number of observations has decreased by 2313. This is an information loss!</p>
+</section>
+<section id="performing-up-sampling-with-step_upsample" class="slide level2">
+<h2>Performing Up-Sampling with <code>step_upsample()</code></h2>
+<p>You need to add the R package <code>themis</code>. Then in your script, you can add <code>step_upsample(Churn)</code> to the recipe (don’t forget to execute the following command lines again). As a reminder our original DataTrain had 4,929 observations, <span class="math inline">\(Churn_{Yes}=1308\)</span>, <span class="math inline">\(Churn_{No}=3621\)</span>:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">step_upsample</span>(Churn)</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Churn </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 3621 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:right;"> 3621 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Note, the number of observations has increased by 2313. The information in the dataset has not increased!</p>
+</section>
+<section id="performing-up-sampling-with-step_smote.-what-is-the-advantage" class="slide level2">
+<h2>Performing Up-Sampling with <code>step_smote()</code>. What is the advantage</h2>
+<p>As a reminder our original DataTrain had 4,929 observations, <span class="math inline">\(Churn_{Yes}=1308\)</span>, <span class="math inline">\(Churn_{No}=3621\)</span>:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">step_upsample</span>(Churn)</span>
+<span id="cb12-6"><a href="#cb12-6"></a></span>
+<span id="cb12-7"><a href="#cb12-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+
+<table>
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Churn </th>
+   <th style="text-align:right;"> n </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> Yes </td>
+   <td style="text-align:right;"> 3621 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> No </td>
+   <td style="text-align:right;"> 3621 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<p>Instead of copying a record from the training dataset, <code>step_smote()</code> finds the Nearest Neighbor to that record and creates a new record that has features generated as a weighted average between the Nearest Neighbor and the original record.</p>
+<div class="footer footer-default">
+<p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
+</div>
+</section>
+    </div>
+  </div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="LogRegr_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="LogRegr_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="LogRegr_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'smaller': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          // dispatch for htmlwidgets
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for reveal
+        if (window.Reveal) {
+          window.Reveal.addEventListener("slidechanged", function(event) {
+            fireSlideChanged(event.previousSlide, event.currentSlide);
+          });
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
+    <script id="quarto-html-after-body" type="application/javascript">
+    window.document.addEventListener("DOMContentLoaded", function (event) {
+      const toggleBodyColorMode = (bsSheetEl) => {
+        const mode = bsSheetEl.getAttribute("data-mode");
+        const bodyEl = window.document.querySelector("body");
+        if (mode === "dark") {
+          bodyEl.classList.add("quarto-dark");
+          bodyEl.classList.remove("quarto-light");
+        } else {
+          bodyEl.classList.add("quarto-light");
+          bodyEl.classList.remove("quarto-dark");
+        }
+      }
+      const toggleBodyColorPrimary = () => {
+        const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+        if (bsSheetEl) {
+          toggleBodyColorMode(bsSheetEl);
+        }
+      }
+      toggleBodyColorPrimary();  
+      const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+      tabsets.forEach(function(tabset) {
+        const tabby = new Tabby('#' + tabset.id);
+      });
+      const clipboard = new window.ClipboardJS('.code-copy-button', {
+        target: function(trigger) {
+          return trigger.previousElementSibling;
+        }
+      });
+      clipboard.on('success', function(e) {
+        // button target
+        const button = e.trigger;
+        // don't keep focus
+        button.blur();
+        // flash "checked"
+        button.classList.add('code-copy-button-checked');
+        var currentTitle = button.getAttribute("title");
+        button.setAttribute("title", "Copied!");
+        setTimeout(function() {
+          button.setAttribute("title", currentTitle);
+          button.classList.remove('code-copy-button-checked');
+        }, 1000);
+        // clear code selection
+        e.clearSelection();
+      });
+      function tippyHover(el, contentFn) {
+        const config = {
+          allowHTML: true,
+          content: contentFn,
+          maxWidth: 500,
+          delay: 100,
+          arrow: false,
+          appendTo: function(el) {
+              return el.closest('section.slide') || el.parentElement;
+          },
+          interactive: true,
+          interactiveBorder: 10,
+          theme: 'quarto-reveal',
+          placement: 'bottom-start'
+        };
+          config['offset'] = [0,0];
+          config['maxWidth'] = 700;
+        window.tippy(el, config); 
+      }
+      const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+      for (var i=0; i<noterefs.length; i++) {
+        const ref = noterefs[i];
+        tippyHover(ref, function() {
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+          try { href = new URL(href).hash; } catch {}
+          const id = href.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          return note.innerHTML;
+        });
+      }
+      var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+      for (var i=0; i<bibliorefs.length; i++) {
+        const ref = bibliorefs[i];
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    });
+    </script>
+    
+
+</body></html>
