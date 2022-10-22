@@ -11,10 +11,10 @@ format:
 
 Classification Algorithm:
 
-- **One outcome variable** (analysed in what follows)
-- Multiple outcome variables
-  - ordered logistic regression (not covered here) 
-  - unordered logistic regression (not covered here) »
+- **Two categories for the outcome variable (analysed in what follows):**  e.g. Unemployed true or false <br><br>
+- Multiple categories for the outcome variable (not covered here)
+  - unordered logistic regression 
+  - ordered logistic regression »
 
 ## A Mock-Up Example to Introduce the Idea {.smaller}
 
@@ -280,9 +280,8 @@ We use data (7,043 customers) of the  fictional telecommunication  company *TELC
 - Predictor variables contain:  
   - Customers' $Gender$ ($Female$ or $Male$), 
   - Customers' $SeniorCitizen$ status ($0$ for no or $1$ for yes), 
-  - Customers' $Tenure$ with *TELCO* (month of membership), 
-  - Customers' $MonthlyCharges$ (in US-\$), as well as
-  - Customers' $TotalCharges$ (in US-\$). 
+  - Customers' $Tenure$ with *TELCO* (month of membership), as well as 
+  - Customers' $MonthlyCharges$ (in US-\$). 
 
 ## Real World Churn Analysis with Logistic Regression --- the Data
 
@@ -381,7 +380,7 @@ kbl(count(DataTrain, Churn))
 
 - Often, a combination of *downsampling* and *upsampling* is performed.
 
-## Performing Down-Sampling with `step_upsample()`
+## Performing Down-Sampling with `step_downsample()`
 
 You need to add the R package `themis`. Then in your script, you can add `step_downsample(Churn)` to the recipe (don't forget to execute the following command lines again). As a reminder our original DataTrain had 4,929 observations, $Churn_{Yes}=1308$, $Churn_{No}=3621$:
 
