@@ -1,0 +1,326 @@
+---
+title: "Neural Networks"
+format: 
+  revealjs:
+    code-fold: true
+---
+
+## Early Days
+
+In the early days of artificial neural networks, data scientists tried to mimic the human brain through computer models.
+
+![](Images/HumanBrain.png){fig-align="center" width="500"}
+
+## Types of Neural Networks
+
+-   **Multi-Layer Perceptrons (MLP)** neural networks (covered here)
+-   Convolutional Neural Networks (CNN)
+-   Recurrent Neural Networks (e.g. Long Short Term Memory recurrent networks)
+-   Generative Adversarial Networks
+-   AutoEncoders
+-   Transformers»
+
+## Multi-Layer Perceptrons (MLP) Neural Network
+
+-   **Input Layer:** with one or more input neurons.
+-   **Hidden Layer(s)** one or more hiden layers with one or more hidden neurons.
+-   **Output Layer:** with one or more output neurons.
+-   **Fully connected:** each neuron in each of the layers is connected to all neurons of the following layer.
+
+## Example for an MLP Neural Network with One Hidden Layer
+
+![](Images/NeuralNetGraphGeneral.png)
+
+## The Data
+
+We will estimate diamond prices based on their physical properties and use the well-known `diamonds` dataset automatically loaded together with `tidymodels`:
+
+```{r}
+#| echo: true
+library(tidymodels); library(janitor)
+str(diamonds)
+```
+
+::: footer
+See: [Source: `diamonds` dataset:](https://ggplot2.tidyverse.org/reference/diamonds.html)
+:::
+
+## Domain Knowledge: The Four C s to Appraise a Diamond
+
+1.  **Cut:** Refers to the facets, symmetry, and reflective qualities of a diamond. The cut of a diamond is directly related to its overall sparkle and beauty.
+
+2.  **Color:** Refers to the natural color or lack of color visible within a diamond. The closer a diamond is to "colorless," the higher its value.
+
+3.  **Clarity:** Is the visibility of natural microscopic inclusions and imperfections within a diamond. Diamonds with little to no inclusions are considered particularly rare and highly valued.
+
+4.  **Carat:** Is the unit of measurement used to describe the weight of a diamond. It is often the most visually apparent factor when comparing diamonds.
+
+::: footer
+See: [Source: Brilliant Earth](https://www.brilliantearth.com/diamond/buying-guide/?gclid=CjwKCAjw79iaBhAJEiwAPYwoCCtVM1dC2gPVa-iqaLjcBzcuLiRvBOuKj_qa3eMoKoyMxX-W4MXQPRoCGp0QAvD_BwE)
+:::
+
+## Data Engeneering
+
+We start with a very basic model with 2 predictors for $Price$:
+
+::: nonincremental
+-   $Carat$ (the weight of the diamond in metric grams),
+
+-   $Clarity$ (eight categories with $8$ being the best).
+:::
+
+To later increase training speed, we use only 10,000 observations.
+
+```{r}
+#| echo: true
+set.seed(777)
+DataDiamonds=diamonds %>% 
+               clean_names("upper_camel") %>%
+               select(Price, Carat, Clarity) %>%
+               mutate(Clarity=as.integer(Clarity)) %>% 
+               sample_n(10000) 
+set.seed(777)
+Split70=DataDiamonds %>%
+  initial_split(prop = 0.7, strata = Price, breaks = 5)
+DataTrain=training(Split70)
+DataTest=testing(Split70)
+print(DataTrain)
+```
+
+## Use a Trained Neural Nework ($\beta s$ are known) to Predict
+
+### Effectiv Inputs to Hidden Neurons
+
+![](Images/NeuralNetGraphGeneral.png)
+
+![](Images/InpEff1.png){.fragment .absolute left="470" top="278"} ![](Images/InpEff2.png){.fragment .absolute left="470" top="550"}
+
+## Use a Trained Neural Nework ($\beta s$ are known) to Predict
+
+### Calculate Activity in Hidden Neurons with Logistic Function
+
+![](Images/NeuralNetGraphGeneral.png)
+
+![](Images/Act1.png){.fragment .absolute left="490" top="210"} ![](Images/Act2.png){.fragment .absolute left="490" top="575"}
+
+## Use a Trained Neural Nework ($\beta s$ are known) to Predict
+
+### Calculate Prediction from Activities in Hidden Neurons
+
+![](Images/NeuralNetGraphGeneral.png)
+
+![](Images/Prediction.png){.fragment .absolute left="735" top="497"}
+
+## Prediction of the Neural Network
+
+$$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$ A neural network can be transformed into a prediction equation that depends only on the $\beta s$ and the values of the predictor variables!
+
+We will show this in more detail on the following slides.»
+
+## Transformation From Neural Network to Prediction Equation
+
+$$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
+
+-   $A^{ct}_1$ and $A^{ct}_2$ depend on $I^{np\ eff}_1$ and $I^{np\ eff}_2$ (and the $\beta s$)
+
+-   $I^{np\ eff}_1$ and $I^{np\ eff}_2$ depend on the values of predictor variables $Carat$ and $Clarity$ (and the $\beta s$)
+
+-   Consequently, prediction depends only on the values of predictor variables and the $\beta s$!
+
+## Transformation From Neural Network to Prediction Equation
+
+To show the transformation, we move backwards from right to left through the neural network.
+
+$$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
+
+## Transformation From Neural Network to Prediction Equation
+
+### Inside the Hidden Neurons
+
+![](Images/NeuralNetGraphGeneral.png)
+
+![](Images/Act1.png){.fragment .absolute left="490" top="210"} ![](Images/Act2.png){.fragment .absolute left="490" top="575"}
+
+## Transformation From Neural Network to Prediction Equation
+
+### Inside the Hidden Neurons
+
+$$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
+
+. . . 
+
+<br> 
+
+$$
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_1}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_8+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_2}}
+}^{\mbox{$A^{ct}_2$}}\cdot\beta_9$$
+
+## Transformation From Neural Network to Prediction Equation {.smaller}
+
+### Between the Input and the Hidden Layer
+
+![](Images/NeuralNetGraphGeneral.png)
+
+![](Images/InpEff1.png){.fragment .absolute left="470" top="278"} ![](Images/InpEff2.png){.fragment .absolute left="470" top="550"}
+
+## Transformation From Neural Network to Prediction Equation {.smaller}
+
+### Between the Input and the Hidden Layer
+
+$$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
+
+$$
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_1}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_8+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_2}}
+}^{\mbox{$A^{ct}_1$}}\cdot\beta_9
+$$
+
+. . .
+
+$$
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_8
++
+\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+$$
+
+## If we know the $\beta s$ We Can Generate Predictions! 
+
+\begin{eqnarray*}
+\widehat{P_i}&=&\beta_7\\
+&+&\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_8
+\\
+&+&\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+\end{eqnarray*}
+
+-   initial $\beta s$ are chosen at random.
+
+-   optimal $\beta s$ are found with the *optimizer*.
+
+# Predicting the First Observation of the Training Data
+
+**Predictor Variables' Values:** $Carat=0.3$ and $Clarity=3$
+
+
+
+## Predicting the First Observation of the Training Data
+
+**Effective Inputs:** $Carat=0.3$ and $Clarity=3$
+
+![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
+
+## Predicting the First Observation of the Training Data
+
+**Effective Input 1:** $Carat=0.3$ and $Clarity=3$
+
+$$\beta_1 = 0.1, \beta_2=-0.9 ,\beta_3 =0.5$$ 
+<br>
+
+$$I_1^{np\ eff}=\beta_1+ \beta_2 Carat + \beta_3 Clarity$$
+
+. . .
+
+$$I_1^{np\ eff}=\underbrace{1 \cdot 0.1}_{1 \cdot \beta_1=0.1}+\underbrace{0.3\cdot(-0.9)}_{Carat\cdot \beta_2=-0.27}+\underbrace{3\cdot 0.5}_{Clarity \cdot\beta_2=First5}=1.33$$
+
+## Predicting the First Observation of the Training Data
+
+**Effective Input 2:** $Carat=0.3$ and $Clarity=3$
+
+![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
+
+## Predicting the First Observation of the Training Data
+
+**Effective Input 2:** $Carat=0.3$ and $Clarity=3$
+
+$$\beta_4 = -0.1,\beta_5 = 0.8,\beta_6 =0.6$$
+<br>
+
+$$I_2^{np\ eff}=\beta_4+ \beta_5 Carat + \beta_6 Clarity$$
+
+. . .
+
+$$I_2^{np\ eff}=\underbrace{1 \cdot (-0.1)}_{1 \cdot \beta_4=-0.1}+\underbrace{0.3\cdot0.8}_{Carat\cdot \beta_5=0.24}+\underbrace{3\cdot 0.6}_{Clarity \cdot\beta_6=1.8}=1.94$$
+
+## Predicting the First Observation of the Training Data
+
+**Hidden Neurons' Activity:** $I_1^{np\ eff}=1.33$ $I_2^{np\ eff}=1.94$
+
+![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
+
+## Predicting the First Observation of the Training Data
+
+**Hidden Neurons' Activity:** $I_1^{np\ eff}=1.33$ and $I_2^{np\ eff}=1.94$
+
+$$A^{ct}_1=\frac{1}{1+e^{-I_1^{np\ eff}}}$$
+
+. . .
+
+$$A^{ct}_1=
+\frac{1}{1+e^{-1.33}}=0.79$$
+
+. . .
+
+$$A^{ct}_2=\frac{1}{1+e^{-I_2^{np\ eff}}}$$
+
+. . .
+
+$$A^{ct}_2=\frac{1}{1+e^{-1.94}}=0.87$$
+
+## Predicting the First Observation of the Training Data
+
+**Prediction:** <br>
+$\beta_7=0.1$,  $\beta_8=0.8$,  $\beta_9=0.9$, $A^{ct}_1=0.79$ and $A^{ct}_2=0.87$
+
+![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
+
+## Predicting the First Observation of the Training Data
+
+**Prediction:** <br>
+$\beta_7=0.1$,  $\beta_8=0.8$,  $\beta_9=0.9$, $A^{ct}_1=0.79$ and $A^{ct}_2=0.87$
+
+$$
+\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2
+$$
+
+. . .
+
+$$
+\widehat P = 0.1+0.8\cdot 0.79  +0.9 \cdot 0.87 = 1.51
+$$ 
+
+The predicted price for a 0.3 g diamond with a clarity level of three is \$1.51.
+<br>
+<br>
+**$1.51 for a diamond???**
+
+
+## Summary
+
+- We can make prediction with the neural network if we know the values for the $\beta s$.  We do know the $\beta s$ because
+  - they are randomly chosen at the beginning, or
+  - they are adjusted by the Optimizer.
+
+- when $\beta's$ are randomly chosen the predictions are useually bad, but they can be improved by the *Optimizer*.
+
+. . .
+
+This raises the question:
+<br><br>
+**How does the *Optimizer* gradually change the $\beta s$ to improve the prediction quality of the neural network?**
