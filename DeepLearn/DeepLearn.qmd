@@ -356,13 +356,29 @@ $$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
   - Increase/Decrease the $\beta`s$ proportional to the change of $MSE$ they triggered when changed individually --- multiply by learning rate (e.g., 0.01) to keep change small.
 - run process for several hundreds or thousands epochs.
 
+## Example: Approximation Properties of Neural Networks
+
+Let us run an example to see how well a Neural Network can approximate.
+
+The link to the example is in the footer of this slide.
+
+::: footer
+See: [Neural Network Appoximation R Script](https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript1.R)
+:::
+
+
+
 ## Approximation Properties of Neural Networks
 
 "Feedforward networks are capable of arbitrarily accurate approximation to any real-valued continuous function over a compact set."
 
 I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well
 
-[Kur Hornik, Maxwell Stinchcombe and Halber White (1989), p. 361](https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf)
+[Kurt Hornik, Maxwell Stinchcombe and Halber White (1989), p. 361](https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf)
+
+
+
+
 
 ## Intuition: Approximation Properties of Neural Networks
 
@@ -388,4 +404,4 @@ The app linked in the footer of this slide provides intuition for the Hornik, St
 See: [Neural Network Appoximation App](https://econ.lange-analytics.com/calcat/horstiwhi)
 :::
 
-## Example: Approximation Properties of Neural Networks
+
