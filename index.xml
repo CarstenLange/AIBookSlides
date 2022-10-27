@@ -73,12 +73,22 @@
   <version>
         <name>Logistic Regression with Unbalanced Data</name>
         <description>
-            This presentation shows how overlearning occurs and why it is a problem. It also 
-            shows how optimal hyper-parameters can be 
-            determined with (cross) validation to avoid overlearning.
+            This presentation introduces the classification algorithm of 
+            Logistic Regression. It also covers how to work with unbalanced datasets.
         </description>
         <asset name="View online (recommended)" type="web">LogRegr/LogRegr.html</asset>
         <asset name="Download PDF">LogRegr/LogRegr.pdf</asset>
         <asset name="Download Presentation's Source Code">LogRegr.zip</asset>
+    </version> 
+  <version>
+        <name>Neural Networks</name>
+        <description>
+            This presentation introduces the Neural Networks and how 
+            the hyper-parameters of a Neural Network can be tuned 
+            to avoid overlearning.
+        </description>
+        <asset name="View online (recommended)" type="web">DeepLearn/DeepLearn.html</asset>
+        <asset name="Download PDF">DeepLearn/DeepLearn.pdf</asset>
+        <asset name="Download Presentation's Source Code (coming soon)">DeepLearn.zip</asset>
     </version> 
 </versions>

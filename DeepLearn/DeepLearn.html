@@ -547,8 +547,8 @@
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/Act1.png" class="fragment absolute" style="top: 210px; left: 490px; "> <img data-src="Images/Act2.png" class="fragment absolute" style="top: 575px; left: 490px; "></p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-3" class="slide level2">
-<h2>Transformation From Neural Network to Prediction Equation</h2>
+<section id="xtransformation-from-neural-network-to-prediction-equation" class="slide level2">
+<h2>XTransformation From Neural Network to Prediction Equation</h2>
 <h3 id="inside-the-hidden-neurons-1">Inside the Hidden Neurons</h3>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
 <div class="fragment">
@@ -560,16 +560,17 @@
 }^{\mbox{$A^{ct}_1$}}\cdot \beta_8+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_2}}
-}^{\mbox{$A^{ct}_2$}}\cdot\beta_9\]</span></p>
+}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+\]</span></p>
 </div>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-4" class="slide level2 smaller">
+<section id="transformation-from-neural-network-to-prediction-equation-3" class="slide level2 smaller">
 <h2>Transformation From Neural Network to Prediction Equation</h2>
 <h3 id="between-the-input-and-the-hidden-layer">Between the Input and the Hidden Layer</h3>
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/InpEff1.png" class="fragment absolute" style="top: 278px; left: 470px; "> <img data-src="Images/InpEff2.png" class="fragment absolute" style="top: 550px; left: 470px; "></p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-5" class="slide level2 smaller">
+<section id="transformation-from-neural-network-to-prediction-equation-4" class="slide level2 smaller">
 <h2>Transformation From Neural Network to Prediction Equation</h2>
 <h3 id="between-the-input-and-the-hidden-layer-1">Between the Input and the Hidden Layer</h3>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
@@ -694,10 +695,73 @@
 <li class="fragment">when <span class="math inline">\(\beta's\)</span> are randomly chosen the predictions are useually bad, but they can be improved by the <em>Optimizer</em>.</li>
 </ul>
 <div class="fragment">
-<p>This raises the question: <br><br> <strong>How does the <em>Optimizer</em> gradually change the <span class="math inline">\(\beta s\)</span> to improve the prediction quality of the neural network?</strong></p>
+<p>This raises the question: <br><br></p>
+<p><strong>How does the <em>Optimizer</em> gradually change the <span class="math inline">\(\beta s\)</span> to improve the prediction quality of the neural network?</strong></p>
+</div>
+</section>
+<section id="steepest-gradient-descent" class="slide level2">
+<h2>Steepest Gradient Descent</h2>
+<p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span> <span class="math display">\[\begin{eqnarray*}
+\widehat{P_i}&amp;=&amp;\beta_7\\
+&amp;+&amp;\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_8
+\\
+&amp;+&amp;\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+\end{eqnarray*}\]</span></p>
+</section>
+<section id="steepest-gradient-descent-1" class="slide level2">
+<h2>Steepest Gradient Descent</h2>
+<ul>
+<li class="fragment"><p>Initially <span class="math inline">\(\beta s\)</span> are chosen randomly.</p></li>
+<li class="fragment"><p>Optimizer adjusts <span class="math inline">\(\beta s\)</span> incrementally (iteration by iteration; the iterations are called <strong>epochs</strong>)</p></li>
+<li class="fragment"><p>Each epoch:</p>
+<ul>
+<li class="fragment">Find if individual <span class="math inline">\(\beta\)</span> needs to be increased or decreased.
+<ul>
+<li class="fragment">Increase <span class="math inline">\(\beta_i\)</span> and see if <span class="math inline">\(MSE\)</span> increases or not.</li>
+<li class="fragment">Decrease <span class="math inline">\(\beta_i\)</span> and see if <span class="math inline">\(MSE\)</span> increases or not.</li>
+<li class="fragment">Reset <span class="math inline">\(\beta_i\)</span> and note if <span class="math inline">\(\beta_i\)</span> needs to be increased or decreased.</li>
+<li class="fragment">Repeat for all <span class="math inline">\(\beta s\)</span></li>
+</ul></li>
+<li class="fragment">Increase/Decrease the <span class="math inline">\(\beta`s\)</span> proportional to the change of <span class="math inline">\(MSE\)</span> they triggered when changed individually — multiply by learning rate (e.g., 0.01) to keep change small.</li>
+</ul></li>
+<li class="fragment"><p>run process for several hundreds or thousands epochs.</p></li>
+</ul>
+</section>
+<section id="approximation-properties-of-neural-networks" class="slide level2">
+<h2>Approximation Properties of Neural Networks</h2>
+<p>“Feedforward networks are capable of arbitrarily accurate approximation to any real-valued continuous function over a compact set.”</p>
+<p>I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well</p>
+<p><a href="https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf">Kur Hornik, Maxwell Stinchcombe and Halber White (1989), p.&nbsp;361</a></p>
+</section>
+<section id="intuition-approximation-properties-of-neural-networks" class="slide level2">
+<h2>Intuition: Approximation Properties of Neural Networks</h2>
+<p><span class="math display">\[\begin{eqnarray*}
+\widehat{y_i}&amp;=&amp;\beta_{10}+
+\overbrace{
+\frac{1}{1+e^{-(\beta_1 x_i + \beta_2)}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_7\\
+&amp;&amp;+
+\overbrace{
+\frac{1}{1+e^{-(\beta_3 x_i + \beta_4)}}
+}^{\mbox{$A^{ct}_2$}}\cdot \beta_8\\
+&amp;&amp;+
+\overbrace{
+\frac{1}{1+e^{-(\beta_5 x_i + \beta_6)}}
+}^{\mbox{$A^{ct}_3$}}\cdot \beta_9
+\end{eqnarray*}\]</span></p>
+<p>The app linked in the footer of this slide provides intuition for the Hornik, Stinchcombe, White proof.</p>
+<div class="footer">
+<p>See: <a href="https://econ.lange-analytics.com/calcat/horstiwhi">Neural Network Appoximation App</a></p>
+</div>
+</section>
+<section id="example-approximation-properties-of-neural-networks" class="slide level2">
+<h2>Example: Approximation Properties of Neural Networks</h2>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
-</div>
 </div>
 </section></section>
     </div>

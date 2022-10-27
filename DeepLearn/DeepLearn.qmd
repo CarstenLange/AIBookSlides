@@ -141,7 +141,7 @@ $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
 ![](Images/Act1.png){.fragment .absolute left="490" top="210"} ![](Images/Act2.png){.fragment .absolute left="490" top="575"}
 
-## Transformation From Neural Network to Prediction Equation
+## XTransformation From Neural Network to Prediction Equation
 
 ### Inside the Hidden Neurons
 
@@ -158,7 +158,8 @@ $$
 }^{\mbox{$A^{ct}_1$}}\cdot \beta_8+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_2}}
-}^{\mbox{$A^{ct}_2$}}\cdot\beta_9$$
+}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+$$
 
 ## Transformation From Neural Network to Prediction Equation {.smaller}
 
@@ -323,4 +324,68 @@ The predicted price for a 0.3 g diamond with a clarity level of three is \$1.51.
 
 This raises the question:
 <br><br>
+
 **How does the *Optimizer* gradually change the $\beta s$ to improve the prediction quality of the neural network?**
+
+
+## Steepest Gradient Descent
+
+$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
+\begin{eqnarray*}
+\widehat{P_i}&=&\beta_7\\
+&+&\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_8
+\\
+&+&\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+\end{eqnarray*}
+
+## Steepest Gradient Descent
+
+- Initially $\beta s$ are chosen randomly.
+- Optimizer adjusts $\beta s$ incrementally (iteration by iteration; the iterations are called **epochs**)
+
+- Each epoch:
+  - Find if individual $\beta$ needs to be increased or decreased.
+    - Increase $\beta_i$ and see if $MSE$ increases or not.
+    - Decrease $\beta_i$ and see if $MSE$ increases or not.
+    - Reset $\beta_i$ and note if $\beta_i$ needs to be increased or decreased.
+    - Repeat for all $\beta s$
+  - Increase/Decrease the $\beta`s$ proportional to the change of $MSE$ they triggered when changed individually --- multiply by learning rate (e.g., 0.01) to keep change small.
+- run process for several hundreds or thousands epochs.
+
+## Approximation Properties of Neural Networks
+
+"Feedforward networks are capable of arbitrarily accurate approximation to any real-valued continuous function over a compact set."
+
+I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well
+
+[Kur Hornik, Maxwell Stinchcombe and Halber White (1989), p. 361](https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf)
+
+## Intuition: Approximation Properties of Neural Networks
+
+\begin{eqnarray*}
+\widehat{y_i}&=&\beta_{10}+
+\overbrace{
+\frac{1}{1+e^{-(\beta_1 x_i + \beta_2)}}
+}^{\mbox{$A^{ct}_1$}}\cdot \beta_7\\
+&&+
+\overbrace{
+\frac{1}{1+e^{-(\beta_3 x_i + \beta_4)}}
+}^{\mbox{$A^{ct}_2$}}\cdot \beta_8\\
+&&+
+\overbrace{
+\frac{1}{1+e^{-(\beta_5 x_i + \beta_6)}}
+}^{\mbox{$A^{ct}_3$}}\cdot \beta_9
+\end{eqnarray*}
+
+The app linked in the footer of this slide provides intuition for the Hornik, Stinchcombe, White proof.
+
+
+::: footer
+See: [Neural Network Appoximation App](https://econ.lange-analytics.com/calcat/horstiwhi)
+:::
+
+## Example: Approximation Properties of Neural Networks
