@@ -143,21 +143,21 @@ $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
 ## Transformation From Neural Network to Prediction Equation
 
-### XXXXX Inside the Hidden Neurons
+### XX Inside the Hidden Neurons
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
-. . . 
 
-<br> 
-
-$$\widehat{P_i}=\beta_7+
+$$
+\widehat{P_i}=\beta_7+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_1}}
 }^{A^{ct}_1}\cdot \beta_8+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_2}}
-}^{A^{ct}_2}\cdot\beta_9$$
+}^{A^{ct}_1}\cdot\beta_9
+$$
+
 
 
 ## Transformation From Neural Network to Prediction Equation {.smaller}
@@ -334,14 +334,14 @@ $$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
 \widehat{P_i}&=&\beta_7\\
 &+&\overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
-}^{\mbox{$A^{ct}_1$}}\cdot \beta_8
+}^{A^{ct}_1}\cdot \beta_8
 \\
 &+&\overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
-}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+}^{A^{ct}_2}\cdot\beta_9
 \end{eqnarray*}
 
-## Steepest Gradient Descent
+## Steepest Gradient Descent{.smaller}
 
 - Initially $\beta s$ are chosen randomly.
 - Optimizer adjusts $\beta s$ incrementally (iteration by iteration; the iterations are called **epochs**)
