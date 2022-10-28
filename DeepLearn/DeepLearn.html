@@ -542,34 +542,46 @@
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/Act1.png" class="fragment absolute" style="top: 210px; left: 490px; "> <img data-src="Images/Act2.png" class="fragment absolute" style="top: 575px; left: 490px; "></p>
 </section>
-<section id="xtransformation-from-neural-network-to-prediction-equation" class="slide level2">
-<h2>XTransformation From Neural Network to Prediction Equation</h2>
-<h3 id="inside-the-hidden-neurons-1">Inside the Hidden Neurons</h3>
+<section id="transformation-from-neural-network-to-prediction-equation-3" class="slide level2">
+<h2>Transformation From Neural Network to Prediction Equation</h2>
+<h3 id="xxxxx-inside-the-hidden-neurons">XXXXX Inside the Hidden Neurons</h3>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
 <div class="fragment">
 <p><br></p>
-<p>$$</p>
-<p>=_7+ ^{}_8+ ^{}_9</p>
-<p>$$</p>
+<p>$$=_7+</p>
+<p><sup>{A</sup>{ct}_1}_8+ <sup>{A</sup>{ct}_2}_9$$</p>
 </div>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-3" class="slide level2 smaller">
+<section id="transformation-from-neural-network-to-prediction-equation-4" class="slide level2 smaller">
 <h2>Transformation From Neural Network to Prediction Equation</h2>
 <h3 id="between-the-input-and-the-hidden-layer">Between the Input and the Hidden Layer</h3>
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/InpEff1.png" class="fragment absolute" style="top: 278px; left: 470px; "> <img data-src="Images/InpEff2.png" class="fragment absolute" style="top: 550px; left: 470px; "></p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-4" class="slide level2 smaller">
+<section id="transformation-from-neural-network-to-prediction-equation-5" class="slide level2 smaller">
 <h2>Transformation From Neural Network to Prediction Equation</h2>
 <h3 id="between-the-input-and-the-hidden-layer-1">Between the Input and the Hidden Layer</h3>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
-<p>$$</p>
-<p>=_7+ ^{}_8+ ^{}_9</p>
-<p>$$</p>
+<p><span class="math display">\[
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_1}}
+}^{A^{ct}_1}\cdot \beta_8+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_2}}
+}^{A^{ct}_1}\cdot\beta_9
+\]</span></p>
 <div class="fragment">
-<p>$$</p>
-<p>=_7+ ^{}_8 + ^{}_9</p>
-<p>$$</p>
+<p><span class="math display">\[
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{A^{ct}_1}\cdot \beta_8
++
+\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{A^{ct}_2}\cdot\beta_9
+\]</span></p>
 </div>
 </section>
 <section id="if-we-know-the-beta-s-we-can-generate-predictions" class="slide level2">
@@ -634,8 +646,8 @@
 <p><strong>Hidden Neurons’ Activity:</strong> <span class="math inline">\(I_1^{np\ eff}=1.33\)</span> and <span class="math inline">\(I_2^{np\ eff}=1.94\)</span></p>
 <p><span class="math display">\[A^{ct}_1=\frac{1}{1+e^{-I_1^{np\ eff}}}\]</span></p>
 <div class="fragment">
-<p>$$A^{ct}_1=</p>
-<p>=0.79$$</p>
+<p><span class="math display">\[A^{ct}_1=
+\frac{1}{1+e^{-1.33}}=0.79\]</span></p>
 </div>
 <div class="fragment">
 <p><span class="math display">\[A^{ct}_2=\frac{1}{1+e^{-I_2^{np\ eff}}}\]</span></p>
@@ -652,13 +664,13 @@
 <section id="predicting-the-first-observation-of-the-training-data-8" class="slide level2">
 <h2>Predicting the First Observation of the Training Data</h2>
 <p><strong>Prediction:</strong> <br> <span class="math inline">\(\beta_7=0.1\)</span>, <span class="math inline">\(\beta_8=0.8\)</span>, <span class="math inline">\(\beta_9=0.9\)</span>, <span class="math inline">\(A^{ct}_1=0.79\)</span> and <span class="math inline">\(A^{ct}_2=0.87\)</span></p>
-<p><span class="math display">\[
-\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2
-\]</span></p>
+<p>$$</p>
+<p>P =_7 + _8 A^{ct}_1 + _9 A^{ct}_2</p>
+<p>$$</p>
 <div class="fragment">
-<p><span class="math display">\[
-\widehat P = 0.1+0.8\cdot 0.79  +0.9 \cdot 0.87 = 1.51
-\]</span></p>
+<p>$$</p>
+<p>P = 0.1+0.8 +0.9 = 1.51</p>
+<p>$$</p>
 <p>The predicted price for a 0.3 g diamond with a clarity level of three is $1.51. <br> <br> <strong>$1.51 for a diamond???</strong></p>
 </div>
 </section>

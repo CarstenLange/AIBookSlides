@@ -141,9 +141,9 @@ $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
 ![](Images/Act1.png){.fragment .absolute left="490" top="210"} ![](Images/Act2.png){.fragment .absolute left="490" top="575"}
 
-## XTransformation From Neural Network to Prediction Equation
+## Transformation From Neural Network to Prediction Equation
 
-### Inside the Hidden Neurons
+### XXXXX Inside the Hidden Neurons
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
@@ -151,15 +151,14 @@ $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
 <br> 
 
-$$
-\widehat{P_i}=\beta_7+
+$$\widehat{P_i}=\beta_7+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_1}}
-}^{\mbox{$A^{ct}_1$}}\cdot \beta_8+
+}^{A^{ct}_1}\cdot \beta_8+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_2}}
-}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
-$$
+}^{A^{ct}_2}\cdot\beta_9$$
+
 
 ## Transformation From Neural Network to Prediction Equation {.smaller}
 
@@ -179,10 +178,10 @@ $$
 \widehat{P_i}=\beta_7+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_1}}
-}^{\mbox{$A^{ct}_1$}}\cdot \beta_8+
+}^{A^{ct}_1}\cdot \beta_8+
 \overbrace{
 \frac{1}{1+e^{-I^{np\ eff}_2}}
-}^{\mbox{$A^{ct}_1$}}\cdot\beta_9
+}^{A^{ct}_1}\cdot\beta_9
 $$
 
 . . .
@@ -191,11 +190,11 @@ $$
 \widehat{P_i}=\beta_7+
 \overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
-}^{\mbox{$A^{ct}_1$}}\cdot \beta_8
+}^{A^{ct}_1}\cdot \beta_8
 +
 \overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
-}^{\mbox{$A^{ct}_2$}}\cdot\beta_9
+}^{A^{ct}_2}\cdot\beta_9
 $$
 
 ## If we know the $\beta s$ We Can Generate Predictions! 
