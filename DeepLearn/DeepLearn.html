@@ -7,7 +7,7 @@
 <link href="DeepLearn_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="DeepLearn_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="DeepLearn_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.0.36">
+  <meta name="generator" content="quarto-1.1.189">
 
   <title>Neural Networks</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,10 +18,15 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -387,8 +392,8 @@
   <h1 class="title">Neural Networks</h1>
 </section>
 
-<section id="early-days" class="slide level2">
-<h2>Early Days</h2>
+<section id="the-early-days" class="slide level2">
+<h2>The Early Days</h2>
 <p>In the early days of artificial neural networks, data scientists tried to mimic the human brain through computer models.</p>
 
 <img data-src="Images/HumanBrain.png" width="500" class="r-stretch quarto-figure-center"></section>
@@ -546,9 +551,15 @@
 <h2>Transformation From Neural Network to Prediction Equation</h2>
 <h3 id="xx-inside-the-hidden-neurons">XX Inside the Hidden Neurons</h3>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
-<p>$$</p>
-<p>=_7+ <sup>{A</sup>{ct}_1}_8+ <sup>{A</sup>{ct}_1}_9</p>
-<p>$$</p>
+<p><span class="math display">\[
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_1}}
+}^{A^{ct}_1}\cdot \beta_8+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_2}}
+}^{A^{ct}_1}\cdot\beta_9
+\]</span></p>
 </section>
 <section id="transformation-from-neural-network-to-prediction-equation-4" class="slide level2 smaller">
 <h2>Transformation From Neural Network to Prediction Equation</h2>
@@ -560,13 +571,26 @@
 <h2>Transformation From Neural Network to Prediction Equation</h2>
 <h3 id="between-the-input-and-the-hidden-layer-1">Between the Input and the Hidden Layer</h3>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
-<p>$$</p>
-<p>=_7+ <sup>{A</sup>{ct}_1}_8+ <sup>{A</sup>{ct}_1}_9</p>
-<p>$$</p>
+<p><span class="math display">\[
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_1}}
+}^{A^{ct}_1}\cdot \beta_8+
+\overbrace{
+\frac{1}{1+e^{-I^{np\ eff}_2}}
+}^{A^{ct}_1}\cdot\beta_9
+\]</span></p>
 <div class="fragment">
-<p>$$</p>
-<p>=_7+ <sup>{A</sup>{ct}_1}_8 + <sup>{A</sup>{ct}_2}_9</p>
-<p>$$</p>
+<p><span class="math display">\[
+\widehat{P_i}=\beta_7+
+\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{A^{ct}_1}\cdot \beta_8
++
+\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{A^{ct}_2}\cdot\beta_9
+\]</span></p>
 </div>
 </section>
 <section id="if-we-know-the-beta-s-we-can-generate-predictions" class="slide level2">
@@ -599,8 +623,7 @@
 <section id="predicting-the-first-observation-of-the-training-data-2" class="slide level2">
 <h2>Predicting the First Observation of the Training Data</h2>
 <p><strong>Effective Input 1:</strong> <span class="math inline">\(Carat=0.3\)</span> and <span class="math inline">\(Clarity=3\)</span></p>
-<p><span class="math display">\[\beta_1 = 0.1, \beta_2=-0.9 ,\beta_3 =0.5\]</span></p>
-<p><br></p>
+<p><span class="math display">\[\beta_1 = 0.1, \beta_2=-0.9 ,\beta_3 =0.5\]</span> <br></p>
 <p><span class="math display">\[I_1^{np\ eff}=\beta_1+ \beta_2 Carat + \beta_3 Clarity\]</span></p>
 <div class="fragment">
 <p><span class="math display">\[I_1^{np\ eff}=\underbrace{1 \cdot 0.1}_{1 \cdot \beta_1=0.1}+\underbrace{0.3\cdot(-0.9)}_{Carat\cdot \beta_2=-0.27}+\underbrace{3\cdot 0.5}_{Clarity \cdot\beta_2=First5}=1.33\]</span></p>
@@ -614,8 +637,7 @@
 <section id="predicting-the-first-observation-of-the-training-data-4" class="slide level2">
 <h2>Predicting the First Observation of the Training Data</h2>
 <p><strong>Effective Input 2:</strong> <span class="math inline">\(Carat=0.3\)</span> and <span class="math inline">\(Clarity=3\)</span></p>
-<p><span class="math display">\[\beta_4 = -0.1,\beta_5 = 0.8,\beta_6 =0.6\]</span></p>
-<p><br></p>
+<p><span class="math display">\[\beta_4 = -0.1,\beta_5 = 0.8,\beta_6 =0.6\]</span> <br></p>
 <p><span class="math display">\[I_2^{np\ eff}=\beta_4+ \beta_5 Carat + \beta_6 Clarity\]</span></p>
 <div class="fragment">
 <p><span class="math display">\[I_2^{np\ eff}=\underbrace{1 \cdot (-0.1)}_{1 \cdot \beta_4=-0.1}+\underbrace{0.3\cdot0.8}_{Carat\cdot \beta_5=0.24}+\underbrace{3\cdot 0.6}_{Clarity \cdot\beta_6=1.8}=1.94\]</span></p>
@@ -631,8 +653,8 @@
 <p><strong>Hidden Neurons’ Activity:</strong> <span class="math inline">\(I_1^{np\ eff}=1.33\)</span> and <span class="math inline">\(I_2^{np\ eff}=1.94\)</span></p>
 <p><span class="math display">\[A^{ct}_1=\frac{1}{1+e^{-I_1^{np\ eff}}}\]</span></p>
 <div class="fragment">
-<p>$$A^{ct}_1=</p>
-<p>=0.79$$</p>
+<p><span class="math display">\[A^{ct}_1=
+\frac{1}{1+e^{-1.33}}=0.79\]</span></p>
 </div>
 <div class="fragment">
 <p><span class="math display">\[A^{ct}_2=\frac{1}{1+e^{-I_2^{np\ eff}}}\]</span></p>
@@ -676,8 +698,7 @@
 </section>
 <section id="steepest-gradient-descent" class="slide level2">
 <h2>Steepest Gradient Descent</h2>
-<p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span></p>
-<p><span class="math display">\[\begin{eqnarray*}
+<p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span> <span class="math display">\[\begin{eqnarray*}
 \widehat{P_i}&amp;=&amp;\beta_7\\
 &amp;+&amp;\overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
@@ -1068,7 +1089,8 @@
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          let href = ref.getAttribute('href');
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
