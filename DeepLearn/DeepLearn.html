@@ -395,24 +395,26 @@
 </div>
 
 </section>
-<section id="the-early-days" class="slide level2">
-<h2>The Early Days</h2>
+<section id="the-early-days" class="title-slide slide level1 center">
+<h1>The Early Days</h1>
 <p>In the early days of artificial neural networks, data scientists tried to mimic the human brain through computer models.</p>
 
 <img data-src="Images/HumanBrain.png" width="500" class="r-stretch quarto-figure-center"></section>
-<section id="types-of-neural-networks" class="slide level2">
-<h2>Types of Neural Networks</h2>
+
+<section id="types-of-neural-networks" class="title-slide slide level1 center">
+<h1>Types of Neural Networks</h1>
 <ul>
 <li class="fragment"><strong>Multi-Layer Perceptrons (MLP)</strong> neural networks (covered here)</li>
-<li class="fragment">Convolutional Neural Networks (CNN)</li>
+<li class="fragment"><a href="https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html">Convolutional Neural Networks (CNN)</a></li>
 <li class="fragment">Recurrent Neural Networks (e.g.&nbsp;Long Short Term Memory recurrent networks)</li>
 <li class="fragment">Generative Adversarial Networks</li>
 <li class="fragment">AutoEncoders</li>
 <li class="fragment">Transformers»</li>
 </ul>
 </section>
-<section id="multi-layer-perceptrons-mlp-neural-network" class="slide level2">
-<h2>Multi-Layer Perceptrons (MLP) Neural Network</h2>
+
+<section id="multi-layer-perceptrons-mlp-neural-network" class="title-slide slide level1 center">
+<h1>Multi-Layer Perceptrons (MLP) Neural Network</h1>
 <ul>
 <li class="fragment"><strong>Input Layer:</strong> with one or more input neurons.</li>
 <li class="fragment"><strong>Hidden Layer(s)</strong> one or more hiden layers with one or more hidden neurons.</li>
@@ -420,12 +422,14 @@
 <li class="fragment"><strong>Fully connected:</strong> each neuron in each of the layers is connected to all neurons of the following layer.</li>
 </ul>
 </section>
-<section id="example-for-an-mlp-neural-network-with-one-hidden-layer" class="slide level2">
-<h2>Example for an MLP Neural Network with One Hidden Layer</h2>
+
+<section id="example-for-an-mlp-neural-network-with-one-hidden-layer" class="title-slide slide level1 center">
+<h1>Example for an MLP Neural Network with One Hidden Layer</h1>
 
 <img data-src="Images/NeuralNetGraphGeneral.png" class="r-stretch"></section>
-<section id="the-data" class="slide level2">
-<h2>The Data</h2>
+
+<section id="the-data" class="title-slide slide level1 center">
+<h1>The Data</h1>
 <p>We will estimate diamond prices based on their physical properties and use the well-known <code>diamonds</code> dataset automatically loaded together with <code>tidymodels</code>:</p>
 <div class="cell">
 <details>
@@ -451,8 +455,9 @@
 <p>See: <a href="https://ggplot2.tidyverse.org/reference/diamonds.html">Source: <code>diamonds</code> dataset:</a></p>
 </div>
 </section>
-<section id="domain-knowledge-the-four-c-s-to-appraise-a-diamond" class="slide level2">
-<h2>Domain Knowledge: The Four C s to Appraise a Diamond</h2>
+
+<section id="domain-knowledge-the-four-c-s-to-appraise-a-diamond" class="title-slide slide level1 center">
+<h1>Domain Knowledge: The Four C s to Appraise a Diamond</h1>
 <ol type="1">
 <li class="fragment"><p><strong>Cut:</strong> Refers to the facets, symmetry, and reflective qualities of a diamond. The cut of a diamond is directly related to its overall sparkle and beauty.</p></li>
 <li class="fragment"><p><strong>Color:</strong> Refers to the natural color or lack of color visible within a diamond. The closer a diamond is to “colorless,” the higher its value.</p></li>
@@ -463,8 +468,9 @@
 <p>See: <a href="https://www.brilliantearth.com/diamond/buying-guide/?gclid=CjwKCAjw79iaBhAJEiwAPYwoCCtVM1dC2gPVa-iqaLjcBzcuLiRvBOuKj_qa3eMoKoyMxX-W4MXQPRoCGp0QAvD_BwE">Source: Brilliant Earth</a></p>
 </div>
 </section>
-<section id="data-engeneering" class="slide level2">
-<h2>Data Engeneering</h2>
+
+<section id="data-engeneering" class="title-slide slide level1 center">
+<h1>Data Engeneering</h1>
 <p>We start with a very basic model with 2 predictors for <span class="math inline">\(Price\)</span>:</p>
 <div>
 <ul>
@@ -507,52 +513,60 @@
 </div>
 </div>
 </section>
-<section id="use-a-trained-neural-nework-beta-s-are-known-to-predict" class="slide level2">
-<h2>Use a Trained Neural Nework (<span class="math inline">\(\beta s\)</span> are known) to Predict</h2>
-<h3 id="effectiv-inputs-to-hidden-neurons">Effectiv Inputs to Hidden Neurons</h3>
+
+<section id="use-a-trained-neural-nework-beta-s-are-known-to-predict" class="title-slide slide level1 center">
+<h1>Use a Trained Neural Nework (<span class="math inline">\(\beta s\)</span> are known) to Predict</h1>
+<p><strong>Effectiv Inputs to Hidden Neurons:</strong></p>
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/InpEff1.png" class="fragment absolute" style="top: 278px; left: 470px; "> <img data-src="Images/InpEff2.png" class="fragment absolute" style="top: 550px; left: 470px; "></p>
 </section>
-<section id="use-a-trained-neural-nework-beta-s-are-known-to-predict-1" class="slide level2">
-<h2>Use a Trained Neural Nework (<span class="math inline">\(\beta s\)</span> are known) to Predict</h2>
-<h3 id="calculate-activity-in-hidden-neurons-with-logistic-function">Calculate Activity in Hidden Neurons with Logistic Function</h3>
+
+<section id="use-a-trained-neural-nework-beta-s-are-known-to-predict-1" class="title-slide slide level1 center">
+<h1>Use a Trained Neural Nework (<span class="math inline">\(\beta s\)</span> are known) to Predict</h1>
+<p><strong>Calculate Activity in Hidden Neurons with Logistic Function</strong></p>
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/Act1.png" class="fragment absolute" style="top: 210px; left: 490px; "> <img data-src="Images/Act2.png" class="fragment absolute" style="top: 575px; left: 490px; "></p>
 </section>
-<section id="use-a-trained-neural-nework-beta-s-are-known-to-predict-2" class="slide level2">
-<h2>Use a Trained Neural Nework (<span class="math inline">\(\beta s\)</span> are known) to Predict</h2>
-<h3 id="calculate-prediction-from-activities-in-hidden-neurons">Calculate Prediction from Activities in Hidden Neurons</h3>
+
+<section id="use-a-trained-neural-nework-beta-s-are-known-to-predict-2" class="title-slide slide level1 center">
+<h1>Use a Trained Neural Nework (<span class="math inline">\(\beta s\)</span> are known) to Predict</h1>
+<p><strong>Calculate Prediction from Activities in Hidden Neurons:</strong></p>
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/Prediction.png" class="fragment absolute" style="top: 497px; left: 735px; "></p>
 </section>
-<section id="prediction-of-the-neural-network" class="slide level2">
-<h2>Prediction of the Neural Network</h2>
+
+<section id="prediction-of-the-neural-network" class="title-slide slide level1 center">
+<h1>Prediction of the Neural Network</h1>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span> A neural network can be transformed into a prediction equation that depends only on the <span class="math inline">\(\beta s\)</span> and the values of the predictor variables!</p>
 <p>We will show this in more detail on the following slides.»</p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation" class="slide level2">
-<h2>Transformation From Neural Network to Prediction Equation</h2>
+
+<section id="transformation-from-neural-network-to-prediction-equation" class="title-slide slide level1 center">
+<h1>Transformation From Neural Network to Prediction Equation</h1>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
 <ul>
 <li class="fragment"><p><span class="math inline">\(A^{ct}_1\)</span> and <span class="math inline">\(A^{ct}_2\)</span> depend on <span class="math inline">\(I^{np\ eff}_1\)</span> and <span class="math inline">\(I^{np\ eff}_2\)</span> (and the <span class="math inline">\(\beta s\)</span>)</p></li>
 <li class="fragment"><p><span class="math inline">\(I^{np\ eff}_1\)</span> and <span class="math inline">\(I^{np\ eff}_2\)</span> depend on the values of predictor variables <span class="math inline">\(Carat\)</span> and <span class="math inline">\(Clarity\)</span> (and the <span class="math inline">\(\beta s\)</span>)</p></li>
-<li class="fragment"><p>Consequently, prediction depends only on the values of predictor variables and the <span class="math inline">\(\beta s\)</span>!</p></li>
+<li class="fragment"><p>Consequently, prediction depends only on the values of predictor variables and the <span class="math inline">\(\beta s\)</span>!»</p></li>
 </ul>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-1" class="slide level2">
-<h2>Transformation From Neural Network to Prediction Equation</h2>
+
+<section id="transformation-from-neural-network-to-prediction-equation-1" class="title-slide slide level1 center">
+<h1>Transformation From Neural Network to Prediction Equation</h1>
 <p>To show the transformation, we move backwards from right to left through the neural network.</p>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-2" class="slide level2">
-<h2>Transformation From Neural Network to Prediction Equation</h2>
-<h3 id="inside-the-hidden-neurons">Inside the Hidden Neurons</h3>
+
+<section id="transformation-from-neural-network-to-prediction-equation-2" class="title-slide slide level1 center">
+<h1>Transformation From Neural Network to Prediction Equation</h1>
+<p><strong>Inside the Hidden Neurons:</strong></p>
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/Act1.png" class="fragment absolute" style="top: 210px; left: 490px; "> <img data-src="Images/Act2.png" class="fragment absolute" style="top: 575px; left: 490px; "></p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-3" class="slide level2">
-<h2>Transformation From Neural Network to Prediction Equation</h2>
-<h3 id="xx-inside-the-hidden-neurons">XX Inside the Hidden Neurons</h3>
+
+<section id="transformation-from-neural-network-to-prediction-equation-3" class="title-slide slide level1 center">
+<h1>Transformation From Neural Network to Prediction Equation</h1>
+<p><strong>Inside the Hidden Neurons</strong></p>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
 <p><span class="math display">\[
 \widehat{P_i}=\beta_7+
@@ -564,15 +578,17 @@
 }^{A^{ct}_1}\cdot\beta_9
 \]</span></p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-4" class="slide level2 smaller">
-<h2>Transformation From Neural Network to Prediction Equation</h2>
-<h3 id="between-the-input-and-the-hidden-layer">Between the Input and the Hidden Layer</h3>
+
+<section id="transformation-from-neural-network-to-prediction-equation-4" class="title-slide slide level1 center">
+<h1>Transformation From Neural Network to Prediction Equation</h1>
+<p><strong>Between the Input and the Hidden Layer:</strong></p>
 <p><img data-src="Images/NeuralNetGraphGeneral.png"></p>
 <p><img data-src="Images/InpEff1.png" class="fragment absolute" style="top: 278px; left: 470px; "> <img data-src="Images/InpEff2.png" class="fragment absolute" style="top: 550px; left: 470px; "></p>
 </section>
-<section id="transformation-from-neural-network-to-prediction-equation-5" class="slide level2 smaller">
-<h2>Transformation From Neural Network to Prediction Equation</h2>
-<h3 id="between-the-input-and-the-hidden-layer-1">Between the Input and the Hidden Layer</h3>
+
+<section id="transformation-from-neural-network-to-prediction-equation-5" class="title-slide slide level1 smaller center">
+<h1>Transformation From Neural Network to Prediction Equation</h1>
+<p><strong>Between the Input and the Hidden Layer:</strong></p>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
 <p><span class="math display">\[
 \widehat{P_i}=\beta_7+
@@ -596,9 +612,10 @@
 \]</span></p>
 </div>
 </section>
-<section id="if-we-know-the-beta-s-we-can-generate-predictions" class="slide level2">
-<h2>If we know the <span class="math inline">\(\beta s\)</span> We Can Generate Predictions!</h2>
-<p><span class="math display">\[\begin{eqnarray*}
+
+<section id="if-we-know-the-beta-s-we-can-generate-predictions" class="title-slide slide level1 center">
+<h1>If we know the <span class="math inline">\(\beta s\)</span> We Can Generate Predictions!</h1>
+<span class="math display">\[\begin{eqnarray*}
 \widehat{P_i}&amp;=&amp;\beta_7\\
 &amp;+&amp;\overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
@@ -607,38 +624,42 @@
 &amp;+&amp;\overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{\mbox{$A^{ct}_2$}}\cdot\beta_9
-\end{eqnarray*}\]</span></p>
+\end{eqnarray*}\]</span>
 <ul>
 <li class="fragment"><p>initial <span class="math inline">\(\beta s\)</span> are chosen at random.</p></li>
-<li class="fragment"><p>optimal <span class="math inline">\(\beta s\)</span> are found with the <em>optimizer</em>.</p></li>
+<li class="fragment"><p>optimal <span class="math inline">\(\beta s\)</span> are found with the <em>optimizer</em>.»</p></li>
 </ul>
 </section>
-<section>
+
 <section id="predicting-the-first-observation-of-the-training-data" class="title-slide slide level1 center">
 <h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Predictor Variables’ Values:</strong> <span class="math inline">\(Carat=0.3\)</span> and <span class="math inline">\(Clarity=3\)</span></p>
 </section>
-<section id="predicting-the-first-observation-of-the-training-data-1" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-1" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Effective Inputs:</strong> <span class="math inline">\(Carat=0.3\)</span> and <span class="math inline">\(Clarity=3\)</span></p>
 
 <img data-src="Images/NeuralNetGraphNumbers.png" alt="Neural network with pre-selected values for the betas" class="r-stretch"></section>
-<section id="predicting-the-first-observation-of-the-training-data-2" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-2" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Effective Input 1:</strong> <span class="math inline">\(Carat=0.3\)</span> and <span class="math inline">\(Clarity=3\)</span></p>
-<p><span class="math display">\[\beta_1 = 0.1, \beta_2=-0.9 ,\beta_3 =0.5\]</span> <br></p>
+<p><span class="math display">\[\beta_1 = 0.1, \beta_2=-0.9 ,\beta_3 =0.5\]</span></p>
 <p><span class="math display">\[I_1^{np\ eff}=\beta_1+ \beta_2 Carat + \beta_3 Clarity\]</span></p>
 <div class="fragment">
 <p><span class="math display">\[I_1^{np\ eff}=\underbrace{1 \cdot 0.1}_{1 \cdot \beta_1=0.1}+\underbrace{0.3\cdot(-0.9)}_{Carat\cdot \beta_2=-0.27}+\underbrace{3\cdot 0.5}_{Clarity \cdot\beta_2=First5}=1.33\]</span></p>
 </div>
 </section>
-<section id="predicting-the-first-observation-of-the-training-data-3" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-3" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Effective Input 2:</strong> <span class="math inline">\(Carat=0.3\)</span> and <span class="math inline">\(Clarity=3\)</span></p>
 
 <img data-src="Images/NeuralNetGraphNumbers.png" alt="Neural network with pre-selected values for the betas" class="r-stretch"></section>
-<section id="predicting-the-first-observation-of-the-training-data-4" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-4" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Effective Input 2:</strong> <span class="math inline">\(Carat=0.3\)</span> and <span class="math inline">\(Clarity=3\)</span></p>
 <p><span class="math display">\[\beta_4 = -0.1,\beta_5 = 0.8,\beta_6 =0.6\]</span> <br></p>
 <p><span class="math display">\[I_2^{np\ eff}=\beta_4+ \beta_5 Carat + \beta_6 Clarity\]</span></p>
@@ -646,13 +667,15 @@
 <p><span class="math display">\[I_2^{np\ eff}=\underbrace{1 \cdot (-0.1)}_{1 \cdot \beta_4=-0.1}+\underbrace{0.3\cdot0.8}_{Carat\cdot \beta_5=0.24}+\underbrace{3\cdot 0.6}_{Clarity \cdot\beta_6=1.8}=1.94\]</span></p>
 </div>
 </section>
-<section id="predicting-the-first-observation-of-the-training-data-5" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-5" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Hidden Neurons’ Activity:</strong> <span class="math inline">\(I_1^{np\ eff}=1.33\)</span> <span class="math inline">\(I_2^{np\ eff}=1.94\)</span></p>
 
 <img data-src="Images/NeuralNetGraphNumbers.png" alt="Neural network with pre-selected values for the betas" class="r-stretch"></section>
-<section id="predicting-the-first-observation-of-the-training-data-6" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-6" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Hidden Neurons’ Activity:</strong> <span class="math inline">\(I_1^{np\ eff}=1.33\)</span> and <span class="math inline">\(I_2^{np\ eff}=1.94\)</span></p>
 <p><span class="math display">\[A^{ct}_1=\frac{1}{1+e^{-I_1^{np\ eff}}}\]</span></p>
 <div class="fragment">
@@ -666,13 +689,15 @@
 <p><span class="math display">\[A^{ct}_2=\frac{1}{1+e^{-1.94}}=0.87\]</span></p>
 </div>
 </section>
-<section id="predicting-the-first-observation-of-the-training-data-7" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-7" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Prediction:</strong> <br> <span class="math inline">\(\beta_7=0.1\)</span>, <span class="math inline">\(\beta_8=0.8\)</span>, <span class="math inline">\(\beta_9=0.9\)</span>, <span class="math inline">\(A^{ct}_1=0.79\)</span> and <span class="math inline">\(A^{ct}_2=0.87\)</span></p>
 
 <img data-src="Images/NeuralNetGraphNumbers.png" alt="Neural network with pre-selected values for the betas" class="r-stretch"></section>
-<section id="predicting-the-first-observation-of-the-training-data-8" class="slide level2">
-<h2>Predicting the First Observation of the Training Data</h2>
+
+<section id="predicting-the-first-observation-of-the-training-data-8" class="title-slide slide level1 center">
+<h1>Predicting the First Observation of the Training Data</h1>
 <p><strong>Prediction:</strong> <br> <span class="math inline">\(\beta_7=0.1\)</span>, <span class="math inline">\(\beta_8=0.8\)</span>, <span class="math inline">\(\beta_9=0.9\)</span>, <span class="math inline">\(A^{ct}_1=0.79\)</span> and <span class="math inline">\(A^{ct}_2=0.87\)</span></p>
 <p><span class="math display">\[
 \widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2
@@ -684,8 +709,9 @@
 <p>The predicted price for a 0.3 g diamond with a clarity level of three is $1.51. <br> <br> <strong>$1.51 for a diamond???</strong></p>
 </div>
 </section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
+
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
 <ul>
 <li class="fragment">We can make prediction with the neural network if we know the values for the <span class="math inline">\(\beta s\)</span>. We do know the <span class="math inline">\(\beta s\)</span> because
 <ul>
@@ -696,11 +722,12 @@
 </ul>
 <div class="fragment">
 <p>This raises the question: <br><br></p>
-<p><strong>How does the <em>Optimizer</em> gradually change the <span class="math inline">\(\beta s\)</span> to improve the prediction quality of the neural network?</strong></p>
+<p><strong>How does the <em>Optimizer</em> gradually change the</strong> <span class="math inline">\(\beta s\)</span> to improve the prediction quality of the neural network?</p>
 </div>
 </section>
-<section id="steepest-gradient-descent" class="slide level2">
-<h2>Steepest Gradient Descent</h2>
+
+<section id="steepest-gradient-descent" class="title-slide slide level1 center">
+<h1>Steepest Gradient Descent</h1>
 <p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span> <span class="math display">\[\begin{eqnarray*}
 \widehat{P_i}&amp;=&amp;\beta_7\\
 &amp;+&amp;\overbrace{
@@ -712,8 +739,9 @@
 }^{A^{ct}_2}\cdot\beta_9
 \end{eqnarray*}\]</span></p>
 </section>
-<section id="steepest-gradient-descent-1" class="slide level2 smaller">
-<h2>Steepest Gradient Descent</h2>
+
+<section id="steepest-gradient-descent-1" class="title-slide slide level1 center">
+<h1>Steepest Gradient Descent</h1>
 <ul>
 <li class="fragment"><p>Initially <span class="math inline">\(\beta s\)</span> are chosen randomly.</p></li>
 <li class="fragment"><p>Optimizer adjusts <span class="math inline">\(\beta s\)</span> incrementally (iteration by iteration; the iterations are called <strong>epochs</strong>)</p></li>
@@ -726,28 +754,47 @@
 <li class="fragment">Reset <span class="math inline">\(\beta_i\)</span> and note if <span class="math inline">\(\beta_i\)</span> needs to be increased or decreased.</li>
 <li class="fragment">Repeat for all <span class="math inline">\(\beta s\)</span></li>
 </ul></li>
-<li class="fragment">Increase/Decrease the <span class="math inline">\(\beta`s\)</span> proportional to the change of <span class="math inline">\(MSE\)</span> they triggered when changed individually — multiply by learning rate (e.g., 0.01) to keep change small.</li>
+<li class="fragment">In/Decrease <span class="math inline">\(\beta`s\)</span> proportional to change of <span class="math inline">\(MSE\)</span> caused — multiply by learning rate (e.g., 0.01) to keep change small.</li>
 </ul></li>
-<li class="fragment"><p>run process for several hundreds or thousands epochs.</p></li>
+<li class="fragment"><p>run process for several hundreds or thousands epochs.»</p></li>
 </ul>
 </section>
-<section id="example-approximation-properties-of-neural-networks" class="slide level2">
-<h2>Example: Approximation Properties of Neural Networks</h2>
+
+<section>
+<section id="example-approximation-properties-of-neural-networks" class="title-slide slide level1 center">
+<h1>Example: Approximation Properties of Neural Networks</h1>
 <p>Let us run an example to see how well a Neural Network can approximate.</p>
-<p>The link to the example is in the footer of this slide.</p>
+<p>In the example we will z-normalize the predictors.</p>
+<p>Are interested why?</p>
+<p>Then use the down-arrow to proceed with the slides. Otherwise, use the left-arrow.</p>
+</section>
+<section id="why-is-scaling-of-predictors-needed" class="slide level2">
+<h2>Why is Scaling of Predictors Needed?</h2>
+
+<img data-src="Images/LogisticFunction.png" class="r-stretch quarto-figure-center"><p class="caption">Logistic Activation Function</p><p>If inputs are not scaled and if they lead to very big effective inputs, the slope of the activation function will be very close to 0 and different effective inputs are indistinguishable.</p>
+<div class="footer">
+
+</div>
+</section></section>
+<section id="example-approximation-properties-of-neural-networks-1" class="title-slide slide level1 center">
+<h1>Example: Approximation Properties of Neural Networks</h1>
+<p>To run the R-script with an example to see how well a Neural Network can approximate:</p>
+<p>Click the link in the footer of this slide.</p>
 <div class="footer">
 <p>See: <a href="https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript1.R">Neural Network Appoximation R Script</a></p>
 </div>
 </section>
-<section id="approximation-properties-of-neural-networks" class="slide level2">
-<h2>Approximation Properties of Neural Networks</h2>
+
+<section id="theorem-approximation-properties-of-neural-networks" class="title-slide slide level1 center">
+<h1>Theorem: Approximation Properties of Neural Networks</h1>
 <p>“Feedforward networks are capable of arbitrarily accurate approximation to any real-valued continuous function over a compact set.”</p>
-<p>I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well</p>
+<p>I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well.</p>
 <p><a href="https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf">Kurt Hornik, Maxwell Stinchcombe and Halber White (1989), p.&nbsp;361</a></p>
 </section>
-<section id="intuition-approximation-properties-of-neural-networks" class="slide level2">
-<h2>Intuition: Approximation Properties of Neural Networks</h2>
-<p><span class="math display">\[\begin{eqnarray*}
+
+<section id="intuition-approximation-properties-of-neural-networks" class="title-slide slide level1 center">
+<h1>Intuition: Approximation Properties of Neural Networks</h1>
+<span class="math display">\[\begin{eqnarray*}
 \widehat{y_i}&amp;=&amp;\beta_{10}+
 \overbrace{
 \frac{1}{1+e^{-(\beta_1 x_i + \beta_2)}}
@@ -760,15 +807,68 @@
 \overbrace{
 \frac{1}{1+e^{-(\beta_5 x_i + \beta_6)}}
 }^{\mbox{$A^{ct}_3$}}\cdot \beta_9
-\end{eqnarray*}\]</span></p>
+\end{eqnarray*}\]</span>
 <p>The app linked in the footer of this slide provides intuition for the Hornik, Stinchcombe, White proof.</p>
 <div class="footer">
 <p>See: <a href="https://econ.lange-analytics.com/calcat/horstiwhi">Neural Network Appoximation App</a></p>
 </div>
+</section>
+
+<section id="real-world-example-to-estimate-diamond-prices" class="title-slide slide level1 center">
+<h1>Real World Example to Estimate Diamond Prices</h1>
+<ol type="1">
+<li class="fragment"><p>You will use all big <em>C</em> variables <span class="math inline">\(Carat\)</span>, <span class="math inline">\(Clarity\)</span>, <span class="math inline">\(Cut\)</span>, and <span class="math inline">\(Color\)</span>. <br><span class="math inline">\(Cut\)</span> describes the quality of the cut of the diamond rated from 1 (lowest) to 6 (highest) and <span class="math inline">\(Color\)</span> rates the color of a diamond from 1 (highest) to 7 (lowest)</p></li>
+<li class="fragment"><p>Instead of using the <code>nnet</code> package, you will use the more advanced <code>brulee</code> package which is based on <em>PyTorch</em>, which is a Python library originally developed by <em>Facebook</em>.</p></li>
+<li class="fragment"><p>We will tune the hyper-parameters of the neural network (e.g., the number of hidden units) using <em>cross validation</em>.</p></li>
+</ol>
+</section>
+
+<section id="major-differences-nnet-and-bruleepytorch" class="title-slide slide level1 center">
+<h1>Major Differences: <code>nnet</code> and <code>brulee</code>/<code>PyTorch</code></h1>
+<ul>
+<li class="fragment"><code>brulee</code> uses internally stop learning.
+<ul>
+<li class="fragment"><code>epoch</code> setting refers to maximum <em>epochs</em></li>
+<li class="fragment">from the <em>training</em> data set a <em>validation</em> set is held back.</li>
+<li class="fragment">when <em>validation error</em> stops decreasing for 5 epochs training is stopped.</li>
+</ul></li>
+<li class="fragment"><code>brulee</code> allows to use <strong>ReLu Activation Functions</strong></li>
+</ul>
+</section>
+
+<section id="relu-activation-function" class="title-slide slide level1 center">
+<h1>ReLu Activation Function</h1>
+<p><span class="math display">\[Act_i=max\left (0, I_i^{eff}\right )\]</span></p>
+
+<img data-src="DeepLearn_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"><p>Two <em>ReLU</em> functions can be combined into one step function similar to <em>sigmoid</em> functions.</p>
+<p>See the link in the footer for a demo.</p>
+<div class="footer">
+<p>See: <a href="https://econ.lange-analytics.com/calcat/relu">Combine two ReLu functions into one step function</a></p>
+</div>
+</section>
+
+<section id="logistic-activation-function-problem-of-vanishing-gradient" class="title-slide slide level1 center">
+<h1>Logistic Activation Function: Problem of Vanishing Gradient</h1>
+
+<img data-src="Images/LogisticFunction.png" class="r-stretch quarto-figure-center"><p class="caption">Logistic Activation Function</p><p>Even when activation is determined somewhere in the middle of the activation function the slope is smaller than one. With multiple layers this can propagate to a gradient that is zero because slopes from multiple layers are multiplied (chain rule).</p>
+</section>
+
+<section id="relu-activation-function-no-problem-of-vanishing-gradient" class="title-slide slide level1 center">
+<h1>ReLu Activation Function: No Problem of Vanishing Gradient</h1>
+<p><span class="math display">\[Act_i=max\left (0, I_i^{eff}\right )\]</span></p>
+
+<img data-src="DeepLearn_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"><p><em>ReLu</em> has a slope of one.</p>
+</section>
+
+<section id="now-its-time-to-run-the-real-world-analysis" class="title-slide slide level1 center">
+<h1>Now It’s Time to Run the Real-World Analysis</h1>
+<p>Go to the AI Book in the link in the footer below and you will find the analysis at the end of the Neural Network chapter.</p>
+<p>Alternatively you can run uncommented R-script with the same code here:</p>
+<p><a href="https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript2.R">Neural Network Real World Application</a></p>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
@@ -823,7 +923,7 @@
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: 'c/t',
+        slideNumber: 'h.v',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -864,7 +964,7 @@
         rtl: false,
 
         // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
+        navigationMode: 'default',
 
         // Randomizes the order of slides each time the presentation loads
         shuffle: false,

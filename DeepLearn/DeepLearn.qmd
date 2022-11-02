@@ -3,35 +3,36 @@ title: "Neural Networks"
 format: 
   revealjs:
     code-fold: true
+    navigation-mode: vertical
 ---
 
-## The Early Days
+# The Early Days
 
 In the early days of artificial neural networks, data scientists tried to mimic the human brain through computer models.
 
 ![](Images/HumanBrain.png){fig-align="center" width="500"}
 
-## Types of Neural Networks
+# Types of Neural Networks
 
 -   **Multi-Layer Perceptrons (MLP)** neural networks (covered here)
--   Convolutional Neural Networks (CNN)
+-   [Convolutional Neural Networks (CNN)](https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html)
 -   Recurrent Neural Networks (e.g. Long Short Term Memory recurrent networks)
 -   Generative Adversarial Networks
 -   AutoEncoders
 -   Transformers»
 
-## Multi-Layer Perceptrons (MLP) Neural Network
+# Multi-Layer Perceptrons (MLP) Neural Network
 
 -   **Input Layer:** with one or more input neurons.
 -   **Hidden Layer(s)** one or more hiden layers with one or more hidden neurons.
 -   **Output Layer:** with one or more output neurons.
 -   **Fully connected:** each neuron in each of the layers is connected to all neurons of the following layer.
 
-## Example for an MLP Neural Network with One Hidden Layer
+# Example for an MLP Neural Network with One Hidden Layer
 
 ![](Images/NeuralNetGraphGeneral.png)
 
-## The Data
+# The Data
 
 We will estimate diamond prices based on their physical properties and use the well-known `diamonds` dataset automatically loaded together with `tidymodels`:
 
@@ -45,7 +46,7 @@ str(diamonds)
 See: [Source: `diamonds` dataset:](https://ggplot2.tidyverse.org/reference/diamonds.html)
 :::
 
-## Domain Knowledge: The Four C s to Appraise a Diamond
+# Domain Knowledge: The Four C s to Appraise a Diamond
 
 1.  **Cut:** Refers to the facets, symmetry, and reflective qualities of a diamond. The cut of a diamond is directly related to its overall sparkle and beauty.
 
@@ -59,7 +60,7 @@ See: [Source: `diamonds` dataset:](https://ggplot2.tidyverse.org/reference/diamo
 See: [Source: Brilliant Earth](https://www.brilliantearth.com/diamond/buying-guide/?gclid=CjwKCAjw79iaBhAJEiwAPYwoCCtVM1dC2gPVa-iqaLjcBzcuLiRvBOuKj_qa3eMoKoyMxX-W4MXQPRoCGp0QAvD_BwE)
 :::
 
-## Data Engeneering
+# Data Engeneering
 
 We start with a very basic model with 2 predictors for $Price$:
 
@@ -87,37 +88,38 @@ DataTest=testing(Split70)
 print(DataTrain)
 ```
 
-## Use a Trained Neural Nework ($\beta s$ are known) to Predict
+# Use a Trained Neural Nework ($\beta s$ are known) to Predict
 
-### Effectiv Inputs to Hidden Neurons
+**Effectiv Inputs to Hidden Neurons:**
 
 ![](Images/NeuralNetGraphGeneral.png)
 
 ![](Images/InpEff1.png){.fragment .absolute left="470" top="278"} ![](Images/InpEff2.png){.fragment .absolute left="470" top="550"}
 
-## Use a Trained Neural Nework ($\beta s$ are known) to Predict
 
-### Calculate Activity in Hidden Neurons with Logistic Function
+# Use a Trained Neural Nework ($\beta s$ are known) to Predict
+
+**Calculate Activity in Hidden Neurons with Logistic Function**
 
 ![](Images/NeuralNetGraphGeneral.png)
 
 ![](Images/Act1.png){.fragment .absolute left="490" top="210"} ![](Images/Act2.png){.fragment .absolute left="490" top="575"}
 
-## Use a Trained Neural Nework ($\beta s$ are known) to Predict
+# Use a Trained Neural Nework ($\beta s$ are known) to Predict
 
-### Calculate Prediction from Activities in Hidden Neurons
+**Calculate Prediction from Activities in Hidden Neurons:**
 
 ![](Images/NeuralNetGraphGeneral.png)
 
 ![](Images/Prediction.png){.fragment .absolute left="735" top="497"}
 
-## Prediction of the Neural Network
+# Prediction of the Neural Network
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$ A neural network can be transformed into a prediction equation that depends only on the $\beta s$ and the values of the predictor variables!
 
 We will show this in more detail on the following slides.»
 
-## Transformation From Neural Network to Prediction Equation
+# Transformation From Neural Network to Prediction Equation
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
@@ -125,28 +127,27 @@ $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
 -   $I^{np\ eff}_1$ and $I^{np\ eff}_2$ depend on the values of predictor variables $Carat$ and $Clarity$ (and the $\beta s$)
 
--   Consequently, prediction depends only on the values of predictor variables and the $\beta s$!
+-   Consequently, prediction depends only on the values of predictor variables and the $\beta s$!»
 
-## Transformation From Neural Network to Prediction Equation
+# Transformation From Neural Network to Prediction Equation
 
 To show the transformation, we move backwards from right to left through the neural network.
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
-## Transformation From Neural Network to Prediction Equation
+# Transformation From Neural Network to Prediction Equation
 
-### Inside the Hidden Neurons
+**Inside the Hidden Neurons:**
 
 ![](Images/NeuralNetGraphGeneral.png)
 
 ![](Images/Act1.png){.fragment .absolute left="490" top="210"} ![](Images/Act2.png){.fragment .absolute left="490" top="575"}
 
-## Transformation From Neural Network to Prediction Equation
+# Transformation From Neural Network to Prediction Equation
 
-### XX Inside the Hidden Neurons
+**Inside the Hidden Neurons**
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
-
 
 $$
 \widehat{P_i}=\beta_7+
@@ -158,19 +159,17 @@ $$
 }^{A^{ct}_1}\cdot\beta_9
 $$
 
+# Transformation From Neural Network to Prediction Equation
 
-
-## Transformation From Neural Network to Prediction Equation {.smaller}
-
-### Between the Input and the Hidden Layer
+**Between the Input and the Hidden Layer:**
 
 ![](Images/NeuralNetGraphGeneral.png)
 
 ![](Images/InpEff1.png){.fragment .absolute left="470" top="278"} ![](Images/InpEff2.png){.fragment .absolute left="470" top="550"}
 
-## Transformation From Neural Network to Prediction Equation {.smaller}
+# Transformation From Neural Network to Prediction Equation {.smaller}
 
-### Between the Input and the Hidden Layer
+**Between the Input and the Hidden Layer:**
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
 
@@ -197,8 +196,9 @@ $$
 }^{A^{ct}_2}\cdot\beta_9
 $$
 
-## If we know the $\beta s$ We Can Generate Predictions! 
+# If we know the $\beta s$ We Can Generate Predictions!
 
+```{=tex}
 \begin{eqnarray*}
 \widehat{P_i}&=&\beta_7\\
 &+&\overbrace{
@@ -209,29 +209,26 @@ $$
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{\mbox{$A^{ct}_2$}}\cdot\beta_9
 \end{eqnarray*}
-
+```
 -   initial $\beta s$ are chosen at random.
 
--   optimal $\beta s$ are found with the *optimizer*.
+-   optimal $\beta s$ are found with the *optimizer*.»
 
 # Predicting the First Observation of the Training Data
 
 **Predictor Variables' Values:** $Carat=0.3$ and $Clarity=3$
 
-
-
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
 **Effective Inputs:** $Carat=0.3$ and $Clarity=3$
 
 ![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
 
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
 **Effective Input 1:** $Carat=0.3$ and $Clarity=3$
 
-$$\beta_1 = 0.1, \beta_2=-0.9 ,\beta_3 =0.5$$ 
-<br>
+$$\beta_1 = 0.1, \beta_2=-0.9 ,\beta_3 =0.5$$
 
 $$I_1^{np\ eff}=\beta_1+ \beta_2 Carat + \beta_3 Clarity$$
 
@@ -239,18 +236,17 @@ $$I_1^{np\ eff}=\beta_1+ \beta_2 Carat + \beta_3 Clarity$$
 
 $$I_1^{np\ eff}=\underbrace{1 \cdot 0.1}_{1 \cdot \beta_1=0.1}+\underbrace{0.3\cdot(-0.9)}_{Carat\cdot \beta_2=-0.27}+\underbrace{3\cdot 0.5}_{Clarity \cdot\beta_2=First5}=1.33$$
 
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
 **Effective Input 2:** $Carat=0.3$ and $Clarity=3$
 
 ![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
 
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
 **Effective Input 2:** $Carat=0.3$ and $Clarity=3$
 
-$$\beta_4 = -0.1,\beta_5 = 0.8,\beta_6 =0.6$$
-<br>
+$$\beta_4 = -0.1,\beta_5 = 0.8,\beta_6 =0.6$$ <br>
 
 $$I_2^{np\ eff}=\beta_4+ \beta_5 Carat + \beta_6 Clarity$$
 
@@ -258,13 +254,13 @@ $$I_2^{np\ eff}=\beta_4+ \beta_5 Carat + \beta_6 Clarity$$
 
 $$I_2^{np\ eff}=\underbrace{1 \cdot (-0.1)}_{1 \cdot \beta_4=-0.1}+\underbrace{0.3\cdot0.8}_{Carat\cdot \beta_5=0.24}+\underbrace{3\cdot 0.6}_{Clarity \cdot\beta_6=1.8}=1.94$$
 
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
 **Hidden Neurons' Activity:** $I_1^{np\ eff}=1.33$ $I_2^{np\ eff}=1.94$
 
 ![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
 
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
 **Hidden Neurons' Activity:** $I_1^{np\ eff}=1.33$ and $I_2^{np\ eff}=1.94$
 
@@ -283,17 +279,15 @@ $$A^{ct}_2=\frac{1}{1+e^{-I_2^{np\ eff}}}$$
 
 $$A^{ct}_2=\frac{1}{1+e^{-1.94}}=0.87$$
 
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
-**Prediction:** <br>
-$\beta_7=0.1$,  $\beta_8=0.8$,  $\beta_9=0.9$, $A^{ct}_1=0.79$ and $A^{ct}_2=0.87$
+**Prediction:** <br> $\beta_7=0.1$, $\beta_8=0.8$, $\beta_9=0.9$, $A^{ct}_1=0.79$ and $A^{ct}_2=0.87$
 
 ![](Images/NeuralNetGraphNumbers.png){fig-alt="Neural network with pre-selected values for the betas"}
 
-## Predicting the First Observation of the Training Data
+# Predicting the First Observation of the Training Data
 
-**Prediction:** <br>
-$\beta_7=0.1$,  $\beta_8=0.8$,  $\beta_9=0.9$, $A^{ct}_1=0.79$ and $A^{ct}_2=0.87$
+**Prediction:** <br> $\beta_7=0.1$, $\beta_8=0.8$, $\beta_9=0.9$, $A^{ct}_1=0.79$ and $A^{ct}_2=0.87$
 
 $$
 \widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2
@@ -303,34 +297,26 @@ $$
 
 $$
 \widehat P = 0.1+0.8\cdot 0.79  +0.9 \cdot 0.87 = 1.51
-$$ 
+$$
 
-The predicted price for a 0.3 g diamond with a clarity level of three is \$1.51.
-<br>
-<br>
-**$1.51 for a diamond???**
+The predicted price for a 0.3 g diamond with a clarity level of three is \$1.51. <br> <br> **\$1.51 for a diamond???**
 
+# Summary
 
-## Summary
-
-- We can make prediction with the neural network if we know the values for the $\beta s$.  We do know the $\beta s$ because
-  - they are randomly chosen at the beginning, or
-  - they are adjusted by the Optimizer.
-
-- when $\beta's$ are randomly chosen the predictions are useually bad, but they can be improved by the *Optimizer*.
+-   We can make prediction with the neural network if we know the values for the $\beta s$. We do know the $\beta s$ because
+    -   they are randomly chosen at the beginning, or
+    -   they are adjusted by the Optimizer.
+-   when $\beta's$ are randomly chosen the predictions are useually bad, but they can be improved by the *Optimizer*.
 
 . . .
 
-This raises the question:
-<br><br>
+This raises the question: <br><br>
 
-**How does the *Optimizer* gradually change the $\beta s$ to improve the prediction quality of the neural network?**
+**How does the *Optimizer* gradually change the** $\beta s$ to improve the prediction quality of the neural network?
 
+# Steepest Gradient Descent
 
-## Steepest Gradient Descent
-
-$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
-\begin{eqnarray*}
+$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$ \begin{eqnarray*}
 \widehat{P_i}&=&\beta_7\\
 &+&\overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
@@ -341,46 +327,65 @@ $$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
 }^{A^{ct}_2}\cdot\beta_9
 \end{eqnarray*}
 
-## Steepest Gradient Descent{.smaller}
+# Steepest Gradient Descent
 
-- Initially $\beta s$ are chosen randomly.
-- Optimizer adjusts $\beta s$ incrementally (iteration by iteration; the iterations are called **epochs**)
+-   Initially $\beta s$ are chosen randomly.
 
-- Each epoch:
-  - Find if individual $\beta$ needs to be increased or decreased.
-    - Increase $\beta_i$ and see if $MSE$ increases or not.
-    - Decrease $\beta_i$ and see if $MSE$ increases or not.
-    - Reset $\beta_i$ and note if $\beta_i$ needs to be increased or decreased.
-    - Repeat for all $\beta s$
-  - Increase/Decrease the $\beta`s$ proportional to the change of $MSE$ they triggered when changed individually --- multiply by learning rate (e.g., 0.01) to keep change small.
-- run process for several hundreds or thousands epochs.
+-   Optimizer adjusts $\beta s$ incrementally (iteration by iteration; the iterations are called **epochs**)
 
-## Example: Approximation Properties of Neural Networks
+-   Each epoch:
+
+    -   Find if individual $\beta$ needs to be increased or decreased.
+        -   Increase $\beta_i$ and see if $MSE$ increases or not.
+        -   Decrease $\beta_i$ and see if $MSE$ increases or not.
+        -   Reset $\beta_i$ and note if $\beta_i$ needs to be increased or decreased.
+        -   Repeat for all $\beta s$
+    -   In/Decrease $\beta`s$ proportional to change of $MSE$ caused --- multiply by learning rate (e.g., 0.01) to keep change small.
+
+-   run process for several hundreds or thousands epochs.»
+
+# Example: Approximation Properties of Neural Networks
 
 Let us run an example to see how well a Neural Network can approximate.
 
-The link to the example is in the footer of this slide.
+In the example we will z-normalize the predictors. 
+
+Are interested why? 
+
+Then use the down-arrow to proceed with the slides. Otherwise, use the left-arrow.
+
+## Why is Scaling of Predictors Needed?
+
+![Logistic Activation Function](Images/LogisticFunction.png)
+
+If inputs are not scaled and if they lead to very big effective inputs, the slope of the activation function will be very close to 0 and different effective inputs are indistinguishable.
+
+::: footer
+:::
+
+
+
+# Example: Approximation Properties of Neural Networks
+
+To run the R-script with an example to see how well a Neural Network can approximate:
+
+Click the link in the footer of this slide.
 
 ::: footer
 See: [Neural Network Appoximation R Script](https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript1.R)
 :::
 
-
-
-## Approximation Properties of Neural Networks
+# Theorem: Approximation Properties of Neural Networks
 
 "Feedforward networks are capable of arbitrarily accurate approximation to any real-valued continuous function over a compact set."
 
-I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well
+I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well.
 
 [Kurt Hornik, Maxwell Stinchcombe and Halber White (1989), p. 361](https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf)
 
+# Intuition: Approximation Properties of Neural Networks
 
-
-
-
-## Intuition: Approximation Properties of Neural Networks
-
+```{=tex}
 \begin{eqnarray*}
 \widehat{y_i}&=&\beta_{10}+
 \overbrace{
@@ -395,12 +400,83 @@ I.e.: Single hidden layer feedforward networks can approximate any measurable fu
 \frac{1}{1+e^{-(\beta_5 x_i + \beta_6)}}
 }^{\mbox{$A^{ct}_3$}}\cdot \beta_9
 \end{eqnarray*}
-
+```
 The app linked in the footer of this slide provides intuition for the Hornik, Stinchcombe, White proof.
-
 
 ::: footer
 See: [Neural Network Appoximation App](https://econ.lange-analytics.com/calcat/horstiwhi)
 :::
+
+# Real World Example to Estimate Diamond Prices
+
+1.  You will use all big *C* variables $Carat$, $Clarity$, $Cut$, and $Color$. <br>$Cut$ describes the quality of the cut of the diamond rated from 1 (lowest) to 6 (highest) and $Color$ rates the color of a diamond from 1 (highest) to 7 (lowest)
+
+2.  Instead of using the `nnet` package, you will use the more advanced `brulee` package which is based on *PyTorch*, which is a Python library originally developed by *Facebook*.
+
+3.  We will tune the hyper-parameters of the neural network (e.g., the number of hidden units) using *cross validation*.
+
+# Major Differences: `nnet` and `brulee`/`PyTorch`
+
+
+- `brulee` uses internally stop learning.
+  - `epoch` setting refers to maximum *epochs* 
+  - from the *training* data set a *validation* set is held back.
+  - when *validation error* stops decreasing for 5 epochs training is stopped.
+- `brulee` allows to use **ReLu Activation Functions**
+
+# ReLu Activation Function
+$$Act_i=max\left (0, I_i^{eff}\right )$$
+```{r}
+FctReLu=function(x){y=ifelse(x>0,x,0)
+return(y)
+}
+ggplot()+
+  xlim(-10, 10)+
+geom_function(fun = FctReLu, color="blue", size=1.2)+
+  xlab("Effective Input")+
+  ylab("Activity")
+```
+
+Two *ReLU* functions can be combined into one step function similar to *sigmoid* functions. 
+
+See the link in the footer for a demo.
+
+::: footer
+
+See: [Combine two ReLu functions into one step function](https://econ.lange-analytics.com/calcat/relu)
+
+:::
+
+# Logistic Activation Function: Problem of Vanishing Gradient
+
+![Logistic Activation Function](Images/LogisticFunction.png)
+
+Even when activation is determined somewhere in the middle of the activation function the slope is smaller than one. With multiple layers this can propagate to a gradient that is zero because slopes from multiple layers are multiplied (chain rule). 
+
+# ReLu Activation Function: No Problem of Vanishing Gradient
+
+
+$$Act_i=max\left (0, I_i^{eff}\right )$$
+```{r}
+FctReLu=function(x){y=ifelse(x>0,x,0)
+return(y)
+}
+ggplot()+
+  xlim(-10, 10)+
+geom_function(fun = FctReLu, color="blue", size=1.2)+
+  xlab("Effective Input")+
+  ylab("Activity")
+```
+
+*ReLu* has a slope of one.
+
+# Now It's Time to Run the Real-World Analysis
+
+Go to the AI Book in the link in the footer below and you will find the analysis at the end of the Neural Network chapter.
+
+Alternatively you can run uncommented R-script with the same code here:
+
+[Neural Network Real World Application](https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript2.R)
+
 
 
