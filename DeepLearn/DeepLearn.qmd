@@ -167,7 +167,8 @@ $$
 
 ![](Images/InpEff1.png){.fragment .absolute left="470" top="278"} ![](Images/InpEff2.png){.fragment .absolute left="470" top="550"}
 
-# Transformation From Neural Network to Prediction Equation {.smaller}
+# Transformation From Neural Network to Prediction Equation
+
 
 **Between the Input and the Hidden Layer:**
 
@@ -185,16 +186,18 @@ $$
 
 . . .
 
-$$
-\widehat{P_i}=\beta_7+
+\begin{eqnarray*}
+\widehat{P_i}&=&\beta_7+
 \overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
-}^{A^{ct}_1}\cdot \beta_8
-+
+}^{A^{ct}_1}\cdot \beta_8\\
+&&+
 \overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9
-$$
+\end{eqnarray*}
+
+
 
 # If we know the $\beta s$ We Can Generate Predictions!
 
@@ -316,7 +319,9 @@ This raises the question: <br><br>
 
 # Steepest Gradient Descent
 
-$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$ \begin{eqnarray*}
+$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$ 
+
+\begin{eqnarray*}
 \widehat{P_i}&=&\beta_7\\
 &+&\overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
@@ -327,7 +332,23 @@ $$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$ \begin{eqnarray*}
 }^{A^{ct}_2}\cdot\beta_9
 \end{eqnarray*}
 
-# Steepest Gradient Descent
+# Steepest Gradient Descent {.smaller}
+
+$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$ 
+
+
+\begin{eqnarray*}
+MSE= \frac{\sum^N_{i=1}\left(\widehat P_i - 
+\left (\underbrace{\beta_7
++\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{A^{ct}_1}\cdot \beta_8
++\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{A^{ct}_2}\cdot\beta_9}_{P_i}  \right ) \right )^2}{N}
+\end{eqnarray*}
+
+# Steepest Gradient Descent {.smaller .scrollable}
 
 -   Initially $\beta s$ are chosen randomly.
 
@@ -352,7 +373,9 @@ In the example we will z-normalize the predictors.
 
 Are interested why? 
 
-Then use the down-arrow to proceed with the slides. Otherwise, use the left-arrow.
+Then use the **down-arrow** to proceed with the slides. 
+
+Otherwise, use the **left-arrow**.
 
 ## Why is Scaling of Predictors Needed?
 
@@ -472,11 +495,11 @@ geom_function(fun = FctReLu, color="blue", size=1.2)+
 
 # Now It's Time to Run the Real-World Analysis
 
-Go to the AI Book in the link in the footer below and you will find the analysis at the end of the Neural Network chapter.
+Go to the AI Book and find the analysis at the end of the Neural Network chapter:
 
-Alternatively you can run uncommented R-script with the same code here:
-
-[Neural Network Real World Application](https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript2.R)
+[Neural Network Real World Application](https://econ.lange-analytics.com/aibook/)
+<br><br>
+Alternatively you can run an uncommented R-script with the same code [here](https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript2.R).
 
 
 

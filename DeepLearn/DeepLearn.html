@@ -586,7 +586,7 @@
 <p><img data-src="Images/InpEff1.png" class="fragment absolute" style="top: 278px; left: 470px; "> <img data-src="Images/InpEff2.png" class="fragment absolute" style="top: 550px; left: 470px; "></p>
 </section>
 
-<section id="transformation-from-neural-network-to-prediction-equation-5" class="title-slide slide level1 smaller center">
+<section id="transformation-from-neural-network-to-prediction-equation-5" class="title-slide slide level1 center">
 <h1>Transformation From Neural Network to Prediction Equation</h1>
 <p><strong>Between the Input and the Hidden Layer:</strong></p>
 <p><span class="math display">\[\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2\]</span></p>
@@ -600,16 +600,16 @@
 }^{A^{ct}_1}\cdot\beta_9
 \]</span></p>
 <div class="fragment">
-<p><span class="math display">\[
-\widehat{P_i}=\beta_7+
+<p><span class="math display">\[\begin{eqnarray*}
+\widehat{P_i}&amp;=&amp;\beta_7+
 \overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
-}^{A^{ct}_1}\cdot \beta_8
-+
+}^{A^{ct}_1}\cdot \beta_8\\
+&amp;&amp;+
 \overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9
-\]</span></p>
+\end{eqnarray*}\]</span></p>
 </div>
 </section>
 
@@ -728,7 +728,8 @@
 
 <section id="steepest-gradient-descent" class="title-slide slide level1 center">
 <h1>Steepest Gradient Descent</h1>
-<p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span> <span class="math display">\[\begin{eqnarray*}
+<p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span></p>
+<p><span class="math display">\[\begin{eqnarray*}
 \widehat{P_i}&amp;=&amp;\beta_7\\
 &amp;+&amp;\overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
@@ -740,7 +741,22 @@
 \end{eqnarray*}\]</span></p>
 </section>
 
-<section id="steepest-gradient-descent-1" class="title-slide slide level1 center">
+<section id="steepest-gradient-descent-1" class="title-slide slide level1 smaller center">
+<h1>Steepest Gradient Descent</h1>
+<p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span></p>
+<p><span class="math display">\[\begin{eqnarray*}
+MSE= \frac{\sum^N_{i=1}\left(\widehat P_i -
+\left (\underbrace{\beta_7
++\overbrace{
+\frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
+}^{A^{ct}_1}\cdot \beta_8
++\overbrace{
+\frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
+}^{A^{ct}_2}\cdot\beta_9}_{P_i}  \right ) \right )^2}{N}
+\end{eqnarray*}\]</span></p>
+</section>
+
+<section id="steepest-gradient-descent-2" class="title-slide slide level1 smaller scrollable center">
 <h1>Steepest Gradient Descent</h1>
 <ul>
 <li class="fragment"><p>Initially <span class="math inline">\(\beta s\)</span> are chosen randomly.</p></li>
@@ -766,7 +782,8 @@
 <p>Let us run an example to see how well a Neural Network can approximate.</p>
 <p>In the example we will z-normalize the predictors.</p>
 <p>Are interested why?</p>
-<p>Then use the down-arrow to proceed with the slides. Otherwise, use the left-arrow.</p>
+<p>Then use the <strong>down-arrow</strong> to proceed with the slides.</p>
+<p>Otherwise, use the <strong>left-arrow</strong>.</p>
 </section>
 <section id="why-is-scaling-of-predictors-needed" class="slide level2">
 <h2>Why is Scaling of Predictors Needed?</h2>
@@ -862,9 +879,8 @@
 
 <section id="now-its-time-to-run-the-real-world-analysis" class="title-slide slide level1 center">
 <h1>Now It’s Time to Run the Real-World Analysis</h1>
-<p>Go to the AI Book in the link in the footer below and you will find the analysis at the end of the Neural Network chapter.</p>
-<p>Alternatively you can run uncommented R-script with the same code here:</p>
-<p><a href="https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript2.R">Neural Network Real World Application</a></p>
+<p>Go to the AI Book and find the analysis at the end of the Neural Network chapter:</p>
+<p><a href="https://econ.lange-analytics.com/aibook/">Neural Network Real World Application</a> <br><br> Alternatively you can run uncommented R-script with the same code <a href="https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript2.R">here</a>.</p>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
