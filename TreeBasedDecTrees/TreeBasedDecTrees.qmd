@@ -1,0 +1,70 @@
+---
+title: "Tree Based Models"
+subtitle: "TDecision Trees"
+format: 
+  revealjs:
+    code-fold: true
+---
+
+## Introduction 
+
+- Decision Trees can be used for 
+  - Classification
+  - Regression
+  
+- Decision Trees can be used as standalone algorithms (this is what we do here)
+
+- Decision Trees can be used as components for other models such as:
+  - Random Forest Models
+  - Boosted Tree Models
+
+
+## Introducing the Idea of Decision Trees with the Titanic Dataset
+
+```{r}
+#| echo: true
+library(rio); library(tidymodels); library(janitor)
+DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv") %>% 
+            clean_names("upper_camel") %>%
+             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) %>%
+             mutate(Survived=as.factor(Survived))
+
+set.seed(777)
+Split7525=initial_split(DataTitanic, strata = Survived)
+
+DataTrain=training(Split7525)
+DataTest=testing(Split7525)
+
+print(as_tibble(DataTrain))
+```
+
+## Generating a Decision Tree with `tidymodels`
+
+Note, `rpart` package needs to be installed. `tidymodels` loads the `rpart` package automatically. Therefore `library(rpart)` is not needed.
+
+```{r}
+#| echo: true
+ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
+                    set_engine("rpart") %>% 
+                    set_mode("classification")
+  
+RecipeTitanic=recipe(Survived~., data=DataTrain)
+
+set.seed(777)
+WfModelTitanic=workflow() %>% 
+               add_model(ModelDesignDecTree) %>% 
+               add_recipe(RecipeTitanic) %>% 
+               fit(DataTrain)
+print(WfModelTitanic)
+```
+
+## Displaying the Decision Tree with `rpart.plot`
+
+Note, `rpart.plot` package needs to be installed and loaed with `library(rpart.plot)`.
+
+```{r}
+#| echo: true
+library(rpart.plot)
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
