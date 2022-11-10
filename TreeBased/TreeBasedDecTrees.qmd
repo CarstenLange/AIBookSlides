@@ -1,0 +1,461 @@
+---
+title: "Tree Based Models"
+subtitle: "Decision Trees"
+format: 
+  revealjs:
+    code-fold: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Introduction
+
+-   Decision Trees can be used for
+
+    -   Classification
+    -   Regression
+
+-   Decision Trees can be used as standalone algorithms (this is what we
+    do here)
+
+-   Decision Trees can be used as components for other models such as:
+
+    -   Random Forest Models
+    -   Boosted Tree Models
+
+## Introducing the Idea of Decision Trees with the Titanic Dataset
+
+```{r}
+#| echo: true
+library(rio); library(tidymodels); library(janitor)
+library(kableExtra)
+DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv") %>% 
+            clean_names("upper_camel") %>%
+             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) %>%
+             mutate(Survived=as.factor(Survived))
+
+set.seed(777)
+Split7525=initial_split(DataTitanic, strata = Survived)
+
+DataTrain=training(Split7525)
+DataTest=testing(Split7525)
+
+kbl(DataTrain[1:5,])
+```
+
+## Generating a Decision Tree with `tidymodels`
+
+Note, `rpart` package needs to be installed. `tidymodels` loads the
+`rpart` package automatically. Therefore `library(rpart)` is not needed.
+
+```{r}
+#| echo: true
+ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
+                    set_engine("rpart") %>% 
+                    set_mode("classification")
+  
+RecipeTitanic=recipe(Survived~., data=DataTrain)
+
+set.seed(777)
+WfModelTitanic=workflow() %>% 
+               add_model(ModelDesignDecTree) %>% 
+               add_recipe(RecipeTitanic) %>% 
+               fit(DataTrain)
+print(WfModelTitanic)
+```
+
+## Displaying the Decision Tree with `rpart.plot`
+
+Note, `rpart.plot` package needs to be installed and loaded with
+`library(rpart.plot)`.
+
+```{r}
+#| echo: true
+library(rpart.plot)
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
+## Nodes in the Decision Tree (ignore decision rules for now) {.smaller}
+
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
+-   Nodes are like containers holding all or some of the training data
+    -   *root* node holds all training records.
+    -   moving down the tree *parent nodes* get split into *child nodes*
+-   `RPart` nodes show three types of information.»
+
+## Nodes in the Decision Tree --- The Optimizer Created Decision Rules {.smaller}
+
+Let us follow the last observation in `DataTrain`
+
+```{r}
+kbl(tail(DataTrain, n=1))
+```
+
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
+## Nodes in the Decision Tree --- Interpreting Terminal Rules
+
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
+## Nodes in the Decision Tree --- Stylized Facts {.smaller}
+
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
+1.  Adult male passengers, regardless of the class and fare, had only a
+    survival rate of 17%.
+
+2.  Female passengers, regardless of age and not considering the class
+    or the fare, had a survival chance of 73%.
+
+3.  Considering the class female passengers traveled in (regardless of
+    age), the survival rate was 95% for First or Second Class.
+
+## Nodes in the Decision Tree --- Not all Decision Rules Make Sense {.smaller}
+
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
+For example:
+
+-   Females traveling in Third Class have a survival rate of 49% (**this
+    makes sense**)
+
+-   Next split **does not make much sense:**
+
+    -   Fare greater or equal to 23 British Pounds survival rate only
+        5%.
+    -   In contrast, lower fare had a survival rate of 60%.
+
+## Predicting Testing Data with a Decision Tree {.smaller}
+
+::: columns
+::: {.column width="57%"}
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+:::
+
+::: {.column width="43%"}
+```{r }
+kbl(DataTest %>% filter(Sex=="male", Age==9, Class==3, Survived==1), caption="Predicting Survival (9-year Old Boy in Third Class)")
+```
+:::
+:::
+
+Prediction: `Not Survived`
+
+Observation is a `false positive` (0=:positive class)
+
+## Predicting all Testing Data with a Decision Tree --- Pediction {.smaller}
+
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+
+```{r}
+#| echo: true
+DataTestWithPred=augment(WfModelTitanic, new_data =  DataTest)
+head(DataTestWithPred)
+```
+
+## Predicting all Testing Data with a Decision Tree --- Metrics
+
+```{r}
+#| echo: true
+#| code-fold: false
+DataTestWithPred=augment(WfModelTitanic, new_data =  DataTest)
+```
+
+<br>
+
+. . .
+
+```{r}
+#| echo: true
+#| code-fold: false
+conf_mat(DataTestWithPred, truth = Survived, estimate = .pred_class)
+```
+
+<br>
+
+. . .
+
+```{r}
+#| echo: true
+#| code-fold: false
+metricSetTitanic=metric_set(accuracy, sensitivity, specificity)
+metricSetTitanic(DataTestWithPred, truth = Survived, estimate = .pred_class)
+```
+
+## How are the Decision Rules Determined? {.smaller}
+
+::: columns
+::: {.column width="60%"}
+```{r}
+rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
+```
+:::
+
+::: {.column width="40%"}
+The short answer: **by the *Optimizer*.**
+
+-   Decision rules are determined from the top down to the bottom.
+
+-   Regardless of decision rule on next level.
+
+    -   No turning back reversing decision rule on higher level. 
+    - *greedy algorithm*
+
+-   Decision rules consists of two components:
+
+    i)  the **splitting variable**,
+
+    ii) the **splitting value** (e.g., `Age` for splitting (here:
+        `Age>=13` for `yes`)
+:::
+:::
+
+. . .
+
+*Optimizer* compares all *splitting variables* and all possible *splitting values* to find **best
+decision rule**.
+
+::: footer
+
+:::
+
+## Criteria to Quantify Quality of  Decision Rules
+
+**How can we determine if a decision rule is good?**
+
+Common criteria for categorical outcomes: 
+
+- *Information Gain* 
+
+- *Chi-Square* 
+
+- **Gini Impurity** used by `RPart` »
+
+## How are the Decision Rules Determined? --- Gini Impurity Criterium
+
+<br><br> **Gini Impurity** is calculated for an individual node and
+estimates " (...) the probability that two entities taken at random from
+the dataset of interest (with replacement) represent (...) different
+types." <br> (Wikipedia contributors. 2022. "Diversity Index ---
+Wikipedia, the Free Encyclopedia.")
+
+## Criteria to Assess Decision Rules --- Gini Impurity
+
+<br> \begin{align}
+G^{Imp}&= 1- \overbrace{(P_{Surv.}^2 + 
+\underbrace{P_{Not Surv.}^2}_{(1-P_{Surv.})^2})}^{\text{Prob. for 2  identical outcomes}}
+\end{align}  
+$P_{Surv.}:=$ Proportion Surv. <br> and <br>
+$P_{Not Surv.}:=$ Proportion Not Surv.
+
+## Criteria to Assess Decision Rules --- Gini Impurity
+
+```{=tex}
+\begin{align}
+G^{Imp}&= 1- \left (P_{Surv.}^2 + (1-P_{Surv.})^2\right ) \nonumber \\
+G^{Imp}&= 1- P_{Surv.}^2 - 1+2P_{Surv.}-P_{Surv.}^2 \nonumber \\
+G^{Imp}&= 2P_{Surv.}-2P_{Surv.}^2 \nonumber \\
+G^{Imp}&= 2 P_{Surv.} (1-P_{Surv.})
+\end{align}
+```
+## Quantifying Quality of Decision Rules --- Gini Impurity
+
+```{=tex}
+\begin{align}
+G^{Imp}&= 2 P_{Surv.} (1-P_{Surv.}) 
+\end{align}
+```
+**Purest Possible Node:**
+
+-   Only *Survived* observations: $P_{Surv.}=1$ and $(1-P_{Surv.})=0$
+-   *or*
+-   only *Not Survived* observations: $P_{Surv.}=0$ and
+    $(1-P_{Surv.})=1$
+-   **In any case:** $G^{Imp}=0$\
+    (probability of drawing two different outcomes = 0)
+
+## Quantifying Quality of Decision Rules --- Gini Impurity
+
+```{=tex}
+\begin{align}
+G^{Imp}&= 2 P_{Surv.} (1-P_{Surv.}) 
+\end{align}
+```
+**Impurest Possible Node:**
+
+-   Equal amount of *Survived* and *Not Survived* observations:\
+    $P_{Surv.}=0.5$ and $(1-P_{Surv.})=0.5$
+
+-   $G^{Imp}=2 \cdot 0.25 \cdot 0.25=0.5$\
+    (Note, $G^{Imp}=0.5$ is maximum for Gini Impurity for 2 categories)
+
+## Determining Impurity for Root's Parent and Child Nodes
+
+::: columns
+::: {.column width="40%"}
+![](Images/DeTreeFirstLevelOnly.png){fig-alt="Root node of decision tree with child nodes"}
+:::
+
+::: {.column width="60%"}
+```{=tex}
+\begin{align}
+G^{Imp}&= 2 P_{Surv.} (1-P_{Surv.}) \\
+\\
+G^{Imp}_{root}&= 2 \cdot 0.39 \cdot 0.61 =  0.48\\
+\\
+G^{Imp}_{YesChild}&= 2 \cdot 0.20 \cdot 0.80 =  0.32\\
+G^{Imp}_{NoChild}&= 2 \cdot 0.73 \cdot 0.27 =  0.39\\
+\\
+G^{Imp}_{AvgChild}&= 0.64 \cdot  0.32 + 0.36 \cdot 0.39\\
+&= 0.35
+\end{align}
+```
+:::
+:::
+
+## Real World Data with a Decision Tree
+
+Predicting vaccination rates in the U.S. based on data from September 2021. 
+
+- Outcome variable: Percentage of fully vaccinated (two shots) people ($PercVacFull$).
+
+- Data from 2,630 continental U.S. counties.
+
+## Real World Data with a Decision Tree --- Predictor Variables {.smaller}
+
+- Race/Ethnicity:
+
+  - Counties' proportion African Americans ($PercBlack$), 
+  - Counties' proportion Asian Americans ($PercAsian$), and 
+  - Counties' proportion Hispanics ($PercHisp$)
+
+- Political Affiliation (Presidential election 2020): 
+  
+  - Counties' proportion Republican votes ($PercRep$)
+
+- Age Groups in Counties: 
+  
+  - Counties' proportion young adults (20-25 years);  $PercYoung25$
+  
+  - Counties' proportion older adults (65 years and older); $PercOld65$)
+
+- Income related: 
+  - Proportion of households receiving food stamps ($PercFoodSt$)
+
+## Loading the Data and Assigning Training and Testing Data{.smaller}
+
+```{r }
+#| echo: true
+DataVax=import("C:/calpoly/aIBOOK/data/DataVax.rds") %>%   
+        select(County, State, PercVacFull, PercRep,
+              PercAsian, PercBlack, PercHisp,
+              PercYoung25, PercOld65, PercFoodSt)
+
+set.seed(2021)
+Split85=DataVax %>% initial_split(prop = 0.85,
+                                 strata = PercVacFull,
+                                 breaks = 3)
+
+DataTrain=training(Split85) %>% select(-County, -State)
+DataTest=testing(Split85) %>% select(-County, -State)
+kbl(head(DataVax))
+```
+
+## Creating Model Design, Recipe, and Fitted Workflow
+
+```{r }
+#| echo: true
+ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
+                    set_engine("rpart") %>%  
+                    set_mode("regression")
+  
+RecipeVax=recipe(PercVacFull~., data=DataTrain)
+
+WfModelVax=workflow() %>% 
+               add_model(ModelDesignDecTree) %>% 
+               add_recipe(RecipeVax) %>% 
+               fit(DataTrain)
+print(WfModelVax)
+```
+
+
+## Decision Tree for the Vacciantion Model
+```{r}
+#| echo: true
+rpart.plot(extract_fit_engine(WfModelVax),roundint=FALSE)
+```
+
+What is difference compared to a classigication model?
+
+- Terminal node stimates now continous variable.
+- Variance instead of Gini Impurity
+
+
+## Metrics for the Decision Tree Vaccination Model
+
+```{r}
+#| echo: true
+DataTestWithPred=augment(WfModelVax, new_data=DataTest)
+metrics(DataTestWithPred, truth=PercVacFull, estimate=.pred)
+```
+
+## Instability of Decision Trees
+
+```{r }
+#| echo: true
+set.seed(777)
+Split85=DataVax %>% initial_split(prop = 0.85,
+                                 strata = PercVacFull,
+                                 breaks = 3)
+
+DataTrain=training(Split85) %>% select(-County, -State)
+DataTest=testing(Split85) %>% select(-County, -State)
+
+
+ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
+                    set_engine("rpart") %>%  
+                    set_mode("regression")
+  
+RecipeVax=recipe(PercVacFull~., data=DataTrain)
+
+WfModelVax=workflow() %>% 
+               add_model(ModelDesignDecTree) %>% 
+               add_recipe(RecipeVax) %>% 
+               fit(DataTrain)
+rpart.plot(extract_fit_engine(WfModelVax),roundint=FALSE)
+```
+
+## Metrics for the (slightly) Changed Decision Tree Vaccination Model
+
+```{r}
+#| echo: true
+DataTestWithPred=augment(WfModelVax, new_data=DataTest)
+metrics(DataTestWithPred, truth=PercVacFull, estimate=.pred)
+```
+
+## When and When Not to Use Decision Trees
+
+-   As as standalone model *Decision Trees* should not be used for predictions. Here sis why:
+
+    -   Desision Trees respond very sensitive to change in hyperparamters such as the tree depth. The structure of the tree can change and also tee predictions.
+    -   Desision Trees respond very sensitive to a change in the data. When choosing different training data (e.g., by changing the `set.seed()`) the structure of the tree can change and also the predictions.
+
+-   Decision Trees have an educational value when explaining more advanced tree based models like ...
+
+-   Using Decision Trees as components of more advanced models like RF boost trees leads often to very good predictive results
