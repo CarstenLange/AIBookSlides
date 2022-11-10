@@ -91,4 +91,15 @@
         <asset name="Download PDF">DeepLearn/DeepLearn.pdf</asset>
         <asset name="Download Presentation's Source Code">DeepLearn.zip</asset>
     </version> 
+    <version>
+        <name>Tree Based - Decicision Tree</name>
+        <description>
+            This presentation introduces the Neural Networks and how 
+            the hyper-parameters of a Neural Network can be tuned 
+            to avoid overlearning.
+        </description>
+        <asset name="View online (recommended)" type="web">TreeBased/TreeBasedDecTrees.html</asset>
+        <asset name="Download PDF">TreeBased/TreeBasedDecTrees.pdf</asset>
+        <asset name="Download Presentation's Source Code (coming soon)">TreeBased.zip</asset>
+    </version> 
 </versions>
