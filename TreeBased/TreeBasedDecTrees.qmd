@@ -403,8 +403,68 @@ rpart.plot(extract_fit_engine(WfModelVax),roundint=FALSE)
 
 What is difference compared to a classigication model?
 
-- Terminal node stimates now continous variable.
+- Terminal node estimates now continous variable.
 - Variance instead of Gini Impurity
+
+##
+
+```{r}
+DataPlot=DataTrain
+MeanAll=mean(DataPlot$PercVacFull)
+StdAll=sd(DataPlot$PercVacFull)
+DataRep68=filter(DataPlot, PercRep>=0.68)
+DataDem68=filter(DataPlot, PercRep<0.68)
+MeanRep68=mean(DataRep68$PercVacFull)
+StdRep68=sd(DataRep68$PercVacFull)
+MeanDem68=mean(DataDem68$PercVacFull)
+StdDem68=sd(DataDem68$PercVacFull)
+ggplot(aes(x=PercVacFull, y="", color=PercRep>=0.68), data=DataPlot)+
+  geom_jitter()+
+  geom_vline(xintercept = MeanDem68, color="red", size=2)+
+  geom_vline(xintercept = MeanRep68, color="blue", size=2)+
+  geom_vline(xintercept = MeanAll, color="black", size=2)+
+  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)+
+  geom_segment(aes(x=MeanRep68-StdRep68,y=1.2, xend=MeanRep68+StdRep68, yend=1.2), color= "blue", size=2)+
+  geom_segment(aes(x=MeanDem68-StdDem68,y=0.8, xend=MeanDem68+StdDem68, yend=0.8), color= "red", size=2)
+PlotVar=ggplot(aes(x=PercVacFull, y="", color="black"), data=DataPlot)+
+  geom_jitter()+
+  geom_vline(xintercept = MeanAll, color="black", size=2)+
+  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)
+PlotVar
+```
+# e
+
+```{r}
+PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=0.68), data=DataPlot)+
+  geom_jitter()+
+  geom_vline(xintercept = MeanAll, color="black", size=2)+
+  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)
+PlotVar
+```
+
+
+# A
+
+```{r}
+PlotVar=PlotVar+
+  geom_vline(xintercept = MeanDem68, color="red", size=2)+
+  geom_vline(xintercept = MeanRep68, color="blue", size=2)+
+  geom_segment(aes(x=MeanRep68-StdRep68,y=1.2, xend=MeanRep68+StdRep68, yend=1.2), color= "blue", size=2)+
+  geom_segment(aes(x=MeanDem68-StdDem68,y=0.8, xend=MeanDem68+StdDem68, yend=0.8), color= "red", size=2)
+
+PlotVar
+```
+# A
+
+```{r}
+PlotVar=PlotVar+
+  geom_vline(xintercept = MeanDem68, color="red", size=2)+
+  geom_vline(xintercept = MeanRep68, color="blue", size=2)+
+  geom_segment(aes(x=MeanRep68-StdRep68,y=1.2, xend=MeanRep68+StdRep68, yend=1.2), color= "blue", size=2)+
+  geom_segment(aes(x=MeanDem68-StdDem68,y=0.8, xend=MeanDem68+StdDem68, yend=0.8), color= "red", size=2)
+
+PlotVar
+```
 
 
 ## Metrics for the Decision Tree Vaccination Model
