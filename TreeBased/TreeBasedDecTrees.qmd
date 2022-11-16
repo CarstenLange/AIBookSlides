@@ -8,6 +8,9 @@ editor:
   markdown: 
     wrap: 72
 ---
+```{r}
+DraftModeCL=FALSE # jitter plot takes a long time. DraftMode=TRUE skips it. 
+```
 
 ## Introduction
 
@@ -83,7 +86,7 @@ rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
 ```
 
 -   Nodes are like containers holding all or some of the training data
-    -   *root* node holds all training records.
+    -   *root* node holds all training observations.
     -   moving down the tree *parent nodes* get split into *child nodes*
 -   `RPart` nodes show three types of information.»
 
@@ -99,7 +102,7 @@ kbl(tail(DataTrain, n=1))
 rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
 ```
 
-## Nodes in the Decision Tree --- Interpreting Terminal Rules
+## Nodes in the Decision Tree --- Interpreting Terminal Nodes
 
 ```{r}
 rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
@@ -135,7 +138,7 @@ For example:
 
     -   Fare greater or equal to 23 British Pounds survival rate only
         5%.
-    -   In contrast, lower fare had a survival rate of 60%.
+    -   In contrast, lower fare had a survival rate of 60%.»
 
 ## Predicting Testing Data with a Decision Tree {.smaller}
 
@@ -155,9 +158,9 @@ kbl(DataTest %>% filter(Sex=="male", Age==9, Class==3, Survived==1), caption="Pr
 
 Prediction: `Not Survived`
 
-Observation is a `false positive` (0=:positive class)
+Observation is a `false positive` (0=:positive class)»
 
-## Predicting all Testing Data with a Decision Tree --- Pediction {.smaller}
+## Predicting all Testing Data with a Decision Tree --- Prediction {.smaller}
 
 ```{r}
 rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
@@ -229,7 +232,7 @@ The short answer: **by the *Optimizer*.**
 . . .
 
 *Optimizer* compares all *splitting variables* and all possible *splitting values* to find **best
-decision rule**.
+decision rule**.»
 
 ::: footer
 
@@ -305,6 +308,10 @@ G^{Imp}&= 2 P_{Surv.} (1-P_{Surv.})
 -   $G^{Imp}=2 \cdot 0.25 \cdot 0.25=0.5$\
     (Note, $G^{Imp}=0.5$ is maximum for Gini Impurity for 2 categories)
 
+. . .
+
+**Probability of drawing two different outcomes = 0.5**
+
 ## Determining Impurity for Root's Parent and Child Nodes
 
 ::: columns
@@ -331,11 +338,11 @@ G^{Imp}_{AvgChild}&= 0.64 \cdot  0.32 + 0.36 \cdot 0.39\\
 
 ## Real World Data with a Decision Tree
 
-Predicting vaccination rates in the U.S. based on data from September 2021. 
+Predicting vaccination rates in the U.S. based on data from September 2021:
 
 - Outcome variable: Percentage of fully vaccinated (two shots) people ($PercVacFull$).
 
-- Data from 2,630 continental U.S. counties.
+- Data from 2,630 continental U.S. counties.»
 
 ## Real World Data with a Decision Tree --- Predictor Variables {.smaller}
 
@@ -353,10 +360,10 @@ Predicting vaccination rates in the U.S. based on data from September 2021.
   
   - Counties' proportion young adults (20-25 years);  $PercYoung25$
   
-  - Counties' proportion older adults (65 years and older); $PercOld65$)
+  - Counties' proportion older adults (65 years and older); $PercOld65$
 
 - Income related: 
-  - Proportion of households receiving food stamps ($PercFoodSt$)
+  - Proportion of households receiving food stamps ($PercFoodSt$)»
 
 ## Loading the Data and Assigning Training and Testing Data{.smaller}
 
@@ -401,71 +408,199 @@ print(WfModelVax)
 rpart.plot(extract_fit_engine(WfModelVax),roundint=FALSE)
 ```
 
-What is difference compared to a classigication model?
+What is difference compared to a classification model?
 
 - Terminal node estimates now continous variable.
 - Variance instead of Gini Impurity
 
-##
-
+## Variance Reduction Explained {transition="fade-in fade-out"}
 ```{r}
-DataPlot=DataTrain
+DataPlot=DataTrain %>% filter(PercVacFull<=1)
+SplitVal=0.68
 MeanAll=mean(DataPlot$PercVacFull)
 StdAll=sd(DataPlot$PercVacFull)
-DataRep68=filter(DataPlot, PercRep>=0.68)
-DataDem68=filter(DataPlot, PercRep<0.68)
-MeanRep68=mean(DataRep68$PercVacFull)
-StdRep68=sd(DataRep68$PercVacFull)
-MeanDem68=mean(DataDem68$PercVacFull)
-StdDem68=sd(DataDem68$PercVacFull)
-ggplot(aes(x=PercVacFull, y="", color=PercRep>=0.68), data=DataPlot)+
+DataRep=filter(DataPlot, PercRep>=SplitVal)
+DataDem=filter(DataPlot, PercRep<SplitVal)
+MeanRep=mean(DataRep$PercVacFull)
+StdRep=sd(DataRep$PercVacFull)
+MeanDem=mean(DataDem$PercVacFull)
+StdDem=sd(DataDem$PercVacFull)
+PropDem=nrow(DataDem)/nrow(DataPlot)
+PropRep=nrow(DataRep)/nrow(DataPlot)
+
+PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)+
   geom_jitter()+
-  geom_vline(xintercept = MeanDem68, color="red", size=2)+
-  geom_vline(xintercept = MeanRep68, color="blue", size=2)+
+  scale_color_manual(values = c("grey", "grey"))+
   geom_vline(xintercept = MeanAll, color="black", size=2)+
   geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)+
-  geom_segment(aes(x=MeanRep68-StdRep68,y=1.2, xend=MeanRep68+StdRep68, yend=1.2), color= "blue", size=2)+
-  geom_segment(aes(x=MeanDem68-StdDem68,y=0.8, xend=MeanDem68+StdDem68, yend=0.8), color= "red", size=2)
-PlotVar=ggplot(aes(x=PercVacFull, y="", color="black"), data=DataPlot)+
-  geom_jitter()+
-  geom_vline(xintercept = MeanAll, color="black", size=2)+
-  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)
-PlotVar
+  geom_label(
+    label=paste0("Std:",round(StdAll,4)), 
+    x=0.8,
+    y=1,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
+if(!DraftModeCL) {PlotVar}
 ```
-# e
+
+## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
 
 ```{r}
-PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=0.68), data=DataPlot)+
-  geom_jitter()+
+PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)+
+  scale_color_manual(values = c("blue", "red"))+
+  geom_jitter(alpha=0.2)+
   geom_vline(xintercept = MeanAll, color="black", size=2)+
-  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)
-PlotVar
+  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)+
+  geom_label(
+    label=paste0("Std:",round(StdAll,4)), 
+    x=0.8,
+    y=1,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
+if(!DraftModeCL) {PlotVar}
 ```
 
 
-# A
+## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
 
 ```{r}
 PlotVar=PlotVar+
-  geom_vline(xintercept = MeanDem68, color="red", size=2)+
-  geom_vline(xintercept = MeanRep68, color="blue", size=2)+
-  geom_segment(aes(x=MeanRep68-StdRep68,y=1.2, xend=MeanRep68+StdRep68, yend=1.2), color= "blue", size=2)+
-  geom_segment(aes(x=MeanDem68-StdDem68,y=0.8, xend=MeanDem68+StdDem68, yend=0.8), color= "red", size=2)
+  geom_vline(xintercept = MeanDem, color="blue", size=2)+
+  geom_vline(xintercept = MeanRep, color="red", size=2)+
+  geom_segment(aes(x=MeanRep-StdRep,y=0.7, xend=MeanRep+StdRep, yend=0.7), color= "red", size=2)+
+  geom_label(
+    label=paste0("Std:",round(StdRep,4)), 
+    x=0.8,
+    y=0.7,
+    color = "black",
+    fill="#69b3a2")+
+  geom_segment(aes(x=MeanDem-StdDem,y=0.8, xend=MeanDem+StdDem, yend=0.8), color= "blue", size=2)+
+  geom_label(
+    label=paste0("Std:",round(StdDem,4)), 
+    x=0.8,
+    y=0.8,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
 
-PlotVar
+if(!DraftModeCL) {PlotVar}
 ```
-# A
+
+## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
 
 ```{r}
 PlotVar=PlotVar+
-  geom_vline(xintercept = MeanDem68, color="red", size=2)+
-  geom_vline(xintercept = MeanRep68, color="blue", size=2)+
-  geom_segment(aes(x=MeanRep68-StdRep68,y=1.2, xend=MeanRep68+StdRep68, yend=1.2), color= "blue", size=2)+
-  geom_segment(aes(x=MeanDem68-StdDem68,y=0.8, xend=MeanDem68+StdDem68, yend=0.8), color= "red", size=2)
+  geom_segment(aes(x=MeanAll-(PropRep*StdRep+PropDem*StdDem),y=1.1, 
+                    xend=MeanAll+(PropRep*StdRep+PropDem*StdDem), yend=1.1), 
+                    color= "blue", size=3.7)+
+  geom_segment(aes(x=MeanAll-(PropRep*StdRep+PropDem*StdDem),y=1.1, 
+                    xend=MeanAll+(PropRep*StdRep+PropDem*StdDem), yend=1.1), 
+                    color= "red", size=3.7, linetype = "dashed")+
+  geom_label(
+    label=paste0("Std:",round(PropRep*StdRep+PropDem*StdDem,4)), 
+    x=0.8,
+    y=1.1,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
 
-PlotVar
+if(!DraftModeCL) {PlotVar}
 ```
 
+## Variance Reduction Explained {transition="fade-in fade-out"}
+```{r}
+SplitVal=0.5
+DataRep=filter(DataPlot, PercRep>=SplitVal)
+DataDem=filter(DataPlot, PercRep<SplitVal)
+MeanRep=mean(DataRep$PercVacFull)
+StdRep=sd(DataRep$PercVacFull)
+MeanDem=mean(DataDem$PercVacFull)
+StdDem=sd(DataDem$PercVacFull)
+PropDem=nrow(DataDem)/nrow(DataPlot)
+PropRep=nrow(DataRep)/nrow(DataPlot)
+
+PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)+
+  geom_jitter()+
+  scale_color_manual(values = c("grey", "grey"))+
+  geom_vline(xintercept = MeanAll, color="black", size=2)+
+  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)+
+  geom_label(
+    label=paste0("Std:",round(StdAll,4)), 
+    x=0.8,
+    y=1,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
+
+if(!DraftModeCL) {PlotVar}
+```
+
+## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+
+```{r}
+PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)+
+  scale_color_manual(values = c("blue", "red"))+
+  geom_jitter(alpha=0.2)+
+  geom_vline(xintercept = MeanAll, color="black", size=2)+
+  geom_segment(aes(x=MeanAll-StdAll,y=1.0, xend=MeanAll+StdAll, yend=1.0), color= "black", size=2)+
+  geom_label(
+    label=paste0("Std:",round(StdAll,4)), 
+    x=0.8,
+    y=1,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
+
+if(!DraftModeCL) {PlotVar}
+```
+
+
+## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+
+```{r}
+PlotVar=PlotVar+
+  geom_vline(xintercept = MeanDem, color="blue", size=2)+
+  geom_vline(xintercept = MeanRep, color="red", size=2)+
+  geom_segment(aes(x=MeanRep-StdRep,y=0.7, xend=MeanRep+StdRep, yend=0.7), color= "red", size=2)+
+  geom_label(
+    label=paste0("Std:",round(StdRep,4)), 
+    x=0.8,
+    y=0.7,
+    color = "black",
+    fill="#69b3a2")+
+  geom_segment(aes(x=MeanDem-StdDem,y=0.8, xend=MeanDem+StdDem, yend=0.8), color= "blue", size=2)+
+  geom_label(
+    label=paste0("Std:",round(StdDem,4)), 
+    x=0.8,
+    y=0.8,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
+
+if(!DraftModeCL) {PlotVar}
+```
+
+## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+
+```{r}
+PlotVar=PlotVar+
+  geom_segment(aes(x=MeanAll-(PropRep*StdRep+PropDem*StdDem),y=1.1, 
+                    xend=MeanAll+(PropRep*StdRep+PropDem*StdDem), yend=1.1), 
+                    color= "blue", size=3.7)+
+  geom_segment(aes(x=MeanAll-(PropRep*StdRep+PropDem*StdDem),y=1.1, 
+                    xend=MeanAll+(PropRep*StdRep+PropDem*StdDem), yend=1.1), 
+                    color= "red", size=3.7, linetype = "dashed")+
+  geom_label(
+    label=paste0("Std:",round(PropRep*StdRep+PropDem*StdDem,4)), 
+    x=0.8,
+    y=1.1,
+    color = "black",
+    fill="#69b3a2")+
+  labs(caption = "Vertical lines represent means. Horizontal lines represent +/- one standard deviation.")
+
+if(!DraftModeCL) {PlotVar}
+```
 
 ## Metrics for the Decision Tree Vaccination Model
 
@@ -509,13 +644,13 @@ DataTestWithPred=augment(WfModelVax, new_data=DataTest)
 metrics(DataTestWithPred, truth=PercVacFull, estimate=.pred)
 ```
 
-## When and When Not to Use Decision Trees
+## When and When Not to Use Decision Trees {.smaller}
 
--   As as standalone model *Decision Trees* should not be used for predictions. Here sis why:
+-   As a standalone model *Decision Trees* should not be used for predictions. Here is why:
 
-    -   Desision Trees respond very sensitive to change in hyperparamters such as the tree depth. The structure of the tree can change and also tee predictions.
-    -   Desision Trees respond very sensitive to a change in the data. When choosing different training data (e.g., by changing the `set.seed()`) the structure of the tree can change and also the predictions.
+    -   *Decision Trees* respond very sensitively to a change in hyperparameters such as the tree depth. Therefore, the tree's structure can change, which may also change the predictions.
+    -   *Decision Trees* respond very sensitively to a change in the training data. Therefore, when choosing different training data (e.g., by changing the `set.seed()`), the tree's structure can change, which may also change the predictions.
 
--   Decision Trees have an educational value when explaining more advanced tree based models like ...
+-   Decision Trees have an educational value because the graphical representation provides an easy way to see which variables influenced the predictions.
 
--   Using Decision Trees as components of more advanced models like RF boost trees leads often to very good predictive results
+-   Using Decision Trees as components of more advanced models like *Random Forest* and *Boosted Trees* often leads to excellent predictive results.»

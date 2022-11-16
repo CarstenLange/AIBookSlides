@@ -399,6 +399,12 @@
 </div>
 
 </section>
+<section class="slide level2">
+
+<div class="cell">
+
+</div>
+</section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
 <ul>
@@ -553,14 +559,14 @@ node), split, n, loss, yval, (yprob)
 </details>
 
 </div>
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
 <section id="nodes-in-the-decision-tree-ignore-decision-rules-for-now" class="slide level2 smaller">
 <h2>Nodes in the Decision Tree (ignore decision rules for now)</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"><ul>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><ul>
 <li class="fragment">Nodes are like containers holding all or some of the training data
 <ul>
-<li class="fragment"><em>root</em> node holds all training records.</li>
+<li class="fragment"><em>root</em> node holds all training observations.</li>
 <li class="fragment">moving down the tree <em>parent nodes</em> get split into <em>child nodes</em></li>
 </ul></li>
 <li class="fragment"><code>RPart</code> nodes show three types of information.»</li>
@@ -598,15 +604,15 @@ node), split, n, loss, yval, (yprob)
 </div>
 </div>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
-<section id="nodes-in-the-decision-tree-interpreting-terminal-rules" class="slide level2">
-<h2>Nodes in the Decision Tree — Interpreting Terminal Rules</h2>
-
 <img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<section id="nodes-in-the-decision-tree-interpreting-terminal-nodes" class="slide level2">
+<h2>Nodes in the Decision Tree — Interpreting Terminal Nodes</h2>
+
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="nodes-in-the-decision-tree-stylized-facts" class="slide level2 smaller">
 <h2>Nodes in the Decision Tree — Stylized Facts</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><ol type="1">
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><ol type="1">
 <li class="fragment"><p>Adult male passengers, regardless of the class and fare, had only a survival rate of 17%.</p></li>
 <li class="fragment"><p>Female passengers, regardless of age and not considering the class or the fare, had a survival chance of 73%.</p></li>
 <li class="fragment"><p>Considering the class female passengers traveled in (regardless of age), the survival rate was 95% for First or Second Class.</p></li>
@@ -615,13 +621,13 @@ node), split, n, loss, yval, (yprob)
 <section id="nodes-in-the-decision-tree-not-all-decision-rules-make-sense" class="slide level2 smaller">
 <h2>Nodes in the Decision Tree — Not all Decision Rules Make Sense</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><p>For example:</p>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"><p>For example:</p>
 <ul>
 <li class="fragment"><p>Females traveling in Third Class have a survival rate of 49% (<strong>this makes sense</strong>)</p></li>
 <li class="fragment"><p>Next split <strong>does not make much sense:</strong></p>
 <ul>
 <li class="fragment">Fare greater or equal to 23 British Pounds survival rate only 5%.</li>
-<li class="fragment">In contrast, lower fare had a survival rate of 60%.</li>
+<li class="fragment">In contrast, lower fare had a survival rate of 60%.»</li>
 </ul></li>
 </ul>
 </section>
@@ -631,7 +637,7 @@ node), split, n, loss, yval, (yprob)
 <div class="column" style="width:57%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </div>
 </div>
 </div><div class="column" style="width:43%;">
@@ -665,12 +671,12 @@ node), split, n, loss, yval, (yprob)
 </div>
 </div>
 <p>Prediction: <code>Not Survived</code></p>
-<p>Observation is a <code>false positive</code> (0=:positive class)</p>
+<p>Observation is a <code>false positive</code> (0=:positive class)»</p>
 </section>
-<section id="predicting-all-testing-data-with-a-decision-tree-pediction" class="slide level2 smaller">
-<h2>Predicting all Testing Data with a Decision Tree — Pediction</h2>
+<section id="predicting-all-testing-data-with-a-decision-tree-prediction" class="slide level2 smaller">
+<h2>Predicting all Testing Data with a Decision Tree — Prediction</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><div class="cell">
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"><div class="cell">
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelTitanic, <span class="at">new_data =</span>  DataTest)</span>
@@ -728,7 +734,7 @@ Prediction   0   1
 <div class="column" style="width:60%;">
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
+<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
 </div>
 </div>
 </div><div class="column" style="width:40%;">
@@ -749,7 +755,7 @@ Prediction   0   1
 </div>
 </div>
 <div class="fragment">
-<p><em>Optimizer</em> compares all <em>splitting variables</em> and all possible <em>splitting values</em> to find <strong>best decision rule</strong>.</p>
+<p><em>Optimizer</em> compares all <em>splitting variables</em> and all possible <em>splitting values</em> to find <strong>best decision rule</strong>.»</p>
 <div class="footer">
 
 </div>
@@ -812,6 +818,9 @@ G^{Imp}&amp;= 2 P_{Surv.} (1-P_{Surv.})
 <li class="fragment"><p><span class="math inline">\(G^{Imp}=2 \cdot 0.25 \cdot 0.25=0.5\)</span><br>
 (Note, <span class="math inline">\(G^{Imp}=0.5\)</span> is maximum for Gini Impurity for 2 categories)</p></li>
 </ul>
+<div class="fragment">
+<p><strong>Probability of drawing two different outcomes = 0.5</strong></p>
+</div>
 </section>
 <section id="determining-impurity-for-roots-parent-and-child-nodes" class="slide level2">
 <h2>Determining Impurity for Root’s Parent and Child Nodes</h2>
@@ -835,10 +844,10 @@ G^{Imp}_{AvgChild}&amp;= 0.64 \cdot  0.32 + 0.36 \cdot 0.39\\
 </section>
 <section id="real-world-data-with-a-decision-tree" class="slide level2">
 <h2>Real World Data with a Decision Tree</h2>
-<p>Predicting vaccination rates in the U.S. based on data from September 2021.</p>
+<p>Predicting vaccination rates in the U.S. based on data from September 2021:</p>
 <ul>
 <li class="fragment"><p>Outcome variable: Percentage of fully vaccinated (two shots) people (<span class="math inline">\(PercVacFull\)</span>).</p></li>
-<li class="fragment"><p>Data from 2,630 continental U.S. counties.</p></li>
+<li class="fragment"><p>Data from 2,630 continental U.S. counties.»</p></li>
 </ul>
 </section>
 <section id="real-world-data-with-a-decision-tree-predictor-variables" class="slide level2 smaller">
@@ -857,11 +866,11 @@ G^{Imp}_{AvgChild}&amp;= 0.64 \cdot  0.32 + 0.36 \cdot 0.39\\
 <li class="fragment"><p>Age Groups in Counties:</p>
 <ul>
 <li class="fragment"><p>Counties’ proportion young adults (20-25 years); <span class="math inline">\(PercYoung25\)</span></p></li>
-<li class="fragment"><p>Counties’ proportion older adults (65 years and older); <span class="math inline">\(PercOld65\)</span>)</p></li>
+<li class="fragment"><p>Counties’ proportion older adults (65 years and older); <span class="math inline">\(PercOld65\)</span></p></li>
 </ul></li>
 <li class="fragment"><p>Income related:</p>
 <ul>
-<li class="fragment">Proportion of households receiving food stamps (<span class="math inline">\(PercFoodSt\)</span>)</li>
+<li class="fragment">Proportion of households receiving food stamps (<span class="math inline">\(PercFoodSt\)</span>)»</li>
 </ul></li>
 </ul>
 </section>
@@ -1034,38 +1043,44 @@ node), split, n, deviance, yval
 </details>
 
 </div>
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-20-1.png" width="960" class="r-stretch"><p>What is difference compared to a classigication model?</p>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"><p>What is difference compared to a classification model?</p>
 <ul>
 <li class="fragment">Terminal node estimates now continous variable.</li>
 <li class="fragment">Variance instead of Gini Impurity</li>
 </ul>
 </section>
-<section id="section" class="slide level2">
-<h2></h2>
-<div class="cell">
-<div class="cell-output-display">
-<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
-</div>
-<div class="cell-output-display">
-<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-21-2.png" width="960"></p>
-</div>
-</div>
-</section>
-<section id="e" class="title-slide slide level1 center">
-<h1>e</h1>
+<section id="variance-reduction-explained" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained</h2>
 
 <img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
-
-<section id="a" class="title-slide slide level1 center">
-<h1>A</h1>
+<section id="variance-reduction-explained-percrep0.68" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained (PercRep&lt;0.68)</h2>
 
 <img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
-
-<section>
-<section id="a-1" class="title-slide slide level1 center">
-<h1>A</h1>
+<section id="variance-reduction-explained-percrep0.68-1" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained (PercRep&lt;0.68)</h2>
 
 <img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<section id="variance-reduction-explained-percrep0.68-2" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained (PercRep&lt;0.68)</h2>
+
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
+<section id="variance-reduction-explained-1" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained</h2>
+
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
+<section id="variance-reduction-explained-percrep0.5" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained (PercRep&lt;0.5)</h2>
+
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
+<section id="variance-reduction-explained-percrep0.5-1" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained (PercRep&lt;0.5)</h2>
+
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-28-1.png" width="960" class="r-stretch"></section>
+<section id="variance-reduction-explained-percrep0.5-2" class="slide level2" data-transition="fade-in fade-out">
+<h2>Variance Reduction Explained (PercRep&lt;0.5)</h2>
+
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"></section>
 <section id="metrics-for-the-decision-tree-vaccination-model" class="slide level2">
 <h2>Metrics for the Decision Tree Vaccination Model</h2>
 <div class="cell">
@@ -1112,7 +1127,7 @@ node), split, n, deviance, yval
 </details>
 
 </div>
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" class="r-stretch"></section>
 <section id="metrics-for-the-slightly-changed-decision-tree-vaccination-model" class="slide level2">
 <h2>Metrics for the (slightly) Changed Decision Tree Vaccination Model</h2>
 <div class="cell">
@@ -1131,21 +1146,21 @@ node), split, n, deviance, yval
 </div>
 </div>
 </section>
-<section id="when-and-when-not-to-use-decision-trees" class="slide level2">
+<section id="when-and-when-not-to-use-decision-trees" class="slide level2 smaller">
 <h2>When and When Not to Use Decision Trees</h2>
 <ul>
-<li class="fragment"><p>As as standalone model <em>Decision Trees</em> should not be used for predictions. Here sis why:</p>
+<li class="fragment"><p>As a standalone model <em>Decision Trees</em> should not be used for predictions. Here is why:</p>
 <ul>
-<li class="fragment">Desision Trees respond very sensitive to change in hyperparamters such as the tree depth. The structure of the tree can change and also tee predictions.</li>
-<li class="fragment">Desision Trees respond very sensitive to a change in the data. When choosing different training data (e.g., by changing the <code>set.seed()</code>) the structure of the tree can change and also the predictions.</li>
+<li class="fragment"><em>Decision Trees</em> respond very sensitively to a change in hyperparameters such as the tree depth. Therefore, the tree’s structure can change, which may also change the predictions.</li>
+<li class="fragment"><em>Decision Trees</em> respond very sensitively to a change in the training data. Therefore, when choosing different training data (e.g., by changing the <code>set.seed()</code>), the tree’s structure can change, which may also change the predictions.</li>
 </ul></li>
-<li class="fragment"><p>Decision Trees have an educational value when explaining more advanced tree based models like …</p></li>
-<li class="fragment"><p>Using Decision Trees as components of more advanced models like RF boost trees leads often to very good predictive results</p></li>
+<li class="fragment"><p>Decision Trees have an educational value because the graphical representation provides an easy way to see which variables influenced the predictions.</p></li>
+<li class="fragment"><p>Using Decision Trees as components of more advanced models like <em>Random Forest</em> and <em>Boosted Trees</em> often leads to excellent predictive results.»</p></li>
 </ul>
 <div class="footer footer-default">
 <p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
