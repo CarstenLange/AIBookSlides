@@ -369,7 +369,7 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
 
 ```{r }
 #| echo: true
-DataVax=import("C:/calpoly/aIBOOK/data/DataVax.rds") %>%   
+DataVax=import("https://lange-analytics.com/AIBook/Data/DataVax.rds") %>%   
         select(County, State, PercVacFull, PercRep,
               PercAsian, PercBlack, PercHisp,
               PercYoung25, PercOld65, PercFoodSt)
