@@ -1,0 +1,222 @@
+---
+title: "Tree Based Models"
+subtitle: "Random Forest"
+format: 
+  revealjs:
+    code-fold: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Introduction
+
+```{r}
+library(tidymodels);library(rio);library(janitor);library(kableExtra)
+```
+
+
+
+
+-   *Random Forest* can be used for
+
+    -   Classification
+    -   Regression
+
+-   A *Random Forest* model is an ensamble model consisting of many (hundreds or thousands) of slightly different *Decision Trees*.
+
+- The weighted predictions from all *Decision Trees* becomes the prediction of the *Random Forest*» 
+
+## The Idea Behind Random Forest
+
+The idea that a combination of weak predictors can lead to a strong prediction is analogous to the wisdom of crowds
+phenomenon described in Galton 1907:
+
+*Visitors at a stock and poultry exhibition in England submitted
+guesses about the weight of an ox. Although most of the visitors were off with their predictions, surprisingly
+the mean of all predictions was very close to the real weight of the ox.*»
+
+## How to ensure that Decision Trees are (slightly) Different {.smaller}
+
+- **Random Subspace Method:** Each decision tree uses only a random selection of the predictors.
+     - As a rule of thumb: If we have $m$ predictors, each decision tree uses only $\sqrt(M)$ predictors (rounded down if needed).
+     - In the case here, where we have $7$ predictors, each decision tree uses only $2$ randomly chosen predictors ($\sqrt(7)=2.65$ rounded down to $2$)<br> <br>  
+
+- **Bagging:** Each decision tree is presented with slightly different training data: We draw from the original training data with replacement to step-wise generate a new training dataset (**Bootstrapping**).
+     - The new training dataset has the same size as the original dataset.
+     - Generate a bootstrap dataset for every decision tree. 
+     
+## Example for Bagging with Bootstapping {.scrollable .smaller}
+
+Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
+
+**Original Training Data:**
+
+```{r}
+#| echo: true
+DataTrain= tibble(ID=seq(1:7),
+                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Sex=c("male","female","male","female","male","female","male"),
+                  Age=c(22,54,32,21,32,87,18),
+                  Weight=c(145,180,167,197,221,146,230))
+kbl(DataTrain)
+```
+
+. . .
+
+**1st Bootstrap Sample:**
+
+```{r}
+#| echo: true
+set.seed(777)
+DataTrain1=sample_n(DataTrain, 7, replace = TRUE)
+kbl(DataTrain1)
+```
+
+**2nd Bootstrap sample:**
+
+```{r}
+#| echo: true
+DataTrain2=sample_n(DataTrain, 7, replace = TRUE)
+kbl(DataTrain2)
+```
+
+**3rd Bootstrap sample:**
+
+```{r}
+#| echo: true
+DataTrain3=sample_n(DataTrain, 7, replace = TRUE)
+kbl(DataTrain3)
+```
+
+**4th Bootstrap sample:**
+
+```{r}
+#| echo: true
+DataTrain4=sample_n(DataTrain, 7, replace = TRUE)
+kbl(DataTrain4)
+```
+
+**5th Bootstrap sample:**
+
+```{r}
+#| echo: true
+DataTrain5=sample_n(DataTrain, 7, replace = TRUE)
+kbl(DataTrain5)
+```
+
+
+
+## Real World Data with a Decision Tree
+
+Predicting vaccination rates in the U.S. based on data from September 2021:
+
+- Outcome variable: Percentage of fully vaccinated (two shots) people ($PercVacFull$).
+
+- Data from 2,630 continental U.S. counties.»
+
+## Real World Data with a Decision Tree --- Predictor Variables {.smaller}
+
+- Race/Ethnicity:
+
+  - Counties' proportion African Americans ($PercBlack$), 
+  - Counties' proportion Asian Americans ($PercAsian$), and 
+  - Counties' proportion Hispanics ($PercHisp$)
+
+- Political Affiliation (Presidential election 2020): 
+  
+  - Counties' proportion Republican votes ($PercRep$)
+
+- Age Groups in Counties: 
+  
+  - Counties' proportion young adults (20-25 years);  $PercYoung25$
+  
+  - Counties' proportion older adults (65 years and older); $PercOld65$
+
+- Income related: 
+  - Proportion of households receiving food stamps ($PercFoodSt$)»
+
+## Loading the Data and Assigning Training and Testing Data{.smaller}
+
+```{r }
+#| echo: true
+DataVax=import("C:/calpoly/aIBOOK/data/DataVax.rds") %>%   
+        select(County, State, PercVacFull, PercRep,
+              PercAsian, PercBlack, PercHisp,
+              PercYoung25, PercOld65, PercFoodSt)
+
+set.seed(2021)
+Split85=DataVax %>% initial_split(prop = 0.85,
+                                 strata = PercVacFull,
+                                 breaks = 3)
+
+DataTrain=training(Split85) %>% select(-County, -State)
+DataTest=testing(Split85) %>% select(-County, -State)
+kbl(head(DataVax))
+```
+
+## Creating Model Design, Recipe, and Fitted Workflow (default hyper-parameters)
+
+```{r }
+#| echo: true
+
+DefaultMtry=floor(sqrt(7)) # floor() rounds down
+
+ModelDesignRandFor=rand_forest(trees=500, min_n=5, mtry = DefaultMtry) %>% 
+                    set_engine("ranger") %>% 
+                    set_mode("regression")
+  
+RecipeVax=recipe(PercVacFull~., data=DataTrain)
+
+WfModelVax=workflow() %>% 
+               add_model(ModelDesignRandFor) %>% 
+               add_recipe(RecipeVax) %>% 
+               fit(DataTrain)
+```
+```{r}
+cat("Default value for mtry is:", DefaultMtry)
+print(WfModelVax)
+```
+
+## Metrics for Default Random Forest Model
+
+```{r}
+#| echo: true
+DataTestWithPred=augment(WfModelVax, new_data=DataTest)
+metrics(DataTestWithPred, truth=PercVacFull, estimate=.pred)
+```
+
+## Tuning the Random Forest Model
+
+On the next slide you find a link to an R script that you can use to tune the Random Forest model. 
+
+Try to beat the predictive quality of the *default* model we used here.
+
+## Tuning the Random Forest Model {.smaller}
+
+```{r}
+#| echo: true
+#| code-fold: false
+ModelDesignRandForTree=rand_forest(trees=500, min_n=tune(), mtry = tune()) %>% 
+                    set_engine("ranger") %>% 
+                    set_mode("regression")
+```
+
+What to consider for the tuning grid?
+
+- `trees=500`: No need to tune because a high number of trees cannot lead to overlearning. This is because the Random Forest prediction is calculated from the average of the trees. However, a high number of trees slows the training (`trees=500' was set; feel free to change it).
+
+- `mtry=tune()` is a hyper-parameter that should be tuned. It determines the number of predictors randomly considered for each decision tree. Recommended is $\sqrt(7)=2.65$. Maybe you try 2, 3, 5.
+
+- `min_n=tune()` is a hyper-parameter that should be tuned. It determines the minimum  number of observations inside a node required for a split into child nodes. If this number is not reached the node becomes a terminal node. Therefore, `min_n=tune()` indirectly determines the tree depth.  Default is $5$. Maybe you try 3, 5, 10, 30.
+
+. . .
+
+Below is a link for an R script that you can use to tune the *Random Forest* model.
+
+::: footer
+See: [Script to tune the Random Forest Model](https://lange-analytics.com/AIBook/Scripts/TreeBasedRandForTuningScript.R) 
+:::
+
+
+

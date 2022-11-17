@@ -94,12 +94,19 @@
     <version>
         <name>Tree Based - Decicision Tree</name>
         <description>
-            This presentation introduces the Neural Networks and how 
-            the hyper-parameters of a Neural Network can be tuned 
-            to avoid overlearning.
+            This presentation introduces a tree based model : Decision Tree
         </description>
         <asset name="View online (recommended)" type="web">TreeBased/TreeBasedDecTrees.html</asset>
         <asset name="Download PDF">TreeBased/TreeBasedDecTrees.pdf</asset>
-        <asset name="Download Presentation's Source Code (coming soon)">TreeBased.zip</asset>
+        <asset name="Download Presentation's Source Code">TreeBased.zip</asset>
     </version> 
+	<version>
+        <name>Tree Based - Random Forest</name>
+        <description>
+            This presentation introduces a tree based model : Random Fores
+        </description>
+        <asset name="View online (recommended)" type="web">TreeBased/TreeBasedRandFor.html</asset>
+        <asset name="Download PDF">TreeBased/TreeBasedRandFor.pdf</asset>
+        <asset name="Download Presentation's Source Code">TreeBased.zip</asset>
+    </version>
 </versions>
