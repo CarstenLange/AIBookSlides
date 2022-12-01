@@ -1,0 +1,484 @@
+---
+title: "Interpretation of Machine Learning Results"
+subtitle: ""
+format: 
+  revealjs:
+    code-fold: true
+---
+
+## From Blackbox to Interpretation
+
+```{r}
+DraftMode=TRUE
+library(plotly)
+```
+
+![](Images/Black%20Box.png)
+
+## Types of Interpretation
+
+-   Model specific
+
+    -   Global
+    -   Local
+
+-   Model agnostic
+
+    -   Global
+    -   Local
+
+## Loading the Data and Libraries
+
+```{r }
+#| echo: true
+#| code-fold: false
+library(tidymodels);library(rio);library(vip);library(DALEXtra); library(kableExtra)
+DataVaxFull=import("https://www.lange-analytics.com/AIBook/Data/DataVax.rds") %>% 
+            mutate(RowNum=row.names(.))
+
+DataVax= DataVaxFull%>%   
+                              select(PercVacFull, PercRep,
+                                      PercAsian, PercBlack,PercHisp,
+                                      PercYoung25, PercOld65, 
+                                      PercFoodSt, Population) %>% 
+                       mutate(Population=frequency_weights(Population))
+set.seed(2021)
+Split85=DataVax %>% initial_split(prop = 0.85,
+                                 strata = PercVacFull,
+                                 breaks = 3)
+
+DataTrain=training(Split85)
+DataTest=testing(Split85)
+```
+
+
+
+## Global/Model Specific: Interpreting Coefficients and t-Values {.smaller}
+###  Linear Regresiion
+
+```{r}
+#| echo: true
+ModelDesignLinRegr= linear_reg() %>% 
+  set_engine("lm") %>%   
+  set_mode("regression")
+
+RecipeVax=recipe(PercVacFull~., data=DataTrain)
+
+set.seed(2021) 
+WfModelVax=workflow() %>% 
+          add_model(ModelDesignLinRegr)%>% 
+          add_recipe(RecipeVax) %>% 
+          add_case_weights(Population) %>% 
+          fit(DataTrain)
+kbl(tidy(WfModelVax) %>% arrange(desc(abs(statistic))))
+```
+
+## Global/Model Specific: Variable Importance --- Permutations
+
+#### Random Forest
+
+1.  Use Out-of-Bag data from each tree.
+2.  Predict with all variables and record $MSE_{all}$.
+3.  Scramble values of first variable and record $MSE_1$.
+4.  The (standardized) difference between the $MSE_{all}$ and the $MSE_1$ of the scrambled version is the variable importance for the first variable.
+5.  Repeat Steps 3 -- 4 for the second, third variables and so on.
+6.  Plot Variable Importance.
+
+## Variable Importance Plot --- Permutations
+
+```{r}
+#| echo: true
+NumberOfCores=parallel::detectCores() 
+ModelDesignRandFor=rand_forest() %>% 
+  set_engine("ranger", num.threads = NumberOfCores, importance="permutation") %>%   
+  set_mode("regression")
+
+set.seed(2021)
+WfModelVax=workflow() %>% 
+          add_model(ModelDesignRandFor)%>% 
+          add_recipe(RecipeVax) %>% 
+          add_case_weights(Population) %>% 
+          fit(DataTrain)
+vip(extract_fit_parsnip(WfModelVax))
+```
+
+## Global/Model Specific: Variable Importance -- Impurity:
+
+#### Random Forest
+
+1.  Use Out-of-Bag data from each tree.
+
+2.  Calculate the decrease of *Variance Impurity* for regression (*Gini* for classification) for each split in each tree where the first variable is involved.
+
+3.  Calculate the (weighted) average of all decreases for the first variable considering alls trees of the *Random Forest*.
+
+4.  Repeat steps 2 -- 3 for the second, third variables and so on.
+
+5.  Plot Variable Importance.
+
+## Variable Importance Plot --- Impurity:
+
+```{r}
+#| echo: true
+ModelDesignRandFor=rand_forest(trees=170, min_n=5, mtry=2) %>% 
+  set_engine("ranger", num.threads = NumberOfCores, importance="impurity") %>%   
+  set_mode("regression")
+
+RecipeVax=recipe(PercVacFull~., data=DataTrain)
+
+set.seed(2021) 
+WfModelVax=workflow() %>% 
+          add_model(ModelDesignRandFor)%>% 
+          add_recipe(RecipeVax) %>% 
+          add_case_weights(Population) %>% 
+          fit(DataTrain)
+vip(extract_fit_parsnip(WfModelVax))
+```
+
+## Shapley Values from a Game Theory Approach {.smaller}
+
+### Bruce, Carsten, and Greg are Players contributing to the profit
+
+![](Images/PermShapleyChartCropped.png){fig-align="center"}
+
+## Shapley Values from a Game Theory Approach {.smaller}
+
+### Estimating Carsten's Contribution
+
+::: columns
+::: {.column width="60%"}
+![](Images/ShapleyChartCropped.png)
+:::
+
+::: {.column width="40%" incremental="true"}
+
+We do not know at which level Carsten joins:
+
+-   Carsten joins last: $\Delta P^{rofit}_{BGC}=5$ <br><br>
+
+-   Carsten joins second: <br>
+    $\Delta P^{rofit}_{BC}=7$ or $\Delta ^{rofit}_{GC}=8$ <br><br>
+
+-   Carsten joins first: $\Delta P^{rofit}_{C}=17$ <br><br>
+
+-   Carsten's average contribution (Shapley value):<br> $S^{hap}_C=\frac{1}{3}17+\frac{1}{6}7+\frac{1}{6}8+\frac{1}{3}5=9.83$
+:::
+:::
+
+## Shapley Values from a Game Theory Approach {.smaller}
+
+### Estimating Bruces's Contribution
+
+::: columns
+::: {.column width="60%"}
+![](Images/PermShapleyChartCropped.png)
+:::
+
+::: {.column width="40%" incremental="true"}
+
+Calculate Bruce' contribution as an exercise:
+
+
+
+-   Spoiler Alert (below is the result):
+-   Bruces's average contribution (Shapley value):<br> $S^{hap}_B=12.33$
+:::
+:::
+
+## Shapley Values from a Game Theory Approach {.smaller}
+
+### Estimating Greg's Contribution
+
+::: columns
+::: {.column width="60%"}
+![](Images/PermShapleyChartCropped.png)
+:::
+
+::: {.column width="40%" incremental="true"}
+
+Calculate Greg' contribution as an exercise:
+
+
+
+-   Spoiler Alert (below is the result):
+-   Greg's average contribution (Shapley value):<br> $S^{hap}_G=13.83$
+:::
+:::
+
+## Shapley Values from a Game Theory Approach {.smaller}
+
+### Starting Profit --- SHAP values --- Final Profit
+
+::: columns
+::: {.column width="60%"}
+![](Images/PermShapleyChartCropped.png)
+:::
+
+::: {.column width="40%" incremental="true"}
+
+Initial Profit: $Profit_0=56$
+
+Bruce's SHAP: $S^{hap}_B=12.33$
+
+Carsten's SHAP: $S^{hap}_B=9.83$
+
+Greg's SHAP: $S^{hap}_G=13.83$ <br>
+
+-----------------------------------------------------------------------
+
+Profit with 3: $Profit_3=92$
+
+:::
+:::
+
+
+
+## Shapley Values from a Game Theory Approach {.smaller}
+
+### Coalitions and Permutations
+
+::: columns
+::: {.column width="60%"}
+![](Images/PermShapleyChartCropped.png)
+:::
+
+::: {.column width="40%"}
+-   Number of coalitions: $N_{coalition }= 2^k=2^3=8$<br><br>
+
+-   Number of *joining* scenarios: $k!=3!=1\cdot 2\cdot 3=6$   <br>$BCG$,$BGC$, <br>$CBG$, $CGB$, <br>$GBC$, $GCB$
+
+- If all 6 scenarios are calculated, one can can calculate *SHAPley* values for all contributors (variables).
+
+- If less than 6 scenarios are calculated, one can can estimate *SHAPley* values for all contributors (variables).
+
+:::
+:::
+
+## SHAPley vs SHAP {.smaller}
+
+-   **SHAPley Values** estimate contribution of players
+
+-   **SHAP** is a computer implementation to estimate *SHAPley* values for predictors. 
+
+    - The predictors become the players.
+    - The contributions become the *SHAP* values.
+    - For convinience we will use the terms *SHAPley Values* and *SHAP Values* interchangeable. 
+    - We will use the term  **SHAP Values** to measure the contribution of specific variables-value combinations.
+    - The average prediction (average outcome training data) plus all *SHAP* values equals the final prediction for the observation.. 
+
+
+
+. . .
+
+**Example:** The fact that the Republican vote was 62% in the analyzed county, lowered the predicted vaccination rate by 3%. Note, we use variable (`Rep` **and** value $62%$). The related *SHAP* value would be $-0.03$ »
+
+## Local/Model Agnostic: Shap Values for Orange County {.smaller}
+
+<!-- Orange row: 141 -->
+```{r}
+#| echo: true
+if (!DraftMode){
+library(DALEXtra)
+DataTrainPredictorVar=DataTrain %>% 
+                                select(-PercVacFull,-Population)
+ExplainerRandFor=explain_tidymodels(WfModelVax, 
+                    data=DataTrainPredictorVar,y=DataTrain$PercVacFull,
+                    type="regression", verbose = FALSE,
+                    label = "Vaccination Shap Values Random Forest")
+
+set.seed(2021)
+ShapValuesID141 = predict_parts(
+    explainer = ExplainerRandFor, 
+    new_observation = DataVax[141,], 
+    type = "shap",
+    b = 200)
+}
+
+# to plot use plot(ShapValuesID141)
+```
+:::: {.columns}
+
+::: {.column width="70%"}
+
+
+```{r}
+# Printing line above diagram
+cat("County: ", DataVaxFull[[141,2]], ", ", DataVaxFull[[141,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[141,])[[1,1]],2), sep="")
+
+# Plotting SHAP Values
+if (!DraftMode){
+  ShapPlot11=plot(ShapValuesID141)
+  export(ShapPlot11, file = "Images/ShapPlot11.rds")
+  }else{
+  ShapPlot11=import("Images/ShapPlot11.rds")
+  }
+ggplotly(ShapPlot11, width=700, height=400)
+cat("Pred. Vac. Rate (all U.S. counties):",round(weighted.mean(DataTrain$PercVacFull,
+                    as.numeric(DataTrain$Population)),2))
+```
+
+
+:::
+
+::: {.column width="30%"}
+Mean PercRep: `r round(weighted.mean(DataTrain$PercRep, as.numeric(DataTrain$Population)),2)`
+
+Mean PercAsian: `r round(weighted.mean(DataTrain$PercAsian, as.numeric(DataTrain$Population)),2)`
+
+Mean PercFoodSt: `r round(weighted.mean(DataTrain$PercFoodSt, as.numeric(DataTrain$Population)),2)`
+
+Mean PercBlack: `r round(weighted.mean(DataTrain$PercBlack, as.numeric(DataTrain$Population)),2)`
+
+Mean PercOld65: `r round(weighted.mean(DataTrain$PercOld65, as.numeric(DataTrain$Population)),2)`
+
+Mean PercOld65: `r round(weighted.mean(DataTrain$PercHisp, as.numeric(DataTrain$Population)),2)`
+
+Mean PercYoung25: `r round(weighted.mean(DataTrain$PercYoung25, as.numeric(DataTrain$Population)),2)`
+
+:::
+
+::::
+
+## Shap Values for Orange County {.smaller}
+
+<!-- Orange row: 141 -->
+
+:::: {.columns}
+
+::: {.column width="70%"}
+
+
+```{r}
+# Printing line above diagram
+cat("County: ", DataVaxFull[[141,2]], ", ", DataVaxFull[[141,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVax[141,])[[1,1]],2), sep="")
+
+# Plotting SHAP Values
+ShapPlot11=import("Images/ShapPlot11.rds")
+
+ggplotly(ShapPlot11, width=700, height=400)
+cat("Pred. Vac. Rate (all U.S. counties; unweighted):", 
+round(mean(DataTrain$PercVacFull),2))
+```
+
+
+:::
+
+::: {.column width="30%"}
+```{r}
+print(levels(ShapPlot11$data[1:7,]$variable)[1])
+print(levels(ShapPlot11$data[1:7,]$variable)[2])
+print(levels(ShapPlot11$data[1:7,]$variable)[4])
+print(levels(ShapPlot11$data[1:7,]$variable)[5])
+print(levels(ShapPlot11$data[1:7,]$variable)[6])
+print(levels(ShapPlot11$data[1:7,]$variable)[7])
+```
+
+:::
+
+::::
+
+## Shap Values for Two Counties (different Politic. Impact)
+
+<!-- Orange row: 141 Merced row: 137 -->
+
+```{r}
+i=141
+j=137
+
+if (!DraftMode){
+set.seed(2021)
+ShapValuesI = ShapValuesID141 # was generated in previous slide
+ShapValuesJ = predict_parts(
+    explainer = ExplainerRandFor, 
+    new_observation = DataVax[j,], 
+    type = "shap",
+    b = 200)
+    }
+```
+
+::: columns
+::: {.column width="50%"}
+```{r}
+cat("County: ", DataVaxFull[[i,2]], ", ", DataVaxFull[[i,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[i,])[[1,1]],2), sep="")
+if (!DraftMode){
+  ShapPlot11=plot(ShapValuesI) #defined in above as ShapValuesID141
+  export(ShapPlot11, file = "Images/ShapPlot11.rds")
+  }else{
+    ShapPlot11=import("Images/ShapPlot11.rds")
+  }
+ggplotly(ShapPlot11, width=470, height=230)
+cat("Pred. Vac. Rate (all U.S. counties):",  round(weighted.mean(DataTrain$PercVacFull,                     as.numeric(DataTrain$Population)),2))
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+cat("County: ", DataVaxFull[[j,2]], ", ", DataVaxFull[[j,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[j,])[[1,1]],2), sep="")
+if (!DraftMode){
+  ShapPlot12=plot(ShapValuesJ)
+  export(ShapPlot12, file = "Images/ShapPlot12.rds")
+  }else{
+    ShapPlot12=import("Images/ShapPlot12.rds")
+  }
+ggplotly(ShapPlot12, width=470, height=230)
+cat("Pred. Vac. Rate (all U.S. counties):",  round(weighted.mean(DataTrain$PercVacFull,                     as.numeric(DataTrain$Population)),2))
+```
+:::
+:::
+
+## Shap Values for Two Counties (different Asian Impact)
+
+<!-- Marin, CA row: 135 San Joaquim, CA row: 149 -->
+
+```{r}
+i=135
+j=149
+if (!DraftMode){
+set.seed(2021)
+ShapValuesI = predict_parts(
+    explainer = ExplainerRandFor, 
+    new_observation = DataVax[i,], 
+    type = "shap",
+    b = 200)
+ShapValuesJ = predict_parts(
+    explainer = ExplainerRandFor, 
+    new_observation = DataVax[j,], 
+    type = "shap",
+    b = 200)
+    }
+```
+
+::: columns
+::: {.column width="50%"}
+```{r}
+cat("County: ", DataVaxFull[[i,2]], ", ", DataVaxFull[[i,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[i,])[[1,1]],2), sep="")
+if (!DraftMode){
+  ShapPlot21=plot(ShapValuesI)
+  export(ShapPlot21, file = "Images/ShapPlot21.rds")
+  }else{
+    ShapPlot21=import("Images/ShapPlot21.rds")
+  }
+ggplotly(ShapPlot21, width=470, height=230)
+cat("Pred. Vac. Rate (all U.S. counties):",  round(weighted.mean(DataTrain$PercVacFull,                     as.numeric(DataTrain$Population)),2))
+```
+:::
+
+::: {.column width="50%"}
+```{r}
+cat("County: ", DataVaxFull[[j,2]], ", ", DataVaxFull[[j,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[j,])[[1,1]],2), sep="")
+if (!DraftMode){
+  ShapPlot22=plot(ShapValuesJ)
+  export(ShapPlot22, file = "Images/ShapPlot12.rds")
+  }else{
+    ShapPlot22=import("Images/ShapPlot12.rds")
+  }
+ggplotly(ShapPlot22, width=470, height=230)
+cat("Pred. Vac. Rate (all U.S. counties):",  round(weighted.mean(DataTrain$PercVacFull,                     as.numeric(DataTrain$Population)),2))
+```
+
+:::
+:::
+
+## Shap Values by Variable {.srollable}
+
+![](Images/AllShapOverview.jpg){fig-align="center"}

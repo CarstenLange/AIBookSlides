@@ -83,7 +83,7 @@
   <version>
         <name>Neural Networks</name>
         <description>
-            This presentation introduces the Neural Networks and how 
+            This presentation introduces Neural Networks and how 
             the hyper-parameters of a Neural Network can be tuned 
             to avoid overlearning.
         </description>
@@ -92,9 +92,9 @@
         <asset name="Download Presentation's Source Code">DeepLearn.zip</asset>
     </version> 
     <version>
-        <name>Tree Based - Decicision Tree</name>
+        <name>Tree Based - Decision Tree</name>
         <description>
-            This presentation introduces a tree based model : Decision Tree
+            This presentation introduces a tree-based model: Decision Tree
         </description>
         <asset name="View online (recommended)" type="web">TreeBased/TreeBasedDecTrees.html</asset>
         <asset name="Download PDF">TreeBased/TreeBasedDecTrees.pdf</asset>
@@ -103,10 +103,20 @@
 	<version>
         <name>Tree Based - Random Forest</name>
         <description>
-            This presentation introduces a tree based model : Random Fores
+            This presentation introduces a tree-based model: Random Fores
         </description>
         <asset name="View online (recommended)" type="web">TreeBased/TreeBasedRandFor.html</asset>
         <asset name="Download PDF">TreeBased/TreeBasedRandFor.pdf</asset>
         <asset name="Download Presentation's Source Code">TreeBased.zip</asset>
     </version>
+<version>
+        <name>Interpretation of Machine Learning Models</name>
+        <description>
+            This presentation important techniques to interpret machine learning models.
+        </description>
+        <asset name="View online (recommended)" type="web">Interpret/Interpret.html</asset>
+        <asset name="Coming soon: Download PDF">Interpret/Interpret.pdf</asset>
+        <asset name="Coming soon: Download Presentation's Source Code">Interpret.zip</asset>
+    </version> 
+    <version>
 </versions>
