@@ -376,6 +376,11 @@ print(levels(ShapPlot11$data[1:7,]$variable)[7])
 :::
 
 ::::
+🤓 Below is a link to an R script that allows you to create your own SHAP values in R.
+
+::: footer
+Create your own SHAP values in R: [Click here and execute in RStudio](https://lange-analytics.com/AIBook/Scripts/InterpretVac.R)
+:::
 
 ## Shap Values for Two Counties (different Politic. Impact)
 
