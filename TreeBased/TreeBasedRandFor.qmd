@@ -25,7 +25,9 @@ library(tidymodels);library(rio);library(janitor);library(kableExtra)
 
 -   A *Random Forest* model is an ensamble model consisting of many (hundreds or thousands) of slightly different *Decision Trees*.
 
-- The weighted predictions from all *Decision Trees* becomes the prediction of the *Random Forest*» 
+- The majority predictions (majority vote) from all *Decision Trees* becomes the prediction of the *Random Forest* for classification» 
+
+- The average predictions from all *Decision Trees* becomes the prediction of the *Random Forest* for regression» 
 
 ## The Idea Behind Random Forest
 
