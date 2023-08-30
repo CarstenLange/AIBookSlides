@@ -7,7 +7,7 @@
 <link href="RAndRStudioPart1_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="RAndRStudioPart1_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="RAndRStudioPart1_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.113">
+  <meta name="generator" content="quarto-1.2.247">
 
   <title>Introduction to R and RStudio</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,7 +19,7 @@
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: 1;}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -391,11 +391,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="center">
+<section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Introduction to R and RStudio</h1>
   <p class="subtitle">Part 1: Basics (follow along in RStudio)</p>
-</section>
 
+<div class="quarto-title-authors">
+</div>
+
+</section>
 <section id="learning-outcomes" class="slide level2">
 <h2>Learning Outcomes</h2>
 <p>What you will learn in this session:</p>
@@ -461,7 +464,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(rio);<span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2"></a>DataHousing <span class="ot">=</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/HousingData.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb1-4"><a href="#cb1-4"></a>  <span class="fu">select</span>(<span class="at">Price=</span>price, <span class="at">Sqft=</span>sqft_living, <span class="at">Bedrooms=</span>bedrooms,<span class="at">Waterfront=</span>waterfront)</span>
 <span id="cb1-5"><a href="#cb1-5"></a><span class="fu">print</span>(DataHousing[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -508,10 +511,12 @@
 </div>
 <div id="tabset-1-2">
 <p><strong>Numerical Data Type (<code>num</code>):</strong> Numerical values are used for calculations (therefore ZIP-Codes are not numerical). Numerical data can be discrete (<code>integer</code>) or continuous (<code>double</code>).</p>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>A<span class="ot">=</span><span class="fu">as.integer</span>(<span class="dv">2</span>)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>B<span class="ot">=</span><span class="fu">as.integer</span>(<span class="dv">3</span>)</span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="fu">str</span>(A) <span class="co"># str() returns structure of a variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code> int 2</code></pre>
 </div>
@@ -538,18 +543,22 @@
 <p><strong>Character Data Type (<code>chr</code>):</strong></p>
 <p>Note that what is called a <code>character</code> in R is often called a <em>string</em> in other programming languages.</p>
 <p><code>character</code> data types must be surrounded by quotes:</p>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>MyText<span class="ot">=</span><span class="st">"Hello world!"</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a><span class="fu">print</span>(MyText)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Hello world!"</code></pre>
 </div>
 </div>
 <p>Character variables can be concatenated with the <code>cat()</code> command:</p>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>FirstName<span class="ot">=</span><span class="st">"Carsten"</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a>LastName<span class="ot">=</span><span class="st">"Lange"</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="fu">cat</span>(FirstName, LastName) <span class="co"># R adds a space automatically</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>Carsten Lange</code></pre>
 </div>
@@ -580,15 +589,19 @@
 </div>
 </div>
 <p>Sex is a <code>charcter</code> variable in the dataset <code>People</code></p>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">str</span>(People<span class="sc">$</span>Sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code> chr [1:5] "male" "female" "female" "female" "male"</code></pre>
 </div>
 </div>
 <p>Transforming the variable <span class="math inline">\(Sex\)</span> to a factor and looking at its structure (<code>str()</code>) again:</p>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">str</span>(<span class="fu">as.factor</span>(People<span class="sc">$</span>Sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code> Factor w/ 2 levels "female","male": 2 1 1 1 2</code></pre>
 </div>
@@ -596,30 +609,38 @@
 </div>
 <div id="tabset-1-5">
 <p><strong>Logic variables</strong>: Store <code>TRUE</code> and <code>FALSE</code>. They can be combined with <code>and</code>/<code>or</code>. Internally <code>True</code> is stored as <span class="math inline">\(1\)</span> and <code>False</code> is stored as <span class="math inline">\(0\)</span></p>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>IsConcertGood<span class="ot">=</span><span class="cn">FALSE</span> </span>
 <span id="cb23-2"><a href="#cb23-2"></a>IsCompanyGood<span class="ot">=</span><span class="cn">TRUE</span></span>
 <span id="cb23-3"><a href="#cb23-3"></a><span class="fu">cat</span>(<span class="st">"Is the concert good?"</span>, IsConcertGood, <span class="st">"Is the company good?"</span>, IsCompanyGood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>Is the concert good? FALSE Is the company good? TRUE</code></pre>
 </div>
 </div>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>IsEveningAmazing<span class="ot">=</span>IsConcertGood <span class="sc">&amp;</span> IsCompanyGood</span>
 <span id="cb25-2"><a href="#cb25-2"></a><span class="fu">cat</span>(<span class="st">"Is the evening amazing?"</span>, IsEveningAmazing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>Is the evening amazing? FALSE</code></pre>
 </div>
 </div>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>IsEveningGood<span class="ot">=</span>IsConcertGood <span class="sc">|</span> IsCompanyGood <span class="co"># | stands for "or"</span></span>
 <span id="cb27-2"><a href="#cb27-2"></a><span class="fu">cat</span>(<span class="st">"Is the evening good?"</span>, IsEveningGood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>Is the evening good? TRUE</code></pre>
 </div>
 </div>
-<div class="cell" data-output-location="fragment">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>IsConcertGood<span class="sc">+</span>IsCompanyGood<span class="sc">+</span><span class="dv">17</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 18</code></pre>
 </div>
@@ -846,13 +867,13 @@
 </div>
 <p>A data frame consist of vectors making up the columns. These are the variables for the data analysis (remember: observations are in the rows, variables are in the columns).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv"</span>)</span>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>)</span>
 <span id="cb37-2"><a href="#cb37-2"></a><span class="fu">str</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   887 obs. of  8 variables:
  $ Survived             : int  0 1 1 1 0 0 0 0 1 1 ...
  $ Pclass               : int  3 1 3 1 3 3 1 3 3 2 ...
- $ Name                 : chr  "Mr. Owen Harris Braund" "Mrs. John Bradley (Florence Briggs Thayer) Cumings" "Miss. Laina Heikkinen" "Mrs. Jacques Heath (Lily May Peel) Futrelle" ...
+ $ Name                 : chr  "Mr. Owen Harris Braund" "Mrs. John Bradley Cumings" "Miss. Laina Heikkinen" "Mrs. Jacques Heath Futrelle" ...
  $ Sex                  : chr  "male" "female" "female" "female" ...
  $ Age                  : num  22 38 26 35 35 27 54 2 27 14 ...
  $ SiblingsSpousesAboard: int  1 1 0 1 0 0 0 3 0 1 ...
@@ -885,7 +906,7 @@
 <pre><code>'data.frame':   887 obs. of  8 variables:
  $ Survived             : logi  FALSE TRUE TRUE TRUE FALSE FALSE ...
  $ Pclass               : int  3 1 3 1 3 3 1 3 3 2 ...
- $ Name                 : chr  "Mr. Owen Harris Braund" "Mrs. John Bradley (Florence Briggs Thayer) Cumings" "Miss. Laina Heikkinen" "Mrs. Jacques Heath (Lily May Peel) Futrelle" ...
+ $ Name                 : chr  "Mr. Owen Harris Braund" "Mrs. John Bradley Cumings" "Miss. Laina Heikkinen" "Mrs. Jacques Heath Futrelle" ...
  $ Sex                  : chr  "male" "female" "female" "female" ...
  $ Age                  : num  22 38 26 35 35 27 54 2 27 14 ...
  $ SiblingsSpousesAboard: int  1 1 0 1 0 0 0 3 0 1 ...
@@ -977,7 +998,7 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <section id="questions" class="slide level2">
 <h2>Questions</h2>
 <div class="footer footer-default">
-<p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
+<p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
 </div>
 </section>
     </div>
@@ -1199,12 +1220,15 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -1215,13 +1239,6 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
               window.jQuery(currentSlide).trigger("shown");
             }
           }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
         }
 
         // hookup for slidy
@@ -1273,7 +1290,24 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
         setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -1311,24 +1345,42 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
           return note.innerHTML;
         });
       }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-        tippyHover(ref, function() {
-          var popup = window.document.createElement('div');
-          cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
-          return popup.innerHTML;
-        });
+        }
       }
     });
     </script>

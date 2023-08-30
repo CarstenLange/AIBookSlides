@@ -7,7 +7,7 @@
 <link href="RAndRStudioPart2_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="RAndRStudioPart2_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="RAndRStudioPart2_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.113">
+  <meta name="generator" content="quarto-1.2.247">
 
   <title>Introduction to R and RStudio</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,7 +19,7 @@
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: 1;}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -388,11 +388,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="center">
+<section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Introduction to R and RStudio</h1>
   <p class="subtitle">Part 2: <code>tidyverse</code> (follow along in RStudio)</p>
-</section>
 
+<div class="quarto-title-authors">
+</div>
+
+</section>
 <section id="learning-outcomes" class="slide level2">
 <h2>Learning Outcomes</h2>
 <p>What you will learn in this session:</p>
@@ -403,7 +406,7 @@
 <li class="fragment"><code>select()</code> and rename columns (variables)</li>
 <li class="fragment"><code>filter()</code> rows (observations)</li>
 <li class="fragment"><code>mutate()</code> (define columns (variables); overwrite old or create new)</li>
-<li class="fragment">piping (connecting commands) with <code>%&gt;%</code>.»</li>
+<li class="fragment">piping (connecting commands) with <code>|&gt;</code>.»</li>
 </ul></li>
 </ul>
 </section>
@@ -502,25 +505,25 @@
 <h2>Titanic Dataset</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>)</span>
 <span id="cb13-3"><a href="#cb13-3"></a><span class="fu">head</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Survived Pclass                                               Name    Sex Age
-1        0      3                             Mr. Owen Harris Braund   male  22
-2        1      1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38
-3        1      3                              Miss. Laina Heikkinen female  26
-4        1      1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35
-5        0      3                            Mr. William Henry Allen   male  35
-6        0      3                                    Mr. James Moran   male  27
-  SiblingsSpousesAboard ParentsChildrenAboard FareInPounds
-1                     1                     0       7.2500
-2                     1                     0      71.2833
-3                     0                     0       7.9250
-4                     1                     0      53.1000
-5                     0                     0       8.0500
-6                     0                     0       8.4583</code></pre>
+<pre><code>  Survived Pclass                        Name    Sex Age SiblingsSpousesAboard
+1        0      3      Mr. Owen Harris Braund   male  22                     1
+2        1      1   Mrs. John Bradley Cumings female  38                     1
+3        1      3       Miss. Laina Heikkinen female  26                     0
+4        1      1 Mrs. Jacques Heath Futrelle female  35                     1
+5        0      3     Mr. William Henry Allen   male  35                     0
+6        0      3             Mr. James Moran   male  27                     0
+  ParentsChildrenAboard FareInPounds
+1                     0       7.2500
+2                     0      71.2833
+3                     0       7.9250
+4                     0      53.1000
+5                     0       8.0500
+6                     0       8.4583</code></pre>
 </div>
 </div>
 <p>»</p>
@@ -540,13 +543,13 @@
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Survived                                               Name    Sex Age
-1        0                             Mr. Owen Harris Braund   male  22
-2        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38
-3        1                              Miss. Laina Heikkinen female  26
-4        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35
-5        0                            Mr. William Henry Allen   male  35
-6        0                                    Mr. James Moran   male  27</code></pre>
+<pre><code>  Survived                        Name    Sex Age
+1        0      Mr. Owen Harris Braund   male  22
+2        1   Mrs. John Bradley Cumings female  38
+3        1       Miss. Laina Heikkinen female  26
+4        1 Mrs. Jacques Heath Futrelle female  35
+5        0     Mr. William Henry Allen   male  35
+6        0             Mr. James Moran   male  27</code></pre>
 </div>
 </div>
 <p>»</p>
@@ -563,13 +566,13 @@
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Survived                                               Name    Sex Age
-1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38
-2        1                              Miss. Laina Heikkinen female  26
-3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35
-4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27
-5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14
-6        1                     Miss. Marguerite Rut Sandstrom female   4</code></pre>
+<pre><code>  Survived                               Name    Sex Age
+1        1          Mrs. John Bradley Cumings female  38
+2        1              Miss. Laina Heikkinen female  26
+3        1        Mrs. Jacques Heath Futrelle female  35
+4        1               Mrs. Oscar W Johnson female  27
+5        1 Mrs. Nicholas (Adele Achem) Nasser female  14
+6        1     Miss. Marguerite Rut Sandstrom female   4</code></pre>
 </div>
 </div>
 <p>»</p>
@@ -586,13 +589,13 @@
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Survived                                               Name    Sex Age Born
-1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38 1874
-2        1                              Miss. Laina Heikkinen female  26 1886
-3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35 1877
-4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27 1885
-5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
-6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
+<pre><code>  Survived                               Name    Sex Age Born
+1        1          Mrs. John Bradley Cumings female  38 1874
+2        1              Miss. Laina Heikkinen female  26 1886
+3        1        Mrs. Jacques Heath Futrelle female  35 1877
+4        1               Mrs. Oscar W Johnson female  27 1885
+5        1 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
+6        1     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
 </div>
 </div>
 <div class="footer">
@@ -626,13 +629,13 @@
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Survived                                               Name    Sex Age Born
-1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38 1874
-2        1                              Miss. Laina Heikkinen female  26 1886
-3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35 1877
-4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27 1885
-5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
-6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
+<pre><code>  Survived                               Name    Sex Age Born
+1        1          Mrs. John Bradley Cumings female  38 1874
+2        1              Miss. Laina Heikkinen female  26 1886
+3        1        Mrs. Jacques Heath Futrelle female  35 1877
+4        1               Mrs. Oscar W Johnson female  27 1885
+5        1 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
+6        1     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
 </div>
 </div>
 <p>»</p>
@@ -646,21 +649,21 @@
 <h4 id="will-be-used-throughout-the-coursebook">(will be used throughout the course/book) 🤓</h4>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb23-2"><a href="#cb23-2"></a>DataTitanicFinal<span class="ot">=</span> DataTitanic <span class="sc">%&gt;%</span> </span>
-<span id="cb23-3"><a href="#cb23-3"></a>                  <span class="fu">select</span>(Survived, Name, Sex, Age) <span class="sc">%&gt;%</span> </span>
-<span id="cb23-4"><a href="#cb23-4"></a>                  <span class="fu">filter</span>(Sex<span class="sc">==</span><span class="st">"female"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2"></a>DataTitanicFinal<span class="ot">=</span> DataTitanic <span class="sc">|&gt;</span> </span>
+<span id="cb23-3"><a href="#cb23-3"></a>                  <span class="fu">select</span>(Survived, Name, Sex, Age) <span class="sc">|&gt;</span> </span>
+<span id="cb23-4"><a href="#cb23-4"></a>                  <span class="fu">filter</span>(Sex<span class="sc">==</span><span class="st">"female"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb23-5"><a href="#cb23-5"></a>                  <span class="fu">mutate</span>(<span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
 <span id="cb23-6"><a href="#cb23-6"></a><span class="fu">head</span>(DataTitanicFinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Survived                                               Name    Sex Age Born
-1        1 Mrs. John Bradley (Florence Briggs Thayer) Cumings female  38 1874
-2        1                              Miss. Laina Heikkinen female  26 1886
-3        1        Mrs. Jacques Heath (Lily May Peel) Futrelle female  35 1877
-4        1   Mrs. Oscar W (Elisabeth Vilhelmina Berg) Johnson female  27 1885
-5        1                 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
-6        1                     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
+<pre><code>  Survived                               Name    Sex Age Born
+1        1          Mrs. John Bradley Cumings female  38 1874
+2        1              Miss. Laina Heikkinen female  26 1886
+3        1        Mrs. Jacques Heath Futrelle female  35 1877
+4        1               Mrs. Oscar W Johnson female  27 1885
+5        1 Mrs. Nicholas (Adele Achem) Nasser female  14 1898
+6        1     Miss. Marguerite Rut Sandstrom female   4 1908</code></pre>
 </div>
 </div>
 <p>»</p>
@@ -671,7 +674,7 @@
 <section id="questions" class="slide level2">
 <h2>Questions</h2>
 <div class="footer footer-default">
-<p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
+<p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
 </div>
 </section>
     </div>
@@ -893,12 +896,15 @@
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -909,13 +915,6 @@
               window.jQuery(currentSlide).trigger("shown");
             }
           }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
         }
 
         // hookup for slidy
@@ -967,7 +966,24 @@
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
         setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -1005,24 +1021,42 @@
           return note.innerHTML;
         });
       }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-        tippyHover(ref, function() {
-          var popup = window.document.createElement('div');
-          cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
-          return popup.innerHTML;
-        });
+        }
       }
     });
     </script>

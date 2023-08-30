@@ -79,7 +79,7 @@ Assuming the `rio` packages is already installed.
 #| echo: true
 library(rio);library(tidyverse)
 DataHousing =
-  import("https://lange-analytics.com/AIBook/Data/HousingData.csv") %>% 
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
   select(Price=price, Sqft=sqft_living, Bedrooms=bedrooms,Waterfront=waterfront)
 print(DataHousing[1:3,])
 ```
@@ -235,8 +235,8 @@ DataTruthTable=tribble(~A,~B,~"A&B",~"A|B",
                        T,F,F,T,
                        F,T,F,T,
                        F,F,F,F)
-kable(DataTruthTable, caption="Truth Table for AND and OR")%>%
-  add_header_above(c("R object A","R object B","A and B","A or B")) %>% 
+kable(DataTruthTable, caption="Truth Table for AND and OR")|>
+  add_header_above(c("R object A","R object B","A and B","A or B")) |> 
   kable_styling(bootstrap_options=c("striped","hover"), position="center", full_width = F)
 ```
 :::
@@ -308,7 +308,7 @@ A data frame is similar to an Excel table (note not all columns of the Titanic d
 
 ```{r}
 library(rio); library(kableExtra)
-DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv") %>% 
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") |> 
   select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
 kbl(DataTitanic[1:12,])
 ```
@@ -317,7 +317,7 @@ A data frame consist of vectors making up the columns. These are the variables f
 
 ```{r}
 #| echo: true
-DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv")
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv")
 str(DataTitanic)
 ```
 
@@ -333,7 +333,7 @@ cat("The average fare of Titanic passengers was:", AvgFare, "British Pounds")
 
 ## Extracting the Vectors and Perform Calculations (logical Vectors)
 
-```{r }
+```{r}
 #| echo: true
 #| output-location: fragment
 DataTitanic$Survived=as.logical(DataTitanic$Survived)

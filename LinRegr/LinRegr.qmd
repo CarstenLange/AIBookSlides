@@ -11,7 +11,7 @@ library(tidymodels)
 library(rio)
 library(kableExtra)
 library(janitor)
-DataMockup=import("https://lange-analytics.com/AIBook/Data/DataStudyTimeMockup.rds")
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 ```
 
 ## What Will You Learn {.scrollable}
@@ -55,9 +55,9 @@ Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\w
 **The Data Table**
 
 ```{r }
-kbl(DataMockup %>% mutate(i=1:5) %>% select(i,everything()), 
-    caption="Mockup Training Dataset")%>%
-  add_header_above(c(" ", "y", "x"), escape=F) %>% 
+kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset")|>
+  add_header_above(c(" ", "y", "x"), escape=F) |> 
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 :::
@@ -114,10 +114,10 @@ MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\bet
 FctMSE=function(VecBeta, data){
                         Beta1=VecBeta[1]
                         Beta2=VecBeta[2]
-                        data=data %>%
-                        rename(Y=1, X=2) %>% 
-                        mutate(YPred=Beta1*X+Beta2) %>%
-                        mutate(Error=YPred-Y) %>%
+                        data=data |>
+                        rename(Y=1, X=2) |> 
+                        mutate(YPred=Beta1*X+Beta2) |>
+                        mutate(Error=YPred-Y) |>
                         mutate(ErrorSqt=Error^2)
                         
                         MSE=mean(data$ErrorSqt)
@@ -141,10 +141,10 @@ Function Definition:»
 FctMSE=function(VecBeta, data){
                         Beta1=VecBeta[1]
                         Beta2=VecBeta[2]
-                        data=data %>%
-                        rename(Y=1, X=2) %>% 
-                        mutate(YPred=Beta1*X+Beta2) %>%
-                        mutate(Error=YPred-Y) %>%
+                        data=data |>
+                        rename(Y=1, X=2) |> 
+                        mutate(YPred=Beta1*X+Beta2) |>
+                        mutate(Error=YPred-Y) |>
                         mutate(ErrorSqt=Error^2)
                         
                         MSE=mean(data$ErrorSqt)
@@ -174,14 +174,14 @@ FctMSE=function(VecBeta, data){
 \end{eqnarray*}
 ```
 ```{r}
-DataTable=DataMockup %>%
-  mutate(GradeXStudyTime=Grade*StudyTime) %>%
+DataTable=DataMockup |>
+  mutate(GradeXStudyTime=Grade*StudyTime) |>
   mutate(StudyTimeSquared=StudyTime^2) 
 
 
-kbl(DataTable %>% mutate(i=1:5) %>% select(i,everything()), 
-    caption="Mockup Training Dataset ")%>%
-  add_header_above(c(" ", "y", "x", "y x","x x"), escape=F) %>% 
+kbl(DataTable |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset ")|>
+  add_header_above(c(" ", "y", "x", "y x","x x"), escape=F) |> 
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
@@ -211,7 +211,7 @@ See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinR
 #| echo: true
 library(rio)
 DataHousing =
-  import("https://lange-analytics.com/AIBook/Data/HousingDataSmall.csv")
+  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
 ```
 
 -   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
@@ -266,8 +266,8 @@ print(as_tibble(DataTest))
 #| echo: true
 library(tidyverse);library(rio);library(janitor);library(tidymodels)
 DataHousing =
-  import("https://lange-analytics.com/AIBook/Data/HousingData.csv")%>%
-  clean_names("upper_camel") %>%
+  import("https://ai.lange-analytics.com/data/HousingData.csv")|>
+  clean_names("upper_camel") |>
   select(Price, Sqft=SqftLiving, Grade, Waterfront)
 ```
 
@@ -336,14 +336,14 @@ print(DummyTable)
 
 ```{r}
 #| echo: true
-RecipeHouses=recipe(Price ~ ., data=DataTrain) %>% 
+RecipeHouses=recipe(Price ~ ., data=DataTrain) |> 
                     step_dummy(Waterfront)
 ```
 
 Here is how the recipe later on (in the workflow) transforms the data:
 
 ```{r}
-juice(RecipeHouses %>% prep())
+juice(RecipeHouses |> prep())
 ```
 
 ## Multivariate Analysis --- Building the Model Design
@@ -352,8 +352,8 @@ juice(RecipeHouses %>% prep())
 
 ```{r}
 #| echo: true
-ModelDesignHouses=linear_reg() %>% 
-  set_engine("lm") %>% 
+ModelDesignHouses=linear_reg() |> 
+  set_engine("lm") |> 
   set_mode("regression")
 print(ModelDesignHouses)
 ```
@@ -364,9 +364,9 @@ print(ModelDesignHouses)
 
 ```{r}
 #| echo: true
-WFModelHouses = workflow() %>%  
-      add_recipe(RecipeHouses) %>% 
-      add_model(ModelDesignHouses) %>% 
+WFModelHouses = workflow() |>  
+      add_recipe(RecipeHouses) |> 
+      add_model(ModelDesignHouses) |> 
       fit(DataTrain)
 tidy(WFModelHouses)
 glance(WFModelHouses)
