@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="LinRegr_files/libs/clipboard/clipboard.min.js"></script>
-<script src="LinRegr_files/libs/quarto-html/tabby.min.js"></script>
-<script src="LinRegr_files/libs/quarto-html/popper.min.js"></script>
-<script src="LinRegr_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="LinRegr_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="LinRegr_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="LinRegr_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="LinRegrIbm_files/libs/clipboard/clipboard.min.js"></script>
+<script src="LinRegrIbm_files/libs/quarto-html/tabby.min.js"></script>
+<script src="LinRegrIbm_files/libs/quarto-html/popper.min.js"></script>
+<script src="LinRegrIbm_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="LinRegrIbm_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="LinRegrIbm_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="LinRegrIbm_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.247">
 
-  <title>Key Machine Learning Concepts</title>
+  <title>Linear Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="LinRegr_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="LinRegr_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="LinRegrIbm_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="LinRegrIbm_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -92,13 +92,13 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="LinRegr_files/libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="LinRegr_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="LinRegr_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="LinRegr_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="LinRegr_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="LinRegr_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="LinRegr_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="LinRegrIbm_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="LinRegrIbm_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="LinRegrIbm_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -384,16 +384,16 @@
     }
   </style>
   
-  <script src="LinRegr_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="LinRegr_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <script src="LinRegrIbm_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="LinRegrIbm_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Key Machine Learning Concepts</h1>
-  <p class="subtitle">Explained with Linear Regression</p>
+  <h1 class="title">Linear Regression</h1>
+  <p class="subtitle">Part 1</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -405,7 +405,7 @@
 
 </div>
 </section>
-<section id="what-will-you-learn" class="slide level2 scrollable">
+<section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
 <ul>
 <li class="fragment"><p>Reviewing the basic idea behind linear regression</p></li>
@@ -418,6 +418,8 @@
 <li class="fragment"><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
 <li class="fragment"><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
 <li class="fragment"><p>Using <code>tidymodels</code> including model design and data pre-processing (recipes) to analyze housing prices.</p></li>
+<li class="fragment"><p>Experiments and Treatment Effects</p></li>
+<li class="fragment"><p>AB Tests</p></li>
 </ul>
 </section>
 <section id="univariate-linear-regression---data-table-and-goal" class="slide level2">
@@ -427,9 +429,11 @@
 <p><strong>The Regression:</strong></p>
 <p><span class="math display">\[
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span> <span class="math display">\[
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
 \]</span></p>
 <p><strong>The Goal</strong></p>
-<p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the prediction errors <span class="math inline">\((\widehat{y}_{i}-y_i)^2\)</span></p>
+<p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the individual prediction errors <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
 </div><div class="column" style="width:60%;">
 <p><strong>The Data Table</strong></p>
 <div class="cell">
@@ -483,6 +487,23 @@
 </div>
 </div>
 </section>
+<section id="predict-grade-based-on-study-time-with-eyeballing" class="slide level2">
+<h2>Predict Grade Based on Study Time with Eyeballing</h2>
+<p>Copy the code at the end of the slide into an <em>R</em> script and try to adjust <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_1\)</span> to get the best prediction equation.</p>
+<p><span class="math display">\[
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span> <span class="math display">\[
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+\]</span></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>Beta1<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>Beta2<span class="ot">=</span><span class="dv">50</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">source</span>(<span class="st">"https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
 <section id="univariate-linear-regression---data-diagram-and-goal" class="slide level2">
 <h2>Univariate Linear Regression - Data Diagram and Goal</h2>
 <div class="columns">
@@ -490,15 +511,20 @@
 <p><strong>The Regression:</strong></p>
 <p><span class="math display">\[
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span> <span class="math display">\[
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
 \]</span></p>
 <p><strong>The Goal</strong></p>
-<p>Find values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimize the prediction errors <span class="math inline">\((\widehat{y}_{i}-y_i)^2\)</span></p>
+<p>Find values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimize the individual prediction errors: <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
 </div><div class="column" style="width:60%;">
 <p><strong>The Data Diagram</strong></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="LinRegr_files/figure-revealjs/unnamed-chunk-3-1.png" width="960"></p>
+<p><img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
 </div>
+</div>
+<div class="cell">
+
 </div>
 </div>
 </div>
@@ -513,6 +539,23 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 \end{eqnarray*}\]</span>
 <p><strong>Note, when the data are given (i.e.,</strong> <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> »</p>
 </section>
+<section id="how-to-measure-prediction-quality-1" class="slide level2 smaller scrollable">
+<h2>How to Measure Prediction Quality</h2>
+<span class="math display">\[\begin{eqnarray}
+MSE &amp; = &amp; \frac{(\beta_1x_{1}+\beta_2-y_1)^2
+       +(\beta_1x_{2}+\beta_2-y_2)^2 +  \cdots+
+       (\beta_1x_{5}+\beta_2-y_{5})^2}{5} \nonumber \\
+       &amp; \Longleftrightarrow&amp; \nonumber \\
+MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mbox{Prediction $1$}}-65}_{\mbox{Error $1$}})^2
+       +(\underbrace{\overbrace{\beta_1\cdot 3+\beta_2}^{\mbox{Prediction $2$}}-82}_{\mbox{Error $2$}})^2\right.\nonumber \\
+   &amp;   &amp;\nonumber \\
+       &amp;&amp; +
+    (\underbrace{\overbrace{\beta_1\cdot 7+\beta_2}^{\mbox{Prediction $3$}}-93}_{\mbox{Error $3$}})^2
++(\underbrace{\overbrace{\beta_1\cdot 8+\beta_2}^{\mbox{Prediction $4$}}-93}_{\mbox{Error $4$}})^2\nonumber \\
+   &amp;   &amp;\nonumber \\
+       &amp;&amp; +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_2}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
+\end{eqnarray}\]</span>
+</section>
 <section id="custom-r-function-to-calculate-mse" class="slide level2">
 <h2>Custom R Function to Calculate MSE</h2>
 <div class="cell">
@@ -522,9 +565,9 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>VecBetaTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBetaTest, DataMockup)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>VecBetaTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBetaTest, DataMockup)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 29.8</code></pre>
@@ -534,18 +577,18 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>FctMSE<span class="ot">=</span><span class="cf">function</span>(VecBeta, data){</span>
-<span id="cb3-2"><a href="#cb3-2"></a>                        Beta1<span class="ot">=</span>VecBeta[<span class="dv">1</span>]</span>
-<span id="cb3-3"><a href="#cb3-3"></a>                        Beta2<span class="ot">=</span>VecBeta[<span class="dv">2</span>]</span>
-<span id="cb3-4"><a href="#cb3-4"></a>                        data<span class="ot">=</span>data <span class="sc">|&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>                        <span class="fu">rename</span>(<span class="at">Y=</span><span class="dv">1</span>, <span class="at">X=</span><span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-6"><a href="#cb3-6"></a>                        <span class="fu">mutate</span>(<span class="at">YPred=</span>Beta1<span class="sc">*</span>X<span class="sc">+</span>Beta2) <span class="sc">|&gt;</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>                        <span class="fu">mutate</span>(<span class="at">Error=</span>YPred<span class="sc">-</span>Y) <span class="sc">|&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>                        <span class="fu">mutate</span>(<span class="at">ErrorSqt=</span>Error<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb3-9"><a href="#cb3-9"></a>                        </span>
-<span id="cb3-10"><a href="#cb3-10"></a>                        MSE<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ErrorSqt)</span>
-<span id="cb3-11"><a href="#cb3-11"></a>                        </span>
-<span id="cb3-12"><a href="#cb3-12"></a>                        <span class="fu">return</span>(MSE)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>FctMSE<span class="ot">=</span><span class="cf">function</span>(VecBeta, data){</span>
+<span id="cb4-2"><a href="#cb4-2"></a>                        Beta1<span class="ot">=</span>VecBeta[<span class="dv">1</span>]</span>
+<span id="cb4-3"><a href="#cb4-3"></a>                        Beta2<span class="ot">=</span>VecBeta[<span class="dv">2</span>]</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                        data<span class="ot">=</span>data <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>                        <span class="fu">rename</span>(<span class="at">Y=</span><span class="dv">1</span>, <span class="at">X=</span><span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6"></a>                        <span class="fu">mutate</span>(<span class="at">YPred=</span>Beta1<span class="sc">*</span>X<span class="sc">+</span>Beta2) <span class="sc">|&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>                        <span class="fu">mutate</span>(<span class="at">Error=</span>YPred<span class="sc">-</span>Y) <span class="sc">|&gt;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>                        <span class="fu">mutate</span>(<span class="at">ErrorSqt=</span>Error<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb4-9"><a href="#cb4-9"></a>                        </span>
+<span id="cb4-10"><a href="#cb4-10"></a>                        MSE<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ErrorSqt)</span>
+<span id="cb4-11"><a href="#cb4-11"></a>                        </span>
+<span id="cb4-12"><a href="#cb4-12"></a>                        <span class="fu">return</span>(MSE)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -661,9 +704,9 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb4-2"><a href="#cb4-2"></a>DataHousing <span class="ot">=</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>DataHousing <span class="ot">=</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ul>
@@ -681,10 +724,10 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb5-2"><a href="#cb5-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>DataTrain</strong></p>
@@ -700,8 +743,8 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
  5 207000  1980
  6 226500  1560
  7 265000  1010
- 8 175000   670
- 9 211000  2100
+ 8 260000  2390
+ 9 175000   670
 10 260000  2160
 # ℹ 339 more rows</code></pre>
 </div>
@@ -710,18 +753,18 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 151 × 2
-    Price  Sqft
-    &lt;int&gt; &lt;int&gt;
- 1 394500  3002
- 2 633000  2020
- 3 500000  2280
- 4 475226  2120
- 5 775000  2030
- 6 560000  2790
- 7 733500  2120
- 8 580000  2430
- 9 295000  1230
-10 872500  2040
+     Price  Sqft
+     &lt;int&gt; &lt;int&gt;
+ 1  540000  1380
+ 2  339950  2390
+ 3  520000  2310
+ 4  733500  2120
+ 5  785000  1670
+ 6  295000  1230
+ 7  640000  2940
+ 8  463000  1250
+ 9 1050000  2880
+10  747000  2560
 # ℹ 141 more rows</code></pre>
 </div>
 </div>
@@ -744,11 +787,11 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(tidyverse);<span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
-<span id="cb8-2"><a href="#cb8-2"></a>DataHousing <span class="ot">=</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(tidyverse);<span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>DataHousing <span class="ot">=</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>Unfitted Model:</strong> » <span class="math display">\[
@@ -760,10 +803,10 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb9-3"><a href="#cb9-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb9-4"><a href="#cb9-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb10-3"><a href="#cb10-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb10-4"><a href="#cb10-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -848,8 +891,8 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">|&gt;</span> </span>
-<span id="cb14-2"><a href="#cb14-2"></a>                    <span class="fu">step_dummy</span>(Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>                    <span class="fu">step_dummy</span>(Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Here is how the recipe later on (in the workflow) transforms the data:</p>
@@ -878,10 +921,10 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>ModelDesignHouses<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="fu">print</span>(ModelDesignHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>ModelDesignHouses<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">print</span>(ModelDesignHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear Regression Model Specification (regression)
@@ -896,11 +939,11 @@ Computational engine: lm </code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>WFModelHouses <span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span>  </span>
-<span id="cb18-2"><a href="#cb18-2"></a>      <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb18-3"><a href="#cb18-3"></a>      <span class="fu">add_model</span>(ModelDesignHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb18-4"><a href="#cb18-4"></a>      <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb18-5"><a href="#cb18-5"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>WFModelHouses <span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span>  </span>
+<span id="cb19-2"><a href="#cb19-2"></a>      <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb19-3"><a href="#cb19-3"></a>      <span class="fu">add_model</span>(ModelDesignHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb19-4"><a href="#cb19-4"></a>      <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 5
@@ -913,7 +956,7 @@ Computational engine: lm </code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">glance</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">glance</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 12
@@ -929,8 +972,8 @@ Computational engine: lm </code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>DataTestWithPredictions <span class="ot">=</span> <span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">metrics</span>(DataTestWithPredictions, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>DataTestWithPredictions <span class="ot">=</span> <span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">metrics</span>(DataTestWithPredictions, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
@@ -949,20 +992,20 @@ Computational engine: lm </code></pre>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="LinRegr_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="LinRegr_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="LinRegr_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="LinRegr_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="LinRegrIbm_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
