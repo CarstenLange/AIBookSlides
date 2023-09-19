@@ -42,7 +42,7 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 
 - AB Tests
 
-## Univariate Linear Regression - Data Table and Goal
+## Univariate Linear Regression - Data Table and Goal {.smaller}
 
 ::: columns
 ::: {.column width="40%"}
@@ -57,7 +57,7 @@ $$
 
 **The Goal**
 
-Find values for $\beta_1$ and $\beta_2$ that minimize the individual prediction errors $$(\widehat{y}_{i}-y_i)^2$$
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
 $$(\widehat{Grade}_{i}-Grade_i)^2$$
 :::
 
@@ -73,7 +73,7 @@ kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()),
 :::
 :::
 
-## Predict Grade Based on Study Time with Eyeballing
+## Predict Grade Based on Study Time with Eyeballing {.smaller}
 
 
 Copy the code at the end of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
@@ -95,7 +95,7 @@ source("https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R")
 ```
 
 
-## Univariate Linear Regression - Data Diagram and Goal
+## Univariate Linear Regression - Data Diagram and Goal {.smaller}
 
 ::: columns
 ::: {.column width="40%"}
@@ -133,7 +133,7 @@ ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
 
 ```{r}
 #| eval: false
-#| echo: false
+#| echo: true
 Beta1=4
 Beta2=64
 ```
