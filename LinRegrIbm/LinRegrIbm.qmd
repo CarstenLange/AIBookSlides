@@ -1,9 +1,10 @@
 ---
 title: "Linear Regression"
-subtitle: "Part 1 "
+subtitle: "Univariate"
 format: 
   revealjs:
     code-fold: true
+    scrollable: true
 ---
 
 ```{r}
@@ -34,32 +35,10 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 
 -   Using `tidymodels` to analyze housing prices.
 
--   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
-
--   Being able to distinguish between dummy encoding and one-hot encoding
-
-- Experiments and Treatment Effects
-
-- AB Tests
 
 ## Univariate Linear Regression - Data Table and Goal {.smaller}
 
 ::: columns
-::: {.column width="40%"}
-**The Regression:**
-
-$$
-\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
-$$
-$$
-\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
-$$
-
-**The Goal**
-
-Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
-$$(\widehat{Grade}_{i}-Grade_i)^2$$
-:::
 
 ::: {.column width="60%"}
 **The Data Table**
@@ -71,12 +50,31 @@ kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 :::
+
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
+$$(\widehat{Grade}_{i}-Grade_i)^2$$
+:::
+
+
 :::
 
 ## Predict Grade Based on Study Time with Eyeballing {.smaller}
 
 
-Copy the code at the end of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
+Copy the code from the code-section of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
 
 $$
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
@@ -110,7 +108,7 @@ $$
 
 **The Goal**
 
-Find values for $\beta_0$ and $\beta_1$ that minimize the individual prediction errors: 
+Find values for $\beta_0$ and $\beta_1$ that minimize the individual (squared) prediction errors: 
 $$(\widehat{y}_{i}-y_i)^2$$
 $$(\widehat{Grade}_{i}-Grade_i)^2$$
 :::
@@ -141,7 +139,7 @@ Beta2=64
 :::
 :::
 
-# How to Measure Prediction Quality
+# How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
 
 ```{=tex}
 \begin{eqnarray*}
@@ -152,7 +150,7 @@ MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\bet
 ```
 **Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
 
-## How to Measure Prediction Quality {.smaller .scrollable}
+## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
 
 ```{=tex}
 \begin{eqnarray}
@@ -172,7 +170,7 @@ MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mb
 ```
 
 
-## Custom R Function to Calculate MSE
+## Custom R Function to Calculate MSE {.scrollable}
 
 ```{r}
 #| echo: false
@@ -194,8 +192,8 @@ Function Call:
 
 ```{r}
 #| echo: true
-VecBetaTest=c(4,61)
-ResultMSE=FctMSE(VecBetaTest, DataMockup)
+VecBeta=c(4,61)
+ResultMSE=FctMSE(VecBeta, DataMockup)
 print(ResultMSE)
 ```
 
@@ -217,17 +215,49 @@ FctMSE=function(VecBeta, data){
                         return(MSE)}
 ```
 
-## How to Find Optimal Values for $\beta_1$ and $\beta_2$
+## How to Find Optimal Values for $\beta_1$ and $\beta_2$ {.smaller .scollable}
+
+**Method 0: (not such a good idea)** 
+
+:   We can use **unsystematic trial and error**.
+
+    ```{r}
+    #| echo: true
+    library(rio)
+    FctMSE=import("https://ai.lange-analytics.com/source/FctMSE.rds")
+    VecBeta=c(7,60)
+    ResultMSE=FctMSE(VecBeta, DataMockup)
+    print(ResultMSE)
+    ```
+
 
 **Method 1:**
 
-:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
+:   We can use a **systematic trial and error process**.
 
 **Method 2:**
 
-:   We can use a **systematic trial and error process**.
+:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
 
-## Method 1: Calculate Optimal Parameters (only for OLS!) {.smaller .scollable}
+
+
+## Method 1: Use a Systematic Trial and Error Process 🤓
+
+-   **Grid Search (aka Brute Force):**
+
+    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
+    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
+    3.  Find the $\beta$ pair with the lowest $MSE$
+
+-   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
+
+-   See the R script in the footnote to see both algorithms in action.»
+
+::: footer
+See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
+:::
+
+## Method 2: Calculate Optimal Parameters (only for OLS!){.smaller}
 
 ```{=tex}
 \begin{eqnarray*} 
@@ -250,21 +280,7 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
-## Method 2: Use a Systematic Trial and Error Process 🤓
 
--   **Grid Search (aka Brute Force):**
-
-    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
-    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
-    3.  Find the $\beta$ pair with the lowest $MSE$
-
--   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
-
--   See the R script in the footnote to see both algorithms in action.»
-
-::: footer
-See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
-:::
 
 # Univariate OLS with a Real World Dataset
 
@@ -313,134 +329,22 @@ print(as_tibble(DataTest))
 
 ## Univariate OLS with a Real World Dataset
 
-**Run the Analysis**»
-
-<https://lange-analytics.com/AIBook/Exercises/handler.html?file=05-LinRegrExerc100.Rmd>
-
-# Multivariate Analysis
-
-## Multivariate Analysis --- Three Predictor Variables {.scrollable}
-
-`Sqft`: Living square footage of the house.
-
-`Grade` Indicates the condition of houses (1 (worst) to 13 (best).
-
-`Waterfront`: Is house located at the waterfront (`yes` or `no`).
+**Run the Analysis**
 
 ```{r}
-#| echo: true
-library(tidyverse);library(rio);library(janitor);library(tidymodels)
+library(rio)
 DataHousing =
-  import("https://ai.lange-analytics.com/data/HousingData.csv")|>
-  clean_names("upper_camel") |>
-  select(Price, Sqft=SqftLiving, Grade, Waterfront)
-```
-
-**Unfitted Model:** »
-$$
-Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
-$$
-
-## Multivariate Real World Dataset --- Splitting {.scrollable}
-
-```{r}
-#| echo: true
-set.seed(777)
+  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
+library(tidymodels)
 Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
 DataTest=testing(Split7030)
+
+lm(Price ~ Sqft, data=DataTrain)
+
+#Alternative: tidymodels
+
+
 ```
 
-```{r}
-DataTrain=as_tibble(DataTrain)
-DataTest=as_tibble(DataTest)
-```
 
-**DataTrain**
-
-```{r}
-print(DataTrain)
-```
-
-**DataTest**
-
-```{r}
-print(DataTest)
-```
-
-## Dummy and One-Hot Encoding {.scrollable}
-
-**One-Hot Encoding**
-
-```{r}
-OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
-print(OneHotTable)
-```
-
-*One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
-
-$$Waterfront_{yes}=1-Waterfront_{no}$$ 
-»
-
-## Dummy and One-Hot Encoding {.scrollable}
-
-**Dummy Coding**
-
-We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
-
-**Dummy Encoding Example**
-
-```{r}
-DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
-print(DummyTable)
-```
-
-**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.»
-
-## Multivariate Analysis --- Building the Recipe
-
-```{r}
-#| echo: true
-RecipeHouses=recipe(Price ~ ., data=DataTrain) |> 
-                    step_dummy(Waterfront)
-```
-
-Here is how the recipe later on (in the workflow) transforms the data:
-
-```{r}
-juice(RecipeHouses |> prep())
-```
-
-## Multivariate Analysis --- Building the Model Design
-
-**Unfitted Model:**
-
-```{r}
-#| echo: true
-ModelDesignHouses=linear_reg() |> 
-  set_engine("lm") |> 
-  set_mode("regression")
-print(ModelDesignHouses)
-```
-
-»
-
-## Multivariate Analysis --- Creating Workflow & Fitting to the Training Data
-
-```{r}
-#| echo: true
-WFModelHouses = workflow() |>  
-      add_recipe(RecipeHouses) |> 
-      add_model(ModelDesignHouses) |> 
-      fit(DataTrain)
-tidy(WFModelHouses)
-glance(WFModelHouses)
-```
-
-## Multivariate Analysis --- Predicting Testing Data and Metrics
-
-```{r}
-#| echo: true
-DataTestWithPredictions = augment(WFModelHouses, new_data=DataTest)
-metrics(DataTestWithPredictions, truth=Price, estimate=.pred)
-```
