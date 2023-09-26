@@ -4,6 +4,7 @@ subtitle: "Regression, Dummies, One-Hot Encoding, AB-Tests"
 format: 
   revealjs:
     code-fold: true
+    scrollable: true
 ---
 
 ```{r}

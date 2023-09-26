@@ -4,6 +4,7 @@ subtitle: "Univariate"
 format: 
   revealjs:
     code-fold: true
+    scrollable: true
 ---
 
 ```{r}
@@ -328,134 +329,22 @@ print(as_tibble(DataTest))
 
 ## Univariate OLS with a Real World Dataset
 
-**Run the Analysis**»
-
-<https://lange-analytics.com/AIBook/Exercises/handler.html?file=05-LinRegrExerc100.Rmd>
-
-# Multivariate Analysis
-
-## Multivariate Analysis --- Three Predictor Variables {.scrollable}
-
-`Sqft`: Living square footage of the house.
-
-`Grade` Indicates the condition of houses (1 (worst) to 13 (best).
-
-`Waterfront`: Is house located at the waterfront (`yes` or `no`).
+**Run the Analysis**
 
 ```{r}
-#| echo: true
-library(tidyverse);library(rio);library(janitor);library(tidymodels)
+library(rio)
 DataHousing =
-  import("https://ai.lange-analytics.com/data/HousingData.csv")|>
-  clean_names("upper_camel") |>
-  select(Price, Sqft=SqftLiving, Grade, Waterfront)
-```
-
-**Unfitted Model:** »
-$$
-Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
-$$
-
-## Multivariate Real World Dataset --- Splitting {.scrollable}
-
-```{r}
-#| echo: true
-set.seed(777)
+  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
+library(tidymodels)
 Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
 DataTest=testing(Split7030)
+
+lm(Price ~ Sqft, data=DataTrain)
+
+#Alternative: tidymodels
+
+
 ```
 
-```{r}
-DataTrain=as_tibble(DataTrain)
-DataTest=as_tibble(DataTest)
-```
 
-**DataTrain**
-
-```{r}
-print(DataTrain)
-```
-
-**DataTest**
-
-```{r}
-print(DataTest)
-```
-
-## Dummy and One-Hot Encoding {.scrollable}
-
-**One-Hot Encoding**
-
-```{r}
-OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
-print(OneHotTable)
-```
-
-*One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
-
-$$Waterfront_{yes}=1-Waterfront_{no}$$ 
-»
-
-## Dummy and One-Hot Encoding {.scrollable}
-
-**Dummy Coding**
-
-We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
-
-**Dummy Encoding Example**
-
-```{r}
-DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
-print(DummyTable)
-```
-
-**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.»
-
-## Multivariate Analysis --- Building the Recipe
-
-```{r}
-#| echo: true
-RecipeHouses=recipe(Price ~ ., data=DataTrain) |> 
-                    step_dummy(Waterfront)
-```
-
-Here is how the recipe later on (in the workflow) transforms the data:
-
-```{r}
-juice(RecipeHouses |> prep())
-```
-
-## Multivariate Analysis --- Building the Model Design
-
-**Unfitted Model:**
-
-```{r}
-#| echo: true
-ModelDesignHouses=linear_reg() |> 
-  set_engine("lm") |> 
-  set_mode("regression")
-print(ModelDesignHouses)
-```
-
-»
-
-## Multivariate Analysis --- Creating Workflow & Fitting to the Training Data
-
-```{r}
-#| echo: true
-WFModelHouses = workflow() |>  
-      add_recipe(RecipeHouses) |> 
-      add_model(ModelDesignHouses) |> 
-      fit(DataTrain)
-tidy(WFModelHouses)
-glance(WFModelHouses)
-```
-
-## Multivariate Analysis --- Predicting Testing Data and Metrics
-
-```{r}
-#| echo: true
-DataTestWithPredictions = augment(WFModelHouses, new_data=DataTest)
-metrics(DataTestWithPredictions, truth=Price, estimate=.pred)
-```
