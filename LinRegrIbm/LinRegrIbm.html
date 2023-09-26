@@ -393,7 +393,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Linear Regression</h1>
-  <p class="subtitle">Part 1</p>
+  <p class="subtitle">Univariate</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -417,25 +417,12 @@
 <li class="fragment"><p>Distinguish between unfitted and fitted models</p></li>
 <li class="fragment"><p>Using <code>tidymodels</code> to split observations randomly into a training and testing dataset.</p></li>
 <li class="fragment"><p>Using <code>tidymodels</code> to analyze housing prices.</p></li>
-<li class="fragment"><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
-<li class="fragment"><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
-<li class="fragment"><p>Experiments and Treatment Effects</p></li>
-<li class="fragment"><p>AB Tests</p></li>
 </ul>
 </section>
 <section id="univariate-linear-regression---data-table-and-goal" class="slide level2 smaller">
 <h2>Univariate Linear Regression - Data Table and Goal</h2>
 <div class="columns">
-<div class="column" style="width:40%;">
-<p><strong>The Regression:</strong></p>
-<p><span class="math display">\[
-\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
-\]</span> <span class="math display">\[
-\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
-\]</span></p>
-<p><strong>The Goal</strong></p>
-<p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the prediction errors <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
-</div><div class="column" style="width:60%;">
+<div class="column" style="width:60%;">
 <p><strong>The Data Table</strong></p>
 <div class="cell">
 <div class="cell-output-display">
@@ -485,12 +472,22 @@
 
 </div>
 </div>
+</div><div class="column" style="width:40%;">
+<p><strong>The Regression:</strong></p>
+<p><span class="math display">\[
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span></p>
+<p><span class="math display">\[
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+\]</span></p>
+<p><strong>The Goal</strong></p>
+<p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the prediction errors <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
 </div>
 </div>
 </section>
 <section id="predict-grade-based-on-study-time-with-eyeballing" class="slide level2 smaller">
 <h2>Predict Grade Based on Study Time with Eyeballing</h2>
-<p>Copy the code at the end of the slide into an <em>R</em> script and try to adjust <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_1\)</span> to get the best prediction equation.</p>
+<p>Copy the code from the code-section of the slide into an <em>R</em> script and try to adjust <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_1\)</span> to get the best prediction equation.</p>
 <p><span class="math display">\[
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
 \]</span> <span class="math display">\[
@@ -516,7 +513,7 @@
 \widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
 \]</span></p>
 <p><strong>The Goal</strong></p>
-<p>Find values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimize the individual prediction errors: <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
+<p>Find values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimize the individual (squared) prediction errors: <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
 </div><div class="column" style="width:60%;">
 <p><strong>The Data Diagram</strong></p>
 <div class="cell">
@@ -535,8 +532,8 @@
 </div>
 </section>
 <section>
-<section id="how-to-measure-prediction-quality" class="title-slide slide level1 center">
-<h1>How to Measure Prediction Quality</h1>
+<section id="how-to-measure-prediction-quality-with-the-mean-squared-error-mse" class="title-slide slide level1 smaller center">
+<h1>How to Measure Prediction Quality with the Mean Squared Error (MSE)</h1>
 <span class="math display">\[\begin{eqnarray*}
 MSE &amp; = &amp; \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 &amp; \Longleftrightarrow&amp; \\
@@ -544,8 +541,8 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 \end{eqnarray*}\]</span>
 <p><strong>Note, when the data are given (i.e.,</strong> <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> »</p>
 </section>
-<section id="how-to-measure-prediction-quality-1" class="slide level2 smaller scrollable">
-<h2>How to Measure Prediction Quality</h2>
+<section id="how-to-measure-prediction-quality-with-the-mse" class="slide level2 smaller scrollable">
+<h2>How to Measure Prediction Quality with the MSE</h2>
 <span class="math display">\[\begin{eqnarray}
 MSE &amp; = &amp; \frac{(\beta_1x_{1}+\beta_2-y_1)^2
        +(\beta_1x_{2}+\beta_2-y_2)^2 +  \cdots+
@@ -561,7 +558,7 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
        &amp;&amp; +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_2}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
 \end{eqnarray}\]</span>
 </section>
-<section id="custom-r-function-to-calculate-mse" class="slide level2">
+<section id="custom-r-function-to-calculate-mse" class="slide level2 scrollable">
 <h2>Custom R Function to Calculate MSE</h2>
 <div class="cell">
 
@@ -570,8 +567,8 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>VecBetaTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
-<span id="cb3-2"><a href="#cb3-2"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBetaTest, DataMockup)</span>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>VecBeta<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBeta, DataMockup)</span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
@@ -597,21 +594,54 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 </details>
 </div>
 </section>
-<section id="how-to-find-optimal-values-for-beta_1-and-beta_2" class="slide level2">
+<section id="how-to-find-optimal-values-for-beta_1-and-beta_2" class="slide level2 smaller scollable">
 <h2>How to Find Optimal Values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span></h2>
 <dl>
-<dt class="fragment"><strong>Method 1:</strong></dt>
+<dt class="fragment"><strong>Method 0: (not such a good idea)</strong></dt>
 <dd class="fragment">
-<p><strong>Calculate optimal values</strong> for the parameters (the <span class="math inline">\(\beta s\)</span>) based on Ordinary Least Squares (OLS) using two formulas (<strong>Note,</strong> this method works only for linear regression)</p>
+<p>We can use <strong>unsystematic trial and error</strong>.</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>FctMSE<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/source/FctMSE.rds"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>VecBeta<span class="ot">=</span><span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">60</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBeta, DataMockup)</span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 178.4</code></pre>
+</div>
+</div>
 </dd>
-<dt class="fragment"><strong>Method 2:</strong></dt>
+<dt class="fragment"><strong>Method 1:</strong></dt>
 <dd class="fragment">
 <p>We can use a <strong>systematic trial and error process</strong>.</p>
 </dd>
+<dt class="fragment"><strong>Method 2:</strong></dt>
+<dd class="fragment">
+<p><strong>Calculate optimal values</strong> for the parameters (the <span class="math inline">\(\beta s\)</span>) based on Ordinary Least Squares (OLS) using two formulas (<strong>Note,</strong> this method works only for linear regression)</p>
+</dd>
 </dl>
 </section>
-<section id="method-1-calculate-optimal-parameters-only-for-ols" class="slide level2 smaller scollable">
-<h2>Method 1: Calculate Optimal Parameters (only for OLS!)</h2>
+<section id="method-1-use-a-systematic-trial-and-error-process" class="slide level2">
+<h2>Method 1: Use a Systematic Trial and Error Process 🤓</h2>
+<ul>
+<li class="fragment"><p><strong>Grid Search (aka Brute Force):</strong></p>
+<ol type="1">
+<li class="fragment">For a given range of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values, build a table with pairs of all combinations of these <span class="math inline">\(\beta s\)</span>.</li>
+<li class="fragment">Then use our custom <code>FctMSE()</code> command to calculate a <span class="math inline">\(MSE\)</span> for each <span class="math inline">\(\beta\)</span> pair.</li>
+<li class="fragment">Find the <span class="math inline">\(\beta\)</span> pair with the lowest <span class="math inline">\(MSE\)</span></li>
+</ol></li>
+<li class="fragment"><p><strong>Optimizer:</strong> Use the R build-in optimizer. Push the start values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> together with the data to the optimizer as arguments. The rest is done by the optimizer.</p></li>
+<li class="fragment"><p>See the R script in the footnote to see both algorithms in action.»</p></li>
+</ul>
+<div class="footer">
+<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R">LinRegrScript.R script100</a></p>
+</div>
+</section>
+<section id="method-2-calculate-optimal-parameters-only-for-ols" class="slide level2 smaller">
+<h2>Method 2: Calculate Optimal Parameters (only for OLS!)</h2>
 <span class="math display">\[\begin{eqnarray*}
 \beta_{1,opt}&amp;=&amp; \frac
 {N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i}
@@ -681,22 +711,6 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 
 </div>
 </div>
-</section>
-<section id="method-2-use-a-systematic-trial-and-error-process" class="slide level2">
-<h2>Method 2: Use a Systematic Trial and Error Process 🤓</h2>
-<ul>
-<li class="fragment"><p><strong>Grid Search (aka Brute Force):</strong></p>
-<ol type="1">
-<li class="fragment">For a given range of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values, build a table with pairs of all combinations of these <span class="math inline">\(\beta s\)</span>.</li>
-<li class="fragment">Then use our custom <code>FctMSE()</code> command to calculate a <span class="math inline">\(MSE\)</span> for each <span class="math inline">\(\beta\)</span> pair.</li>
-<li class="fragment">Find the <span class="math inline">\(\beta\)</span> pair with the lowest <span class="math inline">\(MSE\)</span></li>
-</ol></li>
-<li class="fragment"><p><strong>Optimizer:</strong> Use the R build-in optimizer. Push the start values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> together with the data to the optimizer as arguments. The rest is done by the optimizer.</p></li>
-<li class="fragment"><p>See the R script in the footnote to see both algorithms in action.»</p></li>
-</ul>
-<div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R">LinRegrScript.R script100</a></p>
-</div>
 </section></section>
 <section>
 <section id="univariate-ols-with-a-real-world-dataset" class="title-slide slide level1 center">
@@ -709,9 +723,9 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb6-2"><a href="#cb6-2"></a>DataHousing <span class="ot">=</span></span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>DataHousing <span class="ot">=</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <ul>
@@ -729,10 +743,10 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb7-2"><a href="#cb7-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb7-3"><a href="#cb7-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb7-4"><a href="#cb7-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb9-2"><a href="#cb9-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb9-4"><a href="#cb9-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>DataTrain</strong></p>
@@ -742,15 +756,15 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
     Price  Sqft
     &lt;int&gt; &lt;int&gt;
  1 265000  1400
- 2 207000  1980
- 3 295000  1230
- 4 265000  1010
- 5 175000   670
- 6 270000  1010
- 7 260000  2160
- 8 280000  1590
- 9 240000   870
-10 231200  1400
+ 2 242025  1400
+ 3 207000  1980
+ 4 226500  1560
+ 5 295000  1230
+ 6 175000   670
+ 7 211000  2100
+ 8 270000  1010
+ 9 260000  2160
+10 280000  1590
 # ℹ 339 more rows</code></pre>
 </div>
 </div>
@@ -761,15 +775,15 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
     Price  Sqft
     &lt;int&gt; &lt;int&gt;
  1 394500  3002
- 2 157340   900
- 3 560000  1390
- 4 242025  1400
- 5 339950  2390
- 6 280000  1700
- 7 560000  2790
- 8 300000   930
- 9 226500  1560
-10 260000  2390
+ 2 735000  2340
+ 3 157340   900
+ 4 560000  1390
+ 5 775000  2030
+ 6 339950  2390
+ 7 280000  1700
+ 8 510000  2170
+ 9 340000  1740
+10 325000  1730
 # ℹ 141 more rows</code></pre>
 </div>
 </div>
@@ -792,11 +806,11 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(tidyverse);<span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
-<span id="cb10-2"><a href="#cb10-2"></a>DataHousing <span class="ot">=</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(tidyverse);<span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>DataHousing <span class="ot">=</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>Unfitted Model:</strong> » <span class="math display">\[
@@ -808,10 +822,10 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb11-2"><a href="#cb11-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb11-3"><a href="#cb11-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb11-4"><a href="#cb11-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb13-4"><a href="#cb13-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell">
@@ -896,8 +910,8 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">|&gt;</span> </span>
-<span id="cb16-2"><a href="#cb16-2"></a>                    <span class="fu">step_dummy</span>(Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2"></a>                    <span class="fu">step_dummy</span>(Waterfront)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>Here is how the recipe later on (in the workflow) transforms the data:</p>
@@ -926,10 +940,10 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>ModelDesignHouses<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb18-4"><a href="#cb18-4"></a><span class="fu">print</span>(ModelDesignHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>ModelDesignHouses<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb20-4"><a href="#cb20-4"></a><span class="fu">print</span>(ModelDesignHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Linear Regression Model Specification (regression)
@@ -944,11 +958,11 @@ Computational engine: lm </code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>WFModelHouses <span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span>  </span>
-<span id="cb20-2"><a href="#cb20-2"></a>      <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb20-3"><a href="#cb20-3"></a>      <span class="fu">add_model</span>(ModelDesignHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb20-4"><a href="#cb20-4"></a>      <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb20-5"><a href="#cb20-5"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>WFModelHouses <span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span>  </span>
+<span id="cb22-2"><a href="#cb22-2"></a>      <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3"></a>      <span class="fu">add_model</span>(ModelDesignHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb22-4"><a href="#cb22-4"></a>      <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb22-5"><a href="#cb22-5"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 5
@@ -961,7 +975,7 @@ Computational engine: lm </code></pre>
 </div>
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">glance</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">glance</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 12
@@ -977,8 +991,8 @@ Computational engine: lm </code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>DataTestWithPredictions <span class="ot">=</span> <span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
-<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">metrics</span>(DataTestWithPredictions, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>DataTestWithPredictions <span class="ot">=</span> <span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
+<span id="cb26-2"><a href="#cb26-2"></a><span class="fu">metrics</span>(DataTestWithPredictions, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3

@@ -1,0 +1,187 @@
+---
+title: "Qualitative Independent Variables (Dummy Variables)"
+subtitle: "Regression, Dummies, One-Hot Encoding, AB-Tests"
+format: 
+  revealjs:
+    code-fold: true
+---
+
+```{r}
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
+```
+
+## What Will You Learn {.scrollable .smaller}
+
+-   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
+
+-   Being able to distinguish between dummy encoding and one-hot encoding
+
+- Experiments and Treatment Effects
+
+- AB-Tests
+
+- Newest Development from Harvard University
+
+
+## Dummy and One-Hot Encoding {.scrollable}
+
+**One-Hot Encoding**
+
+```{r}
+OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
+print(OneHotTable)
+```
+
+*One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
+
+$$Waterfront_{yes}=1-Waterfront_{no}$$ 
+»
+
+## Dummy and One-Hot Encoding {.scrollable}
+
+**Dummy Coding**
+
+We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
+
+**Dummy Encoding Example**
+
+```{r}
+#| echo: true
+DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
+print(DummyTable)
+```
+
+**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.»
+
+## Sex Based Wage Discrimination (univariate)
+
+```{r}
+#| echo: true
+library(wooldridge)
+library(janitor)
+DataWage=wage1 %>%
+clean_names("upper_camel") %>%
+select(Wage, SexFem=Female)
+head(DataWage)
+```
+
+## Plotting the Data
+
+```{r}
+#| echo: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_point()
+```
+
+
+## Plotting the Data
+
+```{r}
+#| echo: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)
+```
+
+## Plotting the Data with Regression Line
+
+```{r}
+#| echo: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)+
+  geom_smooth(method = "lm", se=FALSE)
+```
+## Plotting the Data with Regression Line
+
+```{r}
+#| echo: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_point()+
+  geom_smooth(method = "lm", se=FALSE)
+```
+
+# Regression Sex Discrimination
+
+```{r}
+#| echo: true
+lm(Wage ~ SexFem, data=DataWage)
+```
+
+
+# Observational Data Analysis vs. AB-Test
+
+## Marketing Example
+
+You run a company similar than ChatGPT, but it is not free. Your customers can upload their own data right on the sign-in page and then use AI that considers their proprietary  data. The sign-in page is more like a portal and offers various services. You always thought your sign-in page is well designed.
+
+A consulting firm made a new sign in page for you that is supposed to be better designed.
+
+You want to test if conversion (measured in hours of services used) is higher on the newly designed sign-up page.
+
+You collect data from last month.
+
+## Data from Last Month {.scrollable}
+
+```{r}
+#| echo: true
+library(rio)
+DataObserv=import("../DataObservAndABTest.xlsx", sheet = "DataObserv")
+print(DataObserv)
+```
+
+## Run a Regression with LM {.scrollable}
+
+```{r}
+#| echo: true
+lm(ConvHours~NewSignUpPage, data=DataObserv)
+```
+Looks like the new page performed well. 5.8 more hours per month.
+
+## Selection Bias: More Young and Educated Customers Tried the New Design {.scollable}
+
+```{r}
+#| echo: true
+library(tidyverse)
+DataObserv |> 
+  group_by(NewSignUpPage) |> 
+  summarise(mean(Age), mean(EducYears))
+```
+
+## Selection Bias: Young and Educated Customers Use Your AI Service for More Hours {.scollable}
+
+```{r}
+#| echo: true
+lm(ConvHours~Age, data=DataObserv)
+```
+If Age increases by one year, monthly services used **decrease by 0.49 hours**.
+```{r}
+#| echo: true
+lm(ConvHours~EducYears, data = DataObserv)
+```
+If education years increases by one year, monthly services used **increase by 0.49 hours**.
+
+## AB Test - Experiment
+
+Participants get randomly assigned to *Treatment* and *Non-Treatment* (placebo) group. Education and Age is now irrelevant because it should be equally represented in *Treatment* and *Non-Treatment*, if we have enough observations (hundred(s)): 
+
+```{r}
+#| echo: true
+DataABTest=import("../DataObservAndABTest.xlsx", sheet = "DataABTest")
+print(DataABTest)
+```
+
+## Regression: AB Test - Experiment
+
+
+
+```{r}
+#| echo: true
+lm(data = DataABTest, ConvHours ~Treatment)
+```

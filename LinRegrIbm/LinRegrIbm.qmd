@@ -1,6 +1,6 @@
 ---
 title: "Linear Regression"
-subtitle: "Part 1 "
+subtitle: "Univariate"
 format: 
   revealjs:
     code-fold: true
@@ -34,32 +34,10 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 
 -   Using `tidymodels` to analyze housing prices.
 
--   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
-
--   Being able to distinguish between dummy encoding and one-hot encoding
-
-- Experiments and Treatment Effects
-
-- AB Tests
 
 ## Univariate Linear Regression - Data Table and Goal {.smaller}
 
 ::: columns
-::: {.column width="40%"}
-**The Regression:**
-
-$$
-\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
-$$
-$$
-\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
-$$
-
-**The Goal**
-
-Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
-$$(\widehat{Grade}_{i}-Grade_i)^2$$
-:::
 
 ::: {.column width="60%"}
 **The Data Table**
@@ -71,12 +49,31 @@ kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 :::
+
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
+$$(\widehat{Grade}_{i}-Grade_i)^2$$
+:::
+
+
 :::
 
 ## Predict Grade Based on Study Time with Eyeballing {.smaller}
 
 
-Copy the code at the end of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
+Copy the code from the code-section of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
 
 $$
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
@@ -110,7 +107,7 @@ $$
 
 **The Goal**
 
-Find values for $\beta_0$ and $\beta_1$ that minimize the individual prediction errors: 
+Find values for $\beta_0$ and $\beta_1$ that minimize the individual (squared) prediction errors: 
 $$(\widehat{y}_{i}-y_i)^2$$
 $$(\widehat{Grade}_{i}-Grade_i)^2$$
 :::
@@ -141,7 +138,7 @@ Beta2=64
 :::
 :::
 
-# How to Measure Prediction Quality
+# How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
 
 ```{=tex}
 \begin{eqnarray*}
@@ -152,7 +149,7 @@ MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\bet
 ```
 **Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
 
-## How to Measure Prediction Quality {.smaller .scrollable}
+## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
 
 ```{=tex}
 \begin{eqnarray}
@@ -172,7 +169,7 @@ MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mb
 ```
 
 
-## Custom R Function to Calculate MSE
+## Custom R Function to Calculate MSE {.scrollable}
 
 ```{r}
 #| echo: false
@@ -194,8 +191,8 @@ Function Call:
 
 ```{r}
 #| echo: true
-VecBetaTest=c(4,61)
-ResultMSE=FctMSE(VecBetaTest, DataMockup)
+VecBeta=c(4,61)
+ResultMSE=FctMSE(VecBeta, DataMockup)
 print(ResultMSE)
 ```
 
@@ -217,17 +214,49 @@ FctMSE=function(VecBeta, data){
                         return(MSE)}
 ```
 
-## How to Find Optimal Values for $\beta_1$ and $\beta_2$
+## How to Find Optimal Values for $\beta_1$ and $\beta_2$ {.smaller .scollable}
+
+**Method 0: (not such a good idea)** 
+
+:   We can use **unsystematic trial and error**.
+
+    ```{r}
+    #| echo: true
+    library(rio)
+    FctMSE=import("https://ai.lange-analytics.com/source/FctMSE.rds")
+    VecBeta=c(7,60)
+    ResultMSE=FctMSE(VecBeta, DataMockup)
+    print(ResultMSE)
+    ```
+
 
 **Method 1:**
 
-:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
+:   We can use a **systematic trial and error process**.
 
 **Method 2:**
 
-:   We can use a **systematic trial and error process**.
+:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
 
-## Method 1: Calculate Optimal Parameters (only for OLS!) {.smaller .scollable}
+
+
+## Method 1: Use a Systematic Trial and Error Process 🤓
+
+-   **Grid Search (aka Brute Force):**
+
+    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
+    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
+    3.  Find the $\beta$ pair with the lowest $MSE$
+
+-   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
+
+-   See the R script in the footnote to see both algorithms in action.»
+
+::: footer
+See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
+:::
+
+## Method 2: Calculate Optimal Parameters (only for OLS!){.smaller}
 
 ```{=tex}
 \begin{eqnarray*} 
@@ -250,21 +279,7 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
-## Method 2: Use a Systematic Trial and Error Process 🤓
 
--   **Grid Search (aka Brute Force):**
-
-    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
-    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
-    3.  Find the $\beta$ pair with the lowest $MSE$
-
--   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
-
--   See the R script in the footnote to see both algorithms in action.»
-
-::: footer
-See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
-:::
 
 # Univariate OLS with a Real World Dataset
 
