@@ -742,35 +742,35 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
     Price  Sqft
     &lt;int&gt; &lt;int&gt;
  1 265000  1400
- 2 207000  1980
- 3 295000  1230
- 4 265000  1010
- 5 175000   670
- 6 270000  1010
- 7 260000  2160
- 8 280000  1590
- 9 240000   870
-10 231200  1400
-# ℹ 339 more rows</code></pre>
+ 2 157340   900
+ 3 242025  1400
+ 4 280000  1700
+ 5 207000  1980
+ 6 226500  1560
+ 7 265000  1010
+ 8 260000  2390
+ 9 211000  2100
+10 260000  2160
+# … with 339 more rows</code></pre>
 </div>
 </div>
 <p><strong>DataTest</strong></p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 151 × 2
-    Price  Sqft
-    &lt;int&gt; &lt;int&gt;
- 1 394500  3002
- 2 157340   900
- 3 560000  1390
- 4 242025  1400
- 5 339950  2390
- 6 280000  1700
- 7 560000  2790
- 8 300000   930
- 9 226500  1560
-10 260000  2390
-# ℹ 141 more rows</code></pre>
+     Price  Sqft
+     &lt;int&gt; &lt;int&gt;
+ 1  394500  3002
+ 2 1300000  4380
+ 3  775000  2030
+ 4  339950  2390
+ 5  560000  2790
+ 6  785000  1670
+ 7  300000   930
+ 8  530000  1320
+ 9  580000  2430
+10  295000  1230
+# … with 141 more rows</code></pre>
 </div>
 </div>
 </section>
@@ -833,7 +833,7 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
  8 287000  2240     7 no        
  9 204000  1000     7 no        
 10 215000  1610     7 no        
-# ℹ 15,118 more rows</code></pre>
+# … with 15,118 more rows</code></pre>
 </div>
 </div>
 <p><strong>DataTest</strong></p>
@@ -852,7 +852,7 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
  8  233000  1710     6 no        
  9  667000  1400     8 no        
 10  719000  2570     8 no        
-# ℹ 6,475 more rows</code></pre>
+# … with 6,475 more rows</code></pre>
 </div>
 </div>
 </section>
@@ -905,7 +905,7 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 15,128 × 4
     Sqft Grade  Price Waterfront_yes
-   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;          &lt;dbl&gt;
+   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;          &lt;int&gt;
  1  1180     7 221900              0
  2   770     6 180000              0
  3  1200     7 189000              0
@@ -916,7 +916,7 @@ Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
  8  2240     7 287000              0
  9  1000     7 204000              0
 10  1610     7 215000              0
-# ℹ 15,118 more rows</code></pre>
+# … with 15,118 more rows</code></pre>
 </div>
 </div>
 </section>
@@ -965,10 +965,11 @@ Computational engine: lm </code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 12
-  r.squared adj.r.squared   sigma statistic p.value    df   logLik    AIC    BIC
-      &lt;dbl&gt;         &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
-1     0.581         0.581 238574.     7002.       0     3 -208785. 4.18e5 4.18e5
-# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+  r.squared adj.r.s…¹  sigma stati…² p.value    df  logLik    AIC    BIC devia…³
+      &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
+1     0.581     0.581 2.39e5   7002.       0     3 -2.09e5 4.18e5 4.18e5 8.61e14
+# … with 2 more variables: df.residual &lt;int&gt;, nobs &lt;int&gt;, and abbreviated
+#   variable names ¹​adj.r.squared, ²​statistic, ³​deviance</code></pre>
 </div>
 </div>
 </section>
