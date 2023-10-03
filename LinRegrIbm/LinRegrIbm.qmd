@@ -282,7 +282,91 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
 
 
 
-# Univariate OLS with a Real World Dataset
+# Using lm() Command from Base R to Run a Regression {.scrollable}
+
+```{r}
+#| echo: true
+ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
+summary(ModelStudyTime)
+```
+
+## Results from OLS Analysis and Sanity Check
+
+**Unfitted Model**
+
+$$Grade=\beta_1 StudyTime + StudyTime$$
+
+**Fitted Model**
+
+$$Grade=3.96 StudyTime + 64.18$$
+Coefficient for StudyTime $\beta_1$ should be positive.
+
+## Predicting with the Fitted Model - Generated Data
+
+$$Grade=3.96 StudyTime + 64.18$$
+```{r}
+#| echo: true
+ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
+
+DataForPrediction=data.frame(StudyTime=c(1,2,3))
+
+predict(ModelStudyTime, newdata=DataForPrediction)
+```
+
+## Predicting with the Fitted Model - Training Data
+
+
+$$Grade=3.96 StudyTime + 64.18$$
+```{r}
+#| echo: true
+
+ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
+
+VecPred=predict(ModelStudyTime, newdata=DataMockup)
+print(VecPred)
+```
+
+## Predicting with the Fitted Model - Training Data
+
+$$Grade=3.96 StudyTime + 64.18$$
+```{r}
+#| echo: true
+VecPred=predict(ModelStudyTime, newdata=DataMockup)
+DataMockup=DataMockup |> 
+           mutate(.pred=VecPred)
+print(DataMockup)
+```
+
+## Using tidymodels for the Linear Regression
+
+```{r}
+#| echo: true
+library(tidymodels)
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
+RecipeStudyTime=recipe(DataMockup, Grade~StudyTime)
+ModelDesignStudyTime=linear_reg() |> 
+                     set_engine("lm") |> 
+                     set_mode("regression")
+WFModelStudyTime= workflow() |> 
+                  add_recipe(RecipeStudyTime) |> 
+                  add_model(ModelDesignStudyTime) |> 
+                  fit(DataMockup)
+```
+
+##
+Getting the Results from a Workflow
+
+```{r}
+#| echo: true
+ResultsStudyTime=tidy(WFModelStudyTime)
+print(ResultsStudyTime)
+
+```
+
+
+## Adding Predictions to DataMockup
+
+
 
 ## Univariate OLS with a Real World Dataset
 
@@ -332,6 +416,7 @@ print(as_tibble(DataTest))
 **Run the Analysis**
 
 ```{r}
+#| echo: true
 library(rio)
 DataHousing =
   import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
@@ -340,9 +425,51 @@ Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
 DataTest=testing(Split7030)
 
-lm(Price ~ Sqft, data=DataTrain)
+ModelHouses=lm(Price ~ Sqft, data=DataTrain)
+summary(ModelHouses)
+```
 
-#Alternative: tidymodels
+## The Same Analysis with tidymodels
+
+```{r}
+#| echo: true
+library(tidymodels)
+
+RecipeHouses=recipe(DataTrain, Price~Sqft)
+ModelDesignHouses=linear_reg() |> 
+                     set_engine("lm") |> 
+                     set_mode("regression")
+WFModelHouses= workflow() |> 
+               add_recipe(RecipeHouses) |> 
+               add_model(ModelDesignHouses) |> 
+               fit(DataTrain)
+
+Results=tidy(WFModelHouses)
+print(Results)
+```
+
+## Predicting with tidymodels Training Data
+
+The augment() command first predicts and then augments the results to the related data frame
+
+```{r}
+#| echo: true
+DataTrainWithPred=augment(WFModelHouses, new_data = DataTrain)
+
+head(DataTrainWithPred)
+
+```
+
+## Metrics for Predictive Quality
+
+```{r}
+#| echo: true
+metrics(DataTrainWithPred, truth = Price, estimate = .pred)
+
+```
+
+
+```{r}
 
 
 ```
