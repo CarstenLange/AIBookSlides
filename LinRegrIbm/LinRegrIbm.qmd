@@ -301,9 +301,9 @@ $$Grade=\beta_1 StudyTime + StudyTime$$
 $$Grade=3.96 StudyTime + 64.18$$
 Coefficient for StudyTime $\beta_1$ should be positive.
 
-## Predicting with the Fitted Model - Generated Data
+## Predicting with the Fitted Model - Generated Data {.smaller}
 
-$$Grade=3.96 StudyTime + 64.18$$
+$$Grade=3.96 \cdot StudyTime + 64.18$$
 ```{r}
 #| echo: true
 ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
@@ -313,10 +313,20 @@ DataForPrediction=data.frame(StudyTime=c(1,2,3))
 predict(ModelStudyTime, newdata=DataForPrediction)
 ```
 
+Interpretation of $\beta_1=3.96$:
+
+1. From the formula: If $StudyTime$ increases, Grade increases. -> makes sense!
+
+2. From the formula: Quantitative impact: If $StudyTime$ increases by one unit, Grade increases by $3.96$ units.
+
+3. From the prediction: Above we predicted $Grade$ for $Studyteimes$ of 1,2,3, which confirms point 1) and 2).
+
 ## Predicting with the Fitted Model - Training Data
 
 
 $$Grade=3.96 StudyTime + 64.18$$
+Generating the predictions:
+
 ```{r}
 #| echo: true
 
@@ -329,6 +339,8 @@ print(VecPred)
 ## Predicting with the Fitted Model - Training Data
 
 $$Grade=3.96 StudyTime + 64.18$$
+Augmenting the predictions to the data frame:
+
 ```{r}
 #| echo: true
 VecPred=predict(ModelStudyTime, newdata=DataMockup)
@@ -338,6 +350,8 @@ print(DataMockup)
 ```
 
 ## Using tidymodels for the Linear Regression
+
+Creating the fitted (workflow) model:
 
 ```{r}
 #| echo: true
@@ -366,26 +380,50 @@ print(ResultsStudyTime)
 
 ## Adding Predictions to DataMockup
 
+```{r}
+#| echo: true
+DataMockupWithPred=augment(WFModelStudyTime, DataMockup)
+print(DataMockupWithPred)
+```
+## Evaluating Predictive Quality
+
+```{r}
+#| echo: true
+metrics(DataMockupWithPred, truth=Grade, estimate=.pred)
+```
+
+# Real World Application
+
+## Univariate OLS with a Real World Dataset
+
+**Data Description:**
+
+-   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+-   Several predictor variables. For now we use only $Sqft$
+-   We will only use 500 randomly chosen observations from the total of 21,613 observations.
+
+-We only use Sqft as predictor variable for now.
 
 
 ## Univariate OLS with a Real World Dataset
 
-**Data**
+**Data:**
 
 ```{r}
 #| echo: true
 library(rio)
 DataHousing =
   import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
+head(DataHousing)
 ```
 
--   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
--   Several predictor variables. For now we use only $Sqft$
--   We will only use 500 randomly chosen observations from the total of 21,613 observations.
+## Univariate OLS with a Real World Dataset
 
-. . .
 
-**Unfitted Model:**» $$\widehat{Price}=\beta_1 Sqft + \beta_2$$
+**Unfitted Model:** 
+
+$$\widehat{Price}=\beta_1 Sqft + \beta_2$$
+**Directed Acyclic Graphs (causal graphs):**
 
 ## Univariate OLS with a Real World Dataset {.scrollable}
 
@@ -394,6 +432,7 @@ DataHousing =
 ```{r}
 #| echo: true
 library(tidymodels)
+set.seed(777)
 Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
 DataTest=testing(Split7030)
@@ -402,18 +441,18 @@ DataTest=testing(Split7030)
 **DataTrain**
 
 ```{r}
-print(as_tibble(DataTrain))
+print(DataTrain, max=6)
 ```
 
 **DataTest**
 
 ```{r}
-print(as_tibble(DataTest))
+print(DataTest, max=6)
 ```
 
 ## Univariate OLS with a Real World Dataset
 
-**Run the Analysis**
+**Run the Analysis with lm()**
 
 ```{r}
 #| echo: true
@@ -439,6 +478,7 @@ RecipeHouses=recipe(DataTrain, Price~Sqft)
 ModelDesignHouses=linear_reg() |> 
                      set_engine("lm") |> 
                      set_mode("regression")
+
 WFModelHouses= workflow() |> 
                add_recipe(RecipeHouses) |> 
                add_model(ModelDesignHouses) |> 
@@ -448,19 +488,28 @@ Results=tidy(WFModelHouses)
 print(Results)
 ```
 
-## Predicting with tidymodels Training Data
+## Predicting with tidymodels Training Data {.scrollable}
 
 The augment() command first predicts and then augments the results to the related data frame
 
 ```{r}
 #| echo: true
 DataTrainWithPred=augment(WFModelHouses, new_data = DataTrain)
+DataTestWithPred=augment(WFModelHouses, new_data = DataTrain)
 
 head(DataTrainWithPred)
+head(DataTestWithPred)
 
 ```
 
-## Metrics for Predictive Quality
+## Metrics for Predictive Quality Training Data
+
+```{r}
+#| echo: true
+metrics(DataTrainWithPred, truth = Price, estimate = .pred)
+```
+
+## Metrics for Predictive Quality Testing Data
 
 ```{r}
 #| echo: true
@@ -468,10 +517,5 @@ metrics(DataTrainWithPred, truth = Price, estimate = .pred)
 
 ```
 
-
-```{r}
-
-
-```
 
 
