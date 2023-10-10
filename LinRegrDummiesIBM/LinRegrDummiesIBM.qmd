@@ -12,7 +12,6 @@ library(tidymodels)
 library(rio)
 library(kableExtra)
 library(janitor)
-DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 ```
 
 ## What Will You Learn {.scrollable .smaller}
@@ -56,7 +55,12 @@ DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
 print(DummyTable)
 ```
 
-**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.»
+**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.
+
+For example: 
+`recipe(Data, Y~x)`
+`step_dummy()`
+»
 
 ## Sex Based Wage Discrimination (univariate)
 
@@ -80,13 +84,23 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
 ```
 
 
-## Plotting the Data
+## Plotting the Data with Transparency (alpha) and Jittered
 
 ```{r}
 #| echo: true
 library(tidyverse)
 ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_jitter(width=0.05, alpha=0.27)
+```
+
+## Plotting the Data with Transparency (alpha) and Jittered
+
+```{r}
+#| echo: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)+
+  scale_y_continuous(limits = c(0,8))
 ```
 
 ## Plotting the Data with Regression Line
@@ -98,14 +112,7 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_jitter(width=0.05, alpha=0.27)+
   geom_smooth(method = "lm", se=FALSE)
 ```
-## Plotting the Data with Regression Line
 
-```{r}
-#| echo: true
-library(tidyverse)
-ggplot(DataWage, aes(x=SexFem, y=Wage))+
-  geom_point()+
-  geom_smooth(method = "lm", se=FALSE)
 ```
 
 # Regression Sex Discrimination
@@ -118,11 +125,44 @@ lm(Wage ~ SexFem, data=DataWage)
 
 # Observational Data Analysis vs. AB-Test
 
-## Marketing Example
+## Fun Examples 1:
 
-You run a company similar than ChatGPT, but it is not free. Your customers can upload their own data right on the sign-in page and then use AI that considers their proprietary  data. The sign-in page is more like a portal and offers various services. You always thought your sign-in page is well designed.
+**Class Size:**
+
+1. The Dean uses the university's course system and claims the average class size is 35 students.
+
+2. The Student Association ask 500 students on the squad how big was the last class they attended. The result is 54
+
+What happened?
+
+From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/
+
+## Fun Examples 2:
+
+**Fertility Rate:**
+
+We want to find the average offsprings a mother has (fertility rate) about 30 years ago?:
+
+We survey 1,000 people age 50 and ask how many offsprings their mother had.
+
+What is wrong with this methedology?
+
+From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/
+
+
+## Marketing Example {.smaller}
+
+You run a company similar than ChatGPT, but it is not free. The customers (private people) can upload their own data right on the sign-in page and then use AI that considers their   data. 
+
+The sign-in page is more like a portal and offers various services. You always thought your sign-in page is well designed.
 
 A consulting firm made a new sign in page for you that is supposed to be better designed.
+
+You give your customers two sign-in page options:
+
+"classic"
+
+"new design"
 
 You want to test if conversion (measured in hours of services used) is higher on the newly designed sign-up page.
 
@@ -186,3 +226,17 @@ print(DataABTest)
 #| echo: true
 lm(data = DataABTest, ConvHours ~Treatment)
 ```
+
+AB Test is very similar to Medical Trials (thus the terminology).
+
+Experiment:
+
+- Assign participants *randomly* to the placebo (old web page) and the trial group (new web page).
+
+- Determine the length of the experiment.
+
+- Run regression.
+
+- Do not peak!!!
+
+

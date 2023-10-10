@@ -1,0 +1,164 @@
+---
+title: "Linear Regression"
+subtitle: "Multivariate"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+---
+
+```{r}
+library(kableExtra)
+
+```
+
+## What Will You Learn {.scrollable .smaller}
+
+-   How to extend univariate regression to multivaiate
+
+- Motivation for multivariate regression
+    - Prediction of outcome (include all predictors you have data for)
+    - Impact Analysis
+    - Im pact of one predictor but controlled for other predictors
+- Extend univaraite Regresion to multi variate Regression
+
+- Sampling
+
+- Interpretation of standard error, t-value, and P-value to infer on prediction quality
+
+# Sex Discrimination
+
+## The Data
+
+
+
+```{r}
+#| echo: true
+library(wooldridge)
+library(rio)
+library(janitor)
+library(tidyverse)
+DataWageOrg=wage1 |> 
+  clean_names("upper_camel") 
+
+# use ? wage1
+```
+
+
+
+
+
+
+
+## Pick Possible Variables Candidates for Analysis
+
+```{r}
+DataWageAna=select(DataWageOrg, Wage, Educ,Exper,Tenure,      
+                   Nonwhite,SexFem=Female,                      
+                   MarriedTrue=Married, Numdep, SmsaTrue=Smsa) |> 
+             mutate(RaceWhite=1-Nonwhite, Nonwhite=NULL)
+           
+```
+
+## Univariate Analysis and $R^2$
+
+```{r}
+#| echo: true
+ModelWageUnivar=lm(Wage~SexFem, DataWageAna)
+summary(ModelWageUnivar)
+```
+$R^2$ is the part of the variance of the outcome variable that can be expalined by the regression.
+
+# Visualisation of Spread of Wage
+
+```{r}
+#| echo: true
+ggplot(DataWageAna , aes(x = Wage, y = c(1:526))) + 
+    geom_point()+
+    geom_vline(xintercept = mean(DataWageAna$Wage), color="red", size=1.2)
+```
+
+
+## Exploratory Data Analysis with SmartEDA
+
+You need to install the SmartEDA package first.
+
+```{r}
+#| echo: true
+#| eval: false
+library(SmartEDA)
+ExpReport(DataWageAna, op_file = "EDAReport")
+
+```
+
+
+
+
+## Exploratory Data Analysis with cor
+
+```{r}
+#| echo: true
+#| eval: false
+CorMatrix <-cor(DataWageAna) #this will be useful later
+print(CorMatrix)
+```
+
+## Exploratory Data Analysis with CorPlot
+
+install corrplot first
+
+```{r}
+#| echo: true
+#| eval: false
+library(corrplot)
+corrplot(CorMatrix)
+```
+
+## Univariate Analysis and $R^2$
+
+```{r}
+#| echo: true
+ModelWageUnivar=lm(Wage~SexFem, DataWageAna)
+summary(ModelWageUnivar)
+```
+
+## Multivariate Analysis with SexFem and Tenure
+
+```{r}
+#| echo: true
+ModelWageUnivar=lm(Wage~SexFem, DataWageAna)
+summary(ModelWageUnivar)
+```
+
+## Multivariate Analysis with SexFem and Experience
+
+```{r}
+#| echo: true
+ModelWageUnivar=lm(Wage~SexFem, DataWageAna)
+summary(ModelWageUnivar)
+```
+
+## Multivariate Analysis with SexFem, Tenure and Experience
+
+```{r}
+#| echo: true
+ModelWageUnivar=lm(Wage~SexFem, DataWageAna)
+summary(ModelWageUnivar)
+```
+
+## Sampling Process 
+
+```{r}
+#| echo: true
+#| eval: false
+library(rio);library(janitor);library(tidymodels)
+DataHousing =
+import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+clean_names("upper_camel") |>
+select(Price, Sqft=SqftLiving, Grade, Waterfront)
+
+DataTrain=sample_n(DataHousing,30)
+
+
+```
+
