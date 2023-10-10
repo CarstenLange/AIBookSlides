@@ -747,7 +747,7 @@ F-statistic: 12.14 on 1 and 3 DF,  p-value: 0.03992</code></pre>
 <section id="results-from-ols-analysis-and-sanity-check" class="slide level2">
 <h2>Results from OLS Analysis and Sanity Check</h2>
 <p><strong>Unfitted Model</strong></p>
-<p><span class="math display">\[Grade=\beta_1 StudyTime + StudyTime\]</span></p>
+<p><span class="math display">\[Grade=\beta_1 StudyTime + \beta_2\]</span></p>
 <p><strong>Fitted Model</strong></p>
 <p><span class="math display">\[Grade=3.96 StudyTime + 64.18\]</span> Coefficient for StudyTime <span class="math inline">\(\beta_1\)</span> should be positive.</p>
 </section>
@@ -1031,7 +1031,7 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="predicting-with-tidymodels-training-data" class="slide level2">
+<section id="predicting-with-tidymodels-training-data" class="slide level2 scrollable">
 <h2>Predicting with tidymodels Training Data</h2>
 <p>The augment() command first predicts and then augments the results to the related data frame</p>
 <div class="cell">

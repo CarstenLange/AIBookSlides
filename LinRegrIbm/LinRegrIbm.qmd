@@ -294,7 +294,7 @@ summary(ModelStudyTime)
 
 **Unfitted Model**
 
-$$Grade=\beta_1 StudyTime + StudyTime$$
+$$Grade=\beta_1 StudyTime + \beta_2$$
 
 **Fitted Model**
 
