@@ -513,7 +513,7 @@ metrics(DataTrainWithPred, truth = Price, estimate = .pred)
 
 ```{r}
 #| echo: true
-metrics(DataTrainWithPred, truth = Price, estimate = .pred)
+metrics(DataTestWithPred, truth = Price, estimate = .pred)
 
 ```
 
