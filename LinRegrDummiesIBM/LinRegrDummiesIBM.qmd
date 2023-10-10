@@ -229,8 +229,6 @@ print(DataABTest)
 
 ## Regression: AB Test - Experiment
 
-
-
 ```{r}
 #| echo: true
 lm(data = DataABTest, ConvHours ~Treatment)
@@ -238,13 +236,15 @@ lm(data = DataABTest, ConvHours ~Treatment)
 
 AB Test is very similar to Medical Trials (thus the terminology).
 
-Experiment:
+## AB Test or Experiment or Trial
 
-- Assign participants *randomly* to the placebo (old web page) and the trial group (new web page).
+Important:
 
-- Determine the length of the experiment.
+Assign participants **randomly** to the placebo (old web page) and the trial group (new web page).
 
-- Run regression.
+Determine the length of the experiment.
+
+Run regression.
 
 - Do not peak!!!
 
