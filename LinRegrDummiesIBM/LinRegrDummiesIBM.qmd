@@ -58,7 +58,8 @@ print(DummyTable)
 **Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.
 
 For example: 
-`recipe(Data, Y~x)`
+`recipe(Data, Y~x) |> `
+
 `step_dummy()`
 »
 
@@ -113,9 +114,9 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_smooth(method = "lm", se=FALSE)
 ```
 
-```
 
-# Regression Sex Discrimination
+
+## Regression Sex Discrimination
 
 ```{r}
 #| echo: true
@@ -195,13 +196,21 @@ DataObserv |>
   summarise(mean(Age), mean(EducYears))
 ```
 
-## Selection Bias: Young and Educated Customers Use Your AI Service for More Hours {.scollable}
+
+## Regression Age: Younger People use the side more often
+
+**Age:**
 
 ```{r}
 #| echo: true
 lm(ConvHours~Age, data=DataObserv)
 ```
-If Age increases by one year, monthly services used **decrease by 0.49 hours**.
+
+
+## Regression Educated: People with Higher Education use the side more often
+
+**Education:**
+
 ```{r}
 #| echo: true
 lm(ConvHours~EducYears, data = DataObserv)

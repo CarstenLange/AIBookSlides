@@ -452,7 +452,8 @@
 </div>
 </div>
 <p><strong>Note,</strong> dummy encoding can be done with <code>step_dummy()</code> in a <em>tidymodels recipe</em>.</p>
-<p>For example: <code>recipe(Data, Y~x)</code> <code>step_dummy()</code> »</p>
+<p>For example: <code>recipe(Data, Y~x) |&gt;</code></p>
+<p><code>step_dummy()</code> »</p>
 </section>
 <section id="sex-based-wage-discrimination-univariate" class="slide level2">
 <h2>Sex Based Wage Discrimination (univariate)</h2>
@@ -526,13 +527,14 @@
 </details>
 
 </div>
-<img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><pre><code>
-# Regression Sex Discrimination
-
-::: {.cell}
-
-```{.r .cell-code}
-lm(Wage ~ SexFem, data=DataWage)</code></pre>
+<img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="regression-sex-discrimination" class="slide level2">
+<h2>Regression Sex Discrimination</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">lm</span>(Wage <span class="sc">~</span> SexFem, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -542,7 +544,7 @@ Coefficients:
 (Intercept)       SexFem  
       7.099       -2.512  </code></pre>
 </div>
-<p>:::</p>
+</div>
 </section>
 <section>
 <section id="observational-data-analysis-vs.-ab-test" class="title-slide slide level1 center">
@@ -642,8 +644,9 @@ Coefficients:
 </div>
 </div>
 </section>
-<section id="selection-bias-young-and-educated-customers-use-your-ai-service-for-more-hours" class="slide level2 scollable">
-<h2>Selection Bias: Young and Educated Customers Use Your AI Service for More Hours</h2>
+<section id="regression-age-younger-people-use-the-side-more-often" class="slide level2">
+<h2>Regression Age: Younger People use the side more often</h2>
+<p><strong>Age:</strong></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
@@ -659,6 +662,10 @@ Coefficients:
     36.5328      -0.4931  </code></pre>
 </div>
 </div>
+</section>
+<section id="regression-educated-people-with-higher-education-use-the-side-more-often" class="slide level2">
+<h2>Regression Educated: People with Higher Education use the side more often</h2>
+<p><strong>Age:</strong></p>
 <p>If Age increases by one year, monthly services used <strong>decrease by 0.49 hours</strong>.</p>
 <div class="cell">
 <details>
@@ -720,6 +727,14 @@ Coefficients:
         23.83         -11.50  </code></pre>
 </div>
 </div>
+<p>AB Test is very similar to Medical Trials (thus the terminology).</p>
+<p>Experiment:</p>
+<ul>
+<li class="fragment"><p>Assign participants <em>randomly</em> to the placebo (old web page) and the trial group (new web page).</p></li>
+<li class="fragment"><p>Determine the length of the experiment.</p></li>
+<li class="fragment"><p>Run regression.</p></li>
+<li class="fragment"><p>Do not peak!!!</p></li>
+</ul>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
 </div>
