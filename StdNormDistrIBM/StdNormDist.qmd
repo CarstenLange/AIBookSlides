@@ -1,0 +1,109 @@
+---
+title: "Standard Deviation and Normal Distribution"
+subtitle: "Review"
+format: 
+  revealjs:
+    code-fold: false
+    incremental: false
+    scrollable: true
+    echo: true
+---
+
+```{r}
+library(kableExtra)
+
+```
+
+## What Will You Learn {.scrollable .smaller}
+
+-   You will review the concept of Standard Deviation to measure the spread of a variable.
+- You will review the concept of standard deviation
+- You will explain  why Standard Deviation is so important for the concept of Normal Distribution
+
+ 
+
+## The Data {.non-incremental}
+
+**Source:**
+
+- 2012 US Army Anthropometric Survey (ANSUR II) 
+- DCPH (Defense Center for Public Health) - Aberdeen
+- https://phc.amedd.army.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx
+
+**Download:** with rio::import
+
+
+Female Data:
+
+import("https://ai.lange-analytics.com/data/DataUSArmyBodyMeasures.xlsx", sheet=DataFemale)
+
+Male Data:
+
+import("https://ai.lange-analytics.com/data/DataUSArmyBodyMeasures.xlsx", sheet=DataMale)
+
+
+```{r}
+#| echo: true
+library(rio)
+library(janitor)
+library(tidymodels)
+DataSoldiersM=import("C:/CalPoly/RSamples/Data/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
+              clean_names("upper_camel") |> 
+              select(Height=Heightin, Weight=Weightlbs, Gender)
+DataSoldiersF=import("C:/CalPoly/RSamples/Data/DataUSArmyBodyMeasures.xlsx", sheet="DataFemale")|> 
+              clean_names("upper_camel") |> 
+              select(Height=Heightin, Weight=Weightlbs, Gender)
+
+DataSoldiers=merge(DataSoldiersF, DataSoldiersM, all=TRUE)
+print(DataSoldiersF)
+print(DataSoldiersM)
+print(DataSoldiers)
+```
+
+## Plot Height Male and Female Point Plot 
+
+```{r}
+ggplot(DataSoldiers, aes(x=Gender, y=Height, color=Gender))+
+  geom_point()
+  
+```
+
+
+## Plot Height Male and Female Jitter Plot
+
+```{r}
+ggplot(DataSoldiers, aes(x=Gender, y=Height, color=Gender))+
+  geom_jitter()
+  
+```
+
+## Plot Height Male and Female Jitter Plot alpha=0.1)
+
+```{r}
+ggplot(DataSoldiers, aes(x=Gender, y=Height, color=Gender))+
+  geom_jitter(alpha=0.2)
+```
+
+## Plot Height Male and Female Jitter Plot alpha=0.1)
+
+```{r}
+ggplot(DataSoldiers, aes(x=Gender, y=Height, color=Gender))+
+  geom_jitter(alpha=0.2)
+```
+
+# Height Regression
+
+```{r}
+RecipeHeightGender=recipe(DataSoldiers, Height~Gender) |> 
+                   step_dummy(Gender)
+ModelDesignLinear=linear_reg() |> 
+                     set_engine("lm") |> 
+                     set_mode("regression")
+WFModelStudyTime= workflow() |> 
+                  add_recipe(RecipeHeightGender) |> 
+                  add_model(ModelDesignLinear) |> 
+                  fit(DataSoldiers)
+tidy(WFModelStudyTime)
+```
+
+
