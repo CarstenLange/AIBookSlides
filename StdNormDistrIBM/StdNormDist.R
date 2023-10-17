@@ -1,6 +1,7 @@
 library(rio)
 library(janitor)
 library(tidymodels)
+library(TeachHist)
 DataSoldiersM=import("https://ai.lange-analytics.com/data/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
   clean_names("upper_camel") |> 
   select(Height=Heightin, Weight=Weightlbs, Gender)
