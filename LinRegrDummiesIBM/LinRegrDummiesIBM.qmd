@@ -248,4 +248,76 @@ Run regression.
 
 - Do not peak!!!
 
+## AB Test (Experiment) Workflow
+
+1. Assign subjects **randomly** to *Treatment* and *Placebo* group. This ensures that there is no sample bias (if your samples are large enough!!!)
+
+2. Draw acrylic graph (with plus or minus sign). Run uni-variate regression with dummy for *treatment* and *placebo*.
+
+3. Does $\beta_1$ parameter has the expected sign sign from acrylic graph. **If not abort experiment!**
+
+4. Is parameter significant? **If not abort experiment!**
+
+5. Interpret parameter. 
+
+
+
+
+## What to do when AB Test is not possible?
+
+In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* group.
+
+Example: Sex based wage discrimination
+
+```{r}
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+
+DataWage=wage1 |> 
+         clean_names("upper_camel") |> 
+         select(Wage,SexFem=Female, Educ)
+  
+ModelLMWageSex=lm(Wage~SexFem, data=DataWage)        
+summary(ModelLMWageSex)
+```
+
+Does this mean because of sex based wage discrimination women make $2.5 less?
+
+
+## What to do when AB Test is not possible?
+
+In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* group.
+
+This might lead to a biased sample!
+
+Example: Sex based wage discrimination
+
+```{r}
+ 
+ModelLMWageEduc=lm(Wage~Educ, data=DataWage)        
+summary(ModelLMWageEduc)
+
+ModelLMEducSex=lm(Educ~SexFem, data=DataWage)        
+summary(ModelLMExpSex)
+```
+
+Education matters also **and** sex samples (fem/male) are biased in regards of education.
+
+Second best (since AB Test is not possible) solution: 
+
+-  Controll for the impact of $Educ$ on $Wage$
+
+- run a multi-variate regression (possibly with instruments variables; covered in future session)
+
+Draw Acrylic Graph!
+
+Give it a trial without instrument variable:
+
+```{r}
+ModelMultiVar=lm(Wage~SexFem+Educ, DataWage)
+summary(ModelMultiVar)
+
+```
+
 

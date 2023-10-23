@@ -16,9 +16,9 @@ library(kableExtra)
 
 ## What Will You Learn {.scrollable .smaller}
 
+-   You will review the concept of Variance to measure the spread of a variable.
 -   You will review the concept of Standard Deviation to measure the spread of a variable.
-- You will review the concept of standard deviation
-- You will explain  why Standard Deviation is so important for the concept of Normal Distribution
+- You will explain  why Standard Deviation is so important for the concept of Normal Distribution.
 
  
 
@@ -29,35 +29,26 @@ library(kableExtra)
 - 2012 US Army Anthropometric Survey (ANSUR II) 
 - DCPH (Defense Center for Public Health) - Aberdeen
 - https://phc.amedd.army.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx
+- 6068 observations (4082 male, 1986 female) with 108 measures (variables/columns)
 
-**Download:** with rio::import
-
-
-Female Data:
-
-import("https://ai.lange-analytics.com/data/DataUSArmyBodyMeasures.xlsx", sheet=DataFemale)
-
-Male Data:
-
-import("https://ai.lange-analytics.com/data/DataUSArmyBodyMeasures.xlsx", sheet=DataMale)
-
+**Download:**
 
 ```{r}
 #| echo: true
 library(rio)
 library(janitor)
 library(tidymodels)
-DataSoldiersM=import("C:/CalPoly/RSamples/Data/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
+DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
               clean_names("upper_camel") |> 
               select(Height=Heightin, Weight=Weightlbs, Gender)
-DataSoldiersF=import("C:/CalPoly/RSamples/Data/DataUSArmyBodyMeasures.xlsx", sheet="DataFemale")|> 
+DataSoldiersF=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataFemale") |> 
               clean_names("upper_camel") |> 
               select(Height=Heightin, Weight=Weightlbs, Gender)
 
 DataSoldiers=merge(DataSoldiersF, DataSoldiersM, all=TRUE)
-print(DataSoldiersF)
-print(DataSoldiersM)
-print(DataSoldiers)
+head(DataSoldiersF)
+head(DataSoldiersM)
+head(DataSoldiers) #where are the males?
 ```
 
 ## Plot Height Male and Female Point Plot 
@@ -81,15 +72,10 @@ ggplot(DataSoldiers, aes(x=Gender, y=Height, color=Gender))+
 
 ```{r}
 ggplot(DataSoldiers, aes(x=Gender, y=Height, color=Gender))+
-  geom_jitter(alpha=0.2)
+  geom_jitter(alpha=0.1)
 ```
 
-## Plot Height Male and Female Jitter Plot alpha=0.1)
 
-```{r}
-ggplot(DataSoldiers, aes(x=Gender, y=Height, color=Gender))+
-  geom_jitter(alpha=0.2)
-```
 
 # Height Regression
 
