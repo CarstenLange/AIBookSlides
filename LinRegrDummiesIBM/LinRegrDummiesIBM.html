@@ -528,12 +528,26 @@
 
 </div>
 <img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<section id="plotting-the-data-with-regression-line-using-sexmale-instead-of-sexfem" class="slide level2">
+<h2>Plotting the Data with Regression Line using SexMale instead of SexFem</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb10-2"><a href="#cb10-2"></a>DataTemp<span class="ot">=</span>DataWage <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">SexMale=</span><span class="dv">1</span><span class="sc">-</span>SexFem)</span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="fu">ggplot</span>(DataTemp, <span class="fu">aes</span>(<span class="at">x=</span>SexMale, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)<span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
 <section id="regression-sex-discrimination" class="slide level2">
 <h2>Regression Sex Discrimination</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">lm</span>(Wage <span class="sc">~</span> SexFem, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">lm</span>(Wage <span class="sc">~</span> SexFem, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -565,7 +579,7 @@ Coefficients:
 <h2>Fun Examples 2:</h2>
 <p><strong>Fertility Rate:</strong></p>
 <p>We want to find the average offsprings a mother has (fertility rate) about 30 years ago?:</p>
-<p>We survey 1,000 people age 50 and ask how many offsprings their mother had.</p>
+<p>We survey 1,000 people age 30 and ask how many offsprings their mother had.</p>
 <p>What is wrong with this methedology?</p>
 <p>From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/</p>
 </section>
@@ -585,9 +599,9 @@ Coefficients:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb12-2"><a href="#cb12-2"></a>DataObserv<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataObserv"</span>)</span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">print</span>(DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>DataObserv<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataObserv"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">print</span>(DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   EducYears Age NewSignUpPage ConvHours
@@ -611,7 +625,7 @@ Coefficients:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>NewSignUpPage, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>NewSignUpPage, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -630,10 +644,10 @@ Coefficients:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb16-2"><a href="#cb16-2"></a>DataObserv <span class="sc">|&gt;</span> </span>
-<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">group_by</span>(NewSignUpPage) <span class="sc">|&gt;</span> </span>
-<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">summarise</span>(<span class="fu">mean</span>(Age), <span class="fu">mean</span>(EducYears))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb17-2"><a href="#cb17-2"></a>DataObserv <span class="sc">|&gt;</span> </span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">group_by</span>(NewSignUpPage) <span class="sc">|&gt;</span> </span>
+<span id="cb17-4"><a href="#cb17-4"></a>  <span class="fu">summarise</span>(<span class="fu">mean</span>(Age), <span class="fu">mean</span>(EducYears))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 3
@@ -650,7 +664,7 @@ Coefficients:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>Age, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>Age, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -669,7 +683,7 @@ Coefficients:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>EducYears, <span class="at">data =</span> DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>EducYears, <span class="at">data =</span> DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -689,8 +703,8 @@ Coefficients:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>DataABTest<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataABTest"</span>)</span>
-<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">print</span>(DataABTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>DataABTest<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataABTest"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">print</span>(DataABTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Treatment ConvHours
@@ -714,7 +728,7 @@ Coefficients:
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">lm</span>(<span class="at">data =</span> DataABTest, ConvHours <span class="sc">~</span>Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">lm</span>(<span class="at">data =</span> DataABTest, ConvHours <span class="sc">~</span>Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>

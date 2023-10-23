@@ -115,6 +115,17 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
 ```
 
 
+## Plotting the Data with Regression Line using SexMale instead of SexFem
+
+```{r}
+#| echo: true
+library(tidyverse)
+DataTemp=DataWage |> mutate(SexMale=1-SexFem)
+ggplot(DataTemp, aes(x=SexMale, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)+
+  geom_smooth(method = "lm", se=FALSE)
+```
+
 
 ## Regression Sex Discrimination
 
@@ -144,7 +155,7 @@ From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/
 
 We want to find the average offsprings a mother has (fertility rate) about 30 years ago?:
 
-We survey 1,000 people age 50 and ask how many offsprings their mother had.
+We survey 1,000 people age 30 and ask how many offsprings their mother had.
 
 What is wrong with this methedology?
 
