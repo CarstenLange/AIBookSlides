@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="StdNormDist_files/libs/clipboard/clipboard.min.js"></script>
-<script src="StdNormDist_files/libs/quarto-html/tabby.min.js"></script>
-<script src="StdNormDist_files/libs/quarto-html/popper.min.js"></script>
-<script src="StdNormDist_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="StdNormDist_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="StdNormDist_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="StdNormDist_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="StdNormDistIBM_files/libs/clipboard/clipboard.min.js"></script>
+<script src="StdNormDistIBM_files/libs/quarto-html/tabby.min.js"></script>
+<script src="StdNormDistIBM_files/libs/quarto-html/popper.min.js"></script>
+<script src="StdNormDistIBM_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="StdNormDistIBM_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="StdNormDistIBM_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="StdNormDistIBM_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.247">
 
   <title>Standard Deviation and Normal Distribution</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="StdNormDist_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="StdNormDist_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="StdNormDistIBM_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="StdNormDistIBM_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -92,13 +92,13 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="StdNormDist_files/libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="StdNormDist_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="StdNormDist_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="StdNormDist_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="StdNormDist_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="StdNormDist_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="StdNormDist_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="StdNormDistIBM_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="StdNormDistIBM_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="StdNormDistIBM_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="StdNormDistIBM_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="StdNormDistIBM_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="StdNormDistIBM_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="StdNormDistIBM_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -397,21 +397,18 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
+<div class="cell">
+
+</div>
 <ul>
 <li>You will review the concept of Variance to measure the spread of a variable.</li>
 <li>You will review the concept of Standard Deviation to measure the spread of a variable.</li>
 <li>You will explain why Standard Deviation is so important for the concept of Normal Distribution.</li>
 </ul>
 </section>
-<section id="the-data" class="slide level2 non-incremental">
+<section id="the-data" class="slide level2">
 <h2>The Data</h2>
 <p><strong>Source:</strong></p>
 <ul>
@@ -420,20 +417,28 @@
 <li>https://phc.amedd.army.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx</li>
 <li>6068 observations (4082 male, 1986 female) with 108 measures (variables/columns)</li>
 </ul>
+</section>
+<section id="the-data-1" class="slide level2">
+<h2>The Data</h2>
 <p><strong>Download:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>DataSoldiersM<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx"</span>, <span class="at">sheet=</span><span class="st">"DataMale"</span>)<span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href="#cb2-5"></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-6"><a href="#cb2-6"></a>              <span class="fu">select</span>(<span class="at">Height=</span>Heightin, <span class="at">Weight=</span>Weightlbs, Gender)</span>
-<span id="cb2-7"><a href="#cb2-7"></a>DataSoldiersF<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx"</span>, <span class="at">sheet=</span><span class="st">"DataFemale"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-8"><a href="#cb2-8"></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-9"><a href="#cb2-9"></a>              <span class="fu">select</span>(<span class="at">Height=</span>Heightin, <span class="at">Weight=</span>Weightlbs, Gender)</span>
-<span id="cb2-10"><a href="#cb2-10"></a></span>
-<span id="cb2-11"><a href="#cb2-11"></a>DataSoldiers<span class="ot">=</span><span class="fu">merge</span>(DataSoldiersF, DataSoldiersM, <span class="at">all=</span><span class="cn">TRUE</span>)</span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="fu">head</span>(DataSoldiersF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>DataSoldiersM<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx"</span>, <span class="at">sheet=</span><span class="st">"DataMale"</span>)<span class="sc">|&gt;</span> </span>
+<span id="cb1-5"><a href="#cb1-5"></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-6"><a href="#cb1-6"></a>              <span class="fu">select</span>(<span class="at">Height=</span>Heightin, <span class="at">Weight=</span>Weightlbs, Gender)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>DataSoldiersF<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx"</span>, <span class="at">sheet=</span><span class="st">"DataFemale"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-8"><a href="#cb1-8"></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-9"><a href="#cb1-9"></a>              <span class="fu">select</span>(<span class="at">Height=</span>Heightin, <span class="at">Weight=</span>Weightlbs, Gender)</span>
+<span id="cb1-10"><a href="#cb1-10"></a></span>
+<span id="cb1-11"><a href="#cb1-11"></a>DataSoldiers<span class="ot">=</span><span class="fu">merge</span>(DataSoldiersF, DataSoldiersM, <span class="at">all=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="fu">head</span>(DataSoldiersF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>  Height Weight Gender
 1     61    142 Female
@@ -443,7 +448,10 @@
 5     63    195 Female
 6     67    180 Female</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">head</span>(DataSoldiersM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">head</span>(DataSoldiersM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Height Weight Gender
 1     71    180   Male
@@ -453,7 +461,10 @@
 5     77    213   Male
 6     69    175   Male</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">head</span>(DataSoldiers) <span class="co">#where are the males?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">head</span>(DataSoldiers) <span class="co">#where are the males?</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Height Weight Gender
 1     56    100 Female
@@ -468,44 +479,53 @@
 <section id="plot-height-male-and-female-point-plot" class="slide level2">
 <h2>Plot Height Male and Female Point Plot</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">ggplot</span>(DataSoldiers, <span class="fu">aes</span>(<span class="at">x=</span>Gender, <span class="at">y=</span>Height, <span class="at">color=</span>Gender))<span class="sc">+</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">ggplot</span>(DataSoldiers, <span class="fu">aes</span>(<span class="at">x=</span>Gender, <span class="at">y=</span>Height, <span class="at">color=</span>Gender))<span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
 <section id="plot-height-male-and-female-jitter-plot" class="slide level2">
 <h2>Plot Height Male and Female Jitter Plot</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(DataSoldiers, <span class="fu">aes</span>(<span class="at">x=</span>Gender, <span class="at">y=</span>Height, <span class="at">color=</span>Gender))<span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_jitter</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">ggplot</span>(DataSoldiers, <span class="fu">aes</span>(<span class="at">x=</span>Gender, <span class="at">y=</span>Height, <span class="at">color=</span>Gender))<span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">geom_jitter</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
 <section id="plot-height-male-and-female-jitter-plot-alpha0.1" class="slide level2">
 <h2>Plot Height Male and Female Jitter Plot alpha=0.1)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">ggplot</span>(DataSoldiers, <span class="fu">aes</span>(<span class="at">x=</span>Gender, <span class="at">y=</span>Height, <span class="at">color=</span>Gender))<span class="sc">+</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">ggplot</span>(DataSoldiers, <span class="fu">aes</span>(<span class="at">x=</span>Gender, <span class="at">y=</span>Height, <span class="at">color=</span>Gender))<span class="sc">+</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha=</span><span class="fl">0.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
 <section>
 <section id="height-regression" class="title-slide slide level1 center">
 <h1>Height Regression</h1>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>RecipeHeightGender<span class="ot">=</span><span class="fu">recipe</span>(DataSoldiers, Height<span class="sc">~</span>Gender) <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href="#cb11-2"></a>                   <span class="fu">step_dummy</span>(Gender)</span>
-<span id="cb11-3"><a href="#cb11-3"></a></span>
-<span id="cb11-4"><a href="#cb11-4"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-5"><a href="#cb11-5"></a>                  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-6"><a href="#cb11-6"></a>                  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb11-7"><a href="#cb11-7"></a></span>
-<span id="cb11-8"><a href="#cb11-8"></a>WFModelHeight<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-9"><a href="#cb11-9"></a>                  <span class="fu">add_recipe</span>(RecipeHeightGender) <span class="sc">|&gt;</span> </span>
-<span id="cb11-10"><a href="#cb11-10"></a>                  <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb11-11"><a href="#cb11-11"></a>                  <span class="fu">fit</span>(DataSoldiers)</span>
-<span id="cb11-12"><a href="#cb11-12"></a></span>
-<span id="cb11-13"><a href="#cb11-13"></a><span class="fu">tidy</span>(WFModelHeight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>RecipeHeightGender<span class="ot">=</span><span class="fu">recipe</span>(DataSoldiers, Height<span class="sc">~</span>Gender) <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2"></a>                   <span class="fu">step_dummy</span>(Gender)</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-5"><a href="#cb10-5"></a>                  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-6"><a href="#cb10-6"></a>                  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb10-7"><a href="#cb10-7"></a></span>
+<span id="cb10-8"><a href="#cb10-8"></a>WFModelHeight<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-9"><a href="#cb10-9"></a>                  <span class="fu">add_recipe</span>(RecipeHeightGender) <span class="sc">|&gt;</span> </span>
+<span id="cb10-10"><a href="#cb10-10"></a>                  <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb10-11"><a href="#cb10-11"></a>                  <span class="fu">fit</span>(DataSoldiers)</span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="fu">tidy</span>(WFModelHeight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   term        estimate std.error statistic p.value
@@ -518,13 +538,13 @@
 <section id="mean-heights" class="slide level2">
 <h2>Mean Heights</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>MeanHeightF<span class="ot">=</span><span class="fu">mean</span>(DataSoldiersF<span class="sc">$</span>Height)</span>
-<span id="cb13-2"><a href="#cb13-2"></a>MeanHeightM<span class="ot">=</span><span class="fu">mean</span>(DataSoldiersM<span class="sc">$</span>Height)</span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="fu">cat</span>(<span class="st">"Mean Height Female:"</span>,MeanHeightF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>MeanHeightF<span class="ot">=</span><span class="fu">mean</span>(DataSoldiersF<span class="sc">$</span>Height)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>MeanHeightM<span class="ot">=</span><span class="fu">mean</span>(DataSoldiersM<span class="sc">$</span>Height)</span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">cat</span>(<span class="st">"Mean Height Female:"</span>,MeanHeightF)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Height Female: 64.60171</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">cat</span>(<span class="st">"Mean Height Male:"</span>,MeanHeightM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">cat</span>(<span class="st">"Mean Height Male:"</span>,MeanHeightM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Height Male: 70.03577</code></pre>
 </div>
@@ -533,43 +553,64 @@
 <section id="plotting-the-means" class="slide level2">
 <h2>Plotting the Means</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightF, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightM, <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">62</span>,<span class="dv">72</span>,<span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightF, <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightM, <span class="at">color=</span><span class="st">"blue"</span>, <span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">62</span>,<span class="dv">72</span>,<span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="including-the-data---female-height-spread" class="slide level2">
 <h2>Including the Data - Female Height Spread</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">ggplot</span>(DataSoldiersF, <span class="fu">aes</span>(<span class="at">x=</span>Height, <span class="at">y=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1986</span>)))<span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightF, <span class="at">size=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">ggplot</span>(DataSoldiersF, <span class="fu">aes</span>(<span class="at">x=</span>Height, <span class="at">y=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">1986</span>)))<span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightF, <span class="at">size=</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><p>We need a way to measure the Spread and find a way to show the distribution.</p>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><p>We need a way to measure the Spread and find a way to show the distribution.</p>
 </section>
 <section id="including-the-data---male-height-spread-with-male-black-and-female-mean-red" class="slide level2">
 <h2>Including the Data - Male Height Spread (with male (black) and female mean (red))</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">ggplot</span>(DataSoldiersM, <span class="fu">aes</span>(<span class="at">x=</span>Height, <span class="at">y=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4082</span>)))<span class="sc">+</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightM, <span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightF, <span class="at">size=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">ggplot</span>(DataSoldiersM, <span class="fu">aes</span>(<span class="at">x=</span>Height, <span class="at">y=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4082</span>)))<span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightM, <span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span>MeanHeightF, <span class="at">size=</span><span class="dv">2</span>, <span class="at">color=</span><span class="st">"red"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
 <section id="measuring-female-height-spread-for-a-small-sample" class="slide level2">
 <h2>Measuring Female Height Spread for a Small Sample</h2>
 
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><p>Sample Mean: <span class="math inline">\(\bar x=66\)</span></p>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><p>Sample Mean: <span class="math inline">\(\bar x=66\)</span></p>
 <p>Sample Variance: <span class="math display">\[Var=\frac{\sum_{i=1}^N (x_i-\bar x)^2}{N-1}=\frac{4+0+4}{3-1}=4\]</span></p>
 </section>
 <section id="measuring-female-height-spread-for-a-small-sample-1" class="slide level2">
 <h2>Measuring Female Height Spread for a Small Sample</h2>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">ggplot</span>(DataSoldiersF[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>,], <span class="fu">aes</span>(<span class="at">x=</span>Height, <span class="at">y=</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)))<span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">mean</span>(DataSoldiersF[<span class="dv">5</span><span class="sc">:</span><span class="dv">8</span>,]<span class="sc">$</span>Height), <span class="at">size=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="dv">3</span>)<span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">ylab</span>(<span class="st">""</span>)<span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
+<span id="cb19-6"><a href="#cb19-6"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>() </span>
+<span id="cb19-7"><a href="#cb19-7"></a>        )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><p>Sample Mean: <span class="math inline">\(\bar x=65.25\)</span></p>
+</div>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><p>Sample Mean: <span class="math inline">\(\bar x=65.25\)</span></p>
 <p>Sample Variance: <span class="math display">\[Var=\frac{\sum_{i=1}^N (x_i-\bar x)^2}{N-1}=???\]</span></p>
 </section>
 <section id="sample-standard-deviation" class="slide level2">
@@ -587,13 +628,27 @@
 <li>Distribution is symmetric.</li>
 </ol>
 <p>Normal Distribution is for mean=100, sd=10 (we discuss empirical rule later):</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(TeachHist)</span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="fu">TeachHistDens</span>(<span class="at">Mean=</span><span class="dv">100</span>, <span class="at">Sd=</span><span class="dv">10</span>, <span class="at">SeedValue =</span> <span class="dv">777</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
+</div>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
 <section id="relative-frequency-plot-for-1000-random-observations" class="slide level2">
 <h2>Relative Frequency Plot for 1000 Random Observations</h2>
 <p>Normal Distribution is for 1000 rand. obs. (mean=100, sd=10):</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">library</span>(TeachHist)</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">TeachHistRelFreq</span>(<span class="at">Mean=</span><span class="dv">100</span>, <span class="at">Sd=</span><span class="dv">10</span>, <span class="at">SeedValue =</span> <span class="dv">777</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
+</div>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="empirical-rule" class="slide level2 smaller">
 <h2>Empirical Rule</h2>
 <ol type="1">
@@ -602,65 +657,120 @@
 <li><p>97.3% of the data deviate <strong>three standard deviation</strong> or less from the mean.</p></li>
 </ol>
 <p>Normal Distribution is for mean=100, sd=10:</p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(TeachHist)</span>
+<span id="cb22-2"><a href="#cb22-2"></a><span class="fu">TeachHistDens</span>(<span class="at">Mean=</span><span class="dv">100</span>, <span class="at">Sd=</span><span class="dv">10</span>, <span class="at">SeedValue =</span> <span class="dv">777</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+</div>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
 <section id="female-height-showing-a-frequency-plot-histogram" class="slide level2 smaller">
 <h2>Female Height: Showing a Frequency Plot (Histogram)</h2>
 <div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">library</span>(TeachHist)</span>
+<span id="cb23-2"><a href="#cb23-2"></a>MeanFemHeight<span class="ot">=</span><span class="fu">mean</span>(DataSoldiersF<span class="sc">$</span>Height)</span>
+<span id="cb23-3"><a href="#cb23-3"></a>MeanFemSD<span class="ot">=</span><span class="fu">sd</span>(DataSoldiersF<span class="sc">$</span>Height)</span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="fu">cat</span>(<span class="st">"Mean Female Height:"</span>, MeanFemHeight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Female Height: 64.60171</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">cat</span>(<span class="st">"Female SD:"</span>, MeanFemSD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Female SD: 2.801938</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">TeachHistRelFreq</span>(<span class="at">PlotData =</span> DataSoldiersF[<span class="st">"Height"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"></section>
 <section id="showing-a-density-plot-rel-frq.-are-in-area" class="slide level2 smaller">
 <h2>Showing a Density Plot (Rel Frq. are in area)</h2>
 <div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">library</span>(TeachHist)</span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="fu">cat</span>(<span class="st">"Mean Female Height:"</span>, MeanFemHeight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Female Height: 64.60171</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">cat</span>(<span class="st">"Female SD:"</span>, MeanFemSD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Female SD: 2.801938</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">TeachHistDens</span>(<span class="at">PlotData =</span> DataSoldiersF[<span class="st">"Height"</span>], <span class="at">PlotNormCurv =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
 <section id="showing-a-density-plot-with-normal-curve" class="slide level2 smaller">
 <h2>Showing a Density Plot with Normal Curve</h2>
 <div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a><span class="fu">cat</span>(<span class="st">"Mean Female Height:"</span>, MeanFemHeight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Female Height: 64.60171</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="fu">cat</span>(<span class="st">"Female SD:"</span>, MeanFemSD)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Female SD: 2.801938</code></pre>
 </div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a><span class="fu">TeachHistDens</span>(<span class="at">PlotData =</span> DataSoldiersF[<span class="st">"Height"</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"></section>
 <section id="two-normal-distribution-curves-for-height-of-women-and-men" class="slide level2 smaller">
 <h2>Two Normal Distribution Curves for Height of Women and Men</h2>
 <div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>Mean Female Height: 64.60171</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Female SD: 2.801938</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "*************"</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Mean Male Height: 70.03577</code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Male SD: 2.947419</code></pre>
-</div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a>MeanMaleHeight<span class="ot">=</span><span class="fu">mean</span>(DataSoldiersM<span class="sc">$</span>Height)</span>
+<span id="cb38-2"><a href="#cb38-2"></a>MeanMaleSD<span class="ot">=</span><span class="fu">sd</span>(DataSoldiersM<span class="sc">$</span>Height)</span>
+<span id="cb38-3"><a href="#cb38-3"></a></span>
+<span id="cb38-4"><a href="#cb38-4"></a>normal_density <span class="ot">&lt;-</span> <span class="cf">function</span>(x, mean, sd) {</span>
+<span id="cb38-5"><a href="#cb38-5"></a>  <span class="fu">return</span> (<span class="fu">dnorm</span>(x, <span class="at">mean =</span> mean, <span class="at">sd =</span> sd))</span>
+<span id="cb38-6"><a href="#cb38-6"></a>}</span>
+<span id="cb38-7"><a href="#cb38-7"></a></span>
+<span id="cb38-8"><a href="#cb38-8"></a><span class="co"># Create a data frame with x values</span></span>
+<span id="cb38-9"><a href="#cb38-9"></a>x_values <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="dv">50</span>, <span class="dv">100</span>, <span class="at">by =</span> <span class="fl">0.1</span>)</span>
+<span id="cb38-10"><a href="#cb38-10"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> x_values)</span>
+<span id="cb38-11"><a href="#cb38-11"></a></span>
+<span id="cb38-12"><a href="#cb38-12"></a><span class="co"># Plotting two normal curves</span></span>
+<span id="cb38-13"><a href="#cb38-13"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> x)) <span class="sc">+</span></span>
+<span id="cb38-14"><a href="#cb38-14"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> normal_density, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(DataSoldiersM<span class="sc">$</span>Height), <span class="at">sd=</span><span class="fu">sd</span>(DataSoldiersM<span class="sc">$</span>Height)), <span class="at">color =</span> <span class="st">"blue"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb38-15"><a href="#cb38-15"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> normal_density, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(DataSoldiersF<span class="sc">$</span>Height), <span class="at">sd=</span><span class="fu">sd</span>(DataSoldiersF<span class="sc">$</span>Height)), <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>) <span class="sc">+</span></span>
+<span id="cb38-16"><a href="#cb38-16"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Two Normal Curves"</span>,</span>
+<span id="cb38-17"><a href="#cb38-17"></a>       <span class="at">x =</span> <span class="st">"X-axis"</span>,</span>
+<span id="cb38-18"><a href="#cb38-18"></a>       <span class="at">y =</span> <span class="st">"Density"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="StdNormDist_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<img data-src="StdNormDistIBM_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><p>Mean Female Height: 64.601712, Female SD: 2.8019384)</p>
+<p>Mean Male Height: 70.0357668, Male SD: 2.9474187)</p>
+<div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
 </div>
 </section></section>
@@ -668,20 +778,20 @@
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="StdNormDist_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="StdNormDist_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="StdNormDist_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="StdNormDist_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="StdNormDistIBM_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
