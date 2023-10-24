@@ -788,6 +788,11 @@ Residual standard error: 3.378 on 524 degrees of freedom
 Multiple R-squared:  0.1648,    Adjusted R-squared:  0.1632 
 F-statistic: 103.4 on 1 and 524 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
+</div>
+</section>
+<section id="correlation-educ-sex" class="slide level2">
+<h2>Correlation Educ Sex</h2>
+<div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>ModelLMEducSex<span class="ot">=</span><span class="fu">lm</span>(Educ<span class="sc">~</span>SexFem, <span class="at">data=</span>DataWage)        </span>
 <span id="cb33-2"><a href="#cb33-2"></a><span class="fu">summary</span>(ModelLMEducSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -812,9 +817,11 @@ F-statistic: 3.816 on 1 and 524 DF,  p-value: 0.05129</code></pre>
 </div>
 </div>
 <p>Education matters also <strong>and</strong> sex samples (fem/male) are biased in regards of education.</p>
-<p>Second best (since AB Test is not possible) solution:</p>
+</section>
+<section id="second-best-since-ab-test-is-not-possible-solution" class="slide level2">
+<h2>Second best (since AB Test is not possible) solution:</h2>
 <ul>
-<li class="fragment"><p>Controll for the impact of <span class="math inline">\(Educ\)</span> on <span class="math inline">\(Wage\)</span></p></li>
+<li class="fragment"><p>Control for the impact of <span class="math inline">\(Educ\)</span> on <span class="math inline">\(Wage\)</span></p></li>
 <li class="fragment"><p>run a multi-variate regression (possibly with instruments variables; covered in future session)</p></li>
 </ul>
 <p>Draw Acrylic Graph!</p>

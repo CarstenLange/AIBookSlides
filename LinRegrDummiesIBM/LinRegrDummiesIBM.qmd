@@ -309,16 +309,21 @@ Example: Sex based wage discrimination
  
 ModelLMWageEduc=lm(Wage~Educ, data=DataWage)        
 summary(ModelLMWageEduc)
+```
 
+## Correlation Educ Sex
+
+```{r}
 ModelLMEducSex=lm(Educ~SexFem, data=DataWage)        
 summary(ModelLMEducSex)
 ```
 
+
 Education matters also **and** sex samples (fem/male) are biased in regards of education.
 
-Second best (since AB Test is not possible) solution: 
+## Second best (since AB Test is not possible) solution: 
 
--  Controll for the impact of $Educ$ on $Wage$
+-  Control for the impact of $Educ$ on $Wage$
 
 - run a multi-variate regression (possibly with instruments variables; covered in future session)
 
