@@ -3,8 +3,9 @@ title: "Qualitative Independent Variables (Dummy Variables)"
 subtitle: "Regression, Dummies, One-Hot Encoding, AB-Tests"
 format: 
   revealjs:
-    code-fold: true
+    code-fold: false
     scrollable: true
+    echo: true
 ---
 
 ```{r}
@@ -310,7 +311,7 @@ ModelLMWageEduc=lm(Wage~Educ, data=DataWage)
 summary(ModelLMWageEduc)
 
 ModelLMEducSex=lm(Educ~SexFem, data=DataWage)        
-summary(ModelLMExpSex)
+summary(ModelLMEducSex)
 ```
 
 Education matters also **and** sex samples (fem/male) are biased in regards of education.

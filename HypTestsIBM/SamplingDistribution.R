@@ -7,11 +7,11 @@ select(Price, Sqft=SqftLiving, Grade, Waterfront)
 Beta1=c()
 Beta2=c()
 
-set.seed(777)
+set.seed(111)
 
 
-#for (i in 1:10000) {
-DataTrain=sample_n(DataHousing,100)
+for (i in 1:10000) {
+DataTrain=sample_n(DataHousing,30)
 
 RecipeHouses=recipe(DataTrain, Price~Sqft) 
 
@@ -29,8 +29,8 @@ Results=tidy(WFModelHouses)
 # print(Results)
 
 
-Beta2=append(Beta2,Results[[1,2]])
-# }
+Beta1=append(Beta1,Results[[2,2]])
+ }
 
 library(TeachHist) 
 DataBeta1=tibble(beta1=Beta1)
