@@ -6,16 +6,21 @@ format:
     code-fold: false
     scrollable: true
     echo: true
+    incremental: false
 ---
 
+
+
+## What Will You Learn {.scrollable .smaller}
+
 ```{r}
+#| echo: false
 library(tidymodels)
 library(rio)
 library(kableExtra)
 library(janitor)
 ```
 
-## What Will You Learn {.scrollable .smaller}
 
 -   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
 
@@ -33,6 +38,7 @@ library(janitor)
 **One-Hot Encoding**
 
 ```{r}
+#| code-fold: true
 OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
 print(OneHotTable)
 ```
@@ -51,7 +57,7 @@ We use one variable less than we have categories. Waterfront has two categories.
 **Dummy Encoding Example**
 
 ```{r}
-#| echo: true
+#| code-fold: true
 DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
 print(DummyTable)
 ```
@@ -79,7 +85,7 @@ head(DataWage)
 ## Plotting the Data
 
 ```{r}
-#| echo: true
+#| code-fold: true
 library(tidyverse)
 ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_point()
@@ -89,7 +95,7 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
 ## Plotting the Data with Transparency (alpha) and Jittered
 
 ```{r}
-#| echo: true
+#| code-fold: true
 library(tidyverse)
 ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_jitter(width=0.05, alpha=0.27)
@@ -98,7 +104,7 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
 ## Plotting the Data with Transparency (alpha) and Jittered
 
 ```{r}
-#| echo: true
+#| code-fold: true
 library(tidyverse)
 ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_jitter(width=0.05, alpha=0.27)+
@@ -108,7 +114,7 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
 ## Plotting the Data with Regression Line
 
 ```{r}
-#| echo: true
+#| code-fold: true
 library(tidyverse)
 ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_jitter(width=0.05, alpha=0.27)+
@@ -119,7 +125,7 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
 ## Plotting the Data with Regression Line using SexMale instead of SexFem
 
 ```{r}
-#| echo: true
+#| code-fold: true
 library(tidyverse)
 DataTemp=DataWage |> mutate(SexMale=1-SexFem)
 ggplot(DataTemp, aes(x=SexMale, y=Wage))+
@@ -262,6 +268,7 @@ Run regression.
 
 ## AB Test (Experiment) Workflow
 
+::: {.incremental}
 1. Assign subjects **randomly** to *Treatment* and *Placebo* group. This ensures that there is no sample bias (if your samples are large enough!!!)
 
 2. Draw acrylic graph (with plus or minus sign). Run uni-variate regression with dummy for *treatment* and *placebo*.
@@ -271,17 +278,17 @@ Run regression.
 4. Is parameter significant? **If not abort experiment!**
 
 5. Interpret parameter. 
+:::
 
 
-
-
-## What to do when AB Test is not possible?
+## What to do when AB Test is not possible? {.smaller}
 
 In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* group.
 
-Example: Sex based wage discrimination
+Example: Sex based wage discrimination {.smaller}
 
 ```{r}
+#| output-location: fragment
 library(tidymodels)
 library(janitor)
 library(wooldridge)
@@ -297,31 +304,36 @@ summary(ModelLMWageSex)
 Does this mean because of sex based wage discrimination women make $2.5 less?
 
 
-## What to do when AB Test is not possible?
+## What to do when AB Test is not possible? {.smaller}
 
 In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* group.
 
 This might lead to a biased sample!
 
-Example: Sex based wage discrimination
+## Example: Sex Based Wage Discrimination
+
+Wage is not only determined by $SexFem$, but also  by $Educ$:
 
 ```{r}
- 
+#| output-location: fragment 
 ModelLMWageEduc=lm(Wage~Educ, data=DataWage)        
 summary(ModelLMWageEduc)
 ```
 
-## Correlation Educ Sex
+## Example: Sex Based Wage Discrimination {.smaller}
+
+Correlation Educ and Sex: $Educ$ is determined by $SexFem$:
 
 ```{r}
+#| output-location: fragment 
 ModelLMEducSex=lm(Educ~SexFem, data=DataWage)        
 summary(ModelLMEducSex)
 ```
 
 
-Education matters also **and** sex samples (fem/male) are biased in regards of education.
 
-## Second best (since AB Test is not possible) solution: 
+
+## Second best (since AB Test is not possible) solution: {.smaller}
 
 -  Control for the impact of $Educ$ on $Wage$
 
@@ -332,6 +344,7 @@ Draw Acrylic Graph!
 Give it a trial without instrument variable:
 
 ```{r}
+#| output-location: fragment 
 ModelMultiVar=lm(Wage~SexFem+Educ, DataWage)
 summary(ModelMultiVar)
 

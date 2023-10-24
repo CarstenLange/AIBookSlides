@@ -397,31 +397,28 @@
 </div>
 
 </section>
-<section class="slide level2">
-
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(rio)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
+<div class="cell">
+
+</div>
 <ul>
-<li class="fragment"><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
-<li class="fragment"><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
-<li class="fragment"><p>Experiments and Treatment Effects</p></li>
-<li class="fragment"><p>AB-Tests</p></li>
-<li class="fragment"><p>Newest Development from Harvard University</p></li>
+<li><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
+<li><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
+<li><p>Experiments and Treatment Effects</p></li>
+<li><p>AB-Tests</p></li>
+<li><p>Newest Development from Harvard University</p></li>
 </ul>
 </section>
 <section id="dummy-and-one-hot-encoding" class="slide level2 scrollable">
 <h2>Dummy and One-Hot Encoding</h2>
 <p><strong>One-Hot Encoding</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>OneHotTable<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">Waterfront_yes=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="at">Waterfront_no=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">print</span>(OneHotTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>OneHotTable<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">Waterfront_yes=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>),<span class="at">Waterfront_no=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">print</span>(OneHotTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
   Waterfront_yes Waterfront_no
@@ -441,8 +438,11 @@
 <p>We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., <code>Waterfront_yes</code>):</p>
 <p><strong>Dummy Encoding Example</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>DummyTable<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">Waterfront_yes=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">print</span>(DummyTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>DummyTable<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">Waterfront_yes=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">print</span>(DummyTable)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 1
   Waterfront_yes
@@ -460,12 +460,12 @@
 <section id="sex-based-wage-discrimination-univariate" class="slide level2">
 <h2>Sex Based Wage Discrimination (univariate)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(wooldridge)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb6-3"><a href="#cb6-3"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">%&gt;%</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">select</span>(Wage, <span class="at">SexFem=</span>Female)</span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="fu">head</span>(DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">%&gt;%</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="fu">select</span>(Wage, <span class="at">SexFem=</span>Female)</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="fu">head</span>(DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Wage SexFem
 1 3.10      1
@@ -480,56 +480,71 @@
 <section id="plotting-the-data" class="slide level2">
 <h2>Plotting the Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
 <img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
 <section id="plotting-the-data-with-transparency-alpha-and-jittered" class="slide level2">
 <h2>Plotting the Data with Transparency (alpha) and Jittered</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
 <img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
 <section id="plotting-the-data-with-transparency-alpha-and-jittered-1" class="slide level2">
 <h2>Plotting the Data with Transparency (alpha) and Jittered</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)<span class="sc">+</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)<span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
 <img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
 <section id="plotting-the-data-with-regression-line" class="slide level2">
 <h2>Plotting the Data with Regression Line</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)<span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>SexFem, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)<span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
 <img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="plotting-the-data-with-regression-line-using-sexmale-instead-of-sexfem" class="slide level2">
 <h2>Plotting the Data with Regression Line using SexMale instead of SexFem</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb12-2"><a href="#cb12-2"></a>DataTemp<span class="ot">=</span>DataWage <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">SexMale=</span><span class="dv">1</span><span class="sc">-</span>SexFem)</span>
-<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">ggplot</span>(DataTemp, <span class="fu">aes</span>(<span class="at">x=</span>SexMale, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)<span class="sc">+</span></span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>DataTemp<span class="ot">=</span>DataWage <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">SexMale=</span><span class="dv">1</span><span class="sc">-</span>SexFem)</span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">ggplot</span>(DataTemp, <span class="fu">aes</span>(<span class="at">x=</span>SexMale, <span class="at">y=</span>Wage))<span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_jitter</span>(<span class="at">width=</span><span class="fl">0.05</span>, <span class="at">alpha=</span><span class="fl">0.27</span>)<span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
 <img data-src="LinRegrDummiesIBM_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
 <section id="regression-sex-discrimination" class="slide level2">
 <h2>Regression Sex Discrimination</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">lm</span>(Wage <span class="sc">~</span> SexFem, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">lm</span>(Wage <span class="sc">~</span> SexFem, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -550,8 +565,8 @@ Coefficients:
 <h2>Fun Examples 1:</h2>
 <p><strong>Class Size:</strong></p>
 <ol type="1">
-<li class="fragment"><p>The Dean uses the university’s course system and claims the average class size is 35 students.</p></li>
-<li class="fragment"><p>The Student Association ask 500 students on the squad how big was the last class they attended. The result is 54</p></li>
+<li><p>The Dean uses the university’s course system and claims the average class size is 35 students.</p></li>
+<li><p>The Student Association ask 500 students on the squad how big was the last class they attended. The result is 54</p></li>
 </ol>
 <p>What happened?</p>
 <p>From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/</p>
@@ -578,9 +593,9 @@ Coefficients:
 <section id="data-from-last-month" class="slide level2 scrollable">
 <h2>Data from Last Month</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb15-2"><a href="#cb15-2"></a>DataObserv<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataObserv"</span>)</span>
-<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">print</span>(DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb14-2"><a href="#cb14-2"></a>DataObserv<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataObserv"</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="fu">print</span>(DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   EducYears Age NewSignUpPage ConvHours
 1         12  23          TRUE         5
@@ -601,7 +616,7 @@ Coefficients:
 <section id="run-a-regression-with-lm" class="slide level2 scrollable">
 <h2>Run a Regression with LM</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>NewSignUpPage, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>NewSignUpPage, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -617,10 +632,10 @@ Coefficients:
 <section id="selection-bias-more-young-and-educated-customers-tried-the-new-design" class="slide level2 scollable">
 <h2>Selection Bias: More Young and Educated Customers Tried the New Design</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb19-2"><a href="#cb19-2"></a>DataObserv <span class="sc">|&gt;</span> </span>
-<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">group_by</span>(NewSignUpPage) <span class="sc">|&gt;</span> </span>
-<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">summarise</span>(<span class="fu">mean</span>(Age), <span class="fu">mean</span>(EducYears))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb18-2"><a href="#cb18-2"></a>DataObserv <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3"></a>  <span class="fu">group_by</span>(NewSignUpPage) <span class="sc">|&gt;</span> </span>
+<span id="cb18-4"><a href="#cb18-4"></a>  <span class="fu">summarise</span>(<span class="fu">mean</span>(Age), <span class="fu">mean</span>(EducYears))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 3
   NewSignUpPage `mean(Age)` `mean(EducYears)`
@@ -634,7 +649,7 @@ Coefficients:
 <h2>Regression Age: Younger People use the side more often</h2>
 <p><strong>Age:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>Age, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>Age, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -650,7 +665,7 @@ Coefficients:
 <h2>Regression Educated: People with Higher Education use the side more often</h2>
 <p><strong>Education:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>EducYears, <span class="at">data =</span> DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>EducYears, <span class="at">data =</span> DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -667,8 +682,8 @@ Coefficients:
 <h2>AB Test - Experiment</h2>
 <p>Participants get randomly assigned to <em>Treatment</em> and <em>Non-Treatment</em> (placebo) group. Education and Age is now irrelevant because it should be equally represented in <em>Treatment</em> and <em>Non-Treatment</em>, if we have enough observations (hundred(s)):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>DataABTest<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataABTest"</span>)</span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">print</span>(DataABTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>DataABTest<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataABTest"</span>)</span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="fu">print</span>(DataABTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Treatment ConvHours
 1       TRUE         5
@@ -689,7 +704,7 @@ Coefficients:
 <section id="regression-ab-test---experiment" class="slide level2">
 <h2>Regression: AB Test - Experiment</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">lm</span>(<span class="at">data =</span> DataABTest, ConvHours <span class="sc">~</span>Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">lm</span>(<span class="at">data =</span> DataABTest, ConvHours <span class="sc">~</span>Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -709,11 +724,12 @@ Coefficients:
 <p>Determine the length of the experiment.</p>
 <p>Run regression.</p>
 <ul>
-<li class="fragment">Do not peak!!!</li>
+<li>Do not peak!!!</li>
 </ul>
 </section>
 <section id="ab-test-experiment-workflow" class="slide level2">
 <h2>AB Test (Experiment) Workflow</h2>
+<div>
 <ol type="1">
 <li class="fragment"><p>Assign subjects <strong>randomly</strong> to <em>Treatment</em> and <em>Placebo</em> group. This ensures that there is no sample bias (if your samples are large enough!!!)</p></li>
 <li class="fragment"><p>Draw acrylic graph (with plus or minus sign). Run uni-variate regression with dummy for <em>treatment</em> and <em>placebo</em>.</p></li>
@@ -721,22 +737,25 @@ Coefficients:
 <li class="fragment"><p>Is parameter significant? <strong>If not abort experiment!</strong></p></li>
 <li class="fragment"><p>Interpret parameter.</p></li>
 </ol>
+</div>
 </section>
-<section id="what-to-do-when-ab-test-is-not-possible" class="slide level2">
+<section id="what-to-do-when-ab-test-is-not-possible" class="slide level2 smaller">
 <h2>What to do when AB Test is not possible?</h2>
 <p>In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the <em>experiment</em> or <em>placebo</em> group.</p>
-<p>Example: Sex based wage discrimination</p>
+<p>Example: Sex based wage discrimination {.smaller}</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb29-2"><a href="#cb29-2"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb29-3"><a href="#cb29-3"></a><span class="fu">library</span>(wooldridge)</span>
-<span id="cb29-4"><a href="#cb29-4"></a></span>
-<span id="cb29-5"><a href="#cb29-5"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
-<span id="cb29-6"><a href="#cb29-6"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb29-7"><a href="#cb29-7"></a>         <span class="fu">select</span>(Wage,<span class="at">SexFem=</span>Female, Educ)</span>
-<span id="cb29-8"><a href="#cb29-8"></a>  </span>
-<span id="cb29-9"><a href="#cb29-9"></a>ModelLMWageSex<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, <span class="at">data=</span>DataWage)        </span>
-<span id="cb29-10"><a href="#cb29-10"></a><span class="fu">summary</span>(ModelLMWageSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb28-2"><a href="#cb28-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb28-4"><a href="#cb28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
+<span id="cb28-6"><a href="#cb28-6"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb28-7"><a href="#cb28-7"></a>         <span class="fu">select</span>(Wage,<span class="at">SexFem=</span>Female, Educ)</span>
+<span id="cb28-8"><a href="#cb28-8"></a>  </span>
+<span id="cb28-9"><a href="#cb28-9"></a>ModelLMWageSex<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, <span class="at">data=</span>DataWage)        </span>
+<span id="cb28-10"><a href="#cb28-10"></a><span class="fu">summary</span>(ModelLMWageSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -760,14 +779,19 @@ F-statistic: 68.54 on 1 and 524 DF,  p-value: 1.042e-15</code></pre>
 </div>
 <p>Does this mean because of sex based wage discrimination women make $2.5 less?</p>
 </section>
-<section id="what-to-do-when-ab-test-is-not-possible-1" class="slide level2">
+<section id="what-to-do-when-ab-test-is-not-possible-1" class="slide level2 smaller">
 <h2>What to do when AB Test is not possible?</h2>
 <p>In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the <em>experiment</em> or <em>placebo</em> group.</p>
 <p>This might lead to a biased sample!</p>
-<p>Example: Sex based wage discrimination</p>
+</section>
+<section id="example-sex-based-wage-discrimination" class="slide level2">
+<h2>Example: Sex Based Wage Discrimination</h2>
+<p>Wage is not only determined by <span class="math inline">\(SexFem\)</span>, but also by <span class="math inline">\(Educ\)</span>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>ModelLMWageEduc<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>Educ, <span class="at">data=</span>DataWage)        </span>
-<span id="cb31-2"><a href="#cb31-2"></a><span class="fu">summary</span>(ModelLMWageEduc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>ModelLMWageEduc<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>Educ, <span class="at">data=</span>DataWage)        </span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="fu">summary</span>(ModelLMWageEduc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -790,11 +814,14 @@ F-statistic: 103.4 on 1 and 524 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="correlation-educ-sex" class="slide level2">
-<h2>Correlation Educ Sex</h2>
+<section id="example-sex-based-wage-discrimination-1" class="slide level2 smaller">
+<h2>Example: Sex Based Wage Discrimination</h2>
+<p>Correlation Educ and Sex: <span class="math inline">\(Educ\)</span> is determined by <span class="math inline">\(SexFem\)</span>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>ModelLMEducSex<span class="ot">=</span><span class="fu">lm</span>(Educ<span class="sc">~</span>SexFem, <span class="at">data=</span>DataWage)        </span>
-<span id="cb33-2"><a href="#cb33-2"></a><span class="fu">summary</span>(ModelLMEducSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>ModelLMEducSex<span class="ot">=</span><span class="fu">lm</span>(Educ<span class="sc">~</span>SexFem, <span class="at">data=</span>DataWage)        </span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="fu">summary</span>(ModelLMEducSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -816,19 +843,20 @@ Multiple R-squared:  0.00723,   Adjusted R-squared:  0.005335
 F-statistic: 3.816 on 1 and 524 DF,  p-value: 0.05129</code></pre>
 </div>
 </div>
-<p>Education matters also <strong>and</strong> sex samples (fem/male) are biased in regards of education.</p>
 </section>
-<section id="second-best-since-ab-test-is-not-possible-solution" class="slide level2">
+<section id="second-best-since-ab-test-is-not-possible-solution" class="slide level2 smaller">
 <h2>Second best (since AB Test is not possible) solution:</h2>
 <ul>
-<li class="fragment"><p>Control for the impact of <span class="math inline">\(Educ\)</span> on <span class="math inline">\(Wage\)</span></p></li>
-<li class="fragment"><p>run a multi-variate regression (possibly with instruments variables; covered in future session)</p></li>
+<li><p>Control for the impact of <span class="math inline">\(Educ\)</span> on <span class="math inline">\(Wage\)</span></p></li>
+<li><p>run a multi-variate regression (possibly with instruments variables; covered in future session)</p></li>
 </ul>
 <p>Draw Acrylic Graph!</p>
 <p>Give it a trial without instrument variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>ModelMultiVar<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Educ, DataWage)</span>
-<span id="cb35-2"><a href="#cb35-2"></a><span class="fu">summary</span>(ModelMultiVar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>ModelMultiVar<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Educ, DataWage)</span>
+<span id="cb34-2"><a href="#cb34-2"></a><span class="fu">summary</span>(ModelMultiVar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
