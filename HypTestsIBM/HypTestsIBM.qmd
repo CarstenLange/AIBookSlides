@@ -1,0 +1,181 @@
+---
+title: "Hypothesis Tests"
+subtitle: "Inference, Sigificance, Coefficient of Determination ($R^2$)"
+format: 
+  revealjs:
+    code-fold: false
+    scrollable: true
+    echo: true
+    incremental: false
+    smaller: true
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+```{r}
+#| echo: false
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+```
+
+
+- What are **Statistics** (e.g., coefficients of a regresion)?
+- Why can **Statistics change** (sampling distribution)?
+- How to measure the spread of the change of statistics with the **Standard Error**
+- **Standard Deviation vs Standard Error**.
+- *Significance (*P-value*) of a $\beta$ coefficient.
+-  Coefficient of Determination ($R^2$)
+
+## What are **Statistics**?
+
+**Statistics  are numerical values calculated from a sample.**
+
+Examples include: mean, standard deviation, or the coefficients from a regression.
+
+## The Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression.
+
+```{=tex}
+\begin{equation} 
+\beta_{1,opt}= \frac
+{{100} \sum_{i=1}^{100} y_i x_i- \sum_{i=1}^{100} y_i \sum_{i=1}^{100} x_i} 
+{{100} \sum_{i=1}^{100} x_i^2 - \left (\sum_{i=1}^{100} x_i \right )^2}
+\end{equation}
+```
+
+$\beta_1$ is clearly a **Statistic**!
+
+## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(123)
+
+```{r}
+#| code-fold: true
+library(rio);library(janitor);library(tidymodels)
+library(rio)
+library(janitor)
+library(tidymodels)
+DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
+              clean_names("upper_camel") |> 
+              select(Height=Heightin, Weight=Weightlbs, Gender)
+set.seed(123)
+
+DataTrain=sample_n(DataSoldiersM,100)
+
+RecipeWeightHeight=recipe(DataTrain, Weight~Height) 
+
+ModelDesignLinear=linear_reg() |> 
+                  set_engine("lm") |> 
+                  set_mode("regression")
+
+
+
+WFModelWeightHeight= workflow() |> 
+                     add_recipe(RecipeWeightHeight) |> 
+                     add_model(ModelDesignLinear) |> 
+                     fit(DataTrain)
+
+Results=tidy(WFModelWeightHeight)
+print(Results)
+```
+
+$$Weight=\beta_1 Height +\beta_2$$
+
+$$\beta_1=`r Results[[2,2]]`$$
+$$std.error=`r Results[[2,3]]`$$ 
+
+$SE_{\beta_1}$ measures the spread of the 
+
+## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(321)
+
+```{r}
+#| code-fold: true
+library(rio);library(janitor);library(tidymodels)
+library(rio)
+library(janitor)
+library(tidymodels)
+DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
+              clean_names("upper_camel") |> 
+              select(Height=Heightin, Weight=Weightlbs, Gender)
+set.seed(321)
+
+DataTrain=sample_n(DataSoldiersM,100)
+
+RecipeWeightHeight=recipe(DataTrain, Weight~Height) 
+
+ModelDesignLinear=linear_reg() |> 
+                  set_engine("lm") |> 
+                  set_mode("regression")
+
+
+
+WFModelWeightHeight= workflow() |> 
+                     add_recipe(RecipeWeightHeight) |> 
+                     add_model(ModelDesignLinear) |> 
+                     fit(DataTrain)
+
+Results=tidy(WFModelWeightHeight)
+print(Results)
+```
+
+$$Weight=\beta_1 Height +\beta_2$$
+
+$$\beta_1=`r Results[[2,2]]`$$
+$$std.error=`r Results[[2,3]]`$$ 
+
+$SE_{\beta_1}$ measures the spread of the 
+
+
+## Finding the Standard Error with Repeated Sampling
+### In reality this is not possible because we have only on sample!
+
+Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution)
+
+## How Can R Estimate the SE for $\beta_1$ Based on only One Sample?
+
+The estimated *Standard Error* for $\beta_1$ is related to the *MSE* of the regression and the *Variance* of the *dependend variable* $(Y)$. The formula for a uni-variate regression is:
+
+$$
+SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-2}{N-1}}}_{\approx 1}
+$$
+- with $MSE=\sum_{i=1}^N (\widehat Y_i -Y_i)^2$
+- with $VAR_X= \sum_{i=1}^N \bar X 
+- with (in our case) $Y=Weight$
+- with (in our case) $X=Height$
+- with (in our case) $N=100$
+
+The greater $N$ (the sample size)  the smaller is $SE$ (try N=400 instead og N=100) in the simulation and the $SE$ will be cut in half.
+
+## Normal Distribution of $\beta_1$
+
+- If we can estimate $SE_{\beta_1}$.
+- If  we assume the mean is $\beta_1$.
+- If we assume $\beta_1$ is normal distributed.
+
+We can approximate the $\beta_1$ with a normal curve and calculate areas under the curve.
+
+Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution)
+
+```{r}
+print(Results)
+```
+
+Note, R uses the $t-distribution$ here, instead of the standard normal distribution, because the standard error was not known but estimated.  For $N>100$ the two distributions are almost exactly the same.
+
+**t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error**
+
+
+## Coefficient of Determination - SST (sum of squares, total)
+
+## Coefficient of Determination - SSR (sum of squares, errors)
+
+
+## Coefficient of Determination - Defition
+
+
+$$R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{\frac{SST-SSE}{N}}
+                                                   {\frac{SST}{N}}
+$$
+
+**$R^2$ is the proportion of explained variance of the dependend variable.**
