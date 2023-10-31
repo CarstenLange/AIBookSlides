@@ -12,7 +12,7 @@ VecBeta1=c()
 
 set.seed(1111)
 
-RecipeWeightHeight=recipe(DataTrain, Weight~Height) 
+ 
 
 
 ModelDesignLinear=linear_reg() |> 
@@ -22,7 +22,7 @@ ModelDesignLinear=linear_reg() |>
 for (i in 1:1000) { #Be patient this takes a while
 DataTrain=sample_n(DataSoldiersM,100)
 
-
+RecipeWeightHeight=recipe(DataTrain, Weight~Height)
 
 WFModelWeightHeight= workflow() |> 
                      add_recipe(RecipeWeightHeight) |> 

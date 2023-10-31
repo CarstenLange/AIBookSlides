@@ -7,7 +7,7 @@ format:
     scrollable: true
     echo: true
     incremental: false
-    smaller: true
+    smaller: false
 ---
 
 
@@ -48,7 +48,7 @@ Examples include: mean, standard deviation, or the coefficients from a regressio
 
 $\beta_1$ is clearly a **Statistic**!
 
-## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(123)
+## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(123) {.smaller}
 
 ```{r}
 #| code-fold: true
@@ -85,9 +85,11 @@ $$Weight=\beta_1 Height +\beta_2$$
 $$\beta_1=`r Results[[2,2]]`$$
 $$std.error=`r Results[[2,3]]`$$ 
 
-$SE_{\beta_1}$ measures the spread of the 
+$SE_{\beta_1}$ measures the spread of the coefficient $\beta_1$.
 
-## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(321)
+How can $\beta_1$ have spread, as we have only one sample???
+
+## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(321) {.smaller}
 
 ```{r}
 #| code-fold: true
@@ -124,15 +126,15 @@ $$Weight=\beta_1 Height +\beta_2$$
 $$\beta_1=`r Results[[2,2]]`$$
 $$std.error=`r Results[[2,3]]`$$ 
 
-$SE_{\beta_1}$ measures the spread of the 
+$SE_{\beta_1}$ measures the spread of $\beta_1$. 
 
 
 ## Finding the Standard Error with Repeated Sampling
 ### In reality this is not possible because we have only on sample!
 
-Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution)
+Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R)
 
-## How Can R Estimate the SE for $\beta_1$ Based on only One Sample?
+## How Can R Estimate the SE for $\beta_1$ Based on only One Sample?{.smaller}
 
 The estimated *Standard Error* for $\beta_1$ is related to the *MSE* of the regression and the *Variance* of the *dependend variable* $(Y)$. The formula for a uni-variate regression is:
 
@@ -168,9 +170,11 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 
 ## Coefficient of Determination - SST (sum of squares, total)
 
-## Coefficient of Determination - SSR (sum of squares, errors)
+[https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg](https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg)
 
+## Coefficient of Determination - SSE (sum of squares, errors)
 
+[https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg](https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg)
 ## Coefficient of Determination - Defition
 
 
