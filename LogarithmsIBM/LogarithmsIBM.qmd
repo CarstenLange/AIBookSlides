@@ -1,0 +1,81 @@
+---
+title: "Expressing Percentage Change with Logarithms"
+subtitle: "What happens if we work with logarimized variables?"
+format: 
+  revealjs:
+    code-fold: false
+    scrollable: true
+    echo: true
+    incremental: false
+    smaller: false
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+```{r}
+#| echo: false
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+```
+
+
+- The difference between absolute and relative (measured in percent) change.
+- How to interpret a regression with a logarithmic *independent* variable
+- How to interpret a regression with a logarithmic *dependent* variable
+- How to interpret a regression with a logarithmic *independent and dependent* variables
+
+# Absolute Change vs. Percentage Change
+
+Example Wage and Experience Regression
+
+```{r}
+#| code-fold: true
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+DataWage=wage1 |> 
+         clean_names("upper_camel") |> 
+         select(Wage, Exper)
+ModelWage=lm(Wage~Exper, DataWage)
+print(ModelWage)
+```
+
+The model is based on absolute change. For *each year of experience* (**absolute change**) the wage increases by 0.03.
+
+## One year Extra Exper Creates the same Chage {.smaller}
+### For an already experinced employee and a not so experienced employee
+
+Does this really make sense when, for example, comparing some body with already 20 years experience to somebody with 2 years experience. An extra year of experience has the same effect???
+
+. . .
+
+More reasonable is to use relative (percentage) change. I.e., the same **relative change** leads to the same effect. For example, and increase of 50% of experience: 
+- 1 year for the young 
+- 10 years for the older employee
+
+has the same effect. However, we would have to run a different regression (one where we use the logarithm of $Exper$ (`log(Exper)`) instead $Exper$ itself.)
+
+. . .
+
+We can accomplish this in regression by using logarithms:
+
+**A change of a logarithmic variable can be interpreted as relative (percentage) change**
+
+## A change of a logarithmic variable can be interpreted as relative (percentage) change
+### Example
+
+```{r}
+#| code-fold: true
+DataExamp=tibble(t=c(0:3), X=c(200, 203, 207, 200)) |> 
+          mutate(TradPercChange=(X-lag(X))/lag(X)) |> 
+          mutate(LnX=num(log(X),digits=5)) |> # log calculates the natural logarithm ln() in R 
+          mutate(ChangeLnX=LnX - lag(LnX))
+print(DataExamp)
+```
+
+
+

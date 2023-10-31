@@ -178,4 +178,4 @@ $$R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{\frac{SST-SSE}{N}}
                                                    {\frac{SST}{N}}
 $$
 
-**$R^2$ is the proportion of explained variance of the dependend variable.**
+**$R^2$ is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)**
