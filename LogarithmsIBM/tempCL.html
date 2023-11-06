@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="HypTestsIBM_files/libs/clipboard/clipboard.min.js"></script>
-<script src="HypTestsIBM_files/libs/quarto-html/tabby.min.js"></script>
-<script src="HypTestsIBM_files/libs/quarto-html/popper.min.js"></script>
-<script src="HypTestsIBM_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="HypTestsIBM_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="HypTestsIBM_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="HypTestsIBM_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="tempCL_files/libs/clipboard/clipboard.min.js"></script>
+<script src="tempCL_files/libs/quarto-html/tabby.min.js"></script>
+<script src="tempCL_files/libs/quarto-html/popper.min.js"></script>
+<script src="tempCL_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="tempCL_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="tempCL_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="tempCL_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.247">
 
-  <title>Hypothesis Tests</title>
+  <title>Expressing Percentage Change with Logarithms</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="HypTestsIBM_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="HypTestsIBM_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="tempCL_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="tempCL_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -92,13 +92,13 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="HypTestsIBM_files/libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="HypTestsIBM_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="HypTestsIBM_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="HypTestsIBM_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="HypTestsIBM_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="HypTestsIBM_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="HypTestsIBM_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="tempCL_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="tempCL_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="tempCL_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="tempCL_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="tempCL_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="tempCL_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="tempCL_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -390,8 +390,8 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Hypothesis Tests</h1>
-  <p class="subtitle">Inference, Sigificance, Coefficient of Determination (<span class="math inline">\(R^2\)</span>)</p>
+  <h1 class="title">Expressing Percentage Change with Logarithms</h1>
+  <p class="subtitle">What happens if we work with logarimized variables?</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -403,192 +403,111 @@
 
 </div>
 <ul>
-<li>What are <strong>Statistics</strong> (e.g., coefficients of a regresion)?</li>
-<li>Why can <strong>Statistics change</strong> (sampling distribution)?</li>
-<li>How to measure the spread of the change of statistics with the <strong>Standard Error</strong></li>
-<li><strong>Standard Deviation vs Standard Error</strong>.</li>
-<li><em>Significance (</em>P-value*) of a <span class="math inline">\(\beta\)</span> coefficient.</li>
-<li>Coefficient of Determination (<span class="math inline">\(R^2\)</span>)</li>
+<li>The difference between absolute and relative (measured in percent) change.</li>
+<li>How to interpret a regression with a logarithmic <em>independent</em> variable</li>
+<li>How to interpret a regression with a logarithmic <em>dependent</em> variable</li>
+<li>How to interpret a regression with a logarithmic <em>independent and dependent</em> variables</li>
 </ul>
 </section>
-<section id="what-are-statistics" class="slide level2">
-<h2>What are <strong>Statistics</strong>?</h2>
-<p><strong>Statistics are numerical values calculated from a sample.</strong></p>
-<p>Examples include: mean, standard deviation, or the coefficients from a regression.</p>
-</section>
-<section id="the-statistic-beta_1-for-a-sample-of-n100-for-a-univariate-regression." class="slide level2">
-<h2>The Statistic <span class="math inline">\(\beta_1\)</span> for a Sample of N=100 for a Univariate Regression.</h2>
-<span class="math display">\[\begin{equation}
-\beta_{1,opt}= \frac
-{{100} \sum_{i=1}^{100} y_i x_i- \sum_{i=1}^{100} y_i \sum_{i=1}^{100} x_i}
-{{100} \sum_{i=1}^{100} x_i^2 - \left (\sum_{i=1}^{100} x_i \right )^2}
-\end{equation}\]</span>
-<p><span class="math inline">\(\beta_1\)</span> is clearly a <strong>Statistic</strong>!</p>
-</section>
-<section id="example-statistic-beta_1-for-a-sample-of-n100-for-a-univariate-regression-set.seed123" class="slide level2">
-<h2>Example: Statistic <span class="math inline">\(\beta_1\)</span> for a Sample of N=100 for a Univariate Regression set.seed(123)</h2>
+<section>
+<section id="absolute-change-vs.-percentage-change" class="title-slide slide level1 center">
+<h1>Absolute Change vs.&nbsp;Percentage Change</h1>
+<p>Example Wage and Experience Regression</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(rio)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>DataSoldiersM<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx"</span>, <span class="at">sheet=</span><span class="st">"DataMale"</span>)<span class="sc">|&gt;</span> </span>
-<span id="cb1-6"><a href="#cb1-6"></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-7"><a href="#cb1-7"></a>              <span class="fu">select</span>(<span class="at">Height=</span>Heightin, <span class="at">Weight=</span>Weightlbs, Gender)</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb1-9"><a href="#cb1-9"></a></span>
-<span id="cb1-10"><a href="#cb1-10"></a>DataTrain<span class="ot">=</span><span class="fu">sample_n</span>(DataSoldiersM,<span class="dv">100</span>)</span>
-<span id="cb1-11"><a href="#cb1-11"></a></span>
-<span id="cb1-12"><a href="#cb1-12"></a>RecipeWeightHeight<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, Weight<span class="sc">~</span>Height) </span>
-<span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-15"><a href="#cb1-15"></a>                  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-16"><a href="#cb1-16"></a>                  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb1-17"><a href="#cb1-17"></a></span>
-<span id="cb1-18"><a href="#cb1-18"></a></span>
-<span id="cb1-19"><a href="#cb1-19"></a></span>
-<span id="cb1-20"><a href="#cb1-20"></a>WFModelWeightHeight<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb1-21"><a href="#cb1-21"></a>                     <span class="fu">add_recipe</span>(RecipeWeightHeight) <span class="sc">|&gt;</span> </span>
-<span id="cb1-22"><a href="#cb1-22"></a>                     <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb1-23"><a href="#cb1-23"></a>                     <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb1-24"><a href="#cb1-24"></a></span>
-<span id="cb1-25"><a href="#cb1-25"></a>Results<span class="ot">=</span><span class="fu">tidy</span>(WFModelWeightHeight)</span>
-<span id="cb1-26"><a href="#cb1-26"></a><span class="fu">print</span>(Results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb1-4"><a href="#cb1-4"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
+<span id="cb1-5"><a href="#cb1-5"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-6"><a href="#cb1-6"></a>         <span class="fu">select</span>(Wage, Exper)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>ModelWage<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>Exper, DataWage)</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">print</span>(ModelWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  term        estimate std.error statistic    p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-1 (Intercept)  -139.      63.6       -2.18 0.0316    
-2 Height          4.69     0.907      5.17 0.00000123</code></pre>
+<pre><code>
+Call:
+lm(formula = Wage ~ Exper, data = DataWage)
+
+Coefficients:
+(Intercept)        Exper  
+    5.37331      0.03072  </code></pre>
 </div>
 </div>
-<p><span class="math display">\[Weight=\beta_1 Height +\beta_2\]</span></p>
-<p><span class="math display">\[\beta_1=4.6902889\]</span> <span class="math display">\[std.error=0.9068393\]</span></p>
-<p><span class="math inline">\(SE_{\beta_1}\)</span> measures the spread of the</p>
+<p>The model is based on absolute change. For <em>each year of experience</em> (<strong>absolute change</strong>) the wage increases by 0.03.</p>
 </section>
-<section id="example-statistic-beta_1-for-a-sample-of-n100-for-a-univariate-regression-set.seed321" class="slide level2">
-<h2>Example: Statistic <span class="math inline">\(\beta_1\)</span> for a Sample of N=100 for a Univariate Regression set.seed(321)</h2>
+<section id="one-year-extra-exper-creates-the-same-chage" class="slide level2 smaller">
+<h2>One year Extra Exper Creates the same Chage</h2>
+<h3 id="for-an-already-experinced-employee-and-a-not-so-experienced-employee">For an already experinced employee and a not so experienced employee</h3>
+<p>Does this really make sense when, for example, comparing some body with already 20 years experience to somebody with 2 years experience. An extra year of experience has the same effect???</p>
+<div class="fragment">
+<p>More reasonable is to use relative (percentage) change. I.e., the same <strong>relative change</strong> leads to the same effect. For example, and increase of 50% of experience: - 1 year for the young - 10 years for the older employee</p>
+<p>has the same effect. However, we would have to run a different regression (one where we use the logarithm of <span class="math inline">\(Exper\)</span> (<code>log(Exper)</code>) instead <span class="math inline">\(Exper\)</span> itself.)</p>
+</div>
+<div class="fragment">
+<p>We can accomplish this in regression by using logarithms:</p>
+<p><strong>A change of a logarithmic variable can be interpreted as relative (percentage) change</strong></p>
+</div>
+</section>
+<section id="important" class="slide level2">
+<h2>Important !!!</h2>
+<h3 id="a-change-of-a-logarithmic-variable-can-be-interpreted-as-relative-percentage-change">A change of a logarithmic variable can be interpreted as relative (percentage) change</h3>
+<p><strong>Example</strong></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(rio)</span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>DataSoldiersM<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx"</span>, <span class="at">sheet=</span><span class="st">"DataMale"</span>)<span class="sc">|&gt;</span> </span>
-<span id="cb3-6"><a href="#cb3-6"></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-7"><a href="#cb3-7"></a>              <span class="fu">select</span>(<span class="at">Height=</span>Heightin, <span class="at">Weight=</span>Weightlbs, Gender)</span>
-<span id="cb3-8"><a href="#cb3-8"></a><span class="fu">set.seed</span>(<span class="dv">321</span>)</span>
-<span id="cb3-9"><a href="#cb3-9"></a></span>
-<span id="cb3-10"><a href="#cb3-10"></a>DataTrain<span class="ot">=</span><span class="fu">sample_n</span>(DataSoldiersM,<span class="dv">100</span>)</span>
-<span id="cb3-11"><a href="#cb3-11"></a></span>
-<span id="cb3-12"><a href="#cb3-12"></a>RecipeWeightHeight<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, Weight<span class="sc">~</span>Height) </span>
-<span id="cb3-13"><a href="#cb3-13"></a></span>
-<span id="cb3-14"><a href="#cb3-14"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb3-15"><a href="#cb3-15"></a>                  <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-16"><a href="#cb3-16"></a>                  <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb3-17"><a href="#cb3-17"></a></span>
-<span id="cb3-18"><a href="#cb3-18"></a></span>
-<span id="cb3-19"><a href="#cb3-19"></a></span>
-<span id="cb3-20"><a href="#cb3-20"></a>WFModelWeightHeight<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb3-21"><a href="#cb3-21"></a>                     <span class="fu">add_recipe</span>(RecipeWeightHeight) <span class="sc">|&gt;</span> </span>
-<span id="cb3-22"><a href="#cb3-22"></a>                     <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb3-23"><a href="#cb3-23"></a>                     <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb3-24"><a href="#cb3-24"></a></span>
-<span id="cb3-25"><a href="#cb3-25"></a>Results<span class="ot">=</span><span class="fu">tidy</span>(WFModelWeightHeight)</span>
-<span id="cb3-26"><a href="#cb3-26"></a><span class="fu">print</span>(Results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>DataExamp<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">t=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">X=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">203</span>, <span class="dv">207</span>, <span class="dv">200</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2"></a>          <span class="fu">mutate</span>(<span class="at">TradPercChange=</span>(X<span class="sc">-</span><span class="fu">lag</span>(X))<span class="sc">/</span><span class="fu">lag</span>(X)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3"></a>          <span class="fu">mutate</span>(<span class="at">LnX=</span><span class="fu">num</span>(<span class="fu">log</span>(X),<span class="at">digits=</span><span class="dv">5</span>)) <span class="sc">|&gt;</span> <span class="co"># log calculates the natural logarithm ln() in R </span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>          <span class="fu">mutate</span>(<span class="at">ChangeLnX=</span>LnX <span class="sc">-</span> <span class="fu">lag</span>(LnX))</span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">print</span>(DataExamp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)  -297.      59.7       -4.97 2.81e- 6
-2 Height          6.94     0.847      8.20 9.69e-13</code></pre>
+<pre><code># A tibble: 4 × 5
+      t     X TradPercChange       LnX ChangeLnX
+  &lt;int&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;num:.5!&gt; &lt;num:.5!&gt;
+1     0   200        NA        5.29832  NA      
+2     1   203         0.015    5.31321   0.01489
+3     2   207         0.0197   5.33272   0.01951
+4     3   200        -0.0338   5.29832  -0.03440</code></pre>
 </div>
 </div>
-<p><span class="math display">\[Weight=\beta_1 Height +\beta_2\]</span></p>
-<p><span class="math display">\[\beta_1=6.9417371\]</span> <span class="math display">\[std.error=0.8470048\]</span></p>
-<p><span class="math inline">\(SE_{\beta_1}\)</span> measures the spread of the</p>
 </section>
-<section id="finding-the-standard-error-with-repeated-sampling" class="slide level2">
-<h2>Finding the Standard Error with Repeated Sampling</h2>
-<h3 id="in-reality-this-is-not-possible-because-we-have-only-on-sample">In reality this is not possible because we have only on sample!</h3>
-<p>Goto <a href="https:///econ.lange-analytics.com/ibm6510/SamplingDistribution">https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R</a></p>
-</section>
-<section id="how-can-r-estimate-the-se-for-beta_1-based-on-only-one-sample" class="slide level2">
-<h2>How Can R Estimate the SE for <span class="math inline">\(\beta_1\)</span> Based on only One Sample?</h2>
-<p>The estimated <em>Standard Error</em> for <span class="math inline">\(\beta_1\)</span> is related to the <em>MSE</em> of the regression and the <em>Variance</em> of the <em>dependend variable</em> <span class="math inline">\((Y)\)</span>. The formula for a uni-variate regression is:</p>
-<p><span class="math display">\[
-SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-2}{N-1}}}_{\approx 1}
-\]</span></p>
-<ul>
-<li><p>with: <span class="math inline">\(MSE=\sum_{i=1}^N (\widehat Y_i -Y_i)^2\)</span></p></li>
-<li><p>with: <span class="math inline">\(VAR_X= \sum_{i=1}^N (X-\bar X)^2\)</span></p></li>
-<li><p>with (in our case): <span class="math inline">\(Y=Weight\)</span></p></li>
-<li><p>with (in our case): <span class="math inline">\(X=Height\)</span></p></li>
-<li><p>with (in our case): <span class="math inline">\(N=100\)</span></p></li>
-</ul>
-<p>The greater <span class="math inline">\(N\)</span> (the sample size) the smaller is <span class="math inline">\(SE\)</span> (try N=400 instead og N=100) in the simulation and the <span class="math inline">\(SE\)</span> will be cut in half.</p>
-</section>
-<section id="normal-distribution-of-beta_1" class="slide level2">
-<h2>Normal Distribution of <span class="math inline">\(\beta_1\)</span></h2>
-<ul>
-<li>If we can estimate <span class="math inline">\(SE_{\beta_1}\)</span>.</li>
-<li>If we assume the mean is <span class="math inline">\(\beta_1\)</span>.</li>
-<li>If we assume <span class="math inline">\(\beta_1\)</span> is normal distributed.</li>
-</ul>
-<p>We can approximate the <span class="math inline">\(\beta_1\)</span> with a normal curve and calculate areas under the curve.</p>
-<p>Goto <a href="https:///econ.lange-analytics.com/ibm6510/SamplingDistribution">https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R</a></p>
+<section id="plot-mpg-weight" class="slide level2 scrollable">
+<h2>Plot MPG ~ Weight</h2>
+<div class="r-stack">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">print</span>(Results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)  -297.      59.7       -4.97 2.81e- 6
-2 Height          6.94     0.847      8.20 9.69e-13</code></pre>
+<div class="cell-output-display">
+<p><img data-src="tempCL_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</div>
+<div class="cell-output-display">
+<p><img data-src="tempCL_files/figure-revealjs/unnamed-chunk-4-2.png" width="960"></p>
 </div>
 </div>
-<p>Note, R uses the <span class="math inline">\(t-distribution\)</span> here, instead of the standard normal distribution, because the standard error was not known but estimated. For <span class="math inline">\(N&gt;100\)</span> the two distributions are almost exactly the same.</p>
-<p><strong>t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error</strong></p>
-</section>
-<section id="coefficient-of-determination---sst-sum-of-squares-total" class="slide level2">
-<h2>Coefficient of Determination - SST (sum of squares, total)</h2>
-</section>
-<section id="coefficient-of-determination---ssr-sum-of-squares-errors" class="slide level2">
-<h2>Coefficient of Determination - SSR (sum of squares, errors)</h2>
-</section>
-<section id="coefficient-of-determination---defition" class="slide level2">
-<h2>Coefficient of Determination - Defition</h2>
-<p><span class="math display">\[R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{\frac{SST-SSE}{N}}
-                                                   {\frac{SST}{N}}
-\]</span></p>
-<p><strong><span class="math inline">\(R^2\)</span> is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)</strong></p>
+</div>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="HypTestsIBM_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="tempCL_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="HypTestsIBM_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="tempCL_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>
@@ -598,14 +517,14 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
       Reveal.initialize({
 'controlsAuto': false,
 'previewLinksAuto': false,
-'smaller': true,
+'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
-'smaller': true,
+'smaller': false,
  
         // Display controls in the bottom right corner
         controls: true,

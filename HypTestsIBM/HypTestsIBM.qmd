@@ -139,11 +139,16 @@ The estimated *Standard Error* for $\beta_1$ is related to the *MSE* of the regr
 $$
 SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-2}{N-1}}}_{\approx 1}
 $$
-- with $MSE=\sum_{i=1}^N (\widehat Y_i -Y_i)^2$
-- with $VAR_X= \sum_{i=1}^N \bar X 
-- with (in our case) $Y=Weight$
-- with (in our case) $X=Height$
-- with (in our case) $N=100$
+
+- with: $MSE=\sum_{i=1}^N (\widehat Y_i -Y_i)^2$
+
+- with: $VAR_X= \sum_{i=1}^N (X-\bar X)^2$ 
+
+- with (in our case): $Y=Weight$
+
+- with (in our case): $X=Height$
+
+- with (in our case): $N=100$
 
 The greater $N$ (the sample size)  the smaller is $SE$ (try N=400 instead og N=100) in the simulation and the $SE$ will be cut in half.
 

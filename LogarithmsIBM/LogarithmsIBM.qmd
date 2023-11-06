@@ -3,6 +3,7 @@ title: "Expressing Percentage Change with Logarithms"
 subtitle: "What happens if we work with logarimized variables?"
 format: 
   revealjs:
+    multiplex: true
     code-fold: false
     scrollable: true
     echo: true
@@ -20,6 +21,7 @@ library(tidymodels)
 library(rio)
 library(kableExtra)
 library(janitor)
+
 ```
 
 
@@ -65,8 +67,11 @@ We can accomplish this in regression by using logarithms:
 
 **A change of a logarithmic variable can be interpreted as relative (percentage) change**
 
-## A change of a logarithmic variable can be interpreted as relative (percentage) change
-### Example
+## Important !!!
+
+### A change of a logarithmic variable can be interpreted as relative (percentage) change
+
+**Example**
 
 ```{r}
 #| code-fold: true
@@ -77,5 +82,335 @@ DataExamp=tibble(t=c(0:3), X=c(200, 203, 207, 200)) |>
 print(DataExamp)
 ```
 
+## Plot MPG ~ Weight
+```{r}
+#| echo: false
+# Data source: https://www.kaggle.com/datasets/uciml/autompg-dataset/
+DataAutoMPG=import("https://econ.lange-analytics.com/RData/Datasets/AutoMpg.csv") |>
+            clean_names("upper_camel") |> 
+            select(MPG=Mpg, Displ=Displacement, Weight)
 
 
+Plot1=ggplot(DataAutoMPG, aes(x=Weight, y=MPG))+
+      geom_point()+
+      scale_y_continuous(limits=c(0,50))
+Plot2=Plot1+
+      geom_smooth(se=FALSE, method="lm", color="blue") 
+Plot3=Plot2+
+      geom_smooth(se=FALSE, color="red") 
+Plot4=ggplot(DataAutoMPG, aes(x=Weight, y=log(MPG)))+
+      geom_point()
+Plot5=Plot4+
+      geom_smooth(se=FALSE, method="lm", color="blue")
+```
+
+::: {.r-stack}
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot1)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot2)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot3)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot1)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot4)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot5)
+```
+:::
+:::
+
+
+
+
+## Regression MPG ~ Weight {.smaller}
+### No Variable Logarithmized
+
+```{r}
+ModelDesignLinear=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
+RecipeMPGDispl=recipe(DataAutoMPG, MPG~Weight) |>      
+              step_naomit(MPG,Weight)
+
+WFModelMPG=workflow() |> 
+           add_model(ModelDesignLinear) |> 
+           add_recipe(RecipeMPGDispl) |> 
+           fit(DataAutoMPG)
+kbl(tidy(WFModelMPG))
+kbl(glance(WFModelMPG))
+```
+
+## Regression LNMPG ~ Weight {.smaller}
+### Dependent Variable MPG Logarithmized
+```{r}
+ModelDesignLinear=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
+RecipeMPGDispl=recipe(DataAutoMPG, MPG~Weight) |>      
+              step_naomit(MPG,Weight) |> 
+              step_log(all_outcomes()) 
+
+WFModelMPG=workflow() |> 
+           add_model(ModelDesignLinear) |> 
+           add_recipe(RecipeMPGDispl) |> 
+           fit(DataAutoMPG)
+kbl(tidy(WFModelMPG))
+kbl(glance(WFModelMPG))
+```
+
+
+
+## Plot MPG ~ Displ
+
+```{r}
+#| echo: false
+
+Plot1=ggplot(DataAutoMPG, aes(x=Displ, y=MPG))+
+      geom_point()+
+      scale_y_continuous(limits=c(0,50))
+Plot2=Plot1+
+      geom_smooth(se=FALSE, method="lm", color="blue") 
+Plot3=Plot2+
+      geom_smooth(se=FALSE, color="red") 
+Plot4=ggplot(DataAutoMPG, aes(x=log(Displ), y=MPG))+
+      geom_point()
+Plot5=Plot4+
+      geom_smooth(se=FALSE, method="lm", color="blue")
+```
+
+::: {.r-stack}
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot1)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot2)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot3)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot1)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot4)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot5)
+```
+:::
+:::
+
+
+
+
+## Regression MPG ~ Displ {.smaller}
+### No Variable Logarithmized
+
+```{r}
+ModelDesignLinear=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
+RecipeMPGDispl=recipe(DataAutoMPG, MPG~Displ) |>      
+              step_naomit(MPG,Displ)
+
+WFModelMPG=workflow() |> 
+           add_model(ModelDesignLinear) |> 
+           add_recipe(RecipeMPGDispl) |> 
+           fit(DataAutoMPG)
+kbl(tidy(WFModelMPG))
+kbl(glance(WFModelMPG))
+```
+
+## Regression MPG ~ LNDispl {.smaller}
+### Independent Variable Displ Logarithmized
+
+```{r}
+ModelDesignLinear=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
+RecipeMPGDispl=recipe(DataAutoMPG, MPG~Displ) |>      
+              step_naomit(MPG,Displ) |> 
+              step_mutate(LNDispl=log(Displ)) |> 
+              step_rm(Displ)
+
+WFModelMPG=workflow() |> 
+           add_model(ModelDesignLinear) |> 
+           add_recipe(RecipeMPGDispl) |> 
+           fit(DataAutoMPG)
+kbl(tidy(WFModelMPG))
+kbl(glance(WFModelMPG))
+```
+
+## Plot MPG ~ Weight
+
+```{r}
+#| echo: false
+
+Plot1=ggplot(DataAutoMPG, aes(x=Weight, y=MPG))+
+      geom_point()+
+      scale_y_continuous(limits=c(0,50))
+Plot2=Plot1+
+      geom_smooth(se=FALSE, method="lm", color="blue") 
+Plot3=Plot2+
+      geom_smooth(se=FALSE, color="red") 
+Plot4=ggplot(DataAutoMPG, aes(x=log(Weight), y=log(MPG)))+
+      geom_point()
+Plot5=Plot4+
+      geom_smooth(se=FALSE, method="lm", color="blue")
+```
+
+::: {.r-stack}
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot1)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot2)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot3)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot1)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot4)
+```
+:::
+::: {.fragment}
+```{r}
+#| echo: false
+plot(Plot5)
+```
+:::
+:::
+
+
+
+## Regression MPG ~ Weight {.smaller}
+### No Variable Logarithmized
+```{r}
+ModelDesignLinear=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
+RecipeMPGDispl=recipe(DataAutoMPG, MPG~Weight) |>      
+              step_naomit(MPG,Weight)
+
+WFModelMPG=workflow() |> 
+           add_model(ModelDesignLinear) |> 
+           add_recipe(RecipeMPGDispl) |> 
+           fit(DataAutoMPG)
+kbl(tidy(WFModelMPG))
+kbl(glance(WFModelMPG))
+```
+
+## Regression MPG ~ Weight {.smaller}
+### Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized
+
+```{r}
+ModelDesignLinear=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
+RecipeMPGDispl=recipe(DataAutoMPG, MPG~Displ) |>      
+              step_naomit(MPG,Displ) |> 
+              step_mutate(LnDispl=log(Displ)) |> 
+              step_rm(Displ)|> 
+              step_log(all_outcomes()) 
+
+WFModelMPG=workflow() |> 
+           add_model(ModelDesignLinear) |> 
+           add_recipe(RecipeMPGDispl) |> 
+           fit(DataAutoMPG)
+kbl(tidy(WFModelMPG))
+kbl(glance(WFModelMPG))
+```
+
+## Summary
+
+![How to Interpret Regressions With Logarithmic Variables](InterpretLogVarInRegrOverview.png)
+
+Source: <https://quantifyinghealth.com/interpret-log-transformations-in-linear-regression/>
+
+## Interpretation of Regression --- No Transformation {.smaller}
+
+$$Y_i = \beta_1 X_i+ \beta_2 $$
+$$\frac{\delta Y}{\delta X}\approx\frac{\Delta Y}{\Delta X}=\beta_1$$
+$$\Delta Y=\beta_1\Delta X$$
+$\Delta X$: change of $X$,$\Delta Y$: change of $Y$, $\frac{\Delta Y}{\Delta X}$: rise over run.
+
+**The change of $X$ multiplied with $\beta_1$ equals the change of $Y$.**
+
+or
+
+**If $X$ changes by one unit ($\Delta X=1$), $\Delta Y$ changes by $\beta_1$ units.**
+
+## Interpretation of Regression --- Log-Transformation of Dependent Variable{.smaller}
+
+We define a new variable: $LNY=\ln{Y_i}$
+
+$$LNY_i = \beta_1 X_i+ \beta_2 $$
+$$\frac{\delta LNY}{\delta X}\approx\frac{\Delta LNY}{\Delta X}=\beta_1$$
+$$\Delta LNY=\beta_1\Delta X$$
+$\Delta X$: change of $X$,$\Delta LNY$: change of $LNY$, $\frac{\Delta LNY}{\Delta X}$: rise over run.
+
+**The change of $X$ multiplied with $\beta_1$ equals the change of $LNY$.**
+
+
+
+$$\Delta LNY=\beta_1\underbrace{\Delta X}_{+1}$$
+
+**Since we know that the change of a logarithm is a relative (percentage) change, we can say: If $X$ changes by one unit $\Delta X=1$, then $Y$ changes by $\beta_1\cdot 100$%.**
