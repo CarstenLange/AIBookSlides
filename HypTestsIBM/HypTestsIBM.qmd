@@ -175,16 +175,28 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 
 ## Coefficient of Determination - SST (sum of squares, total)
 
+See the two diagrams on Wikipedia to see the difference of 
+
+- the Sum of Squares total (SST)
+
+- Sum of Squared Errors from the Regression or Sum of Squared Residuals (SSR)
+
 [https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg](https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg)
 
-## Coefficient of Determination - SSE (sum of squares, errors)
 
-[https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg](https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg)
 ## Coefficient of Determination - Defition
 
 
-$$R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{\frac{SST-SSE}{N}}
-                                                   {\frac{SST}{N}}
+$$R^2=1 - \frac{SSR}{SST}=\frac{
+\overbrace{SSR-SSE}^{\mbox{Expl. Sum of Squares}}
+}{SST}=\frac{
+\overbrace{\frac{SST-SSR}{N-1}}^{\mbox{Expl. Variance}}
+}
+{
+\underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
+}
 $$
+
+
 
 **$R^2$ is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)**

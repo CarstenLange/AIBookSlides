@@ -558,13 +558,23 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
 </section>
 <section id="coefficient-of-determination---sst-sum-of-squares-total" class="slide level2">
 <h2>Coefficient of Determination - SST (sum of squares, total)</h2>
+<p>See the two diagrams on Wikipedia to see the difference of</p>
+<ul>
+<li><p>the Sum of Squares total (SST)</p></li>
+<li><p>Sum of Squared Errors from the Regression or Sum of Squared Residuals (SSR)</p></li>
+</ul>
 <p><a href="https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg">https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg</a></p>
 </section>
-<section id="coefficient-of-determination---sse-sum-of-squares-errors" class="slide level2">
-<h2>Coefficient of Determination - SSE (sum of squares, errors)</h2>
-<p><a href="https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg">https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg</a> ## Coefficient of Determination - Defition</p>
-<p><span class="math display">\[R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{\frac{SST-SSE}{N}}
-                                                   {\frac{SST}{N}}
+<section id="coefficient-of-determination---defition" class="slide level2">
+<h2>Coefficient of Determination - Defition</h2>
+<p><span class="math display">\[R^2=1 - \frac{SSR}{SST}=\frac{
+\overbrace{SSR-SSE}^{\mbox{Expl. Sum of Squares}}
+}{SST}=\frac{
+\overbrace{\frac{SST-SSR}{N-1}}^{\mbox{Expl. Variance}}
+}
+{
+\underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
+}
 \]</span></p>
 <p><strong><span class="math inline">\(R^2\)</span> is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)</strong></p>
 <div class="footer footer-default">

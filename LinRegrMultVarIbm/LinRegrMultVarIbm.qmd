@@ -67,7 +67,7 @@ DataWageAna=select(DataWageOrg, Wage, Educ,Exper,Tenure,
 ModelWageUnivar=lm(Wage~SexFem, DataWageAna)
 summary(ModelWageUnivar)
 ```
-$R^2$ is the part of the variance of the outcome variable that can be expalined by the regression.
+$R^2$ is the part of the variance of the outcome variable that can be explained by the regression.
 
 # Visualisation of Spread of Wage
 
