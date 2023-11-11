@@ -3,6 +3,7 @@ title: "Linear Regression"
 subtitle: "Multivariate"
 format: 
   revealjs:
+    multiplex: true
     code-fold: false
     scrollable: true
     incremental: false
@@ -109,7 +110,7 @@ print(Result, n=100)
 
 ```{r}
 #| echo: false
-DagCoord=data_frame(x=c(1,3,4,4,5,4.5),  y=c(2,2,3,1,2,3), name=c("Exp","Wage","Educ","SnglPar","SexFem","ParEdu"))
+DagCoord=tibble(x=c(1,3,4,4,5,4.5),  y=c(2,2,3,1,2,3), name=c("Exp","Wage","Educ","SnglPar","SexFem","ParEdu"))
 ```
 
 
@@ -123,7 +124,7 @@ dagify(Wage~SexFem+Educ+Exp+SnglPar,
        exposure = "SexFem",
        coords = DagCoord
       ) |> 
-ggdag(node_size = 22) 
+ggdag(node_size = 22) + theme_void()
 ```
 ## Step 1: Use Domain Knowledge (beliefs)
 
@@ -136,7 +137,7 @@ dagify(Wage~SexFem+Educ+SnglPar+Exp,
        exposure = "SexFem",
        coords = DagCoord
        ) |> 
-ggdag(node_size = 22)
+ggdag(node_size = 22) + theme_void()
 ```
 
 :::
@@ -150,7 +151,7 @@ dagify(Wage~SexFem+Educ+SnglPar+Exp,
        exposure = "SexFem",
        coords = DagCoord
       ) |> 
-ggdag(node_size = 22)
+ggdag(node_size = 22) + theme_void()
 ```
 
 :::
@@ -165,7 +166,7 @@ dagify(Wage~SexFem+Educ+SnglPar+Exp,
        exposure = "SexFem",
        coords = DagCoord
       ) |> 
-ggdag(node_size = 22)
+ggdag(node_size = 22) + theme_void()
 ```
 :::
 ::: 
@@ -342,6 +343,7 @@ corrplot(CorMatrix)
 ## Step 4: Select Resonable Predictors and Try Regression
 
 ```{r}
+#| output-location: slide
 RecipeWageSex=recipe(DataWageClean, 
                      Wage~SexFem+Educ+Ten+MarTrue+MsaTrue+SnglPar+NonWhite)
 
@@ -363,7 +365,7 @@ library(tidymodels)
 library(janitor)
 library(wooldridge)
 library(corrplot)
-
+library(SmartEDA)
 DataWage=wage1 |> 
          clean_names("upper_camel") |> 
          select(Wage, SexFem=Female, Educ,Exp=Exper,Ten=Tenure,      
@@ -371,13 +373,15 @@ DataWage=wage1 |>
                 MarTrue=Married, NumChild=Numdep, MsaTrue=Smsa) |> 
           mutate(SnglPar=ifelse(MarTrue==0 & NumChild>0,1,0))
 
-CorMatrix=cor(DataWageClean)
+ExpReport(DataWage, op_file = "EDAReport")
+
+CorMatrix=cor(DataWage)
 corrplot(CorMatrix)
 
 ModelDesignLinear=linear_reg() |> 
                   set_engine("lm")
 
-RecipeWageSex=recipe(DataWage, Wage~SexFem+Ten)
+RecipeWageSex=recipe(DataWage, Wage~SexFem)
     
 WfModelWageSex=workflow() |> 
                add_recipe(RecipeWageSex) |> 
