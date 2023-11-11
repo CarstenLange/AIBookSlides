@@ -179,7 +179,8 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 
 ## Coefficient of Determination - SSE (sum of squares, errors)
 
-[https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg](https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg)
+![Source: https://en.wikipedia.org/wiki/Coefficient_of_determination](CoefficientOfDetermination.png)
+
 ## Coefficient of Determination - Defition
 
 
