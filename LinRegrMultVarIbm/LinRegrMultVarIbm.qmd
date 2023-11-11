@@ -10,10 +10,7 @@ format:
     echo: true
 ---
 
-```{r}
-library(kableExtra)
 
-```
 
 ## What Will You Learn {.scrollable .smaller}
 
@@ -29,9 +26,12 @@ library(kableExtra)
 
 -   Interpretation of standard error, t-value, and P-value to infer on prediction quality
 
-# Sex Discrimination
+## Sex Discrimination
+### Univariate with SexFem only
 
 ```{r}
+#| code-fold: true
+
 library(tidymodels)
 library(janitor)
 library(wooldridge)
@@ -64,7 +64,10 @@ For a women (when $SexFem$ switches from 0 to 1) the wage is predicted to decrea
 
 ## Switching from a Univariate to a Multivariate Regression with R
 
+
 ```{r}
+#| code-line-numbers: "1|3-6|8-9"
+#| output-location: fragment
 RecipeWageSex=recipe(DataWage, Wage~SexFem+Ten+Exp)
 
 WfModelWageSex=workflow() |> 
@@ -83,6 +86,8 @@ print(Result)
 Note, I took at $LWage$ (log wage) out. Otherwise, I would have regressed wage on ln(wage).
 
 ```{r}
+#| output-location: slide
+#| code-line-numbers: "1-3|5|7-10|12,13"
 DataWageAllVar=wage1 |>
                clean_names("upper_camel") |> 
                select(-Lwage)
@@ -100,7 +105,7 @@ print(Result, n=100)
 
 ## Which Independent Variables Should we Choose?
 
-**If choosing all variables is a bad idea, we need a procedure to choose!**
+**If choosing all variables is a bad idea, we need a procedure to choose independent variables (predictors)!**
 
 **Plan and think before you run a regression**
 
@@ -126,6 +131,9 @@ dagify(Wage~SexFem+Educ+Exp+SnglPar,
       ) |> 
 ggdag(node_size = 22) + theme_void()
 ```
+
+
+
 ## Step 1: Use Domain Knowledge (beliefs)
 
 ::: {.r-stack}
@@ -171,13 +179,34 @@ ggdag(node_size = 22) + theme_void()
 :::
 ::: 
 
+## Step 1: Your Turn
+
+Copy the code and make your own DAG:
+
+1. First use `Wage` as a dependent (outcome) and assume
+
+- `SexFem` causes `Wage`
+- `Educ` causes `Wage`
+
+2. In addition, assume that `SexFem` also causes `Educ`
+
+3. Build your own causal graph (you are not limited to causes in `DataWage`)
+
+```{r}
+#| eval: false
+library(tidymodels)
+library(ggdag)
+dagify(Wage~SexFem)|> 
+ggdag(node_size = 22) + theme_void()
+```
+
 ## After Step 1: Use Domain Knowledge (beliefs)
 
 **Based on the DAG decide which variables are candidates and include only the candidates in your analytics data frame (here,** $DataWage$). I have done this already:
 
 ```{r}
-#| code-fold: true
-#| output-location: fragment
+#| output-location: slide
+#| code-line-numbers: "1-5|6-9|11"
 DataWage=DataWageAllVar |> 
          clean_names("upper_camel") |> 
          select(Wage, SexFem=Female, Educ,Exp=Exper,Ten=Tenure,      
@@ -211,10 +240,19 @@ The pair-wise correlation between so many variables in the plots of the *EDA Rep
 
 ```{r}
 #| output-location: slide
+#| code-line-numbers: "1|2|3"
 library(corrplot)
 CorMatrix=cor(DataWage)
 corrplot(CorMatrix)
 ```
+
+## Step 3: First 6 Observasions of Damaged Dataset
+
+```{r}
+#| code-fold: true
+head(DataWage)
+```
+
 
 ## Step 3: Data Engineering
 ### Impute Educ with Mean
@@ -233,6 +271,7 @@ head(RecipeWageSex |> prep() |> juice())
 ## Step 3: Data Engineering
 ### Impute Exp with Median
 ```{r}
+#| code-line-numbers: "3"
 RecipeWageSex=recipe(DataWage, Wage~.) |> 
               step_impute_mean(Educ) |>
               step_impute_median(Exp)
@@ -249,6 +288,7 @@ head(RecipeWageSex |> prep() |> juice())
 ## Step 3: Data Engineering
 ### Impute NonWhite with Mode
 ```{r}
+#| code-line-numbers: "4-6"
 RecipeWageSex=recipe(DataWage, Wage~.) |> 
               step_impute_mean(Educ) |>
               step_impute_median(Exp) |> 
@@ -267,6 +307,7 @@ head(RecipeWageSex |> prep() |> juice())
 ## Step 3: Data Engineering
 ### Impute SexFem with k=Nearest Neighbors (k=1)
 ```{r}
+#| code-line-numbers: "7"
 RecipeWageSex=recipe(DataWage, Wage~.) |> 
               step_impute_mean(Educ)|>
               step_impute_median(Exp) |> 
@@ -288,6 +329,7 @@ head(RecipeWageSex |> prep() |> juice())
 ### Remove Observation with missing wage.
 
 ```{r}
+#| code-line-numbers: "8"
 RecipeWageSex=recipe(DataWage, Wage~.) |> 
               step_impute_mean(Educ)|>
               step_impute_median(Exp) |>   
@@ -309,6 +351,7 @@ head(RecipeWageSex |> prep() |> juice())
 ### Data engineer a new variable
 
 ```{r}
+#| code-line-numbers: "9"
 RecipeWageSex=recipe(DataWage, Wage~.) |> 
               step_impute_mean(Educ)|>
               step_impute_median(Exp) |>   
@@ -344,6 +387,7 @@ corrplot(CorMatrix)
 
 ```{r}
 #| output-location: slide
+#| code-line-numbers: "1,2|4-7|9"
 RecipeWageSex=recipe(DataWageClean, 
                      Wage~SexFem+Educ+Ten+MarTrue+MsaTrue+SnglPar+NonWhite)
 
