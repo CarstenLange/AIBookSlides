@@ -400,237 +400,480 @@
 <section class="slide level2">
 
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(kableExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
 <ul>
-<li class="fragment"><p>How to extend univariate regression to multivaiate</p></li>
-<li class="fragment"><p>Motivation for multivariate regression</p>
+<li><p>How to extend univariate regression to multivariate regression in <em>R</em></p></li>
+<li><p>Motivation for multivariate regression</p>
 <ul>
-<li class="fragment">Prediction of outcome (include all predictors you have data for)</li>
-<li class="fragment">Impact Analysis</li>
-<li class="fragment">Im pact of one predictor but controlled for other predictors</li>
+<li>Prediction of outcome (include all predictors you have data for)</li>
+<li>Impact Analysis</li>
+<li>Impact of one predictor but controlled for other predictors</li>
 </ul></li>
-<li class="fragment"><p>Extend univaraite Regresion to multi variate Regression</p></li>
-<li class="fragment"><p>Sampling</p></li>
-<li class="fragment"><p>Interpretation of standard error, t-value, and P-value to infer on prediction quality</p></li>
+<li><p>Extend univaraite Regresion to multi variate Regression</p></li>
+<li><p>Interpretation of standard error, t-value, and P-value to infer on prediction quality</p></li>
 </ul>
 </section>
 <section>
 <section id="sex-discrimination" class="title-slide slide level1 center">
 <h1>Sex Discrimination</h1>
-
-</section>
-<section id="the-data" class="slide level2">
-<h2>The Data</h2>
-<p>You need to install SmartEDA package first.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(wooldridge)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(rio)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>DataWageOrg<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
-<span id="cb1-6"><a href="#cb1-6"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) </span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># use ? wage1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="pick-possible-variables-candidates-for-analysis" class="slide level2">
-<h2>Pick Possible Variables Candidates for Analysis</h2>
-<div class="cell">
-
-</div>
-</section>
-<section id="univariate-analysis-and-r2" class="slide level2">
-<h2>Univariate Analysis and <span class="math inline">\(R^2\)</span></h2>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>ModelWageUnivar<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, DataWageAna)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">summary</span>(ModelWageUnivar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
+<span id="cb2-6"><a href="#cb2-6"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-7"><a href="#cb2-7"></a>         <span class="fu">select</span>(Wage, <span class="at">SexFem=</span>Female, Educ,<span class="at">Exp=</span>Exper,<span class="at">Ten=</span>Tenure,      </span>
+<span id="cb2-8"><a href="#cb2-8"></a>                   <span class="at">NonWhite=</span>Nonwhite,<span class="at">SexFem=</span>Female,                      </span>
+<span id="cb2-9"><a href="#cb2-9"></a>                   <span class="at">MarTrue=</span>Married, <span class="at">NumChild=</span>Numdep, <span class="at">MsaTrue=</span>Smsa,</span>
+<span id="cb2-10"><a href="#cb2-10"></a>                   )</span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-13"><a href="#cb2-13"></a>                  <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
+<span id="cb2-14"><a href="#cb2-14"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>SexFem)</span>
+<span id="cb2-15"><a href="#cb2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16"></a>WfModelWageSex<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb2-17"><a href="#cb2-17"></a>               <span class="fu">add_recipe</span>(RecipeWageSex) <span class="sc">|&gt;</span> </span>
+<span id="cb2-18"><a href="#cb2-18"></a>               <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb2-19"><a href="#cb2-19"></a>               <span class="fu">fit</span>(DataWage)</span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
+<span id="cb2-21"><a href="#cb2-21"></a>Result<span class="ot">=</span><span class="fu">tidy</span>(WfModelWageSex)</span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="fu">print</span>(Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem, data = DataWageAna)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.5995 -1.8495 -0.9877  1.4260 17.8805 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   7.0995     0.2100  33.806  &lt; 2e-16 ***
-SexFem       -2.5118     0.3034  -8.279 1.04e-15 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.476 on 524 degrees of freedom
-Multiple R-squared:  0.1157,    Adjusted R-squared:  0.114 
-F-statistic: 68.54 on 1 and 524 DF,  p-value: 1.042e-15</code></pre>
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic   p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)     7.10     0.210     33.8  8.97e-134
+2 SexFem         -2.51     0.303     -8.28 1.04e- 15</code></pre>
 </div>
 </div>
-<p><span class="math inline">\(R^2\)</span> is the part of the variance of the outcome variable that can be expalined by the regression.</p>
-</section></section>
-<section>
-<section id="visualisation-of-spread-of-wage" class="title-slide slide level1 center">
-<h1>Visualisation of Spread of Wage</h1>
-
-<img data-src="LinRegrMultVarIbm_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section id="exploratory-data-analysis-with-smarteda" class="slide level2">
-<h2>Exploratory Data Analysis with SmartEDA</h2>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(SmartEDA)</span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">ExpReport</span>(DataWageAna, <span class="at">op_file =</span> <span class="st">"EDAReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
+<p>For a women (when <span class="math inline">\(SexFem\)</span> switches from 0 to 1) the wage is predicted to decrease by $-2.5118303</p>
+<p><strong>But what if other factors like education, tenure, experience etc. also influence</strong> <span class="math inline">\(Wage\)</span>?</p>
+<p><strong>Can we trust a univariate regression with only <span class="math inline">\(SexFem\)</span> ???</strong></p>
 </section>
-<section id="exploratory-data-analysis-with-cor" class="slide level2">
-<h2>Exploratory Data Analysis with cor</h2>
+<section id="switching-from-a-univariate-to-a-multivariate-regression-with-r" class="slide level2">
+<h2>Switching from a Univariate to a Multivariate Regression with R</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>CorMatrix <span class="ot">&lt;-</span><span class="fu">cor</span>(DataWageAna) <span class="co">#this will be useful later</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a>CorMatrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="exploratory-data-analysis-with-corplot" class="slide level2">
-<h2>Exploratory Data Analysis with CorPlot</h2>
-<p>install corrplot first</p>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">corrplot</span>(CorMatrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-</section>
-<section id="univariate-analysis-and-r2-1" class="slide level2">
-<h2>Univariate Analysis and <span class="math inline">\(R^2\)</span></h2>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>ModelWageUnivar<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, DataWageAna)</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">summary</span>(ModelWageUnivar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Ten<span class="sc">+</span>Exp)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>WfModelWageSex<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href="#cb4-4"></a>               <span class="fu">add_recipe</span>(RecipeWageSex) <span class="sc">|&gt;</span> </span>
+<span id="cb4-5"><a href="#cb4-5"></a>               <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6"></a>               <span class="fu">fit</span>(DataWage)</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a>Result<span class="ot">=</span><span class="fu">tidy</span>(WfModelWageSex)</span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="fu">print</span>(Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem, data = DataWageAna)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.5995 -1.8495 -0.9877  1.4260 17.8805 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   7.0995     0.2100  33.806  &lt; 2e-16 ***
-SexFem       -2.5118     0.3034  -8.279 1.04e-15 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.476 on 524 degrees of freedom
-Multiple R-squared:  0.1157,    Adjusted R-squared:  0.114 
-F-statistic: 68.54 on 1 and 524 DF,  p-value: 1.042e-15</code></pre>
+<pre><code># A tibble: 4 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)   6.32      0.278      22.8  3.72e-80
+2 SexFem       -2.06      0.296      -6.97 9.72e-12
+3 Ten           0.164     0.0236      6.96 1.05e-11
+4 Exp          -0.0161    0.0123     -1.30 1.93e- 1</code></pre>
 </div>
 </div>
 </section>
-<section id="multivariate-analysis-with-sexfem-and-tenure" class="slide level2">
-<h2>Multivariate Analysis with SexFem and Tenure</h2>
+<section id="which-independent-variables-should-we-choose" class="slide level2">
+<h2>Which Independent Variables Should we Choose?</h2>
+<p><strong>Choosing as many as possible is a bad idea!!!</strong></p>
+<p>Note, I took at <span class="math inline">\(LWage\)</span> (log wage) out. Otherwise, I would have regressed wage on ln(wage).</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>ModelWageUnivar<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, DataWageAna)</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">summary</span>(ModelWageUnivar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>DataWageAllVar<span class="ot">=</span>wage1 <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>               <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-3"><a href="#cb6-3"></a>               <span class="fu">select</span>(<span class="sc">-</span>Lwage)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>               </span>
+<span id="cb6-5"><a href="#cb6-5"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWageAllVar, Wage<span class="sc">~</span>.)</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a>WfModelWageSex<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-8"><a href="#cb6-8"></a>               <span class="fu">add_recipe</span>(RecipeWageSex) <span class="sc">|&gt;</span> </span>
+<span id="cb6-9"><a href="#cb6-9"></a>               <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb6-10"><a href="#cb6-10"></a>               <span class="fu">fit</span>(DataWageAllVar)</span>
+<span id="cb6-11"><a href="#cb6-11"></a></span>
+<span id="cb6-12"><a href="#cb6-12"></a>Result<span class="ot">=</span><span class="fu">tidy</span>(WfModelWageSex)</span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="fu">print</span>(Result, <span class="at">n=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem, data = DataWageAna)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.5995 -1.8495 -0.9877  1.4260 17.8805 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   7.0995     0.2100  33.806  &lt; 2e-16 ***
-SexFem       -2.5118     0.3034  -8.279 1.04e-15 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.476 on 524 degrees of freedom
-Multiple R-squared:  0.1157,    Adjusted R-squared:  0.114 
-F-statistic: 68.54 on 1 and 524 DF,  p-value: 1.042e-15</code></pre>
+<pre><code># A tibble: 23 × 5
+   term        estimate std.error statistic       p.value
+   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;         &lt;dbl&gt;
+ 1 (Intercept)  0.803    0.859       0.935  0.350        
+ 2 Educ         0.326    0.0576      5.67   0.0000000246 
+ 3 Exper        0.165    0.0375      4.40   0.0000130    
+ 4 Tenure       0.157    0.0472      3.32   0.000956     
+ 5 Nonwhite    -0.0847   0.399      -0.212  0.832        
+ 6 Female      -1.63     0.274      -5.95   0.00000000503
+ 7 Married      0.100    0.284       0.354  0.724        
+ 8 Numdep      -0.00224  0.105      -0.0214 0.983        
+ 9 Smsa         0.709    0.283       2.51   0.0124       
+10 Northcen    -0.567    0.344      -1.65   0.0998       
+11 South       -0.448    0.330      -1.36   0.175        
+12 West         0.438    0.383       1.15   0.253        
+13 Construc    -0.505    0.637      -0.793  0.428        
+14 Ndurman     -0.807    0.473      -1.71   0.0884       
+15 Trcommpu    -1.04     0.660      -1.57   0.116        
+16 Trade       -2.03     0.397      -5.11   0.000000459  
+17 Services    -1.76     0.504      -3.50   0.000515     
+18 Profserv    -0.933    0.436      -2.14   0.0327       
+19 Profocc      1.89     0.358       5.28   0.000000188  
+20 Clerocc      0.335    0.422       0.794  0.428        
+21 Servocc      0.00430  0.423       0.0102 0.992        
+22 Expersq     -0.00343  0.000799   -4.30   0.0000207    
+23 Tenursq     -0.00171  0.00161    -1.06   0.288        </code></pre>
 </div>
 </div>
 </section>
-<section id="multivariate-analysis-with-sexfem-and-experience" class="slide level2">
-<h2>Multivariate Analysis with SexFem and Experience</h2>
+<section id="which-independent-variables-should-we-choose-1" class="slide level2">
+<h2>Which Independent Variables Should we Choose?</h2>
+<p><strong>If choosing all variables is a bad idea, we need a procedure to choose!</strong></p>
+<p><strong>Plan and think before you run a regression</strong></p>
+</section>
+<section id="step-1-use-domain-knowledge-beliefs" class="slide level2">
+<h2>Step 1: Use Domain Knowledge (beliefs)</h2>
+<p><em>Directed Acylical Graphs (DAG’s)</em> can help to structure our beliefs.</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>ModelWageUnivar<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, DataWageAna)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">summary</span>(ModelWageUnivar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem, data = DataWageAna)
 
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.5995 -1.8495 -0.9877  1.4260 17.8805 
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">dagify</span>(Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Educ<span class="sc">+</span>Exp<span class="sc">+</span>SnglPar,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>       Educ<span class="sc">~</span>ParEdu,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>       <span class="at">outcome =</span> <span class="st">"Wage"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>       <span class="at">exposure =</span> <span class="st">"SexFem"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>       <span class="at">coords =</span> DagCoord</span>
+<span id="cb8-7"><a href="#cb8-7"></a>      ) <span class="sc">|&gt;</span> </span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="fu">ggdag</span>(<span class="at">node_size =</span> <span class="dv">22</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   7.0995     0.2100  33.806  &lt; 2e-16 ***
-SexFem       -2.5118     0.3034  -8.279 1.04e-15 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.476 on 524 degrees of freedom
-Multiple R-squared:  0.1157,    Adjusted R-squared:  0.114 
-F-statistic: 68.54 on 1 and 524 DF,  p-value: 1.042e-15</code></pre>
+</section>
+<section id="step-1-use-domain-knowledge-beliefs-output" class="slide level2 output-location-slide"><h2>Step 1: Use Domain Knowledge (beliefs)</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<p><img data-src="LinRegrMultVarIbm_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</div>
+</div></section><section id="step-1-use-domain-knowledge-beliefs-1" class="slide level2">
+<h2>Step 1: Use Domain Knowledge (beliefs)</h2>
+<div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="LinRegrMultVarIbm_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="LinRegrMultVarIbm_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<p><img data-src="LinRegrMultVarIbm_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</div>
+</div>
 </div>
 </div>
 </section>
-<section id="multivariate-analysis-with-sexfem-tenure-and-experience" class="slide level2">
-<h2>Multivariate Analysis with SexFem, Tenure and Experience</h2>
+<section id="after-step-1-use-domain-knowledge-beliefs" class="slide level2">
+<h2>After Step 1: Use Domain Knowledge (beliefs)</h2>
+<p><strong>Based on the DAG decide which variables are candidates and include only the candidates in your analytics data frame (here,</strong> <span class="math inline">\(DataWage\)</span>). I have done this already:</p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>ModelWageUnivar<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, DataWageAna)</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">summary</span>(ModelWageUnivar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>DataWage<span class="ot">=</span>DataWageAllVar <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3"></a>         <span class="fu">select</span>(Wage, <span class="at">SexFem=</span>Female, Educ,<span class="at">Exp=</span>Exper,<span class="at">Ten=</span>Tenure,      </span>
+<span id="cb9-4"><a href="#cb9-4"></a>                   <span class="at">NonWhite=</span>Nonwhite,<span class="at">SexFem=</span>Female,                    </span>
+<span id="cb9-5"><a href="#cb9-5"></a>                   <span class="at">MarTrue=</span>Married, <span class="at">NumChild=</span>Numdep, <span class="at">MsaTrue=</span>Smsa)</span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co"># Sabotaging the Dataset for Educational Purpose</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>DataWage[<span class="dv">1</span>,<span class="dv">3</span>]<span class="ot">=</span><span class="cn">NA</span>; DataWage[<span class="dv">2</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">4</span>]<span class="ot">=</span><span class="cn">NA</span>; </span>
+<span id="cb9-8"><a href="#cb9-8"></a> DataWage[<span class="dv">4</span>,<span class="dv">6</span>]<span class="ot">=</span><span class="cn">NA</span>; DataWage[<span class="dv">5</span>,<span class="dv">2</span>]<span class="ot">=</span><span class="cn">NA</span>;</span>
+<span id="cb9-9"><a href="#cb9-9"></a> DataWage[<span class="dv">6</span>,<span class="dv">1</span>]<span class="ot">=</span><span class="cn">NA</span>;</span>
+<span id="cb9-10"><a href="#cb9-10"></a></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="fu">head</span>(DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem, data = DataWageAna)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.5995 -1.8495 -0.9877  1.4260 17.8805 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   7.0995     0.2100  33.806  &lt; 2e-16 ***
-SexFem       -2.5118     0.3034  -8.279 1.04e-15 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.476 on 524 degrees of freedom
-Multiple R-squared:  0.1157,    Adjusted R-squared:  0.114 
-F-statistic: 68.54 on 1 and 524 DF,  p-value: 1.042e-15</code></pre>
 </div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  Wage SexFem Educ Exp Ten NonWhite MarTrue NumChild MsaTrue
+1 3.10      1   NA   2   0        0       0        2       1
+2 3.24      1   12  NA   2        0       1        3       1
+3 3.00      0   11  NA   0        0       0        2       0
+4 6.00      0    8  44  28       NA       1        0       1
+5 5.30     NA   12   7   2        0       1        1       0
+6   NA      0   16   9   8        0       1        0       1</code></pre>
+</div>
+</div>
+</section>
+<section id="step-2-exploratory-data-analysis-with-smarteda" class="slide level2">
+<h2>Step 2: Exploratory Data Analysis with SmartEDA</h2>
+<p>You need to install the <code>SmartEDA</code> package first.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(SmartEDA)</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">ExpReport</span>(DataWage, <span class="at">op_file =</span> <span class="st">"EDAReport"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><a href="EDAReport.html">EDAReport.html</a></p>
+</section>
+<section id="step-2-exploratory-data-analysis-with-cor" class="slide level2">
+<h2>Step 2: Exploratory Data Analysis with cor</h2>
+<p>The pair-wise correlation between so many variables in the plots of the <em>EDA Report</em> was difficult to see. A Correlation Matrix shows correlation in a more compact way (NA observations are a problem):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb12-2"><a href="#cb12-2"></a>CorMatrix<span class="ot">=</span><span class="fu">cor</span>(DataWage)</span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="fu">corrplot</span>(CorMatrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</section>
+<section id="step-2-exploratory-data-analysis-with-cor-output" class="slide level2 output-location-slide"><h2>Step 2: Exploratory Data Analysis with cor</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<p><img data-src="LinRegrMultVarIbm_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</div>
+</div></section><section id="step-3-data-engineering" class="slide level2">
+<h2>Step 3: Data Engineering</h2>
+<h3 id="impute-educ-with-mean">Impute Educ with Mean</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>.) <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2"></a>              <span class="fu">step_impute_mean</span>(Educ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  SexFem  Educ   Exp   Ten NonWhite MarTrue NumChild MsaTrue  Wage
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;
+1      1    13     2     0        0       0        2       1  3.10
+2      1    12    NA     2        0       1        3       1  3.24
+3      0    11    NA     0        0       0        2       0  3   
+4      0     8    44    28       NA       1        0       1  6   
+5     NA    12     7     2        0       1        1       0  5.30
+6      0    16     9     8        0       1        0       1 NA   </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-data-engineering-1" class="slide level2">
+<h2>Step 3: Data Engineering</h2>
+<h3 id="impute-exp-with-median">Impute Exp with Median</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>.) <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2"></a>              <span class="fu">step_impute_mean</span>(Educ) <span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>              <span class="fu">step_impute_median</span>(Exp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  SexFem  Educ   Exp   Ten NonWhite MarTrue NumChild MsaTrue  Wage
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;
+1      1    13     2     0        0       0        2       1  3.10
+2      1    12    14     2        0       1        3       1  3.24
+3      0    11    14     0        0       0        2       0  3   
+4      0     8    44    28       NA       1        0       1  6   
+5     NA    12     7     2        0       1        1       0  5.30
+6      0    16     9     8        0       1        0       1 NA   </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-data-engineering-2" class="slide level2">
+<h2>Step 3: Data Engineering</h2>
+<h3 id="impute-nonwhite-with-mode">Impute NonWhite with Mode</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>.) <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2"></a>              <span class="fu">step_impute_mean</span>(Educ) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>              <span class="fu">step_impute_median</span>(Exp) <span class="sc">|&gt;</span> </span>
+<span id="cb17-4"><a href="#cb17-4"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.character</span>(NonWhite)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-5"><a href="#cb17-5"></a>              <span class="fu">step_impute_mode</span>(NonWhite) <span class="sc">|&gt;</span> </span>
+<span id="cb17-6"><a href="#cb17-6"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.numeric</span>(NonWhite))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  SexFem  Educ   Exp   Ten NonWhite MarTrue NumChild MsaTrue  Wage
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;
+1      1    13     2     0        0       0        2       1  3.10
+2      1    12    14     2        0       1        3       1  3.24
+3      0    11    14     0        0       0        2       0  3   
+4      0     8    44    28        0       1        0       1  6   
+5     NA    12     7     2        0       1        1       0  5.30
+6      0    16     9     8        0       1        0       1 NA   </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-data-engineering-3" class="slide level2">
+<h2>Step 3: Data Engineering</h2>
+<h3 id="impute-sexfem-with-knearest-neighbors-k1">Impute SexFem with k=Nearest Neighbors (k=1)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>.) <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2"></a>              <span class="fu">step_impute_mean</span>(Educ)<span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>              <span class="fu">step_impute_median</span>(Exp) <span class="sc">|&gt;</span> </span>
+<span id="cb19-4"><a href="#cb19-4"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.character</span>(NonWhite)) <span class="sc">|&gt;</span> </span>
+<span id="cb19-5"><a href="#cb19-5"></a>              <span class="fu">step_impute_mode</span>(NonWhite) <span class="sc">|&gt;</span> </span>
+<span id="cb19-6"><a href="#cb19-6"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.numeric</span>(NonWhite)) <span class="sc">|&gt;</span> </span>
+<span id="cb19-7"><a href="#cb19-7"></a>              <span class="fu">step_impute_knn</span>(SexFem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  SexFem  Educ   Exp   Ten NonWhite MarTrue NumChild MsaTrue  Wage
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;
+1      1    13     2     0        0       0        2       1  3.10
+2      1    12    14     2        0       1        3       1  3.24
+3      0    11    14     0        0       0        2       0  3   
+4      0     8    44    28        0       1        0       1  6   
+5      1    12     7     2        0       1        1       0  5.30
+6      0    16     9     8        0       1        0       1 NA   </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-data-engineering-4" class="slide level2">
+<h2>Step 3: Data Engineering</h2>
+<h3 id="remove-observation-with-missing-wage.">Remove Observation with missing wage.</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>.) <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2"></a>              <span class="fu">step_impute_mean</span>(Educ)<span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>              <span class="fu">step_impute_median</span>(Exp) <span class="sc">|&gt;</span>   </span>
+<span id="cb21-4"><a href="#cb21-4"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.character</span>(NonWhite)) <span class="sc">|&gt;</span> </span>
+<span id="cb21-5"><a href="#cb21-5"></a>              <span class="fu">step_impute_mode</span>(NonWhite) <span class="sc">|&gt;</span> </span>
+<span id="cb21-6"><a href="#cb21-6"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.numeric</span>(NonWhite)) <span class="sc">|&gt;</span> </span>
+<span id="cb21-7"><a href="#cb21-7"></a>              <span class="fu">step_impute_knn</span>(SexFem) <span class="sc">|&gt;</span> </span>
+<span id="cb21-8"><a href="#cb21-8"></a>              <span class="fu">step_naomit</span>(<span class="fu">everything</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 9
+  SexFem  Educ   Exp   Ten NonWhite MarTrue NumChild MsaTrue  Wage
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;
+1      1    13     2     0        0       0        2       1  3.10
+2      1    12    14     2        0       1        3       1  3.24
+3      0    11    14     0        0       0        2       0  3   
+4      0     8    44    28        0       1        0       1  6   
+5      1    12     7     2        0       1        1       0  5.30
+6      0    18    15     7        0       0        0       1 11.2 </code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="step-3-data-engineering-5" class="slide level2">
+<h2>Step 3: Data Engineering</h2>
+<h3 id="data-engineer-a-new-variable">Data engineer a new variable</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>.) <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2"></a>              <span class="fu">step_impute_mean</span>(Educ)<span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>              <span class="fu">step_impute_median</span>(Exp) <span class="sc">|&gt;</span>   </span>
+<span id="cb23-4"><a href="#cb23-4"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.character</span>(NonWhite)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-5"><a href="#cb23-5"></a>              <span class="fu">step_impute_mode</span>(NonWhite) <span class="sc">|&gt;</span> </span>
+<span id="cb23-6"><a href="#cb23-6"></a>              <span class="fu">step_mutate</span>(<span class="at">NonWhite=</span><span class="fu">as.numeric</span>(NonWhite)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-7"><a href="#cb23-7"></a>              <span class="fu">step_impute_knn</span>(SexFem) <span class="sc">|&gt;</span> </span>
+<span id="cb23-8"><a href="#cb23-8"></a>              <span class="fu">step_naomit</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb23-9"><a href="#cb23-9"></a>              <span class="fu">step_mutate</span>(<span class="at">SnglPar=</span><span class="fu">ifelse</span>(MarTrue<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> NumChild<span class="sc">&gt;</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+  SexFem  Educ   Exp   Ten NonWhite MarTrue NumChild MsaTrue  Wage SnglPar
+   &lt;int&gt; &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;dbl&gt;   &lt;int&gt;    &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt;
+1      1    13     2     0        0       0        2       1  3.10       1
+2      1    12    14     2        0       1        3       1  3.24       0
+3      0    11    14     0        0       0        2       0  3          1
+4      0     8    44    28        0       1        0       1  6          0
+5      1    12     7     2        0       1        1       0  5.30       0
+6      0    18    15     7        0       0        0       1 11.2        0</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="again-step-2-exploratory-data-analysis-with-cor" class="slide level2">
+<h2>AGAIN Step 2: Exploratory Data Analysis with cor</h2>
+<p>The pair-wise correlation between so many variables in the plots of the <em>EDA Report</em> was difficult to see. A Correlation Matrix shows correlation in a more compact way (NA observations is resolved in the recipe):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb25-2"><a href="#cb25-2"></a>CorMatrix<span class="ot">=</span><span class="fu">cor</span>(DataWageClean)</span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="fu">corrplot</span>(CorMatrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+</section>
+<section id="again-step-2-exploratory-data-analysis-with-cor-output" class="slide level2 output-location-slide"><h2>AGAIN Step 2: Exploratory Data Analysis with cor</h2><div class="cell output-location-slide">
+<div class="cell-output-display">
+<p><img data-src="LinRegrMultVarIbm_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
+</div>
+</div></section><section id="step-4-select-resonable-predictors-and-try-regression" class="slide level2">
+<h2>Step 4: Select Resonable Predictors and Try Regression</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWageClean, </span>
+<span id="cb26-2"><a href="#cb26-2"></a>                     Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Educ<span class="sc">+</span>Ten<span class="sc">+</span>MarTrue<span class="sc">+</span>MsaTrue<span class="sc">+</span>SnglPar<span class="sc">+</span>NonWhite)</span>
+<span id="cb26-3"><a href="#cb26-3"></a></span>
+<span id="cb26-4"><a href="#cb26-4"></a>WfModelWageSex<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb26-5"><a href="#cb26-5"></a>               <span class="fu">add_recipe</span>(RecipeWageSex) <span class="sc">|&gt;</span> </span>
+<span id="cb26-6"><a href="#cb26-6"></a>               <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb26-7"><a href="#cb26-7"></a>               <span class="fu">fit</span>(DataWageClean)</span>
+<span id="cb26-8"><a href="#cb26-8"></a></span>
+<span id="cb26-9"><a href="#cb26-9"></a><span class="fu">tidy</span>(WfModelWageSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)  -1.04      0.721     -1.44  1.51e- 1
+2 SexFem       -1.69      0.267     -6.30  6.22e-10
+3 Educ          0.485     0.0490     9.90  2.75e-21
+4 Ten           0.149     0.0187     7.94  1.23e-14
+5 MarTrue       0.598     0.319      1.88  6.13e- 2
+6 MsaTrue       0.853     0.297      2.88  4.18e- 3
+7 SnglPar      -0.531     0.435     -1.22  2.22e- 1
+8 NonWhite     -0.0525    0.424     -0.124 9.02e- 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">glance</span>(WfModelWageSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 12
+  r.squared adj.r.squared sigma statistic  p.value    df logLik   AIC   BIC
+      &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1     0.377         0.369  2.94      44.7 2.21e-49     7 -1306. 2631. 2669.
+# ℹ 3 more variables: deviance &lt;dbl&gt;, df.residual &lt;int&gt;, nobs &lt;int&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="step-4-select-resonable-predictors-and-try-regression-1" class="slide level2 smaller">
+<h2>Step 4: Select Resonable Predictors and Try Regression</h2>
+<h3 id="try-it-yourself-copy-the-code">Try it yourself, copy the code</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb30-2"><a href="#cb30-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb30-5"><a href="#cb30-5"></a></span>
+<span id="cb30-6"><a href="#cb30-6"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
+<span id="cb30-7"><a href="#cb30-7"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb30-8"><a href="#cb30-8"></a>         <span class="fu">select</span>(Wage, <span class="at">SexFem=</span>Female, Educ,<span class="at">Exp=</span>Exper,<span class="at">Ten=</span>Tenure,      </span>
+<span id="cb30-9"><a href="#cb30-9"></a>                <span class="at">NonWhite=</span>Nonwhite,<span class="at">SexFem=</span>Female,                   </span>
+<span id="cb30-10"><a href="#cb30-10"></a>                <span class="at">MarTrue=</span>Married, <span class="at">NumChild=</span>Numdep, <span class="at">MsaTrue=</span>Smsa) <span class="sc">|&gt;</span> </span>
+<span id="cb30-11"><a href="#cb30-11"></a>          <span class="fu">mutate</span>(<span class="at">SnglPar=</span><span class="fu">ifelse</span>(MarTrue<span class="sc">==</span><span class="dv">0</span> <span class="sc">&amp;</span> NumChild<span class="sc">&gt;</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb30-12"><a href="#cb30-12"></a></span>
+<span id="cb30-13"><a href="#cb30-13"></a>CorMatrix<span class="ot">=</span><span class="fu">cor</span>(DataWageClean)</span>
+<span id="cb30-14"><a href="#cb30-14"></a><span class="fu">corrplot</span>(CorMatrix)</span>
+<span id="cb30-15"><a href="#cb30-15"></a></span>
+<span id="cb30-16"><a href="#cb30-16"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb30-17"><a href="#cb30-17"></a>                  <span class="fu">set_engine</span>(<span class="st">"lm"</span>)</span>
+<span id="cb30-18"><a href="#cb30-18"></a></span>
+<span id="cb30-19"><a href="#cb30-19"></a>RecipeWageSex<span class="ot">=</span><span class="fu">recipe</span>(DataWage, Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Ten)</span>
+<span id="cb30-20"><a href="#cb30-20"></a>    </span>
+<span id="cb30-21"><a href="#cb30-21"></a>WfModelWageSex<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb30-22"><a href="#cb30-22"></a>               <span class="fu">add_recipe</span>(RecipeWageSex) <span class="sc">|&gt;</span> </span>
+<span id="cb30-23"><a href="#cb30-23"></a>               <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb30-24"><a href="#cb30-24"></a>               <span class="fu">fit</span>(DataWage)</span>
+<span id="cb30-25"><a href="#cb30-25"></a></span>
+<span id="cb30-26"><a href="#cb30-26"></a><span class="fu">tidy</span>(WfModelWageSex)</span>
+<span id="cb30-27"><a href="#cb30-27"></a><span class="fu">glance</span>(WfModelWageSex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
