@@ -173,19 +173,27 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 **t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error**
 
 
-## Coefficient of Determination - SST (sum of squares, total)
 
-[https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg](https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg)
+## Coefficient of Determination {.smaller}
+### Left: SST (sum of squares, total) --------- Right: SSE (sum of squares, errors)
 
-## Coefficient of Determination - SSE (sum of squares, errors)
-
-![Source: https://en.wikipedia.org/wiki/Coefficient_of_determination](CoefficientOfDetermination.png)
+![Source: [https://en.wikipedia.org/wiki/Coefficient_of_determination](https://en.wikipedia.org/wiki/Coefficient_of_determination)](CoefficientOfDetermination.png)
 
 ## Coefficient of Determination - Defition
 
 
-$$R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{\frac{SST-SSE}{N}}
-                                                   {\frac{SST}{N}}
-$$
+```{=tex}
+\begin{eqnarray*}
+R^2&=&1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{
+\overbrace{\frac{SST-SSE}{N-1}}^{\mbox {Expl. Variance}}
+}
+{
+\underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
+}\\
+&=&
+\frac{\mbox {Expl. Variance}}{\mbox {Variance}}
+\end{eqnarray*}
+```
+
 
 **$R^2$ is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)**
