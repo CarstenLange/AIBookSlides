@@ -182,18 +182,20 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 ## Coefficient of Determination - Defition
 
 
-```{=tex}
-\begin{eqnarray*}
-R^2&=&1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{
+$$
+R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{
 \overbrace{\frac{SST-SSE}{N-1}}^{\mbox {Expl. Variance}}
 }
 {
 \underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
-}\\
-&=&
+}
+$$
+
+. . .
+
+$$R^2=
 \frac{\mbox {Expl. Variance}}{\mbox {Variance}}
-\end{eqnarray*}
-```
+$$
 
 
-**$R^2$ is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)**
+**$R^2$ is the proportion of explained variance of the depended variable. $R^2$ takes values from 0 (worst) to 1 (best)**
