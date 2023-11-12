@@ -3,6 +3,7 @@ title: "Hypothesis Tests"
 subtitle: "Inference, Sigificance, Coefficient of Determination ($R^2$)"
 format: 
   revealjs:
+    multiplex: true
     code-fold: false
     scrollable: true
     echo: true
@@ -175,7 +176,7 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 
 
 ## Coefficient of Determination {.smaller}
-### Left: SST (sum of squares, total) --------- Right: SSE (sum of squares, errors)
+### Left: SST (sum of squares, total) --------- Right: SSR (sum of squares, residuals)
 
 ![Source: [https://en.wikipedia.org/wiki/Coefficient_of_determination](https://en.wikipedia.org/wiki/Coefficient_of_determination)](CoefficientOfDetermination.png)
 
@@ -183,8 +184,8 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 
 
 $$
-R^2=1 - \frac{SSE}{SST}=\frac{SST-SSE}{SST}=\frac{
-\overbrace{\frac{SST-SSE}{N-1}}^{\mbox {Expl. Variance}}
+R^2=1 - \frac{SSR}{SST}=\frac{SST-SSR}{SST}=\frac{
+\overbrace{\frac{SST-SSR}{N-1}}^{\mbox {Expl. Variance}}
 }
 {
 \underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
