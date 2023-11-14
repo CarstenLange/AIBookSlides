@@ -2,21 +2,14 @@ library(wooldridge)
 library(ggdag)
 library(tidymodels)
 library(janitor)
-dagify(cardiacarrest ~ cholesterol,
-       cholesterol ~ smoking + weight,
-       smoking ~ unhealthy,
-       weight ~ unhealthy,
-       labels = c(
-         "cardiacarrest" = "Cardiac\n Arrest",
-         "smoking" = "Smoking",
-         "cholesterol" = "Cholesterol",
-         "unhealthy" = "Unhealthy\n Lifestyle",
-         "weight" = "Weight"
-       ),
-       latent = "unhealthy",
-       exposure = "smoking",
-       outcome = "cardiacarrest"
+DAGMine=dagify(Wage ~ Tenure + Educ + SexFem,
+       Educ~ParentEduc,
+       latent = "ParentEduc",
+       exposure = "SexFem",
+       outcome = "Wage"
 )
+
+ggdag(DAGMine)
 
 DataWageOrg=wage1 
          
@@ -38,6 +31,8 @@ smoking_ca_dag <- dagify(cardiacarrest ~ cholesterol,
                          exposure = "smoking",
                          outcome = "cardiacarrest"
 )
+
+ggdag(smoking_ca_dag)
 
 
 DataWage=DataWageOrg |>
