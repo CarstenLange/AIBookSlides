@@ -3,6 +3,7 @@ title: "Hypothesis Tests"
 subtitle: "Inference, Sigificance, Coefficient of Determination ($R^2$)"
 format: 
   revealjs:
+    multiplex: true
     code-fold: false
     scrollable: true
     echo: true
@@ -173,30 +174,29 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 **t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error**
 
 
-## Coefficient of Determination - SST (sum of squares, total)
 
-See the two diagrams on Wikipedia to see the difference of 
+## Coefficient of Determination {.smaller}
+### Left: SST (sum of squares, total) --------- Right: SSR (sum of squares, residuals)
 
-- the Sum of Squares total (SST)
-
-- Sum of Squared Errors from the Regression or Sum of Squared Residuals (SSR)
-
-[https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg](https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg)
-
+![Source: [https://en.wikipedia.org/wiki/Coefficient_of_determination](https://en.wikipedia.org/wiki/Coefficient_of_determination)](CoefficientOfDetermination.png)
 
 ## Coefficient of Determination - Defition
 
 
-$$R^2=1 - \frac{SSR}{SST}=\frac{
-\overbrace{SSR-SSE}^{\mbox{Expl. Sum of Squares}}
-}{SST}=\frac{
-\overbrace{\frac{SST-SSR}{N-1}}^{\mbox{Expl. Variance}}
+$$
+R^2=1 - \frac{SSR}{SST}=\frac{SST-SSR}{SST}=\frac{
+\overbrace{\frac{SST-SSR}{N-1}}^{\mbox {Expl. Variance}}
 }
 {
 \underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
 }
 $$
 
+. . .
+
+$$R^2=
+\frac{\mbox {Expl. Variance}}{\mbox {Variance}}
+$$
 
 
-**$R^2$ is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)**
+**$R^2$ is the proportion of explained variance of the depended variable. $R^2$ takes values from 0 (worst) to 1 (best)**

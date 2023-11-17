@@ -556,29 +556,29 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
 <p>Note, R uses the <span class="math inline">\(t-distribution\)</span> here, instead of the standard normal distribution, because the standard error was not known but estimated. For <span class="math inline">\(N&gt;100\)</span> the two distributions are almost exactly the same.</p>
 <p><strong>t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error</strong></p>
 </section>
-<section id="coefficient-of-determination---sst-sum-of-squares-total" class="slide level2">
-<h2>Coefficient of Determination - SST (sum of squares, total)</h2>
-<p>See the two diagrams on Wikipedia to see the difference of</p>
-<ul>
-<li><p>the Sum of Squares total (SST)</p></li>
-<li><p>Sum of Squared Errors from the Regression or Sum of Squared Residuals (SSR)</p></li>
-</ul>
-<p><a href="https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg">https://en.wikipedia.org/wiki/Coefficient_of_determination#/media/File:Coefficient_of_Determination.svg</a></p>
-</section>
+<section id="coefficient-of-determination" class="slide level2 smaller">
+<h2>Coefficient of Determination</h2>
+<h3 id="left-sst-sum-of-squares-total-right-ssr-sum-of-squares-residuals">Left: SST (sum of squares, total) ——— Right: SSR (sum of squares, residuals)</h3>
+
+<img data-src="CoefficientOfDetermination.png" class="r-stretch quarto-figure-center"><p class="caption">Source: <a href="https://en.wikipedia.org/wiki/Coefficient_of_determination">https://en.wikipedia.org/wiki/Coefficient_of_determination</a></p></section>
 <section id="coefficient-of-determination---defition" class="slide level2">
 <h2>Coefficient of Determination - Defition</h2>
-<p><span class="math display">\[R^2=1 - \frac{SSR}{SST}=\frac{
-\overbrace{SSR-SSE}^{\mbox{Expl. Sum of Squares}}
-}{SST}=\frac{
-\overbrace{\frac{SST-SSR}{N-1}}^{\mbox{Expl. Variance}}
+<p><span class="math display">\[
+R^2=1 - \frac{SSR}{SST}=\frac{SST-SSR}{SST}=\frac{
+\overbrace{\frac{SST-SSR}{N-1}}^{\mbox {Expl. Variance}}
 }
 {
 \underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
 }
 \]</span></p>
-<p><strong><span class="math inline">\(R^2\)</span> is the proportion of explained variance of the depended variable. I takes values from 0 (worst) to 1 (best)</strong></p>
+<div class="fragment">
+<p><span class="math display">\[R^2=
+\frac{\mbox {Expl. Variance}}{\mbox {Variance}}
+\]</span></p>
+<p><strong><span class="math inline">\(R^2\)</span> is the proportion of explained variance of the depended variable. <span class="math inline">\(R^2\)</span> takes values from 0 (worst) to 1 (best)</strong></p>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
+</div>
 </div>
 </section>
     </div>
@@ -592,6 +592,8 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
   <script src="HypTestsIBM_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="HypTestsIBM_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
   <script src="HypTestsIBM_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="HypTestsIBM_files/libs/revealjs/plugin/multiplex/socket.io.js"></script>
+  <script src="HypTestsIBM_files/libs/revealjs/plugin/multiplex/multiplex.js"></script>
   <script src="HypTestsIBM_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -615,6 +617,7 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
+'multiplex': {"secret":null,"id":"3d13bdc33e1e8fe3","url":"https://reveal-multiplex.glitch.me/"},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -788,7 +791,7 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
-          RevealNotes,
+          
           RevealSearch,
           RevealZoom
         ]
