@@ -1,6 +1,6 @@
 ---
-title: "Hypothesis Tests"
-subtitle: "Inference, Sigificance, Coefficient of Determination ($R^2$)"
+title: "Gauss Markow"
+subtitle: "Linearity, no perfect multicollinearity, strict exogeneity, no heteroscedacisity, noautocorrelation"
 format: 
   revealjs:
     multiplex: true
@@ -11,192 +11,305 @@ format:
     smaller: false
 ---
 
-
-
 ## What Will You Learn {.scrollable .smaller}
 
+-   What are the Gauss Markov assumptions?
+
+-   What means *BLUE* (**B**est **L**inear **U**nbiased Model)?
+
+-   How to test if Gauss Markov assumptions are violated?
+
+-   What are the consequences if Gauss Markov assumptions are violated?
+
+-   Remedies to use when Gauss Markov assumptions are violated?
+
+## Gauss Markow Assumptions
+
+-   Linearity
+
+-   No perfect Multicollinearity,
+
+-   Strict Exogeneity (errors are not correlated with any predictor variable's values)
+
+-   no heteroscedacisity
+
+-   no autocorrelation (errors are not correlated with their pressors; applies only when observations have a "natural order")
+
+## wage2 Data from Wooldridge --- Data Enginering
+
 ```{r}
-#| echo: false
+#| output-location: fragment
+#| code-line-numbers: "1-3|4-8|10"
 library(tidymodels)
-library(rio)
-library(kableExtra)
 library(janitor)
+library(wooldridge)
+DataWage=wage2 |> 
+         clean_names("upper_camel") |> 
+         select(Wage,LogWage=Lwage, Educ, Tenure, RaceBl=Black, Feduc, Meduc) |> 
+         mutate(ParEdu=pmax(Feduc,Meduc)) |> 
+         drop_na(ParEdu) 
+
+cat("Mean monthly wage:",mean(DataWage$Wage))
 ```
-
-
-- What are **Statistics** (e.g., coefficients of a regresion)?
-- Why can **Statistics change** (sampling distribution)?
-- How to measure the spread of the change of statistics with the **Standard Error**
-- **Standard Deviation vs Standard Error**.
-- *Significance (*P-value*) of a $\beta$ coefficient.
--  Coefficient of Determination ($R^2$)
-
-## What are **Statistics**?
-
-**Statistics  are numerical values calculated from a sample.**
-
-Examples include: mean, standard deviation, or the coefficients from a regression.
-
-## The Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression.
-
-```{=tex}
-\begin{equation} 
-\beta_{1,opt}= \frac
-{{100} \sum_{i=1}^{100} y_i x_i- \sum_{i=1}^{100} y_i \sum_{i=1}^{100} x_i} 
-{{100} \sum_{i=1}^{100} x_i^2 - \left (\sum_{i=1}^{100} x_i \right )^2}
-\end{equation}
-```
-
-$\beta_1$ is clearly a **Statistic**!
-
-## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(123) {.smaller}
-
-```{r}
-#| code-fold: true
-library(rio);library(janitor);library(tidymodels)
-library(rio)
-library(janitor)
-library(tidymodels)
-DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
-              clean_names("upper_camel") |> 
-              select(Height=Heightin, Weight=Weightlbs, Gender)
-set.seed(123)
-
-DataTrain=sample_n(DataSoldiersM,100)
-
-RecipeWeightHeight=recipe(DataTrain, Weight~Height) 
-
-ModelDesignLinear=linear_reg() |> 
-                  set_engine("lm") |> 
-                  set_mode("regression")
-
-
-
-WFModelWeightHeight= workflow() |> 
-                     add_recipe(RecipeWeightHeight) |> 
-                     add_model(ModelDesignLinear) |> 
-                     fit(DataTrain)
-
-Results=tidy(WFModelWeightHeight)
-print(Results)
-```
-
-$$Weight=\beta_1 Height +\beta_2$$
-
-$$\beta_1=`r Results[[2,2]]`$$
-$$std.error=`r Results[[2,3]]`$$ 
-
-$SE_{\beta_1}$ measures the spread of the coefficient $\beta_1$.
-
-How can $\beta_1$ have spread, as we have only one sample???
-
-## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(321) {.smaller}
-
-```{r}
-#| code-fold: true
-library(rio);library(janitor);library(tidymodels)
-library(rio)
-library(janitor)
-library(tidymodels)
-DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
-              clean_names("upper_camel") |> 
-              select(Height=Heightin, Weight=Weightlbs, Gender)
-set.seed(321)
-
-DataTrain=sample_n(DataSoldiersM,100)
-
-RecipeWeightHeight=recipe(DataTrain, Weight~Height) 
-
-ModelDesignLinear=linear_reg() |> 
-                  set_engine("lm") |> 
-                  set_mode("regression")
-
-
-
-WFModelWeightHeight= workflow() |> 
-                     add_recipe(RecipeWeightHeight) |> 
-                     add_model(ModelDesignLinear) |> 
-                     fit(DataTrain)
-
-Results=tidy(WFModelWeightHeight)
-print(Results)
-```
-
-$$Weight=\beta_1 Height +\beta_2$$
-
-$$\beta_1=`r Results[[2,2]]`$$
-$$std.error=`r Results[[2,3]]`$$ 
-
-$SE_{\beta_1}$ measures the spread of $\beta_1$. 
-
-
-## Finding the Standard Error with Repeated Sampling
-### In reality this is not possible because we have only on sample!
-
-Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R)
-
-## How Can R Estimate the SE for $\beta_1$ Based on only One Sample?{.smaller}
-
-The estimated *Standard Error* for $\beta_1$ is related to the *MSE* of the regression and the *Variance* of the *dependend variable* $(Y)$. The formula for a uni-variate regression is:
-
-$$
-SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-2}{N-1}}}_{\approx 1}
-$$
-
-- with: $MSE=\sum_{i=1}^N (\widehat Y_i -Y_i)^2$
-
-- with: $VAR_X= \sum_{i=1}^N (X-\bar X)^2$ 
-
-- with (in our case): $Y=Weight$
-
-- with (in our case): $X=Height$
-
-- with (in our case): $N=100$
-
-The greater $N$ (the sample size)  the smaller is $SE$ (try N=400 instead og N=100) in the simulation and the $SE$ will be cut in half.
-
-## Normal Distribution of $\beta_1$
-
-- If we can estimate $SE_{\beta_1}$.
-- If  we assume the mean is $\beta_1$.
-- If we assume $\beta_1$ is normal distributed.
-
-We can approximate the $\beta_1$ with a normal curve and calculate areas under the curve.
-
-Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution)
-
-```{r}
-print(Results)
-```
-
-Note, R uses the $t-distribution$ here, instead of the standard normal distribution, because the standard error was not known but estimated.  For $N>100$ the two distributions are almost exactly the same.
-
-**t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error**
-
-
-
-## Coefficient of Determination {.smaller}
-### Left: SST (sum of squares, total) --------- Right: SSR (sum of squares, residuals)
-
-![Source: [https://en.wikipedia.org/wiki/Coefficient_of_determination](https://en.wikipedia.org/wiki/Coefficient_of_determination)](CoefficientOfDetermination.png)
-
-## Coefficient of Determination - Defition
-
-
-$$
-R^2=1 - \frac{SSR}{SST}=\frac{SST-SSR}{SST}=\frac{
-\overbrace{\frac{SST-SSR}{N-1}}^{\mbox {Expl. Variance}}
-}
-{
-\underbrace{\frac{SST}{N-1}}_{\mbox{Variance}}
-}
-$$
 
 . . .
 
-$$R^2=
-\frac{\mbox {Expl. Variance}}{\mbox {Variance}}
+```{r}
+#| eval: false
+library(SmartEDA)
+ExpReport(DataWage, op_file = "EdaDataWage2")
+```
+
+[Click to open: EdaDataWage2.html](EdaDataWage2.html "Click")
+
+## Linearity
+
+**Not fulfilled:** Coefficients $(\beta s)$ are biased and inconsistent:"
+
+**Identify:** Visual inspection of regression and residuals.
+
+**Remedy:** Use logarithms or polynomials (such as squares) on data.
+
+## Linearity
+
+```{r}
+#| code-fold: true
+DataPlot=DataWage |> 
+         select(LogWage,Educ) |> 
+         group_by(Educ) |> 
+         mutate(CondMean=mean(LogWage))
+
+ggplot(DataPlot, aes(y=LogWage, x=Educ))+
+  geom_point(alpha=0.2)+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_point(aes(x=Educ, y=CondMean), color="red", size=7)+
+  scale_x_continuous(breaks = c(0:100))
+  
+```
+
+## Multi Collinearity (Overview) {.smaller}
+
+**Not fulfilled (perfect multicolinearity):** Coefficients $(\beta s)$ cannot be calculated"
+
+**Not fulfilled (strong multicolinearity):** 
+
+- Coefficients $(\beta s)$ are biased and inconsistent. 
+
+- However, predictions are not.
+
+- Coefficients $(\beta s)$ are sensitive to small changes in data.
+
+**Identify:** VIF between an independent variables $i$ regressed on all other variables should be less than $10$ (some authors use less than 5):
+
+$$VIF=\frac{1}{1-R^2_{i}}$$
+
+
+
+
+**Remedy:** 
+
+- Do nothing
+
+- Eliminate variable(s) that are correlated with others step wise (!)
+
+- Others
+
+## Multi Collinearity (Example) {.smaller}
+
+
+
+Assume we have two variables for education. $Edu$ measures the years of education, but $EducMod$ counts high school dropouts as 12 years and does not consider graduate studies and thus cuts off EducMod$ at 16 years.
+
+```{r}
+#| code-line-numbers: "1-8|9,10|12-14"
+#| output-location: slide
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+DataWage=wage2 |> 
+         clean_names("upper_camel") |> 
+         select(Wage,LogWage=Lwage, Educ, Tenure, RaceBl=Black, Feduc, Meduc) |> 
+         mutate(ParEdu=pmax(Feduc,Meduc)) |> 
+         drop_na(ParEdu) |> 
+         mutate(EducMod=ifelse(Educ<12, 12, Educ)) |> 
+         mutate(EducMod=ifelse(Educ>16, 16, EducMod))
+
+ggplot(DataWage, aes(x=Educ, y=EducMod))+
+      geom_point()+
+      geom_smooth(method = "lm", se=FALSE)
+```
+
+## Multi Collinearity (Regression Examples) {.smaller}
+
+```{r}
+#| code-line-numbers: "1|2|3|4"
+ModelWage0=lm(LogWage~Educ+Tenure+RaceBl, DataWage)
+set.seed(123)
+ModelWage1=lm(LogWage~Educ+EducMod+Tenure+RaceBl, DataWage |> sample_n(500))
+ModelWage2=lm(LogWage~Educ+EducMod+Tenure+RaceBl, DataWage |> sample_n(500))
+```
+
+::: {.fragment}
+```{r}
+summary(ModelWage0)
+```
+:::
+
+::: {.fragment}
+```{r}
+summary(ModelWage1)
+```
+:::
+
+::: {.fragment}
+```{r}
+summary(ModelWage2)
+```
+:::
+
+::: {.fragment}
+```{r}
+library(car)
+vif(ModelWage1)
+vif(ModelWage2)
+```
+:::
+
+::: {.fragment}
+```{r}
+ModelWage00=lm(LogWage~EducMod+Tenure+RaceBl, DataWage)
+summary(ModelWage00)
+```
+:::
+## Endogenity of Education
+
+```{r}
+#| output-location: slide
+library(ggdag)
+set.seed(123)
+dagify(Wage~Educ+Ability+RaceBl,
+       Educ~Ability,
+       Educ~ParEdu,
+       Educ~RaceBl) |> ggdag(node_size = 22)
+       
+```
+
+## Endogeneity (Correlation with the errors) --- Simple Model
+
+```{=tex}
+$$\widehat{Wage}= \beta_1 Educ + \beta_2 RaceBl +\beta3$$
+```
+
+
+## Endogeneity (Correlation with the errors) --- Simple Model
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "1|2"
+ModelWageEdu=lm(LogWage~RaceBl+Educ,DataWage)
+summary(ModelWageEdu)
+```
+
+## Endogeneity (Correlation with the errors) --- IV Model 
+
+### Instrumen: $ParEduc$
+
+```{r}
+#| echo: false
+set.seed(123)
+dagify(Wage~Educ+Ability+RaceBl,
+       Educ~Ability,
+       Educ~ParEdu,
+       Educ~RaceBl) |> ggdag(node_size = 22)
+```
+
+## Endogeneity (Correlation with the error) --- IV Model 
+
+### (Instrument: ParEduc)
+
+```{=tex}
 $$
+\widehat{Educ}&=& \alpha_1 ParEdu + \alpha_2 RaceBl +\beta3
+$$
+```
+
+. . . 
+
+```{=tex}
+$$
+\widehat{Wage}= \beta_1 \widehat{Educ} + \beta_2 RaceBl +\beta3
+$$
+```
+
+## Endogeneity (Correlation with the error) --- IV Model (
+
+### Instrumen: $ParEdu$
 
 
-**$R^2$ is the proportion of explained variance of the depended variable. $R^2$ takes values from 0 (worst) to 1 (best)**
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "1|2|3"
+library(AER)
+ModelWageEdiIV=ivreg(LogWage~RaceBl+Educ|RaceBl+ParEdu, data=DataWage)
+summary(ModelWageEdiIV)
+```
+## Heteroscedasticity 
+
+### Overview
+
+**Not fulfilled:** Standard errors and thus P values are incorrect.
+
+**Identify:** Visual inspection of residuals. White test.
+
+**Remedy:** White robust standard errors
+
+## Heteroscedasticity 
+
+### No Heteroscedasticity in IV Wage Model
+
+```{r}
+#| code-fold: true
+DataPlot=augment(ModelWageEdiIV)
+
+ggplot(DataPlot, aes(x=LogWage, y=.resid))+
+  geom_point(alpha=0.2)
+  
+```
+
+## Heteroscedasticity 
+
+### Some Heteroscedasticity in House Model (Sqft, Grade, Waterfront)
+
+```{r}
+library(rio);library(janitor);library(tidymodels)
+DataHouses =
+import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+clean_names("upper_camel") |>
+select(Price, Sqft=SqftLiving, Grade, Waterfront)
+
+ModelHouses=lm(Price~., DataHouses)
+
+DataPlot=augment(ModelHouses) |> 
+         mutate(Category=case_when(Price<500000~1,
+                                  Price<1000000~2,
+                                  Price<1500000~3,
+                                  Price<2000000~4,
+                                  Price<2500000~5,
+                                  Price<3000000~6,
+                                  TRUE~7)) |>
+         group_by(Category) |>  
+         mutate(TwoSDHigh=mean(.resid)+2*sd(.resid)) |> 
+         mutate(TwoSDLow=mean(.resid)-2*sd(.resid))
+
+ggplot(DataPlot)+
+  geom_point(aes(x=Price, y=.resid, color="Residuals"), alpha=0.2)+
+  geom_point(aes(x=Price, y=TwoSDLow, color="Mean - 2 SD"))+
+  geom_point(aes(x=Price, y=TwoSDHigh, color="Mean + 2 SD"))+
+  scale_color_manual(values = c("Residuals" = "black", "Mean - 2 SD" = "orange", "Mean + 2 SD" = "red")) +
+  scale_x_continuous(limits = c(0,3000000))+
+  scale_y_continuous(limits = c(-2000000,3000000))
+  
+
+ 
+```
+
