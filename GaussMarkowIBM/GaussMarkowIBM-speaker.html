@@ -9,7 +9,7 @@
 <link href="GaussMarkowIBM_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.247">
 
-  <title>Gauss Markow</title>
+  <title>Gauss Markov Assumptions</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -390,8 +390,8 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Gauss Markow</h1>
-  <p class="subtitle">Linearity, no perfect multicollinearity, strict exogeneity, no heteroscedacisity, noautocorrelation</p>
+  <h1 class="title">Gauss Markov Assumptions</h1>
+  <p class="subtitle">Linearity, no perfect multicollinearity, strict exogeneity, no heteroscedacisity, no autocorrelation</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -401,26 +401,40 @@
 <h2>What Will You Learn</h2>
 <ul>
 <li><p>What are the Gauss Markov assumptions?</p></li>
-<li><p>What means <em>BLUE</em> (<strong>B</strong>est <strong>L</strong>inear <strong>U</strong>nbiased Model)?</p></li>
+<li><p>What means <em>BLUE</em> (<strong>B</strong>est <strong>L</strong>inear <strong>U</strong>nbiased <strong>E</strong>stimator Model)?</p></li>
 <li><p>How to test if Gauss Markov assumptions are violated?</p></li>
 <li><p>What are the consequences if Gauss Markov assumptions are violated?</p></li>
 <li><p>Remedies to use when Gauss Markov assumptions are violated?</p></li>
 </ul>
 </section>
-<section id="gauss-markow-assumptions" class="slide level2">
-<h2>Gauss Markow Assumptions</h2>
+<section id="gauss-markov-assumptions" class="slide level2">
+<h2>Gauss Markov Assumptions</h2>
+<div>
 <ul>
-<li><p>Linearity</p></li>
-<li><p>No perfect Multicollinearity,</p></li>
-<li><p>Strict Exogeneity (errors are not correlated with any predictor variable’s values)</p></li>
-<li><p>no heteroscedacisity</p></li>
-<li><p>no autocorrelation (errors are not correlated with their pressors; applies only when observations have a “natural order”)</p></li>
+<li class="fragment"><p>Linearity</p></li>
+<li class="fragment"><p>No perfect Multicollinearity,</p></li>
+<li class="fragment"><p>Strict Exogeneity (errors are not correlated with any predictor variable’s values)</p></li>
+<li class="fragment"><p>No Heteroscedacisity</p></li>
+<li class="fragment"><p>No Autocorrelation (errors are not correlated with their own lagged values; applies only when observations have a “natural order”)</p></li>
 </ul>
+</div>
+</section>
+<section id="best-linear-unbiased-estimator" class="slide level2 incremental">
+<h2>Best Linear Unbiased Estimator</h2>
+<p>If Gauss Markov assumptions are fulfilled a linear regression has the following properties:</p>
+<div>
+<ul>
+<li class="fragment"><p><strong>B</strong>est: Lowest variance of error terms.</p></li>
+<li class="fragment"><p><strong>L</strong>inear model</p></li>
+<li class="fragment"><p><strong>U</strong>nbiased: The expected values of the sample <span class="math inline">\(\beta s\)</span> coincide with the true <span class="math inline">\(\beta s\)</span> from the unobserved population. There is no systematic over- or under-estimation of the <span class="math inline">\(\beta s\)</span>. If the <span class="math inline">\(\beta s\)</span> are only unbiased for big samples, we call the estimation <em>consistent</em>.</p></li>
+<li class="fragment"><p><strong>E</strong>stimators are the <span class="math inline">\(\beta s\)</span></p></li>
+</ul>
+</div>
 </section>
 <section id="wage2-data-from-wooldridge-data-enginering" class="slide level2">
 <h2>wage2 Data from Wooldridge — Data Enginering</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="1-3|4-8|10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels)</span>
+<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="1-3|4-6|7|8|10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(wooldridge)</span>
 <span id="cb1-4"><a href="#cb1-4"></a>DataWage<span class="ot">=</span>wage2 <span class="sc">|&gt;</span> </span>
@@ -446,7 +460,7 @@
 </section>
 <section id="linearity" class="slide level2">
 <h2>Linearity</h2>
-<p><strong>Not fulfilled:</strong> Coefficients <span class="math inline">\((\beta s)\)</span> are biased and inconsistent:”</p>
+<p><strong>If not fulfilled:</strong> Coefficients <span class="math inline">\((\beta s)\)</span> are biased and inconsistent</p>
 <p><strong>Identify:</strong> Visual inspection of regression and residuals.</p>
 <p><strong>Remedy:</strong> Use logarithms or polynomials (such as squares) on data.</p>
 </section>
@@ -471,15 +485,15 @@
 <img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
 <section id="multi-collinearity-overview" class="slide level2 smaller">
 <h2>Multi Collinearity (Overview)</h2>
-<p><strong>Not fulfilled (perfect multicolinearity):</strong> Coefficients <span class="math inline">\((\beta s)\)</span> cannot be calculated”</p>
-<p><strong>Not fulfilled (strong multicolinearity):</strong></p>
+<p>One or more of the independent variables are correlated.</p>
+<p><strong>If not fulfilled (perfect multicolinearity):</strong> Coefficients <span class="math inline">\((\beta s)\)</span> cannot be calculated</p>
+<p><strong>If not fulfilled (strong multicolinearity):</strong></p>
 <ul>
 <li><p>Coefficients <span class="math inline">\((\beta s)\)</span> are biased and inconsistent.</p></li>
 <li><p>However, predictions are not.</p></li>
 <li><p>Coefficients <span class="math inline">\((\beta s)\)</span> are sensitive to small changes in data.</p></li>
 </ul>
-<p><strong>Identify:</strong> VIF between an independent variables <span class="math inline">\(i\)</span> regressed on all other variables should be less than <span class="math inline">\(10\)</span> (some authors use less than 5):</p>
-<p><span class="math display">\[VIF=\frac{1}{1-R^2_{i}}\]</span></p>
+<p><strong>Identify:</strong> VIF between an independent variables <span class="math inline">\(i\)</span> regressed on all other variables should be less than <span class="math inline">\(10\)</span> (some authors use less than 5): <span class="math inline">\(VIF=\frac{1}{1-R^2_{i}}\)</span></p>
 <p><strong>Remedy:</strong></p>
 <ul>
 <li><p>Do nothing</p></li>
@@ -487,11 +501,15 @@
 <li><p>Others</p></li>
 </ul>
 </section>
-<section id="multi-collinearity-example" class="slide level2 smaller">
-<h2>Multi Collinearity (Example)</h2>
-<p>Assume we have two variables for education. <span class="math inline">\(Edu\)</span> measures the years of education, but <span class="math inline">\(EducMod\)</span> counts high school dropouts as 12 years and does not consider graduate studies and thus cuts off EducMod$ at 16 years.</p>
+<section id="perfect-multi-collinearity-example" class="slide level2 smaller">
+<h2>Perfect Multi Collinearity (Example)</h2>
+<p>Assume we have two variables for education.</p>
+<ul>
+<li><p><span class="math inline">\(Edu\)</span> measures the years of education,</p></li>
+<li><p><span class="math inline">\(EducMonth\)</span> measures the month of education and is 12 times <span class="math inline">\(Educ\)</span></p></li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="1-8|9,10|12-14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(tidymodels)</span>
+<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="1-8|9|11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="fu">library</span>(janitor)</span>
 <span id="cb5-3"><a href="#cb5-3"></a><span class="fu">library</span>(wooldridge)</span>
 <span id="cb5-4"><a href="#cb5-4"></a>DataWage<span class="ot">=</span>wage2 <span class="sc">|&gt;</span> </span>
@@ -499,30 +517,66 @@
 <span id="cb5-6"><a href="#cb5-6"></a>         <span class="fu">select</span>(Wage,<span class="at">LogWage=</span>Lwage, Educ, Tenure, <span class="at">RaceBl=</span>Black, Feduc, Meduc) <span class="sc">|&gt;</span> </span>
 <span id="cb5-7"><a href="#cb5-7"></a>         <span class="fu">mutate</span>(<span class="at">ParEdu=</span><span class="fu">pmax</span>(Feduc,Meduc)) <span class="sc">|&gt;</span> </span>
 <span id="cb5-8"><a href="#cb5-8"></a>         <span class="fu">drop_na</span>(ParEdu) <span class="sc">|&gt;</span> </span>
-<span id="cb5-9"><a href="#cb5-9"></a>         <span class="fu">mutate</span>(<span class="at">EducMod=</span><span class="fu">ifelse</span>(Educ<span class="sc">&lt;</span><span class="dv">12</span>, <span class="dv">12</span>, Educ)) <span class="sc">|&gt;</span> </span>
-<span id="cb5-10"><a href="#cb5-10"></a>         <span class="fu">mutate</span>(<span class="at">EducMod=</span><span class="fu">ifelse</span>(Educ<span class="sc">&gt;</span><span class="dv">16</span>, <span class="dv">16</span>, EducMod))</span>
-<span id="cb5-11"><a href="#cb5-11"></a></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>Educ, <span class="at">y=</span>EducMod))<span class="sc">+</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>      <span class="fu">geom_point</span>()<span class="sc">+</span></span>
-<span id="cb5-14"><a href="#cb5-14"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-9"><a href="#cb5-9"></a>         <span class="fu">mutate</span>(<span class="at">EducMonth=</span><span class="dv">12</span><span class="sc">*</span>Educ)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>           </span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="fu">lm</span>(LogWage<span class="sc">~</span> Educ<span class="sc">+</span> EducMonth <span class="sc">+</span> Tenure<span class="sc">+</span> RaceBl, DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = LogWage ~ Educ + EducMonth + Tenure + RaceBl, data = DataWage)
+
+Coefficients:
+(Intercept)         Educ    EducMonth       Tenure       RaceBl  
+    5.94515      0.05653           NA      0.01375     -0.18283  </code></pre>
+</div>
+</div>
+</section>
+<section id="strong-multi-collinearity-example" class="slide level2 smaller">
+<h2>Strong Multi Collinearity (Example)</h2>
+<p>Assume we have two variables for education.</p>
+<ul>
+<li><p><span class="math inline">\(Edu\)</span> measures the years of education</p></li>
+<li><p><span class="math inline">\(EducMod\)</span></p>
+<ul>
+<li><p>counts high school dropouts as 12 years of education and</p></li>
+<li><p>does not consider graduate studies and thus cuts off <span class="math inline">\(EducMod\)</span> at 16 years.</p></li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" data-code-line-numbers="1-8|9,10|12-14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb7-4"><a href="#cb7-4"></a>DataWage<span class="ot">=</span>wage2 <span class="sc">|&gt;</span> </span>
+<span id="cb7-5"><a href="#cb7-5"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-6"><a href="#cb7-6"></a>         <span class="fu">select</span>(Wage,<span class="at">LogWage=</span>Lwage, Educ, Tenure, <span class="at">RaceBl=</span>Black, Feduc, Meduc) <span class="sc">|&gt;</span> </span>
+<span id="cb7-7"><a href="#cb7-7"></a>         <span class="fu">mutate</span>(<span class="at">ParEdu=</span><span class="fu">pmax</span>(Feduc,Meduc)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-8"><a href="#cb7-8"></a>         <span class="fu">drop_na</span>(ParEdu) <span class="sc">|&gt;</span> </span>
+<span id="cb7-9"><a href="#cb7-9"></a>         <span class="fu">mutate</span>(<span class="at">EducMod=</span><span class="fu">ifelse</span>(Educ<span class="sc">&lt;</span><span class="dv">12</span>, <span class="dv">12</span>, Educ)) <span class="sc">|&gt;</span> </span>
+<span id="cb7-10"><a href="#cb7-10"></a>         <span class="fu">mutate</span>(<span class="at">EducMod=</span><span class="fu">ifelse</span>(Educ<span class="sc">&gt;</span><span class="dv">16</span>, <span class="dv">16</span>, EducMod))</span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="fu">ggplot</span>(DataWage, <span class="fu">aes</span>(<span class="at">x=</span>Educ, <span class="at">y=</span>EducMod))<span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a>      <span class="fu">geom_point</span>()<span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a>      <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
-<section id="multi-collinearity-example-output" class="slide level2 smaller output-location-slide"><h2>Multi Collinearity (Example)</h2><div class="cell output-location-slide">
+<section id="strong-multi-collinearity-example-output" class="slide level2 smaller output-location-slide"><h2>Strong Multi Collinearity (Example)</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<p><img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+<p><img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
 </div>
-</div></section><section id="multi-collinearity-regression-examples" class="slide level2 smaller">
-<h2>Multi Collinearity (Regression Examples)</h2>
+</div></section><section id="strong-multi-collinearity-regression-examples" class="slide level2 smaller">
+<h2>Strong Multi Collinearity (Regression Examples)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" data-code-line-numbers="1|2|3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>ModelWage0<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>Educ<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a>ModelWage1<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>Educ<span class="sc">+</span>EducMod<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(<span class="dv">500</span>))</span>
-<span id="cb6-4"><a href="#cb6-4"></a>ModelWage2<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>Educ<span class="sc">+</span>EducMod<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(<span class="dv">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8" data-code-line-numbers="1|2|3|4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>ModelWage0<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>Educ<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a>ModelWage1<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>Educ<span class="sc">+</span>EducMod<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(<span class="dv">500</span>))</span>
+<span id="cb8-4"><a href="#cb8-4"></a>ModelWage2<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>Educ<span class="sc">+</span>EducMod<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage <span class="sc">|&gt;</span> <span class="fu">sample_n</span>(<span class="dv">500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">summary</span>(ModelWage0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">summary</span>(ModelWage0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -549,7 +603,7 @@ F-statistic: 40.01 on 3 and 718 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">summary</span>(ModelWage1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">summary</span>(ModelWage1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -578,7 +632,7 @@ F-statistic: 18.97 on 4 and 495 DF,  p-value: 1.582e-14</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">summary</span>(ModelWage2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">summary</span>(ModelWage2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -607,13 +661,13 @@ F-statistic: 19.01 on 4 and 495 DF,  p-value: 1.473e-14</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">vif</span>(ModelWage1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">vif</span>(ModelWage1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Educ   EducMod    Tenure    RaceBl 
 12.061705 12.001751  1.006975  1.029412 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">vif</span>(ModelWage2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">vif</span>(ModelWage2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Educ   EducMod    Tenure    RaceBl 
 11.525250 11.496184  1.005858  1.021887 </code></pre>
@@ -622,8 +676,8 @@ F-statistic: 19.01 on 4 and 495 DF,  p-value: 1.473e-14</code></pre>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>ModelWage00<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>EducMod<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage)</span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="fu">summary</span>(ModelWage00)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>ModelWage00<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>EducMod<span class="sc">+</span>Tenure<span class="sc">+</span>RaceBl, DataWage)</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">summary</span>(ModelWage00)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -649,55 +703,37 @@ F-statistic:  38.8 on 3 and 718 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="endogenity-of-education" class="slide level2">
-<h2>Endogenity of Education</h2>
+<section id="endogenity-overview" class="slide level2 smaller">
+<h2>Endogenity (Overview)</h2>
+<p><strong>Endogenity:</strong> Error term is correlated with one or more of the independent (predictor) variables.</p>
+<p><strong>If not fulfilled:</strong> Coefficients <span class="math inline">\((\beta s)\)</span> are biased and inconsistent.</p>
+<p><strong>Identify:</strong> Difficult, because if estimate is biased errors are also biased and cannot be used to test for correlation with predictors.</p>
+<p>If domain knowledge indicates endegenity, try IV Regression and see the results of the <em>Durbin-Wu-Hasumann</em> (<em>DWH</em>) test.</p>
+<p><strong>Remedy:</strong></p>
+<ul>
+<li><p>Do nothing</p></li>
+<li><p>Run two stage IV Regression</p></li>
+</ul>
+</section>
+<section id="endogenity-example" class="slide level2">
+<h2>Endogenity (Example)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">library</span>(ggdag)</span>
-<span id="cb19-2"><a href="#cb19-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">dagify</span>(Wage<span class="sc">~</span>Educ<span class="sc">+</span>Ability<span class="sc">+</span>RaceBl,</span>
-<span id="cb19-4"><a href="#cb19-4"></a>       Educ<span class="sc">~</span>Ability,</span>
-<span id="cb19-5"><a href="#cb19-5"></a>       Educ<span class="sc">~</span>ParEdu,</span>
-<span id="cb19-6"><a href="#cb19-6"></a>       Educ<span class="sc">~</span>RaceBl) <span class="sc">|&gt;</span> <span class="fu">ggdag</span>(<span class="at">node_size =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb21-3"><a href="#cb21-3"></a><span class="fu">dagify</span>(Wage<span class="sc">~</span>Educ<span class="sc">+</span>Ability<span class="sc">+</span>RaceBl,</span>
+<span id="cb21-4"><a href="#cb21-4"></a>       Educ<span class="sc">~</span>Ability,</span>
+<span id="cb21-5"><a href="#cb21-5"></a>       Educ<span class="sc">~</span>ParEdu,</span>
+<span id="cb21-6"><a href="#cb21-6"></a>       Educ<span class="sc">~</span>RaceBl) <span class="sc">|&gt;</span> <span class="fu">ggdag</span>(<span class="at">node_size =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
-<section id="endogenity-of-education-output" class="slide level2 output-location-slide"><h2>Endogenity of Education</h2><div class="cell output-location-slide">
+<section id="endogenity-example-output" class="slide level2 output-location-slide"><h2>Endogenity (Example)</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
-<p><img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+<p><img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </div>
 </div></section><section id="endogeneity-correlation-with-the-errors-simple-model" class="slide level2">
 <h2>Endogeneity (Correlation with the errors) — Simple Model</h2>
 
-</section>
-<section id="endogeneity-correlation-with-the-errors-simple-model-1" class="slide level2">
-<h2>Endogeneity (Correlation with the errors) — Simple Model</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20" data-code-line-numbers="1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>ModelWageEdu<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>RaceBl<span class="sc">+</span>Educ,DataWage)</span>
-<span id="cb20-2"><a href="#cb20-2"></a><span class="fu">summary</span>(ModelWageEdu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = LogWage ~ RaceBl + Educ, data = DataWage)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--1.98170 -0.24692  0.02642  0.27402  1.25043 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  6.06700    0.09267  65.471  &lt; 2e-16 ***
-RaceBl      -0.20160    0.05185  -3.888  0.00011 ***
-Educ         0.05497    0.00664   8.279 6.04e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 0.3948 on 719 degrees of freedom
-Multiple R-squared:  0.1163,    Adjusted R-squared:  0.1138 
-F-statistic: 47.31 on 2 and 719 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
 </section>
 <section id="endogeneity-correlation-with-the-errors-iv-model" class="slide level2">
 <h2>Endogeneity (Correlation with the errors) — IV Model</h2>
@@ -706,19 +742,30 @@ F-statistic: 47.31 on 2 and 719 DF,  p-value: &lt; 2.2e-16</code></pre>
 <img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"></section>
 <section id="endogeneity-correlation-with-the-error-iv-model" class="slide level2">
 <h2>Endogeneity (Correlation with the error) — IV Model</h2>
-<h3 id="instrument-pareduc">(Instrument: ParEduc)</h3>
+<h3 id="instrument-pareduc-2-step-regression">(Instrument: ParEduc) 2-Step Regression</h3>
 <div class="fragment">
+<p><span class="math display">\[
+\widehat{Educ}= \alpha_1 ParEdu + \alpha_2
+\]</span></p>
+</div>
+<div class="fragment">
+<p><span class="math display">\[
+\widehat{Wage}= \beta_1 \widehat{Educ} + \beta_2 RaceBl +\beta3
+\]</span></p>
 </div>
 </section>
-<section id="endogeneity-correlation-with-the-error-iv-model-1" class="slide level2">
-<h2>Endogeneity (Correlation with the error) — IV Model (</h2>
-<h3 id="instrumen-paredu">Instrumen: <span class="math inline">\(ParEdu\)</span></h3>
+<section id="endogeneity-iv-model" class="slide level2">
+<h2>Endogeneity — IV Model</h2>
+<h3 id="instrument-paredu">Instrument: <span class="math inline">\(ParEdu\)</span></h3>
+<div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="1|2|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(AER)</span>
-<span id="cb22-2"><a href="#cb22-2"></a>ModelWageEdiIV<span class="ot">=</span><span class="fu">ivreg</span>(LogWage<span class="sc">~</span>RaceBl<span class="sc">+</span>Educ<span class="sc">|</span>RaceBl<span class="sc">+</span>ParEdu, <span class="at">data=</span>DataWage)</span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="fu">summary</span>(ModelWageEdiIV)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(AER)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>ModelWageEdiIV<span class="ot">=</span><span class="fu">ivreg</span>(LogWage<span class="sc">~</span>RaceBl<span class="sc">+</span>Educ<span class="sc">|</span>RaceBl<span class="sc">+</span>ParEdu, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment">
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="fu">summary</span>(ModelWageEdiIV)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -741,62 +788,99 @@ Multiple R-Squared: 0.0906, Adjusted R-squared: 0.08807
 Wald test: 26.45 on 2 and 719 DF,  p-value: 8.277e-12 </code></pre>
 </div>
 </div>
+</div>
+<div class="fragment">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25" data-code-line-numbers="1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Basic LM Model as Benchmark</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>ModelWageEdu<span class="ot">=</span><span class="fu">lm</span>(LogWage<span class="sc">~</span>RaceBl<span class="sc">+</span>Educ,DataWage)</span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="fu">summary</span>(ModelWageEdu)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = LogWage ~ RaceBl + Educ, data = DataWage)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.98170 -0.24692  0.02642  0.27402  1.25043 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  6.06700    0.09267  65.471  &lt; 2e-16 ***
+RaceBl      -0.20160    0.05185  -3.888  0.00011 ***
+Educ         0.05497    0.00664   8.279 6.04e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.3948 on 719 degrees of freedom
+Multiple R-squared:  0.1163,    Adjusted R-squared:  0.1138 
+F-statistic: 47.31 on 2 and 719 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div>
 </section>
 <section id="heteroscedasticity" class="slide level2">
 <h2>Heteroscedasticity</h2>
 <h3 id="overview">Overview</h3>
-<p><strong>Not fulfilled:</strong> Standard errors and thus P values are incorrect.</p>
+<p><strong>If not fulfilled:</strong> Standard errors and thus P values are incorrect.</p>
 <p><strong>Identify:</strong> Visual inspection of residuals. White test.</p>
 <p><strong>Remedy:</strong> White robust standard errors</p>
 </section>
 <section id="heteroscedasticity-1" class="slide level2">
 <h2>Heteroscedasticity</h2>
+<p>Error variance is not constant for different values of dependent variable.</p>
 <h3 id="no-heteroscedasticity-in-iv-wage-model">No Heteroscedasticity in IV Wage Model</h3>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>DataPlot<span class="ot">=</span><span class="fu">augment</span>(ModelWageEdiIV)</span>
-<span id="cb24-2"><a href="#cb24-2"></a></span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="fu">ggplot</span>(DataPlot, <span class="fu">aes</span>(<span class="at">x=</span>LogWage, <span class="at">y=</span>.resid))<span class="sc">+</span></span>
-<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>DataPlot<span class="ot">=</span><span class="fu">augment</span>(ModelWageEdiIV)</span>
+<span id="cb27-2"><a href="#cb27-2"></a></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="fu">ggplot</span>(DataPlot, <span class="fu">aes</span>(<span class="at">x=</span>LogWage, <span class="at">y=</span>.resid))<span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-15-1.png" width="960" class="r-stretch"></section>
+<img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
 <section id="heteroscedasticity-2" class="slide level2">
 <h2>Heteroscedasticity</h2>
 <h3 id="some-heteroscedasticity-in-house-model-sqft-grade-waterfront">Some Heteroscedasticity in House Model (Sqft, Grade, Waterfront)</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
-<span id="cb25-2"><a href="#cb25-2"></a>DataHouses <span class="ot">=</span></span>
-<span id="cb25-3"><a href="#cb25-3"></a><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span>
-<span id="cb25-6"><a href="#cb25-6"></a></span>
-<span id="cb25-7"><a href="#cb25-7"></a>ModelHouses<span class="ot">=</span><span class="fu">lm</span>(Price<span class="sc">~</span>., DataHouses)</span>
-<span id="cb25-8"><a href="#cb25-8"></a></span>
-<span id="cb25-9"><a href="#cb25-9"></a>DataPlot<span class="ot">=</span><span class="fu">augment</span>(ModelHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb25-10"><a href="#cb25-10"></a>         <span class="fu">mutate</span>(<span class="at">Category=</span><span class="fu">case_when</span>(Price<span class="sc">&lt;</span><span class="dv">500000</span><span class="sc">~</span><span class="dv">1</span>,</span>
-<span id="cb25-11"><a href="#cb25-11"></a>                                  Price<span class="sc">&lt;</span><span class="dv">1000000</span><span class="sc">~</span><span class="dv">2</span>,</span>
-<span id="cb25-12"><a href="#cb25-12"></a>                                  Price<span class="sc">&lt;</span><span class="dv">1500000</span><span class="sc">~</span><span class="dv">3</span>,</span>
-<span id="cb25-13"><a href="#cb25-13"></a>                                  Price<span class="sc">&lt;</span><span class="dv">2000000</span><span class="sc">~</span><span class="dv">4</span>,</span>
-<span id="cb25-14"><a href="#cb25-14"></a>                                  Price<span class="sc">&lt;</span><span class="dv">2500000</span><span class="sc">~</span><span class="dv">5</span>,</span>
-<span id="cb25-15"><a href="#cb25-15"></a>                                  Price<span class="sc">&lt;</span><span class="dv">3000000</span><span class="sc">~</span><span class="dv">6</span>,</span>
-<span id="cb25-16"><a href="#cb25-16"></a>                                  <span class="cn">TRUE</span><span class="sc">~</span><span class="dv">7</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb25-17"><a href="#cb25-17"></a>         <span class="fu">group_by</span>(Category) <span class="sc">|&gt;</span>  </span>
-<span id="cb25-18"><a href="#cb25-18"></a>         <span class="fu">mutate</span>(<span class="at">TwoSDHigh=</span><span class="fu">mean</span>(.resid)<span class="sc">+</span><span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(.resid)) <span class="sc">|&gt;</span> </span>
-<span id="cb25-19"><a href="#cb25-19"></a>         <span class="fu">mutate</span>(<span class="at">TwoSDLow=</span><span class="fu">mean</span>(.resid)<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(.resid))</span>
-<span id="cb25-20"><a href="#cb25-20"></a></span>
-<span id="cb25-21"><a href="#cb25-21"></a><span class="fu">ggplot</span>(DataPlot)<span class="sc">+</span></span>
-<span id="cb25-22"><a href="#cb25-22"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>.resid, <span class="at">color=</span><span class="st">"Residuals"</span>), <span class="at">alpha=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb25-23"><a href="#cb25-23"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>TwoSDLow, <span class="at">color=</span><span class="st">"Mean - 2 SD"</span>))<span class="sc">+</span></span>
-<span id="cb25-24"><a href="#cb25-24"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>TwoSDHigh, <span class="at">color=</span><span class="st">"Mean + 2 SD"</span>))<span class="sc">+</span></span>
-<span id="cb25-25"><a href="#cb25-25"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Residuals"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"Mean - 2 SD"</span> <span class="ot">=</span> <span class="st">"orange"</span>, <span class="st">"Mean + 2 SD"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb25-26"><a href="#cb25-26"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3000000</span>))<span class="sc">+</span></span>
-<span id="cb25-27"><a href="#cb25-27"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2000000</span>,<span class="dv">3000000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28" data-code-line-numbers="1|2-4|6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">library</span>(rio);<span class="fu">library</span>(janitor);<span class="fu">library</span>(tidymodels)</span>
+<span id="cb28-2"><a href="#cb28-2"></a>DataHouses<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a><span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving, Grade, Waterfront)</span>
+<span id="cb28-5"><a href="#cb28-5"></a></span>
+<span id="cb28-6"><a href="#cb28-6"></a>ModelHouses<span class="ot">=</span><span class="fu">lm</span>(Price<span class="sc">~</span>., DataHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="heteroscedasticity-3" class="slide level2">
+<h2>Heteroscedasticity</h2>
+<h3 id="some-heteroscedasticity-in-house-model-sqft-grade-waterfront-1">Some Heteroscedasticity in House Model (Sqft, Grade, Waterfront)</h3>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>DataPlot<span class="ot">=</span><span class="fu">augment</span>(ModelHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2"></a>         <span class="fu">mutate</span>(<span class="at">Category=</span><span class="fu">case_when</span>(Price<span class="sc">&lt;</span><span class="dv">500000</span><span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb29-3"><a href="#cb29-3"></a>                                  Price<span class="sc">&lt;</span><span class="dv">1000000</span><span class="sc">~</span><span class="dv">2</span>,</span>
+<span id="cb29-4"><a href="#cb29-4"></a>                                  Price<span class="sc">&lt;</span><span class="dv">1500000</span><span class="sc">~</span><span class="dv">3</span>,</span>
+<span id="cb29-5"><a href="#cb29-5"></a>                                  Price<span class="sc">&lt;</span><span class="dv">2000000</span><span class="sc">~</span><span class="dv">4</span>,</span>
+<span id="cb29-6"><a href="#cb29-6"></a>                                  Price<span class="sc">&lt;</span><span class="dv">2500000</span><span class="sc">~</span><span class="dv">5</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>                                  Price<span class="sc">&lt;</span><span class="dv">3000000</span><span class="sc">~</span><span class="dv">6</span>,</span>
+<span id="cb29-8"><a href="#cb29-8"></a>                                  <span class="cn">TRUE</span><span class="sc">~</span><span class="dv">7</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb29-9"><a href="#cb29-9"></a>         <span class="fu">group_by</span>(Category) <span class="sc">|&gt;</span>  </span>
+<span id="cb29-10"><a href="#cb29-10"></a>         <span class="fu">mutate</span>(<span class="at">TwoSDHigh=</span><span class="fu">mean</span>(.resid)<span class="sc">+</span><span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(.resid)) <span class="sc">|&gt;</span> </span>
+<span id="cb29-11"><a href="#cb29-11"></a>         <span class="fu">mutate</span>(<span class="at">TwoSDLow=</span><span class="fu">mean</span>(.resid)<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(.resid))</span>
+<span id="cb29-12"><a href="#cb29-12"></a></span>
+<span id="cb29-13"><a href="#cb29-13"></a><span class="fu">ggplot</span>(DataPlot)<span class="sc">+</span></span>
+<span id="cb29-14"><a href="#cb29-14"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>.resid, <span class="at">color=</span><span class="st">"Residuals"</span>), <span class="at">alpha=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb29-15"><a href="#cb29-15"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>TwoSDLow, <span class="at">color=</span><span class="st">"Mean - 2 SD"</span>))<span class="sc">+</span></span>
+<span id="cb29-16"><a href="#cb29-16"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>TwoSDHigh, <span class="at">color=</span><span class="st">"Mean + 2 SD"</span>))<span class="sc">+</span></span>
+<span id="cb29-17"><a href="#cb29-17"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Residuals"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"Mean - 2 SD"</span> <span class="ot">=</span> <span class="st">"orange"</span>, <span class="st">"Mean + 2 SD"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
+<span id="cb29-18"><a href="#cb29-18"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3000000</span>))<span class="sc">+</span></span>
+<span id="cb29-19"><a href="#cb29-19"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2000000</span>,<span class="dv">3000000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 
 </div>
-<img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
 </div>
 </section>

@@ -1,6 +1,6 @@
 ---
-title: "Gauss Markow"
-subtitle: "Linearity, no perfect multicollinearity, strict exogeneity, no heteroscedacisity, noautocorrelation"
+title: "Gauss Markov Assumptions"
+subtitle: "Linearity, no perfect multicollinearity, strict exogeneity, no heteroscedacisity, no autocorrelation"
 format: 
   revealjs:
     multiplex: true
@@ -15,7 +15,7 @@ format:
 
 -   What are the Gauss Markov assumptions?
 
--   What means *BLUE* (**B**est **L**inear **U**nbiased Model)?
+-   What means *BLUE* (**B**est **L**inear **U**nbiased **E**stimator Model)?
 
 -   How to test if Gauss Markov assumptions are violated?
 
@@ -23,23 +23,39 @@ format:
 
 -   Remedies to use when Gauss Markov assumptions are violated?
 
-## Gauss Markow Assumptions
+## Gauss Markov Assumptions 
 
+::: {.incremental}
 -   Linearity
 
 -   No perfect Multicollinearity,
 
 -   Strict Exogeneity (errors are not correlated with any predictor variable's values)
 
--   no heteroscedacisity
+-   No Heteroscedacisity
 
--   no autocorrelation (errors are not correlated with their pressors; applies only when observations have a "natural order")
+-   No Autocorrelation (errors are not correlated with their own lagged values; applies only when observations have a "natural order")
+:::
+
+## Best Linear Unbiased Estimator {.incremental}
+
+If Gauss Markov assumptions are fulfilled a linear regression has the following properties:
+
+::: {.incremental}
+- **B**est: Lowest variance of error terms.
+
+- **L**inear model
+
+- **U**nbiased: The expected values of the sample  $\beta s$ coincide with the true $\beta s$ from the unobserved population. There is no systematic over- or under-estimation of the $\beta s$. If the $\beta s$ are only unbiased for big samples, we call the estimation *consistent*.
+
+- **E**stimators are the $\beta s$
+:::
 
 ## wage2 Data from Wooldridge --- Data Enginering
 
 ```{r}
 #| output-location: fragment
-#| code-line-numbers: "1-3|4-8|10"
+#| code-line-numbers: "1-3|4-6|7|8|10"
 library(tidymodels)
 library(janitor)
 library(wooldridge)
@@ -64,7 +80,7 @@ ExpReport(DataWage, op_file = "EdaDataWage2")
 
 ## Linearity
 
-**Not fulfilled:** Coefficients $(\beta s)$ are biased and inconsistent:"
+**If not fulfilled:** Coefficients $(\beta s)$ are biased and inconsistent
 
 **Identify:** Visual inspection of regression and residuals.
 
@@ -89,9 +105,11 @@ ggplot(DataPlot, aes(y=LogWage, x=Educ))+
 
 ## Multi Collinearity (Overview) {.smaller}
 
-**Not fulfilled (perfect multicolinearity):** Coefficients $(\beta s)$ cannot be calculated"
+One or more of the independent variables are correlated.
 
-**Not fulfilled (strong multicolinearity):** 
+**If not fulfilled (perfect multicolinearity):** Coefficients $(\beta s)$ cannot be calculated
+
+**If not fulfilled (strong multicolinearity):** 
 
 - Coefficients $(\beta s)$ are biased and inconsistent. 
 
@@ -99,12 +117,7 @@ ggplot(DataPlot, aes(y=LogWage, x=Educ))+
 
 - Coefficients $(\beta s)$ are sensitive to small changes in data.
 
-**Identify:** VIF between an independent variables $i$ regressed on all other variables should be less than $10$ (some authors use less than 5):
-
-$$VIF=\frac{1}{1-R^2_{i}}$$
-
-
-
+**Identify:** VIF between an independent variables $i$ regressed on all other variables should be less than $10$ (some authors use less than 5): $VIF=\frac{1}{1-R^2_{i}}$
 
 **Remedy:** 
 
@@ -114,11 +127,47 @@ $$VIF=\frac{1}{1-R^2_{i}}$$
 
 - Others
 
-## Multi Collinearity (Example) {.smaller}
+## Perfect Multi Collinearity (Example) {.smaller}
 
 
 
-Assume we have two variables for education. $Edu$ measures the years of education, but $EducMod$ counts high school dropouts as 12 years and does not consider graduate studies and thus cuts off EducMod$ at 16 years.
+Assume we have two variables for education. 
+
+- $Edu$ measures the years of education, 
+
+- $EducMonth$ measures the month of education and is 12 times $Educ$
+
+```{r}
+#| code-line-numbers: "1-8|9|11"
+#| output-location: fragment
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+DataWage=wage2 |> 
+         clean_names("upper_camel") |> 
+         select(Wage,LogWage=Lwage, Educ, Tenure, RaceBl=Black, Feduc, Meduc) |> 
+         mutate(ParEdu=pmax(Feduc,Meduc)) |> 
+         drop_na(ParEdu) |> 
+         mutate(EducMonth=12*Educ)
+           
+lm(LogWage~ Educ+ EducMonth + Tenure+ RaceBl, DataWage)
+```
+
+
+
+## Strong Multi Collinearity (Example) {.smaller}
+
+
+
+Assume we have two variables for education. 
+
+- $Edu$ measures the years of education
+
+- $EducMod$ 
+
+    - counts high school dropouts as 12 years of education and 
+
+    - does not consider graduate studies and thus cuts off $EducMod$ at 16 years.
 
 ```{r}
 #| code-line-numbers: "1-8|9,10|12-14"
@@ -139,7 +188,7 @@ ggplot(DataWage, aes(x=Educ, y=EducMod))+
       geom_smooth(method = "lm", se=FALSE)
 ```
 
-## Multi Collinearity (Regression Examples) {.smaller}
+## Strong Multi Collinearity (Regression Examples) {.smaller}
 
 ```{r}
 #| code-line-numbers: "1|2|3|4"
@@ -181,7 +230,27 @@ ModelWage00=lm(LogWage~EducMod+Tenure+RaceBl, DataWage)
 summary(ModelWage00)
 ```
 :::
-## Endogenity of Education
+
+## Endogenity (Overview) {.smaller}
+
+**Endogenity:** Error term is correlated with one or more of the independent (predictor) variables.
+
+
+**If not fulfilled:** Coefficients $(\beta s)$ are biased and inconsistent. 
+
+
+**Identify:** Difficult, because if estimate is biased errors are also biased and cannot be used to test for correlation with predictors.
+
+If domain knowledge indicates endegenity, try IV Regression and see the results of the *Durbin-Wu-Hasumann* (*DWH*) test.
+
+**Remedy:** 
+
+- Do nothing
+
+- Run two stage IV Regression
+
+## Endogenity (Example)
+
 
 ```{r}
 #| output-location: slide
@@ -201,14 +270,7 @@ $$\widehat{Wage}= \beta_1 Educ + \beta_2 RaceBl +\beta3$$
 ```
 
 
-## Endogeneity (Correlation with the errors) --- Simple Model
 
-```{r}
-#| output-location: fragment
-#| code-line-numbers: "1|2"
-ModelWageEdu=lm(LogWage~RaceBl+Educ,DataWage)
-summary(ModelWageEdu)
-```
 
 ## Endogeneity (Correlation with the errors) --- IV Model 
 
@@ -225,45 +287,65 @@ dagify(Wage~Educ+Ability+RaceBl,
 
 ## Endogeneity (Correlation with the error) --- IV Model 
 
-### (Instrument: ParEduc)
+### (Instrument: ParEduc) 2-Step Regression
 
-```{=tex}
+. . .
+
 $$
-\widehat{Educ}&=& \alpha_1 ParEdu + \alpha_2 RaceBl +\beta3
+\widehat{Educ}= \alpha_1 ParEdu + \alpha_2
 $$
-```
 
-. . . 
+. . .
 
-```{=tex}
 $$
 \widehat{Wage}= \beta_1 \widehat{Educ} + \beta_2 RaceBl +\beta3
 $$
-```
 
-## Endogeneity (Correlation with the error) --- IV Model (
 
-### Instrumen: $ParEdu$
+## Endogeneity --- IV Model
+
+### Instrument: $ParEdu$
+
+
+::: {.fragment}
 
 
 ```{r}
-#| output-location: fragment
-#| code-line-numbers: "1|2|3"
+#| code-line-numbers: "1|2"
 library(AER)
 ModelWageEdiIV=ivreg(LogWage~RaceBl+Educ|RaceBl+ParEdu, data=DataWage)
+```
+:::
+::: {.fragment}
+```{r}
 summary(ModelWageEdiIV)
 ```
+:::
+
+
+::: {.fragment}
+```{r}
+#| code-line-numbers: "1"
+# Basic LM Model as Benchmark
+ModelWageEdu=lm(LogWage~RaceBl+Educ,DataWage)
+summary(ModelWageEdu)
+```
+:::
+
+
 ## Heteroscedasticity 
 
 ### Overview
 
-**Not fulfilled:** Standard errors and thus P values are incorrect.
+**If not fulfilled:** Standard errors and thus P values are incorrect.
 
 **Identify:** Visual inspection of residuals. White test.
 
 **Remedy:** White robust standard errors
 
 ## Heteroscedasticity 
+
+Error variance is not constant for different values of dependent variable.
 
 ### No Heteroscedasticity in IV Wage Model
 
@@ -281,14 +363,21 @@ ggplot(DataPlot, aes(x=LogWage, y=.resid))+
 ### Some Heteroscedasticity in House Model (Sqft, Grade, Waterfront)
 
 ```{r}
+#| code-line-numbers: "1|2-4|6"
 library(rio);library(janitor);library(tidymodels)
-DataHouses =
-import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+DataHouses=import("https://ai.lange-analytics.com/data/HousingData.csv") |>
 clean_names("upper_camel") |>
 select(Price, Sqft=SqftLiving, Grade, Waterfront)
 
 ModelHouses=lm(Price~., DataHouses)
+```
 
+## Heteroscedasticity 
+
+### Some Heteroscedasticity in House Model (Sqft, Grade, Waterfront)
+
+```{r}
+#| code-fold: true
 DataPlot=augment(ModelHouses) |> 
          mutate(Category=case_when(Price<500000~1,
                                   Price<1000000~2,
@@ -308,8 +397,5 @@ ggplot(DataPlot)+
   scale_color_manual(values = c("Residuals" = "black", "Mean - 2 SD" = "orange", "Mean + 2 SD" = "red")) +
   scale_x_continuous(limits = c(0,3000000))+
   scale_y_continuous(limits = c(-2000000,3000000))
-  
-
- 
 ```
 
