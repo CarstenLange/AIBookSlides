@@ -117,13 +117,13 @@ One or more of the independent variables are correlated.
 
 - Coefficients $(\beta s)$ are sensitive to small changes in data.
 
-**Identify:** VIF between an independent variables $i$ regressed on all other variables should be less than $10$ (some authors use less than 5): $VIF=\frac{1}{1-R^2_{i}}$
+**Identify:** VIF between an independent variables $i$ regressed on all other variables should be less than $10$ (some authors use less than 5): $VIF_i=\frac{1}{1-R^2_{i}}$
 
 **Remedy:** 
 
 - Do nothing
 
-- Eliminate variable(s) that are correlated with others step wise (!)
+- Eliminate variable(s) that are correlated with others --- step wise (!)
 
 - Others
 
@@ -241,7 +241,7 @@ summary(ModelWage00)
 
 **Identify:** Difficult, because if estimate is biased errors are also biased and cannot be used to test for correlation with predictors.
 
-If domain knowledge indicates endegenity, try IV Regression and see the results of the *Durbin-Wu-Hasumann* (*DWH*) test.
+If domain knowledge indicates endegenity, try IV Regression and see the results of the *Durbin-Wu-Hausmann* (*DWH*) test.
 
 **Remedy:** 
 
@@ -258,7 +258,6 @@ library(ggdag)
 set.seed(123)
 dagify(Wage~Educ+Ability+RaceBl,
        Educ~Ability,
-       Educ~ParEdu,
        Educ~RaceBl) |> ggdag(node_size = 22)
        
 ```
@@ -339,9 +338,16 @@ summary(ModelWageEdu)
 
 **If not fulfilled:** Standard errors and thus P values are incorrect.
 
-**Identify:** Visual inspection of residuals. White test.
+**Identify:** 
 
-**Remedy:** White robust standard errors
+- Visual inspection of residuals. 
+
+- White test.
+
+**Remedy:** 
+- White robust standard errors
+
+- Generalized Least Square (weighs observation with variance, if it is known.)
 
 ## Heteroscedasticity 
 
@@ -353,8 +359,9 @@ Error variance is not constant for different values of dependent variable.
 #| code-fold: true
 DataPlot=augment(ModelWageEdiIV)
 
-ggplot(DataPlot, aes(x=LogWage, y=.resid))+
-  geom_point(alpha=0.2)
+ggplot(DataPlot, aes(x=,.fitted, y=.resid))+
+  geom_point(alpha=0.2)+
+  labs(x = "LogWage (estimated)")
   
 ```
 
@@ -379,23 +386,24 @@ ModelHouses=lm(Price~., DataHouses)
 ```{r}
 #| code-fold: true
 DataPlot=augment(ModelHouses) |> 
-         mutate(Category=case_when(Price<500000~1,
-                                  Price<1000000~2,
-                                  Price<1500000~3,
-                                  Price<2000000~4,
-                                  Price<2500000~5,
-                                  Price<3000000~6,
+         mutate(Category=case_when(.fitted<500000~1,
+                                  .fitted<1000000~2,
+                                  .fitted<1500000~3,
+                                  .fitted<2000000~4,
+                                  .fitted<2500000~5,
+                                  .fitted<3000000~6,
                                   TRUE~7)) |>
          group_by(Category) |>  
          mutate(TwoSDHigh=mean(.resid)+2*sd(.resid)) |> 
          mutate(TwoSDLow=mean(.resid)-2*sd(.resid))
 
 ggplot(DataPlot)+
-  geom_point(aes(x=Price, y=.resid, color="Residuals"), alpha=0.2)+
-  geom_point(aes(x=Price, y=TwoSDLow, color="Mean - 2 SD"))+
-  geom_point(aes(x=Price, y=TwoSDHigh, color="Mean + 2 SD"))+
+  geom_point(aes(x=.fitted, y=.resid, color="Residuals"), alpha=0.2)+
+  geom_point(aes(x=.fitted, y=TwoSDLow, color="Mean - 2 SD"))+
+  geom_point(aes(x=.fitted, y=TwoSDHigh, color="Mean + 2 SD"))+
   scale_color_manual(values = c("Residuals" = "black", "Mean - 2 SD" = "orange", "Mean + 2 SD" = "red")) +
-  scale_x_continuous(limits = c(0,3000000))+
-  scale_y_continuous(limits = c(-2000000,3000000))
+  scale_x_continuous(limits = c(0,2500000))+
+  scale_y_continuous(limits = c(-2000000,5000000))+
+  labs(x = "Price (estimated)")
 ```
 

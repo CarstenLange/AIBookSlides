@@ -493,11 +493,11 @@
 <li><p>However, predictions are not.</p></li>
 <li><p>Coefficients <span class="math inline">\((\beta s)\)</span> are sensitive to small changes in data.</p></li>
 </ul>
-<p><strong>Identify:</strong> VIF between an independent variables <span class="math inline">\(i\)</span> regressed on all other variables should be less than <span class="math inline">\(10\)</span> (some authors use less than 5): <span class="math inline">\(VIF=\frac{1}{1-R^2_{i}}\)</span></p>
+<p><strong>Identify:</strong> VIF between an independent variables <span class="math inline">\(i\)</span> regressed on all other variables should be less than <span class="math inline">\(10\)</span> (some authors use less than 5): <span class="math inline">\(VIF_i=\frac{1}{1-R^2_{i}}\)</span></p>
 <p><strong>Remedy:</strong></p>
 <ul>
 <li><p>Do nothing</p></li>
-<li><p>Eliminate variable(s) that are correlated with others step wise (!)</p></li>
+<li><p>Eliminate variable(s) that are correlated with others — step wise (!)</p></li>
 <li><p>Others</p></li>
 </ul>
 </section>
@@ -708,7 +708,7 @@ F-statistic:  38.8 on 3 and 718 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><strong>Endogenity:</strong> Error term is correlated with one or more of the independent (predictor) variables.</p>
 <p><strong>If not fulfilled:</strong> Coefficients <span class="math inline">\((\beta s)\)</span> are biased and inconsistent.</p>
 <p><strong>Identify:</strong> Difficult, because if estimate is biased errors are also biased and cannot be used to test for correlation with predictors.</p>
-<p>If domain knowledge indicates endegenity, try IV Regression and see the results of the <em>Durbin-Wu-Hasumann</em> (<em>DWH</em>) test.</p>
+<p>If domain knowledge indicates endegenity, try IV Regression and see the results of the <em>Durbin-Wu-Hausmann</em> (<em>DWH</em>) test.</p>
 <p><strong>Remedy:</strong></p>
 <ul>
 <li><p>Do nothing</p></li>
@@ -722,8 +722,7 @@ F-statistic:  38.8 on 3 and 718 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb21-2"><a href="#cb21-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
 <span id="cb21-3"><a href="#cb21-3"></a><span class="fu">dagify</span>(Wage<span class="sc">~</span>Educ<span class="sc">+</span>Ability<span class="sc">+</span>RaceBl,</span>
 <span id="cb21-4"><a href="#cb21-4"></a>       Educ<span class="sc">~</span>Ability,</span>
-<span id="cb21-5"><a href="#cb21-5"></a>       Educ<span class="sc">~</span>ParEdu,</span>
-<span id="cb21-6"><a href="#cb21-6"></a>       Educ<span class="sc">~</span>RaceBl) <span class="sc">|&gt;</span> <span class="fu">ggdag</span>(<span class="at">node_size =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-5"><a href="#cb21-5"></a>       Educ<span class="sc">~</span>RaceBl) <span class="sc">|&gt;</span> <span class="fu">ggdag</span>(<span class="at">node_size =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 </section>
@@ -822,8 +821,15 @@ F-statistic: 47.31 on 2 and 719 DF,  p-value: &lt; 2.2e-16</code></pre>
 <h2>Heteroscedasticity</h2>
 <h3 id="overview">Overview</h3>
 <p><strong>If not fulfilled:</strong> Standard errors and thus P values are incorrect.</p>
-<p><strong>Identify:</strong> Visual inspection of residuals. White test.</p>
-<p><strong>Remedy:</strong> White robust standard errors</p>
+<p><strong>Identify:</strong></p>
+<ul>
+<li><p>Visual inspection of residuals.</p></li>
+<li><p>White test.</p></li>
+</ul>
+<p><strong>Remedy:</strong> - White robust standard errors</p>
+<ul>
+<li>Generalized Least Square (weighs observation with variance, if it is known.)</li>
+</ul>
 </section>
 <section id="heteroscedasticity-1" class="slide level2">
 <h2>Heteroscedasticity</h2>
@@ -834,8 +840,9 @@ F-statistic: 47.31 on 2 and 719 DF,  p-value: &lt; 2.2e-16</code></pre>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>DataPlot<span class="ot">=</span><span class="fu">augment</span>(ModelWageEdiIV)</span>
 <span id="cb27-2"><a href="#cb27-2"></a></span>
-<span id="cb27-3"><a href="#cb27-3"></a><span class="fu">ggplot</span>(DataPlot, <span class="fu">aes</span>(<span class="at">x=</span>LogWage, <span class="at">y=</span>.resid))<span class="sc">+</span></span>
-<span id="cb27-4"><a href="#cb27-4"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="fu">ggplot</span>(DataPlot, <span class="fu">aes</span>(<span class="at">x=</span>,.fitted, <span class="at">y=</span>.resid))<span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4"></a>  <span class="fu">geom_point</span>(<span class="at">alpha=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"LogWage (estimated)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
@@ -859,24 +866,25 @@ F-statistic: 47.31 on 2 and 719 DF,  p-value: &lt; 2.2e-16</code></pre>
 <details>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>DataPlot<span class="ot">=</span><span class="fu">augment</span>(ModelHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb29-2"><a href="#cb29-2"></a>         <span class="fu">mutate</span>(<span class="at">Category=</span><span class="fu">case_when</span>(Price<span class="sc">&lt;</span><span class="dv">500000</span><span class="sc">~</span><span class="dv">1</span>,</span>
-<span id="cb29-3"><a href="#cb29-3"></a>                                  Price<span class="sc">&lt;</span><span class="dv">1000000</span><span class="sc">~</span><span class="dv">2</span>,</span>
-<span id="cb29-4"><a href="#cb29-4"></a>                                  Price<span class="sc">&lt;</span><span class="dv">1500000</span><span class="sc">~</span><span class="dv">3</span>,</span>
-<span id="cb29-5"><a href="#cb29-5"></a>                                  Price<span class="sc">&lt;</span><span class="dv">2000000</span><span class="sc">~</span><span class="dv">4</span>,</span>
-<span id="cb29-6"><a href="#cb29-6"></a>                                  Price<span class="sc">&lt;</span><span class="dv">2500000</span><span class="sc">~</span><span class="dv">5</span>,</span>
-<span id="cb29-7"><a href="#cb29-7"></a>                                  Price<span class="sc">&lt;</span><span class="dv">3000000</span><span class="sc">~</span><span class="dv">6</span>,</span>
+<span id="cb29-2"><a href="#cb29-2"></a>         <span class="fu">mutate</span>(<span class="at">Category=</span><span class="fu">case_when</span>(.fitted<span class="sc">&lt;</span><span class="dv">500000</span><span class="sc">~</span><span class="dv">1</span>,</span>
+<span id="cb29-3"><a href="#cb29-3"></a>                                  .fitted<span class="sc">&lt;</span><span class="dv">1000000</span><span class="sc">~</span><span class="dv">2</span>,</span>
+<span id="cb29-4"><a href="#cb29-4"></a>                                  .fitted<span class="sc">&lt;</span><span class="dv">1500000</span><span class="sc">~</span><span class="dv">3</span>,</span>
+<span id="cb29-5"><a href="#cb29-5"></a>                                  .fitted<span class="sc">&lt;</span><span class="dv">2000000</span><span class="sc">~</span><span class="dv">4</span>,</span>
+<span id="cb29-6"><a href="#cb29-6"></a>                                  .fitted<span class="sc">&lt;</span><span class="dv">2500000</span><span class="sc">~</span><span class="dv">5</span>,</span>
+<span id="cb29-7"><a href="#cb29-7"></a>                                  .fitted<span class="sc">&lt;</span><span class="dv">3000000</span><span class="sc">~</span><span class="dv">6</span>,</span>
 <span id="cb29-8"><a href="#cb29-8"></a>                                  <span class="cn">TRUE</span><span class="sc">~</span><span class="dv">7</span>)) <span class="sc">|&gt;</span></span>
 <span id="cb29-9"><a href="#cb29-9"></a>         <span class="fu">group_by</span>(Category) <span class="sc">|&gt;</span>  </span>
 <span id="cb29-10"><a href="#cb29-10"></a>         <span class="fu">mutate</span>(<span class="at">TwoSDHigh=</span><span class="fu">mean</span>(.resid)<span class="sc">+</span><span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(.resid)) <span class="sc">|&gt;</span> </span>
 <span id="cb29-11"><a href="#cb29-11"></a>         <span class="fu">mutate</span>(<span class="at">TwoSDLow=</span><span class="fu">mean</span>(.resid)<span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">sd</span>(.resid))</span>
 <span id="cb29-12"><a href="#cb29-12"></a></span>
 <span id="cb29-13"><a href="#cb29-13"></a><span class="fu">ggplot</span>(DataPlot)<span class="sc">+</span></span>
-<span id="cb29-14"><a href="#cb29-14"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>.resid, <span class="at">color=</span><span class="st">"Residuals"</span>), <span class="at">alpha=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
-<span id="cb29-15"><a href="#cb29-15"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>TwoSDLow, <span class="at">color=</span><span class="st">"Mean - 2 SD"</span>))<span class="sc">+</span></span>
-<span id="cb29-16"><a href="#cb29-16"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Price, <span class="at">y=</span>TwoSDHigh, <span class="at">color=</span><span class="st">"Mean + 2 SD"</span>))<span class="sc">+</span></span>
+<span id="cb29-14"><a href="#cb29-14"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>.fitted, <span class="at">y=</span>.resid, <span class="at">color=</span><span class="st">"Residuals"</span>), <span class="at">alpha=</span><span class="fl">0.2</span>)<span class="sc">+</span></span>
+<span id="cb29-15"><a href="#cb29-15"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>.fitted, <span class="at">y=</span>TwoSDLow, <span class="at">color=</span><span class="st">"Mean - 2 SD"</span>))<span class="sc">+</span></span>
+<span id="cb29-16"><a href="#cb29-16"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>.fitted, <span class="at">y=</span>TwoSDHigh, <span class="at">color=</span><span class="st">"Mean + 2 SD"</span>))<span class="sc">+</span></span>
 <span id="cb29-17"><a href="#cb29-17"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Residuals"</span> <span class="ot">=</span> <span class="st">"black"</span>, <span class="st">"Mean - 2 SD"</span> <span class="ot">=</span> <span class="st">"orange"</span>, <span class="st">"Mean + 2 SD"</span> <span class="ot">=</span> <span class="st">"red"</span>)) <span class="sc">+</span></span>
-<span id="cb29-18"><a href="#cb29-18"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3000000</span>))<span class="sc">+</span></span>
-<span id="cb29-19"><a href="#cb29-19"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2000000</span>,<span class="dv">3000000</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb29-18"><a href="#cb29-18"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">2500000</span>))<span class="sc">+</span></span>
+<span id="cb29-19"><a href="#cb29-19"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">2000000</span>,<span class="dv">5000000</span>))<span class="sc">+</span></span>
+<span id="cb29-20"><a href="#cb29-20"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Price (estimated)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
