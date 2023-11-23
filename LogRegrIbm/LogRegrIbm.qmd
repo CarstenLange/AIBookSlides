@@ -1,0 +1,61 @@
+---
+title: "Logistic Regression"
+subtitle: "Multivariate"
+format: 
+  revealjs:
+    multiplex: true
+    code-fold: false
+    scrollable: true
+    incremental: false
+    echo: true
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+-   How
+
+##  {background-iframe="loglinapp0.html" background-interactive="true" .smaller}
+
+:::: {.columns}
+
+::: {.column width="70%" }
+
+:::
+
+::: {.column width="30%"}
+
+$$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
+
+- Click on legend to show/hide graphs.
+
+- 50%-Level and Decision Boundary graphs are currently hidden
+
+- Adjust beta1 and beta2 to improve MSE of Logistic Regression
+:::
+
+::::
+
+##  {background-iframe="loglinappopt.html" background-interactive="true" .smaller}
+
+:::: {.columns}
+
+::: {.column width="70%" }
+
+:::
+
+::: {.column width="30%"}
+
+$$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
+
+- Click on legend to show/hide graphs.
+
+- 50%-Level and Decision Boundary graphs are currently hidden
+
+- Use 50%-Level and Decision Boundary to see predicted yacht ownership fot data
+:::
+
+::::
+
+## bla
