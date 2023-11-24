@@ -16,6 +16,23 @@ format:
 
 -   How
 
+##  {background-iframe="logisticfuncapp.html" background-interactive="true" .smaller}
+
+:::: {.columns}
+
+::: {.column width="70%" }
+
+:::
+
+::: {.column width="30%"}
+
+$$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
+
+- Adjust beta1 and beta2 to see the effect on the Logistic Function
+:::
+
+::::
+
 ##  {background-iframe="loglinapp0.html" background-interactive="true" .smaller}
 
 :::: {.columns}
