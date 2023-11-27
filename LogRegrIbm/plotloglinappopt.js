@@ -108,7 +108,7 @@ function UpdatePlot() {
     var layout = {
         xaxis: {title: "Income"}, //pop() last item of list 
         yaxis: {title: "Yacht Ownership",
-                range: [-0.1, 1.2], tickvals: [0, 0.5, 1],
+                range: [-0.1, 1.2], tickvals: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1],
                },
         title: "Opt. Logistic vs. Opt. Linear Regression"
     };

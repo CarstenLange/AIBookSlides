@@ -1,6 +1,6 @@
 ---
 title: "Logistic Regression"
-subtitle: "Multivariate"
+subtitle: "Multivariate logistic Regression"
 format: 
   revealjs:
     multiplex: true
@@ -14,17 +14,64 @@ format:
 
 ## What Will You Learn {.scrollable .smaller}
 
--   How
+-   What distinguishees data with a binary dependent variable (dummy variables) from data with a contious dependent variable.
+
+- Why a linear regression (Linear Probability Model; LPM) is not suitable for estimating dummy variables
+
+- Why a Logistic Regression function are well suited to estimate dummy variables.
+
+- What is the difference between Odds and Probabilities
+
+- How to interpret the parameters of a Logistic Regression
+
+## A Mock Up Example {.smaller}
+
+```{r}
+#| echo: false
+library(rio)
+library(janitor)
+library(tidymodels)
+library(kableExtra)
+DataPlot=tibble(Name=c("Jack","Sarah","Carl","Eric","Zoe",
+                          "James","Enrico","Erica","Stephanie","Susan"),
+                   Income=c(45,50,55,60,67,250,280,320,370,500),
+                   Yacht=c(1,0,0,0,0,1,1,1,1,1))
+kbl(DataPlot)
+```
+
+
+
+##  {background-iframe="loglinappdata.html" background-interactive="true" .smaller}
+
+:::: {.columns}
+
+::: {.column width="80%" }
+
+:::
+
+::: {.column width="20%"}
+
+- Click on legend to show/hide graphs.
+
+- The data are already shown.
+
+- Activate the OLS regression line to see how data are approximated.
+
+:::
+
+
+::::
+
 
 ##  {background-iframe="logisticfuncapp.html" background-interactive="true" .smaller}
 
 :::: {.columns}
 
-::: {.column width="70%" }
+::: {.column width="75%" }
 
 :::
 
-::: {.column width="30%"}
+::: {.column width="25%"}
 
 $$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
 
