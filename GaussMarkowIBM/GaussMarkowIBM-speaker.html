@@ -703,9 +703,9 @@ F-statistic:  38.8 on 3 and 718 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="endogenity-overview" class="slide level2 smaller">
-<h2>Endogenity (Overview)</h2>
-<p><strong>Endogenity:</strong> Error term is correlated with one or more of the independent (predictor) variables.</p>
+<section id="endogeneity-overview" class="slide level2 smaller">
+<h2>Endogeneity (Overview)</h2>
+<p><strong>Endogeneity:</strong> Error term is correlated with one or more of the independent (predictor) variables.</p>
 <p><strong>If not fulfilled:</strong> Coefficients <span class="math inline">\((\beta s)\)</span> are biased and inconsistent.</p>
 <p><strong>Identify:</strong> Difficult, because if estimate is biased errors are also biased and cannot be used to test for correlation with predictors.</p>
 <p>If domain knowledge indicates endegenity, try IV Regression and see the results of the <em>Durbin-Wu-Hausmann</em> (<em>DWH</em>) test.</p>
@@ -715,8 +715,8 @@ F-statistic:  38.8 on 3 and 718 DF,  p-value: &lt; 2.2e-16</code></pre>
 <li><p>Run two stage IV Regression</p></li>
 </ul>
 </section>
-<section id="endogenity-example" class="slide level2">
-<h2>Endogenity (Example)</h2>
+<section id="endogeneity-example" class="slide level2">
+<h2>Endogeneity (Example)</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">library</span>(ggdag)</span>
 <span id="cb21-2"><a href="#cb21-2"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
@@ -726,7 +726,7 @@ F-statistic:  38.8 on 3 and 718 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 
 </section>
-<section id="endogenity-example-output" class="slide level2 output-location-slide"><h2>Endogenity (Example)</h2><div class="cell output-location-slide">
+<section id="endogeneity-example-output" class="slide level2 output-location-slide"><h2>Endogeneity (Example)</h2><div class="cell output-location-slide">
 <div class="cell-output-display">
 <p><img data-src="GaussMarkowIBM_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
 </div>

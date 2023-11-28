@@ -231,9 +231,9 @@ summary(ModelWage00)
 ```
 :::
 
-## Endogenity (Overview) {.smaller}
+## Endogeneity (Overview) {.smaller}
 
-**Endogenity:** Error term is correlated with one or more of the independent (predictor) variables.
+**Endogeneity:** Error term is correlated with one or more of the independent (predictor) variables.
 
 
 **If not fulfilled:** Coefficients $(\beta s)$ are biased and inconsistent. 
@@ -249,7 +249,7 @@ If domain knowledge indicates endegenity, try IV Regression and see the results 
 
 - Run two stage IV Regression
 
-## Endogenity (Example)
+## Endogeneity (Example)
 
 
 ```{r}
