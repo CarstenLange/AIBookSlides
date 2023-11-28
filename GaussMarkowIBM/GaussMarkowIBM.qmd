@@ -264,9 +264,7 @@ dagify(Wage~Educ+Ability+RaceBl,
 
 ## Endogeneity (Correlation with the errors) --- Simple Model
 
-```{=tex}
 $$\widehat{Wage}= \beta_1 Educ + \beta_2 RaceBl +\beta3$$
-```
 
 
 

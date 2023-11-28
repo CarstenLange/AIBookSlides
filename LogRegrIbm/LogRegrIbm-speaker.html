@@ -586,12 +586,12 @@ Odds=\frac{P}{1-P}=\frac{0.4}{1-0.4}=\frac{0.4}{0.6}=\frac{2}{3}
 <section id="churn-at-the-telco-company" class="slide level2">
 <h2>Churn at the Telco Company</h2>
 <p><strong>Research Question:</strong></p>
-<p>Should seniors treated diferently when it comes to churn prevention?</p>
+<p>Should seniors be treated differently when it comes to churn prevention?</p>
 </section>
 <section id="churn-at-the-telco-company-digital-acylical-graph" class="slide level2">
 <h2>Churn at the Telco Company — Digital Acylical Graph</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ggdag)</span>
+<div class="sourceCode cell-code" id="cb1" data-code-line-numbers="2|3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(ggdag)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">dagify</span>(Churn<span class="sc">~</span>SexMale<span class="sc">+</span>SeniorYes<span class="sc">+</span>MonChar<span class="sc">+</span>TotChar<span class="sc">+</span>Tenure,</span>
 <span id="cb1-3"><a href="#cb1-3"></a>       TotChar<span class="sc">~</span>MonChar<span class="sc">+</span>Tenure) <span class="sc">|&gt;</span> </span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="fu">ggdag</span>(<span class="at">node_size =</span> <span class="dv">22</span>) <span class="sc">+</span> <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -620,26 +620,33 @@ Odds=\frac{P}{1-P}=\frac{0.4}{1-0.4}=\frac{0.4}{0.6}=\frac{2}{3}
 <section id="data-engineering" class="slide level2">
 <h2>Data Engineering</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(corrplot)</span>
+<div class="sourceCode cell-code" id="cb4" data-code-line-numbers="2,3|4|5|6|7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(corrplot)</span>
 <span id="cb4-2"><a href="#cb4-2"></a>DataChurn<span class="ot">=</span>DataChurnOrg <span class="sc">|&gt;</span></span>
 <span id="cb4-3"><a href="#cb4-3"></a>          <span class="fu">select</span>(Churn,Gender,<span class="at">SeniorYes=</span>SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) <span class="sc">|&gt;</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a>          <span class="fu">mutate</span>(<span class="at">ChurnYes=</span><span class="fu">ifelse</span>(Churn<span class="sc">==</span><span class="st">"Yes"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Churn=</span><span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a>          <span class="fu">mutate</span>(<span class="at">MaleYes=</span><span class="fu">ifelse</span>(Gender<span class="sc">==</span><span class="st">"Male"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Gender=</span><span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a>          <span class="fu">na.omit</span>(TotalCharges)</span>
 <span id="cb4-7"><a href="#cb4-7"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(DataChurn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-
 </div>
-<img data-src="LogRegrIbm_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<div class="cell fragment">
+<div class="cell-output-display">
+<p><img data-src="LogRegrIbm_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+</div>
+</div>
+</section>
 <section id="splitting-into-training-and-testing-data" class="slide level2">
 <h2>Splitting into Training and Testing Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>DataChurn<span class="ot">=</span>DataChurn <span class="sc">|&gt;</span> </span>
+<div class="sourceCode cell-code" id="cb5" data-code-line-numbers="1,2|4,5|6-8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>DataChurn<span class="ot">=</span>DataChurn <span class="sc">|&gt;</span> </span>
 <span id="cb5-2"><a href="#cb5-2"></a><span class="fu">mutate</span>(<span class="at">ChurnYes=</span><span class="fu">as.factor</span>(ChurnYes))</span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>Split3070<span class="ot">=</span><span class="fu">initial_split</span>(DataChurn, <span class="at">prop=</span><span class="fl">0.7</span>,<span class="at">strata=</span>ChurnYes)</span>
-<span id="cb5-5"><a href="#cb5-5"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split3070)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split3070)</span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="fu">head</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a>Split3070<span class="ot">=</span><span class="fu">initial_split</span>(DataChurn, <span class="at">prop=</span><span class="fl">0.7</span>,<span class="at">strata=</span>ChurnYes)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split3070)</span>
+<span id="cb5-7"><a href="#cb5-7"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split3070)</span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="fu">head</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>  SeniorYes Tenure MonthlyCharges TotalCharges ChurnYes MaleYes
 1         0      1          29.85        29.85        0       0
@@ -654,46 +661,65 @@ Odds=\frac{P}{1-P}=\frac{0.4}{1-0.4}=\frac{0.4}{0.6}=\frac{2}{3}
 <section id="analysis-creating-fitted-workflow" class="slide level2">
 <h2>Analysis — Creating Fitted Workflow</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>ModelDesignLogistic<span class="ot">=</span><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<div class="sourceCode cell-code" id="cb7" data-code-line-numbers="1-3|6|8-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>ModelDesignLogistic<span class="ot">=</span><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
 <span id="cb7-2"><a href="#cb7-2"></a>                    <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb7-3"><a href="#cb7-3"></a>                    <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
 <span id="cb7-4"><a href="#cb7-4"></a></span>
-<span id="cb7-5"><a href="#cb7-5"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, ChurnYes<span class="sc">~</span>MaleYes<span class="sc">+</span>SeniorYes<span class="sc">+</span>MonthlyCharges)</span>
-<span id="cb7-6"><a href="#cb7-6"></a></span>
-<span id="cb7-7"><a href="#cb7-7"></a>WFModelChurn<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>             <span class="fu">add_recipe</span>(RecipeChurn) <span class="sc">|&gt;</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>             <span class="fu">add_model</span>(ModelDesignLogistic) <span class="sc">|&gt;</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>             <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-5"><a href="#cb7-5"></a></span>
+<span id="cb7-6"><a href="#cb7-6"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, ChurnYes<span class="sc">~</span>MaleYes<span class="sc">+</span>SeniorYes<span class="sc">+</span>MonthlyCharges<span class="sc">+</span>Tenure)</span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a>WFModelChurn<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a>             <span class="fu">add_recipe</span>(RecipeChurn) <span class="sc">|&gt;</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>             <span class="fu">add_model</span>(ModelDesignLogistic) <span class="sc">|&gt;</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>             <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="testing-for-multicolinearity" class="slide level2">
+<h2>Testing for Multicolinearity</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="fu">vif</span>(<span class="fu">extract_fit_engine</span>(WFModelChurn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>       MaleYes      SeniorYes MonthlyCharges         Tenure 
+      1.001700       1.040422       1.324105       1.298105 </code></pre>
+</div>
 </div>
 </section>
 <section id="analysis-results" class="slide level2">
 <h2>Analysis Results</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">tidy</span>(WFModelChurn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">tidy</span>(WFModelChurn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 4 × 5
+<pre><code># A tibble: 5 × 5
   term           estimate std.error statistic   p.value
   &lt;chr&gt;             &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
-1 (Intercept)     -2.07     0.0957    -21.7   2.85e-104
-2 MaleYes         -0.0540   0.0663     -0.814 4.16e-  1
-3 SeniorYes        0.651    0.0835      7.80  6.18e- 15
-4 MonthlyCharges   0.0142   0.00119    12.0   3.93e- 33</code></pre>
+1 (Intercept)    -1.83      0.112    -16.3    5.97e- 60
+2 MaleYes         0.00693   0.0750     0.0925 9.26e-  1
+3 SeniorYes       0.643     0.0962     6.68   2.34e- 11
+4 MonthlyCharges  0.0322    0.00159   20.2    7.59e- 91
+5 Tenure         -0.0574    0.00210  -27.3    5.44e-164</code></pre>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelChurn, <span class="at">new_data =</span> DataTest)</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">head</span>(DataTestWithPred[,<span class="sc">-</span><span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelChurn, <span class="at">new_data =</span> DataTest)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">head</span>(DataTestWithPred[,<span class="sc">-</span><span class="dv">4</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
   SeniorYes Tenure MonthlyCharges ChurnYes MaleYes .pred_class .pred_0 .pred_1
       &lt;int&gt;  &lt;int&gt;          &lt;dbl&gt; &lt;fct&gt;      &lt;dbl&gt; &lt;fct&gt;         &lt;dbl&gt;   &lt;dbl&gt;
-1         0     34           57.0 0              1 0             0.789   0.211
-2         0     16           19.0 0              1 0             0.865   0.135
-3         0     69          113.  0              0 0             0.614   0.386
-4         0     52           20.6 0              0 0             0.856   0.144
-5         0     71          107.  0              1 0             0.648   0.352
-6         1      1           39.6 1              1 0             0.714   0.286</code></pre>
+1         0     34           57.0 0              1 0             0.875  0.125 
+2         0     16           19.0 0              1 0             0.894  0.106 
+3         0     69          113.  0              0 0             0.895  0.105 
+4         0     52           20.6 0              0 0             0.985  0.0155
+5         0     71          107.  0              1 0             0.922  0.0783
+6         1      1           39.6 1              1 1             0.491  0.509 </code></pre>
 </div>
 </div>
 </div>
@@ -702,88 +728,112 @@ Odds=\frac{P}{1-P}=\frac{0.4}{1-0.4}=\frac{0.4}{0.6}=\frac{2}{3}
 <h2>Analysis — Summary Result</h2>
 <p><strong>Confusion Matrix:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>          Truth
 Prediction    0    1
-         0 1497  545
-         1   52   16</code></pre>
+         0 1399  309
+         1  150  252</code></pre>
 </div>
 </div>
 <div class="fragment">
 <p><strong>Selected Metrics:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>FctMetricsCL<span class="ot">=</span><span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="fu">FctMetricsCL</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16" data-code-line-numbers="1|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>FctMetricsCL<span class="ot">=</span><span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">FctMetricsCL</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   .metric     .estimator .estimate
   &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
-1 accuracy    binary        0.717 
-2 sensitivity binary        0.966 
-3 specificity binary        0.0285</code></pre>
+1 accuracy    binary         0.782
+2 sensitivity binary         0.903
+3 specificity binary         0.449</code></pre>
 </div>
 </div>
 </div>
 </section>
 <section id="fixing-the-problem-of-unbalanced-data---code" class="slide level2">
 <h2>Fixing the Problem of Unbalanced Data - Code</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">count</span>(DataTrain, ChurnYes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>  ChurnYes    n
+1        0 3614
+2        1 1308</code></pre>
+</div>
+</div>
+<div>
 <ol type="1">
-<li><p><code>step_downsample()</code></p></li>
-<li><p><code>step_upsample()</code></p></li>
-<li><p><code>step_smote()</code></p></li>
+<li class="fragment"><p><code>step_downsample():</code> Delete observations. from the majority class.</p></li>
+<li class="fragment"><p><code>step_upsample():</code> Copy/Paste observations. from the minority class.</p></li>
+<li class="fragment"><p><code>step_smote():</code> Create records similar to existing minority class observations.</p></li>
 </ol>
+</div>
 </section>
 <section id="fixing-the-problem-of-unbalanced-data---code-1" class="slide level2">
 <h2>Fixing the Problem of Unbalanced Data - Code</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb16-4"><a href="#cb16-4"></a></span>
-<span id="cb16-5"><a href="#cb16-5"></a>DataChurnOrg<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/TelcoData.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) </span>
-<span id="cb16-7"><a href="#cb16-7"></a></span>
-<span id="cb16-8"><a href="#cb16-8"></a>DataChurn<span class="ot">=</span>DataChurnOrg <span class="sc">|&gt;</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a>          <span class="fu">select</span>(Churn,Gender,<span class="at">SeniorYes=</span>SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) <span class="sc">|&gt;</span></span>
-<span id="cb16-10"><a href="#cb16-10"></a>          <span class="fu">mutate</span>(<span class="at">ChurnYes=</span><span class="fu">ifelse</span>(Churn<span class="sc">==</span><span class="st">"Yes"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Churn=</span><span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-11"><a href="#cb16-11"></a>          <span class="fu">mutate</span>(<span class="at">MaleYes=</span><span class="fu">ifelse</span>(Gender<span class="sc">==</span><span class="st">"Male"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Gender=</span><span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a>          <span class="fu">na.omit</span>(TotalCharges)</span>
-<span id="cb16-13"><a href="#cb16-13"></a></span>
-<span id="cb16-14"><a href="#cb16-14"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb16-15"><a href="#cb16-15"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(DataChurn))</span>
-<span id="cb16-16"><a href="#cb16-16"></a></span>
-<span id="cb16-17"><a href="#cb16-17"></a><span class="fu">library</span>(SmartEDA)</span>
-<span id="cb16-18"><a href="#cb16-18"></a><span class="fu">ExpReport</span>(DataChurnOrg, <span class="at">op_file=</span><span class="st">"EDAChurnData.html"</span>)</span>
-<span id="cb16-19"><a href="#cb16-19"></a></span>
-<span id="cb16-20"><a href="#cb16-20"></a>DataChurn<span class="ot">=</span>DataChurn <span class="sc">|&gt;</span> </span>
-<span id="cb16-21"><a href="#cb16-21"></a><span class="fu">mutate</span>(<span class="at">ChurnYes=</span><span class="fu">as.factor</span>(ChurnYes))</span>
-<span id="cb16-22"><a href="#cb16-22"></a></span>
-<span id="cb16-23"><a href="#cb16-23"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
-<span id="cb16-24"><a href="#cb16-24"></a>Split3070<span class="ot">=</span><span class="fu">initial_split</span>(DataChurn, <span class="at">prop=</span><span class="fl">0.7</span>,<span class="at">strata=</span>ChurnYes)</span>
-<span id="cb16-25"><a href="#cb16-25"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split3070)</span>
-<span id="cb16-26"><a href="#cb16-26"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split3070)</span>
-<span id="cb16-27"><a href="#cb16-27"></a></span>
-<span id="cb16-28"><a href="#cb16-28"></a></span>
-<span id="cb16-29"><a href="#cb16-29"></a>ModelDesignLogistic<span class="ot">=</span><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
-<span id="cb16-30"><a href="#cb16-30"></a>                    <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb16-31"><a href="#cb16-31"></a>                    <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
-<span id="cb16-32"><a href="#cb16-32"></a><span class="fu">library</span>(themis) <span class="co">#needed for step_smote</span></span>
-<span id="cb16-33"><a href="#cb16-33"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, ChurnYes<span class="sc">~</span>MaleYes<span class="sc">+</span>SeniorYes<span class="sc">+</span>MonthlyCharges) <span class="sc">|&gt;</span>       </span>
-<span id="cb16-34"><a href="#cb16-34"></a>            <span class="fu">step_smote</span>(ChurnYes)</span>
-<span id="cb16-35"><a href="#cb16-35"></a></span>
-<span id="cb16-36"><a href="#cb16-36"></a>WFModelChurn<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
-<span id="cb16-37"><a href="#cb16-37"></a>             <span class="fu">add_recipe</span>(RecipeChurn) <span class="sc">|&gt;</span></span>
-<span id="cb16-38"><a href="#cb16-38"></a>             <span class="fu">add_model</span>(ModelDesignLogistic) <span class="sc">|&gt;</span></span>
-<span id="cb16-39"><a href="#cb16-39"></a>             <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb16-40"><a href="#cb16-40"></a></span>
-<span id="cb16-41"><a href="#cb16-41"></a></span>
-<span id="cb16-42"><a href="#cb16-42"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelChurn, <span class="at">new_data =</span> DataTest)</span>
-<span id="cb16-43"><a href="#cb16-43"></a></span>
-<span id="cb16-44"><a href="#cb16-44"></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span>
-<span id="cb16-45"><a href="#cb16-45"></a></span>
-<span id="cb16-46"><a href="#cb16-46"></a>FctMetricsCL<span class="ot">=</span><span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span>
-<span id="cb16-47"><a href="#cb16-47"></a><span class="fu">FctMetricsCL</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb20-4"><a href="#cb20-4"></a></span>
+<span id="cb20-5"><a href="#cb20-5"></a>DataChurnOrg<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/TelcoData.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) </span>
+<span id="cb20-7"><a href="#cb20-7"></a></span>
+<span id="cb20-8"><a href="#cb20-8"></a>DataChurn<span class="ot">=</span>DataChurnOrg <span class="sc">|&gt;</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a>          <span class="fu">select</span>(Churn,Gender,<span class="at">SeniorYes=</span>SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) <span class="sc">|&gt;</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>          <span class="fu">mutate</span>(<span class="at">ChurnYes=</span><span class="fu">ifelse</span>(Churn<span class="sc">==</span><span class="st">"Yes"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Churn=</span><span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-11"><a href="#cb20-11"></a>          <span class="fu">mutate</span>(<span class="at">MaleYes=</span><span class="fu">ifelse</span>(Gender<span class="sc">==</span><span class="st">"Male"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Gender=</span><span class="cn">NULL</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-12"><a href="#cb20-12"></a>          <span class="fu">na.omit</span>(TotalCharges)</span>
+<span id="cb20-13"><a href="#cb20-13"></a></span>
+<span id="cb20-14"><a href="#cb20-14"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb20-15"><a href="#cb20-15"></a><span class="fu">corrplot</span>(<span class="fu">cor</span>(DataChurn))</span>
+<span id="cb20-16"><a href="#cb20-16"></a></span>
+<span id="cb20-17"><a href="#cb20-17"></a><span class="fu">library</span>(SmartEDA)</span>
+<span id="cb20-18"><a href="#cb20-18"></a><span class="fu">ExpReport</span>(DataChurnOrg, <span class="at">op_file=</span><span class="st">"EDAChurnData.html"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19"></a></span>
+<span id="cb20-20"><a href="#cb20-20"></a>DataChurn<span class="ot">=</span>DataChurn <span class="sc">|&gt;</span> </span>
+<span id="cb20-21"><a href="#cb20-21"></a><span class="fu">mutate</span>(<span class="at">ChurnYes=</span><span class="fu">as.factor</span>(ChurnYes))</span>
+<span id="cb20-22"><a href="#cb20-22"></a></span>
+<span id="cb20-23"><a href="#cb20-23"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
+<span id="cb20-24"><a href="#cb20-24"></a>Split3070<span class="ot">=</span><span class="fu">initial_split</span>(DataChurn, <span class="at">prop=</span><span class="fl">0.7</span>,<span class="at">strata=</span>ChurnYes)</span>
+<span id="cb20-25"><a href="#cb20-25"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split3070)</span>
+<span id="cb20-26"><a href="#cb20-26"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split3070)</span>
+<span id="cb20-27"><a href="#cb20-27"></a></span>
+<span id="cb20-28"><a href="#cb20-28"></a></span>
+<span id="cb20-29"><a href="#cb20-29"></a>ModelDesignLogistic<span class="ot">=</span><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-30"><a href="#cb20-30"></a>                    <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-31"><a href="#cb20-31"></a>                    <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb20-32"><a href="#cb20-32"></a></span>
+<span id="cb20-33"><a href="#cb20-33"></a><span class="fu">library</span>(themis) <span class="co">#needed for step_smote</span></span>
+<span id="cb20-34"><a href="#cb20-34"></a></span>
+<span id="cb20-35"><a href="#cb20-35"></a><span class="fu">count</span>(DataTrain,ChurnYes) </span>
+<span id="cb20-36"><a href="#cb20-36"></a></span>
+<span id="cb20-37"><a href="#cb20-37"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
+<span id="cb20-38"><a href="#cb20-38"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, ChurnYes<span class="sc">~</span>MaleYes<span class="sc">+</span>SeniorYes<span class="sc">+</span>MonthlyCharges<span class="sc">+</span>Tenure) <span class="sc">|&gt;</span>       </span>
+<span id="cb20-39"><a href="#cb20-39"></a>  <span class="fu">step_downsample</span>(ChurnYes, <span class="at">under_ratio=</span><span class="dv">2</span>) <span class="sc">|&gt;</span>          </span>
+<span id="cb20-40"><a href="#cb20-40"></a>  <span class="fu">step_smote</span>(ChurnYes, <span class="at">over_ratio=</span><span class="fl">0.75</span>)</span>
+<span id="cb20-41"><a href="#cb20-41"></a></span>
+<span id="cb20-42"><a href="#cb20-42"></a><span class="fu">count</span>(RecipeChurn<span class="sc">|&gt;</span><span class="fu">prep</span>()<span class="sc">|&gt;</span><span class="fu">juice</span>(),ChurnYes)  </span>
+<span id="cb20-43"><a href="#cb20-43"></a>  </span>
+<span id="cb20-44"><a href="#cb20-44"></a>WFModelChurn<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-45"><a href="#cb20-45"></a>             <span class="fu">add_recipe</span>(RecipeChurn) <span class="sc">|&gt;</span></span>
+<span id="cb20-46"><a href="#cb20-46"></a>             <span class="fu">add_model</span>(ModelDesignLogistic) <span class="sc">|&gt;</span></span>
+<span id="cb20-47"><a href="#cb20-47"></a>             <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb20-48"><a href="#cb20-48"></a></span>
+<span id="cb20-49"><a href="#cb20-49"></a></span>
+<span id="cb20-50"><a href="#cb20-50"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelChurn, <span class="at">new_data =</span> DataTest)</span>
+<span id="cb20-51"><a href="#cb20-51"></a></span>
+<span id="cb20-52"><a href="#cb20-52"></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span>
+<span id="cb20-53"><a href="#cb20-53"></a></span>
+<span id="cb20-54"><a href="#cb20-54"></a>FctMetricsCL<span class="ot">=</span><span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span>
+<span id="cb20-55"><a href="#cb20-55"></a><span class="fu">FctMetricsCL</span>(DataTestWithPred, <span class="at">truth=</span>ChurnYes, <span class="at">estimate=</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>

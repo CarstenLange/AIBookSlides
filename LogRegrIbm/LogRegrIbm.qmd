@@ -177,13 +177,14 @@ $$
 
 **Research Question:**
 
-Should seniors treated diferently when it comes to churn prevention?
+Should seniors be treated differently when it comes to churn prevention?
 
 
 ## Churn at the Telco Company --- Digital Acylical Graph
 
 ```{r}
 #| output-location: slide
+#| code-line-numbers: "2|3"
 library(ggdag)
 dagify(Churn~SexMale+SeniorYes+MonChar+TotChar+Tenure,
        TotChar~MonChar+Tenure) |> 
@@ -213,6 +214,8 @@ ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
 
 ## Data Engineering 
 ```{r}
+#| code-line-numbers: "2,3|4|5|6|7"
+#| output-location: fragment
 library(corrplot)
 DataChurn=DataChurnOrg |>
           select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) |>
@@ -225,8 +228,11 @@ corrplot(cor(DataChurn))
 ## Splitting into Training and Testing Data
 
 ```{r}
+#| output-location: fragment
+#| code-line-numbers: "1,2|4,5|6-8"
 DataChurn=DataChurn |> 
 mutate(ChurnYes=as.factor(ChurnYes))
+
 set.seed(789)
 Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
 DataTrain=training(Split3070)
@@ -237,28 +243,40 @@ head(DataTrain)
 ## Analysis --- Creating Fitted Workflow
 
 ```{r}
+#| code-line-numbers: "1-3|6|8-11"
 ModelDesignLogistic=logistic_reg() |>
                     set_engine("glm") |> 
                     set_mode("classification")
 
-RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges)
+
+RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure)
 
 WFModelChurn=workflow() |>
              add_recipe(RecipeChurn) |>
              add_model(ModelDesignLogistic) |>
              fit(DataTrain)
+
+```
+## Testing for Multicolinearity
+
+```{r}
+#| output-location: fragment
+library(car)
+vif(extract_fit_engine(WFModelChurn))
 ```
 
 ## Analysis Results 
 
 
 ```{r}
+#| output-location: fragment
 tidy(WFModelChurn)
 ```
 
 . . .
 
 ```{r}
+#| output-location: fragment
 DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
 head(DataTestWithPred[,-4])
 ```
@@ -268,6 +286,7 @@ head(DataTestWithPred[,-4])
 **Confusion Matrix:**
 
 ```{r}
+#| output-location: fragment
 conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
 ```
 
@@ -276,18 +295,28 @@ conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
 **Selected Metrics:**
 
 ```{r}
+#| output-location: fragment
+#| code-line-numbers: "1|2"
 FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
 FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
 ```
 
 
-## Fixing the Problem of Unbalanced Data - Code
+## Fixing the Problem of Unbalanced Data - Code 
 
-1. `step_downsample()`
+```{r}
+#| output-location: fragment
+count(DataTrain, ChurnYes)
+```
 
-2. `step_upsample()`
 
-3. `step_smote()`
+::: {.incremental}
+1. `step_downsample():` Delete observations. from the majority class.
+
+2. `step_upsample():`  Copy/Paste observations. from the minority class.
+
+3. `step_smote():` Create records similar to existing minority class observations.
+:::
 
 ## Fixing the Problem of Unbalanced Data - Code
 
@@ -324,10 +353,18 @@ DataTest=testing(Split3070)
 ModelDesignLogistic=logistic_reg() |>
                     set_engine("glm") |> 
                     set_mode("classification")
-library(themis) #needed for step_smote
-RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges) |>       
-            step_smote(ChurnYes)
 
+library(themis) #needed for step_smote
+
+count(DataTrain,ChurnYes) 
+
+set.seed(789)
+RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure) |>       
+  step_downsample(ChurnYes, under_ratio=2) |>          
+  step_smote(ChurnYes, over_ratio=0.75)
+
+count(RecipeChurn|>prep()|>juice(),ChurnYes)  
+  
 WFModelChurn=workflow() |>
              add_recipe(RecipeChurn) |>
              add_model(ModelDesignLogistic) |>
