@@ -1,6 +1,6 @@
 ---
 title: "Logistic Regression"
-subtitle: "Multivariate logistic Regression"
+subtitle: "Multivariate Logistic Regression"
 format: 
   revealjs:
     multiplex: true
@@ -10,19 +10,17 @@ format:
     echo: true
 ---
 
+## What Will You Learn 
 
+-   What distinguishes data with a binary dependent variable (dummy variables) from data with a continuous dependent variable.
 
-## What Will You Learn {.scrollable .smaller}
+-   Why a linear regression (Linear Probability Model; LPM) is not suitable for estimating dummy variables
 
--   What distinguishees data with a binary dependent variable (dummy variables) from data with a contious dependent variable.
+-   Why a Logistic Regression function is well suited to estimate dummy variables.
 
-- Why a linear regression (Linear Probability Model; LPM) is not suitable for estimating dummy variables
+-   What is the difference between Odds and Probabilities
 
-- Why a Logistic Regression function are well suited to estimate dummy variables.
-
-- What is the difference between Odds and Probabilities
-
-- How to interpret the parameters of a Logistic Regression
+-   How to interpret the parameters of a Logistic Regression
 
 ## A Mock Up Example {.smaller}
 
@@ -39,87 +37,308 @@ DataPlot=tibble(Name=c("Jack","Sarah","Carl","Eric","Zoe",
 kbl(DataPlot)
 ```
 
+##  {.smaller background-iframe="loglinappdata.html" background-interactive="true"}
 
-
-##  {background-iframe="loglinappdata.html" background-interactive="true" .smaller}
-
-:::: {.columns}
-
-::: {.column width="80%" }
-
+::: columns
+::: {.column width="80%"}
 :::
 
 ::: {.column width="20%"}
+-   Click on legend to show/hide graphs.
 
-- Click on legend to show/hide graphs.
+-   The data are already shown.
 
-- The data are already shown.
-
-- Activate the OLS regression line to see how data are approximated.
-
+-   Activate the OLS regression line to see how data are approximated.
+:::
 :::
 
+##  {.smaller background-iframe="logisticfuncapp.html" background-interactive="true"}
 
-::::
-
-
-##  {background-iframe="logisticfuncapp.html" background-interactive="true" .smaller}
-
-:::: {.columns}
-
-::: {.column width="75%" }
-
+::: columns
+::: {.column width="75%"}
 :::
 
 ::: {.column width="25%"}
-
 $$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
 
-- Adjust beta1 and beta2 to see the effect on the Logistic Function
+-   Adjust beta1 and beta2 to see the effect on the Logistic Function
+:::
 :::
 
-::::
+##  {.smaller background-iframe="loglinapp0.html" background-interactive="true"}
 
-##  {background-iframe="loglinapp0.html" background-interactive="true" .smaller}
-
-:::: {.columns}
-
-::: {.column width="70%" }
-
+::: columns
+::: {.column width="70%"}
 :::
 
 ::: {.column width="30%"}
-
 $$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
 
-- Click on legend to show/hide graphs.
+-   Click on legend to show/hide graphs.
 
-- 50%-Level and Decision Boundary graphs are currently hidden
+-   50%-Level and Decision Boundary graphs are currently hidden
 
-- Adjust beta1 and beta2 to improve MSE of Logistic Regression
+-   Adjust beta1 and beta2 to improve MSE of Logistic Regression
+:::
 :::
 
-::::
+##  {.smaller background-iframe="loglinappopt.html" background-interactive="true"}
 
-##  {background-iframe="loglinappopt.html" background-interactive="true" .smaller}
-
-:::: {.columns}
-
-::: {.column width="70%" }
-
+::: columns
+::: {.column width="70%"}
 :::
 
 ::: {.column width="30%"}
-
 $$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
 
-- Click on legend to show/hide graphs.
+-   Click on legend to show/hide graphs.
 
-- 50%-Level and Decision Boundary graphs are currently hidden
+-   50%-Level and Decision Boundary graphs are currently hidden
 
-- Use 50%-Level and Decision Boundary to see predicted yacht ownership fot data
+-   Use 50%-Level and Decision Boundary to see predicted yacht ownership fot data
+:::
 :::
 
-::::
+## How to Interpret the Logistic Regression Coefficients {.smaller}
+### Oddds vs. Probabilty --- Example 
 
-## bla
+Assume a horse has a chance of $40\%$ to end up in the first three and you bet on this. The probability for you to win are:
+
+$$P=0.4$$
+
+. . . 
+
+The *Odds* are the chance to win compared to the chance **not** to win:
+
+. . . 
+
+$$
+Odds=\frac{P}{1-P}=\frac{0.4}{1-0.4}=\frac{0.4}{0.6}=\frac{2}{3}
+$$
+The odds are **two-to-three**.
+
+
+. . . 
+
+Remember for later: $$Odds=\frac{P}{1-P}$$
+
+## How to Interpret the Logistic Regression Coefficients {.smaller}
+
+$$P=\frac{1}{1+e^{-(\beta_1\cdot x_i+\beta_2)}} $$ 
+
+Take the reciprocal on both sides of the equation:  
+
+. . .
+
+$$\frac{1}{P}=1+e^{-(\beta_1\cdot x_i+\beta_2)}$$ 
+
+
+Subtract 1 on both sides:  
+
+. . .
+
+$$\frac{1}{P}-1=e^{-(\beta_1\cdot x_i+\beta_2)}$$ 
+
+
+Consider that $-1=-\frac{P}{P}$:  
+
+. . .
+
+$$\frac{1}{P}-\frac{P}{P}=e^{-(\beta_1\cdot x_i+\beta_2)}$$ 
+Simplify:  
+
+. . .
+
+$$\frac{1-P}{P}=e^{-(\beta_1\cdot x_i+\beta_2)}$$ 
+
+
+Take again the reciprocal of both sides:  
+
+. . .
+
+$$\underbrace{\frac{P}{1- P}}_{Odds_i}=e^{\beta_1\cdot x_i+\beta_2}$$ 
+
+
+
+
+
+
+Take the logarithm on both sides:
+
+. . .
+
+$$
+\ln(Odds)=\beta_1\cdot x_i+\beta_2  
+$$
+**If $x$ changes by one unit then $
+\ln(Odds)$ changes by $\beta_1$ --- which is a relative (percentage) change. **
+
+## Churn at the Telco Company 
+
+**Research Question:**
+
+Should seniors treated diferently when it comes to churn prevention?
+
+
+## Churn at the Telco Company --- Digital Acylical Graph
+
+```{r}
+#| output-location: slide
+library(ggdag)
+dagify(Churn~SexMale+SeniorYes+MonChar+TotChar+Tenure,
+       TotChar~MonChar+Tenure) |> 
+ggdag(node_size = 22) + theme_void()
+```
+
+
+
+## Churn at the Telco Company
+
+```{r}
+library(rio)
+library(janitor)
+library(tidymodels)
+library(SmartEDA)
+DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |>
+clean_names("upper_camel") 
+```
+
+```{r}
+#| eval: false
+ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
+```
+
+[EDAChurnData.html](EDAChurnData.html)
+
+
+## Data Engineering 
+```{r}
+library(corrplot)
+DataChurn=DataChurnOrg |>
+          select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) |>
+          mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |>
+          mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |>
+          na.omit(TotalCharges)
+corrplot(cor(DataChurn))
+```
+
+## Splitting into Training and Testing Data
+
+```{r}
+DataChurn=DataChurn |> 
+mutate(ChurnYes=as.factor(ChurnYes))
+set.seed(789)
+Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(Split3070)
+DataTest=testing(Split3070)
+head(DataTrain)
+```
+
+## Analysis --- Creating Fitted Workflow
+
+```{r}
+ModelDesignLogistic=logistic_reg() |>
+                    set_engine("glm") |> 
+                    set_mode("classification")
+
+RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges)
+
+WFModelChurn=workflow() |>
+             add_recipe(RecipeChurn) |>
+             add_model(ModelDesignLogistic) |>
+             fit(DataTrain)
+```
+
+## Analysis Results 
+
+
+```{r}
+tidy(WFModelChurn)
+```
+
+. . .
+
+```{r}
+DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
+head(DataTestWithPred[,-4])
+```
+
+## Analysis --- Summary Result
+
+**Confusion Matrix:**
+
+```{r}
+conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+```
+
+. . .
+
+**Selected Metrics:**
+
+```{r}
+FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
+FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+```
+
+
+## Fixing the Problem of Unbalanced Data - Code
+
+1. `step_downsample()`
+
+2. `step_upsample()`
+
+3. `step_smote()`
+
+## Fixing the Problem of Unbalanced Data - Code
+
+```{r}
+#| eval: false
+library(rio)
+library(janitor)
+library(tidymodels)
+
+DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |>
+clean_names("upper_camel") 
+
+DataChurn=DataChurnOrg |>
+          select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) |>
+          mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |>
+          mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |>
+          na.omit(TotalCharges)
+
+library(corrplot)
+corrplot(cor(DataChurn))
+
+library(SmartEDA)
+ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
+
+DataChurn=DataChurn |> 
+mutate(ChurnYes=as.factor(ChurnYes))
+
+set.seed(789)
+Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(Split3070)
+DataTest=testing(Split3070)
+
+
+ModelDesignLogistic=logistic_reg() |>
+                    set_engine("glm") |> 
+                    set_mode("classification")
+library(themis) #needed for step_smote
+RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges) |>       
+            step_smote(ChurnYes)
+
+WFModelChurn=workflow() |>
+             add_recipe(RecipeChurn) |>
+             add_model(ModelDesignLogistic) |>
+             fit(DataTrain)
+
+
+DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
+
+conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+
+FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
+FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+```
+
