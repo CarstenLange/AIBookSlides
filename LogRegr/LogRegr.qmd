@@ -3,7 +3,12 @@ title: "Logistic Regression"
 subtitle: "A Powerful Tool for Classification"
 format: 
   revealjs:
-    code-fold: true
+    multiplex: true
+    code-fold: false
+    scrollable: true
+    echo: true
+    incremental: false
+    smaller: false
 ---
 
 

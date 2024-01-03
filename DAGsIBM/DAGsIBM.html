@@ -333,39 +333,19 @@
 </div>
 
 </section>
+<section id="test" class="slide level2">
+<h2>Test</h2>
+<p>hello</p>
+</section>
+<section id="slide-title" class="slide level2" data-background-iframe="https://ec-clange-web.cpp.edu/overallgradecalculator/default.aspx?course=EC201&amp;instructor=Lange&amp;cat1=Midterm&amp;w1=30&amp;cat2=Paper&amp;w2=20&amp;cat3=Final&amp;w3=50">
+<h2>Slide Title</h2>
+</section>
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
-<div class="cell">
-
-</div>
 <ul>
 <li class="fragment">DAG</li>
 </ul>
-</section>
-<section id="dags" class="slide level2 smaller">
-<h2>DAGs</h2>
-<p>Setting up a <em>DAG</em>:</p>
-<div class="cell">
-
-</div>
-
-<img data-src="DAGsIBM_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
-<section id="all-paths" class="slide level2">
-<h2>All Paths</h2>
-
-<img data-src="DAGsIBM_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
-<section id="sex-based-discrimination" class="slide level2">
-<h2>Sex Based Discrimination</h2>
-
-<img data-src="DAGsIBM_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section id="all-paths-1" class="slide level2">
-<h2>All Paths</h2>
-
-<img data-src="DAGsIBM_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
-<section id="adjustment-set" class="slide level2">
-<h2>Adjustment Set</h2>
-
-<img data-src="DAGsIBM_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"><div class="footer footer-default">
+<div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
 </div>
 </section>
@@ -582,44 +562,6 @@
         ]
       });
     </script>
-    
-    <script>
-      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
-      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
-      // slide changes (different for each slide format).
-      (function () {
-        // dispatch for htmlwidgets
-        function fireSlideEnter() {
-          const event = window.document.createEvent("Event");
-          event.initEvent("slideenter", true, true);
-          window.document.dispatchEvent(event);
-        }
-
-        function fireSlideChanged(previousSlide, currentSlide) {
-          fireSlideEnter();
-
-          // dispatch for shiny
-          if (window.jQuery) {
-            if (previousSlide) {
-              window.jQuery(previousSlide).trigger("hidden");
-            }
-            if (currentSlide) {
-              window.jQuery(currentSlide).trigger("shown");
-            }
-          }
-        }
-
-        // hookup for slidy
-        if (window.w3c_slidy) {
-          window.w3c_slidy.add_observer(function (slide_num) {
-            // slide_num starts at position 1
-            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
-          });
-        }
-
-      })();
-    </script>
-
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
       const toggleBodyColorMode = (bsSheetEl) => {

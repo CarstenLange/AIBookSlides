@@ -5,90 +5,21 @@ format:
   revealjs:
     code-fold: true
     scrollable: true
+
 ---
+
+## Test
+
+hello
+
+## Slide Title {background-iframe="https://ec-clange-web.cpp.edu/overallgradecalculator/default.aspx?course=EC201&instructor=Lange&cat1=Midterm&w1=30&cat2=Paper&w2=20&cat3=Final&w3=50"} 
 
 
 
 ## What Will You Learn {.scrollable .smaller}
-```{r}
-#| echo: false
-library(tidymodels)
-library(rio)
-library(kableExtra)
-library(janitor)
-DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
-```
+
 
 -   DAG 
 
-
-## DAGs {.smaller}
-
-Setting up a *DAG*: 
-
-
-```{r}
-
-library(tidymodels)
-library(rio)
-library(kableExtra)
-library(janitor)
-```
-
-
-
-```{r}
-library(ggdag)
-smoking_ca_dag <- dagify(cardiacarrest ~ cholesterol,
-  cholesterol ~ smoking + weight,
-  smoking ~ unhealthy,
-  weight ~ unhealthy,
-  labels = c(
-    "cardiacarrest" = "Cardiac\n Arrest",
-    "smoking" = "Smoking",
-    "cholesterol" = "Cholesterol",
-    "unhealthy" = "Unhealthy\n Lifestyle",
-    "weight" = "Weight"
-  ),
-  latent = "unhealthy",
-  exposure = "smoking",
-  outcome = "cardiacarrest"
-)
-
-ggdag(smoking_ca_dag, text = FALSE, use_labels = "label", stylized=FALSE)
-```
-
-## All Paths
-
-```{r}
-ggdag_paths(smoking_ca_dag, text = FALSE, use_labels = "label", shadow = TRUE)
-```
-## Sex Based Discrimination
-
-```{r}
-DagWageSex <- dagify(
-  Wage ~ SexFem+Educ + Exper+Tenure,
-  Educ ~ SexFem, Educ~EducParents,  
-  labels = c("Wage"="Wage","SexFem"="SexFem", "Exper"="Exper",
-             "Tenure"="Tenure","Educ"="Educ",
-             "EducParents"="EducParents"), 
-  latent = "EducParents",
-  exposure = "SexFem",
-  outcome = "Wage"
-)
-
-ggdag(DagWageSex, text = FALSE, use_labels = "label")
-```
-
-## All Paths
-
-```{r}
-ggdag_paths(DagWageSex, text = FALSE, use_labels = "label", shadow = TRUE)
-```
-## Adjustment Set
-
-```{r}
-ggdag_adjustment_set(DagWageSex, text = FALSE, use_labels = "label", shadow = TRUE)
-```
 
 
