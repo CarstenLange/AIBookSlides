@@ -1,0 +1,109 @@
+---
+title: "Innovative Educators"
+subtitle: "Virtual Summit, 2024-02-29"
+format: 
+  revealjs:
+    code-fold: false
+    scrollable: true
+    echo: true
+    incremental: false
+---
+
+## 
+
+![](Dr.%20Carsten%20Lange.png){fig-align="center"}
+
+## Topics Covered {.scrollable .smaller}
+
+::: incremental
+1.  **R Package TeachHist**
+    -   Uses ggplot2 R package for histograms
+    -   In addition to the original horizontal axis, a **Z-score axis** is displayed
+    -   Displays data, confidence intervals, and hypothesis tests.
+2.  **Quarto Slides**
+    -   Support R and Python coding
+    -   Browser-based but also supports PDF (and PowerPoint)
+    -   Supports equations
+3.  **Google Colab**
+    -   supports interactive R and Python in a browser
+    -   no software requirements other than an Internet browser
+    -   supports interactive tutorials
+4.  **Quarto Books**
+    -   Supports R and Python when writing tutorials or books
+    -   Generates HTML and PDF simultaneously
+    -   Supports LaTex
+5.  **LearnR Package**
+    -   Start in *RStudio* runs in a browser
+    -   Supports Hints and Solution
+    -   Faster than Google Colab esecially when loading packages
+:::
+
+## Displaying Data with TeachHist (Preparation) {.smaller}
+
+Data source: 2012 US Army Anthropometric Survey
+
+```{r}
+#| output-location: fragment 
+library(tidyverse)
+library(rio)
+DataFemHeight=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx") |> 
+select(HeightIn=Heightin)
+head(DataFemHeight)
+```
+
+## Determining N
+
+```{r}
+#| output-location: fragment 
+nrow(DataFemHeight)
+```
+
+## Determining N with Python
+
+```{python}
+#| output-location: fragment
+DataFemHeightPy=r.DataFemHeight
+len(DataFemHeightPy["HeightIn"])
+```
+
+
+## Calculating Mean
+
+$$
+\bar{x}=\sum_{i=1}^N x_i
+$$
+
+```{r}
+#| output-location: fragment 
+mean(DataFemHeight$HeightIn)
+```
+
+## Calculating Standard Deviation
+
+$$
+SD=\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
+        {N-1}
+$$
+
+```{r}
+#| output-location: fragment 
+sd(DataFemHeight$HeightIn)
+```
+
+::: footer
+Data Source: <https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx>
+:::
+
+## Displaying Data with TeachHist (Count Diagram)
+
+```{r}
+#| output-location: fragment 
+library(TeachHist)
+TeachHistCounts(PlotData=DataFemHeight, PrintZAxis = FALSE)
+```
+
+## Displaying Data with TeachHist (RelFreq Diagram)
+
+print HeachHist Rel Freq Diagram with ZAxis
+
+## From Relative Frequency to Density(RelFreq Diagram)
