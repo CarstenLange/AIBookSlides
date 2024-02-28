@@ -307,7 +307,6 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
-      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -415,7 +414,7 @@
 <ul>
 <li class="fragment">Support R and Python coding</li>
 <li class="fragment">Browser-based but also supports PDF (and PowerPoint)</li>
-<li class="fragment">Supports equations</li>
+<li class="fragment">Supports LaTex equations out of the box</li>
 </ul></li>
 <li class="fragment"><strong>Google Colab</strong>
 <ul>
@@ -423,7 +422,7 @@
 <li class="fragment">no software requirements other than an Internet browser</li>
 <li class="fragment">supports interactive tutorials</li>
 </ul></li>
-<li class="fragment"><strong>Quarto Books</strong>
+<li class="fragment"><strong>Quarto Books/R BookDown</strong>
 <ul>
 <li class="fragment">Supports R and Python when writing tutorials or books</li>
 <li class="fragment">Generates HTML and PDF simultaneously</li>
@@ -431,12 +430,20 @@
 </ul></li>
 <li class="fragment"><strong>LearnR Package</strong>
 <ul>
-<li class="fragment">Start in <em>RStudio</em> runs in a browser</li>
+<li class="fragment">Starts in <em>RStudio</em> and runs in a browser</li>
 <li class="fragment">Supports Hints and Solution</li>
-<li class="fragment">Faster than Google Colab esecially when loading packages</li>
+<li class="fragment">Faster than Google Colab when working with big packages</li>
 </ul></li>
 </ol>
 </div>
+</section>
+<section id="start-quarto" class="slide level2">
+<h2>Start Quarto</h2>
+<p>In <em>RStudio’s</em> main menu:<br>
+<code>File -&gt; New File -&gt; Quarto Presentation -&gt; RevealJS</code></p>
+<p>Documentation with sample template:<br>
+<a href="https://quarto.org/docs/presentations/revealjs/" class="uri">https://quarto.org/docs/presentations/revealjs/</a><br>
+</p>
 </section>
 <section id="displaying-data-with-teachhist-preparation" class="slide level2 smaller">
 <h2>Displaying Data with TeachHist (Preparation)</h2>
@@ -458,6 +465,9 @@
 5       63
 6       67</code></pre>
 </div>
+</div>
+<div class="footer">
+<p>Data Source: <a href="https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx" class="uri">https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx</a></p>
 </div>
 </section>
 <section id="determining-n" class="slide level2">
@@ -482,11 +492,14 @@
 <pre><code>1986</code></pre>
 </div>
 </div>
+<div class="footer">
+<p>Data Source: <a href="https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx" class="uri">https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx</a></p>
+</div>
 </section>
 <section id="calculating-mean" class="slide level2">
 <h2>Calculating Mean</h2>
 <p><span class="math display">\[
-\bar{x}=\sum_{i=1}^N x_i
+\bar{x}=\sum_{i=1}^N
 \]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">mean</span>(DataFemHeight<span class="sc">$</span>HeightIn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -496,11 +509,14 @@
 <pre><code>[1] 64.60171</code></pre>
 </div>
 </div>
+<div class="footer">
+<p>Data Source: <a href="https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx" class="uri">https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropometric-Database.aspx</a></p>
+</div>
 </section>
 <section id="calculating-standard-deviation" class="slide level2">
 <h2>Calculating Standard Deviation</h2>
 <p><span class="math display">\[
-SD=\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
+SD=\sqrt\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
         {N-1}
 \]</span></p>
 <div class="cell">
@@ -519,7 +535,8 @@ SD=\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
 <h2>Displaying Data with TeachHist (Count Diagram)</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(TeachHist)</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">TeachHistCounts</span>(<span class="at">PlotData=</span>DataFemHeight, <span class="at">PrintZAxis =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="fu">TeachHistCounts</span>(<span class="at">PlotData=</span>DataFemHeight, </span>
+<span id="cb11-3"><a href="#cb11-3"></a>                <span class="at">PrintZAxis =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output-display">
@@ -529,10 +546,49 @@ SD=\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
 </section>
 <section id="displaying-data-with-teachhist-relfreq-diagram" class="slide level2">
 <h2>Displaying Data with TeachHist (RelFreq Diagram)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(TeachHist)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">TeachHistRelFreq</span>(<span class="at">PlotData=</span>DataFemHeight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output-display">
+<p><img data-src="IES2024_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</div>
+</div>
 <p>print HeachHist Rel Freq Diagram with ZAxis</p>
+</section>
+<section id="displaying-data-with-teachhist-relfreq-diagram-more-granular" class="slide level2">
+<h2>Displaying Data with TeachHist (RelFreq Diagram) — More Granular</h2>
+<div class="cell">
+<details>
+<summary>Click Play-Button to show the code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(TeachHist) </span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">TeachHistRelFreq</span>(<span class="at">PlotData=</span>DataFemHeight, <span class="at">BinWidth=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+
+</div>
+<img data-src="IES2024_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><p>print HeachHist Rel Freq Diagram with ZAxis</p>
 </section>
 <section id="from-relative-frequency-to-densityrelfreq-diagram" class="slide level2">
 <h2>From Relative Frequency to Density(RelFreq Diagram)</h2>
+<ul>
+<li><p>So far: the output was generated by <em>R</em> but it was not interactive</p></li>
+<li><p><em>Google Colab</em> allows executing <em>R</em> code in a browser</p></li>
+<li><p><em>Google Colab</em> can be integrated into <em>Quarto</em> with a link (opens in new tab; see the footer)</p></li>
+<li><p>To execute <em>Google Colab</em> a <em>Google</em> account is required</p></li>
+</ul>
+<div class="footer">
+<p><a href="https://colab.research.google.com/drive/1h2H09DlpFZrf7uzgQOG_hlMD1ryfRLm7?usp=sharing" target="_blank" title="Click to open Google Colab session.">https://colab.research.google.com/drive/1h2H09DlpFZrf7uzgQOG_hlMD1ryfRLm7?usp=sharing</a></p>
+</div>
+</section>
+<section id="creating-a-booktutorial-with-quarto-combined-with-learnr" class="slide level2">
+<h2>Creating a Book/Tutorial with Quarto Combined with LearnR</h2>
+</section>
+<section id="links" class="slide level2">
+<h2>Links</h2>
+<ul>
+<li>Link to these slides:</li>
+</ul>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com/htmlbook/" target="_blank">https://ai.lange-analytics.com/htmlbook/</a></p>
 </div>
