@@ -11,7 +11,7 @@ format:
 
 ## .
 
-![](Dr.%20Carsten%20Lange.png){fig-align="center"}
+## ![](IES.png){width="463"} {.scrollable .smaller}
 
 ## Topics Covered {.scrollable .smaller}
 
@@ -48,7 +48,7 @@ In *RStudio's* main menu:\
 Documentation with sample template:\
 [https://quarto.org/docs/presentations/revealjs/](https://quarto.org/docs/presentations/revealjs/){.uri target="_blank"}\
 
-## TeachHist: Histograms for Teaching (Preparation) 
+## TeachHist: Histograms for Teaching (Preparation)
 
 Data source: 2012 US Army Anthropometric Survey
 
@@ -101,7 +101,7 @@ Data Source: <https://ph.health.mil/topics/workplacehealth/ergo/Pages/Anthropome
 ## Calculating Mean
 
 $$
-\bar{x}=\sum_{i=1}^N 
+\bar{x}=\sum_{i=1}^N x_i
 $$
 
 ```{r}
@@ -140,7 +140,11 @@ TeachHistCounts(PlotData=DataFemHeight,
 
 ## Displaying Data with TeachHist (RelFreq Diagram)
 
-Here goes RelFreq chart
+
+```{r}
+library(TeachHist)
+TeachHistRelFreq(PlotData=DataFemHeight)
+```
 
 ## Displaying Data with TeachHist (RelFreq Diagram) --- More Granular
 
@@ -173,12 +177,9 @@ TeachHistRelFreq(PlotData=DataFemHeight, BinWidth=0.5)
 TeachHistDens(PlotData=DataFemHeight, VLine2 = 70.2)
 ```
 
-
-
 ## Creating a Book/Tutorial with Quarto Combined with LearnR
 
 See: Practical Machine Learning with R
-
 
 ## Confidence Intervall
 
@@ -187,16 +188,14 @@ See: Practical Machine Learning with R
 TeachHistConfInterv(SampleMean=64.6, StandardError=2.8/sqrt(1986),Confidence=0.95, IsSdEstimated=TRUE, DegreeFreedom=1985)
 ```
 
+## Hyptheses Test:
 
-## Hyptheses Test: 
 ### True Height of female soldiers is 65
-
 
 ```{r}
 #| output-location: fragment
 TeachHistHypTest(NullHyp=65, StandardError=2.8/sqrt(1986), SampleMean=64.6, TestType="BothTails", IsSdEstimated=TRUE, DegreeFreedom=1985, XAxisMax = 7, BinWidth = 1)
 ```
-
 
 ## Thank You!
 
@@ -209,8 +208,10 @@ TeachHistHypTest(NullHyp=65, StandardError=2.8/sqrt(1986), SampleMean=64.6, Test
 -   **Link to:** [My YouTube channel](https://www.youtube.com/@carstenlange8073){target="_blank"}
 
 -   **Link to:** [Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook "Machine Learning Textbook"){target="_blank"} (with LearnR examples\
-    User name: `aibook`\
-    Pasword: `Coming022024#` (please keep confidential)
+    Email me for the password to preview: `clange@cpp.edu`
+
+-   **Link to my website:** [https://ai.lange-analytics.com](https://ai.lange-analytics.com/){target="_blank"} 
+
 
 -   **Link to:** [My Blog](https://blog.lange-analytics.com/){target="_blank"} (going live on 5/1/2024)
 

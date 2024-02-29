@@ -398,8 +398,10 @@
 </section>
 <section id="section" class="slide level2">
 <h2>.</h2>
-
-<img data-src="Dr.%20Carsten%20Lange.png" class="r-stretch quarto-figure-center"></section>
+</section>
+<section id="section-1" class="slide level2 scrollable smaller">
+<h2><img data-src="IES.png" width="463"></h2>
+</section>
 <section id="topics-covered" class="slide level2 scrollable smaller">
 <h2>Topics Covered</h2>
 <div>
@@ -513,7 +515,7 @@
 <section id="calculating-mean" class="slide level2">
 <h2>Calculating Mean</h2>
 <p><span class="math display">\[
-\bar{x}=\sum_{i=1}^N
+\bar{x}=\sum_{i=1}^N x_i
 \]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">mean</span>(DataFemHeight<span class="sc">$</span>HeightIn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -560,19 +562,23 @@ SD=\sqrt\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
 </section>
 <section id="displaying-data-with-teachhist-relfreq-diagram" class="slide level2">
 <h2>Displaying Data with TeachHist (RelFreq Diagram)</h2>
-<p>Here goes RelFreq chart</p>
-</section>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(TeachHist)</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">TeachHistRelFreq</span>(<span class="at">PlotData=</span>DataFemHeight)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
+</div>
+<img data-src="IES2024_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
 <section id="displaying-data-with-teachhist-relfreq-diagram-more-granular" class="slide level2">
 <h2>Displaying Data with TeachHist (RelFreq Diagram) — More Granular</h2>
 <div class="cell">
 <details>
 <summary>Click Play-Button to show the code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(TeachHist) </span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="fu">TeachHistRelFreq</span>(<span class="at">PlotData=</span>DataFemHeight, <span class="at">BinWidth=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">library</span>(TeachHist) </span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">TeachHistRelFreq</span>(<span class="at">PlotData=</span>DataFemHeight, <span class="at">BinWidth=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="IES2024_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<img data-src="IES2024_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="from-relative-frequency-to-densityrelfreq-diagram" class="slide level2">
 <h2>From Relative Frequency to Density(RelFreq Diagram)</h2>
 <ul>
@@ -590,11 +596,11 @@ SD=\sqrt\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
 <div class="cell">
 <details>
 <summary>Click Play-Button to show the code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">TeachHistDens</span>(<span class="at">PlotData=</span>DataFemHeight, <span class="at">VLine2 =</span> <span class="fl">70.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">TeachHistDens</span>(<span class="at">PlotData=</span>DataFemHeight, <span class="at">VLine2 =</span> <span class="fl">70.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="IES2024_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
+<img data-src="IES2024_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
 <section id="creating-a-booktutorial-with-quarto-combined-with-learnr" class="slide level2">
 <h2>Creating a Book/Tutorial with Quarto Combined with LearnR</h2>
 <p>See: Practical Machine Learning with R</p>
@@ -602,11 +608,11 @@ SD=\sqrt\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
 <section id="confidence-intervall" class="slide level2">
 <h2>Confidence Intervall</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">TeachHistConfInterv</span>(<span class="at">SampleMean=</span><span class="fl">64.6</span>, <span class="at">StandardError=</span><span class="fl">2.8</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">1986</span>),<span class="at">Confidence=</span><span class="fl">0.95</span>, <span class="at">IsSdEstimated=</span><span class="cn">TRUE</span>, <span class="at">DegreeFreedom=</span><span class="dv">1985</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">TeachHistConfInterv</span>(<span class="at">SampleMean=</span><span class="fl">64.6</span>, <span class="at">StandardError=</span><span class="fl">2.8</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">1986</span>),<span class="at">Confidence=</span><span class="fl">0.95</span>, <span class="at">IsSdEstimated=</span><span class="cn">TRUE</span>, <span class="at">DegreeFreedom=</span><span class="dv">1985</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output-display">
-<p><img data-src="IES2024_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+<p><img data-src="IES2024_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -614,11 +620,11 @@ SD=\sqrt\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
 <h2>Hyptheses Test:</h2>
 <h3 id="true-height-of-female-soldiers-is-65">True Height of female soldiers is 65</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">TeachHistHypTest</span>(<span class="at">NullHyp=</span><span class="dv">65</span>, <span class="at">StandardError=</span><span class="fl">2.8</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">1986</span>), <span class="at">SampleMean=</span><span class="fl">64.6</span>, <span class="at">TestType=</span><span class="st">"BothTails"</span>, <span class="at">IsSdEstimated=</span><span class="cn">TRUE</span>, <span class="at">DegreeFreedom=</span><span class="dv">1985</span>, <span class="at">XAxisMax =</span> <span class="dv">7</span>, <span class="at">BinWidth =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">TeachHistHypTest</span>(<span class="at">NullHyp=</span><span class="dv">65</span>, <span class="at">StandardError=</span><span class="fl">2.8</span><span class="sc">/</span><span class="fu">sqrt</span>(<span class="dv">1986</span>), <span class="at">SampleMean=</span><span class="fl">64.6</span>, <span class="at">TestType=</span><span class="st">"BothTails"</span>, <span class="at">IsSdEstimated=</span><span class="cn">TRUE</span>, <span class="at">DegreeFreedom=</span><span class="dv">1985</span>, <span class="at">XAxisMax =</span> <span class="dv">7</span>, <span class="at">BinWidth =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output-display">
-<p><img data-src="IES2024_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+<p><img data-src="IES2024_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
 </div>
 </div>
 </section>
@@ -630,8 +636,8 @@ SD=\sqrt\frac{\sum_{i=1}^N (x_i - \bar{x})^2}
 <li><p><strong>Link to:</strong> <a href="https://www.youtube.com/watch?v=DB5isjqmV5c" target="_blank">R TeachHist package video</a></p></li>
 <li><p><strong>Link to:</strong> <a href="https://www.youtube.com/@carstenlange8073" target="_blank">My YouTube channel</a></p></li>
 <li><p><strong>Link to:</strong> <a href="https://ai.lange-analytics.com/htmlbook" target="_blank" title="Machine Learning Textbook">Practical Machine Learning with R</a> (with LearnR examples<br>
-User name: <code>aibook</code><br>
-Pasword: <code>Coming022024#</code> (please keep confidential)</p></li>
+Email me for the password to preview: <code>clange@cpp.edu</code></p></li>
+<li><p><strong>Link to my website:</strong> <a href="https://ai.lange-analytics.com/" target="_blank">https://ai.lange-analytics.com</a></p></li>
 <li><p><strong>Link to:</strong> <a href="https://blog.lange-analytics.com/" target="_blank">My Blog</a> (going live on 5/1/2024)</p></li>
 </ul>
 <div class="footer footer-default">
