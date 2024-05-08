@@ -1,0 +1,49 @@
+---
+title: "Innovative Educators"
+subtitle: "Virtual Summit, 2024-02-29"
+format: 
+  revealjs:
+    code-fold: false
+    scrollable: false
+    echo: true
+    incremental: false
+---
+
+## j
+
+![](Dr.%20Carsten%20Lange.png){fig-align="center"}
+
+## Topics Covered {.scrollable .smaller}
+
+::: incremental
+1.  **R Package TeachHist**
+    -   Uses ggplot2 R package for histograms
+    -   In addition to the original horizontal axis, a **Z-score axis** is displayed
+    -   Displays data, confidence intervals, and hypothesis tests.
+2.  **Quarto RevealJS Slides**
+    -   Support R and Python coding
+    -   Browser-based, but it also supports PDF (and PowerPoint)
+    -   Supports LaTex equations out of the box
+3.  **Google Colab**
+    -   supports interactive R and Python in a browser
+    -   no software requirements other than an Internet browser
+    -   supports interactive tutorials
+    -   requires a Google account for authors and users (viewing works without account)
+4.  **Quarto for Books/Tutorial**
+    -   Supports R and Python when writing tutorials or books
+    -   Generates HTML and PDF simultaneously
+    -   Supports LaTex
+5.  **LearnR Package**
+    -   Starts in *RStudio* and runs in a browser
+    -   Fully interactive tutorial questions
+    -   Supports Hints and Solution
+    -   Faster than Google Colab when working with big packages
+:::
+
+## Start Quarto
+
+In *RStudio's* main menu:\
+`File -> New File -> Quarto Presentation -> RevealJS`
+
+Documentation with sample template:\
+[https://quarto.org/docs/presentations/revealjs/](https://quarto.org/docs/presentations/revealjs/){.uri target="_blank"}\
