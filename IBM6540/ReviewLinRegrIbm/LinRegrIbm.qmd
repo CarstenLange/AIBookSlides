@@ -1,0 +1,521 @@
+---
+title: "Linear Regression"
+subtitle: "Univariate"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+---
+
+```{r}
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
+```
+
+## What Will You Learn {.scrollable .smaller}
+
+-   Reviewing the basic idea behind linear regression
+
+-   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
+
+-   Understanding the role of in a linear regression model (applies also to other models)
+
+-   Calculating optimal regression parameters using OLS
+
+-   Finding optimal regression parameters by trial and error
+
+-   Finding optimal regression parameters with `lm` and `tidymodels`.
+
+-   Distinguish between unfitted and fitted models
+
+-   Using `tidymodels` to split observations randomly into a training and testing dataset.
+
+-   Using `tidymodels` to analyze housing prices.
+
+
+## Univariate Linear Regression - Data Table and Goal {.smaller}
+
+::: columns
+
+::: {.column width="60%"}
+**The Data Table**
+
+```{r }
+kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset")|>
+  add_header_above(c(" ", "y", "x"), escape=F) |> 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+:::
+
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
+$$(\widehat{Grade}_{i}-Grade_i)^2$$
+:::
+
+
+:::
+
+## Predict Grade Based on Study Time with Eyeballing {.smaller}
+
+
+Copy the code from the code-section of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+$$
+
+```{r}
+#| eval: false
+#| echo: true
+Beta1=0
+Beta2=50
+source("https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R")
+
+```
+
+
+## Univariate Linear Regression - Data Diagram and Goal {.smaller}
+
+::: columns
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_0$ and $\beta_1$ that minimize the individual (squared) prediction errors: 
+$$(\widehat{y}_{i}-y_i)^2$$
+$$(\widehat{Grade}_{i}-Grade_i)^2$$
+:::
+
+::: {.column width="60%"}
+**The Data Diagram**
+
+```{r}
+Model123=lm(Grade~StudyTime, data=DataMockup)
+PredGrade=predict(Model123, DataMockup)
+ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
+  geom_line(aes(y=PredGrade), color="red", size=2.7)+
+  geom_point(size=5, color="blue")+
+  geom_point(aes(y=PredGrade), color="black", size=2.7)+
+  geom_segment(aes(x = StudyTime, y = PredGrade,
+                   xend = StudyTime, yend = Grade),size=1.2)+
+  scale_x_continuous("Study Time", breaks=seq(1,8))+
+  scale_y_continuous(limits=c(65,110), breaks=seq(60,100,5))
+```
+
+```{r}
+#| eval: false
+#| echo: true
+Beta1=4
+Beta2=64
+```
+
+:::
+:::
+
+# How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
+
+```{=tex}
+\begin{eqnarray*}
+MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+ & \Longleftrightarrow& \\
+MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}
+```
+**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
+
+## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
+
+```{=tex}
+\begin{eqnarray}
+MSE & = & \frac{(\beta_1x_{1}+\beta_2-y_1)^2
+       +(\beta_1x_{2}+\beta_2-y_2)^2 +  \cdots+
+       (\beta_1x_{5}+\beta_2-y_{5})^2}{5} \nonumber \\
+       & \Longleftrightarrow& \nonumber \\
+MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mbox{Prediction $1$}}-65}_{\mbox{Error $1$}})^2
+       +(\underbrace{\overbrace{\beta_1\cdot 3+\beta_2}^{\mbox{Prediction $2$}}-82}_{\mbox{Error $2$}})^2\right.\nonumber \\
+   &   &\nonumber \\
+       && +
+    (\underbrace{\overbrace{\beta_1\cdot 7+\beta_2}^{\mbox{Prediction $3$}}-93}_{\mbox{Error $3$}})^2 
++(\underbrace{\overbrace{\beta_1\cdot 8+\beta_2}^{\mbox{Prediction $4$}}-93}_{\mbox{Error $4$}})^2\nonumber \\
+   &   &\nonumber \\
+       && +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_2}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
+\end{eqnarray}
+```
+
+
+## Custom R Function to Calculate MSE {.scrollable}
+
+```{r}
+#| echo: false
+FctMSE=function(VecBeta, data){
+                        Beta1=VecBeta[1]
+                        Beta2=VecBeta[2]
+                        data=data |>
+                        rename(Y=1, X=2) |> 
+                        mutate(YPred=Beta1*X+Beta2) |>
+                        mutate(Error=YPred-Y) |>
+                        mutate(ErrorSqt=Error^2)
+                        
+                        MSE=mean(data$ErrorSqt)
+                        
+                        return(MSE)}
+```
+
+Function Call:
+
+```{r}
+#| echo: true
+VecBeta=c(4,61)
+ResultMSE=FctMSE(VecBeta, DataMockup)
+print(ResultMSE)
+```
+
+Function Definition:»
+
+```{r}
+#| echo: true
+FctMSE=function(VecBeta, data){
+                        Beta1=VecBeta[1]
+                        Beta2=VecBeta[2]
+                        data=data |>
+                        rename(Y=1, X=2) |> 
+                        mutate(YPred=Beta1*X+Beta2) |>
+                        mutate(Error=YPred-Y) |>
+                        mutate(ErrorSqt=Error^2)
+                        
+                        MSE=mean(data$ErrorSqt)
+                        
+                        return(MSE)}
+```
+
+## How to Find Optimal Values for $\beta_1$ and $\beta_2$ {.smaller .scollable}
+
+**Method 0: (not such a good idea)** 
+
+:   We can use **unsystematic trial and error**.
+
+    ```{r}
+    #| echo: true
+    library(rio)
+    FctMSE=import("https://ai.lange-analytics.com/source/FctMSE.rds")
+    VecBeta=c(7,60)
+    ResultMSE=FctMSE(VecBeta, DataMockup)
+    print(ResultMSE)
+    ```
+
+
+**Method 1:**
+
+:   We can use a **systematic trial and error process**.
+
+**Method 2:**
+
+:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
+
+
+
+## Method 1: Use a Systematic Trial and Error Process 🤓
+
+-   **Grid Search (aka Brute Force):**
+
+    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
+    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
+    3.  Find the $\beta$ pair with the lowest $MSE$
+
+-   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
+
+-   See the R script in the footnote to see both algorithms in action.»
+
+::: footer
+See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
+:::
+
+## Method 2: Calculate Optimal Parameters (only for OLS!){.smaller}
+
+```{=tex}
+\begin{eqnarray*} 
+\beta_{1,opt}&=& \frac
+{N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
+&& \nonumber \\
+\beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
+\end{eqnarray*}
+```
+```{r}
+DataTable=DataMockup |>
+  mutate(GradeXStudyTime=Grade*StudyTime) |>
+  mutate(StudyTimeSquared=StudyTime^2) 
+
+
+kbl(DataTable |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset ")|>
+  add_header_above(c(" ", "y", "x", "y x","x x"), escape=F) |> 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+
+
+
+# Using lm() Command from Base R to Run a Regression {.scrollable}
+
+```{r}
+#| echo: true
+ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
+summary(ModelStudyTime)
+```
+
+## Results from OLS Analysis and Sanity Check
+
+**Unfitted Model**
+
+$$Grade=\beta_1 StudyTime + \beta_2$$
+
+**Fitted Model**
+
+$$Grade=3.96 StudyTime + 64.18$$
+Coefficient for StudyTime $\beta_1$ should be positive.
+
+## Predicting with the Fitted Model - Generated Data {.smaller}
+
+$$Grade=3.96 \cdot StudyTime + 64.18$$
+```{r}
+#| echo: true
+ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
+
+DataForPrediction=data.frame(StudyTime=c(1,2,3))
+
+predict(ModelStudyTime, newdata=DataForPrediction)
+```
+
+Interpretation of $\beta_1=3.96$:
+
+1. From the formula: If $StudyTime$ increases, Grade increases. -> makes sense!
+
+2. From the formula: Quantitative impact: If $StudyTime$ increases by one unit, Grade increases by $3.96$ units.
+
+3. From the prediction: Above we predicted $Grade$ for $Studyteimes$ of 1,2,3, which confirms point 1) and 2).
+
+## Predicting with the Fitted Model - Training Data
+
+
+$$Grade=3.96 StudyTime + 64.18$$
+Generating the predictions:
+
+```{r}
+#| echo: true
+
+ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
+
+VecPred=predict(ModelStudyTime, newdata=DataMockup)
+print(VecPred)
+```
+
+## Predicting with the Fitted Model - Training Data
+
+$$Grade=3.96 StudyTime + 64.18$$
+Augmenting the predictions to the data frame:
+
+```{r}
+#| echo: true
+VecPred=predict(ModelStudyTime, newdata=DataMockup)
+DataMockup=DataMockup |> 
+           mutate(.pred=VecPred)
+print(DataMockup)
+```
+
+## Using tidymodels for the Linear Regression
+
+Creating the fitted (workflow) model:
+
+```{r}
+#| echo: true
+library(tidymodels)
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
+RecipeStudyTime=recipe(DataMockup, Grade~StudyTime)
+ModelDesignStudyTime=linear_reg() |> 
+                     set_engine("lm") |> 
+                     set_mode("regression")
+WFModelStudyTime= workflow() |> 
+                  add_recipe(RecipeStudyTime) |> 
+                  add_model(ModelDesignStudyTime) |> 
+                  fit(DataMockup)
+```
+
+##
+Getting the Results from a Workflow
+
+```{r}
+#| echo: true
+ResultsStudyTime=tidy(WFModelStudyTime)
+print(ResultsStudyTime)
+
+```
+
+
+## Adding Predictions to DataMockup
+
+```{r}
+#| echo: true
+DataMockupWithPred=augment(WFModelStudyTime, DataMockup)
+print(DataMockupWithPred)
+```
+## Evaluating Predictive Quality
+
+```{r}
+#| echo: true
+metrics(DataMockupWithPred, truth=Grade, estimate=.pred)
+```
+
+# Real World Application
+
+## Univariate OLS with a Real World Dataset
+
+**Data Description:**
+
+-   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+-   Several predictor variables. For now we use only $Sqft$
+-   We will only use 500 randomly chosen observations from the total of 21,613 observations.
+
+-We only use Sqft as predictor variable for now.
+
+
+## Univariate OLS with a Real World Dataset
+
+**Data:**
+
+```{r}
+#| echo: true
+library(rio)
+DataHousing =
+  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
+head(DataHousing)
+```
+
+## Univariate OLS with a Real World Dataset
+
+
+**Unfitted Model:** 
+
+$$\widehat{Price}=\beta_1 Sqft + \beta_2$$
+**Directed Acyclic Graphs (causal graphs):**
+
+## Univariate OLS with a Real World Dataset {.scrollable}
+
+**Splitting in Training and Testing Datasets**
+
+```{r}
+#| echo: true
+library(tidymodels)
+set.seed(777)
+Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+```
+
+**DataTrain**
+
+```{r}
+print(DataTrain, max=6)
+```
+
+**DataTest**
+
+```{r}
+print(DataTest, max=6)
+```
+
+## Univariate OLS with a Real World Dataset
+
+**Run the Analysis with lm()**
+
+```{r}
+#| echo: true
+library(rio)
+DataHousing =
+  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
+library(tidymodels)
+Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+
+ModelHouses=lm(Price ~ Sqft, data=DataTrain)
+summary(ModelHouses)
+```
+
+## The Same Analysis with tidymodels
+
+```{r}
+#| echo: true
+library(tidymodels)
+
+RecipeHouses=recipe(DataTrain, Price~Sqft)
+ModelDesignHouses=linear_reg() |> 
+                     set_engine("lm") |> 
+                     set_mode("regression")
+
+WFModelHouses= workflow() |> 
+               add_recipe(RecipeHouses) |> 
+               add_model(ModelDesignHouses) |> 
+               fit(DataTrain)
+
+Results=tidy(WFModelHouses)
+print(Results)
+```
+
+## Predicting with tidymodels Training Data {.scrollable}
+
+The augment() command first predicts and then augments the results to the related data frame
+
+```{r}
+#| echo: true
+DataTrainWithPred=augment(WFModelHouses, new_data = DataTrain)
+DataTestWithPred=augment(WFModelHouses, new_data = DataTrain)
+
+head(DataTrainWithPred)
+head(DataTestWithPred)
+
+```
+
+## Metrics for Predictive Quality Training Data
+
+```{r}
+#| echo: true
+metrics(DataTrainWithPred, truth = Price, estimate = .pred)
+```
+
+## Metrics for Predictive Quality Testing Data
+
+```{r}
+#| echo: true
+metrics(DataTestWithPred, truth = Price, estimate = .pred)
+
+```
+
+
+

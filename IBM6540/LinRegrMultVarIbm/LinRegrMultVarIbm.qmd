@@ -1,0 +1,437 @@
+---
+title: "Linear Regression"
+subtitle: "Multivariate"
+format: 
+  revealjs:
+    multiplex: true
+    code-fold: false
+    scrollable: true
+    incremental: false
+    echo: true
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+-   How to extend univariate regression to multivariate regression in *R*
+
+-   Motivation for multivariate regression
+
+    -   Prediction of outcome (include all predictors you have data for)
+    -   Impact Analysis
+    -   Impact of one predictor but controlled for other predictors
+
+-   Extend univaraite Regresion to multi variate Regression
+
+-   Interpretation of standard error, t-value, and P-value to infer on prediction quality
+
+## Sex Discrimination
+### Univariate with SexFem only
+
+```{r}
+#| code-fold: true
+
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+
+DataWage=wage1 |> 
+         clean_names("upper_camel") |> 
+         select(Wage, SexFem=Female, Educ,Exp=Exper,Ten=Tenure,      
+                   NonWhite=Nonwhite,SexFem=Female,                      
+                   MarTrue=Married, NumChild=Numdep, MsaTrue=Smsa,
+                   )
+
+ModelDesignLinear=linear_reg() |> 
+                  set_engine("lm")
+RecipeWageSex=recipe(DataWage, Wage~SexFem)
+
+WfModelWageSex=workflow() |> 
+               add_recipe(RecipeWageSex) |> 
+               add_model(ModelDesignLinear) |> 
+               fit(DataWage)
+
+Result=tidy(WfModelWageSex)
+print(Result)
+```
+
+For a women (when $SexFem$ switches from 0 to 1) the wage is predicted to decrease by \$`r Result[[2,2]]`
+
+**But what if other factors like education, tenure, experience etc. also influence** $Wage$?
+
+**Can we trust a univariate regression with only $SexFem$ ???**
+
+## Switching from a Univariate to a Multivariate Regression with R
+
+
+```{r}
+#| code-line-numbers: "1|3-6|8-9"
+#| output-location: fragment
+RecipeWageSex=recipe(DataWage, Wage~SexFem+Ten+Exp)
+
+WfModelWageSex=workflow() |> 
+               add_recipe(RecipeWageSex) |> 
+               add_model(ModelDesignLinear) |> 
+               fit(DataWage)
+
+Result=tidy(WfModelWageSex)
+print(Result)
+```
+
+## Which Independent Variables Should we Choose?
+
+**Choosing as many as possible is a bad idea!!!**
+
+Note, I took at $LWage$ (log wage) out. Otherwise, I would have regressed wage on ln(wage).
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "1-3|5|7-10|12,13"
+DataWageAllVar=wage1 |>
+               clean_names("upper_camel") |> 
+               select(-Lwage)
+               
+RecipeWageSex=recipe(DataWageAllVar, Wage~.)
+
+WfModelWageSex=workflow() |> 
+               add_recipe(RecipeWageSex) |> 
+               add_model(ModelDesignLinear) |> 
+               fit(DataWageAllVar)
+
+Result=tidy(WfModelWageSex)
+print(Result, n=100)
+```
+
+## Which Independent Variables Should we Choose?
+
+**If choosing all variables is a bad idea, we need a procedure to choose independent variables (predictors)!**
+
+**Plan and think before you run a regression**
+
+## Step 1: Use Domain Knowledge (beliefs)
+
+*Directed Acylical Graphs (DAG's)* can help to structure our beliefs.
+
+```{r}
+#| echo: false
+DagCoord=tibble(x=c(1,3,4,4,5,4.5),  y=c(2,2,3,1,2,3), name=c("Exp","Wage","Educ","SnglPar","SexFem","ParEdu"))
+```
+
+
+
+```{r}
+#| output-location: slide
+library(ggdag)
+dagify(Wage~SexFem+Educ+Exp+SnglPar,
+       Educ~ParEdu,
+       outcome = "Wage",
+       exposure = "SexFem",
+       coords = DagCoord
+      ) |> 
+ggdag(node_size = 22) + theme_void()
+```
+
+
+
+## Step 1: Use Domain Knowledge (beliefs)
+
+::: {.r-stack}
+::: {.fragment}
+```{r}
+#| echo: false
+dagify(Wage~SexFem+Educ+SnglPar+Exp, 
+       outcome = "Wage",
+       exposure = "SexFem",
+       coords = DagCoord
+       ) |> 
+ggdag(node_size = 22) + theme_void()
+```
+
+:::
+
+::: {.fragment}
+```{r}
+#| echo: false
+dagify(Wage~SexFem+Educ+SnglPar+Exp,
+       Educ~SexFem,
+       outcome = "Wage",
+       exposure = "SexFem",
+       coords = DagCoord
+      ) |> 
+ggdag(node_size = 22) + theme_void()
+```
+
+:::
+
+::: {.fragment}
+```{r}
+#| echo: false
+dagify(Wage~SexFem+Educ+SnglPar+Exp,
+       Educ~SexFem,
+       SnglPar~SexFem,
+       outcome = "Wage",
+       exposure = "SexFem",
+       coords = DagCoord
+      ) |> 
+ggdag(node_size = 22) + theme_void()
+```
+:::
+::: 
+
+## Step 1: Your Turn
+
+Copy the code and make your own DAG:
+
+1. First use `Wage` as a dependent (outcome) and assume
+
+- `SexFem` causes `Wage`
+- `Educ` causes `Wage`
+
+2. In addition, assume that `SexFem` also causes `Educ`
+
+3. Build your own causal graph (you are not limited to causes in `DataWage`)
+
+```{r}
+#| eval: false
+library(tidymodels)
+library(ggdag)
+dagify(Wage~SexFem)|> 
+ggdag(node_size = 22) + theme_void()
+```
+
+## After Step 1: Use Domain Knowledge (beliefs)
+
+**Based on the DAG decide which variables are candidates and include only the candidates in your analytics data frame (here,** $DataWage$). I have done this already:
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "1-5|6-9|11"
+DataWage=DataWageAllVar |> 
+         clean_names("upper_camel") |> 
+         select(Wage, SexFem=Female, Educ,Exp=Exper,Ten=Tenure,      
+                   NonWhite=Nonwhite,SexFem=Female,                    
+                   MarTrue=Married, NumChild=Numdep, MsaTrue=Smsa)
+# Sabotaging the Dataset for Educational Purpose
+DataWage[1,3]=NA; DataWage[2:3,4]=NA; 
+ DataWage[4,6]=NA; DataWage[5,2]=NA;
+ DataWage[6,1]=NA;
+
+head(DataWage)
+```
+
+## Step 2: Exploratory Data Analysis with SmartEDA
+
+You need to install the `SmartEDA` package first.
+
+```{r}
+#| echo: true
+#| eval: false
+library(SmartEDA)
+ExpReport(DataWage, op_file = "EDAReport")
+```
+
+[EDAReport.html](EDAReport.html)
+
+## Step 2: Exploratory Data Analysis  with cor
+
+
+The pair-wise correlation between so many variables in the plots of the *EDA Report* was difficult to see. A Correlation Matrix shows correlation in a more compact way (NA observations are a problem):
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "1|2|3"
+library(corrplot)
+CorMatrix=cor(DataWage)
+corrplot(CorMatrix)
+```
+
+## Step 3: First 6 Observasions of Damaged Dataset
+
+```{r}
+#| code-fold: true
+head(DataWage)
+```
+
+
+## Step 3: Data Engineering
+### Impute Educ with Mean
+```{r}
+RecipeWageSex=recipe(DataWage, Wage~.) |> 
+              step_impute_mean(Educ)
+```
+
+::: {.fragment}
+```{r}
+#| echo: false
+head(RecipeWageSex |> prep() |> juice())
+```
+:::
+
+## Step 3: Data Engineering
+### Impute Exp with Median
+```{r}
+#| code-line-numbers: "3"
+RecipeWageSex=recipe(DataWage, Wage~.) |> 
+              step_impute_mean(Educ) |>
+              step_impute_median(Exp)
+              
+```
+
+::: {.fragment}
+```{r}
+#| echo: false
+head(RecipeWageSex |> prep() |> juice())
+```
+:::
+
+## Step 3: Data Engineering
+### Impute NonWhite with Mode
+```{r}
+#| code-line-numbers: "4-6"
+RecipeWageSex=recipe(DataWage, Wage~.) |> 
+              step_impute_mean(Educ) |>
+              step_impute_median(Exp) |> 
+              step_mutate(NonWhite=as.character(NonWhite)) |> 
+              step_impute_mode(NonWhite) |> 
+              step_mutate(NonWhite=as.numeric(NonWhite))
+```
+
+::: {.fragment}
+```{r}
+#| echo: false
+head(RecipeWageSex |> prep() |> juice())
+```
+:::
+
+## Step 3: Data Engineering
+### Impute SexFem with k=Nearest Neighbors (k=1)
+```{r}
+#| code-line-numbers: "7"
+RecipeWageSex=recipe(DataWage, Wage~.) |> 
+              step_impute_mean(Educ)|>
+              step_impute_median(Exp) |> 
+              step_mutate(NonWhite=as.character(NonWhite)) |> 
+              step_impute_mode(NonWhite) |> 
+              step_mutate(NonWhite=as.numeric(NonWhite)) |> 
+              step_impute_knn(SexFem)
+```
+
+::: {.fragment}
+```{r}
+#| echo: false
+head(RecipeWageSex |> prep() |> juice())
+```
+:::
+
+
+## Step 3: Data Engineering
+### Remove Observation with missing wage.
+
+```{r}
+#| code-line-numbers: "8"
+RecipeWageSex=recipe(DataWage, Wage~.) |> 
+              step_impute_mean(Educ)|>
+              step_impute_median(Exp) |>   
+              step_mutate(NonWhite=as.character(NonWhite)) |> 
+              step_impute_mode(NonWhite) |> 
+              step_mutate(NonWhite=as.numeric(NonWhite)) |> 
+              step_impute_knn(SexFem) |> 
+              step_naomit(everything())
+```
+
+::: {.fragment}
+```{r}
+#| echo: false
+head(RecipeWageSex |> prep() |> juice())
+```
+:::
+
+## Step 3: Data Engineering
+### Data engineer a new variable
+
+```{r}
+#| code-line-numbers: "9"
+RecipeWageSex=recipe(DataWage, Wage~.) |> 
+              step_impute_mean(Educ)|>
+              step_impute_median(Exp) |>   
+              step_mutate(NonWhite=as.character(NonWhite)) |> 
+              step_impute_mode(NonWhite) |> 
+              step_mutate(NonWhite=as.numeric(NonWhite)) |> 
+              step_impute_knn(SexFem) |> 
+              step_naomit(everything()) |> 
+              step_mutate(SnglPar=ifelse(MarTrue==0 & NumChild>0,1,0))
+```
+
+::: {.fragment}
+```{r}
+#| echo: false
+DataWageClean=RecipeWageSex |> prep() |> juice()
+head(DataWageClean)
+```
+:::
+
+## AGAIN Step 2: Exploratory Data Analysis  with cor
+
+
+The pair-wise correlation between so many variables in the plots of the *EDA Report* was difficult to see. A Correlation Matrix shows correlation in a more compact way (NA observations is resolved in the recipe):
+
+```{r}
+#| output-location: slide
+library(corrplot)
+CorMatrix=cor(DataWageClean)
+corrplot(CorMatrix)
+```
+
+## Step 4: Select Resonable Predictors and Try Regression
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "1,2|4-7|9"
+RecipeWageSex=recipe(DataWageClean, 
+                     Wage~SexFem+Educ+Ten+MarTrue+MsaTrue+SnglPar+NonWhite)
+
+WfModelWageSex=workflow() |> 
+               add_recipe(RecipeWageSex) |> 
+               add_model(ModelDesignLinear) |> 
+               fit(DataWageClean)
+
+tidy(WfModelWageSex)
+glance(WfModelWageSex)
+```
+
+## Step 4: Select Resonable Predictors and Try Regression {.smaller}
+### Try it yourself, copy the code
+
+```{r}
+#| eval: false
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+library(corrplot)
+library(SmartEDA)
+DataWage=wage1 |> 
+         clean_names("upper_camel") |> 
+         select(Wage, SexFem=Female, Educ,Exp=Exper,Ten=Tenure,      
+                NonWhite=Nonwhite,SexFem=Female,                   
+                MarTrue=Married, NumChild=Numdep, MsaTrue=Smsa) |> 
+          mutate(SnglPar=ifelse(MarTrue==0 & NumChild>0,1,0))
+
+ExpReport(DataWage, op_file = "EDAReport")
+
+CorMatrix=cor(DataWage)
+corrplot(CorMatrix)
+
+ModelDesignLinear=linear_reg() |> 
+                  set_engine("lm")
+
+RecipeWageSex=recipe(DataWage, Wage~SexFem)
+    
+WfModelWageSex=workflow() |> 
+               add_recipe(RecipeWageSex) |> 
+               add_model(ModelDesignLinear) |> 
+               fit(DataWage)
+
+tidy(WfModelWageSex)
+glance(WfModelWageSex)
+```
