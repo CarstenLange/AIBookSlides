@@ -7,7 +7,7 @@
 <link href="00Intro_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="00Intro_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="00Intro_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.247">
+  <meta name="generator" content="quarto-1.1.189">
 
   <title>Intro to the Course</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -324,13 +324,10 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="quarto-title-block center">
+<section id="title-slide" class="center">
   <h1 class="title">Intro to the Course</h1>
-
-<div class="quarto-title-authors">
-</div>
-
 </section>
+
 <section id="about-the-course" class="slide level2 smaller">
 <h2>About the Course</h2>
 <ul>
@@ -394,7 +391,7 @@
 <section id="your-questions" class="slide level2">
 <h2>Your Questions</h2>
 <div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+<p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
 </div>
 </section>
     </div>
@@ -648,24 +645,7 @@
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
-        let tooltip;
-        if (window.bootstrap) {
-          button.setAttribute("data-bs-toggle", "tooltip");
-          button.setAttribute("data-bs-placement", "left");
-          button.setAttribute("data-bs-title", "Copied!");
-          tooltip = new bootstrap.Tooltip(button, 
-            { trigger: "manual", 
-              customClass: "code-copy-button-tooltip",
-              offset: [0, -8]});
-          tooltip.show();    
-        }
         setTimeout(function() {
-          if (tooltip) {
-            tooltip.hide();
-            button.removeAttribute("data-bs-title");
-            button.removeAttribute("data-bs-toggle");
-            button.removeAttribute("data-bs-placement");
-          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -703,42 +683,24 @@
           return note.innerHTML;
         });
       }
-      const findCites = (el) => {
-        const parentEl = el.parentElement;
-        if (parentEl) {
-          const cites = parentEl.dataset.cites;
-          if (cites) {
-            return {
-              el,
-              cites: cites.split(' ')
-            };
-          } else {
-            return findCites(el.parentElement)
-          }
-        } else {
-          return undefined;
-        }
-      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const citeInfo = findCites(ref);
-        if (citeInfo) {
-          tippyHover(citeInfo.el, function() {
-            var popup = window.document.createElement('div');
-            citeInfo.cites.forEach(function(cite) {
-              var citeDiv = window.document.createElement('div');
-              citeDiv.classList.add('hanging-indent');
-              citeDiv.classList.add('csl-entry');
-              var biblioDiv = window.document.getElementById('ref-' + cite);
-              if (biblioDiv) {
-                citeDiv.innerHTML = biblioDiv.innerHTML;
-              }
-              popup.appendChild(citeDiv);
-            });
-            return popup.innerHTML;
+        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+        tippyHover(ref, function() {
+          var popup = window.document.createElement('div');
+          cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
           });
-        }
+          return popup.innerHTML;
+        });
       }
     });
     </script>
