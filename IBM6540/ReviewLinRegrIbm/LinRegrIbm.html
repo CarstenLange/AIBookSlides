@@ -394,29 +394,25 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Linear Regression</h1>
-  <p class="subtitle">Univariate</p>
+  <p class="subtitle">Review</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section class="slide level2">
-
+<section id="what-will-you-learn" class="slide level2 scrollable smaller">
+<h2>What Will You Learn</h2>
 <div class="cell">
 
 </div>
-</section>
-<section id="what-will-you-learn" class="slide level2 scrollable smaller">
-<h2>What Will You Learn</h2>
 <ul>
 <li class="fragment"><p>Reviewing the basic idea behind linear regression</p></li>
 <li class="fragment"><p>Learning how how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
-<li class="fragment"><p>Understanding the role of in a linear regression model (applies also to other models)</p></li>
+<li class="fragment"><p>Understanding the idea of a (linear) regression model</p></li>
 <li class="fragment"><p>Calculating optimal regression parameters using OLS</p></li>
 <li class="fragment"><p>Finding optimal regression parameters by trial and error</p></li>
-<li class="fragment"><p>Finding optimal regression parameters with <code>lm</code> and <code>tidymodels</code>.</p></li>
+<li class="fragment"><p>Finding optimal regression parameters with <code>tidymodels</code>.</p></li>
 <li class="fragment"><p>Distinguish between unfitted and fitted models</p></li>
-<li class="fragment"><p>Using <code>tidymodels</code> to split observations randomly into a training and testing dataset.</p></li>
 <li class="fragment"><p>Using <code>tidymodels</code> to analyze housing prices.</p></li>
 </ul>
 </section>
@@ -1092,7 +1088,7 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">metrics</span>(DataTrainWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3

@@ -1,13 +1,15 @@
 ---
-title: "Linear Regression"
-subtitle: "Univariate"
+title: " Linear Regression"
+subtitle: "Review"
 format: 
   revealjs:
     code-fold: true
     scrollable: true
 ---
+## What Will You Learn {.scrollable .smaller}
 
 ```{r}
+#| echo: false
 library(tidymodels)
 library(rio)
 library(kableExtra)
@@ -15,23 +17,19 @@ library(janitor)
 DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 ```
 
-## What Will You Learn {.scrollable .smaller}
 
--   Reviewing the basic idea behind linear regression
+-   Reviewing the basic idea behind (linear) regression
 
 -   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
-
--   Understanding the role of in a linear regression model (applies also to other models)
 
 -   Calculating optimal regression parameters using OLS
 
 -   Finding optimal regression parameters by trial and error
 
--   Finding optimal regression parameters with `lm` and `tidymodels`.
+-   Finding optimal regression parameters with  `tidymodels`.
 
 -   Distinguish between unfitted and fitted models
 
--   Using `tidymodels` to split observations randomly into a training and testing dataset.
 
 -   Using `tidymodels` to analyze housing prices.
 
