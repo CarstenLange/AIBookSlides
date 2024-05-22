@@ -198,7 +198,7 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
 -   See the R script in the footnote to see both algorithms in action.»
 
 ::: footer
-See: [LinRegrScript.R script100](https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R)
+See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRegrScript.R)
 :::
 
 # Univariate OLS with a Real World Dataset
@@ -250,7 +250,7 @@ print(as_tibble(DataTest))
 
 **Run the Analysis**»
 
-<https://lange-analytics.com/AIBook/Exercises/handler.html?file=05-LinRegrExerc100.Rmd>
+<https://ai.lange-analytics.com/exc/?file=05-LinRegrExerc100.Rmd>
 
 # Multivariate Analysis
 

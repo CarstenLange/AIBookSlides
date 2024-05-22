@@ -428,7 +428,7 @@
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(rio); <span class="fu">library</span>(tidymodels); <span class="fu">library</span>(janitor)</span>
 <span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-3"><a href="#cb1-3"></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-3"><a href="#cb1-3"></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-4"><a href="#cb1-4"></a>            <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a>             <span class="fu">select</span>(Survived, Sex, <span class="at">Class=</span>Pclass, Sex, Age, <span class="at">Fare=</span>FareInPounds) <span class="sc">%&gt;%</span></span>
 <span id="cb1-6"><a href="#cb1-6"></a>             <span class="fu">mutate</span>(<span class="at">Survived=</span><span class="fu">as.factor</span>(Survived))</span>
@@ -446,7 +446,6 @@
 <table>
  <thead>
   <tr>
-   <th style="text-align:left;">   </th>
    <th style="text-align:left;"> Survived </th>
    <th style="text-align:left;"> Sex </th>
    <th style="text-align:right;"> Class </th>
@@ -456,7 +455,6 @@
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> 5 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:left;"> male </td>
    <td style="text-align:right;"> 3 </td>
@@ -464,7 +462,6 @@
    <td style="text-align:right;"> 8.0500 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 7 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:left;"> male </td>
    <td style="text-align:right;"> 1 </td>
@@ -472,7 +469,6 @@
    <td style="text-align:right;"> 51.8625 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 8 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:left;"> male </td>
    <td style="text-align:right;"> 3 </td>
@@ -480,7 +476,6 @@
    <td style="text-align:right;"> 21.0750 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 13 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:left;"> male </td>
    <td style="text-align:right;"> 3 </td>
@@ -488,7 +483,6 @@
    <td style="text-align:right;"> 8.0500 </td>
   </tr>
   <tr>
-   <td style="text-align:left;"> 14 </td>
    <td style="text-align:left;"> 0 </td>
    <td style="text-align:left;"> male </td>
    <td style="text-align:right;"> 3 </td>
@@ -591,7 +585,7 @@ node), split, n, loss, yval, (yprob)
  </thead>
 <tbody>
   <tr>
-   <td style="text-align:left;"> 886 </td>
+   <td style="text-align:left;"> 664 </td>
    <td style="text-align:left;"> 1 </td>
    <td style="text-align:left;"> male </td>
    <td style="text-align:right;"> 1 </td>
@@ -879,7 +873,7 @@ G^{Imp}_{AvgChild}&amp;= 0.64 \cdot  0.32 + 0.36 \cdot 0.39\\
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>DataVax<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/DataVax.rds"</span>) <span class="sc">%&gt;%</span>   </span>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>DataVax<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataVax.rds"</span>) <span class="sc">%&gt;%</span>   </span>
 <span id="cb12-2"><a href="#cb12-2"></a>        <span class="fu">select</span>(County, State, PercVacFull, PercRep,</span>
 <span id="cb12-3"><a href="#cb12-3"></a>              PercAsian, PercBlack, PercHisp,</span>
 <span id="cb12-4"><a href="#cb12-4"></a>              PercYoung25, PercOld65, PercFoodSt)</span>
@@ -1158,7 +1152,7 @@ node), split, n, deviance, yval
 <li class="fragment"><p>Using Decision Trees as components of more advanced models like <em>Random Forest</em> and <em>Boosted Trees</em> often leads to excellent predictive results.»</p></li>
 </ul>
 <div class="footer footer-default">
-<p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
+<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
 </section>
     </div>

@@ -41,7 +41,7 @@ Detailed installation guides are provided in the Book and the Online Resources s
 ![RStudio Window](Images/RAndRStudioWindow.PNG)
 
 ::: footer
-See: [RandRStudioScriptPart1.R script100](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
 :::
 
 ## Recommended RStudio Settings
@@ -242,7 +242,7 @@ kable(DataTruthTable, caption="Truth Table for AND and OR")|>
 :::
 
 ::: footer
-See: [RandRStudioScriptPart1.R script200](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
 :::
 
 ## Data Types & Data Objects
@@ -362,7 +362,7 @@ A few of the differences between *data frames* and *tibbles*:
 
 
 ::: footer
-See: [RandRStudioScriptPart1.R script300](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
 :::
 
 ## Summary Data Types and Objects
@@ -434,7 +434,7 @@ cat("Probabilty to get stuck by a lighning on an avg. day:", ProbStruck)
 :::
 
 ::: footer
-See: [RandRStudioScriptPart1.R script400](https://lange-analytics.com/AIBook/Scripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script400](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
 :::
 
 ## Questions

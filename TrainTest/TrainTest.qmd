@@ -45,7 +45,7 @@ In what follows we use the Kings County Real Estate dataset.
 #| echo: true
 library(tidymodels); library(rio); library(janitor)
 
-DataHousing = import("https://lange-analytics.com/AIBook/Data/HousingData.csv")%>%
+DataHousing = import("https://ai.lange-analytics.com/data/HousingData.csv")%>%
   clean_names("upper_camel") %>%
   select(Price, Sqft=SqftLiving)
 ```
@@ -128,7 +128,7 @@ head(DataHousing %>% mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
 Code to compare is linked in the footer of this slide.
 
 ::: footer
-See: [TrainTestScript.R Script100](https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R)
+See: [TrainTestScript.R Script100](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
 :::
 
 ## Polynomial Regression (degree=5) vs. Regular OLS
@@ -322,7 +322,7 @@ The **10 general steps** are:
 Code to run all 10 steps is linked in the footer of this slide.
 
 ::: footer
-See: [TrainTestScript.R Script200](https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R)
+See: [TrainTestScript.R Script200](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
 :::
 
 ## Exercise from AIBook 🤓
@@ -332,7 +332,7 @@ See: [TrainTestScript.R Script200](https://lange-analytics.com/AIBook/Scripts/Tr
 Click the link in the footer of this slide to start the exercise.
 
 ::: footer
-See: [Exercise from AI Book](https://lange-analytics.com/AIBook/Exercises/handler.html?file=06-TrainTestExerc100.Rmd)
+See: [Exercise from AI Book](https://ai.lange-analytics.com/exc/?file=06-TrainTestExerc100.Rmd)
 :::
 
 ## Research Project  🤓
@@ -340,5 +340,5 @@ See: [Exercise from AI Book](https://lange-analytics.com/AIBook/Exercises/handle
 Click the link in the footer of this slide to download a skeleton of the R script for the research project.
 
 ::: footer
-See: [Research Project](https://lange-analytics.com/AIBook/Scripts/KNearNeighIndepExerc.R)
+See: [Research Project](https://econ.lange-analytics.com/RScripts/KNearNeighIndepExerc.R)
 :::

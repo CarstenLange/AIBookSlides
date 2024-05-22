@@ -7,7 +7,7 @@
 <link href="LogRegr_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="LogRegr_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="LogRegr_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.0.36">
+  <meta name="generator" content="quarto-1.2.247">
 
   <title>Logistic Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -18,10 +18,15 @@
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    span.underline{text-decoration: underline;}
-    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -302,6 +307,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -381,47 +387,47 @@
   
   <script src="LogRegr_files/libs/kePrint-0.0.1/kePrint.js"></script>
   <link href="LogRegr_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-  <script src="LogRegr_files/libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
-  <script src="LogRegr_files/libs/plotly-binding-4.10.0/plotly.js"></script>
+  <script src="LogRegr_files/libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <script src="LogRegr_files/libs/plotly-binding-4.10.3/plotly.js"></script>
   <script src="LogRegr_files/libs/typedarray-0.1/typedarray.min.js"></script>
   <script src="LogRegr_files/libs/jquery-3.5.1/jquery.min.js"></script>
-  <link href="LogRegr_files/libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
-  <script src="LogRegr_files/libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-  <link href="LogRegr_files/libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet">
-  <script src="LogRegr_files/libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+  <link href="LogRegr_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+  <script src="LogRegr_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+  <link href="LogRegr_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+  <script src="LogRegr_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
 </head>
 <body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="center">
+<section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Logistic Regression</h1>
   <p class="subtitle">A Powerful Tool for Classification</p>
-</section>
 
+<div class="quarto-title-authors">
+</div>
+
+</section>
 <section id="basics-of-logistic-regression" class="slide level2">
 <h2>Basics of Logistic Regression</h2>
 <p>Classification Algorithm:</p>
 <ul>
-<li class="fragment"><strong>Two categories for the outcome variable (analysed in what follows):</strong> e.g.&nbsp;Unemployed true or false <br><br></li>
-<li class="fragment">Multiple categories for the outcome variable (not covered here)
+<li><strong>Two categories for the outcome variable (analysed in what follows):</strong> e.g.&nbsp;Unemployed true or false <br><br></li>
+<li>Multiple categories for the outcome variable (not covered here)
 <ul>
-<li class="fragment">unordered logistic regression</li>
-<li class="fragment">ordered logistic regression »</li>
+<li>unordered logistic regression</li>
+<li>ordered logistic regression »</li>
 </ul></li>
 </ul>
 </section>
 <section id="a-mock-up-example-to-introduce-the-idea" class="slide level2 smaller">
 <h2>A Mock-Up Example to Introduce the Idea</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels); <span class="fu">library</span>(kableExtra); <span class="fu">library</span>(janitor); <span class="fu">library</span>(rio)</span>
-<span id="cb1-2"><a href="#cb1-2"></a>DataYachts<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/DataYachts.csv"</span>)<span class="sc">%&gt;%</span> </span>
+<span id="cb1-2"><a href="#cb1-2"></a>DataYachts<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataYachts.csv"</span>)<span class="sc">%&gt;%</span> </span>
 <span id="cb1-3"><a href="#cb1-3"></a>  <span class="fu">mutate</span>(<span class="at">YachtNum=</span>Yacht, <span class="at">Yacht=</span><span class="fu">as.factor</span>(Yacht)) </span>
 <span id="cb1-4"><a href="#cb1-4"></a><span class="fu">kbl</span>(DataYachts <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>YachtNum), <span class="at">caption=</span><span class="st">"Income and Yacht Ownership"</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb1-5"><a href="#cb1-5"></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options=</span><span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>), <span class="at">position=</span><span class="st">"center"</span>, <span class="at">full_width =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
 
 <table class="table table-striped table-hover" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -493,26 +499,21 @@
 <section id="using-ols-is-a-tempting-but-bad-idea" class="slide level2">
 <h2>Using OLS is a Tempting (but bad) Idea</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(plotly)</span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">ggplotly</span>(<span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Income,<span class="at">y=</span>YachtNum),<span class="at">data=</span>DataYachts)<span class="sc">+</span></span>
 <span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">2.7</span>, <span class="at">color=</span><span class="st">"magenta"</span>)<span class="sc">+</span></span>
 <span id="cb2-4"><a href="#cb2-4"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">500</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">50</span>))<span class="sc">+</span> </span>
 <span id="cb2-5"><a href="#cb2-5"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">1.25</span>,<span class="fl">0.25</span>))<span class="sc">+</span> </span>
 <span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability of Yacht Ownership"</span>, <span class="at">x=</span><span class="st">"Income in $1,000"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
-<div id="htmlwidget-15bf2f3a28615734422a" style="width:960px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-15bf2f3a28615734422a">{"x":{"data":[{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,0,255,1)","opacity":1,"size":10.2047244094488,"symbol":"circle","line":{"width":1.88976377952756,"color":"rgba(255,0,255,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.6118721461187,"r":7.30593607305936,"b":44.5662100456621,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.05,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"43bc9593545":{"x":{},"y":{},"type":"scatter"}},"cur_data":"43bc9593545","visdat":{"43bc9593545":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-71523bc4d6bad2ba78df" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-71523bc4d6bad2ba78df">{"x":{"data":[{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,0,255,1)","opacity":1,"size":10.204724409448822,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,0,255,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":48.949771689497723},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150.00000000000003,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.050000000000000003,1.05],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00"],"tickvals":[0,0.25,0.5,0.75,1],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1e1c6f1d1bf2":{"x":{},"y":{},"type":"scatter"}},"cur_data":"1e1c6f1d1bf2","visdat":{"1e1c6f1d1bf2":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
 <section id="using-ols-is-a-tempting-but-bad-idea-1" class="slide level2">
 <h2>Using OLS is a Tempting (but bad) Idea</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(plotly)</span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="fu">ggplotly</span>(<span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Income,<span class="at">y=</span>YachtNum),<span class="at">data=</span>DataYachts)<span class="sc">+</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
@@ -521,10 +522,9 @@
 <span id="cb3-6"><a href="#cb3-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">500</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">50</span>))<span class="sc">+</span> </span>
 <span id="cb3-7"><a href="#cb3-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">1.25</span>,<span class="fl">0.25</span>))<span class="sc">+</span> </span>
 <span id="cb3-8"><a href="#cb3-8"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability of Yacht Ownership"</span>, <span class="at">x=</span><span class="st">"Income in $1,000"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 <div class="cell-output-display">
-<div id="htmlwidget-bf07a0e504fcaaada09f" style="width:960px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-bf07a0e504fcaaada09f">{"x":{"data":[{"x":[-77.5,527.5],"y":[0.5,0.5],"text":"yintercept: 0.5","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"],"opacity":1,"size":10.2047244094488,"symbol":"circle","line":{"width":1.88976377952756,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"]}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50.7594936708861,56.5189873417722,62.2784810126582,68.0379746835443,73.7974683544304,79.5569620253165,85.3164556962025,91.0759493670886,96.8354430379747,102.594936708861,108.354430379747,114.113924050633,119.873417721519,125.632911392405,131.392405063291,137.151898734177,142.911392405063,148.670886075949,154.430379746835,160.189873417722,165.949367088608,171.708860759494,177.46835443038,183.227848101266,188.987341772152,194.746835443038,200.506329113924,206.26582278481,212.025316455696,217.784810126582,223.544303797468,229.303797468354,235.063291139241,240.822784810127,246.582278481013,252.341772151899,258.101265822785,263.860759493671,269.620253164557,275.379746835443,281.139240506329,286.898734177215,292.658227848101,298.417721518987,304.177215189873,309.936708860759,315.696202531646,321.455696202532,327.215189873418,332.974683544304,338.73417721519,344.493670886076,350.253164556962,356.012658227848,361.772151898734,367.53164556962,373.291139240506,379.050632911392,384.810126582278,390.569620253165,396.329113924051,402.088607594937,407.848101265823,413.607594936709,419.367088607595,425.126582278481,430.886075949367,436.645569620253,442.405063291139,448.164556962025,453.924050632911,459.683544303797,465.443037974684,471.20253164557,476.962025316456,482.721518987342,488.481012658228,494.240506329114,500],"y":[0.245058960540905,0.258273444511831,0.271487928482758,0.284702412453685,0.297916896424612,0.311131380395539,0.324345864366466,0.337560348337393,0.35077483230832,0.363989316279246,0.377203800250173,0.3904182842211,0.403632768192027,0.416847252162954,0.430061736133881,0.443276220104807,0.456490704075734,0.469705188046661,0.482919672017588,0.496134155988515,0.509348639959442,0.522563123930369,0.535777607901295,0.548992091872222,0.562206575843149,0.575421059814076,0.588635543785003,0.60185002775593,0.615064511726857,0.628278995697784,0.64149347966871,0.654707963639637,0.667922447610564,0.681136931581491,0.694351415552418,0.707565899523345,0.720780383494272,0.733994867465198,0.747209351436125,0.760423835407052,0.773638319377979,0.786852803348906,0.800067287319833,0.81328177129076,0.826496255261686,0.839710739232613,0.85292522320354,0.866139707174467,0.879354191145394,0.892568675116321,0.905783159087248,0.918997643058174,0.932212127029101,0.945426611000028,0.958641094970955,0.971855578941882,0.985070062912809,0.998284546883736,1.01149903085466,1.02471351482559,1.03792799879652,1.05114248276744,1.06435696673837,1.0775714507093,1.09078593468022,1.10400041865115,1.11721490262208,1.130429386593,1.14364387056393,1.15685835453486,1.17007283850579,1.18328732247671,1.19650180644764,1.20971629041857,1.22293077438949,1.23614525836042,1.24935974233135,1.26257422630227,1.2757887102732,1.28900319424413],"text":["Income:  45.00000<br />YachtNum: 0.2450590","Income:  50.75949<br />YachtNum: 0.2582734","Income:  56.51899<br />YachtNum: 0.2714879","Income:  62.27848<br />YachtNum: 0.2847024","Income:  68.03797<br />YachtNum: 0.2979169","Income:  73.79747<br />YachtNum: 0.3111314","Income:  79.55696<br />YachtNum: 0.3243459","Income:  85.31646<br />YachtNum: 0.3375603","Income:  91.07595<br />YachtNum: 0.3507748","Income:  96.83544<br />YachtNum: 0.3639893","Income: 102.59494<br />YachtNum: 0.3772038","Income: 108.35443<br />YachtNum: 0.3904183","Income: 114.11392<br />YachtNum: 0.4036328","Income: 119.87342<br />YachtNum: 0.4168473","Income: 125.63291<br />YachtNum: 0.4300617","Income: 131.39241<br />YachtNum: 0.4432762","Income: 137.15190<br />YachtNum: 0.4564907","Income: 142.91139<br />YachtNum: 0.4697052","Income: 148.67089<br />YachtNum: 0.4829197","Income: 154.43038<br />YachtNum: 0.4961342","Income: 160.18987<br />YachtNum: 0.5093486","Income: 165.94937<br />YachtNum: 0.5225631","Income: 171.70886<br />YachtNum: 0.5357776","Income: 177.46835<br />YachtNum: 0.5489921","Income: 183.22785<br />YachtNum: 0.5622066","Income: 188.98734<br />YachtNum: 0.5754211","Income: 194.74684<br />YachtNum: 0.5886355","Income: 200.50633<br />YachtNum: 0.6018500","Income: 206.26582<br />YachtNum: 0.6150645","Income: 212.02532<br />YachtNum: 0.6282790","Income: 217.78481<br />YachtNum: 0.6414935","Income: 223.54430<br />YachtNum: 0.6547080","Income: 229.30380<br />YachtNum: 0.6679224","Income: 235.06329<br />YachtNum: 0.6811369","Income: 240.82278<br />YachtNum: 0.6943514","Income: 246.58228<br />YachtNum: 0.7075659","Income: 252.34177<br />YachtNum: 0.7207804","Income: 258.10127<br />YachtNum: 0.7339949","Income: 263.86076<br />YachtNum: 0.7472094","Income: 269.62025<br />YachtNum: 0.7604238","Income: 275.37975<br />YachtNum: 0.7736383","Income: 281.13924<br />YachtNum: 0.7868528","Income: 286.89873<br />YachtNum: 0.8000673","Income: 292.65823<br />YachtNum: 0.8132818","Income: 298.41772<br />YachtNum: 0.8264963","Income: 304.17722<br />YachtNum: 0.8397107","Income: 309.93671<br />YachtNum: 0.8529252","Income: 315.69620<br />YachtNum: 0.8661397","Income: 321.45570<br />YachtNum: 0.8793542","Income: 327.21519<br />YachtNum: 0.8925687","Income: 332.97468<br />YachtNum: 0.9057832","Income: 338.73418<br />YachtNum: 0.9189976","Income: 344.49367<br />YachtNum: 0.9322121","Income: 350.25316<br />YachtNum: 0.9454266","Income: 356.01266<br />YachtNum: 0.9586411","Income: 361.77215<br />YachtNum: 0.9718556","Income: 367.53165<br />YachtNum: 0.9850701","Income: 373.29114<br />YachtNum: 0.9982845","Income: 379.05063<br />YachtNum: 1.0114990","Income: 384.81013<br />YachtNum: 1.0247135","Income: 390.56962<br />YachtNum: 1.0379280","Income: 396.32911<br />YachtNum: 1.0511425","Income: 402.08861<br />YachtNum: 1.0643570","Income: 407.84810<br />YachtNum: 1.0775715","Income: 413.60759<br />YachtNum: 1.0907859","Income: 419.36709<br />YachtNum: 1.1040004","Income: 425.12658<br />YachtNum: 1.1172149","Income: 430.88608<br />YachtNum: 1.1304294","Income: 436.64557<br />YachtNum: 1.1436439","Income: 442.40506<br />YachtNum: 1.1568584","Income: 448.16456<br />YachtNum: 1.1700728","Income: 453.92405<br />YachtNum: 1.1832873","Income: 459.68354<br />YachtNum: 1.1965018","Income: 465.44304<br />YachtNum: 1.2097163","Income: 471.20253<br />YachtNum: 1.2229308","Income: 476.96203<br />YachtNum: 1.2361453","Income: 482.72152<br />YachtNum: 1.2493597","Income: 488.48101<br />YachtNum: 1.2625742","Income: 494.24051<br />YachtNum: 1.2757887","Income: 500.00000<br />YachtNum: 1.2890032"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":6.4251968503937,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.6118721461187,"r":7.30593607305936,"b":44.5662100456621,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0644501597122063,1.35345335395633],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00","1.25"],"tickvals":[0,0.25,0.5,0.75,1,1.25],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00","1.25"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"43bc1b2240c1":{"yintercept":{},"type":"scatter"},"43bc1d065f28":{"x":{},"y":{}},"43bc37e37b48":{"x":{},"y":{}}},"cur_data":"43bc1b2240c1","visdat":{"43bc1b2240c1":["function (y) ","x"],"43bc1d065f28":["function (y) ","x"],"43bc37e37b48":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-66a5583c97f6cf5d6881" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-66a5583c97f6cf5d6881">{"x":{"data":[{"x":[-77.5,527.5],"y":[0.5,0.5],"text":"yintercept: 0.5","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"],"opacity":1,"size":10.204724409448822,"symbol":"circle","line":{"width":1.8897637795275593,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"]}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50.759493670886073,56.518987341772153,62.278481012658226,68.037974683544306,73.797468354430379,79.556962025316452,85.316455696202524,91.075949367088612,96.83544303797467,102.59493670886076,108.35443037974683,114.1139240506329,119.87341772151898,125.63291139240506,131.39240506329114,137.15189873417722,142.91139240506328,148.67088607594934,154.43037974683546,160.18987341772151,165.94936708860757,171.70886075949366,177.46835443037975,183.22784810126581,188.98734177215189,194.74683544303795,200.50632911392404,206.26582278481013,212.02531645569618,217.78481012658227,223.54430379746833,229.30379746835442,235.0632911392405,240.82278481012656,246.58227848101265,252.34177215189871,258.1012658227848,263.86075949367091,269.62025316455697,275.37974683544303,281.13924050632909,286.89873417721515,292.65822784810126,298.41772151898732,304.17721518987338,309.9367088607595,315.69620253164555,321.45569620253161,327.21518987341773,332.97468354430379,338.73417721518985,344.4936708860759,350.25316455696202,356.01265822784808,361.77215189873414,367.53164556962025,373.29113924050631,379.05063291139237,384.81012658227849,390.56962025316454,396.3291139240506,402.08860759493666,407.84810126582278,413.60759493670884,419.36708860759489,425.12658227848101,430.88607594936707,436.64556962025313,442.40506329113919,448.1645569620253,453.92405063291136,459.68354430379742,465.44303797468353,471.20253164556959,476.96202531645565,482.72151898734177,488.48101265822783,494.24050632911388,500],"y":[0.24505896054090456,0.25827344451183143,0.27148792848275827,0.28470241245368516,0.29791689642461205,0.31113138039553889,0.32434586436646573,0.33756034833739257,0.35077483230831952,0.3639893162792463,0.37720380025017319,0.39041828422110003,0.40363276819202693,0.41684725216295376,0.43006173613388066,0.44327622010480749,0.45649070407573439,0.46970518804666123,0.48291967201758801,0.49613415598851501,0.5093486399594418,0.52256312393036863,0.53577760790129547,0.54899209187222242,0.56220657584314926,0.5754210598140761,0.58863554378500293,0.60185002775592977,0.61506451172685672,0.62827899569778356,0.6414934796687104,0.65470796363963724,0.66792244761056419,0.68113693158149102,0.69435141555241786,0.7075658995233447,0.72078038349427154,0.73399486746519849,0.74720935143612544,0.76042383540705227,0.773638319377979,0.78685280334890584,0.80006728731983268,0.81328177129075963,0.82649625526168646,0.8397107392326133,0.85292522320354025,0.86613970717446709,0.87935419114539393,0.89256867511632088,0.90578315908724771,0.91899764305817444,0.93221212702910128,0.94542661100002823,0.95864109497095507,0.9718555789418819,0.98507006291280885,0.99828454688373569,1.0114990308546625,1.0247135148255895,1.0379279987965164,1.0511424827674432,1.0643569667383699,1.0775714507092968,1.0907859346802238,1.1040004186511505,1.1172149026220775,1.1304293865930042,1.1436438705639311,1.1568583545348581,1.170072838505785,1.1832873224767115,1.1965018064476385,1.2097162904185654,1.2229307743894924,1.2361452583604193,1.2493597423313463,1.2625742263022728,1.2757887102731997,1.2890031942441267],"text":["Income:  45.00000<br />YachtNum: 0.2450590","Income:  50.75949<br />YachtNum: 0.2582734","Income:  56.51899<br />YachtNum: 0.2714879","Income:  62.27848<br />YachtNum: 0.2847024","Income:  68.03797<br />YachtNum: 0.2979169","Income:  73.79747<br />YachtNum: 0.3111314","Income:  79.55696<br />YachtNum: 0.3243459","Income:  85.31646<br />YachtNum: 0.3375603","Income:  91.07595<br />YachtNum: 0.3507748","Income:  96.83544<br />YachtNum: 0.3639893","Income: 102.59494<br />YachtNum: 0.3772038","Income: 108.35443<br />YachtNum: 0.3904183","Income: 114.11392<br />YachtNum: 0.4036328","Income: 119.87342<br />YachtNum: 0.4168473","Income: 125.63291<br />YachtNum: 0.4300617","Income: 131.39241<br />YachtNum: 0.4432762","Income: 137.15190<br />YachtNum: 0.4564907","Income: 142.91139<br />YachtNum: 0.4697052","Income: 148.67089<br />YachtNum: 0.4829197","Income: 154.43038<br />YachtNum: 0.4961342","Income: 160.18987<br />YachtNum: 0.5093486","Income: 165.94937<br />YachtNum: 0.5225631","Income: 171.70886<br />YachtNum: 0.5357776","Income: 177.46835<br />YachtNum: 0.5489921","Income: 183.22785<br />YachtNum: 0.5622066","Income: 188.98734<br />YachtNum: 0.5754211","Income: 194.74684<br />YachtNum: 0.5886355","Income: 200.50633<br />YachtNum: 0.6018500","Income: 206.26582<br />YachtNum: 0.6150645","Income: 212.02532<br />YachtNum: 0.6282790","Income: 217.78481<br />YachtNum: 0.6414935","Income: 223.54430<br />YachtNum: 0.6547080","Income: 229.30380<br />YachtNum: 0.6679224","Income: 235.06329<br />YachtNum: 0.6811369","Income: 240.82278<br />YachtNum: 0.6943514","Income: 246.58228<br />YachtNum: 0.7075659","Income: 252.34177<br />YachtNum: 0.7207804","Income: 258.10127<br />YachtNum: 0.7339949","Income: 263.86076<br />YachtNum: 0.7472094","Income: 269.62025<br />YachtNum: 0.7604238","Income: 275.37975<br />YachtNum: 0.7736383","Income: 281.13924<br />YachtNum: 0.7868528","Income: 286.89873<br />YachtNum: 0.8000673","Income: 292.65823<br />YachtNum: 0.8132818","Income: 298.41772<br />YachtNum: 0.8264963","Income: 304.17722<br />YachtNum: 0.8397107","Income: 309.93671<br />YachtNum: 0.8529252","Income: 315.69620<br />YachtNum: 0.8661397","Income: 321.45570<br />YachtNum: 0.8793542","Income: 327.21519<br />YachtNum: 0.8925687","Income: 332.97468<br />YachtNum: 0.9057832","Income: 338.73418<br />YachtNum: 0.9189976","Income: 344.49367<br />YachtNum: 0.9322121","Income: 350.25316<br />YachtNum: 0.9454266","Income: 356.01266<br />YachtNum: 0.9586411","Income: 361.77215<br />YachtNum: 0.9718556","Income: 367.53165<br />YachtNum: 0.9850701","Income: 373.29114<br />YachtNum: 0.9982845","Income: 379.05063<br />YachtNum: 1.0114990","Income: 384.81013<br />YachtNum: 1.0247135","Income: 390.56962<br />YachtNum: 1.0379280","Income: 396.32911<br />YachtNum: 1.0511425","Income: 402.08861<br />YachtNum: 1.0643570","Income: 407.84810<br />YachtNum: 1.0775715","Income: 413.60759<br />YachtNum: 1.0907859","Income: 419.36709<br />YachtNum: 1.1040004","Income: 425.12658<br />YachtNum: 1.1172149","Income: 430.88608<br />YachtNum: 1.1304294","Income: 436.64557<br />YachtNum: 1.1436439","Income: 442.40506<br />YachtNum: 1.1568584","Income: 448.16456<br />YachtNum: 1.1700728","Income: 453.92405<br />YachtNum: 1.1832873","Income: 459.68354<br />YachtNum: 1.1965018","Income: 465.44304<br />YachtNum: 1.2097163","Income: 471.20253<br />YachtNum: 1.2229308","Income: 476.96203<br />YachtNum: 1.2361453","Income: 482.72152<br />YachtNum: 1.2493597","Income: 488.48101<br />YachtNum: 1.2625742","Income: 494.24051<br />YachtNum: 1.2757887","Income: 500.00000<br />YachtNum: 1.2890032"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":6.4251968503937009,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":48.949771689497723},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150.00000000000003,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.064450159712206342,1.3534533539563329],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00","1.25"],"tickvals":[0,0.25,0.5,0.75,0.99999999999999989,1.25],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00","1.25"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1e1cdb8741":{"yintercept":{},"type":"scatter"},"1e1c68ba4186":{"x":{},"y":{}},"1e1c492c1f07":{"x":{},"y":{}}},"cur_data":"1e1cdb8741","visdat":{"1e1cdb8741":["function (y) ","x"],"1e1c68ba4186":["function (y) ","x"],"1e1c492c1f07":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -533,15 +533,23 @@
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Income,<span class="at">y=</span>YachtNum),<span class="at">data=</span>DataYachts)<span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">158</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">2.7</span>, <span class="at">color=</span><span class="fu">ifelse</span>(DataYachts<span class="sc">$</span>Income<span class="sc">==</span><span class="dv">45</span>,<span class="st">"red"</span>,<span class="st">"cyan"</span>))<span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">size=</span><span class="fl">1.7</span>)<span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">500</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">50</span>))<span class="sc">+</span> </span>
+<span id="cb4-7"><a href="#cb4-7"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">1.25</span>,<span class="fl">0.25</span>))<span class="sc">+</span> </span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability of Yacht Ownership"</span>, <span class="at">x=</span><span class="st">"Income in $1,000"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img data-src="LogRegr_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
 <ol type="1">
-<li class="fragment"><p>Find the intersection point between the prediction line and the horizontal 0.5 probability line.</p></li>
-<li class="fragment"><p>Draw a vertical line through the intersection point. This line is called a <strong>decision boundary</strong>.</p></li>
-<li class="fragment"><p>All incomes left of the <em>decision boundary</em> (income smaller than 158) are predicted as “no”. All incomes right of the <em>decision boundary</em> (income greater than 158) are predicted as “yes”.»</p></li>
+<li><p>Find the intersection point between the prediction line and the horizontal 0.5 probability line.</p></li>
+<li><p>Draw a vertical line through the intersection point. This line is called a <strong>decision boundary</strong>.</p></li>
+<li><p>All incomes left of the <em>decision boundary</em> (income smaller than 158) are predicted as “no”. All incomes right of the <em>decision boundary</em> (income greater than 158) are predicted as “yes”.»</p></li>
 </ol>
 </div>
 </div>
@@ -549,9 +557,18 @@
 <section id="why-ols-for-classification-is-a-bad-idea" class="slide level2 smaller">
 <h2>Why OLS for Classification is a Bad Idea</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">ggplotly</span>(<span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Income,<span class="at">y=</span>YachtNum),<span class="at">data=</span>DataYachts)<span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">158</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">2.7</span>, <span class="at">color=</span><span class="fu">ifelse</span>(DataYachts<span class="sc">$</span>Income<span class="sc">==</span><span class="dv">45</span>,<span class="st">"red"</span>,<span class="st">"cyan"</span>))<span class="sc">+</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">size=</span><span class="fl">1.7</span>)<span class="sc">+</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">500</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">50</span>))<span class="sc">+</span> </span>
+<span id="cb5-8"><a href="#cb5-8"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">1.25</span>,<span class="fl">0.25</span>))<span class="sc">+</span> </span>
+<span id="cb5-9"><a href="#cb5-9"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability of Yacht Ownership"</span>, <span class="at">x=</span><span class="st">"Income in $1,000"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="htmlwidget-2e78912c7d98df12a377" style="width:960px;height:480px;" class="plotly html-widget"></div>
-<script type="application/json" data-for="htmlwidget-2e78912c7d98df12a377">{"x":{"data":[{"x":[-77.5,527.5],"y":[0.5,0.5],"text":"yintercept: 0.5","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[158,158],"y":[-0.0644501597122063,1.35345335395633],"text":"xintercept: 158","type":"scatter","mode":"lines","line":{"width":1.88976377952756,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"],"opacity":1,"size":10.2047244094488,"symbol":"circle","line":{"width":1.88976377952756,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"]}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50.7594936708861,56.5189873417722,62.2784810126582,68.0379746835443,73.7974683544304,79.5569620253165,85.3164556962025,91.0759493670886,96.8354430379747,102.594936708861,108.354430379747,114.113924050633,119.873417721519,125.632911392405,131.392405063291,137.151898734177,142.911392405063,148.670886075949,154.430379746835,160.189873417722,165.949367088608,171.708860759494,177.46835443038,183.227848101266,188.987341772152,194.746835443038,200.506329113924,206.26582278481,212.025316455696,217.784810126582,223.544303797468,229.303797468354,235.063291139241,240.822784810127,246.582278481013,252.341772151899,258.101265822785,263.860759493671,269.620253164557,275.379746835443,281.139240506329,286.898734177215,292.658227848101,298.417721518987,304.177215189873,309.936708860759,315.696202531646,321.455696202532,327.215189873418,332.974683544304,338.73417721519,344.493670886076,350.253164556962,356.012658227848,361.772151898734,367.53164556962,373.291139240506,379.050632911392,384.810126582278,390.569620253165,396.329113924051,402.088607594937,407.848101265823,413.607594936709,419.367088607595,425.126582278481,430.886075949367,436.645569620253,442.405063291139,448.164556962025,453.924050632911,459.683544303797,465.443037974684,471.20253164557,476.962025316456,482.721518987342,488.481012658228,494.240506329114,500],"y":[0.245058960540905,0.258273444511831,0.271487928482758,0.284702412453685,0.297916896424612,0.311131380395539,0.324345864366466,0.337560348337393,0.35077483230832,0.363989316279246,0.377203800250173,0.3904182842211,0.403632768192027,0.416847252162954,0.430061736133881,0.443276220104807,0.456490704075734,0.469705188046661,0.482919672017588,0.496134155988515,0.509348639959442,0.522563123930369,0.535777607901295,0.548992091872222,0.562206575843149,0.575421059814076,0.588635543785003,0.60185002775593,0.615064511726857,0.628278995697784,0.64149347966871,0.654707963639637,0.667922447610564,0.681136931581491,0.694351415552418,0.707565899523345,0.720780383494272,0.733994867465198,0.747209351436125,0.760423835407052,0.773638319377979,0.786852803348906,0.800067287319833,0.81328177129076,0.826496255261686,0.839710739232613,0.85292522320354,0.866139707174467,0.879354191145394,0.892568675116321,0.905783159087248,0.918997643058174,0.932212127029101,0.945426611000028,0.958641094970955,0.971855578941882,0.985070062912809,0.998284546883736,1.01149903085466,1.02471351482559,1.03792799879652,1.05114248276744,1.06435696673837,1.0775714507093,1.09078593468022,1.10400041865115,1.11721490262208,1.130429386593,1.14364387056393,1.15685835453486,1.17007283850579,1.18328732247671,1.19650180644764,1.20971629041857,1.22293077438949,1.23614525836042,1.24935974233135,1.26257422630227,1.2757887102732,1.28900319424413],"text":["Income:  45.00000<br />YachtNum: 0.2450590","Income:  50.75949<br />YachtNum: 0.2582734","Income:  56.51899<br />YachtNum: 0.2714879","Income:  62.27848<br />YachtNum: 0.2847024","Income:  68.03797<br />YachtNum: 0.2979169","Income:  73.79747<br />YachtNum: 0.3111314","Income:  79.55696<br />YachtNum: 0.3243459","Income:  85.31646<br />YachtNum: 0.3375603","Income:  91.07595<br />YachtNum: 0.3507748","Income:  96.83544<br />YachtNum: 0.3639893","Income: 102.59494<br />YachtNum: 0.3772038","Income: 108.35443<br />YachtNum: 0.3904183","Income: 114.11392<br />YachtNum: 0.4036328","Income: 119.87342<br />YachtNum: 0.4168473","Income: 125.63291<br />YachtNum: 0.4300617","Income: 131.39241<br />YachtNum: 0.4432762","Income: 137.15190<br />YachtNum: 0.4564907","Income: 142.91139<br />YachtNum: 0.4697052","Income: 148.67089<br />YachtNum: 0.4829197","Income: 154.43038<br />YachtNum: 0.4961342","Income: 160.18987<br />YachtNum: 0.5093486","Income: 165.94937<br />YachtNum: 0.5225631","Income: 171.70886<br />YachtNum: 0.5357776","Income: 177.46835<br />YachtNum: 0.5489921","Income: 183.22785<br />YachtNum: 0.5622066","Income: 188.98734<br />YachtNum: 0.5754211","Income: 194.74684<br />YachtNum: 0.5886355","Income: 200.50633<br />YachtNum: 0.6018500","Income: 206.26582<br />YachtNum: 0.6150645","Income: 212.02532<br />YachtNum: 0.6282790","Income: 217.78481<br />YachtNum: 0.6414935","Income: 223.54430<br />YachtNum: 0.6547080","Income: 229.30380<br />YachtNum: 0.6679224","Income: 235.06329<br />YachtNum: 0.6811369","Income: 240.82278<br />YachtNum: 0.6943514","Income: 246.58228<br />YachtNum: 0.7075659","Income: 252.34177<br />YachtNum: 0.7207804","Income: 258.10127<br />YachtNum: 0.7339949","Income: 263.86076<br />YachtNum: 0.7472094","Income: 269.62025<br />YachtNum: 0.7604238","Income: 275.37975<br />YachtNum: 0.7736383","Income: 281.13924<br />YachtNum: 0.7868528","Income: 286.89873<br />YachtNum: 0.8000673","Income: 292.65823<br />YachtNum: 0.8132818","Income: 298.41772<br />YachtNum: 0.8264963","Income: 304.17722<br />YachtNum: 0.8397107","Income: 309.93671<br />YachtNum: 0.8529252","Income: 315.69620<br />YachtNum: 0.8661397","Income: 321.45570<br />YachtNum: 0.8793542","Income: 327.21519<br />YachtNum: 0.8925687","Income: 332.97468<br />YachtNum: 0.9057832","Income: 338.73418<br />YachtNum: 0.9189976","Income: 344.49367<br />YachtNum: 0.9322121","Income: 350.25316<br />YachtNum: 0.9454266","Income: 356.01266<br />YachtNum: 0.9586411","Income: 361.77215<br />YachtNum: 0.9718556","Income: 367.53165<br />YachtNum: 0.9850701","Income: 373.29114<br />YachtNum: 0.9982845","Income: 379.05063<br />YachtNum: 1.0114990","Income: 384.81013<br />YachtNum: 1.0247135","Income: 390.56962<br />YachtNum: 1.0379280","Income: 396.32911<br />YachtNum: 1.0511425","Income: 402.08861<br />YachtNum: 1.0643570","Income: 407.84810<br />YachtNum: 1.0775715","Income: 413.60759<br />YachtNum: 1.0907859","Income: 419.36709<br />YachtNum: 1.1040004","Income: 425.12658<br />YachtNum: 1.1172149","Income: 430.88608<br />YachtNum: 1.1304294","Income: 436.64557<br />YachtNum: 1.1436439","Income: 442.40506<br />YachtNum: 1.1568584","Income: 448.16456<br />YachtNum: 1.1700728","Income: 453.92405<br />YachtNum: 1.1832873","Income: 459.68354<br />YachtNum: 1.1965018","Income: 465.44304<br />YachtNum: 1.2097163","Income: 471.20253<br />YachtNum: 1.2229308","Income: 476.96203<br />YachtNum: 1.2361453","Income: 482.72152<br />YachtNum: 1.2493597","Income: 488.48101<br />YachtNum: 1.2625742","Income: 494.24051<br />YachtNum: 1.2757887","Income: 500.00000<br />YachtNum: 1.2890032"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":6.4251968503937,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.6118721461187,"r":7.30593607305936,"b":44.5662100456621,"l":48.9497716894977},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.0644501597122063,1.35345335395633],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00","1.25"],"tickvals":[0,0.25,0.5,0.75,1,1.25],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00","1.25"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.65296803652968,"tickwidth":0.66417600664176,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.689497716895},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.6118721461187}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.88976377952756,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.689497716895}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"43bc44313263":{"yintercept":{},"type":"scatter"},"43bc17b33a54":{"xintercept":{}},"43bc7f0c38f3":{"x":{},"y":{}},"43bc65e66d63":{"x":{},"y":{}}},"cur_data":"43bc44313263","visdat":{"43bc44313263":["function (y) ","x"],"43bc17b33a54":["function (y) ","x"],"43bc7f0c38f3":["function (y) ","x"],"43bc65e66d63":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.2,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+<div class="plotly html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-81168bf6aada0f49b071" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-81168bf6aada0f49b071">{"x":{"data":[{"x":[-77.5,527.5],"y":[0.5,0.5],"text":"yintercept: 0.5","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[158,158],"y":[-0.064450159712206342,1.3534533539563329],"text":"xintercept: 158","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,255,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50,55,60,67,250,280,320,370,500],"y":[1,0,0,0,0,1,1,1,1,1],"text":["Income:  45<br />YachtNum: 1","Income:  50<br />YachtNum: 0","Income:  55<br />YachtNum: 0","Income:  60<br />YachtNum: 0","Income:  67<br />YachtNum: 0","Income: 250<br />YachtNum: 1","Income: 280<br />YachtNum: 1","Income: 320<br />YachtNum: 1","Income: 370<br />YachtNum: 1","Income: 500<br />YachtNum: 1"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"],"opacity":1,"size":10.204724409448822,"symbol":"circle","line":{"width":1.8897637795275593,"color":["rgba(255,0,0,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)","rgba(0,255,255,1)"]}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[45,50.759493670886073,56.518987341772153,62.278481012658226,68.037974683544306,73.797468354430379,79.556962025316452,85.316455696202524,91.075949367088612,96.83544303797467,102.59493670886076,108.35443037974683,114.1139240506329,119.87341772151898,125.63291139240506,131.39240506329114,137.15189873417722,142.91139240506328,148.67088607594934,154.43037974683546,160.18987341772151,165.94936708860757,171.70886075949366,177.46835443037975,183.22784810126581,188.98734177215189,194.74683544303795,200.50632911392404,206.26582278481013,212.02531645569618,217.78481012658227,223.54430379746833,229.30379746835442,235.0632911392405,240.82278481012656,246.58227848101265,252.34177215189871,258.1012658227848,263.86075949367091,269.62025316455697,275.37974683544303,281.13924050632909,286.89873417721515,292.65822784810126,298.41772151898732,304.17721518987338,309.9367088607595,315.69620253164555,321.45569620253161,327.21518987341773,332.97468354430379,338.73417721518985,344.4936708860759,350.25316455696202,356.01265822784808,361.77215189873414,367.53164556962025,373.29113924050631,379.05063291139237,384.81012658227849,390.56962025316454,396.3291139240506,402.08860759493666,407.84810126582278,413.60759493670884,419.36708860759489,425.12658227848101,430.88607594936707,436.64556962025313,442.40506329113919,448.1645569620253,453.92405063291136,459.68354430379742,465.44303797468353,471.20253164556959,476.96202531645565,482.72151898734177,488.48101265822783,494.24050632911388,500],"y":[0.24505896054090456,0.25827344451183143,0.27148792848275827,0.28470241245368516,0.29791689642461205,0.31113138039553889,0.32434586436646573,0.33756034833739257,0.35077483230831952,0.3639893162792463,0.37720380025017319,0.39041828422110003,0.40363276819202693,0.41684725216295376,0.43006173613388066,0.44327622010480749,0.45649070407573439,0.46970518804666123,0.48291967201758801,0.49613415598851501,0.5093486399594418,0.52256312393036863,0.53577760790129547,0.54899209187222242,0.56220657584314926,0.5754210598140761,0.58863554378500293,0.60185002775592977,0.61506451172685672,0.62827899569778356,0.6414934796687104,0.65470796363963724,0.66792244761056419,0.68113693158149102,0.69435141555241786,0.7075658995233447,0.72078038349427154,0.73399486746519849,0.74720935143612544,0.76042383540705227,0.773638319377979,0.78685280334890584,0.80006728731983268,0.81328177129075963,0.82649625526168646,0.8397107392326133,0.85292522320354025,0.86613970717446709,0.87935419114539393,0.89256867511632088,0.90578315908724771,0.91899764305817444,0.93221212702910128,0.94542661100002823,0.95864109497095507,0.9718555789418819,0.98507006291280885,0.99828454688373569,1.0114990308546625,1.0247135148255895,1.0379279987965164,1.0511424827674432,1.0643569667383699,1.0775714507092968,1.0907859346802238,1.1040004186511505,1.1172149026220775,1.1304293865930042,1.1436438705639311,1.1568583545348581,1.170072838505785,1.1832873224767115,1.1965018064476385,1.2097162904185654,1.2229307743894924,1.2361452583604193,1.2493597423313463,1.2625742263022728,1.2757887102731997,1.2890031942441267],"text":["Income:  45.00000<br />YachtNum: 0.2450590","Income:  50.75949<br />YachtNum: 0.2582734","Income:  56.51899<br />YachtNum: 0.2714879","Income:  62.27848<br />YachtNum: 0.2847024","Income:  68.03797<br />YachtNum: 0.2979169","Income:  73.79747<br />YachtNum: 0.3111314","Income:  79.55696<br />YachtNum: 0.3243459","Income:  85.31646<br />YachtNum: 0.3375603","Income:  91.07595<br />YachtNum: 0.3507748","Income:  96.83544<br />YachtNum: 0.3639893","Income: 102.59494<br />YachtNum: 0.3772038","Income: 108.35443<br />YachtNum: 0.3904183","Income: 114.11392<br />YachtNum: 0.4036328","Income: 119.87342<br />YachtNum: 0.4168473","Income: 125.63291<br />YachtNum: 0.4300617","Income: 131.39241<br />YachtNum: 0.4432762","Income: 137.15190<br />YachtNum: 0.4564907","Income: 142.91139<br />YachtNum: 0.4697052","Income: 148.67089<br />YachtNum: 0.4829197","Income: 154.43038<br />YachtNum: 0.4961342","Income: 160.18987<br />YachtNum: 0.5093486","Income: 165.94937<br />YachtNum: 0.5225631","Income: 171.70886<br />YachtNum: 0.5357776","Income: 177.46835<br />YachtNum: 0.5489921","Income: 183.22785<br />YachtNum: 0.5622066","Income: 188.98734<br />YachtNum: 0.5754211","Income: 194.74684<br />YachtNum: 0.5886355","Income: 200.50633<br />YachtNum: 0.6018500","Income: 206.26582<br />YachtNum: 0.6150645","Income: 212.02532<br />YachtNum: 0.6282790","Income: 217.78481<br />YachtNum: 0.6414935","Income: 223.54430<br />YachtNum: 0.6547080","Income: 229.30380<br />YachtNum: 0.6679224","Income: 235.06329<br />YachtNum: 0.6811369","Income: 240.82278<br />YachtNum: 0.6943514","Income: 246.58228<br />YachtNum: 0.7075659","Income: 252.34177<br />YachtNum: 0.7207804","Income: 258.10127<br />YachtNum: 0.7339949","Income: 263.86076<br />YachtNum: 0.7472094","Income: 269.62025<br />YachtNum: 0.7604238","Income: 275.37975<br />YachtNum: 0.7736383","Income: 281.13924<br />YachtNum: 0.7868528","Income: 286.89873<br />YachtNum: 0.8000673","Income: 292.65823<br />YachtNum: 0.8132818","Income: 298.41772<br />YachtNum: 0.8264963","Income: 304.17722<br />YachtNum: 0.8397107","Income: 309.93671<br />YachtNum: 0.8529252","Income: 315.69620<br />YachtNum: 0.8661397","Income: 321.45570<br />YachtNum: 0.8793542","Income: 327.21519<br />YachtNum: 0.8925687","Income: 332.97468<br />YachtNum: 0.9057832","Income: 338.73418<br />YachtNum: 0.9189976","Income: 344.49367<br />YachtNum: 0.9322121","Income: 350.25316<br />YachtNum: 0.9454266","Income: 356.01266<br />YachtNum: 0.9586411","Income: 361.77215<br />YachtNum: 0.9718556","Income: 367.53165<br />YachtNum: 0.9850701","Income: 373.29114<br />YachtNum: 0.9982845","Income: 379.05063<br />YachtNum: 1.0114990","Income: 384.81013<br />YachtNum: 1.0247135","Income: 390.56962<br />YachtNum: 1.0379280","Income: 396.32911<br />YachtNum: 1.0511425","Income: 402.08861<br />YachtNum: 1.0643570","Income: 407.84810<br />YachtNum: 1.0775715","Income: 413.60759<br />YachtNum: 1.0907859","Income: 419.36709<br />YachtNum: 1.1040004","Income: 425.12658<br />YachtNum: 1.1172149","Income: 430.88608<br />YachtNum: 1.1304294","Income: 436.64557<br />YachtNum: 1.1436439","Income: 442.40506<br />YachtNum: 1.1568584","Income: 448.16456<br />YachtNum: 1.1700728","Income: 453.92405<br />YachtNum: 1.1832873","Income: 459.68354<br />YachtNum: 1.1965018","Income: 465.44304<br />YachtNum: 1.2097163","Income: 471.20253<br />YachtNum: 1.2229308","Income: 476.96203<br />YachtNum: 1.2361453","Income: 482.72152<br />YachtNum: 1.2493597","Income: 488.48101<br />YachtNum: 1.2625742","Income: 494.24051<br />YachtNum: 1.2757887","Income: 500.00000<br />YachtNum: 1.2890032"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":6.4251968503937009,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":48.949771689497723},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.5,527.5],"tickmode":"array","ticktext":["0","50","100","150","200","250","300","350","400","450","500"],"tickvals":[0,50,100,150.00000000000003,200,250,300,350,400,450,500],"categoryorder":"array","categoryarray":["0","50","100","150","200","250","300","350","400","450","500"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Income in $1,000","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-0.064450159712206342,1.3534533539563329],"tickmode":"array","ticktext":["0.00","0.25","0.50","0.75","1.00","1.25"],"tickvals":[0,0.25,0.5,0.75,0.99999999999999989,1.25],"categoryorder":"array","categoryarray":["0.00","0.25","0.50","0.75","1.00","1.25"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Probability of Yacht Ownership","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"1e1c2d233173":{"yintercept":{},"type":"scatter"},"1e1c11091323":{"xintercept":{}},"1e1c36f3671b":{"x":{},"y":{}},"1e1c760e5463":{"x":{},"y":{}}},"cur_data":"1e1c2d233173","visdat":{"1e1c2d233173":["function (y) ","x"],"1e1c11091323":["function (y) ","x"],"1e1c36f3671b":["function (y) ","x"],"1e1c760e5463":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Note, incomes &gt; $370,000 are predicted with a probability &gt; 100% to be yacht owners(?)<br> E.g. probability of owning a yacht for an income of $500,000 is 125% (?)</p>
@@ -559,14 +576,40 @@
 </section>
 <section id="a-step-function-as-an-alternative-to-ols" class="slide level2">
 <h2>A Step-Function as an Alternative to OLS</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>ModelDesignLogRegr<span class="ot">=</span><span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>RecipeYachts<span class="ot">=</span><span class="fu">recipe</span>(Yacht<span class="sc">~</span>Income, <span class="at">data =</span> DataYachts)</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb6-8"><a href="#cb6-8"></a>WFYachts<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">add_model</span>(ModelDesignLogRegr) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">add_recipe</span>(RecipeYachts) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="fu">fit</span>(DataYachts)</span>
+<span id="cb6-12"><a href="#cb6-12"></a></span>
+<span id="cb6-13"><a href="#cb6-13"></a>b1<span class="ot">=</span><span class="fu">tidy</span>(WFYachts)[[<span class="dv">2</span>,<span class="dv">2</span>]]</span>
+<span id="cb6-14"><a href="#cb6-14"></a>b2<span class="ot">=</span><span class="fu">tidy</span>(WFYachts)[[<span class="dv">1</span>,<span class="dv">2</span>]]</span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Income,<span class="at">y=</span>YachtNum),<span class="at">data=</span>DataYachts)<span class="sc">+</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">158</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">110</span>, <span class="at">linetype=</span><span class="st">"dashed"</span>, <span class="at">color=</span><span class="st">"magenta"</span>)<span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="fl">2.7</span>, <span class="at">color=</span><span class="fu">ifelse</span>(DataYachts<span class="sc">$</span>Income<span class="sc">==</span><span class="dv">45</span>,<span class="st">"red"</span>,<span class="st">"cyan"</span>))<span class="sc">+</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>  <span class="fu">geom_function</span>(<span class="at">fun=</span><span class="cf">function</span>(x) <span class="dv">1</span><span class="sc">/</span>(<span class="dv">1</span><span class="sc">+</span><span class="fu">exp</span>(<span class="sc">-</span>b1<span class="sc">*</span>x<span class="sc">-</span>b2)), <span class="at">color=</span><span class="st">"magenta"</span>, <span class="at">size=</span><span class="fl">1.7</span>)<span class="sc">+</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>,<span class="at">se=</span><span class="cn">FALSE</span>, <span class="at">size=</span><span class="fl">1.7</span>)<span class="sc">+</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>,<span class="dv">500</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">500</span>,<span class="dv">50</span>))<span class="sc">+</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="fl">1.25</span>,<span class="fl">0.25</span>))<span class="sc">+</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a>  <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Probability of Yacht Ownership"</span>, <span class="at">x=</span><span class="st">"Income in $1,000"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
+</div>
 <img data-src="LogRegr_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
 <section id="popular-step-functions-sigmoid-function" class="slide level2">
 <h2>Popular Step-Functions (Sigmoid Function)</h2>
 <ul>
-<li class="fragment"><p>The <strong>Hyperbolic Tangent function</strong>.</p></li>
-<li class="fragment"><p>The <strong>Arc Tangent function</strong>.</p></li>
-<li class="fragment"><p>The <strong>Logistic function</strong> (confusingly sometimes also called the <em>sigmoid function</em>).</p></li>
+<li><p>The <strong>Hyperbolic Tangent function</strong>.</p></li>
+<li><p>The <strong>Arc Tangent function</strong>.</p></li>
+<li><p>The <strong>Logistic function</strong> (confusingly sometimes also called the <em>sigmoid function</em>).</p></li>
 </ul>
 <div class="fragment">
 <p><span class="math display">\[
@@ -590,8 +633,7 @@ y_i=\frac{1}{1+e^{-x_i}}
 <div class="fragment">
 <p><span class="math display">\[
 P^{rob}_{yes,i}=\frac{1}{1+e^{-(\beta_1 Inc_i+\beta_2)}}
-\]</span></p>
-<p><strong><span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> change slope and position <br> <span class="math inline">\(\beta_1=1\)</span> and <span class="math inline">\(\beta_2=0\)</span> gives the org. logistic function.</strong> 🤓</p>
+\]</span> <strong><span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> change slope and position <br> <span class="math inline">\(\beta_1=1\)</span> and <span class="math inline">\(\beta_2=0\)</span> gives the org. logistic function.</strong> 🤓</p>
 <div class="footer">
 <p>See: <a href="https://econ.lange-analytics.com/calcat/logisticregr">Try it yourself</a></p>
 </div>
@@ -631,10 +673,10 @@ P^{rob}_{yes,i}=\frac{1}{1+e^{-(\beta_1 Inc_i+\beta_2)}}
 <section id="one-more-step-odds-vs-probabilties" class="slide level2">
 <h2>One More Step — Odds vs Probabilties</h2>
 <ul>
-<li class="fragment"><p>The fraction of the yes/no probabilities can be interpreted as <span class="math inline">\(Odds\)</span> as they are often used in betting.</p></li>
-<li class="fragment"><p>Example: The probability of getting two heads when flipping two coins is is <span class="math inline">\(P^{rob}_{yes,i}=0.25\)</span>.</p></li>
-<li class="fragment"><p>Consequently, the probability of <strong>not</strong> getting two heads when flipping two coins is <span class="math inline">\(P^{rob}_{no,i}=0.75\)</span>.</p></li>
-<li class="fragment"><p><span class="math inline">\(Odds\)</span> for 2 Heads compared to <strong>not</strong> 2 heads is 1 to 3 or 33%:</p></li>
+<li><p>The fraction of the yes/no probabilities can be interpreted as <span class="math inline">\(Odds\)</span> as they are often used in betting.</p></li>
+<li><p>Example: The probability of getting two heads when flipping two coins is is <span class="math inline">\(P^{rob}_{yes,i}=0.25\)</span>.</p></li>
+<li><p>Consequently, the probability of <strong>not</strong> getting two heads when flipping two coins is <span class="math inline">\(P^{rob}_{no,i}=0.75\)</span>.</p></li>
+<li><p><span class="math inline">\(Odds\)</span> for 2 Heads compared to <strong>not</strong> 2 heads is 1 to 3 or 33%:</p></li>
 </ul>
 <div class="fragment">
 <p><span class="math display">\[O^{dds}=\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}=\frac{0.25}{0.75}=\frac{1}{3}=0.33\]</span></p>
@@ -645,12 +687,9 @@ P^{rob}_{yes,i}=\frac{1}{1+e^{-(\beta_1 Inc_i+\beta_2)}}
 <p><span class="math display">\[\ln(O^{dds})=\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=0.02\cdot Inc_i+(-2.7)\]</span></p>
 <p>Model results after running and printing the workflow():</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># The workflow WFYachts had been created before and</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># DataTest were fitted to the workflow.</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">print</span>(WFYachts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># The workflow WFYachts had been created before and</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co"># DataTest were fitted to the workflow.</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="fu">print</span>(WFYachts)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════
 Preprocessor: Recipe
@@ -677,8 +716,8 @@ Residual Deviance: 5.654    AIC: 9.654</code></pre>
 <h2>Interpretation of the <span class="math inline">\(\beta s\)</span>: Yacht Ownership</h2>
 <p><span class="math display">\[\ln(O^{dds})=\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=0.02\cdot Inc_i+(-2.7)\]</span></p>
 <ul>
-<li class="fragment"><p>If income increases by 1 ($1,000) the logarithm of the odds increases by 0.02.</p></li>
-<li class="fragment"><p>Since change of a logarithm is a relative change (<strong>percentage</strong>):</p></li>
+<li><p>If income increases by 1 ($1,000) the logarithm of the odds increases by 0.02.</p></li>
+<li><p>Since change of a logarithm is a relative change (<strong>percentage</strong>):</p></li>
 </ul>
 <div class="fragment">
 <p>If income increases by 1 ($1,000) the odds increases by 2% (0.02). (careful with the results because data were made up and N is too small!)</p>
@@ -688,11 +727,8 @@ Residual Deviance: 5.654    AIC: 9.654</code></pre>
 <h2>Confusion Matrix</h2>
 <p>Note, in the mockup we did not create training and testing data. Therefore, we use DataYachts (the data we used to fit/train the workflow) here. This is not a proper methodology but good enough for the mock-up:</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>DataYachtsWithPred<span class="ot">=</span><span class="fu">augment</span>(WFYachts, <span class="at">new_data=</span>DataYachts)</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">conf_mat</span>(DataYachtsWithPred, <span class="at">truth=</span>Yacht, <span class="at">estimate=</span>.pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>DataYachtsWithPred<span class="ot">=</span><span class="fu">augment</span>(WFYachts, <span class="at">new_data=</span>DataYachts)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">conf_mat</span>(DataYachtsWithPred, <span class="at">truth=</span>Yacht, <span class="at">estimate=</span>.pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>          Truth
 Prediction 0 1
@@ -705,27 +741,24 @@ Prediction 0 1
 <h2>Real World Churn Analysis with Logistic Regression — the Data</h2>
 <p>We use data (7,043 customers) of the fictional telecommunication company <em>TELCO</em>, generated by <em>IBM</em> for training purposes:</p>
 <ul>
-<li class="fragment">The outcome variable <span class="math inline">\(Churn\)</span> indicates, if a customer departed within the last month (<span class="math inline">\(Churn=Yes\)</span>) or not (<span class="math inline">\(Churn=No\)</span>).</li>
-<li class="fragment">Predictor variables contain:
+<li>The outcome variable <span class="math inline">\(Churn\)</span> indicates, if a customer departed within the last month (<span class="math inline">\(Churn=Yes\)</span>) or not (<span class="math inline">\(Churn=No\)</span>).</li>
+<li>Predictor variables contain:
 <ul>
-<li class="fragment">Customers’ <span class="math inline">\(Gender\)</span> (<span class="math inline">\(Female\)</span> or <span class="math inline">\(Male\)</span>),</li>
-<li class="fragment">Customers’ <span class="math inline">\(SeniorCitizen\)</span> status (<span class="math inline">\(0\)</span> for no or <span class="math inline">\(1\)</span> for yes),</li>
-<li class="fragment">Customers’ <span class="math inline">\(Tenure\)</span> with <em>TELCO</em> (month of membership), as well as</li>
-<li class="fragment">Customers’ <span class="math inline">\(MonthlyCharges\)</span> (in US-$).</li>
+<li>Customers’ <span class="math inline">\(Gender\)</span> (<span class="math inline">\(Female\)</span> or <span class="math inline">\(Male\)</span>),</li>
+<li>Customers’ <span class="math inline">\(SeniorCitizen\)</span> status (<span class="math inline">\(0\)</span> for no or <span class="math inline">\(1\)</span> for yes),</li>
+<li>Customers’ <span class="math inline">\(Tenure\)</span> with <em>TELCO</em> (month of membership), as well as</li>
+<li>Customers’ <span class="math inline">\(MonthlyCharges\)</span> (in US-$).</li>
 </ul></li>
 </ul>
 </section>
 <section id="real-world-churn-analysis-with-logistic-regression-the-data-1" class="slide level2">
 <h2>Real World Churn Analysis with Logistic Regression — the Data</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>DataChurn<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/TelcoChurnData.csv"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">select</span>(Churn,Gender,SeniorCitizen,Tenure,MonthlyCharges) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">mutate</span>(<span class="at">Churn=</span><span class="fu">factor</span>(Churn, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Yes"</span>,<span class="st">"No"</span>))) </span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="fu">head</span>(DataChurn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>DataChurn<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/TelcoChurnData.csv"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">select</span>(Churn,Gender,SeniorCitizen,Tenure,MonthlyCharges) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">mutate</span>(<span class="at">Churn=</span><span class="fu">factor</span>(Churn, <span class="at">levels=</span><span class="fu">c</span>(<span class="st">"Yes"</span>,<span class="st">"No"</span>))) </span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">head</span>(DataChurn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Churn Gender SeniorCitizen Tenure MonthlyCharges
 1    No Female             0      1          29.85
@@ -742,16 +775,37 @@ Prediction 0 1
 <h3 id="do-it-yourself">— Do it yourself —</h3>
 <p>Create the Churn analysis with logistic regression. Click on the link in the footer to get an R-script with a skeleton for the analysis.🤓</p>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LogRegrChurnScript.R">LogRegrChurnScript.R</a></p>
+<p>See: <a href="https://econ.lange-analytics.com/RScripts/LogRegrChurnScript.R">LogRegrChurnScript.R</a></p>
 </div>
 </section>
 <section id="results-from-churn-analysis-with-logistic-regression" class="slide level2 smaller">
 <h2>Results from Churn Analysis with Logistic Regression</h2>
 <div class="cell">
-
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
+<span id="cb13-2"><a href="#cb13-2"></a>Split3070<span class="ot">=</span><span class="fu">initial_split</span>(DataChurn, <span class="at">prop=</span><span class="fl">0.7</span>,<span class="at">strata =</span>Churn)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split3070)</span>
+<span id="cb13-5"><a href="#cb13-5"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split3070)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="fu">set.seed</span>(<span class="dv">789</span>)</span>
+<span id="cb13-8"><a href="#cb13-8"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-9"><a href="#cb13-9"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-10"><a href="#cb13-10"></a>  <span class="fu">step_dummy</span>(Gender)</span>
+<span id="cb13-11"><a href="#cb13-11"></a></span>
+<span id="cb13-12"><a href="#cb13-12"></a>ModelDesignLogisticRegr<span class="ot">=</span> <span class="fu">logistic_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-13"><a href="#cb13-13"></a>  <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-14"><a href="#cb13-14"></a>  <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb13-15"><a href="#cb13-15"></a></span>
+<span id="cb13-16"><a href="#cb13-16"></a>WFModelChurn<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-17"><a href="#cb13-17"></a>  <span class="fu">add_recipe</span>(RecipeChurn) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-18"><a href="#cb13-18"></a>  <span class="fu">add_model</span>(ModelDesignLogisticRegr) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-19"><a href="#cb13-19"></a>  <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb13-20"><a href="#cb13-20"></a></span>
+<span id="cb13-21"><a href="#cb13-21"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelChurn, <span class="at">new_data =</span> DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Confusion Matrix:</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">kbl</span>(<span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth =</span> Churn, <span class="at">estimate =</span> .pred_class)<span class="sc">$</span>table)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -780,6 +834,7 @@ Prediction 0 1
 </div>
 <p>Accuracy:</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">kbl</span>(<span class="fu">accuracy</span>(DataTestWithPred, <span class="at">truth =</span> Churn, <span class="at">estimate =</span> .pred_class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -803,6 +858,7 @@ Prediction 0 1
 </div>
 <p>Sensitivity:</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">kbl</span>(<span class="fu">sensitivity</span>(DataTestWithPred, <span class="at">truth =</span> Churn, <span class="at">estimate =</span> .pred_class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -826,6 +882,7 @@ Prediction 0 1
 </div>
 <p>Specificity:</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">kbl</span>(<span class="fu">specificity</span>(DataTestWithPred, <span class="at">truth =</span> Churn, <span class="at">estimate =</span> .pred_class))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -852,6 +909,7 @@ Prediction 0 1
 <section id="problem-unballanced-training-data" class="slide level2">
 <h2>Problem: Unballanced Training Data</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">kbl</span>(<span class="fu">count</span>(DataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -881,6 +939,7 @@ Prediction 0 1
 <section id="what-can-we-do" class="slide level2">
 <h2>What can we do?</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">kbl</span>(<span class="fu">count</span>(DataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -905,28 +964,25 @@ Prediction 0 1
 </div>
 </div>
 <ul>
-<li class="fragment"><p><strong>Downsampling:</strong> Randomly <strong>delete observations from majority class</strong> until ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).</p></li>
-<li class="fragment"><p><strong>Upsampling:</strong> In simplest version, <strong>creates new observations for the minority class</strong> by copying randomly chosen observations from the minority class until the ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).</p></li>
-<li class="fragment"><p>Often, a combination of <em>downsampling</em> and <em>upsampling</em> is performed.</p></li>
+<li><p><strong>Downsampling:</strong> Randomly <strong>delete observations from majority class</strong> until ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).</p></li>
+<li><p><strong>Upsampling:</strong> In simplest version, <strong>creates new observations for the minority class</strong> by copying randomly chosen observations from the minority class until the ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).</p></li>
+<li><p>Often, a combination of <em>downsampling</em> and <em>upsampling</em> is performed.</p></li>
 </ul>
 </section>
 <section id="performing-down-sampling-with-step_downsample" class="slide level2">
 <h2>Performing Down-Sampling with <code>step_downsample()</code></h2>
 <p>You need to add the R package <code>themis</code>. Then in your script, you can add <code>step_downsample(Churn)</code> to the recipe (don’t forget to execute the following command lines again). As a reminder our original DataTrain had 4,929 observations, <span class="math inline">\(Churn_{Yes}=1308\)</span>, <span class="math inline">\(Churn_{No}=3621\)</span>:</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(themis)</span>
-<span id="cb10-2"><a href="#cb10-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb10-5"><a href="#cb10-5"></a>  <span class="fu">step_downsample</span>(Churn)</span>
-<span id="cb10-6"><a href="#cb10-6"></a></span>
-<span id="cb10-7"><a href="#cb10-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
-<span id="cb10-9"><a href="#cb10-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
-<span id="cb10-10"><a href="#cb10-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb20-2"><a href="#cb20-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">step_downsample</span>(Churn)</span>
+<span id="cb20-6"><a href="#cb20-6"></a></span>
+<span id="cb20-7"><a href="#cb20-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
+<span id="cb20-10"><a href="#cb20-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -956,19 +1012,16 @@ Prediction 0 1
 <h2>Performing Up-Sampling with <code>step_upsample()</code></h2>
 <p>You need to add the R package <code>themis</code>. Then in your script, you can add <code>step_upsample(Churn)</code> to the recipe (don’t forget to execute the following command lines again). As a reminder our original DataTrain had 4,929 observations, <span class="math inline">\(Churn_{Yes}=1308\)</span>, <span class="math inline">\(Churn_{No}=3621\)</span>:</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">library</span>(themis)</span>
-<span id="cb11-2"><a href="#cb11-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">step_upsample</span>(Churn)</span>
-<span id="cb11-6"><a href="#cb11-6"></a></span>
-<span id="cb11-7"><a href="#cb11-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
-<span id="cb11-9"><a href="#cb11-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
-<span id="cb11-10"><a href="#cb11-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb21-2"><a href="#cb21-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">step_upsample</span>(Churn)</span>
+<span id="cb21-6"><a href="#cb21-6"></a></span>
+<span id="cb21-7"><a href="#cb21-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
+<span id="cb21-10"><a href="#cb21-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -998,19 +1051,16 @@ Prediction 0 1
 <h2>Performing Up-Sampling with <code>step_smote()</code>. What is the advantage</h2>
 <p>As a reminder our original DataTrain had 4,929 observations, <span class="math inline">\(Churn_{Yes}=1308\)</span>, <span class="math inline">\(Churn_{No}=3621\)</span>:</p>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">library</span>(themis)</span>
-<span id="cb12-2"><a href="#cb12-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
-<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">step_upsample</span>(Churn)</span>
-<span id="cb12-6"><a href="#cb12-6"></a></span>
-<span id="cb12-7"><a href="#cb12-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
-<span id="cb12-8"><a href="#cb12-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
-<span id="cb12-10"><a href="#cb12-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="fu">library</span>(themis)</span>
+<span id="cb22-2"><a href="#cb22-2"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(Churn <span class="sc">~</span> ., <span class="at">data=</span>DataTrain) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="fu">step_dummy</span>(Gender) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-5"><a href="#cb22-5"></a>  <span class="fu">step_upsample</span>(Churn)</span>
+<span id="cb22-6"><a href="#cb22-6"></a></span>
+<span id="cb22-7"><a href="#cb22-7"></a> <span class="co"># you do not need to do the following steps.</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a><span class="co"># They just allow to display the count() for the training data</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>ExtractedDataTrain<span class="ot">=</span><span class="fu">juice</span>(RecipeChurn <span class="sc">%&gt;%</span> <span class="fu">prep</span>())</span>
+<span id="cb22-10"><a href="#cb22-10"></a><span class="fu">kbl</span>(<span class="fu">count</span>(ExtractedDataTrain, Churn))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 
 <table>
@@ -1036,7 +1086,7 @@ Prediction 0 1
 </div>
 <p>Instead of copying a record from the training dataset, <code>step_smote()</code> finds the Nearest Neighbor to that record and creates a new record that has features generated as a weighted average between the Nearest Neighbor and the original record.</p>
 <div class="footer footer-default">
-<p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
+<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
 </section>
     </div>
@@ -1050,6 +1100,8 @@ Prediction 0 1
   <script src="LogRegr_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
   <script src="LogRegr_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
   <script src="LogRegr_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/multiplex/socket.io.js"></script>
+  <script src="LogRegr_files/libs/revealjs/plugin/multiplex/multiplex.js"></script>
   <script src="LogRegr_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
@@ -1073,6 +1125,7 @@ Prediction 0 1
 'autoAnimateUnmatched': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
+'multiplex': {"secret":null,"id":"d5b9b3abee700104","url":"https://reveal-multiplex.glitch.me/"},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1246,7 +1299,7 @@ Prediction 0 1
         plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
 
           RevealMath,
-          RevealNotes,
+          
           RevealSearch,
           RevealZoom
         ]
@@ -1258,12 +1311,15 @@ Prediction 0 1
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -1274,13 +1330,6 @@ Prediction 0 1
               window.jQuery(currentSlide).trigger("shown");
             }
           }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
         }
 
         // hookup for slidy
@@ -1332,7 +1381,24 @@ Prediction 0 1
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
         setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -1362,31 +1428,50 @@ Prediction 0 1
       for (var i=0; i<noterefs.length; i++) {
         const ref = noterefs[i];
         tippyHover(ref, function() {
-          let href = ref.getAttribute('href');
+          // use id or data attribute instead here
+          let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
           return note.innerHTML;
         });
       }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-        tippyHover(ref, function() {
-          var popup = window.document.createElement('div');
-          cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
-          return popup.innerHTML;
-        });
+        }
       }
     });
     </script>
