@@ -6,15 +6,19 @@ format:
     code-fold: false
 ---
 
-## Before we Begin Let Us Do A Thought Experiment
+## Before we Begin Let Us Run an Experiment
 
-I want to find somebody to spend a Saturday afternoon with and I am looking for somebody most similar to me (nearest neighbor) in terms of:
+I need two volunteers who are willing to reveal their political opinion and for which party they would vote, if we have election now (ideally one Democrat and one Republican).
 
-::: nonincremental
--   Sex (coded as 0 for female, and 1 for male)
--   Age (coded in years)
--   Outdoor sports interest (coded from 0 (no interest) to 10 (enthusiast))»
-:::
+The survey questions are below (wait for instructions before you take the survey):
+
+- Survey for all students (except the two volunteers)://
+  
+
+
+- Survey for the two volunteers:
+
+
 
 **(all categories matter the same to me)**
 
@@ -90,7 +94,7 @@ Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is
 #| echo: true
 #| output-location: fragment
 library(rio)
-DataWine=import("https://lange-analytics.com/AIBook/Data/WineData.rds")
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds")
 print(DataWine)
 ```
 
