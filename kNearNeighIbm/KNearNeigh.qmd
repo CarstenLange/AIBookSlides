@@ -1,0 +1,710 @@
+---
+title: "k Nearest Neighbors"
+subtitle: "Projects: 1) Identifying Wine Color and 2) Optical Character Recognition"
+format: 
+  revealjs:
+    code-fold: false
+---
+
+## Before we Begin Let Us Do A Thought Experiment
+
+I want to find somebody to spend a Saturday afternoon with and I am looking for somebody most similar to me (nearest neighbor) in terms of:
+
+::: nonincremental
+-   Sex (coded as 0 for female, and 1 for male)
+-   Age (coded in years)
+-   Outdoor sports interest (coded from 0 (no interest) to 10 (enthusiast))»
+:::
+
+**(all categories matter the same to me)**
+
+## Let us do the Calculation for a Similarity Score
+
+#### (average absolute differences)
+
+Sake of argument: I am male (**1**), **50** years, outdoor sports score **7**: <br> <br>
+
+::: columns
+::: {.column width="50%"}
+-   first candidate a student <br> .
+-   second candidate a  women (**0**) **51** years old, athletic outdoor (score=**9**)
+-   third candidate a  man (**1**), **53** years, athletic outdoor (score=**9**)<br>
+:::
+
+::: {.column width="50%"}
+:::
+:::
+
+## Let us do the Calculation for a Similarity Score
+
+#### (average absolute differences --- normalized to 0 -- 10)
+
+Sake of argument: I am male (**1**), **50** years, outdoor sports score **7**: <br> <br>
+
+::: columns
+::: {.column width="50%"}
+-   first candidate a student <br> .
+-   second candidate a women (**0**), **51** years old, athletic outdoor (score=**9**) 
+-   third candidate is an athletic outdoor (score=**9**) man (**1**) <br>**53** years»
+:::
+
+::: {.column width="50%"}
+:::
+:::
+
+## Overwiew {.smaller .scrollable}
+
+In this session you will learn:
+
+1.  What is the underlying **idea of k-Nearest Neighbors**
+
+2.  How similarity can be measured with **Euclidean distance**
+
+3.  Why **scaling predictor variables** is important for some machine learning models
+
+4.  Why the **tidymodels package** makes it easy to work with machine learning models
+
+5.  How you can define a **recipe** to pre-process data with the `tidymodels` package
+
+6.  How you can define a **model-design** with the `tidymodels` package
+
+7.  How you can create a machine learning **workflow** with the `tidymodels` package
+
+8.  How **metrics** derived from a **confusion matrix** can be used to asses prediction quality
+
+9.  Why you have to be careful when interpreting *accuracy*, when you work with **unbalanced observations**
+
+10. How a machine learning model can **process images** and how OCR (Optical Character Recognition) works»
+
+## About the Wine Dataset
+
+<br><br><br>We will work with a publicly available wine dataset[^1] containing 3,198 observations about different wines and their chemical properties.
+
+[^1]: Cortez, Paulo, António Cerdeira, Fernando Almeida, Telmo Matos, and José Reis. 2009. "Modeling Wine Preferences by Data Mining from Physicochemical Properties." Decision Support Systems 47 (4): 547--53. https://doi.org/10.1016/j.dss.2009.05.016.
+
+Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine's chemical properties.»
+
+## Raw Observations from Wine Dataset {.scrollable}
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(rio)
+DataWine=import("https://lange-analytics.com/AIBook/Data/WineData.rds")
+print(DataWine)
+```
+
+»
+
+## Observations from Wine Dataset for Selected Variables {.scrollable}
+
+### Sulfor Dioxide and Acidity
+
+Note we use `clean_names("upper_camel")` from the `janitor` package to change all column (variable) names to UpperCamel.
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse); library(rio);library(janitor)
+DataWine=import("https://lange-analytics.com/AIBook/Data/WineData.rds") %>% 
+  clean_names("upper_camel") %>% 
+  select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) %>% 
+  mutate(WineColor=as.factor(WineColor))
+print(DataWine)
+```
+
+»
+
+## Before Starting with k Nearest Neighbors
+
+<br><br><br><br>
+
+#### Let us find some eyeballing techniques that are related to various machine learning models»
+
+## Eye Balling Techniques to Identify Red and White Wines {.scrollable}
+
+#### try eyeballing the data
+
+```{r}
+library(tidymodels);
+set.seed(876)
+Split7030=initial_split(DataWine,prop=0.7,strata = WineColor)
+
+DataTrain=training(Split7030)
+DataTest=testing(Split7030) 
+```
+
+```{r WinePlot, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color"}
+ggplot(DataTrain%>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' accidity 
+                                                    and total sulfur dioxide")+
+  geom_point(size=1, alpha=0.35)+
+  geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
+  scale_x_continuous(breaks=seq(0,300,50))+
+  scale_colour_manual(values = c("red", "green","blue"))+
+  theme(legend.position = c(0.9, 0.8))
+```
+
+## Eye Balling Techniques to Identify Red and White Wines
+
+#### Horizontal Boundary
+
+```{r WinePlotAcid8, echo=FALSE, fig.cap="Horizontal Decision Boundary for Acidity and Total Sulfur Dioxide Related to Wine Color"}
+ggplot(DataTrain%>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)", color="Wine Color", alt="A point plot of the wines' accidity 
+                                                    and total sulfur dioxide")+
+  geom_point(size=1, alpha=0.35)+
+  geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
+  scale_x_continuous(breaks=seq(0,300,25))+
+  scale_y_continuous(breaks=seq(4,16,2))+
+  scale_colour_manual(values = c("red", "green","blue"))+
+  geom_abline(slope = 0, intercept = 8)+
+  theme(legend.position = c(0.9, 0.8))
+```
+
+#### Confusion Matrix
+
+```{r echo=FALSE}
+DataTemp=tibble(A=as.factor(c(1,1,3)),B=as.factor(c(1,1,3)))
+ConMatTemp=conf_mat(DataTemp, truth = A, estimate = B)
+
+
+rownames(ConMatTemp$table)=c("Red Wine","White Wine")
+colnames(ConMatTemp$table)=c("Red Wine","White Wine")
+ConMatTemp$table[1]="TP: 'half'"
+ConMatTemp$table[2]="FN: 'half'"
+ConMatTemp$table[3]="FP: 'few'"
+ConMatTemp$table[4]="TN: 'most'"
+print(ConMatTemp)
+```
+
+## Eyeballing Techniques to Identify Red and White Wines
+
+#### Creating Subspaces Like Similar to a Decision Tree
+
+```{r WinePlotDecTree, echo=FALSE, fig.cap="Sub-Space Boundaries for Acidity and Total Sulfur Dioxide Related to Wine Color"}
+ggplot(DataTrain%>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)", color="Wine Color", alt="A point plot of the wines' accidity 
+                                                    and total sulfur dioxide")+
+  geom_point(size=1, alpha=0.35)+
+  geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
+  scale_x_continuous(breaks=seq(0,300,25))+
+  scale_y_continuous(breaks=seq(4,16,2))+
+  scale_colour_manual(values = c("red", "green","blue"))+
+  geom_abline(slope = 0, intercept = 8)+
+  geom_segment(x=75, xend=75, y=0, yend=8, color="black", size=1)+
+  theme(legend.position = c(0.9, 0.8))
+```
+
+#### Confusion Matrix
+
+```{r echo=FALSE}
+DataTemp=tibble(A=as.factor(c(1,1,3)),B=as.factor(c(1,1,3)))
+ConMatTemp=conf_mat(DataTemp, truth = A, estimate = B)
+
+
+rownames(ConMatTemp$table)=c("Red Wine","White Wine")
+colnames(ConMatTemp$table)=c("Red Wine","White Wine")
+ConMatTemp$table[1]="TP: 'most'"
+ConMatTemp$table[2]="FN: 'few'"
+ConMatTemp$table[3]="FP: 'few'"
+ConMatTemp$table[4]="TN: 'most'"
+print(ConMatTemp)
+```
+
+## Eyeballing Techniques to Identify Red and White Wines
+
+#### Using a non-linear Decision Boundary Like a Neural Network
+
+```{r WinePlotSVM, message=FALSE, warning=FALSE, echo=FALSE, fig.cap="Curved Decision Boundary for Acidity and Total Sulfur Dioxide Related to Wine Color"}
+ggplot(DataTrain%>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)", color="Wine Color", alt="A point plot of the wines' accidity 
+                                                    and total sulfur dioxide")+
+  geom_point(size=1, alpha=0.35)+
+  geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
+  scale_x_continuous(breaks=seq(0,300,25))+
+  scale_y_continuous(breaks=seq(4,16,2))+
+  scale_colour_manual(values = c("red", "green","blue"))+
+  geom_curve(aes(x=35,y=4, xend=150,yend=12), color="black", curvature=-0.2, size=1)+
+  theme(legend.position = c(0.9, 0.8))
+```
+
+#### Confusion Matrix
+
+```{r echo=FALSE}
+DataTemp=tibble(A=as.factor(c(1,1,3)),B=as.factor(c(1,1,3)))
+ConMatTemp=conf_mat(DataTemp, truth = A, estimate = B)
+
+
+rownames(ConMatTemp$table)=c("Red Wine","White Wine")
+colnames(ConMatTemp$table)=c("Red Wine","White Wine")
+ConMatTemp$table[1]="TP: 'most'"
+ConMatTemp$table[2]="FN: 'few'"
+ConMatTemp$table[3]="FP: 'few'"
+ConMatTemp$table[4]="TN: 'most'"
+print(ConMatTemp)
+```
+
+# So, how does k Nearest Neighbors Work?
+
+## k Nearest Neighbors k=1 {transition="fade-in zoom-out" transition-speed="slow"}
+
+```{r WinePlotAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color»"}
+ggplot(DataTrain%>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' accidity and total sulfur dioxide")+
+  geom_point(size=1, alpha=0.35)+
+  geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
+  scale_x_continuous(breaks=seq(0,300,50))+
+  scale_colour_manual(values = c("red", "green","blue"))+
+  theme(legend.position = c(0.9, 0.8))
+```
+
+## k Nearest Neighbors k=1 {transition="zoom-in slide-out" transition-speed="slow"}
+
+```{r WinePlotK1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Predicting  Wine Color with k-Nearest Neighbors (k=1)"}
+library(latex2exp)
+ggplot(DataTrain %>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+         geom_point(size=5)+
+         labs(x="Total Sulfur Dioxide (mg/liter)", color="Wine Color")+
+         scale_x_continuous(limits = c(66.5,70), breaks=seq(65,80,0.5))+
+         scale_y_continuous(limits = c(6.7,7.5), breaks=seq(6.7,8,0.1))+
+         geom_segment(aes(x = 68.5,y =6.8, xend =68.5, yend=7), color="black")+ #vert
+         geom_segment(aes(x = 68.5,y =7, xend =69, yend=7), color="black")+ # horiz
+         geom_segment(aes(x = 68.5,y =6.8, xend =69, yend=7), color="magenta", size=1.2)+
+         scale_colour_manual(values = c("red", "green", "blue"))+
+  annotate(geom="text", x=68.5, y=6.9, label=TeX("$b = (Acid_p - Acid_i)$"),
+              color="black", hjust=1.1)+
+  annotate(geom="text", x=68.75, y=7, label=TeX("$a = (Sulfur_p - Sulfur_i)$"),
+              color="black", vjust=-0.77)+
+  annotate(geom="text", x=68.75, y=6.9, label="c = Dist",
+              color="black", hjust=-0.17)
+```
+
+## How to calculate Euclidean Distance for Two Variables
+
+Assume our observations have **two predictor variables** $x$ and $y$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}$$ »
+
+## How to calculate Euclidean Distance for Three Variables
+
+Assume our observations have **three predictor variables** $x$, $y$, and $z$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}$$ »
+
+## How to calculate Euclidean Distance for N Variables
+
+Assume our observations have $N$ predictor variables $v_j$ with $j=1 ... N$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}$$ »
+
+## k Nearest Neighbors k=4 (for a different unknown wine){transition="fade-in zoom-out" transition-speed="slow"}
+
+```{r WinePlotAgainAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color"}
+ggplot(DataTrain%>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' accidity 
+                                                    and total sulfur dioxide")+
+  geom_point(size=1, alpha=0.35)+
+  geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
+  scale_x_continuous(breaks=seq(0,300,50))+
+  scale_colour_manual(values = c("red", "green","blue"))+
+  theme(legend.position = c(0.9, 0.8))
+```
+
+## k Nearest Neighbors k=4 (for a different unknown wine){transition="zoom-in slide-out" transition-speed="slow"}
+
+#### 4 nearest neighbors vote on "red" vs. "white"
+
+```{r WinePlotK4, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Predicting Wine Color with k-Nearest Neighbors (k=4)"}
+ggplot(DataTrain %>% 
+         add_row(WineColor="unknown", Acidity=7.3,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+         geom_point(size=5)+
+         labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color")+
+         scale_x_continuous(limits = c(66.5,70), breaks=seq(65,80,0.5))+
+         scale_y_continuous(limits = c(6.7,7.5), breaks=seq(6.7,8,0.1))+
+         geom_segment(aes(x = 68.5,y =7.3, xend =69, yend=7.3), color="magenta", size=1.2)+ 
+         geom_segment(aes(x = 68.5,y =7.3, xend =69, yend=7), color="magenta")+ 
+         geom_segment(aes(x = 68.5,y =7.3, xend =68, yend=7.2), color="magenta")+
+         geom_segment(aes(x = 68.5,y =7.3, xend =68, yend=7.1), color="magenta")+
+         annotate(geom="text", x=69, y=7.3, label=TeX("$N_1$"),
+              color="black", vjust=-1.1)+
+         annotate(geom="text", x=68, y=7.2, label=TeX("$N_2$"),
+              color="black", hjust=1.57)+
+         annotate(geom="text", x=68, y=7.1, label=TeX("$N_3$"),
+              color="black", hjust=1.57)+
+         annotate(geom="text", x=69, y=7, label=TeX("$N_4$"),
+              color="black", hjust=1.57)+
+  scale_colour_manual(values = c("red", "green", "blue"))
+```
+
+## k Nearest Neighbors k=4 (for a different unknown wine){transition="fade-in zoom-out" transition-speed="slow"}
+
+#### Watch the scale: g/liter vs. mg/liter. That does not look right!
+
+```{r WinePlotAgainAgainAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color »"}
+ggplot(DataTrain%>% 
+         add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' accidity 
+                                                    and total sulfur dioxide")+
+  geom_point(size=1, alpha=0.35)+
+  geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
+  scale_x_continuous(breaks=seq(0,300,50))+
+  scale_colour_manual(values = c("red", "green","blue"))+
+  theme(legend.position = c(0.9, 0.8))
+```
+
+## A Few Common Scaling Options {.smaller}
+
+-   **Same units**
+
+    Divide or multiply to get the same units. This is often not possible (e.g., `Height` and `Weight`). Or it is not feasible (e.g. `Alcohol` and `StrawberryJuice` content in spiked strawberry drink))
+
+-   **Rescaling**
+
+    Generates a variable $y$ that is scaled to a range between 0 and 1 based on the original variable's value $x$, its minimum $x_{min}$ and its maximum $x_{max}$: $$ y= \frac{x-x_{min}}{x_{max} - x_{min}}$$
+
+-   **Z-Score Normalization**
+
+    Z-score normalization uses the mean ($\overline x$) and the standard deviation ($s$) of a variable to scale the variable $x$ to the variable $z$:
+
+    $$z=\frac{x-\overline x}{s}$$»
+
+## Time to Run k-Nearest Neighbors
+
+#### Loading Data and Selecting Variables
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse); library(rio);library(janitor)
+DataWine=import("https://lange-analytics.com/AIBook/Data/WineData.rds") %>% 
+         clean_names("upper_camel") %>% 
+         select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) %>% 
+  mutate(WineColor=as.factor(WineColor))
+print(DataWine)
+```
+
+»
+
+## Time to Run k-Nearest Neighbors {.scrollable}
+
+Generate Training and Testing Data (Splitting):
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidymodels);
+set.seed(876)
+Split7030=initial_split(DataWine,prop=0.7,strata = WineColor)
+
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+print(DataTrain)
+print(DataTest)
+```
+
+## Time to Run k-Nearest Neighbors {.scrollable}
+### [Click here to find a reference list for various `Step_` commands](https://recipes.tidymodels.org/reference/index.html)
+
+Recipe: Prepare Data for Analysis:
+
+```{r}
+#| echo: true
+RecipeWine=recipe(WineColor~Acidity+Sulfur, data = DataTrain) %>%
+            step_naomit() %>% 
+            step_normalize(all_predictors())
+```
+
+Or:
+
+```{r }
+#| echo: true
+RecipeWine=recipe(WineColor~., data = DataTrain) %>%
+            step_naomit() %>% 
+            step_normalize(all_predictors()) 
+
+```
+
+```{r}
+#| echo: true
+#| output-location: fragment
+print(RecipeWine)
+```
+
+## Time to Run k-Nearest Neighbors {.scrollable}
+### [Click here to find a reference list for various `Step_` commands](https://parsnip.tidymodels.org/reference/index.html)
+
+Creating a Model Design:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+ModelDesignKNN=nearest_neighbor(neighbors = 4, weight_func = "rectangular") %>%
+               set_engine("kknn") %>% 
+               set_mode("classification")
+print(ModelDesignKNN)
+```
+
+## Time to Run k-Nearest Neighbors
+
+Putting it all together in a **fitted** `workflow`:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+#| 
+WFModelWine=workflow() %>% 
+             add_recipe(RecipeWine) %>%
+             add_model(ModelDesignKNN) %>% 
+             fit(DataTrain)
+print(WFModelWine)
+```
+## Time to Run k-Nearest Neighbors
+
+How to use the **fitted** `workflow` to predict the wine color for the wines in the testing dataset:
+
+1. Start with observation $i=1$ from `DataTest` (the first observation).
+2. Take observation $i$ from `DataTest` and use `Acidity` and `Sulfur` to calculate the Euclidean distance to **each** of the observations of `DataTrain`.
+2. Isolate the 4 observations with the smallest Euclidean distance and use the majority of their wine color as a prediction for observation $i$ from `DataTest` (in case of a par, decide randomly).
+4. Increase $i$ by one (i.e., take the next observation from `DataTest`) and go to step 2 (until all `DataTest` observations are processed).
+
+
+## Time to Run k-Nearest Neighbors
+
+Predicting with the fitted workflow using `predict()` (not exactly helpful!):
+
+```{r}
+#| echo: true
+#| output-location: fragment
+predict(WFModelWine, DataTest)
+```
+
+## Time to Run k-Nearest Neighbors
+
+Predicting with the fitted workflow using `augment()` which *augments* `DataTest` with the predictions:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataPredWithTestData=augment(WFModelWine, DataTest)
+head(DataPredWithTestData)
+```
+
+## Having a Data Frame with `truth` and `esimate` we can calculate **performance metrics**
+
+Confusion Matrix:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+ConfMatrixWine=conf_mat(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
+print(ConfMatrixWine)
+```
+
+## Reading the Confusion Matrix
+
+```{r}
+DataTemp=tibble(A=as.factor(c(1,1,3)),B=as.factor(c(1,1,3)))
+ConMatTemp=conf_mat(DataTemp, truth = A, estimate = B)
+
+
+rownames(ConMatTemp$table)=c("Red Wine","White Wine")
+colnames(ConMatTemp$table)=c("Red Wine","White Wine")
+ConMatTemp$table[1]="TP: 436"
+ConMatTemp$table[2]="FN: 44"
+ConMatTemp$table[3]="FP: 46"
+ConMatTemp$table[4]="TN: 434"
+print(ConMatTemp)
+```
+
+-   The **positive class** (wine is "red") is in the **first column**. 436 of the positives are classified correctly (TR: true positives), and 44 positives are incorrectly classified (FN: false negatives).
+
+-   The **negative class** (wine is "white") is in the **second column**. 44 negatives are incorrectly classified (FP: false positives), and 434 negatives are classified correctly (TN: true negatives).
+
+. . .
+
+**Accuracy:** Number of wines on diagonal/number of all wines:
+
+. . .
+
+```{r}
+#| echo: true
+#| output-location: fragment
+accuracy(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
+```
+
+»
+
+## **Warning: Be careful with the Accuracy Rate**
+
+#### The Story of Dr. Nebulous's Gamblers System
+
+Dr. Nebulous offers a **97% Machine Learning Gambling Prediction**. Here is how it works: Gamblers can buy a prediction for a fee of \$5. Dr. Nebulous will then run his famous machine learning model and send a closed envelope with the prediction. The gambler is supposed to open the envelope in the casino, right before placing a bet of \$100 on a number in roulette. The envelope contains a message that states either "You will win" or "You will lose", which allows the gambler to act accordingly by either bet or not bet.
+
+Dr. Nebulous claims that a "clinical trial" of 1000 volunteers, who opened the envelope after they had bet on a number in roulette, shows an accuracy of 97.3%.
+
+**How could Dr. Nebulous have such a precise model?**
+
+## **Warning: Be careful with thethe Accuracy Rate**
+
+#### The Story of Dr. Nebulous's Gamblers System
+
+The trick is Dr. Nebulous's machine learning model uses the *naive prognosis*: It always predicts "You will lose".
+
+Here is the confusion matrix from the 1,000 volunteers trial:
+
+```{r echo=FALSE}
+ConMatNebulous=ConfMatrixWine
+
+rownames(ConMatNebulous$table)=c("Win","Lose")
+colnames(ConMatNebulous$table)=c("Win","Lose")
+ConMatNebulous$table[1]=0
+ConMatNebulous$table[2]=27
+ConMatNebulous$table[3]=0
+ConMatNebulous$table[4]=997
+print(ConMatNebulous)
+```
+
+Roulette has 37 numbers to bet on. Chance to win is: $\frac{1}{37}=0.027$.
+
+Out of the 1000 volunteers, 27 are expected to win, and 973 are expected to lose.
+
+$$Accuracy=\frac{0+973}{1000}=0.973$$
+
+## **Warning: Be careful with the Accuracy Rate**
+
+#### The Story of Dr. Nebulous's Gamblers System
+
+```{r echo=FALSE}
+ConMatNebulous=ConfMatrixWine
+
+rownames(ConMatNebulous$table)=c("Win","Lose")
+colnames(ConMatNebulous$table)=c("Win","Lose")
+ConMatNebulous$table[1]=0
+ConMatNebulous$table[2]=27
+ConMatNebulous$table[3]=0
+ConMatNebulous$table[4]=997
+print(ConMatNebulous)
+```
+
+However, when we look at the correct positive and the correct negative rate separately, we see that Dr. Nebulous' accuracy rate (although correct) makes little sense.
+
+-   The correct negative rate (**specificity**) is 100%
+
+-   The correct positive rate (**sensitivity**) is zero (out of the 27 winners, all were falsely predicted as "You will lose").
+
+. . .
+
+**This example shows: When interpreting the confusion matrix, you must look at accuracy, sensitivity, and specificity simultaneously**
+
+## Time to Run k-Nearest Neighbors 🤓
+
+`accuracy()`, `sensitivity()` and `specificity()` for the wine data:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+accuracy(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
+```
+
+. . .
+
+```{r}
+#| echo: true
+#| output-location: fragment
+sensitivity(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
+```
+
+. . .
+
+```{r}
+#| echo: true
+#| output-location: fragment
+specificity(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
+```
+
+. . .
+
+Can we improve by using all predictors.»
+
+::: footer
+See: [Exercise from AI Book](https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc200.Rmd)
+:::
+
+# Project: Design a Machine Learning Workflow for Optical Character Recognition »
+
+## MNIST Data Set
+
+You will develop a machine learning model based on k-Nearest Neighbors to recognize handwritten digits from images.
+
+You will use the MNIST dataset, a standard dataset for image recognition in machine learning (60,000 images for training and 10,000 images for testing). Developed by LeCun, Cortes, and Burges (2010) based on two datasets from handwritten digits obtained from Census workers and high school students.
+
+We will use only the first 500 images of the original MNIST dataset to speed up the *k-Nearest Neighbors* model's training time.
+
+## Visualization of the First Six Images from the MNIST Data Set
+
+```{r}
+#|echo: false
+FctPlotImages=function(Data){
+  MnistLong = Data %>% 
+    mutate(instance = row_number()) %>%
+    gather(pixel, value, -Label, -instance) %>%
+    tidyr::extract(pixel, "pixel", "(\\d+)", convert = TRUE) %>%
+    mutate(pixel = pixel - 2,
+           x = pixel %% 28,
+           y = 28 - pixel %/% 28) 
+  Plot=MnistLong %>% ggplot(aes(x, y, fill = value)) +
+    geom_tile() +
+    facet_wrap(~ instance + Label)+
+    scale_fill_gradient(
+      low = "#000000",
+      high = "#FFFFFF",
+      guide = "colourbar",
+      aesthetics = "fill")+ coord_fixed()
+  return(Plot)}
+
+
+Mnist4PlotAndTable = import("Data/Mnist4PlotAndTable.rds") 
+
+FctPlotImages(Mnist4PlotAndTable)
+```
+
+## How a Image is Stored in the Mnist Dataset
+
+![Image of a Handwritten Nine](Images/CodedNine.PNG){width="1500"}
+
+The image has 28 rows and 28 columns. Each of the 784 cells (pixels) holds a value between 0 (black) and 255 (white)
+
+## How a Image is Stored in the Mnist Dataset
+
+::: columns
+::: {.column width="50%"}
+![Image of a Handwritten Nine](Images/CodedNine.PNG)
+
+
+:::
+
+::: {.column width="50%"}
+- Pixel values for a single image are not stored in a table. Ohterwise we would end-up with a table containing tables.
+- Pixel values are stored as one row for each image. 
+- Concatenating the 28 rows of an image into one row with 28*28=784 cells (pixels)
+:::
+::::
+
+## Three Rows from the Data Frame of the MNIST Dataset {.smaller .scollable}
+
+```{r}
+#| echo: true
+#| output-location: fragment
+print(Mnist4PlotAndTable[1:3,1:784])
+```
+
+## Go to Project in Book 🤓
+
+### Build your own OCR system.»
+
+
+::: footer
+See: [RandRStudioScriptPart1.R script300](https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc300.Rmd)
+:::
