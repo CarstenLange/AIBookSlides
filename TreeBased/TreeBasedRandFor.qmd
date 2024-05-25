@@ -142,7 +142,7 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
 
 ```{r }
 #| echo: true
-DataVax=import("https://lange-analytics.com/AIBook/Data/DataVax.rds") %>%   
+DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") %>%   
         select(County, State, PercVacFull, PercRep,
               PercAsian, PercBlack, PercHisp,
               PercYoung25, PercOld65, PercFoodSt)
@@ -217,7 +217,7 @@ What to consider for the tuning grid?
 Below is a link for an R script that you can use to tune the *Random Forest* model.
 
 ::: footer
-See: [Script to tune the Random Forest Model](https://lange-analytics.com/AIBook/Scripts/TreeBasedRandForTuningScript.R) 
+See: [Script to tune the Random Forest Model](https://econ.lange-analytics.com/RScripts/TreeBasedRandForTuningScript.R) 
 :::
 
 

@@ -33,7 +33,7 @@ library(plotly)
 #| echo: true
 #| code-fold: false
 library(tidymodels);library(rio);library(vip);library(DALEXtra); library(kableExtra)
-DataVaxFull=import("https://www.lange-analytics.com/AIBook/Data/DataVax.rds") %>% 
+DataVaxFull=import("https://ai.lange-analytics.com/data/DataVax.rds") %>% 
             mutate(RowNum=row.names(.))
 
 DataVax= DataVaxFull%>%   
@@ -312,7 +312,7 @@ if (!DraftMode){
   }else{
   ShapPlot11=import("Images/ShapPlot11.rds")
   }
-ggplotly(ShapPlot11, width=700, height=400)
+plot(ShapPlot11, width=700, height=400)
 cat("Pred. Vac. Rate (all U.S. counties):",round(weighted.mean(DataTrain$PercVacFull,
                     as.numeric(DataTrain$Population)),2))
 ```
@@ -379,7 +379,7 @@ print(levels(ShapPlot11$data[1:7,]$variable)[7])
 🤓 Below is a link to an R script that allows you to create your own SHAP values in R.
 
 ::: footer
-Create your own SHAP values in R: [Click here and execute in RStudio](https://lange-analytics.com/AIBook/Scripts/InterpretVac.R)
+Create your own SHAP values in R: [Click here and execute in RStudio](https://econ.lange-analytics.com/RScripts/InterpretVac.R)
 :::
 
 ## Shap Values for Two Counties (different Politic. Impact)

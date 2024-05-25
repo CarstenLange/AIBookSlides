@@ -1,0 +1,334 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+  letterpaper,
+  DIV=11,
+  numbers=noendperiod]{scrartcl}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+% Make \paragraph and \subparagraph free-standing
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\KOMAoption{captions}{tableheading}
+\makeatletter
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+\makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
+\makeatother
+\makeatletter
+\@ifundefined{shadecolor}{\definecolor{shadecolor}{rgb}{.97, .97, .97}}
+\makeatother
+\makeatletter
+\makeatother
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Draft Studylist Final},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Draft Studylist Final}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[sharp corners, borderline west={3pt}{0pt}{shadecolor}, frame hidden, enhanced, interior hidden, boxrule=0pt, breakable]}{\end{tcolorbox}}\fi
+
+\hypertarget{k-nearest-neighbors}{%
+\subsection{k-Nearest Neighbors}\label{k-nearest-neighbors}}
+
+\begin{itemize}
+\item
+  You must manually calculate the Euclidian Distance between a testing
+  record and 3 observations from the training dataset for two predictor
+  variables and then find the nearest neighbor for k=1.
+\item
+  Euclidean Distance between a testing record and 9 observations is
+  given together with the outcome for the 9 observations. You have to
+  manually find the 3 nearest neighbors and make a prediction.
+\item
+  In a diagram with two predictors for a binary classification that
+  shows both classes color-coded for the training data and also shows
+  one record to be classified. Use k=5 and k=1 to classify the record.
+\end{itemize}
+
+\hypertarget{linear-regression}{%
+\subsection{Linear Regression}\label{linear-regression}}
+
+\begin{itemize}
+\item
+  Calculating regression coefficients: not relevant
+\item
+  Understand (!) the logic of the MSE (e.g., identify the error for an
+  individual prediction in the formula, identify an individual
+  prediction in the formulas, ee why MSE is the mean of squared errors)
+\item
+  Understand the role of the betas (parameters and why their choice
+  determines the MSE)
+\item
+  interpret the coeficients and the p-values from a fitted regression
+\end{itemize}
+
+\hypertarget{logistic-regression}{%
+\subsection{Logistic Regression}\label{logistic-regression}}
+
+\begin{itemize}
+\item
+  When a graph of a linear or logistic regression line is given in a
+  diagram, find the probabilities for YES/NO
+\item
+  When a graph of a linear or logistic regression line is given in a
+  diagram, find the decision boundary (e.g.~every income greater 100k is
+  predicted as YES, smaller 100k results in NO).
+
+  \begin{itemize}
+  \tightlist
+  \item
+    which data points are predicted Yes which NO
+  \item
+    which data points are predicted correctly which are predicted
+    incorrectly
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{neural-networks}{%
+\subsection{Neural Networks}\label{neural-networks}}
+
+\begin{itemize}
+\tightlist
+\item
+  Make a prediction when a Neural Network with parameters (\(\beta s\))
+  is given
+
+  \begin{itemize}
+  \tightlist
+  \item
+    in algebraic form
+  \item
+    in a diagram
+  \end{itemize}
+\item
+  Calculate the MSE for a prediction (testing observation),when a Neural
+  Network with parameters (\(\beta s\)) is given
+
+  \begin{itemize}
+  \tightlist
+  \item
+    in algebraic form
+  \item
+    in a diagram
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{decision-tree}{%
+\subsection{Decision Tree}\label{decision-tree}}
+
+\begin{itemize}
+\item
+  Predict with a decision tree when spliting rules are given.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Classification model
+  \item
+    Regression model
+  \end{itemize}
+\item
+  Understand the meaning of the meaning of the three numbers in each
+  node.
+\item
+  Interpret a decision tree (terminal nodes and other nodes).
+\item
+  Understand a confusion matrix and be able to calculate accuracy,
+  sensitivity, and specificity)
+\item
+  Know what a splitting variable and a splitting value are
+\item
+  Not on final: Gini impurity and variance decrease
+\end{itemize}
+
+\hypertarget{random-forest}{%
+\subsection{Random Forest}\label{random-forest}}
+
+\begin{itemize}
+\item
+  How does a Random Forest generates a prediction from multiple decision
+  trees (you might have to calculate the Random Forest Prediction from 5
+  or 10 trees.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Classification
+  \item
+    Regression
+  \end{itemize}
+\item
+  How do we ensure the decision trees of a random forest different?
+\item
+  Random Subspace method
+\item
+  Bagging (i.e., Bootstrapping)
+\item
+  How can you create a bootstrap dataset from an original training
+  dataset?
+\end{itemize}
+
+\hypertarget{interpretation}{%
+\subsection{Interpretation}\label{interpretation}}
+
+\begin{itemize}
+\item
+  Know the difference between
+
+  \begin{itemize}
+  \tightlist
+  \item
+    local/global interpretation
+  \item
+    model specific/ model agnostic
+  \end{itemize}
+\item
+  Interpret a Variable importance Plot
+\item
+  SHAP values:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Understand why SHAP values are local/model agnostic interpreters
+  \item
+    Understand the relation between (when numerical values are give):
+
+    \begin{itemize}
+    \tightlist
+    \item
+      average prediction
+    \item
+      SHAZP values for all predictor variables for the observaion
+    \item
+      predicted value for that observation
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+
+
+\end{document}

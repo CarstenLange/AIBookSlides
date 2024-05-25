@@ -7,7 +7,7 @@
 <link href="TrainTest_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="TrainTest_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="TrainTest_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.1.189">
+  <meta name="generator" content="quarto-1.2.247">
 
   <title>Polynomial Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -388,11 +388,14 @@
   <div class="reveal">
     <div class="slides">
 
-<section id="title-slide" class="center">
+<section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Polynomial Regression</h1>
   <p class="subtitle">Overlearning, Training, Testing, and Validation</p>
-</section>
 
+<div class="quarto-title-authors">
+</div>
+
+</section>
 <section id="overview" class="slide level2">
 <h2>Overview</h2>
 <p>You will learn about:</p>
@@ -430,7 +433,7 @@
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels); <span class="fu">library</span>(rio); <span class="fu">library</span>(janitor)</span>
 <span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>DataHousing <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"https://lange-analytics.com/AIBook/Data/HousingData.csv"</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>DataHousing <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>)<span class="sc">%&gt;%</span></span>
 <span id="cb1-4"><a href="#cb1-4"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb1-5"><a href="#cb1-5"></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
@@ -515,7 +518,7 @@
 <h2>Comparing Regular OLS and Polynominal Regression (degree=5)</h2>
 <p>Code to compare is linked in the footer of this slide.</p>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R">TrainTestScript.R Script100</a></p>
+<p>See: <a href="https://econ.lange-analytics.com/RScripts/TrainTestScript.R">TrainTestScript.R Script100</a></p>
 </div>
 </section>
 <section id="polynomial-regression-degree5-vs.-regular-ols" class="slide level2">
@@ -628,7 +631,7 @@
 <h2>Run all 10 Steps to Tune the Real Estate Model</h2>
 <p>Code to run all 10 steps is linked in the footer of this slide.</p>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/TrainTestScript.R">TrainTestScript.R Script200</a></p>
+<p>See: <a href="https://econ.lange-analytics.com/RScripts/TrainTestScript.R">TrainTestScript.R Script200</a></p>
 </div>
 </section>
 <section id="exercise-from-aibook" class="slide level2">
@@ -636,17 +639,17 @@
 <p><strong>Use k-Nearest Neighbors to estimate the color of a wine</strong></p>
 <p>Click the link in the footer of this slide to start the exercise.</p>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Exercises/handler.html?file=06-TrainTestExerc100.Rmd">Exercise from AI Book</a></p>
+<p>See: <a href="https://ai.lange-analytics.com/exc/?file=06-TrainTestExerc100.Rmd">Exercise from AI Book</a></p>
 </div>
 </section>
 <section id="research-project" class="slide level2">
 <h2>Research Project 🤓</h2>
 <p>Click the link in the footer of this slide to download a skeleton of the R script for the research project.</p>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/KNearNeighIndepExerc.R">Research Project</a></p>
+<p>See: <a href="https://econ.lange-analytics.com/RScripts/KNearNeighIndepExerc.R">Research Project</a></p>
 </div>
 <div class="footer footer-default">
-<p><a href="https://econ.lange-analytics.com/aibook/" target="_blank">https://econ.lange-analytics.com/aibook/</a></p>
+<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
 </section></section>
     </div>
@@ -868,12 +871,15 @@
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
       // slide changes (different for each slide format).
       (function () {
-        function fireSlideChanged(previousSlide, currentSlide) {
-
-          // dispatch for htmlwidgets
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
           const event = window.document.createEvent("Event");
           event.initEvent("slideenter", true, true);
           window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
 
           // dispatch for shiny
           if (window.jQuery) {
@@ -884,13 +890,6 @@
               window.jQuery(currentSlide).trigger("shown");
             }
           }
-        }
-
-        // hookup for reveal
-        if (window.Reveal) {
-          window.Reveal.addEventListener("slidechanged", function(event) {
-            fireSlideChanged(event.previousSlide, event.currentSlide);
-          });
         }
 
         // hookup for slidy
@@ -942,7 +941,24 @@
         button.classList.add('code-copy-button-checked');
         var currentTitle = button.getAttribute("title");
         button.setAttribute("title", "Copied!");
+        let tooltip;
+        if (window.bootstrap) {
+          button.setAttribute("data-bs-toggle", "tooltip");
+          button.setAttribute("data-bs-placement", "left");
+          button.setAttribute("data-bs-title", "Copied!");
+          tooltip = new bootstrap.Tooltip(button, 
+            { trigger: "manual", 
+              customClass: "code-copy-button-tooltip",
+              offset: [0, -8]});
+          tooltip.show();    
+        }
         setTimeout(function() {
+          if (tooltip) {
+            tooltip.hide();
+            button.removeAttribute("data-bs-title");
+            button.removeAttribute("data-bs-toggle");
+            button.removeAttribute("data-bs-placement");
+          }
           button.setAttribute("title", currentTitle);
           button.classList.remove('code-copy-button-checked');
         }, 1000);
@@ -980,24 +996,42 @@
           return note.innerHTML;
         });
       }
+      const findCites = (el) => {
+        const parentEl = el.parentElement;
+        if (parentEl) {
+          const cites = parentEl.dataset.cites;
+          if (cites) {
+            return {
+              el,
+              cites: cites.split(' ')
+            };
+          } else {
+            return findCites(el.parentElement)
+          }
+        } else {
+          return undefined;
+        }
+      };
       var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
       for (var i=0; i<bibliorefs.length; i++) {
         const ref = bibliorefs[i];
-        const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-        tippyHover(ref, function() {
-          var popup = window.document.createElement('div');
-          cites.forEach(function(cite) {
-            var citeDiv = window.document.createElement('div');
-            citeDiv.classList.add('hanging-indent');
-            citeDiv.classList.add('csl-entry');
-            var biblioDiv = window.document.getElementById('ref-' + cite);
-            if (biblioDiv) {
-              citeDiv.innerHTML = biblioDiv.innerHTML;
-            }
-            popup.appendChild(citeDiv);
+        const citeInfo = findCites(ref);
+        if (citeInfo) {
+          tippyHover(citeInfo.el, function() {
+            var popup = window.document.createElement('div');
+            citeInfo.cites.forEach(function(cite) {
+              var citeDiv = window.document.createElement('div');
+              citeDiv.classList.add('hanging-indent');
+              citeDiv.classList.add('csl-entry');
+              var biblioDiv = window.document.getElementById('ref-' + cite);
+              if (biblioDiv) {
+                citeDiv.innerHTML = biblioDiv.innerHTML;
+              }
+              popup.appendChild(citeDiv);
+            });
+            return popup.innerHTML;
           });
-          return popup.innerHTML;
-        });
+        }
       }
     });
     </script>

@@ -1,6 +1,6 @@
 ---
 title: "Draft Studylist Final"
-format: pdf
+format: html
 ---
 
 ## k-Nearest Neighbors 

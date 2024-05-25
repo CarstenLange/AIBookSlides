@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="LinRegrIbm_files/libs/clipboard/clipboard.min.js"></script>
-<script src="LinRegrIbm_files/libs/quarto-html/tabby.min.js"></script>
-<script src="LinRegrIbm_files/libs/quarto-html/popper.min.js"></script>
-<script src="LinRegrIbm_files/libs/quarto-html/tippy.umd.min.js"></script>
-<link href="LinRegrIbm_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="LinRegrIbm_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
-<link href="LinRegrIbm_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<script src="ReviewLinRegrIbm_files/libs/clipboard/clipboard.min.js"></script>
+<script src="ReviewLinRegrIbm_files/libs/quarto-html/tabby.min.js"></script>
+<script src="ReviewLinRegrIbm_files/libs/quarto-html/popper.min.js"></script>
+<script src="ReviewLinRegrIbm_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="ReviewLinRegrIbm_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="ReviewLinRegrIbm_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
+<link href="ReviewLinRegrIbm_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.247">
 
   <title>Linear Regression</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
-  <link rel="stylesheet" href="LinRegrIbm_files/libs/revealjs/dist/reset.css">
-  <link rel="stylesheet" href="LinRegrIbm_files/libs/revealjs/dist/reveal.css">
+  <link rel="stylesheet" href="ReviewLinRegrIbm_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="ReviewLinRegrIbm_files/libs/revealjs/dist/reveal.css">
   <style>
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
@@ -92,13 +92,13 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="LinRegrIbm_files/libs/revealjs/dist/theme/quarto.css" id="theme">
-  <link href="LinRegrIbm_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
-  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
-  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
-  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
-  <link href="LinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
-  <link href="LinRegrIbm_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <link rel="stylesheet" href="ReviewLinRegrIbm_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link href="ReviewLinRegrIbm_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="ReviewLinRegrIbm_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="ReviewLinRegrIbm_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="ReviewLinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="ReviewLinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="ReviewLinRegrIbm_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
   <style type="text/css">
 
   .callout {
@@ -385,8 +385,8 @@
     }
   </style>
   
-  <script src="LinRegrIbm_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="LinRegrIbm_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+  <script src="ReviewLinRegrIbm_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="ReviewLinRegrIbm_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -394,29 +394,24 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Linear Regression</h1>
-  <p class="subtitle">Univariate</p>
+  <p class="subtitle">Review</p>
 
 <div class="quarto-title-authors">
 </div>
 
 </section>
-<section class="slide level2">
-
+<section id="what-will-you-learn" class="slide level2 scrollable smaller">
+<h2>What Will You Learn</h2>
 <div class="cell">
 
 </div>
-</section>
-<section id="what-will-you-learn" class="slide level2 scrollable smaller">
-<h2>What Will You Learn</h2>
 <ul>
-<li class="fragment"><p>Reviewing the basic idea behind linear regression</p></li>
+<li class="fragment"><p>Reviewing the basic idea behind (linear) regression</p></li>
 <li class="fragment"><p>Learning how how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
-<li class="fragment"><p>Understanding the role of in a linear regression model (applies also to other models)</p></li>
 <li class="fragment"><p>Calculating optimal regression parameters using OLS</p></li>
 <li class="fragment"><p>Finding optimal regression parameters by trial and error</p></li>
-<li class="fragment"><p>Finding optimal regression parameters with <code>lm</code> and <code>tidymodels</code>.</p></li>
+<li class="fragment"><p>Finding optimal regression parameters with <code>tidymodels</code>.</p></li>
 <li class="fragment"><p>Distinguish between unfitted and fitted models</p></li>
-<li class="fragment"><p>Using <code>tidymodels</code> to split observations randomly into a training and testing dataset.</p></li>
 <li class="fragment"><p>Using <code>tidymodels</code> to analyze housing prices.</p></li>
 </ul>
 </section>
@@ -519,7 +514,7 @@
 <p><strong>The Data Diagram</strong></p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+<p><img data-src="ReviewLinRegrIbm_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
 </div>
 </div>
 <div class="cell">
@@ -638,7 +633,7 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <li class="fragment"><p>See the R script in the footnote to see both algorithms in action.»</p></li>
 </ul>
 <div class="footer">
-<p>See: <a href="https://lange-analytics.com/AIBook/Scripts/LinRegrScript.R">LinRegrScript.R script100</a></p>
+<p>See: <a href="https://econ.lange-analytics.com/RScripts/LinRegrScript.R">LinRegrScript.R script100</a></p>
 </div>
 </section>
 <section id="method-2-calculate-optimal-parameters-only-for-ols" class="slide level2 smaller">
@@ -1092,7 +1087,7 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">metrics</span>(DataTrainWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
@@ -1104,27 +1099,27 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com/book/" target="_blank">https://ai.lange-analytics.com/book/</a></p>
+<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
 </section></section>
     </div>
   </div>
 
   <script>window.backupDefine = window.define; window.define = undefined;</script>
-  <script src="LinRegrIbm_files/libs/revealjs/dist/reveal.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/dist/reveal.js"></script>
   <!-- reveal.js plugins -->
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/quarto-support/support.js"></script>
   
 
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/notes/notes.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/search/search.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/zoom/zoom.js"></script>
-  <script src="LinRegrIbm_files/libs/revealjs/plugin/math/math.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="ReviewLinRegrIbm_files/libs/revealjs/plugin/math/math.js"></script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
 
   <script>

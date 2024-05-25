@@ -26,7 +26,7 @@ Classification Algorithm:
 ```{r}
 #| echo: true
 library(tidymodels); library(kableExtra); library(janitor); library(rio)
-DataYachts=import("https://lange-analytics.com/AIBook/Data/DataYachts.csv")%>% 
+DataYachts=import("https://ai.lange-analytics.com/data/DataYachts.csv")%>% 
   mutate(YachtNum=Yacht, Yacht=as.factor(Yacht)) 
 kbl(DataYachts %>% select(-YachtNum), caption="Income and Yacht Ownership") %>% 
   kable_styling(bootstrap_options=c("striped","hover"), position="center", full_width = F)
@@ -292,7 +292,7 @@ We use data (7,043 customers) of the  fictional telecommunication  company *TELC
 
 ```{r}
 #| echo: true
-DataChurn=import("https://lange-analytics.com/AIBook/Data/TelcoChurnData.csv") %>%
+DataChurn=import("https://ai.lange-analytics.com/data/TelcoChurnData.csv") %>%
   clean_names("upper_camel") %>%
   select(Churn,Gender,SeniorCitizen,Tenure,MonthlyCharges) %>%
   mutate(Churn=factor(Churn, levels=c("Yes","No"))) 
@@ -306,7 +306,7 @@ head(DataChurn)
 Create the Churn analysis with logistic regression. Click on the link in the footer to get an R-script with a skeleton for the analysis.🤓
 
 ::: footer
-See: [LogRegrChurnScript.R](https://lange-analytics.com/AIBook/Scripts/LogRegrChurnScript.R)
+See: [LogRegrChurnScript.R](https://econ.lange-analytics.com/RScripts/LogRegrChurnScript.R)
 :::
 
 

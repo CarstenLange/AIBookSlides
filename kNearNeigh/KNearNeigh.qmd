@@ -90,7 +90,7 @@ Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is
 #| echo: true
 #| output-location: fragment
 library(rio)
-DataWine=import("https://lange-analytics.com/AIBook/Data/WineData.rds")
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds")
 print(DataWine)
 ```
 
@@ -106,7 +106,7 @@ Note we use `clean_names("upper_camel")` from the `janitor` package to change al
 #| echo: true
 #| output-location: fragment
 library(tidyverse); library(rio);library(janitor)
-DataWine=import("https://lange-analytics.com/AIBook/Data/WineData.rds") %>% 
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") %>% 
   clean_names("upper_camel") %>% 
   select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) %>% 
   mutate(WineColor=as.factor(WineColor))
@@ -378,7 +378,7 @@ ggplot(DataTrain%>%
 #| echo: true
 #| output-location: fragment
 library(tidyverse); library(rio);library(janitor)
-DataWine=import("https://lange-analytics.com/AIBook/Data/WineData.rds") %>% 
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") %>% 
          clean_names("upper_camel") %>% 
          select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) %>% 
   mutate(WineColor=as.factor(WineColor))
@@ -629,7 +629,7 @@ specificity(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
 Can we improve by using all predictors.»
 
 ::: footer
-See: [Exercise from AI Book](https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc200.Rmd)
+See: [Exercise from AI Book](https://ai.lange-analytics.com/exc/?file=04-KNearNeighExerc200.Rmd)
 :::
 
 # Project: Design a Machine Learning Workflow for Optical Character Recognition »
@@ -706,5 +706,5 @@ print(Mnist4PlotAndTable[1:3,1:784])
 
 
 ::: footer
-See: [RandRStudioScriptPart1.R script300](https://lange-analytics.com/AIBook/Exercises/handler.html?file=04-KNearNeighExerc300.Rmd)
+See: [RandRStudioScriptPart1.R script300](https://ai.lange-analytics.com/exc/?file=04-KNearNeighExerc300.Rmd)
 :::

@@ -33,7 +33,7 @@ DraftModeCL=FALSE # jitter plot takes a long time. DraftMode=TRUE skips it.
 #| echo: true
 library(rio); library(tidymodels); library(janitor)
 library(kableExtra)
-DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv") %>% 
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") %>% 
             clean_names("upper_camel") %>%
              select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) %>%
              mutate(Survived=as.factor(Survived))
@@ -369,7 +369,7 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
 
 ```{r }
 #| echo: true
-DataVax=import("https://lange-analytics.com/AIBook/Data/DataVax.rds") %>%   
+DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") %>%   
         select(County, State, PercVacFull, PercRep,
               PercAsian, PercBlack, PercHisp,
               PercYoung25, PercOld65, PercFoodSt)
