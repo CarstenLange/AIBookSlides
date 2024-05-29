@@ -1,0 +1,317 @@
+---
+title: " Dunmies, Factors, ANOVA, and Linear Regression"
+subtitle: "Review"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## What Will You Learn 
+
+-   Review: Dummy Variables in Linear Regression
+-   One-Way ANOVA
+-   AB Tests
+-   Two-Way ANOVA
+
+## Libraries and Data
+
+```{r echo=TRUE}
+library(rio)
+library(tidyverse)
+library(janitor)
+library(wooldridge)
+DataWage=wage1 |>
+clean_names("upper_camel") |>
+select(Wage, Educ, FemaleYes=Female) |>
+filter(Educ>0) |> 
+mutate(Wage=Wage*5.51) |>   
+mutate(FemaleYes=factor(FemaleYes)) |> 
+mutate(Educ=cut(Educ, breaks = c(0,11,12,99), 
+                       labels = c("NoHS","HS","Degree")))
+head(DataWage)
+```
+
+::: footer
+Note, $Wage$ from 1976 has been adjusted to 2024 purchasing power using
+<https://www.in2013dollars.com/us/inflation/1976?amount=1>.
+:::
+
+# ARE WAGE MEANS DIFFERENT FOR FEMALES AND MALES?
+
+## Are Wage Means Different for Females and Males?
+
+#### Graphical Approach (comparing means)
+
+```{r}
+DataWageFem=DataWage |> filter(FemaleYes==1)
+MeanWageFem=mean(DataWageFem$Wage)
+DataWageMale=DataWage |> filter(FemaleYes==0)
+MeanWageMale=mean(DataWageMale$Wage)
+ggplot(DataWage, aes(x=FemaleYes, y=Wage))+
+   geom_point()+
+   geom_point(aes(x=1, y=MeanWageMale), size=7, color="Blue")+
+   geom_point(aes(x=2, y=MeanWageFem), size=7, color="Red")+
+   scale_y_continuous(breaks = c(seq(0,150,10)))
+```
+
+## Are Wage Means Different for Females and Males?
+
+#### Graphical Approach (comparing means)
+
+```{r}
+DataWageFem=DataWage |> filter(FemaleYes==1)
+MeanWageFem=mean(DataWageFem$Wage)
+DataWageMale=DataWage |> filter(FemaleYes==0)
+MeanWageMale=mean(DataWageMale$Wage)
+ggplot(DataWage, aes(x=FemaleYes, y=Wage))+
+   geom_jitter(width=0.07)+
+   geom_point(aes(x=1, y=MeanWageMale), size=7, color="Blue")+
+   geom_point(aes(x=2, y=MeanWageFem), size=7, color="Red")+
+   scale_y_continuous(breaks = c(seq(0,150,10)))
+```
+
+## Are Wage Means Different for Females and Males?
+
+#### t-test (comparing means)
+
+```{r echo=TRUE}
+DataWageFem= filter(DataWage, FemaleYes==1)
+DataWageMale= filter(DataWage, FemaleYes==0)
+
+t.test(DataWageFem$Wage,DataWageMale$Wage, var.equal = TRUE)
+```
+
+The difference in means is: `r mean(DataWageFem$Wage)-mean(DataWageMale$Wage)`
+
+## Are Wage Means Different for Females and Males?
+
+#### Graphical Approach (OLS Regression)
+
+::: r-stack
+::: fragment
+```{r  }
+Plot1=ggplot(DataWage, aes(x=FemaleYes, y=Wage))+
+   geom_point()+
+   geom_point(aes(x=1, y=MeanWageMale), size=7, color="Blue")+
+   geom_point(aes(x=2, y=MeanWageFem), size=7, color="Red")+
+  scale_y_continuous(breaks = c(seq(0,150,10)))
+plot(Plot1)
+```
+:::
+
+::: fragment
+```{r }
+Plot1=Plot1+
+    geom_segment(aes(x = 1,y = MeanWageMale, 
+                     xend = 2,yend = MeanWageFem),                                     color="magenta", linewidth=2.7)
+plot(Plot1)
+```
+:::
+:::
+
+## Are Wage Means Different for Females and Males?
+
+#### OLS Regression Approach
+
+```{r echo=TRUE}
+
+ModelSexDis=lm(Wage~FemaleYes, data=DataWage)
+summary(ModelSexDis)
+
+```
+
+## Are Wage Means Different for Females and Males? {.smaller}
+### Interpretation of Dummy Variables 
+
+```{r echo=TRUE}
+print(ModelSexDis)
+```
+
+$$
+\begin{aligned}
+Wage & = \beta_1& \cdot &FemaleYes& + \beta_0 \\
+Wage & = (-13.8)& \cdot &FemaleYes& + 39.1 \\
+[-13.8] & = (-13.8)& \cdot &[+1]& + [+0] \\
+\end{aligned}
+$$
+$FemaleYes$ can only increase by +1 from 0 to 1 --- when a observation with $FemaleYes=0$ (male) switches to  $FemaleYes=1$ (female). The consequence is that wage changes with -13.8. 
+
+## Are Wage Means Different for Females and Males?
+
+#### ANOVA
+
+::: r-stack
+::: fragment
+```{r  }
+ggplot(DataWage, aes(x=FemaleYes, y=Wage))+
+   geom_jitter(width=0.07)+
+   geom_point(aes(x=1, y=MeanWageMale), size=7, color="Blue")+
+   geom_point(aes(x=2, y=MeanWageFem), size=7, color="Red")+
+   geom_segment(aes(x = 1,y = MeanWageMale, 
+                     xend = 2,yend = MeanWageFem),                                     color="magenta", linewidth=2.7)+
+   scale_y_continuous(breaks = c(seq(0,150,10)))
+```
+:::
+
+::: fragment
+```{r  }
+ggplot(DataWage, aes(x=FemaleYes, y=Wage))+
+   geom_jitter(width=0.07)+
+   geom_point(aes(x=1, y=MeanWageMale), size=7, color="Blue")+
+   geom_point(aes(x=2, y=MeanWageFem), size=7, color="Red")+
+   geom_segment(aes(x = 1,y = MeanWageMale, 
+                     xend = 2,yend = MeanWageFem),                                     color="magenta", linewidth=2.7)+
+   scale_y_continuous(breaks = c(seq(0,90,5)), limits=c(10,90))
+```
+:::
+
+::: fragment
+```{r  }
+ggplot(DataWage, aes(x=FemaleYes, y=Wage))+
+   geom_jitter(width=0.07)+
+   geom_point(aes(x=1, y=MeanWageMale), size=7, color="Blue")+
+   geom_point(aes(x=2, y=MeanWageFem), size=7, color="Red")+
+   geom_segment(aes(x = 1,y = MeanWageMale, 
+                     xend = 2,yend = MeanWageFem),                                     color="magenta", linewidth=2.7)+
+   geom_hline(yintercept=mean(DataWage$Wage),color="red",size=2)+
+   scale_y_continuous(breaks = c(seq(0,90,5)), limits=c(10,90))
+```
+:::
+:::
+
+## Are Wage Means Different for Females and Males? 
+#### ANOVA
+
+$$
+\begin{aligned}
+\mbox{Mean Total Error (Variance): } & MTE \approx \frac{1}{N}
+                             \sum_{i=1}^N (y_i - \overline{y})^2 \\
+\mbox{Mean Residual Error: } & MSE \approx \frac{1}{N}
+                             \sum_{i=1}^N (y_i - \widehat{y})^2
+\end{aligned}
+$$
+
+F-Value:
+
+$$
+F=\frac{MTE}{MSE}= \frac{\mbox{Mean Total Error (Restricted Model)}}{\mbox{Mean Residual Error (Full Model)}}
+$$
+
+## Are Wage Means Different for Females and Males?  {.smaller}
+
+#### ANOVA 
+
+$$
+F=\frac{MTE}{MSE}= \frac{\mbox{Mean Sum of Errors: Restricted Model}}{\mbox{Mean Sum of Errors: Full Model}}
+$$
+
+```{r echo=TRUE}
+ModelSexDis=lm(Wage~FemaleYes, data=DataWage)
+ANOVATable=anova(ModelSexDis)
+print(ANOVATable)
+```
+
+$MTE$= `r format(ANOVATable[[1,3]], scientific=FALSE)` +
+`r format(ANOVATable[[2,3]], scientific=FALSE)`=
+`r format(ANOVATable[[1,3]]+ ANOVATable[[2,3]], scientific=FALSE)`
+
+If F\>1. I.e., full model mean squared error is smaller than the one of
+the restricted model. And if this is not by chance ($P$ is very small),
+then the variables from the full model must be significant.
+
+## Are Education Differences Relevant for Wages?
+
+#### Data
+
+```{r echo=TRUE}
+head(DataWage)
+levels(DataWage$Educ)
+```
+
+## Are Education Differences Relevant for Wages?
+
+#### (pair wise) t-test
+
+Pair-wise t-test is problematic to indicate if factor is relevant
+because of multi-testing problem.
+
+## Are Education Differences Relevant for Wages?
+
+#### One-Way ANOVA (one factor (eduction) with 3 groups)
+
+```{r echo=TRUE}
+ModelEdu=lm(Wage~Educ, data=DataWage )
+summary(ModelEdu)
+
+ANOVATable=anova(ModelEdu)
+print(ANOVATable)
+```
+
+$MTE$= `r format(ANOVATable[[1,3]], scientific=FALSE)` +
+`r format(ANOVATable[[2,3]], scientific=FALSE)`=
+`r format(ANOVATable[[1,3]]+ ANOVATable[[2,3]], scientific=FALSE)`
+
+
+## Are Education Differences Relevant for Wages?
+
+#### Adjusted Paired t-test
+
+
+```{r echo=TRUE}
+pairwise.t.test(DataWage$Wage,DataWage$Educ, pool.sd=FALSE, p.adjust.method="bonferroni")
+```
+
+## AB-Test {.smaller}
+
+A very powerful and easy to use methodology to compare means of one or more *Treatment* groups to a *Control Group*. 
+
+
+**Goal:** Determine if a treatment(s) (e.g., conversion rates for one or more new websites (*Treatment*)) are significant compared to the old website (*Control Group*).
+
+. . .
+
+**Methodology:** To evaluate significant differences between groups *One-Way ANOVA* possibly followed by a *post-hoc* pairwise t-test, if *ANOVA* was successful and the dependent variable is continuous. For binary dependent variables alternatives to ANOVA exist.For experiments with binary outcome and one control group and one treatment group a t-test can be used.
+
+. . .
+
+**Requirement:** Participants must be randomly assigned to the groups (no self-selection!).
+
+. . .
+
+**Problem:** While it is easy and technically straightforward to randomly assign website visitors to different webpages, it can be difficult or impossible in other cases. 
+
+For example, it is not feasible to assign participants of a marketing event into a treatment group (drank a glass of champagne before the talk) and a control group (did not drink a glass of champagne before the talk)
+
+## Two-Way Anova (not relevant for midterm)
+#### With Interaction Term 
+```{r echo=TRUE}
+Model2WayWage=lm(Wage~Educ*FemaleYes, data=DataWage)
+anova(Model2WayWage)
+```
+
+## Two-Way Anova (not relevant for midterm)
+#### With Interaction Term (again with different order)
+```{r echo=TRUE}
+Model2WayWage=lm(Wage~FemaleYes*Educ, data=DataWage)
+anova(Model2WayWage)
+```
+
+## Two-Way Anova (not relevant for midterm)
+#### Without Interaction Term 
+
+```{r echo=TRUE}
+Model2WayWage=lm(Wage~FemaleYes+Educ, data=DataWage)
+anova(Model2WayWage)
+```
+
+## Tukey Pairwise t-Test (not relevant for midterm)
+#### Without Interaction Term 
+
+```{r echo=TRUE}
+Model2WayWageNoInt=lm(Wage~FemaleYes+Educ, data=DataWage)
+TukeyHSD(aov(Model2WayWageNoInt))
+```
