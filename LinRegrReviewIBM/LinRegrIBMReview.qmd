@@ -1,0 +1,96 @@
+---
+title: "Linear Regression"
+subtitle: "Review"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Libraries and Data
+
+```{r echo=TRUE}
+library(rio)
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+DataWage=wage1 |>
+clean_names("upper_camel") |>
+select(Wage, Educ=Educ, Tenu=Tenure) |>
+mutate(Wage=Wage*5.51) |>  
+drop_na()
+
+head(DataWage)
+```
+
+::: footer
+Note, $Wage$ from 1976 has been adjusted to 2024 purchasing power using
+<https://www.in2013dollars.com/us/inflation/1976?amount=1>.
+:::
+
+
+## Running an OLS Regression with Tidymodels {.smaller}
+### Recipe
+
+Recipe determines the data source as well as the outcome and predictor variables.
+
+Explicit Definition:
+```{r echo=TRUE}
+RecipeWage=recipe(Wage~Educ+Tenu, data=DataWage)
+```
+
+```{r}
+head(DataWage)
+```
+
+Implicit Definition:
+```{r echo=TRUE}
+RecipeWage=recipe(Wage~., data=DataWage)
+```
+
+
+
+$$
+Wage=\beta_1 \cdot Educ +\beta_2 \cdot Tenu+ \beta_0
+$$
+
+## Running an OLS Regression with Tidymodels
+
+### Model Design
+
+
+```{r echo=TRUE}
+ModelOLS=linear_reg() |> 
+         set_engine("lm") |> 
+         set_mode("regression")
+```
+
+The model design is only a blue print for the model. It becomes a *model* when  it is integrated into the *workflow model*.
+
+
+## Running an OLS Regression with Tidymodels {.smaller}
+### Recipe
+### Building and Fitting a Workflow Model
+
+$$
+Wage=\beta_1 \cdot Educ +\beta_2 \cdot Tenu+ \beta_0
+$$
+```{r echo=TRUE}
+WFModelWage=workflow() |> 
+            add_recipe(RecipeWage) |> 
+            add_model(ModelOLS)|> 
+            fit(DataWage)
+```
+
+The `fit()` command *fits* the model. I.e., it assigns optimal numeric values to the parameters.
+
+```{r echo=TRUE}
+tidy(WFModelWage)
+```
+
+$$
+Wage=3.14 \cdot Educ +1.04 \cdot Tenu+ (-12.20)
+$$
