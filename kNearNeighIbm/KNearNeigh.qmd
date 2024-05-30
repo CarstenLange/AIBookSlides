@@ -97,7 +97,7 @@ print(DataWine)
 
 ## Eye Balling Techniques to Identify Red and White Wines {.scrollable}
 
-#### try eyeballing the data
+#### try eyeballing the training data ($N=2238$)
 
 ```{r}
 library(tidymodels);
@@ -336,7 +336,7 @@ ggplot(DataTrain |>
 
 -   **Convert from sub-units to major units or vice versa by multiplying or deviding**
 
-    For example, if one one variable is in feet and one in inches, you can multiply feet by 12 to get inches or devide inches by 12 to get feet. This is often not possible (e.g., `Height` and `Weight`).
+    For example, if one variable is in feet and one in inches, you can multiply feet by 12 to get inches or devide inches by 12 to get feet. This is often not possible (e.g., `Height` and `Weight`).
 
 -   **Rescaling** (*R* command `range()`)
 
@@ -390,26 +390,18 @@ Recipe: Prepare Data for Analysis:
 
 ```{r}
 #| echo: true
+#| output-location: fragment
 RecipeWine=recipe(WineColor~Acidity+Sulfur, data = DataTrain) %>%
             step_naomit() %>% 
             step_normalize(all_predictors())
-```
+# or
 
-Or:
-
-```{r }
-#| echo: true
 RecipeWine=recipe(WineColor~., data = DataTrain) %>%
             step_naomit() %>% 
             step_normalize(all_predictors()) 
-
-```
-
-```{r}
-#| echo: true
-#| output-location: fragment
 print(RecipeWine)
 ```
+
 
 ## Time to Run k-Nearest Neighbors {.scrollable}
 

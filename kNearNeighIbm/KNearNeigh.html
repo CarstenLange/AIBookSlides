@@ -13268,7 +13268,7 @@
 </section>
 <section id="eye-balling-techniques-to-identify-red-and-white-wines" class="slide level2 scrollable">
 <h2>Eye Balling Techniques to Identify Red and White Wines</h2>
-<h4 id="try-eyeballing-the-data">try eyeballing the data</h4>
+<h4 id="try-eyeballing-the-training-data-n2238">try eyeballing the training data (<span class="math inline">\(N=2238\)</span>)</h4>
 <div class="cell">
 
 </div>
@@ -13369,9 +13369,9 @@ Accuracy=\frac{1016+974}
 <section id="a-few-common-scaling-options" class="slide level2 smaller">
 <h2>A Few Common Scaling Options</h2>
 <ul>
-<li class="fragment"><p><strong>Same units</strong></p>
-<p>Divide or multiply to get the same units. This is often not possible (e.g., <code>Height</code> and <code>Weight</code>). Or it is not feasible (e.g.&nbsp;<code>Alcohol</code> and <code>StrawberryJuice</code> content in spiked strawberry drink))</p></li>
-<li class="fragment"><p><strong>Rescaling</strong></p>
+<li class="fragment"><p><strong>Convert from sub-units to major units or vice versa by multiplying or deviding</strong></p>
+<p>For example, if one variable is in feet and one in inches, you can multiply feet by 12 to get inches or devide inches by 12 to get feet. This is often not possible (e.g., <code>Height</code> and <code>Weight</code>).</p></li>
+<li class="fragment"><p><strong>Rescaling</strong> (<em>R</em> command <code>range()</code>)</p>
 <p>Generates a variable <span class="math inline">\(y\)</span> that is scaled to a range between 0 and 1 based on the original variable’s value <span class="math inline">\(x\)</span>, its minimum <span class="math inline">\(x_{min}\)</span> and its maximum <span class="math inline">\(x_{max}\)</span>: <span class="math display">\[ y= \frac{x-x_{min}}{x_{max} - x_{min}}\]</span></p></li>
 <li class="fragment"><p><strong>Z-Score Normalization</strong></p>
 <p>Z-score normalization uses the mean (<span class="math inline">\(\overline x\)</span>) and the standard deviation (<span class="math inline">\(s\)</span>) of a variable to scale the variable <span class="math inline">\(x\)</span> to the variable <span class="math inline">\(z\)</span>:</p>
@@ -19821,16 +19821,13 @@ Accuracy=\frac{1016+974}
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>Acidity<span class="sc">+</span>Sulfur, <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
 <span id="cb14-2"><a href="#cb14-2"></a>            <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb14-3"><a href="#cb14-3"></a>            <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>Or:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>., <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>            <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb15-3"><a href="#cb15-3"></a>            <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>()) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">print</span>(RecipeWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-3"><a href="#cb14-3"></a>            <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co"># or</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a></span>
+<span id="cb14-6"><a href="#cb14-6"></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>., <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>            <span class="fu">step_naomit</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb14-8"><a href="#cb14-8"></a>            <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>()) </span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="fu">print</span>(RecipeWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 
@@ -19841,10 +19838,10 @@ Accuracy=\frac{1016+974}
 <h3 id="click-here-to-find-a-reference-list-for-various-step_-commands-1"><a href="https://parsnip.tidymodels.org/reference/index.html">Click here to find a reference list for various <code>Step_</code> commands</a></h3>
 <p>Creating a Model Design:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>ModelDesignKNN<span class="ot">=</span><span class="fu">nearest_neighbor</span>(<span class="at">neighbors =</span> <span class="dv">4</span>, <span class="at">weight_func =</span> <span class="st">"rectangular"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a>               <span class="fu">set_engine</span>(<span class="st">"kknn"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-3"><a href="#cb17-3"></a>               <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
-<span id="cb17-4"><a href="#cb17-4"></a><span class="fu">print</span>(ModelDesignKNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>ModelDesignKNN<span class="ot">=</span><span class="fu">nearest_neighbor</span>(<span class="at">neighbors =</span> <span class="dv">4</span>, <span class="at">weight_func =</span> <span class="st">"rectangular"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>               <span class="fu">set_engine</span>(<span class="st">"kknn"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3"></a>               <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="fu">print</span>(ModelDesignKNN)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -19862,11 +19859,11 @@ Computational engine: kknn </code></pre>
 <h2>Time to Run k-Nearest Neighbors</h2>
 <p>Putting it all together in a <strong>fitted</strong> <code>workflow</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2"></a>             <span class="fu">add_recipe</span>(RecipeWine) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a>             <span class="fu">add_model</span>(ModelDesignKNN) <span class="sc">%&gt;%</span> </span>
-<span id="cb19-4"><a href="#cb19-4"></a>             <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="fu">print</span>(WFModelWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2"></a>             <span class="fu">add_recipe</span>(RecipeWine) <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>             <span class="fu">add_model</span>(ModelDesignKNN) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-4"><a href="#cb17-4"></a>             <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">print</span>(WFModelWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -19906,7 +19903,7 @@ Best k: 4</code></pre>
 <h2>Time to Run k-Nearest Neighbors</h2>
 <p>Predicting with the fitted workflow using <code>predict()</code> (not exactly helpful!):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="fu">predict</span>(WFModelWine, DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">predict</span>(WFModelWine, DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -19931,8 +19928,8 @@ Best k: 4</code></pre>
 <h2>Time to Run k-Nearest Neighbors</h2>
 <p>Predicting with the fitted workflow using <code>augment()</code> which <em>augments</em> <code>DataTest</code> with the predictions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>DataPredWithTestData<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest)</span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">head</span>(DataPredWithTestData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>DataPredWithTestData<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest)</span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="fu">head</span>(DataPredWithTestData)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -19952,8 +19949,8 @@ Best k: 4</code></pre>
 <h2>Having a Data Frame with <code>truth</code> and <code>esimate</code> we can calculate <strong>performance metrics</strong></h2>
 <p>Confusion Matrix:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>ConfMatrixWine<span class="ot">=</span><span class="fu">conf_mat</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span>
-<span id="cb25-2"><a href="#cb25-2"></a><span class="fu">print</span>(ConfMatrixWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>ConfMatrixWine<span class="ot">=</span><span class="fu">conf_mat</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="fu">print</span>(ConfMatrixWine)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -19983,7 +19980,7 @@ Prediction   Red Wine White Wine
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="fu">accuracy</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">accuracy</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -20044,7 +20041,7 @@ Prediction Win Lose
 <h2>Time to Run k-Nearest Neighbors 🤓</h2>
 <p><code>accuracy()</code>, <code>sensitivity()</code> and <code>specificity()</code> for the wine data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">accuracy</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="fu">accuracy</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -20056,7 +20053,7 @@ Prediction Win Lose
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">sensitivity</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a><span class="fu">sensitivity</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -20069,7 +20066,7 @@ Prediction Win Lose
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">specificity</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a><span class="fu">specificity</span>(DataPredWithTestData, <span class="at">truth =</span> WineColor, <span class="at">estimate =</span> .pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -20101,7 +20098,7 @@ Prediction Win Lose
 <section id="visualization-of-the-first-six-images-from-the-mnist-data-set" class="slide level2">
 <h2>Visualization of the First Six Images from the MNIST Data Set</h2>
 
-<img data-src="KNearNeigh_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+<img data-src="KNearNeigh_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"></section>
 <section id="how-a-image-is-stored-in-the-mnist-dataset" class="slide level2">
 <h2>How a Image is Stored in the Mnist Dataset</h2>
 
@@ -20129,7 +20126,7 @@ Prediction Win Lose
 <section id="three-rows-from-the-data-frame-of-the-mnist-dataset" class="slide level2 smaller scollable">
 <h2>Three Rows from the Data Frame of the MNIST Dataset</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1"></a><span class="fu">print</span>(Mnist4PlotAndTable[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">784</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a><span class="fu">print</span>(Mnist4PlotAndTable[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,<span class="dv">1</span><span class="sc">:</span><span class="dv">784</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
