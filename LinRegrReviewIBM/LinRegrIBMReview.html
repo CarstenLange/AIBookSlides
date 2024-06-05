@@ -397,121 +397,189 @@
 </div>
 
 </section>
-<section id="libraries-and-data" class="slide level2">
-<h2>Libraries and Data</h2>
+<section id="what-will-you-learnreview" class="slide level2 scrollable smaller">
+<h2>What Will You Learn/Review</h2>
+<ul>
+<li class="fragment"><p>Reviewing the basic idea behind linear regression</p></li>
+<li class="fragment"><p>Learning how how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
+<li class="fragment"><p>Understanding the role of in a linear regression model (applies also to other models)</p></li>
+<li class="fragment"><p>Calculating optimal regression parameters using OLS</p></li>
+<li class="fragment"><p>Finding optimal regression parameters by trial and error</p></li>
+<li class="fragment"><p>Finding optimal regression parameters with <code>lm</code> and <code>tidymodels</code>.</p></li>
+<li class="fragment"><p>Distinguish between unfitted and fitted models</p></li>
+<li class="fragment"><p>Using <code>tidymodels</code> to split observations randomly into a training and testing dataset.</p></li>
+<li class="fragment"><p>Using <code>tidymodels</code> to analyze housing prices.</p></li>
+</ul>
+</section>
+<section id="loading-the-libraries-and-the-data" class="slide level2">
+<h2>Loading the Libraries and the Data</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(tidymodels)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(rio)</span>
 <span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">library</span>(wooldridge)</span>
-<span id="cb1-5"><a href="#cb1-5"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span></span>
-<span id="cb1-6"><a href="#cb1-6"></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb1-7"><a href="#cb1-7"></a><span class="fu">select</span>(Wage, <span class="at">Educ=</span>Educ, <span class="at">Tenu=</span>Tenure) <span class="sc">|&gt;</span></span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">mutate</span>(<span class="at">Wage=</span>Wage<span class="sc">*</span><span class="fl">5.51</span>) <span class="sc">|&gt;</span>  </span>
-<span id="cb1-9"><a href="#cb1-9"></a><span class="fu">drop_na</span>()</span>
-<span id="cb1-10"><a href="#cb1-10"></a></span>
-<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">head</span>(DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-4"><a href="#cb1-4"></a>Seed<span class="ot">=</span><span class="dv">123</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="fu">set.seed</span>(Seed)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>DataHouses<span class="ot">=</span><span class="fu">import</span>(<span class="st">"../Data/DataHousingBig.rds"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-7"><a href="#cb1-7"></a>           <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-8"><a href="#cb1-8"></a>           <span class="fu">select</span>(Price,<span class="at">Sqft=</span>SqftLiving,Bedrooms,Condition) <span class="sc">|&gt;</span> </span>
+<span id="cb1-9"><a href="#cb1-9"></a>           <span class="fu">sample_n</span>(<span class="dv">144</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-10"><a href="#cb1-10"></a>           <span class="fu">mutate</span>(<span class="at">Price=</span><span class="dv">228</span><span class="sc">*</span>Sqft<span class="sc">+</span><span class="dv">32543</span><span class="sc">+</span><span class="fu">rnorm</span>(<span class="dv">144</span>,<span class="dv">0</span>,<span class="dv">50000</span>))</span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="fu">head</span>(DataHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>     Wage Educ Tenu
-1 17.0810   11    0
-2 17.8524   12    2
-3 16.5300   11    0
-4 33.0600    8   28
-5 29.2030   12    2
-6 48.2125   16    8</code></pre>
+<pre><code>     Price Sqft Bedrooms Condition
+1 523633.4 2040        4         3
+2 530960.7 2120        4         3
+3 523466.8 2130        4         4
+4 759747.7 3330        4         3
+5 546377.8 2440        4         3
+6 186536.6  900        3         4</code></pre>
 </div>
-</div>
-<div class="footer">
-<p>Note, <span class="math inline">\(Wage\)</span> from 1976 has been adjusted to 2024 purchasing power using <a href="https://www.in2013dollars.com/us/inflation/1976?amount=1" class="uri">https://www.in2013dollars.com/us/inflation/1976?amount=1</a>.</p>
 </div>
 </section>
-<section id="running-an-ols-regression-with-tidymodels" class="slide level2 smaller">
-<h2>Running an OLS Regression with Tidymodels</h2>
-<h3 id="recipe">Recipe</h3>
-<p>Recipe determines the data source as well as the outcome and predictor variables.</p>
-<p>Explicit Definition:</p>
+<section id="splitting-in-training-and-testing-data" class="slide level2">
+<h2>Splitting in Training and Testing Data:</h2>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>RecipeWage<span class="ot">=</span><span class="fu">recipe</span>(Wage<span class="sc">~</span>Educ<span class="sc">+</span>Tenu, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">set.seed</span>(Seed)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(DataHouses,<span class="at">prop=</span><span class="fl">0.7</span>, <span class="at">strata =</span> Price)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
+</section>
+<section id="how-much-is-a-house-worth-in-king-county" class="slide level2">
+<h2>How much is a House Worth in King County?</h2>
+<div class="fragment">
+<p><strong>A house with average properties should be predicted with an average price!</strong></p>
 <div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>MeanSqft<span class="ot">=</span><span class="fu">mean</span>(DataHouses<span class="sc">$</span>Sqft)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">cat</span>(<span class="st">"The mean square footage of a house in King county is:"</span>, MeanSqft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
-<pre><code>     Wage Educ Tenu
-1 17.0810   11    0
-2 17.8524   12    2
-3 16.5300   11    0
-4 33.0600    8   28
-5 29.2030   12    2
-6 48.2125   16    8</code></pre>
+<pre><code>The mean square footage of a house in King county is: 2044.319</code></pre>
 </div>
-</div>
-<p>Implicit Definition:</p>
-<div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>RecipeWage<span class="ot">=</span><span class="fu">recipe</span>(Wage<span class="sc">~</span>., <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>MeanPrice<span class="ot">=</span><span class="fu">mean</span>(DataHouses<span class="sc">$</span>Price)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">cat</span>(<span class="st">"The mean price of a house in King county is:"</span>, MeanPrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The mean price of a house in King county is: 497414.9</code></pre>
 </div>
+</div>
+</div>
+</section>
+<section id="predicting-the-price-of-an-average-sized-house-as-the-average-of-all-house-prices" class="slide level2">
+<h2>Predicting the Price of an Average Sized House as the Average of all House Prices</h2>
+
+<img data-src="LinRegrIBMReview_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<section>
+<section id="how-to-measure-prediction-quality-with-the-mean-squared-error-mse" class="title-slide slide level1 smaller center">
+<h1>How to Measure Prediction Quality with the Mean Squared Error (MSE)</h1>
+<span class="math display">\[\begin{eqnarray*}
+MSE &amp; = &amp; \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+&amp; \Longleftrightarrow&amp; \\
+MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}\]</span>
+<p><strong>Note, when the data are given (i.e.,</strong> <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> »</p>
+</section>
+<section id="including-sqft-as-determiant-of-price" class="slide level2">
+<h2>Including Sqft as Determiant of Price</h2>
+<h3 id="preparing-the-data">Preparing the Data</h3>
+<p>Blueprint for the data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price<span class="sc">~</span>Sqft, <span class="at">data=</span>DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="choosing-the-model-blueprint" class="slide level2">
+<h2>Choosing the Model Blueprint</h2>
+<p>Blueprint for the model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>ModelDesignOLS<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2"></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href="#cb9-3"></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="how-does-the-unfitted-model-looks-like" class="slide level2">
+<h2>How does the Unfitted Model Looks Like?</h2>
 <p><span class="math display">\[
-Wage=\beta_1 \cdot Educ +\beta_2 \cdot Tenu+ \beta_0
-\]</span></p>
-</section>
-<section id="running-an-ols-regression-with-tidymodels-1" class="slide level2">
-<h2>Running an OLS Regression with Tidymodels</h2>
-<h3 id="model-design">Model Design</h3>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>ModelOLS<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb6-2"><a href="#cb6-2"></a>         <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-3"><a href="#cb6-3"></a>         <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>The model design is only a blue print for the model. It becomes a <em>model</em> when it is integrated into the <em>workflow model</em>.</p>
-</section>
-<section id="running-an-ols-regression-with-tidymodels-2" class="slide level2 smaller">
-<h2>Running an OLS Regression with Tidymodels</h2>
-<h3 id="recipe-1">Recipe</h3>
-<h3 id="building-and-fitting-a-workflow-model">Building and Fitting a Workflow Model</h3>
+\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\]</span> ## Using a Workflow to Fit the Model to the Data (finding the optimal <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values</p>
 <p><span class="math display">\[
-Wage=\beta_1 \cdot Educ +\beta_2 \cdot Tenu+ \beta_0
+\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>WFModelHouses<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2"></a>              <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3"></a>              <span class="fu">add_model</span>(ModelDesignOLS) <span class="sc">|&gt;</span> </span>
+<span id="cb10-4"><a href="#cb10-4"></a>              <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2 smaller">
+<h2>Unfitted Model vs Fitted Workflow Model</h2>
+<p>Unfitted Model: <span class="math display">\[
+\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 \]</span></p>
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>WFModelWage<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2"></a>            <span class="fu">add_recipe</span>(RecipeWage) <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3"></a>            <span class="fu">add_model</span>(ModelOLS)<span class="sc">|&gt;</span> </span>
-<span id="cb7-4"><a href="#cb7-4"></a>            <span class="fu">fit</span>(DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-</div>
-<p>The <code>fit()</code> command <em>fits</em> the model. I.e., it assigns optimal numeric values to the parameters.</p>
-<div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">tidy</span>(WFModelWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 5
+<pre><code># A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)   -12.2      3.53      -3.47 5.63e- 4
-2 Educ            3.14     0.269     11.7  4.30e-28
-3 Tenu            1.04     0.103     10.1  3.69e-22</code></pre>
+1 (Intercept)    6584.  12191.       0.540 5.90e- 1
+2 Sqft            238.      5.47    43.5   6.43e-66</code></pre>
 </div>
 </div>
+<p>Fitted Model: <span class="math display">\[
+\underbrace{Price}_y=\underbrace{228}_m \cdot\underbrace{Sqft}_x + \underbrace{32390}_b
+\]</span></p>
+<p>Predict the price for a house with 1,000 sqft and send it to me in a private chat!</p>
+</section>
+<section id="how-does-the-fitted-model-that-considers-sqft-improves-the-prediction-as-a-simple-average" class="slide level2">
+<h2>How Does the fitted model that considers SQFT improves the prediction as a simple average</h2>
+
+<img data-src="LinRegrIBMReview_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
+<section id="interpretation-of-the-results" class="slide level2">
+<h2>Interpretation of the Results</h2>
+</section>
+<section id="unfitted-model-vs-fitted-workflow-model-1" class="slide level2">
+<h2>Unfitted Model vs Fitted Workflow Model</h2>
+<p>Unfitted Model: <span class="math display">\[
+Price=\beta_1 Sqft + \beta_0
+\]</span></p>
+<div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)    6584.  12191.       0.540 5.90e- 1
+2 Sqft            238.      5.47    43.5   6.43e-66</code></pre>
+</div>
+</div>
+<p>Fitted Model:</p>
 <p><span class="math display">\[
-Wage=3.1 \cdot Educ +1.0 \cdot Tenu+ (\beta_0)-12.2)
+\begin{aligned}
+Price&amp;=&amp;177 \cdot &amp;Sqft + &amp;131134\\
++177&amp;= &amp;177  \cdot &amp;(+1)+ &amp;(+0)
+\end{aligned}
 \]</span></p>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 

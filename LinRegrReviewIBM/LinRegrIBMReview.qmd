@@ -5,92 +5,179 @@ format:
   revealjs:
     code-fold: true
     scrollable: true
-editor: 
-  markdown: 
-    wrap: 72
+    echo: true
 ---
 
-## Libraries and Data
 
-```{r echo=TRUE}
-library(rio)
-library(tidymodels)
-library(janitor)
-library(wooldridge)
-DataWage=wage1 |>
-clean_names("upper_camel") |>
-select(Wage, Educ=Educ, Tenu=Tenure) |>
-mutate(Wage=Wage*5.51) |>  
-drop_na()
+## What Will You Learn/Review {.scrollable .smaller}
 
-head(DataWage)
-```
+-   Reviewing the basic idea behind linear regression
 
-::: footer
-Note, $Wage$ from 1976 has been adjusted to 2024 purchasing power using
-<https://www.in2013dollars.com/us/inflation/1976?amount=1>.
-:::
+-   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
 
+-   Understanding the role of in a linear regression model (applies also to other models)
 
-## Running an OLS Regression with Tidymodels {.smaller}
-### Recipe
+-   Calculating optimal regression parameters using OLS
 
-Recipe determines the data source as well as the outcome and predictor variables.
+-   Finding optimal regression parameters by trial and error
 
-Explicit Definition:
-```{r echo=TRUE}
-RecipeWage=recipe(Wage~Educ+Tenu, data=DataWage)
-```
+-   Finding optimal regression parameters with `lm` and `tidymodels`.
+
+-   Distinguish between unfitted and fitted models
+
+-   Using `tidymodels` to split observations randomly into a training and testing dataset.
+
+-   Using `tidymodels` to analyze housing prices.
+
+## Loading the Libraries and the Data
 
 ```{r}
-head(DataWage)
+library(tidymodels)
+library(rio)
+library(janitor)
+Seed=123
+set.seed(Seed)
+DataHouses=import("../Data/DataHousingBig.rds") |> 
+           clean_names("upper_camel") |> 
+           select(Price,Sqft=SqftLiving,Bedrooms,Condition) |> 
+           sample_n(144) |> 
+           mutate(Price=228*Sqft+32543+rnorm(144,0,50000))
+head(DataHouses)
+
+```
+## Splitting in Training and Testing Data:
+
+```{r}
+set.seed(Seed)
+Split7030=initial_split(DataHouses,prop=0.7, strata = Price)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+```
+## How much is a House Worth in King County?
+
+. . .
+
+**A house with average properties should be predicted with an average price!**
+
+```{r}
+MeanSqft=mean(DataHouses$Sqft)
+cat("The mean square footage of a house in King county is:", MeanSqft)
+
+MeanPrice=mean(DataHouses$Price)
+cat("The mean price of a house in King county is:", MeanPrice)
 ```
 
-Implicit Definition:
-```{r echo=TRUE}
-RecipeWage=recipe(Wage~., data=DataWage)
+## Predicting the Price of an Average Sized House as the Average of all House Prices
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
+  geom_point(color="red")+
+  geom_hline(yintercept=mean(DataHouses$Price))+
+  geom_vline(xintercept=mean(DataHouses$Sqft))
+```
+# How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
+
+```{=tex}
+\begin{eqnarray*}
+MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+ & \Longleftrightarrow& \\
+MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}
+```
+**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
+
+
+## Including Sqft as Determiant of Price
+### Preparing the Data
+
+Blueprint for the data:
+```{r}
+#| code-fold: false
+RecipeHouses=recipe(Price~Sqft, data=DataTrain)
 ```
 
+## Choosing the Model Blueprint
 
-
-$$
-Wage=\beta_1 \cdot Educ +\beta_2 \cdot Tenu+ \beta_0
-$$
-
-## Running an OLS Regression with Tidymodels
-
-### Model Design
-
-
-```{r echo=TRUE}
-ModelOLS=linear_reg() |> 
-         set_engine("lm") |> 
-         set_mode("regression")
+Blueprint for the model:
+```{r}
+#| code-fold: false
+ModelDesignOLS=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
 ```
 
-The model design is only a blue print for the model. It becomes a *model* when  it is integrated into the *workflow model*.
-
-
-## Running an OLS Regression with Tidymodels {.smaller}
-### Recipe
-### Building and Fitting a Workflow Model
+## How does the Unfitted Model Looks Like?
 
 $$
-Wage=\beta_1 \cdot Educ +\beta_2 \cdot Tenu+ \beta_0
+\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
-```{r echo=TRUE}
-WFModelWage=workflow() |> 
-            add_recipe(RecipeWage) |> 
-            add_model(ModelOLS)|> 
-            fit(DataWage)
+## Using a Workflow to Fit the Model to the Data (finding the optimal $\beta_1$ and $\beta_2$ values
+
+$$
+\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+```{r}
+#| code-fold: false
+WFModelHouses=workflow() |> 
+              add_recipe(RecipeHouses) |> 
+              add_model(ModelDesignOLS) |> 
+              fit(DataTrain)
 ```
 
-The `fit()` command *fits* the model. I.e., it assigns optimal numeric values to the parameters.
+## Unfitted Model vs Fitted Workflow Model {.smaller}
 
-```{r echo=TRUE}
-tidy(WFModelWage)
+Unfitted Model:
+$$
+\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+```{r}
+tidy(WFModelHouses)
 ```
 
+Fitted Model:
 $$
-Wage=3.14 \cdot Educ +1.04 \cdot Tenu+ (-12.20)
+\underbrace{Price}_y=\underbrace{228}_m \cdot\underbrace{Sqft}_x + \underbrace{32390}_b
 $$
+
+Predict the price for a house with 1,000 sqft and send it to me in a private chat!
+
+## How Does the fitted model that considers SQFT improves the prediction as a simple average
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
+  geom_point(color="red")+
+  geom_vline(xintercept=mean(DataHouses$Sqft))+
+  geom_hline(yintercept=mean(DataHouses$Price))+
+  geom_smooth(method="lm", se=FALSE, color="blue")
+```
+
+## Interpretation of the Results
+
+## Unfitted Model vs Fitted Workflow Model
+
+Unfitted Model:
+$$
+Price=\beta_1 Sqft + \beta_0
+$$
+
+```{r}
+tidy(WFModelHouses)
+```
+
+Fitted Model:
+
+$$
+\begin{aligned}
+Price&=&177 \cdot &Sqft + &131134\\
++177&= &177  \cdot &(+1)+ &(+0)
+\end{aligned}
+$$
+
+
+
+
+
+
