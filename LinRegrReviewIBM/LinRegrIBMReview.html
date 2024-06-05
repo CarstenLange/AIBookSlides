@@ -400,15 +400,12 @@
 <section id="what-will-you-learnreview" class="slide level2 scrollable smaller">
 <h2>What Will You Learn/Review</h2>
 <ul>
-<li class="fragment"><p>Reviewing the basic idea behind linear regression</p></li>
-<li class="fragment"><p>Learning how how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
-<li class="fragment"><p>Understanding the role of in a linear regression model (applies also to other models)</p></li>
-<li class="fragment"><p>Calculating optimal regression parameters using OLS</p></li>
-<li class="fragment"><p>Finding optimal regression parameters by trial and error</p></li>
-<li class="fragment"><p>Finding optimal regression parameters with <code>lm</code> and <code>tidymodels</code>.</p></li>
-<li class="fragment"><p>Distinguish between unfitted and fitted models</p></li>
-<li class="fragment"><p>Using <code>tidymodels</code> to split observations randomly into a training and testing dataset.</p></li>
-<li class="fragment"><p>Using <code>tidymodels</code> to analyze housing prices.</p></li>
+<li><p>Reviewing the basic idea behind linear regression</p></li>
+<li><p>Learning how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
+<li><p>Calculating optimal OLS regression parameters using <code>tidymodels</code></p></li>
+<li><p>Distinguish between unfitted and fitted models</p></li>
+<li><p>How to interpret the OLS regression parameters and their significance</p></li>
+<li><p>Using metrics to evaluate prediction quality on the testing</p></li>
 </ul>
 </section>
 <section id="loading-the-libraries-and-the-data" class="slide level2">
@@ -442,13 +439,10 @@
 <section id="splitting-in-training-and-testing-data" class="slide level2">
 <h2>Splitting in Training and Testing Data:</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">set.seed</span>(Seed)</span>
 <span id="cb3-2"><a href="#cb3-2"></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(DataHouses,<span class="at">prop=</span><span class="fl">0.7</span>, <span class="at">strata =</span> Price)</span>
 <span id="cb3-3"><a href="#cb3-3"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
 <span id="cb3-4"><a href="#cb3-4"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
 </div>
 </section>
 <section id="how-much-is-a-house-worth-in-king-county" class="slide level2">
@@ -487,10 +481,10 @@ MSE &amp; = &amp; \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 &amp; \Longleftrightarrow&amp; \\
 MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}\]</span>
-<p><strong>Note, when the data are given (i.e.,</strong> <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> »</p>
+<p><strong>Note, when the data are given (i.e., <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span></strong> »</p>
 </section>
-<section id="including-sqft-as-determiant-of-price" class="slide level2">
-<h2>Including Sqft as Determiant of Price</h2>
+<section id="including-sqft-as-determinat-of-price" class="slide level2">
+<h2>Including Sqft as Determinat of Price</h2>
 <h3 id="preparing-the-data">Preparing the Data</h3>
 <p>Blueprint for the data:</p>
 <div class="cell">
@@ -510,7 +504,10 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <h2>How does the Unfitted Model Looks Like?</h2>
 <p><span class="math display">\[
 \underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
-\]</span> ## Using a Workflow to Fit the Model to the Data (finding the optimal <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values</p>
+\]</span></p>
+</section>
+<section id="using-a-workflow-to-fit-the-model-to-the-data-finding-the-optimal-beta_1-and-beta_2-values" class="slide level2">
+<h2>Using a Workflow to Fit the Model to the Data (finding the optimal <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> values</h2>
 <p><span class="math display">\[
 \underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 \]</span></p>
@@ -521,8 +518,10 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <span id="cb10-4"><a href="#cb10-4"></a>              <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2 smaller">
+<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2">
 <h2>Unfitted Model vs Fitted Workflow Model</h2>
+<h3 id="interpretation-and-significance">Interpretation and Significance</h3>
+<p>{.smaller}</p>
 <p>Unfitted Model: <span class="math display">\[
 \underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 \]</span></p>
@@ -540,42 +539,39 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 </div>
 </div>
 <p>Fitted Model: <span class="math display">\[
-\underbrace{Price}_y=\underbrace{228}_m \cdot\underbrace{Sqft}_x + \underbrace{32390}_b
+\underbrace{Price}_y=\underbrace{238}_m \cdot\underbrace{Sqft}_x + \underbrace{6584}_b
 \]</span></p>
 <p>Predict the price for a house with 1,000 sqft and send it to me in a private chat!</p>
 </section>
-<section id="how-does-the-fitted-model-that-considers-sqft-improves-the-prediction-as-a-simple-average" class="slide level2">
-<h2>How Does the fitted model that considers SQFT improves the prediction as a simple average</h2>
+<section id="how-does-the-fitted-model-that-considers-sqft-improves-the-prediction-compared-to-a-simple-average" class="slide level2">
+<h2>How Does the fitted model that considers SQFT improves the prediction compared to a simple average</h2>
 
 <img data-src="LinRegrIBMReview_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
-<section id="interpretation-of-the-results" class="slide level2">
-<h2>Interpretation of the Results</h2>
-</section>
-<section id="unfitted-model-vs-fitted-workflow-model-1" class="slide level2">
-<h2>Unfitted Model vs Fitted Workflow Model</h2>
-<p>Unfitted Model: <span class="math display">\[
-Price=\beta_1 Sqft + \beta_0
-\]</span></p>
+<section id="evaluating-predictive-quality-with-the-testing-dataset" class="slide level2">
+<h2>Evaluating Predictive Quality with the Testing Dataset</h2>
 <div class="cell">
-<details>
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  term        estimate std.error statistic  p.value
-  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)    6584.  12191.       0.540 5.90e- 1
-2 Sqft            238.      5.47    43.5   6.43e-66</code></pre>
+<pre><code># A tibble: 3 × 3
+  .metric .estimator .estimate
+  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+1 rmse    standard   50915.   
+2 rsq     standard       0.923
+3 mae     standard   39748.   </code></pre>
 </div>
 </div>
-<p>Fitted Model:</p>
-<p><span class="math display">\[
-\begin{aligned}
-Price&amp;=&amp;177 \cdot &amp;Sqft + &amp;131134\\
-+177&amp;= &amp;177  \cdot &amp;(+1)+ &amp;(+0)
-\end{aligned}
-\]</span></p>
+</section>
+<section id="project-analysis-with-all-variables" class="slide level2">
+<h2>Project: Analysis with all Variables</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">library</span>(rio)</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb15-4"><a href="#cb15-4"></a>DataHouses<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb15-5"><a href="#cb15-5"></a>           <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb15-6"><a href="#cb15-6"></a>           <span class="fu">select</span>(Price,<span class="at">Sqft=</span>SqftLiving,Bedrooms,Condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>

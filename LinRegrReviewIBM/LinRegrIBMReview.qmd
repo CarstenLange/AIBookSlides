@@ -6,6 +6,7 @@ format:
     code-fold: true
     scrollable: true
     echo: true
+    incremental: false
 ---
 
 
@@ -13,21 +14,15 @@ format:
 
 -   Reviewing the basic idea behind linear regression
 
--   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
+-   Learning how  to measure predictive quality with Mean Square Error ($MSE$).
 
--   Understanding the role of in a linear regression model (applies also to other models)
-
--   Calculating optimal regression parameters using OLS
-
--   Finding optimal regression parameters by trial and error
-
--   Finding optimal regression parameters with `lm` and `tidymodels`.
+-    Calculating optimal OLS regression parameters using `tidymodels`
 
 -   Distinguish between unfitted and fitted models
 
--   Using `tidymodels` to split observations randomly into a training and testing dataset.
+- How to interpret the OLS regression parameters and their significance
 
--   Using `tidymodels` to analyze housing prices.
+- Using metrics to evaluate prediction quality on the testing 
 
 ## Loading the Libraries and the Data
 
@@ -48,6 +43,7 @@ head(DataHouses)
 ## Splitting in Training and Testing Data:
 
 ```{r}
+#| code-fold: false
 set.seed(Seed)
 Split7030=initial_split(DataHouses,prop=0.7, strata = Price)
 DataTrain=training(Split7030)
@@ -74,7 +70,9 @@ cat("The mean price of a house in King county is:", MeanPrice)
 ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
   geom_point(color="red")+
   geom_hline(yintercept=mean(DataHouses$Price))+
-  geom_vline(xintercept=mean(DataHouses$Sqft))
+  geom_vline(xintercept=mean(DataHouses$Sqft))+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
 ```
 # How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
 
@@ -85,10 +83,10 @@ MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}
 ```
-**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
+**Note, when the data are given (i.e., $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$** »
 
 
-## Including Sqft as Determiant of Price
+## Including Sqft as Determinat of Price
 ### Preparing the Data
 
 Blueprint for the data:
@@ -112,6 +110,7 @@ ModelDesignOLS=linear_reg() |>
 $$
 \underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
+
 ## Using a Workflow to Fit the Model to the Data (finding the optimal $\beta_1$ and $\beta_2$ values
 
 $$
@@ -125,7 +124,9 @@ WFModelHouses=workflow() |>
               fit(DataTrain)
 ```
 
-## Unfitted Model vs Fitted Workflow Model {.smaller}
+## Unfitted Model vs Fitted Workflow Model
+### Interpretation and Significance
+{.smaller}
 
 Unfitted Model:
 $$
@@ -138,12 +139,12 @@ tidy(WFModelHouses)
 
 Fitted Model:
 $$
-\underbrace{Price}_y=\underbrace{228}_m \cdot\underbrace{Sqft}_x + \underbrace{32390}_b
+\underbrace{Price}_y=\underbrace{238}_m \cdot\underbrace{Sqft}_x + \underbrace{6584}_b
 $$
 
 Predict the price for a house with 1,000 sqft and send it to me in a private chat!
 
-## How Does the fitted model that considers SQFT improves the prediction as a simple average
+## How Does the fitted model that considers SQFT improves the prediction compared to a simple average
 
 ```{r}
 #| echo: false
@@ -151,33 +152,27 @@ ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
   geom_point(color="red")+
   geom_vline(xintercept=mean(DataHouses$Sqft))+
   geom_hline(yintercept=mean(DataHouses$Price))+
-  geom_smooth(method="lm", se=FALSE, color="blue")
+  geom_smooth(method="lm", se=FALSE, color="blue")+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
 ```
-
-## Interpretation of the Results
-
-## Unfitted Model vs Fitted Workflow Model
-
-Unfitted Model:
-$$
-Price=\beta_1 Sqft + \beta_0
-$$
+## Evaluating Predictive Quality with the Testing Dataset
 
 ```{r}
-tidy(WFModelHouses)
+#| code-fold: false
+DataTestWithPred=augment(WFModelHouses, new_data=DataTest)
+metrics(DataTestWithPred, truth=Price, estimate=.pred)
 ```
 
-Fitted Model:
+## Project: Analysis with all Variables
 
-$$
-\begin{aligned}
-Price&=&177 \cdot &Sqft + &131134\\
-+177&= &177  \cdot &(+1)+ &(+0)
-\end{aligned}
-$$
-
-
-
-
-
+```{r}
+#| code-fold: false
+library(rio)
+library(janitor)
+library(tidyverse)
+DataHouses=import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
+           clean_names("upper_camel") |> 
+           select(Price,Sqft=SqftLiving,Bedrooms,Condition)
+```
 
