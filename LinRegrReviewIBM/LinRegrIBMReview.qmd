@@ -32,7 +32,7 @@ library(rio)
 library(janitor)
 Seed=123
 set.seed(Seed)
-DataHouses=import("../Data/DataHousingBig.rds") |> 
+DataHouses=import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
            clean_names("upper_camel") |> 
            select(Price,Sqft=SqftLiving,Bedrooms,Condition) |> 
            sample_n(144) |> 
@@ -80,10 +80,10 @@ ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
 \begin{eqnarray*}
 MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
  & \Longleftrightarrow& \\
-MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_0}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}
 ```
-**Note, when the data are given (i.e., $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$** »
+**Note, when the data are given (i.e., $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_0$** »
 
 
 ## Including Sqft as Determinat of Price
@@ -111,7 +111,7 @@ $$
 \underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
 
-## Using a Workflow to Fit the Model to the Data (finding the optimal $\beta_1$ and $\beta_2$ values
+## Using a Workflow to Fit the Model to the Data (finding the optimal $\beta_1$ and $\beta_0$ values
 
 $$
 \underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
@@ -124,9 +124,9 @@ WFModelHouses=workflow() |>
               fit(DataTrain)
 ```
 
-## Unfitted Model vs Fitted Workflow Model
-### Interpretation and Significance
-{.smaller}
+## Unfitted Model vs Fitted Workflow Model {.smaller}
+
+
 
 Unfitted Model:
 $$
@@ -143,6 +143,25 @@ $$
 $$
 
 Predict the price for a house with 1,000 sqft and send it to me in a private chat!
+
+## Interpretation and Significance {.smaller}
+
+```{r}
+#| echo: false
+tidy(WFModelHouses)
+```
+
+$$
+\begin{align}
+\widehat{Price}&=238 \cdot Sqft +  6584\\
+ (+238)&=238\cdot (+1) +  (+0)\\
+ (+476)&=238\cdot (+2) +  (+0)\\
+ (+714)&=238\cdot (+3) +  (+0)
+\end{align}
+$$
+**For each extra $Sqft$ the predicted price increases by \$238**
+
+**The variable $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.**
 
 ## How Does the fitted model that considers SQFT improves the prediction compared to a simple average
 
