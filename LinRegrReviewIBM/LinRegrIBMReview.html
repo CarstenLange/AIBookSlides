@@ -503,13 +503,13 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <section id="how-does-the-unfitted-model-looks-like" class="slide level2">
 <h2>How does the Unfitted Model Looks Like?</h2>
 <p><span class="math display">\[
-\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 \]</span></p>
 </section>
 <section id="using-a-workflow-to-fit-the-model-to-the-data-finding-the-optimal-beta_1-and-beta_0-values" class="slide level2">
 <h2>Using a Workflow to Fit the Model to the Data (finding the optimal <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_0\)</span> values</h2>
 <p><span class="math display">\[
-\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 \]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>WFModelHouses<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
@@ -521,7 +521,7 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <section id="unfitted-model-vs-fitted-workflow-model" class="slide level2 smaller">
 <h2>Unfitted Model vs Fitted Workflow Model</h2>
 <p>Unfitted Model: <span class="math display">\[
-\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 \]</span></p>
 <div class="cell">
 <details>
@@ -537,7 +537,7 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 </div>
 </div>
 <p>Fitted Model: <span class="math display">\[
-\underbrace{Price}_y=\underbrace{238}_m \cdot\underbrace{Sqft}_x + \underbrace{6584}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{238}_m \cdot\underbrace{Sqft}_x + \underbrace{6584}_b
 \]</span></p>
 <p>Predict the price for a house with 1,000 sqft and send it to me in a private chat!</p>
 </section>

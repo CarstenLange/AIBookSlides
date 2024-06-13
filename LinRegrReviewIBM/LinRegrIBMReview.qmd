@@ -108,13 +108,13 @@ ModelDesignOLS=linear_reg() |>
 ## How does the Unfitted Model Looks Like?
 
 $$
-\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
 
 ## Using a Workflow to Fit the Model to the Data (finding the optimal $\beta_1$ and $\beta_0$ values
 
 $$
-\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
 ```{r}
 #| code-fold: false
@@ -130,7 +130,7 @@ WFModelHouses=workflow() |>
 
 Unfitted Model:
 $$
-\underbrace{Price}_y=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
 
 ```{r}
@@ -139,7 +139,7 @@ tidy(WFModelHouses)
 
 Fitted Model:
 $$
-\underbrace{Price}_y=\underbrace{238}_m \cdot\underbrace{Sqft}_x + \underbrace{6584}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{238}_m \cdot\underbrace{Sqft}_x + \underbrace{6584}_b
 $$
 
 Predict the price for a house with 1,000 sqft and send it to me in a private chat!
