@@ -1,0 +1,345 @@
+---
+title: "Polynomial Regression"
+subtitle: "Overlearning, Training, Testing, and Validation"
+format: 
+  revealjs:
+    code-fold: true
+---
+
+## Overview
+
+You will learn about:
+
+::: nonincremental
+-   Overlearning in detail.
+
+-   Circumstances that make *overlearning* more likely to occur.
+
+-   Consequences of overlearning when predicting new data.
+
+-   Hyper-parameter tuning to avoid *overlearning*.
+
+    -   Validation
+    -   Cross Validation»
+:::
+
+## Overlearning
+
+If a model performs well when approximating the training data but does not perform well when it faces new data to predict outcomes.
+
+Overlearning is one of the most pressing and still not fully solved problems in machine learning.»
+
+## Circumstances that Can Lead to Overlearning
+
+-   If the training dataset does not have a sufficient number of observations.
+
+-   If the model considers many variables and thus contains many parameters to calibrate.
+
+-   If the underlying machine learning model is highly non-linear.»
+
+## The Data {.scrollable}
+
+In what follows we use the Kings County Real Estate dataset.
+
+```{r}
+#| echo: true
+library(tidymodels); library(rio); library(janitor)
+
+DataHousing = import("https://ai.lange-analytics.com/data/HousingData.csv")%>%
+  clean_names("upper_camel") %>%
+  select(Price, Sqft=SqftLiving)
+```
+
+We want to demonstrate *overlearning*. Therefore, we ceate conditions that **likely trigger overlearning**. Consequently, we work only with a very small training dataset (20 observations=0.1% of total observations. All other observations become testing data:
+
+```{r}
+#| echo: true
+set.seed(777)
+# initial_split(prop = 0.001, ...) randomly chooses 20 training observations
+Split001=DataHousing %>% 
+  initial_split(prop = 0.001, strata = Price, breaks = 5) 
+DataTrain=training(Split001)
+DataTest=testing(Split001)
+```
+
+## Data Visualization
+
+There seems to be a non-liner trend:
+
+```{r}
+ggplot(aes(y=Price, x=Sqft), data=DataHousing)+
+  geom_point(size=0.5)+
+  geom_smooth(se=FALSE)
+```
+
+## Data Structure
+
+```{r}
+head(DataHousing)
+```
+
+## Polynomial Regression
+
+Regular univariate prediction equation: 
+$$
+\widehat{Price}=\beta_1 Sqft+\beta_2
+$$ 
+
+. . .
+
+Polynomial univariate prediction equation (degree 5):
+
+```{=tex}
+\begin{eqnarray*}
+\widehat{Price}&=&\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 \\
+  && +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+\end{eqnarray*}
+```
+## Polynomial Regression
+
+Polynomial univariate prediction equation (degree 5):
+
+```{=tex}
+\begin{eqnarray*}
+\widehat{Price}&=&\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3\\
+  && +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+\end{eqnarray*}
+```
+. . .
+
+We create $Sqft^2$, $Sqft^3$, $Sqft^4$, and $Sqft^5$ as new variables in the data and treat them as they were separate variables in a multivariate regression.
+
+. . .
+
+This makes the regression **linear in variables** but **non-linear in data**.
+
+. . .
+
+Consequently we can OLS to find the optimal $\beta s$.»
+
+## HOW THE DATA WOULD LOOK LIKE
+
+```{r}
+#| echo: true
+head(DataHousing %>% mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5))
+```
+
+## Comparing Regular OLS and Polynominal Regression (degree=5)
+
+Code to compare is linked in the footer of this slide.
+
+::: footer
+See: [TrainTestScript.R Script100](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
+:::
+
+## Polynomial Regression (degree=5) vs. Regular OLS
+
+### Aproximation of the Training Data
+
+```{r}
+ModelDesignLinRegr=linear_reg() %>% 
+  set_engine("lm") %>% 
+  set_mode("regression")
+
+RecipeHousesBenchmOLS=recipe(Price ~ Sqft, data=DataTrain)
+
+RecipeHousesPolynomOLS=recipe(Price ~ ., data=DataTrain) %>% 
+  step_mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
+
+######## Fitted Workflows
+WFModelHousesBenchmOLS=workflow() %>% 
+  add_model(ModelDesignLinRegr) %>% 
+  add_recipe(RecipeHousesBenchmOLS) %>% 
+  fit(DataTrain)
+
+WFModelHousesPolynomOLS=workflow() %>% 
+  add_model(ModelDesignLinRegr) %>% 
+  add_recipe(RecipeHousesPolynomOLS) %>% 
+  fit(DataTrain)
+
+####### Generating Predictions #######
+
+DataTrainWithPredBenchmOLS=augment(WFModelHousesBenchmOLS, DataTrain)
+DataTrainWithPredPolynomOLS=augment(WFModelHousesPolynomOLS, DataTrain)
+
+DataTestWithPredBenchmOLS=augment(WFModelHousesBenchmOLS, DataTest)
+DataTestWithPredPolynomOLS=augment(WFModelHousesPolynomOLS, DataTest)
+
+########## Polynomial degree 10
+
+RecipeHousesPolynom10OLS=recipe(Price ~ ., data=DataTrain) %>% 
+  step_poly(Sqft, degree = 10, options = list(raw = TRUE))
+  
+  
+WFModelHousesPolynom10OLS=workflow() %>% 
+  add_model(ModelDesignLinRegr)%>%            
+  add_recipe(RecipeHousesPolynom10OLS) %>% 
+  fit(DataTrain)
+
+DataTrainWithPredPolynom10OLS=augment(WFModelHousesPolynom10OLS, DataTrain)
+DataTestWithPredPolynom10OLS=augment(WFModelHousesPolynom10OLS, DataTest)
+```
+
+## Polynomial Regression (degree=5) vs. Regular OLS
+
+### Aproximation of the Training Data
+
+```{r}
+
+ggplot(aes(x=Sqft,y=Price), data=DataTrainWithPredPolynomOLS)+
+  geom_smooth(method = "lm", se=FALSE, size=1)+
+  geom_point(color="red")+
+  geom_line(aes(y=.pred), color="magenta", size=1, data=DataTestWithPredPolynomOLS)+
+  xlim(c(500,4500))+
+  ylim(c(0,1500000))
+```
+
+## Polynomial Regression (degree=5) vs. Regular OLS {.smaller}
+
+### Training and Testing Data Performance
+
+```{r}
+ggplot(aes(x=Sqft,y=Price), data=DataTestWithPredPolynomOLS)+
+  geom_point(size=0.001)+
+  geom_smooth(method = "lm", se=FALSE, size=1, data=DataTrainWithPredPolynomOLS)+
+  geom_line(aes(y=.pred), color="magenta", size=1)+
+  geom_point(color="red", size=2, data=DataTrainWithPredPolynomOLS)+
+  xlim(c(0,4500))+
+  ylim(c(0,1500000))
+```
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}$$
+
+## Polynomial Regression (degree=10) vs. Regular OLS {.smaller}
+
+### Training and Testing Data Performance
+
+```{r}
+ggplot(aes(x=Sqft,y=Price), data=DataTestWithPredPolynom10OLS)+
+  geom_point(size=0.001)+
+  geom_smooth(method = "lm", se=FALSE, size=1, data=DataTrainWithPredPolynom10OLS)+
+  geom_line(aes(y=.pred), color="magenta", size=1.2)+
+  geom_point(color="red", size=2, data=DataTrainWithPredPolynom10OLS)+
+  xlim(c(0,4300))+
+  ylim(c(-150000,2000000))
+```
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{10} Sqft^{10}+\beta_{11}$$
+
+## SUMMARY: POLYNOMIAL REGRESSION
+
+-   If we do not have enough data polynomial regression with a high degree might lead to overlearning
+
+-   What is the right degree?
+
+-   We could try different degrees (e.g., 2, 3, 4, ... 10) and see which model performs best.
+
+-   Which data are we using to measure performance? Training data (overlearning) and testing data (cannot be used for model optimization) are out.
+
+-   We could split off data from the training dataset (**validation data**). These *validation data* are not used to calculate the βs. Instead, they are used to find the best setting for the degree of polynomial regression (aka hyper-parameter of polynomial regression).
+
+## Hyper-Parameters
+
+-   Hyper-Parameters are parameters other than the $\beta$ parameters, because they can not be optimized by the optimizer.
+
+-   Hyper-Parameters are like settings for a machine learning model such as the number of polynomials (e.g., $Sqft^N$) to be considered for polynomial regression. Another example are the number of $k$ Nearest Neighbors.
+
+-   Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overlearning.»
+
+## PROBLEMS OF SPLITTING VALIDATION DATA OFF THE TRAINING DATA
+
+::: nonincremental
+-   Reduces data left over to train (finding optimal βs).
+
+-   If the training dataset is big enough this is no problem. Otherwise, it is a problem!
+:::
+
+## CROSS VALIDATION (4-FOLD)
+
+For each hyper-parameter setting:
+
+1.  Splits off validation data from training data (e.g. last quarter)
+
+2.  Runs the model and calculates metrics based on validation data.
+
+3.  Splits off validation data from training data (next quarter)
+
+4.  Repeats steps 2 -- 3 four times.
+
+. . .
+
+We end up with four results for each hyper-parameter setting. We calculate the average of the four results as an result for that specific hyper parameter.
+
+# CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY REALESTATE DATASET
+
+## MORE REALISTIC DATASPLIT: 80% TRAINING, 20% TESTING
+
+```{r}
+#| echo: true
+#| code-fold: false
+set.seed(987)
+
+Split80=DataHousing %>% 
+  initial_split(prop = 0.8, strata = Price, breaks = 5) 
+DataTrain=training(Split80)
+DataTest=testing(Split80) 
+
+print(Split80)
+
+```
+
+## Crossvalidation --- The Idea Behind It
+
+![](Images/4Folds.png)
+
+
+## 10 Steps to Create a Model, Tune it, and Predict {.smaller}
+
+The **10 general steps** are:
+
+1. Generating **training and testing data** with `initial_split()`, `training()`, `testing()`.
+
+2. Create **recipe** to determine predictor and outcome variables. Optionally add one or more `step_X()` commands.
+
+3. Create  **model design** and mark parameters to be `tune()` ed. without `fit()`
+
+4. Create **workflow** by `add_recipe()` and `add_model()`
+
+5. Create a **hyper-parameter grid** containing the hyper-parameter combinations to be validated.
+
+6. Create **cross validation datasets** (aka *resamples*) containing the folds (use commands `vfold()`).
+
+7. **Tune** the machine learning model with `tune_grid()` and track specific metrics defined by `metric_set()`. **Runs all hyper-parameter combinations for all folds.**
+
+8. **Extract the best hyper-parameter combination** from the tuning results based on selected metrics (use `select_best()`)
+
+
+9. **Finalize the model** by training it with the full set of training data with the best hyper-parameter combination (see `finalize_workflow() %>% fit()`).
+
+10.  **Assessing predictive quality** of the final model by using the testing dataset to predict (see `augment() %>% metrics()`).
+
+## Run all 10 Steps to Tune the Real Estate Model
+
+Code to run all 10 steps is linked in the footer of this slide.
+
+::: footer
+See: [TrainTestScript.R Script200](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
+:::
+
+## Exercise from AIBook 🤓
+
+**Use k-Nearest Neighbors to estimate the color of a wine**
+
+Click the link in the footer of this slide to start the exercise.
+
+::: footer
+See: [Exercise from AI Book](https://ai.lange-analytics.com/exc/?file=06-TrainTestExerc100.Rmd)
+:::
+
+## Research Project  🤓
+
+Click the link in the footer of this slide to download a skeleton of the R script for the research project.
+
+::: footer
+See: [Research Project](https://econ.lange-analytics.com/RScripts/KNearNeighIndepExerc.R)
+:::

@@ -1,0 +1,9 @@
+Review:
+Compare results among students.
+Marvin Castrejon: ran correlation first also look at . notation
+Eric Garcia: set.seed()
+Luyao Liu only one variable still good (Vanessa had 2 variables and only 62% accuracy) results (interpretation mach learning models)
+Elizabethe Ruiz nice autoplot
+
+
+

@@ -1,0 +1,196 @@
+---
+title: "Regularization"
+subtitle: "Ridge and Lasso"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+    echo: true
+    incremental: false
+---
+
+
+## What Will You Learn/Review {.scrollable .smaller}
+
+-   Reviewing the basic idea behind linear regression
+
+-   Learning how  to measure predictive quality with Mean Square Error ($MSE$).
+
+-    Calculating optimal OLS regression parameters using `tidymodels`
+
+-   Distinguish between unfitted and fitted models
+
+- How to interpret the OLS regression parameters and their significance
+
+- Using metrics to evaluate prediction quality on the testing 
+
+## Loading the Libraries and the Data
+
+```{r}
+library(tidymodels)
+library(rio)
+library(janitor)
+set.seed(123)
+DataHouses=import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
+           clean_names("upper_camel") |> 
+           select(Price,Sqft=SqftLiving,Bedrooms,Condition) |> 
+           sample_n(144) |> 
+           mutate(Price=228*Sqft+32543+rnorm(144,0,50000))
+head(DataHouses)
+
+```
+## Splitting in Training and Testing Data:
+
+```{r}
+#| code-fold: false
+set.seed(Seed)
+Split7030=initial_split(DataHouses,prop=0.7, strata = Price)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+```
+## How much is a House Worth in King County?
+
+. . .
+
+**A house with average properties should be predicted with an average price!**
+
+```{r}
+MeanSqft=mean(DataHouses$Sqft)
+cat("The mean square footage of a house in King county is:", MeanSqft)
+
+MeanPrice=mean(DataHouses$Price)
+cat("The mean price of a house in King county is:", MeanPrice)
+```
+
+## Predicting the Price of an Average Sized House as the Average of all House Prices
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
+  geom_point(color="red")+
+  geom_hline(yintercept=mean(DataHouses$Price))+
+  geom_vline(xintercept=mean(DataHouses$Sqft))+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
+```
+# How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
+
+```{=tex}
+\begin{eqnarray*}
+MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+ & \Longleftrightarrow& \\
+MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_0}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}
+```
+**Note, when the data are given (i.e., $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_0$** »
+
+
+## Including Sqft as Determinat of Price
+### Preparing the Data
+
+Blueprint for the data:
+```{r}
+#| code-fold: false
+RecipeHouses=recipe(Price~Sqft, data=DataTrain)
+```
+
+## Choosing the Model Blueprint
+
+Blueprint for the model:
+```{r}
+#| code-fold: false
+ModelDesignOLS=linear_reg() |> 
+            set_engine("lm") |> 
+            set_mode("regression")
+```
+
+## How does the Unfitted Model Looks Like?
+
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+## Using a Workflow to Fit the Model to the Data (finding the optimal $\beta_1$ and $\beta_0$ values
+
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+```{r}
+#| code-fold: false
+WFModelHouses=workflow() |> 
+              add_recipe(RecipeHouses) |> 
+              add_model(ModelDesignOLS) |> 
+              fit(DataTrain)
+```
+
+## Unfitted Model vs Fitted Workflow Model {.smaller}
+
+
+
+Unfitted Model:
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+```{r}
+tidy(WFModelHouses)
+```
+
+Fitted Model:
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{238}_m \cdot\underbrace{Sqft}_x + \underbrace{6584}_b
+$$
+
+Predict the price for a house with 1,000 sqft and send it to me in a private chat!
+
+## Interpretation and Significance {.smaller}
+
+```{r}
+#| echo: false
+tidy(WFModelHouses)
+```
+
+$$
+\begin{align}
+\widehat{Price}&=238 \cdot Sqft +  6584\\
+ (+238)&=238\cdot (+1) +  (+0)\\
+ (+476)&=238\cdot (+2) +  (+0)\\
+ (+714)&=238\cdot (+3) +  (+0)
+\end{align}
+$$
+**For each extra $Sqft$ the predicted price increases by \$238**
+
+**The variable $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.**
+
+## How Does the fitted model that considers SQFT improves the prediction compared to a simple average
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
+  geom_point(color="red")+
+  geom_vline(xintercept=mean(DataHouses$Sqft))+
+  geom_hline(yintercept=mean(DataHouses$Price))+
+  geom_smooth(method="lm", se=FALSE, color="blue")+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
+```
+## Evaluating Predictive Quality with the Testing Dataset
+
+```{r}
+#| code-fold: false
+DataTestWithPred=augment(WFModelHouses, new_data=DataTest)
+metrics(DataTestWithPred, truth=Price, estimate=.pred)
+```
+
+## Project: Analysis with all Variables
+
+```{r}
+#| code-fold: false
+library(rio)
+library(janitor)
+library(tidyverse)
+DataHouses=import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
+           clean_names("upper_camel") |> 
+           select(Price,Sqft=SqftLiving,Bedrooms,Condition)
+```
+
