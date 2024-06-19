@@ -503,6 +503,10 @@
 <section id="how-the-data-would-look-like" class="slide level2">
 <h2>HOW THE DATA WOULD LOOK LIKE</h2>
 <div class="cell">
+<details>
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">head</span>(DataHousing <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Sqft2=</span>Sqft<span class="sc">^</span><span class="dv">2</span>,<span class="at">Sqft3=</span>Sqft<span class="sc">^</span><span class="dv">3</span>,<span class="at">Sqft4=</span>Sqft<span class="sc">^</span><span class="dv">4</span>,<span class="at">Sqft5=</span>Sqft<span class="sc">^</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Price Sqft    Sqft2        Sqft3        Sqft4        Sqft5
 1  221900 1180  1392400   1643032000 1.938778e+12 2.287758e+15
@@ -593,14 +597,14 @@
 <section id="more-realistic-datasplit-80-training-20-testing" class="slide level2">
 <h2>MORE REALISTIC DATASPLIT: 80% TRAINING, 20% TESTING</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a>Split80<span class="ot">=</span>DataHousing <span class="sc">%&gt;%</span> </span>
-<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
-<span id="cb5-5"><a href="#cb5-5"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split80)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split80) </span>
-<span id="cb5-7"><a href="#cb5-7"></a></span>
-<span id="cb5-8"><a href="#cb5-8"></a><span class="fu">print</span>(Split80)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a>Split80<span class="ot">=</span>DataHousing <span class="sc">%&gt;%</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
+<span id="cb6-5"><a href="#cb6-5"></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split80)</span>
+<span id="cb6-6"><a href="#cb6-6"></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split80) </span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">print</span>(Split80)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;Training/Testing/Total&gt;
 &lt;17289/4324/21613&gt;</code></pre>

@@ -120,6 +120,7 @@ Consequently we can OLS to find the optimal $\beta s$.»
 ## HOW THE DATA WOULD LOOK LIKE
 
 ```{r}
+#| echo: true
 head(DataHousing %>% mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5))
 ```
 
