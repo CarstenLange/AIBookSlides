@@ -48,7 +48,7 @@ print(DataTrain)
 ## The Model {.smaller}
 ```{=tex}
 \begin{equation}
-\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 
+\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6 
 \end{equation}
 ```
 
@@ -62,7 +62,7 @@ with:
 
 ```{=tex}
 \begin{equation}
-\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 
+\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6 
 \end{equation}
 ```
 
@@ -108,7 +108,7 @@ metrics(DataTestWithPredBenchmark, truth=Price, estimate=.pred)
 ```{=tex}
 \begin{eqnarray}
 T^{arget}&=&\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2+\lambda P^{enalty} \\
-\mbox{with:}&& \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 \nonumber \\
+\mbox{with:}&& \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6 \nonumber \\
 \mbox{with:}&& P^{enalty}=\sum_{j=1}^{5} \beta_j^2 \nonumber
 \end{eqnarray}
 ```
@@ -156,7 +156,7 @@ metrics(DataTestWithPredBenchmark, truth=Price, estimate=.pred)
 ```{=tex}
 \begin{eqnarray}
 T^{arget}&=&\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2+\lambda P^{enalty} \\
-\mbox{with:}&& \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 \nonumber \\
+\mbox{with:}&& \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6 \nonumber \\
 \mbox{with:}&& P^{enalty}=\sum_{j=1}^{5} | \beta_j | \nonumber
 \end{eqnarray}
 ```

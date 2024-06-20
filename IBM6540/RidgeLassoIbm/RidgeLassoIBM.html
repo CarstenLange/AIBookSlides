@@ -453,7 +453,7 @@
 <section id="the-model" class="slide level2 smaller">
 <h2>The Model</h2>
 <span class="math display">\[\begin{equation}
-\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0
+\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6
 \end{equation}\]</span>
 </section>
 <section id="unregularized-model-minimizes-the-mse-by-choosing-the-optimal-beta-s" class="slide level2 smaller">
@@ -462,7 +462,7 @@
 \displaystyle MSE=\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2
 \]</span> with:</p>
 <span class="math display">\[\begin{equation}
-\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0
+\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6
 \end{equation}\]</span>
 </section>
 <section id="running-the-unregularized-model" class="slide level2">
@@ -540,7 +540,7 @@
 <h3 id="ridge">Ridge</h3>
 <span class="math display">\[\begin{eqnarray}
 T^{arget}&amp;=&amp;\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2+\lambda P^{enalty} \\
-\mbox{with:}&amp;&amp; \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 \nonumber \\
+\mbox{with:}&amp;&amp; \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6 \nonumber \\
 \mbox{with:}&amp;&amp; P^{enalty}=\sum_{j=1}^{5} \beta_j^2 \nonumber
 \end{eqnarray}\]</span>
 <p>Two Goals: Minimize <span class="math inline">\(MSE\)</span> and Minimize Penalty (small or zero <span class="math inline">\(\beta s\)</span>)</p>
@@ -618,7 +618,7 @@ T^{arget}&amp;=&amp;\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_
 <h3 id="lasso">Lasso</h3>
 <span class="math display">\[\begin{eqnarray}
 T^{arget}&amp;=&amp;\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2+\lambda P^{enalty} \\
-\mbox{with:}&amp;&amp; \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 \nonumber \\
+\mbox{with:}&amp;&amp; \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6 \nonumber \\
 \mbox{with:}&amp;&amp; P^{enalty}=\sum_{j=1}^{5} | \beta_j | \nonumber
 \end{eqnarray}\]</span>
 <p>Two Goals: Minimize <span class="math inline">\(MSE\)</span> and Minimize Penalty (small or zero <span class="math inline">\(\beta s\)</span>)</p>
