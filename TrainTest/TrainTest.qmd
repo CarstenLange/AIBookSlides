@@ -125,7 +125,7 @@ Consequently, we can use OLS to find the optimal $\beta s$.»
 head(DataHousing %>% mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5))
 ```
 
-## Comparing Regular OLS and Polynominal Regression (degree=5)
+## Comparing Regular OLS and Polynominal Regression (degree=5) 🤓
 
 Code to compare is linked in the footer of this slide.
 
@@ -319,7 +319,7 @@ The **10 general steps** are:
 
 10.  **Assessing predictive quality** of the final model by using the testing dataset to predict (see `augment() %>% metrics()`).
 
-## Run all 10 Steps to Tune the Real Estate Model
+## Run all 10 Steps to Tune the Real Estate Model 🤓
 
 Code to run all 10 steps is linked in the footer of this slide.
 
