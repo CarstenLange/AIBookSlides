@@ -1,6 +1,6 @@
 ---
 title: "Polynomial Regression"
-subtitle: "Overlearning, Training, Testing, and Validation"
+subtitle: "Overfitting/Tuning Explained"
 format: 
   revealjs:
     code-fold: true
@@ -11,25 +11,25 @@ format:
 You will learn about:
 
 ::: nonincremental
--   Overlearning in detail.
+-   Overfitting in detail.
 
--   Circumstances that make *overlearning* more likely to occur.
+-   Circumstances that make *overfitting* more likely to occur.
 
--   Consequences of overlearning when predicting new data.
+-   Consequences of overfitting when predicting new data.
 
--   Hyper-parameter tuning to avoid *overlearning*.
+-   Hyper-parameter tuning to avoid *overfitting*.
 
     -   Validation
     -   Cross Validation»
 :::
 
-## Overlearning
+## Overfitting
 
 If a model performs well when approximating the training data but does not perform well when it faces new data to predict outcomes.
 
-Overlearning is one of the most pressing and still not fully solved problems in machine learning.»
+Overfitting is one of the most pressing and still not fully solved problems in machine learning.»
 
-## Circumstances that Can Lead to Overlearning
+## Circumstances that Can Lead to Overfitting
 
 -   If the training dataset does not have a sufficient number of observations.
 
@@ -50,7 +50,7 @@ DataHousing = import("https://ai.lange-analytics.com/data/HousingData.csv")%>%
   select(Price, Sqft=SqftLiving)
 ```
 
-We want to demonstrate *overlearning*. Therefore, we ceate conditions that **likely trigger overlearning**. Consequently, we work only with a very small training dataset (20 observations=0.1% of total observations. All other observations become testing data:
+We want to demonstrate *overfitting*. Therefore, we ceate conditions that **likely trigger overfitting**. Consequently, we work only with a very small training dataset (20 observations=0.1% of total observations. All other observations become testing data:
 
 ```{r}
 #| echo: true
@@ -72,10 +72,11 @@ ggplot(aes(y=Price, x=Sqft), data=DataHousing)+
   geom_smooth(se=FALSE)
 ```
 
-## Data Structure
+## Training Data Structure
 
 ```{r}
-head(DataHousing)
+#| echo: true
+print(DataTrain)
 ```
 
 ## Polynomial Regression
@@ -115,7 +116,7 @@ This makes the regression **linear in variables** but **non-linear in data**.
 
 . . .
 
-Consequently we can OLS to find the optimal $\beta s$.»
+Consequently, we can use OLS to find the optimal $\beta s$.»
 
 ## HOW THE DATA WOULD LOOK LIKE
 
@@ -228,13 +229,13 @@ $$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{1
 
 ## SUMMARY: POLYNOMIAL REGRESSION
 
--   If we do not have enough data polynomial regression with a high degree might lead to overlearning
+-   If we do not have enough data polynomial regression with a high degree might lead to overfitting
 
 -   What is the right degree?
 
 -   We could try different degrees (e.g., 2, 3, 4, ... 10) and see which model performs best.
 
--   Which data are we using to measure performance? Training data (overlearning) and testing data (cannot be used for model optimization) are out.
+-   Which data are we using to measure performance? Training data (overfitting) and testing data (cannot be used for model optimization) are out.
 
 -   We could split off data from the training dataset (**validation data**). These *validation data* are not used to calculate the βs. Instead, they are used to find the best setting for the degree of polynomial regression (aka hyper-parameter of polynomial regression).
 
@@ -244,7 +245,7 @@ $$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{1
 
 -   Hyper-Parameters are like settings for a machine learning model such as the number of polynomials (e.g., $Sqft^N$) to be considered for polynomial regression. Another example are the number of $k$ Nearest Neighbors.
 
--   Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overlearning.»
+-   Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overfitting.»
 
 ## PROBLEMS OF SPLITTING VALIDATION DATA OFF THE TRAINING DATA
 
@@ -301,13 +302,13 @@ The **10 general steps** are:
 
 2. Create **recipe** to determine predictor and outcome variables. Optionally add one or more `step_X()` commands.
 
-3. Create  **model design** and mark parameters to be `tune()` ed. without `fit()`
+3. Create  **model design** and mark parameters to be tuned (use `tune()`) without `fit()`
 
 4. Create **workflow** by `add_recipe()` and `add_model()`
 
 5. Create a **hyper-parameter grid** containing the hyper-parameter combinations to be validated.
 
-6. Create **cross validation datasets** (aka *resamples*) containing the folds (use commands `vfold()`).
+6. Create **cross validation datasets** (aka *resamples*) containing the folds (use command `vfold()`).
 
 7. **Tune** the machine learning model with `tune_grid()` and track specific metrics defined by `metric_set()`. **Runs all hyper-parameter combinations for all folds.**
 
