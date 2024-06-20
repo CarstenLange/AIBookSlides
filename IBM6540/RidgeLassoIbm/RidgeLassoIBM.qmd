@@ -1,0 +1,199 @@
+---
+title: "Regularization"
+subtitle: "Ridge and Lasso"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+    echo: true
+    incremental: false
+---
+
+
+## What Will You Learn/Review {.scrollable .smaller}
+
+-   The **basic idea behind regularization** 
+
+-   The difference between the **penalty terms for Lasso and Ridge** regression models 
+
+-   How the **target function for Lasso** regularized regression models differs from the $MSE$ function of an unregularized model 
+
+-   How to create a **workflow for a Lasso** regularized regression using the *R* `tidymodels` framework 
+
+
+
+-   How the **target function for Ridge** regularized regression model differs from the $MSE$ function of an unregularized model 
+
+-   How to create a **workflow for a Ridge** regularized model using the *R* `tidymodels` framework
+
+
+
+## Loading the Libraries, Data, and Splitting in Training/Testing Data:
+
+```{r}
+library(tidymodels); library(rio); library(janitor)
+DataHousing=
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving)
+
+set.seed(777)
+Split001=initial_split(DataHousing, prop=0.001, strata=Price, breaks=5)
+DataTrain=training(Split001)
+DataTest=testing(Split001)
+print(DataTrain)
+
+```
+
+## The Model {.smaller}
+```{=tex}
+\begin{equation}
+\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 
+\end{equation}
+```
+
+## Unregularized Model Minimizes the MSE by Choosing the Optimal $\beta s$  {.smaller}
+
+
+$$
+\displaystyle MSE=\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2 
+$$
+with: 
+
+```{=tex}
+\begin{equation}
+\displaystyle\widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 
+\end{equation}
+```
+
+
+
+## Running the Unregularized Model
+
+```{r}
+library(tidymodels)
+ModelDesignBenchmark=linear_reg() |>
+                     set_engine("lm") |> 
+                     set_mode("regression")
+
+RecipeHouses=recipe(Price~., data=DataTrain) |> 
+             step_mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,
+                         Sqft4=Sqft^4,Sqft5=Sqft^5) |> 
+             step_normalize(all_predictors())
+
+WFModelBenchmark=workflow() |> 
+                 add_model(ModelDesignBenchmark) |> 
+                 add_recipe(RecipeHouses) |> 
+                 fit(DataTrain)
+tidy(WFModelBenchmark)
+```
+
+## Assessing Prediction Quality (Training Data)
+
+```{r}
+DataTrainWithPredBenchmark=augment(WFModelBenchmark, DataTrain)
+metrics(DataTrainWithPredBenchmark, truth=Price, estimate=.pred)
+```
+
+## Assessing Prediction Quality (Training Data)
+
+```{r}
+DataTestWithPredBenchmark=augment(WFModelBenchmark, DataTest)
+metrics(DataTestWithPredBenchmark, truth=Price, estimate=.pred)
+```
+
+## Regularization {.smaller}
+### Ridge
+
+```{=tex}
+\begin{eqnarray}
+T^{arget}&=&\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2+\lambda P^{enalty} \\
+\mbox{with:}&& \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 \nonumber \\
+\mbox{with:}&& P^{enalty}=\sum_{j=1}^{5} \beta_j^2 \nonumber
+\end{eqnarray}
+```
+
+Two Goals: Minimize $MSE$ and Minimize Penalty (small or zero $\beta s$)
+
+$T^{arget}$ value still only depends on data.
+
+Note, reducing a large or a small $\beta$ parameter by the same amount has the same impact on the *penalty*.
+
+
+## Running the Ridge Model
+
+```{r}
+library(glmnet)
+set.seed(777)
+ModelDesignRidge=linear_reg(penalty=1000000, mixture=0) |>
+                 set_engine("glmnet") |> 
+                 set_mode("regression")
+
+WFModelRidge=workflow() |> 
+             add_model(ModelDesignRidge) |> 
+             add_recipe(RecipeHouses) |> 
+             fit(DataTrain)
+tidy(WFModelRidge)
+```
+
+## Assessing Prediction Quality Ridge Model (Training Data)
+
+```{r}
+DataTrainWithPredBenchmark=augment(WFModelRidge, DataTrain)
+metrics(DataTrainWithPredBenchmark, truth=Price, estimate=.pred)
+```
+
+## Assessing Prediction Quality Ridge Model (Testingg Data)
+
+```{r}
+DataTestWithPredBenchmark=augment(WFModelRidge, DataTest)
+metrics(DataTestWithPredBenchmark, truth=Price, estimate=.pred)
+```
+
+## Regularization {.smaller}
+### Lasso
+
+```{=tex}
+\begin{eqnarray}
+T^{arget}&=&\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2+\lambda P^{enalty} \\
+\mbox{with:}&& \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3 Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_0 \nonumber \\
+\mbox{with:}&& P^{enalty}=\sum_{j=1}^{5} | \beta_j | \nonumber
+\end{eqnarray}
+```
+
+Two Goals: Minimize $MSE$ and Minimize Penalty (small or zero $\beta s$)
+
+$T^{arget}$ value still only depends on data.
+
+Note, reducing a large or a small $\beta$ parameter by the same amount has the same impact on the *penalty*.
+
+
+## Running the Lasso Model
+
+```{r}
+library(glmnet)
+set.seed(777)
+ModelDesignLasso=linear_reg(penalty=500, mixture=1) |>
+                 set_engine("glmnet") |> 
+                 set_mode("regression")
+
+WFModelLasso=workflow() |> 
+             add_model(ModelDesignLasso) |> 
+             add_recipe(RecipeHouses) |> 
+             fit(DataTrain)
+tidy(WFModelLasso)
+```
+
+## Assessing Prediction Quality Lasso Model (Training Data)
+
+```{r}
+DataTrainWithPredBenchmark=augment(WFModelLasso, DataTrain)
+metrics(DataTrainWithPredBenchmark, truth=Price, estimate=.pred)
+```
+
+## Assessing Prediction Quality Lasso Model (Testing Data)
+
+```{r}
+DataTestWithPredBenchmark=augment(WFModelLasso, DataTest)
+metrics(DataTestWithPredBenchmark, truth=Price, estimate=.pred)
+```
