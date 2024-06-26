@@ -29,6 +29,9 @@ WfModelNN=workflow() %>%
   add_recipe(RecipeDiamonds) %>%
   fit(DataTrain)
 
+library(NeuralNetTools)
+plotnet(extract_fit_engine(WfModelNN))
+
 DataTrainWithPred=augment(WfModelNN, new_data = DataTrain)
 metrics(DataTrainWithPred, truth=Price, estimate = .pred)
 
