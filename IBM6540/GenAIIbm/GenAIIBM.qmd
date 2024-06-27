@@ -1,6 +1,8 @@
 ---
 title: "Generative AI and Large Language Models"
-subtitle: "Review"
+subtitle: "Based on the Article: How Large Language Models Work by Andreas Schoeffelbauer"
+
+
 format: 
   revealjs:
     code-fold: true
