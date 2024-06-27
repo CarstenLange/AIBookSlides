@@ -400,12 +400,12 @@
 <section id="what-will-you-learnreview" class="slide level2 scrollable smaller">
 <h2>What Will You Learn/Review</h2>
 <ul>
-<li><p>Reviewing the basic idea behind linear regression</p></li>
-<li><p>Learning how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>).</p></li>
-<li><p>Calculating optimal OLS regression parameters using <code>tidymodels</code></p></li>
-<li><p>Distinguish between unfitted and fitted models</p></li>
-<li><p>How to interpret the OLS regression parameters and their significance</p></li>
-<li><p>Using metrics to evaluate prediction quality on the testing</p></li>
+<li><p>How a Large Language Model Works</p></li>
+<li><p>How words can be embedded as vectors to code similar meanings.</p></li>
+<li><p>How a LLM guesses the next word?</p></li>
+<li><p>How fine tuning allos LLM to become “intelligent”</p></li>
+<li><p>Examples of gen AI</p></li>
+<li><p>How post-prepossessing can avoid discrimination, derogative language, and racism</p></li>
 </ul>
 </section>
 <section id="loading-the-libraries-and-the-data" class="slide level2">
@@ -445,7 +445,8 @@
 <section id="word-encoding-for-sentiment-analysis" class="slide level2">
 <h2>Word Encoding for Sentiment Analysis</h2>
 
-<img data-src="images/clipboard-2372440190.png" class="r-stretch quarto-figure-center"><p class="caption">Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f</p></section>
+<img data-src="images/clipboard-2372440190.png" class="r-stretch quarto-figure-center"><p class="caption">Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f</p><p>Note, that similar words will have similar encoding vectors (similarity can be measured by Euclidean Distance)</p>
+</section>
 <section id="large-language-generation-llm" class="slide level2">
 <h2>(Large) Language Generation/ (L)LM</h2>
 
@@ -487,7 +488,7 @@
 <h2>Prompt Engineering (Example: AI Book Marketing)</h2>
 <p><a href="https://ai.lange-analytics.com" class="uri">https://ai.lange-analytics.com</a></p>
 </section>
-<section id="prompt-engineering-example-ai-book-marketing-1" class="slide level2">
+<section id="prompt-engineering-example-ai-book-marketing-1" class="slide level2 smaller">
 <h2>Prompt Engineering (Example: AI Book Marketing)</h2>
 <p>Proceed step by step:</p>
 <p>First, answer the following question: &lt;{question}&gt;?</p>
@@ -496,7 +497,7 @@
 <p>To find the section in the book that coveres the question use the following information from the book Machine Learning with R. Tutorials and Case Studies by Carsten Lange:</p>
 <p>Carsten Lange is an economics professor at Cal Poly Pomona with a keen interest in making data science and machine learning more accessible. He has authored multiple refereed articles and four books, including his 2004 book on applying neural networks for economics. Carsten is passionate about teaching machine learning and artificial intelligence with a focus on practical applications and hands-on learning.</p>
 <p>Max Lange, tirelessly wrote Python programs for the book Machine Learning with R and designed the website. These Python programs automated many tasks of the interactive and the digital resource sections, which made it possible to integrate these sections seamlessly into the book.</p>
-<p>Chaper 1 Section 1.0:</p>
+<p>Chapter 1 Section 1.0:</p>
 <p>With rapid advancements in recent years, machine learning and artificial intelligence (AI) have become increasingly relevant and have already started transforming many businesses. Knowledge about machine learning and AI is critical not just for STEM (science, technology, engineering, and mathematics) majors but also in many other fields, including business, economics, and other social science majors.</p>
 <p>To better prepare students for a future with AI, Machine Learning with R by Carsten Lange introduces and applies fundamental machine learning principles. The goal of Machine Learning with R is to combine theoretical concepts with hands-on projects to equip the students with the skills to solve real-world problems. Recognizing that there is a need for a machine learning textbook that implements a hands-on approach, where students can interactively work step-by-step, and that introduces the quantitative concepts in a less mathematical way gave the idea to write the book Machine Learning with R.</p>
 <p>This book introduces machine learning algorithms and explains the underlying concepts without using higher mathematics concepts like matrix algebra or calculus. Each chapter provides examples, case studies, and interactive tutorials. The examples and hands-on tutorials use the statistical programming language R, which is widely used for statistical analysis and data science. R has a relatively simple syntax. R is easy to learn easy for beginners, making R a good choice for teaching machine learning. No prior programming skills are required to work with the book Machine Learning with R. Tutorials and Case Studies by Carsten Lange. A designated R chapter introduces the R skills needed for the course. In addition, each chapter offers one or more interactive R tutorials. Students can work with real-world data and use the interactive environment to learn and experiment with R code in a web browser.</p>
@@ -612,6 +613,10 @@
 <p>- Section 11.6 shows how you can use Variable Importance Plots (VIP) to identify predictor variables that are more or less important for the prediction. The less important variables are potential candidates to be dropped from the analysis.</p>
 <p>- Section 11.7 shows how you can use SHAP values to quantify the contribution of each predictor variable to the prediction of a specific observation of interest.</p>
 <p>- Section 11.8 shows how you can use the Local Interpretable Model-agnostic Explanations (LIME) methodology to approximate a non-linear machine learning model with a linear OLS model. The latter can then be used to interpret the related impacts of the predictor variables.</p>
+</section>
+<section id="post-processing-bias-discrimination-derogatory-language" class="slide level2">
+<h2>Post Processing: Bias, Discrimination, Derogatory Language</h2>
+<p>Example: Pi chat bot</p>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
