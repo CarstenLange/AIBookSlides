@@ -395,6 +395,21 @@
 </div>
 
 </section>
+<section id="learning-outcomes" class="title-slide slide level1 smaller center">
+<h1>Learning Outcomes</h1>
+<ul>
+<li class="fragment"><p>How to work with a graphical representation of a Neural Network</p></li>
+<li class="fragment"><p>How to transform the graphical representation into a Neural Network prediction function</p></li>
+<li class="fragment"><p>How to use an Optimizer in a Neural Network to change the network’s parameters to step-wise improve the approximation quality</p></li>
+<li class="fragment"><p>Why Neural Networks have outstanding approximation qualities that allow them to approximate any continuous function with any degree of accuracy</p></li>
+<li class="fragment"><p>How and why the outstanding approximation quality of Neural Networks makes them prone to overfitting</p></li>
+<li class="fragment"><p>How to work with the R nnet package and with PyTorch to design and run a Neural Network</p></li>
+<li class="fragment"><p>Why a Neural Network with ReLU (Rectified Linear Unit) activation functions has the same outstanding approximation properties as a Neural Network with classic Sigmoid activation functions</p></li>
+<li class="fragment"><p>Why ReLU functions mitigate the possible inability of the Optimizer to change the values for the β parameters</p></li>
+<li class="fragment"><p>How to use PyTorch in an interactive project to estimate the prices of more than 50,00050,000 diamonds based on four common predictors used in the appraisal industry (Carat, Clarity, Cut, and Color)</p></li>
+</ul>
+</section>
+
 <section id="the-early-days" class="title-slide slide level1 center">
 <h1>The Early Days</h1>
 <p>In the early days of artificial neural networks, data scientists tried to mimic the human brain through computer models.</p>
@@ -600,7 +615,7 @@
 }^{A^{ct}_1}\cdot\beta_9
 \]</span></p>
 <div class="fragment">
-<p><span class="math display">\[\begin{eqnarray*}
+<span class="math display">\[\begin{eqnarray*}
 \widehat{P_i}&amp;=&amp;\beta_7+
 \overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
@@ -609,7 +624,7 @@
 \overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9
-\end{eqnarray*}\]</span></p>
+\end{eqnarray*}\]</span>
 </div>
 </section>
 
@@ -729,7 +744,7 @@
 <section id="steepest-gradient-descent" class="title-slide slide level1 center">
 <h1>Steepest Gradient Descent</h1>
 <p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span></p>
-<p><span class="math display">\[\begin{eqnarray*}
+<span class="math display">\[\begin{eqnarray*}
 \widehat{P_i}&amp;=&amp;\beta_7\\
 &amp;+&amp;\overbrace{
 \frac{1}{1+e^{-(\beta_1 +\beta_2 Carat_i+\beta_3 Clarity_i)}}
@@ -738,13 +753,13 @@
 &amp;+&amp;\overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9
-\end{eqnarray*}\]</span></p>
+\end{eqnarray*}\]</span>
 </section>
 
 <section id="steepest-gradient-descent-1" class="title-slide slide level1 smaller center">
 <h1>Steepest Gradient Descent</h1>
 <p><span class="math display">\[MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}\]</span></p>
-<p><span class="math display">\[\begin{eqnarray*}
+<span class="math display">\[\begin{eqnarray*}
 MSE= \frac{\sum^N_{i=1}\left(
 \left (\underbrace{\beta_7
 +\overbrace{
@@ -753,7 +768,7 @@ MSE= \frac{\sum^N_{i=1}\left(
 +\overbrace{
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9}_{\widehat{P_i}}  \right ) - P_i\right )^2}{N}
-\end{eqnarray*}\]</span></p>
+\end{eqnarray*}\]</span>
 </section>
 
 <section id="steepest-gradient-descent-2" class="title-slide slide level1 smaller scrollable center">
@@ -879,8 +894,7 @@ MSE= \frac{\sum^N_{i=1}\left(
 
 <section id="now-its-time-to-run-the-real-world-analysis" class="title-slide slide level1 center">
 <h1>Now It’s Time to Run the Real-World Analysis</h1>
-<p>Go to the AI Book and find the analysis at the end of the Neural Network chapter:</p>
-<p><a href="https://econ.lange-analytics.com/aibook/">Neural Network Real World Application</a> <br><br> Alternatively you can run an uncommented R-script with the same code <a href="https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript2.R">here</a>.</p>
+<p><a href="https://aibookslides.netlify.app/scripts/DeepLearnScript1.R">Neural Network Real World Application</a> <br><br> Alternatively you can run an uncommented R-script with the same code <a href="https://aibookslides.netlify.app/scripts/deeplearnscript2.R">here</a>.</p>
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>

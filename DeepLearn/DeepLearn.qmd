@@ -6,6 +6,26 @@ format:
     navigation-mode: vertical
 ---
 
+# Learning Outcomes {.smaller}
+
+-   How to work with a graphical representation of a Neural Network
+
+-   How to transform the graphical representation into a Neural Network prediction function
+
+-   How to use an Optimizer in a Neural Network to change the network’s parameters to step-wise improve the approximation quality
+
+-   Why Neural Networks have outstanding approximation qualities that allow them to approximate any continuous function with any degree of accuracy
+
+-   How and why the outstanding approximation quality of Neural Networks makes them prone to overfitting
+
+-   How to work with the R nnet package and with PyTorch to design and run a Neural Network
+
+-   Why a Neural Network with ReLU (Rectified Linear Unit) activation functions has the same outstanding approximation properties as a Neural Network with classic Sigmoid activation functions
+
+-   Why ReLU functions mitigate the possible inability of the Optimizer to change the values for the β parameters
+
+-   How to use PyTorch in an interactive project to estimate the prices of more than 50,00050,000 diamonds based on four common predictors used in the appraisal industry (Carat, Clarity, Cut, and Color)
+
 # The Early Days
 
 In the early days of artificial neural networks, data scientists tried to mimic the human brain through computer models.
@@ -96,7 +116,6 @@ print(DataTrain)
 
 ![](Images/InpEff1.png){.fragment .absolute left="470" top="278"} ![](Images/InpEff2.png){.fragment .absolute left="470" top="550"}
 
-
 # Use a Trained Neural Nework ($\beta s$ are known) to Predict
 
 **Calculate Activity in Hidden Neurons with Logistic Function**
@@ -169,7 +188,6 @@ $$
 
 # Transformation From Neural Network to Prediction Equation
 
-
 **Between the Input and the Hidden Layer:**
 
 $$\widehat P =\beta_7 + \beta_8 A^{ct}_1 +  \beta_9 A^{ct}_2$$
@@ -186,6 +204,7 @@ $$
 
 . . .
 
+```{=tex}
 \begin{eqnarray*}
 \widehat{P_i}&=&\beta_7+
 \overbrace{
@@ -196,9 +215,7 @@ $$
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9
 \end{eqnarray*}
-
-
-
+```
 # If we know the $\beta s$ We Can Generate Predictions!
 
 ```{=tex}
@@ -319,8 +336,9 @@ This raises the question: <br><br>
 
 # Steepest Gradient Descent
 
-$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$ 
+$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
 
+```{=tex}
 \begin{eqnarray*}
 \widehat{P_i}&=&\beta_7\\
 &+&\overbrace{
@@ -331,12 +349,12 @@ $$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9
 \end{eqnarray*}
-
+```
 # Steepest Gradient Descent {.smaller}
 
-$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$ 
+$$MSE= \frac{\sum^N_{i=1}(\widehat P_i - P_i)^2}{N}$$
 
-
+```{=tex}
 \begin{eqnarray*}
 MSE= \frac{\sum^N_{i=1}\left( 
 \left (\underbrace{\beta_7
@@ -347,7 +365,7 @@ MSE= \frac{\sum^N_{i=1}\left(
 \frac{1}{1+e^{-(\beta_4 +\beta_5 Carat_i+\beta_6 Clarity_i)}}
 }^{A^{ct}_2}\cdot\beta_9}_{\widehat{P_i}}  \right ) - P_i\right )^2}{N}
 \end{eqnarray*}
-
+```
 # Steepest Gradient Descent {.smaller .scrollable}
 
 -   Initially $\beta s$ are chosen randomly.
@@ -369,11 +387,11 @@ MSE= \frac{\sum^N_{i=1}\left(
 
 Let us run an example to see how well a Neural Network can approximate.
 
-In the example we will z-normalize the predictors. 
+In the example we will z-normalize the predictors.
 
-Are interested why? 
+Are interested why?
 
-Then use the **down-arrow** to proceed with the slides. 
+Then use the **down-arrow** to proceed with the slides.
 
 Otherwise, use the **left-arrow**.
 
@@ -385,8 +403,6 @@ If inputs are not scaled and if they lead to very big effective inputs, the slop
 
 ::: footer
 :::
-
-
 
 # Example: Approximation Properties of Neural Networks
 
@@ -440,15 +456,16 @@ See: [Neural Network Appoximation App](https://econ.lange-analytics.com/calcat/h
 
 # Major Differences: `nnet` and `brulee`/`PyTorch`
 
-
-- `brulee` uses internally stop learning.
-  - `epoch` setting refers to maximum *epochs* 
-  - from the *training* data set a *validation* set is held back.
-  - when *validation error* stops decreasing for 5 epochs training is stopped.
-- `brulee` allows to use **ReLu Activation Functions**
+-   `brulee` uses internally stop learning.
+    -   `epoch` setting refers to maximum *epochs*
+    -   from the *training* data set a *validation* set is held back.
+    -   when *validation error* stops decreasing for 5 epochs training is stopped.
+-   `brulee` allows to use **ReLu Activation Functions**
 
 # ReLu Activation Function
+
 $$Act_i=max\left (0, I_i^{eff}\right )$$
+
 ```{r}
 FctReLu=function(x){y=ifelse(x>0,x,0)
 return(y)
@@ -460,26 +477,24 @@ geom_function(fun = FctReLu, color="blue", size=1.2)+
   ylab("Activity")
 ```
 
-Two *ReLU* functions can be combined into one step function similar to *sigmoid* functions. 
+Two *ReLU* functions can be combined into one step function similar to *sigmoid* functions.
 
 See the link in the footer for a demo.
 
 ::: footer
-
 See: [Combine two ReLu functions into one step function](https://econ.lange-analytics.com/calcat/relu)
-
 :::
 
 # Logistic Activation Function: Problem of Vanishing Gradient
 
 ![Logistic Activation Function](Images/LogisticFunction.png)
 
-Even when activation is determined somewhere in the middle of the activation function the slope is smaller than one. With multiple layers this can propagate to a gradient that is zero because slopes from multiple layers are multiplied (chain rule). 
+Even when activation is determined somewhere in the middle of the activation function the slope is smaller than one. With multiple layers this can propagate to a gradient that is zero because slopes from multiple layers are multiplied (chain rule).
 
 # ReLu Activation Function: No Problem of Vanishing Gradient
 
-
 $$Act_i=max\left (0, I_i^{eff}\right )$$
+
 ```{r}
 FctReLu=function(x){y=ifelse(x>0,x,0)
 return(y)
@@ -495,11 +510,4 @@ geom_function(fun = FctReLu, color="blue", size=1.2)+
 
 # Now It's Time to Run the Real-World Analysis
 
-
-
-[Neural Network Real World Application](https://aibookslides.netlify.app/scripts/DeepLearnScript1.R)
-<br><br>
-Alternatively you can run an uncommented R-script with the same code [here](https://aibookslides.netlify.app/scripts/deeplearnscript2.R).
-
-
-
+[Neural Network Real World Application](https://aibookslides.netlify.app/scripts/DeepLearnScript1.R) <br><br> Alternatively you can run an uncommented R-script with the same code [here](https://aibookslides.netlify.app/scripts/deeplearnscript2.R).
