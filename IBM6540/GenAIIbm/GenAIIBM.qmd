@@ -1,7 +1,5 @@
 ---
 title: "Generative AI and Large Language Models"
-subtitle: "Based on the Article: How Large Language Models Work by Andreas Schoeffelbauer"
-
 
 format: 
   revealjs:
@@ -10,6 +8,10 @@ format:
     echo: true
     incremental: false
 ---
+
+## Source
+
+The presentation is based on the Article: [How Large Language Models Work by Andreas Schoeffelbauer](https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f)
 
 ## What Will You Learn/Review {.scrollable .smaller}
 
@@ -39,11 +41,17 @@ library(janitor)
 
 ![Source: Medium: <https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f>](images/clipboard-1934318519.png)
 
+## Image Recognition (Cat, Dog, Bird)
+
+### Size 224 x 224 and 3 colors = 150,528 Pixels
+
+![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-2629028543.png)
+
 ## First Image Recognition (Cat, Dog, Bird)
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
-**Neural Network:** MLP with only one hidden layer (in reality: Convolutional NN)
+**Neural Network:** MLP with only twohidden layers (in reality: Convolutional NN)
 
 **Inputs:** 150,528
 
@@ -51,13 +59,7 @@ library(janitor)
 
 **Hidden Neurons:** E.g. 150,528
 
-**Parameters:** 150,528 \**150,528+ 150,528 + 150,528*4 + 3=22,659,280,899
-
-## Image Recognition (Cat, Dog, Bird)
-
-### Size 224 x 224 and 3 colors = 150,528 Pixels
-
-![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-2629028543.png)
+**Parameters:** 150,528 \**150,528+ 150,528+*150,528 \**150,528+ 150,528 + 150,528*4 + 3=45,318,110,209
 
 ## First Image Recognition (Cat, Dog, Bird)
 
