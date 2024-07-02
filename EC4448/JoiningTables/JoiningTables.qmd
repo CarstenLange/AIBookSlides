@@ -1,0 +1,186 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Joining two Tables"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+---
+
+```{r}
+#| include: false
+library(tidymodels)
+library(rio)
+library(janitor)
+DataHouses= import("../../Data/DataHouseSampleCL.csv")
+library(tidyverse)
+NameAdresses=tibble(ID=c(1,22,3,4,5,6),
+                    First=c("John","Joe","Jake",
+                            "Hans","Anne", "Agatha"),                   
+                  Last=c("Doe","Dull","Dune",
+                          "Meier","Scholz","Smith"),
+                  Street=c("649 C Street","648 A Street", "345 H Street",
+                           "118 B Street","120 B Street","876 G Street"),
+                  City=c("Pomona","Pomona","Pomona", 
+                         "Pomona","Pomona","Pomona"))
+Orders=tibble(ID=c(1,22,22,3,5,3,5,5,27,6),
+              Item=c("Shoes","Shirt","Shoes","Shoe",
+                     "Shirt","Shoes","Jeans","Jeans",
+                    "Shoes","Shirt"),
+              Amount=c(123,67,78,111,98,17,45,37,22,11)
+  )                    
+
+
+```
+
+## What Will You Learn {.scrollable}
+
+- Load a csv table to *My Content*
+- Add a table from *My Content* to a *Web Map*
+
+- What a relational database is
+- Joining two tables into one table based on matching observations
+    - Left Join
+    - Inner Join
+    - Outer or Full Join (rarely used)
+- Join a *FeatureLayer*'s table with a *Table* in a *Web Ma*p
+
+## ArcGis Online: 
+
+1.  Load  Web map from `SchoolQualityYourInitial` from *My Content*
+
+**Problem:** No school quality reported
+
+## Adding Table with School Quality to ArcGIS Online
+
+**We start with:** Showing School Quality in R: `Schools.R` (this step is not required)
+
+**Next:** You add CSV file with school quality:<br> `DataEC4448/DataSchoolQuality.csv` to *My Content*:
+
+Content -\> New Item -\> . . . (as feature table)
+
+
+## ArcGis Online: Add table to Map
+
+1.  Load  Web map from `SchoolQualityYourInitial` from *My Content*
+2.  Add Table (table icon on the left)
+3.   Choose: `DataSchoolQuality`
+
+**Problem:** One layer has no school quality and the SchoolQuality table has no location information.
+
+**Solution:**  Both have a school identifier (CDS code). So, we can join them.
+
+
+
+## Joining two Tables {.smaller .scrollable}
+
+Programs that allow joining two tables are called **relational databases**
+
+```{r}
+#| echo: false
+Orders
+```
+
+```{r}
+#| echo: false
+NameAdresses
+```
+
+## Joining two Tables (Left Join) {.smaller}
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: false
+Orders
+```
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+NameAdresses
+```
+:::
+:::
+
+**Left Join**
+
+. . .
+
+```{r}
+left_join(Orders,NameAdresses, by=join_by(ID==ID))
+```
+
+## Joining two Tables (Inner Join) {.smaller}
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: false
+Orders
+```
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+NameAdresses
+```
+:::
+:::
+
+**Inner Join**
+
+. . .
+
+```{r}
+inner_join(Orders,NameAdresses, by=join_by(ID==ID))
+```
+
+## Joining two Tables (Outer Join)
+
+::: columns
+::: {.column width="40%"}
+```{r}
+#| echo: false
+Orders
+```
+:::
+
+::: {.column width="60%"}
+```{r}
+#| echo: false
+NameAdresses
+```
+:::
+:::
+
+**Outer Join**
+
+. . .
+
+```{r}
+full_join(Orders,NameAdresses, by=join_by(ID==ID))
+```
+
+
+
+## Joining two Tables in ArcGis Online
+
+1.  Back to the web map `SchoolQualityYourInitial`
+
+If you have not done it already: 
+
+2.  Add Table (table icon on the left)
+3.   Choose: `DataSchoolQuality`
+4.  both have a school identifier (CDS code)
+
+Joining based on attributes/features:
+
+5.  **Joining:** Analysis -\> Summarize Data -\> Join Features
+Result Layer: `SchoolQualityWithAdrYourInitial` Folder: `EC4448Schools` 
+
+**Save Web map!!!**

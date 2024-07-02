@@ -1,0 +1,133 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Introduction"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+---
+
+```{r}
+#| include: false
+library(tidymodels)
+library(rio)
+library(janitor)
+DataHouses= import("../../Data/DataHouseSampleCL.csv")
+library(tidyverse)
+
+```
+
+## What Will You Learn {.scrollable}
+
+-   Details about te project to estimate house prices in Los Angeles County
+- How data are stored in tables in general
+- How data tables with location information can be stored in ArcGIS Online 
+- How Latitude and Longitude can be used to reference any point on earth
+
+
+## Project Goal of the Course {.smaller}
+
+We have data to estimate Los Angeles County House Prices:
+
+$$
+\widehat{Price}=\beta_1 Sqft + \beta_2 Bedrooms + \beta3
+$$
+
+Running an OLS Regression leads to:
+
+```{r}
+ModelOLS=lm(Price~Sqft+Bedrooms, data=DataHouses)
+Result=tidy(ModelOLS)
+print(Result)
+```
+
+$$
+\widehat{Price}=\underbrace{507}_{\beta_1} \cdot Sqft + \underbrace{83251}_{\beta_2} \cdot Bedrooms + \underbrace{311,211}_{\beta3}
+$$
+
+## The Goal is to Consider Location Information
+
+Such as:
+
+$$\begin{align}
+\widehat{Price}&=\beta_1 Sqft + \beta_2 Bedrooms + \beta3 NearSchoolQuality \\
+\\
+&+
+                \beta_4 DistBeach + \beta_5 Income + \ldots
+\end{align}$$
+
+## Data are Usually Stored in Tables (e.g., Excel sheets)
+
+**Rows** are holding the **observations**.
+
+**Columns** are holding **variables/features**.
+
+E.g., tables can be stored in **Excel sheets**:
+
+![](images/clipboard-4115553016.png)
+
+## Data are Usually Stored in Tables(e.g., *Excel sheets* R\* data frame variables)
+
+**Rows** are holding the **observations**.
+
+**Columns** are holding **variables/features**.
+
+E.g., tables can be stored in **data frames variables in R**:
+
+```{r}
+NameAdresses=tibble(ID=c(1,22,3,4,5,6),
+                    First=c("John","Joe","Jake",
+                            "Hans","Anne", "Agatha"),                   
+                    Last=c("Doe","Dull","Dune",
+                          "Meier","Scholz","Smith"),
+                    Street=c("649 C Street","648 A Street", "345 H Street",
+                           "118 B Street","120 B Street","876 G Street"),
+                    City=c("Pomona","Pomona","Pomona", 
+                         "Pomona","Pomona","Pomona"))
+print(NameAdresses)
+```
+
+## Data are Usually Stored in Tables (e.g., CSV files)
+
+**Rows** are holding the **observations**.
+
+**Columns** are holding **variables/features**.
+
+E.g., tables can be stored in **CSV** (comma separated values) files:
+
+![](images/clipboard-1839310003.png){width="544"}
+
+## Longitude-Latitude
+
+Lat-Long is a coordinate system for locations. Latitude represents the vertical axis, and Longitude represents the horizontal axis.
+
+![](images/clipboard-3894559965.png){width="421"}
+
+## Location Data (e.g., points)
+
+Data with Lat-Long Information (e.g., Observations that are points on earth) are stored in ArcGIS Online in a (hosted) **Feature Layer**.
+
+Basically, one or more layers on top of a **Base Map**.
+
+
+
+
+**Think of overlayed transparencies on a projector**
+
+## ArcGis Online: Location Data (e.g., points)
+
+1.  Load new map with Basemap only.
+
+2.  Show (`DataPublSchlsAdr.csv`) in EC4448Data
+
+3.  Add School Points with addresses to a ArcGIS Online *Web Map*
+    Map -\> Layers -\> Add -\> Add Layer from file (`DataPublSchlsAdr.csv`)
+
+4.  *Web Map*: Save as ... `SchoolQualityYourInitial` into your group (into a new folder: `EC4448SchoolsGroupYourInitial`
+
+5.  Note that the file has no school quality info. 
+    The info about school quality is a different file.
+
+ 
