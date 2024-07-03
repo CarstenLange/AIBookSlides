@@ -1,0 +1,107 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Strategies for Choosing Symbology and Popups for Web Maps"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+- Choose symbol
+    - Choosing a symbol icon
+    - Choose static symbol size
+    - Choose static symbol color
+- Choose variable symbol color based on feature value
+    - Choose color pallet 
+    - Distinguish between classes and continuous colors
+- Choose variable symbol size based on feature value
+- Scaling/Standardizing features before symbolizing
+    - Population
+    - Area
+    - other
+- Choose fields for popups (can be undone)
+- Delete fields (permanently from feature layer)
+
+## ArcGis Online: Choosing Static, Symbol, Color, and Size  {.smaller}
+
+Coloring House Prices from `DataHouseSampleCL` (only available to CL)
+
+- If needed: Click on Hamburger Menu of layer and choose `Show Properties`
+- In the right menu select the `Styles` icon.
+- Select Location (single symbol)
+
+## ArcGis Online: Choosing Variabe Color Depending on a Feature Value  {.smaller}
+
+Coloring House Prices from `DataHouseSampleCL` (only available to CL) according to Price, Sqft or Price/Sqft
+
+- If needed: Click on Hamburger Menu of layer and choose `Show Properties`
+- In the right menu select the `Styles` icon.
+- Select Counts and Amounts (Color)
+
+Consider:
+- Color ramps (classify and continuous)
+    - Classic consider different breaks
+    - Flip Color ramp
+- Static size
+- Transparency
+- Divide by
+
+## ArcGis Online: Choosing Variabe Size Depending on a Feature Value  {.smaller}
+
+Sizing House Prices from `DataHouseSampleCL` (only available to CL) according to Price, Sqft or Price/Sqft
+
+- If needed: Click on Hamburger Menu of layer and choose `Show Properties`
+- In the right menu select the `Styles` icon.
+- Select Counts and Amounts (Size)
+
+Consider:
+- Special Symbol
+- Size ramps (classify and continuous)
+    - Classify: consider different breaks
+- Static size
+- Transparency
+- Divide by
+
+## ArcGis Online: Choosing two Features Variabe Size and Color Depending on a Feature Value  {.smaller}
+
+Sizing House Prices from `DataHouseSampleCL` (only available to CL) according to Price, Sqft or Price/Sqft
+
+- If needed: Click on Hamburger Menu of layer and choose `Show Properties`
+- Choose two features (e.g., Price and Sqft)
+- In the right menu select the `Styles` icon.
+- Select Counts and Amounts (Color and Size)
+
+Consider:
+- Special Symbol
+- Size and Color ramps (classify and continuous)
+    - Classify: consider different breaks
+- Static size
+- Transparency
+
+## ArcGis Online: Configuring PopUps {.smaller}
+
+Configuring PopUps from `DataHouseSampleCL` (only available to CL) according to Price, Sqft or Price/Sqft
+
+- If needed: Click on Hamburger Menu of layer and choose `Show Properties`
+- In the right menu select the `Pop-ups` icon.
+- In the right form choose `Select Fields` to choose fields for the popups
+- You can also add other content with `Add Content`
+
+## Deleting Fields for Feature Layers and Creating Aliases {.smaller}
+
+**Careful: This deletes the feature permanently in the Feature Layer. It is not limited to the Web Map**
+
+Sometimes Feature layers have useless features/variables/columns that we want to delete permanently or we like a different or we like to crete Aliases (Display Names):
+
+- If needed: Click on Hamburger Menu of layer and choose `Show Properties`
+- Make sure you selected the correct Feature Layer
+- In the right menu select the `Fields` icon.
+- Choose a Field (variable) that you either want to delete or create an Alias for
+- Delete the field (permanently) or create an Alias. Note, in the Fields menu Aliases are displayed while original Variable Names are displayed in ()

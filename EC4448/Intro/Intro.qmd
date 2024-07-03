@@ -7,6 +7,7 @@ format:
     code-fold: true
     incremental: false
     scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
 ---
 
 ```{r}
@@ -108,7 +109,8 @@ Lat-Long is a coordinate system for locations. Latitude represents the vertical 
 ## Location Data (e.g., points)
 
 Data with Lat-Long Information (e.g., Observations that are points on earth) are stored in ArcGIS Online in a (hosted) **Feature Layer**.
-
+<br>
+<br>
 Basically, one or more layers on top of a **Base Map**.
 
 
