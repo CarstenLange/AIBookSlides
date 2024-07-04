@@ -46,6 +46,7 @@ Coloring House Prices from `DataHouseSampleCL` (only available to CL) according 
 - Select Counts and Amounts (Color)
 
 Consider:
+
 - Color ramps (classify and continuous)
     - Classic consider different breaks
     - Flip Color ramp
@@ -62,6 +63,7 @@ Sizing House Prices from `DataHouseSampleCL` (only available to CL) according to
 - Select Counts and Amounts (Size)
 
 Consider:
+
 - Special Symbol
 - Size ramps (classify and continuous)
     - Classify: consider different breaks
@@ -79,6 +81,7 @@ Sizing House Prices from `DataHouseSampleCL` (only available to CL) according to
 - Select Counts and Amounts (Color and Size)
 
 Consider:
+
 - Special Symbol
 - Size and Color ramps (classify and continuous)
     - Classify: consider different breaks
