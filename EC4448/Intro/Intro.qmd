@@ -45,7 +45,7 @@ print(Result)
 ```
 
 $$
-\widehat{Price}=\underbrace{507}_{\beta_1} \cdot Sqft + \underbrace{83251}_{\beta_2} \cdot Bedrooms + \underbrace{311,211}_{\beta3}
+\widehat{Price}=\underbrace{507}_{\beta_1} \cdot Sqft - \underbrace{83251}_{\beta_2} \cdot Bedrooms + \underbrace{311,211}_{\beta3}
 $$
 
 ## The Goal is to Consider Location Information
@@ -69,7 +69,7 @@ E.g., tables can be stored in **Excel sheets**:
 
 ![](images/clipboard-4115553016.png)
 
-## Data are Usually Stored in Tables(e.g., *Excel sheets* R\* data frame variables)
+## Data are Usually Stored in Tables(e.g., *R* data frame variables)
 
 **Rows** are holding the **observations**.
 
