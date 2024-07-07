@@ -127,7 +127,7 @@ Basically, one or more layers on top of a **Base Map**.
 3.  Add School Points with addresses to a ArcGIS Online *Web Map*
     Map -\> Layers -\> Add -\> Add Layer from file (`DataPublSchlsAdr.csv`)
 
-4.  *Web Map*: Save as ... `SchoolQualityYourInitial` into your group (into a new folder: `EC4448SchoolsGroupYourInitial`
+4.  *Web Map*: Save as ... `MapSchoolQualityYourInitial` into your group (into a new folder: `EC4448SchoolsGroupYourInitial`
 
 5.  Note that the file has no school quality info. 
     The info about school quality is a different file.

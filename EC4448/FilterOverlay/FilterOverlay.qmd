@@ -14,7 +14,7 @@ format:
 
 -   How to choose a subset of observations in a feature layer based on variable values(filtering)
 
--   How to ave the filtered layer as a new `Feature Layer`
+-   How to add the filtered layer as a new `Feature Layer`
 
 -   How to use one layer to spatially choose observations from anothother layer
 

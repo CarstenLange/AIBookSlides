@@ -43,13 +43,13 @@ Our table has the address info in several columns formated as above.
 
     ![](images/clipboard-2253966799.png){width="310"}
 
-3.  Choose `Add Layer from File` and chhose the CSV file.
+3.  Choose `Add Layer from File` and choose the CSV file.
 
 4.  Choose `Create hosted feature layer`
 
 5.  Add the data type of your fields (e.g., ZIP should be String)
 
-6.  Choose `Location information is in multiple fields` scrool down and complete the address field assignments and check the Credit costs. Only after you did all this click `Next`
+6.  Choose `Location information is in multiple fields` scroll down and complete the address field assignments and check the Credit costs. Only after you did all this click `Next`
 
 ## How to Geocode with incomplete Address (e.g., only Zip)
 

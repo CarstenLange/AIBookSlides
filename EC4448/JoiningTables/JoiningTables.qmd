@@ -38,19 +38,23 @@ Orders=tibble(ID=c(1,22,22,3,5,3,5,5,27,6),
 
 ## What Will You Learn {.scrollable}
 
-- Load a csv table to *My Content*
-- Add a table from *My Content* to a *Web Map*
+-   Load a csv table to *My Content*
 
-- What a relational database is
-- Joining two tables into one table based on matching observations
-    - Left Join
-    - Inner Join
-    - Outer or Full Join (rarely used)
-- Join a *FeatureLayer*'s table with a *Table* in a *Web Ma*p
+-   Add a table to a *Web Map*
 
-## ArcGis Online: 
+-   What a relational database is
 
-1.  Load  Web map from `SchoolQualityYourInitial` from *My Content*
+-   Joining two tables into one table based on matching observations
+
+    -   Left Join
+    -   Inner Join
+    -   Outer or Full Join (rarely used)
+
+-   Join a *FeatureLayer*'s table with a *Table* in a *Web Ma*p
+
+## ArcGis Online:
+
+1.  Load Web map from `SchoolQualityMapYourInitial` from *My Content*
 
 **Problem:** No school quality reported
 
@@ -58,22 +62,25 @@ Orders=tibble(ID=c(1,22,22,3,5,3,5,5,27,6),
 
 **We start with:** Showing School Quality in R: `Schools.R` (this step is not required)
 
-**Next:** You add CSV file with school quality:<br> `DataEC4448/DataSchoolQuality.csv` to *My Content*:
-
-Content -\> New Item -\> . . . (as feature table)
-
-
 ## ArcGis Online: Add table to Map
 
-1.  Load  Web map from `SchoolQualityYourInitial` from *My Content*
-2.  Add Table (table icon on the left)
-3.   Choose: `DataSchoolQuality`
+1.  Generate a new map or use an existing map.
+
+2.  Use the + sign to add a new Feature Layer:
+
+    ![](images/clipboard-3277988701.png)
+
+3.  Choose `Add Layer from File` and choose the CSV file: `SchoolQualityYourInitial.`
+
+4.  Choose `Create hosted feature layer`
+
+5.  Add the data type of your fields (e.g., CDS should be String)
+
+6.  Choose `None`
 
 **Problem:** One layer has no school quality and the SchoolQuality table has no location information.
 
-**Solution:**  Both have a school identifier (CDS code). So, we can join them.
-
-
+**Solution:** Both have a school identifier (CDS code). So, we can join them.
 
 ## Joining two Tables {.smaller .scrollable}
 
@@ -167,21 +174,18 @@ NameAdresses
 full_join(Orders,NameAdresses, by=join_by(ID==ID))
 ```
 
-
-
 ## Joining two Tables in ArcGis Online
 
 1.  Back to the web map `SchoolQualityYourInitial`
 
-If you have not done it already: 
+If you have not done it already:
 
 2.  Add Table (table icon on the left)
-3.   Choose: `DataSchoolQuality`
+3.  Choose: `DataSchoolQuality`
 4.  both have a school identifier (CDS code)
 
 Joining based on attributes/features:
 
-5.  **Joining:** Analysis -\> Summarize Data -\> Join Features
-Result Layer: `SchoolQualityWithAdrYourInitial` Folder: `EC4448Schools` 
+5.  **Joining:** Analysis -\> Summarize Data -\> Join Features Result Layer: `SchoolQualityWithAdrYourInitial` Folder: `EC4448Schools`
 
 **Save Web map!!!**

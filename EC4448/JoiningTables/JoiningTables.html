@@ -402,7 +402,7 @@
 <h2>What Will You Learn</h2>
 <ul>
 <li><p>Load a csv table to <em>My Content</em></p></li>
-<li><p>Add a table from <em>My Content</em> to a <em>Web Map</em></p></li>
+<li><p>Add a table to a <em>Web Map</em></p></li>
 <li><p>What a relational database is</p></li>
 <li><p>Joining two tables into one table based on matching observations</p>
 <ul>
@@ -416,22 +416,24 @@
 <section id="arcgis-online" class="slide level2">
 <h2>ArcGis Online:</h2>
 <ol type="1">
-<li>Load Web map from <code>SchoolQualityYourInitial</code> from <em>My Content</em></li>
+<li>Load Web map from <code>SchoolQualityMapYourInitial</code> from <em>My Content</em></li>
 </ol>
 <p><strong>Problem:</strong> No school quality reported</p>
 </section>
 <section id="adding-table-with-school-quality-to-arcgis-online" class="slide level2">
 <h2>Adding Table with School Quality to ArcGIS Online</h2>
 <p><strong>We start with:</strong> Showing School Quality in R: <code>Schools.R</code> (this step is not required)</p>
-<p><strong>Next:</strong> You add CSV file with school quality:<br> <code>DataEC4448/DataSchoolQuality.csv</code> to <em>My Content</em>:</p>
-<p>Content -&gt; New Item -&gt; . . . (as feature table)</p>
 </section>
 <section id="arcgis-online-add-table-to-map" class="slide level2">
 <h2>ArcGis Online: Add table to Map</h2>
 <ol type="1">
-<li>Load Web map from <code>SchoolQualityYourInitial</code> from <em>My Content</em></li>
-<li>Add Table (table icon on the left)</li>
-<li>Choose: <code>DataSchoolQuality</code></li>
+<li><p>Generate a new map or use an existing map.</p></li>
+<li><p>Use the + sign to add a new Feature Layer:</p>
+<p><img data-src="images/clipboard-3277988701.png"></p></li>
+<li><p>Choose <code>Add Layer from File</code> and choose the CSV file: <code>SchoolQualityYourInitial.</code></p></li>
+<li><p>Choose <code>Create hosted feature layer</code></p></li>
+<li><p>Add the data type of your fields (e.g., CDS should be String)</p></li>
+<li><p>Choose <code>None</code></p></li>
 </ol>
 <p><strong>Problem:</strong> One layer has no school quality and the SchoolQuality table has no location information.</p>
 <p><strong>Solution:</strong> Both have a school identifier (CDS code). So, we can join them.</p>
