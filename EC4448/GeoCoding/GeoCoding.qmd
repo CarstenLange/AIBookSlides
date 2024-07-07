@@ -1,0 +1,58 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Geo Coding: From Addresses to Location Encoding"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+## What Will You Learn {.scrollable .smaller}
+
+-   Format a table (csv file) with addresses to ensure ArcGIS Online can geocode the table
+-   How to use geocoding to create a feature layer with location encoding from a table (csv file) with correctly formatted addresses.
+
+## Why Geocoding
+
+Often the observations in a data table do not contain latitude and longitude information, but they contain addresses.
+
+**Geocoding** can be used to transform addresses to location information in a feature layer.
+
+The observations from the table with addresses can then be displayed on a map as points.
+
+## Address Formats Accepted by ArcGIS Online
+
+1.  All address information is contained in one column of the table such as:
+
+    ![](images/clipboard-543755487.png)
+
+2.  Location information is in separate columns:
+
+    ![](images/clipboard-3526201983.png)
+
+Our table has the address info in several columns formated as above.
+
+## How to Geocode {.smaller}
+
+1.  Generate a new map or use an existing map.
+
+2.  Use the + sign to add a new Feature Layer:
+
+    ![](images/clipboard-2253966799.png){width="310"}
+
+3.  Choose `Add Layer from File` and chhose the CSV file.
+
+4.  Choose `Create hosted feature layer`
+
+5.  Add the data type of your fields (e.g., ZIP should be String)
+
+6.  Choose `Location information is in multiple fields` scrool down and complete the address field assignments and check the Credit costs. Only after you did all this click `Next`
+
+## How to Geocode with incomplete Address (e.g., only Zip)
+
+Use the procedure as before but only assign ZIP code
+
+**All records will be located in the ZIP code Centrois**
