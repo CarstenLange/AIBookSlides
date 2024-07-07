@@ -1,0 +1,66 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Filter Observations and Overlay Layer"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+## What Will You Learn {.scrollable .smaller}
+
+-   How to choose a subset of observations in a feature layer based on variable values(filtering)
+
+-   How to ave the filtered layer as a new `Feature Layer`
+
+-   How to use one layer to spatially choose observations from anothother layer
+
+## Filter
+
+`Filter` chooses one or more observations based on a condition for a variable (column or field)
+
+## Filtering Observations from a Feature Layer Conditional on a Variable Value
+
+-   Add the `Generalized County Boundaries` from `Living Atlas` (`Layers Icon -> Living Atlas`)
+
+-   On the right menu choose the `Filter Icon`
+
+-   `Add New` -\> Choose the search field to find `Los Angeles Conty`. Result: `Name is Los Angeles County`
+
+-   `Save`
+
+-   `Zoom to` (left menu, `Layer` icon)
+
+## Saving the Filtered Layer in My Content
+
+-   Click the `Layer` icon in the left menu
+-   Click the `Hamburger Menu` and choose `Save as ...`
+-   Save as: `LACountyBoundariesYourInitial`
+-   You do not need to save the map.
+
+## Overlay ("Cookie Cutter" tool)
+
+**Overlay uses one layer (\`Overlay Layer) to spatially select observations from another layer.**
+
+Overlay is similar to a cookie-cutter tool:
+
+![The cut cookie is `Intersect`, the leftover dow is `Erase`](CookieCutter.jfif){width="462"}
+
+## Spatially Selecting LA County Schools from All California Schools
+
+-   Add the feature layer `LACountyBoundariesYourInitial`
+
+-   Add the point layer that contains all California School addresses `DataPubSchsAdrYourInitial`
+
+-   `Manage Data -> Overlay Layer`
+
+    -   Input Layer: `DataPubSchsAdrYourInitail`
+
+    -   Overlay Features (the cookie-cutter): `LACountyBoundariesYourInitial`
+
+    -   Overlay Type: `Intersect` (taking out the cookie)
+
+    -   Result Layer: `SchoolAddressesInLAYourInitial`
