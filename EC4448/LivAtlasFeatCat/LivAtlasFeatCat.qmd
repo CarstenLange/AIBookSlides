@@ -1,0 +1,37 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Finding Points, Lines, Polygons and Rasters in Living Atlas"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+## What Will You Learn {.scrollable .smaller}
+
+-   F
+
+## Points, Lines, and Polygons vs. Rasters
+
+
+
+
+[![Story Map: Cartographic Design by Laura Sharp](images/clipboard-1511551534.png)](https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3)
+
+https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3
+
+
+## Lines
+
+U.S. Electric Power Transmission Lines
+
+## Polygon
+
+-   Income
+
+## Raster
+
+-   Terrain Slope Map
