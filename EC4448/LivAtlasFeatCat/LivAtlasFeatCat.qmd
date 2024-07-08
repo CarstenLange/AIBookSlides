@@ -12,26 +12,60 @@ format:
 
 ## What Will You Learn {.scrollable .smaller}
 
--   F
+-   The difference between
+    - Point features
+    - Lines features
+    - Polygons features
+    - Raster features
+- How to add feature layers from Living Atlas
 
 ## Points, Lines, and Polygons vs. Rasters
 
 
+![Story Map: Cartographic Design by Laura Sharp](images/clipboard-1511551534.png)
+<br>
+[Story Map: Cartographic Design by Laura Sharp](https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3)
 
+## Read Feature Layer from Living Atlas
 
-[![Story Map: Cartographic Design by Laura Sharp](images/clipboard-1511551534.png)](https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3)
+- Click the `+ symbol` in the left menu bar
 
-https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3
+- Choose `Browse Layer -> Living Atlas`
+
+- Use the `Search` window to find a layer.
+
+- `Add` the layer to the map.
+
+## Point Layer Example {.smaller}
+
+![Story Map: Cartographic Design by Laura Sharp](images/clipboard-1511551534.png)
+<br>
+[Story Map: Cartographic Design by Laura Sharp](https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3)
+
+Example: "ACS Population Variables - Centroids" 
+
+(add "USA Counties Generalized Boundaries" to see what Centroids are)
 
 
 ## Lines
 
-U.S. Electric Power Transmission Lines
+![Story Map: Cartographic Design by Laura Sharp](images/clipboard-1511551534.png)
+<br>
+[Story Map: Cartographic Design by Laura Sharp](https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3)
+
+Example: U.S. Electric Power Transmission Lines
 
 ## Polygon
 
--   Income
+![Story Map: Cartographic Design by Laura Sharp](images/clipboard-1511551534.png)
+<br>
+[Story Map: Cartographic Design by Laura Sharp](https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3)
+
+Example:   Income
 
 ## Raster
 
--   Terrain Slope Map
+![Story Map: Cartographic Design by Laura Sharp](images/clipboard-1511551534.png)
+<br>
+[Story Map: Cartographic Design by Laura Sharp](https://storymaps.arcgis.com/stories/58593bfc09c741a0b67dd81c22a914e3)
+Example: Terrain Slope Map (find Snow Summit: The Wall and Olympic)
