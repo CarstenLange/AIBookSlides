@@ -1,0 +1,59 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Spatial Auto Correlation"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+## What Will You Learn {.scrollable .smaller}
+
+- Tobler's Law
+- What Spatial Autocorrelation is
+- How to identify a hot spot (high feature value) and a cold spot (low feature value)
+
+## Tobler's Law and Spatial Auto Correlation
+
+**First Law of Geography:**
+
+> Everything is related to everything else, but near things are more related than distant things. (Waldo Rudolph Tobler (1930 – 2018)
+
+Spatial autocorrelation is present when point values influence the values of their neighbors.
+
+In other words, if a point with a high value is surrounded by points with high values (***Hot Spot***) \
+and/or\
+if a point with a low value is surrounded by points with low values (***Cold Spot***)
+
+## Hot Spot Cold Spot Analysis (Getis\`s i) {.smaller}
+
+![](images/clipboard-1935281655.png)
+
+Note, Getis's i is calculated for each point separately
+
+"Getis\`s i" is a z-Value. Therefore, we can assign a P -P-value that expresses the probability that we see the high or low value just by accident.
+
+## Hot Spot Cold Spot Analysis in ArcGIS Online {.smaller}
+
+-   Choose the `Analysis` icon in the right menu bar
+
+-   `Analyze Patterns -> Find Hot Spots`
+
+-   Set the `Analysis Field` to the variable you would like to analyze.
+
+-   Set Output Name to the name of the result feature layer you choose
+
+-   `Estimate credits` and `Run`
+
+**Interpretation:**
+
+-   Dark (light) red indicates a **hot spot** with a probability of more than 95% (90%) significance
+
+-   Dark (light) blue indicates a **cold spot** with a probability of more than 95% (90%) significance
+
+-   Grey indicates a significance below 90%
+
+Try it with `SchooolQualityWithAdr`feature layer\

@@ -327,7 +327,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">GIS - Spatial Econometrics</h1>
-  <p class="subtitle">Filter Observations and Overlay Layer</p>
+  <p class="subtitle">Spatial Auto Correlation</p>
 
 <div class="quarto-title-authors">
 </div>
@@ -336,54 +336,45 @@
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
 <ul>
-<li><p>How to choose a subset of observations in a feature layer based on variable values(filtering)</p></li>
-<li><p>How to add the filtered layer as a new <code>Feature Layer</code></p></li>
-<li><p>How to use one layer to spatially choose observations from anothother layer</p></li>
+<li>Tobler’s Law</li>
+<li>What Spatial Autocorrelation is</li>
+<li>How to identify a hot spot (high feature value) and a cold spot (low feature value)</li>
 </ul>
 </section>
-<section id="filter" class="slide level2">
-<h2>Filter</h2>
-<p><code>Filter</code> chooses one or more observations based on a condition for a variable (column or field)</p>
+<section id="toblers-law-and-spatial-auto-correlation" class="slide level2">
+<h2>Tobler’s Law and Spatial Auto Correlation</h2>
+<p><strong>First Law of Geography:</strong></p>
+<blockquote>
+<p>Everything is related to everything else, but near things are more related than distant things. (Waldo Rudolph Tobler (1930 – 2018)</p>
+</blockquote>
+<p>Spatial autocorrelation is present when point values influence the values of their neighbors.</p>
+<p>In other words, if a point with a high value is surrounded by points with high values (<strong><em>Hot Spot</em></strong>)<br>
+and/or<br>
+if a point with a low value is surrounded by points with low values (<strong><em>Cold Spot</em></strong>)</p>
 </section>
-<section id="filtering-observations-from-a-feature-layer-conditional-on-a-variable-value" class="slide level2">
-<h2>Filtering Observations from a Feature Layer Conditional on a Variable Value</h2>
-<ul>
-<li><p>Add the <code>Generalized County Boundaries</code> from <code>Living Atlas</code> (<code>Layers Icon -&gt; Living Atlas</code>)</p></li>
-<li><p>On the right menu choose the <code>Filter Icon</code></p></li>
-<li><p><code>Add New</code> -&gt; Choose the search field to find <code>Los Angeles County</code>. Result: <code>Name is Los Angeles County</code></p></li>
-<li><p>(Optional: You can add more than one condition and connect them either with “and” (“all of the following are true”) or with “or” (“any of the following are true”)</p></li>
-<li><p><code>Save</code></p></li>
-<li><p><code>Zoom to</code> (left menu, <code>Layer</code> icon)</p></li>
-</ul>
-</section>
-<section id="saving-the-filtered-layer-in-my-content" class="slide level2">
-<h2>Saving the Filtered Layer in My Content</h2>
-<ul>
-<li>Click the <code>Layer</code> icon in the left menu</li>
-<li>Click the <code>Hamburger Menu</code> and choose <code>Save as ...</code></li>
-<li>Save as: <code>LACountyBoundariesYourInitial</code></li>
-<li>In principle, you do not need to save the layer or the map.</li>
-</ul>
-</section>
-<section id="overlay-cookie-cutter-tool" class="slide level2">
-<h2>Overlay (“Cookie Cutter” tool)</h2>
-<p><strong>Overlay uses one layer (`Overlay Layer) to spatially select observations from another layer.</strong></p>
-<p>Overlay is similar to a cookie-cutter tool:</p>
+<section id="hot-spot-cold-spot-analysis-getiss-i" class="slide level2 smaller">
+<h2>Hot Spot Cold Spot Analysis (Getis`s i)</h2>
 
-<img data-src="CookieCutter.jfif" width="462" class="r-stretch quarto-figure-center"><p class="caption">The cut cookie is <code>Intersect</code>, the leftover dow is <code>Erase</code></p></section>
-<section id="spatially-selecting-la-county-schools-from-all-california-schools" class="slide level2">
-<h2>Spatially Selecting LA County Schools from All California Schools</h2>
+<img data-src="images/clipboard-1935281655.png" class="r-stretch"><p>Note, Getis’s i is calculated for each point separately</p>
+<p>“Getis`s i” is a z-Value. Therefore, we can assign a P -P-value that expresses the probability that we see the high or low value just by accident.</p>
+</section>
+<section id="hot-spot-cold-spot-analysis-in-arcgis-online" class="slide level2 smaller">
+<h2>Hot Spot Cold Spot Analysis in ArcGIS Online</h2>
 <ul>
-<li><p>Add the feature layer <code>LACountyBoundariesYourInitial</code></p></li>
-<li><p>Add the point layer that contains all California School addresses <code>DataPubSchsAdrYourInitial</code></p></li>
-<li><p><code>Manage Data -&gt; Overlay Layer</code></p>
-<ul>
-<li><p>Input Layer: <code>DataPubSchsAdrYourInitail</code></p></li>
-<li><p>Overlay Features (the cookie-cutter): <code>LACountyBoundariesYourInitial</code></p></li>
-<li><p>Overlay Type: <code>Intersect</code> (taking out the cookie)</p></li>
-<li><p>Result Layer: <code>SchoolAddressesInLAYourInitial</code></p></li>
-</ul></li>
+<li><p>Choose the <code>Analysis</code> icon in the right menu bar</p></li>
+<li><p><code>Analyze Patterns -&gt; Find Hot Spots</code></p></li>
+<li><p>Set the <code>Analysis Field</code> to the variable you would like to analyze.</p></li>
+<li><p>Set Output Name to the name of the result feature layer you choose</p></li>
+<li><p><code>Estimate credits</code> and <code>Run</code></p></li>
 </ul>
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li><p>Dark (light) red indicates a <strong>hot spot</strong> with a probability of more than 95% (90%) significance</p></li>
+<li><p>Dark (light) blue indicates a <strong>cold spot</strong> with a probability of more than 95% (90%) significance</p></li>
+<li><p>Grey indicates a significance below 90%</p></li>
+</ul>
+<p>Try it with <code>SchooolQualityWithAdr</code>feature layer<br>
+</p>
 <div class="footer footer-default">
 <p><a href="https://pomona.maps.arcgis.com/">https://pomona.maps.arcgis.com/</a></p>
 </div>

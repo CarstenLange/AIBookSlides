@@ -28,7 +28,9 @@ format:
 
 -   On the right menu choose the `Filter Icon`
 
--   `Add New` -\> Choose the search field to find `Los Angeles Conty`. Result: `Name is Los Angeles County`
+-   `Add New` -\> Choose the search field to find `Los Angeles County`. Result: `Name is Los Angeles County`
+
+-   (Optional: You can add more than one condition and connect them either with "and" ("all of the following are true") or with "or" ("any of the following are true")
 
 -   `Save`
 
@@ -39,7 +41,7 @@ format:
 -   Click the `Layer` icon in the left menu
 -   Click the `Hamburger Menu` and choose `Save as ...`
 -   Save as: `LACountyBoundariesYourInitial`
--   You do not need to save the map.
+-   In principle, you do not need to save the layer or the map.
 
 ## Overlay ("Cookie Cutter" tool)
 
