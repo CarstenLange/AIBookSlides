@@ -1,0 +1,381 @@
+---
+title: "Logistic Regression"
+subtitle: "Multivariate Logistic Regression"
+format: 
+  revealjs:
+    multiplex: true
+    code-fold: false
+    scrollable: true
+    incremental: false
+    echo: true
+---
+
+## What Will You Learn
+
+-   What distinguishes data with a binary dependent variable (dummy variables) from data with a continuous dependent variable.
+
+-   Why a linear regression (Linear Probability Model; LPM) is not suitable for estimating dummy variables
+
+-   Why a Logistic Regression function is well suited to estimate dummy variables.
+
+-   What is the difference between Odds and Probabilities
+
+-   How to interpret the parameters of a Logistic Regression
+
+-   How to deal with unballanced datasets
+
+## A Mock Up Example {.smaller}
+
+```{r}
+#| echo: false
+library(rio)
+library(janitor)
+library(tidymodels)
+library(kableExtra)
+DataPlot=tibble(Name=c("Jack","Sarah","Carl","Eric","Zoe",
+                          "James","Enrico","Erica","Stephanie","Susan"),
+                   Income=c(45,50,55,60,67,250,280,320,370,500),
+                   Yacht=c(1,0,0,0,0,1,1,1,1,1))
+kbl(DataPlot)
+```
+
+##  {.smaller background-iframe="loglinappdata.html" background-interactive="true"}
+
+::: columns
+::: {.column width="80%"}
+:::
+
+::: {.column width="20%"}
+-   Click on legend to show/hide graphs.
+
+-   The data are already shown.
+
+-   Activate the OLS regression line to see how data are approximated.
+:::
+:::
+
+##  {.smaller background-iframe="logisticfuncapp.html" background-interactive="true"}
+
+::: columns
+::: {.column width="75%"}
+:::
+
+::: {.column width="25%"}
+$$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
+
+-   Adjust beta1 and beta2 to see the effect on the Logistic Function
+:::
+:::
+
+##  {.smaller background-iframe="loglinapp0.html" background-interactive="true"}
+
+::: columns
+::: {.column width="70%"}
+:::
+
+::: {.column width="30%"}
+$$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
+
+-   Click on legend to show/hide graphs.
+
+-   50%-Level and Decision Boundary graphs are currently hidden
+
+-   Adjust beta1 and beta2 to improve MSE of Logistic Regression
+:::
+:::
+
+##  {.smaller background-iframe="loglinappopt.html" background-interactive="true"}
+
+::: columns
+::: {.column width="70%"}
+:::
+
+::: {.column width="30%"}
+$$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
+
+-   Click on legend to show/hide graphs.
+
+-   50%-Level and Decision Boundary graphs are currently hidden
+
+-   Use 50%-Level and Decision Boundary to see predicted yacht ownership fot data
+:::
+:::
+
+## Churn at the Telco Company
+
+**Research Question:**
+
+Should seniors be treated differently when it comes to churn prevention?
+
+## Churn at the Telco Company --- Digital Acylical Graph
+
+```{r}
+#| output-location: slide
+#| code-line-numbers: "2|3"
+library(ggdag)
+dagify(Churn~SexMale+SeniorYes+MonChar+TotChar+Tenure,
+       TotChar~MonChar+Tenure) |> 
+ggdag(node_size = 22) + theme_void()
+```
+
+## Churn at the Telco Company
+
+```{r}
+library(rio)
+library(janitor)
+library(tidymodels)
+library(SmartEDA)
+DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |>
+clean_names("upper_camel") 
+```
+
+```{r}
+#| eval: false
+ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
+```
+
+[EDAChurnData.html](EDAChurnData.html)
+
+## Data Engineering
+
+```{r}
+#| code-line-numbers: "2,3|4|5|6|7"
+#| output-location: fragment
+library(corrplot)
+DataChurn=DataChurnOrg |>
+          select(Churn,Gender,SeniorYes=SeniorCitizen,
+                 Tenure,MonthlyCharges, TotalCharges) |>
+          mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |>
+          mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |>
+          na.omit(TotalCharges)
+corrplot(cor(DataChurn))
+```
+
+## Splitting into Training and Testing Data
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "1,2|4,5|6-8"
+DataChurn=DataChurn |> 
+mutate(ChurnYes=as.factor(ChurnYes))
+
+set.seed(789)
+Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(Split3070)
+DataTest=testing(Split3070)
+head(DataTrain)
+```
+
+## Analysis --- Creating Fitted Workflow
+
+```{r}
+#| code-line-numbers: "1-3|6|8-11"
+ModelDesignLogistic=logistic_reg() |>
+                    set_engine("glm") |> 
+                    set_mode("classification")
+
+
+RecipeChurn=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=DataTrain)
+
+WFModelChurn=workflow() |>
+             add_recipe(RecipeChurn) |>
+             add_model(ModelDesignLogistic) |>
+             fit(DataTrain)
+
+```
+
+## Analysis Results
+
+```{r}
+#| output-location: fragment
+tidy(WFModelChurn)
+```
+
+. . .
+
+```{r}
+#| output-location: fragment
+DataTestWithPred=augment(WFModelChurn, new_data = DataTrain)
+head(DataTestWithPred[-7])
+```
+
+## Analysis --- Summary Result
+
+**Confusion Matrix:**
+
+```{r}
+#| output-location: fragment
+conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+```
+
+. . .
+
+**Selected Metrics:**
+
+```{r}
+#| output-location: fragment
+#| code-line-numbers: "1|2"
+FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
+FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+```
+
+## **Warning: Be careful with the Accuracy Rate** {.smaller}
+
+#### The Story of Dr. Nebulous's Gamblers System
+
+Dr. Nebulous offers a **97% Machine Learning Gambling Prediction**. Here is how it works: Gamblers can buy a prediction for a fee of \$5. Dr. Nebulous will then run his famous machine learning model and send a closed envelope with the prediction. The gambler is supposed to open the envelope in the casino, right before placing a bet of \$100 on a number in roulette. The envelope contains a message that states either "You will win" or "You will lose", which allows the gambler to act accordingly by either bet or not bet.
+
+Dr. Nebulous claims that a "clinical trial" of 1000 volunteers, who opened the envelope after they had bet on a number in roulette, shows an accuracy of 97.3%.
+
+**How could Dr. Nebulous have such a precise model?**
+
+## **Warning: Be careful with thethe Accuracy Rate** {.smaller}
+
+#### The Story of Dr. Nebulous's Gamblers System
+
+The trick is Dr. Nebulous's machine learning model uses the *naive prognosis*: It always predicts "You will lose".
+
+Here is the confusion matrix from the 1,000 volunteers trial:
+
+```{r echo=FALSE}
+# needed for Dr. Nebulous
+ConMatNebulous=conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+
+
+rownames(ConMatNebulous$table)=c("Win","Lose")
+colnames(ConMatNebulous$table)=c("Win","Lose")
+ConMatNebulous$table[1]=0
+ConMatNebulous$table[2]=27
+ConMatNebulous$table[3]=0
+ConMatNebulous$table[4]=997
+print(ConMatNebulous)
+```
+
+Roulette has 37 numbers to bet on. Chance to win is: $\frac{1}{37}=0.027$.
+
+Out of the 1000 volunteers, 27 are expected to win, and 973 are expected to lose.
+
+$$Accuracy=\frac{0+973}{1000}=0.973$$
+
+## **Warning: Be careful with the Accuracy Rate** {.smaller}
+
+#### The Story of Dr. Nebulous's Gamblers System
+
+```{r echo=FALSE}
+rownames(ConMatNebulous$table)=c("Win","Lose")
+colnames(ConMatNebulous$table)=c("Win","Lose")
+ConMatNebulous$table[1]=0
+ConMatNebulous$table[2]=27
+ConMatNebulous$table[3]=0
+ConMatNebulous$table[4]=997
+print(ConMatNebulous)
+```
+
+However, when we look at the correct positive and the correct negative rate separately, we see that Dr. Nebulous' accuracy rate (although correct) makes little sense.
+
+-   The correct negative rate (**specificity**) is 100%
+
+-   The correct positive rate (**sensitivity**) is zero (out of the 27 winners, all were falsely predicted as "You will lose").
+
+. . .
+
+**This example shows: When interpreting the confusion matrix, you must look at accuracy, sensitivity, and specificity simultaneously**
+
+## Fixing the Problem of Unbalanced Data - Code {.smaller}
+
+```{r}
+#| output-location: fragment
+count(DataTrain, ChurnYes)
+```
+
+::: incremental
+1.  `step_downsample()`: Delete observations from the majority class. \
+    With the argument `underatio=` you can stop *downsampling* when the majority class is reduced to a defined multiple of the minority class. E.g., `step_downsample(underatio=1.2)` means that *downsampling* stops when the majority class is 1.2 times the minority class (default is `underatio=1`)
+
+2.  `step_upsample()`: Copy/Paste observations from the minority class. \
+    With the argument `over_ratio=` you can stop *upsampling* when the minority class grows to a defined fraction of the majority class (default is `overatio=1`). E.g., `step_upsample(over_ratio=0.9)` *upsampling* stops when the minority class reaches 0.9 (90%) of the majority class:\`
+
+3.  `step_smote()`: Create records similar to existing minority class observations. \
+    *Smote* uses *k-Nearest-Neighbor* to find the most similar observation to a randomly selected observation and th,e generates a mix out of these two observations until the chosen `over_ratio=` ratio is reached (default is `over_ratio=1`)
+:::
+
+## Implementing Up-, Downsampling and Smote into a `tidymodels` Workflow
+
+To implement `step_upsample()`, `step_downsample(), and/or `step_smote()` only the `recipe()` needs to be changed and the workflow with the updated *recipe* needs to be excuted again.
+
+Note, `step_upsample()`, `step_downsample(), and `step_smote()` are not included in `tidymodels`. They are part of the `themis` package, which needs to be loaded first and installed. 
+
+
+## Using Smote to balance the training data
+
+```{r}
+library(themis)
+RecipeChurn=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=DataTrain)  |>          
+  step_smote(ChurnYes, over_ratio=0.8)
+```
+
+```{r}
+#| echo: false
+count(RecipeChurn|>prep()|>juice(),ChurnYes)  
+
+```
+
+## delete later
+```{r}
+#| eval: false
+library(rio)
+library(janitor)
+library(tidymodels)
+
+DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |>
+clean_names("upper_camel") 
+
+DataChurn=DataChurnOrg |>
+          select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) |>
+          mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |>
+          mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |>
+          na.omit(TotalCharges)
+
+library(corrplot)
+corrplot(cor(DataChurn))
+
+library(SmartEDA)
+ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
+
+DataChurn=DataChurn |> 
+mutate(ChurnYes=as.factor(ChurnYes))
+
+set.seed(789)
+Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(Split3070)
+DataTest=testing(Split3070)
+
+
+ModelDesignLogistic=logistic_reg() |>
+                    set_engine("glm") |> 
+                    set_mode("classification")
+
+library(themis) #needed for step_smote
+
+count(DataTrain,ChurnYes) 
+
+set.seed(789)
+RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure) |>       
+  step_downsample(ChurnYes, under_ratio=2) |>          
+  step_smote(ChurnYes, over_ratio=0.75)
+
+count(RecipeChurn|>prep()|>juice(),ChurnYes)  
+  
+WFModelChurn=workflow() |>
+             add_recipe(RecipeChurn) |>
+             add_model(ModelDesignLogistic) |>
+             fit(DataTrain)
+
+
+DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
+
+conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+
+FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
+FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+```
