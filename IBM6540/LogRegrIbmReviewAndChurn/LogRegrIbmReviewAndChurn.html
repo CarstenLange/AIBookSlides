@@ -400,7 +400,7 @@
 </div>
 
 </section>
-<section id="what-will-you-learn" class="slide level2">
+<section id="what-will-you-learn" class="slide level2 smaller">
 <h2>What Will You Learn</h2>
 <ul>
 <li><p>What distinguishes data with a binary dependent variable (dummy variables) from data with a continuous dependent variable.</p></li>
@@ -617,7 +617,7 @@
 <section id="analysis-creating-fitted-workflow" class="slide level2">
 <h2>Analysis — Creating Fitted Workflow</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6" data-code-line-numbers="1-3|6|8-11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(ChurnYes<span class="sc">~</span>MaleYes<span class="sc">+</span>SeniorYes<span class="sc">+</span>MonthlyCharges<span class="sc">+</span>Tenure, <span class="at">data=</span>DataTrain)</span>
+<div class="sourceCode cell-code" id="cb6" data-code-line-numbers="1|3-5|7-10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>RecipeChurn<span class="ot">=</span><span class="fu">recipe</span>(ChurnYes<span class="sc">~</span>MaleYes<span class="sc">+</span>SeniorYes<span class="sc">+</span>MonthlyCharges<span class="sc">+</span>Tenure, <span class="at">data=</span>DataTrain)</span>
 <span id="cb6-2"><a href="#cb6-2"></a></span>
 <span id="cb6-3"><a href="#cb6-3"></a>ModelDesignLogistic<span class="ot">=</span><span class="fu">logistic_reg</span>() <span class="sc">|&gt;</span></span>
 <span id="cb6-4"><a href="#cb6-4"></a>                    <span class="fu">set_engine</span>(<span class="st">"glm"</span>) <span class="sc">|&gt;</span> </span>

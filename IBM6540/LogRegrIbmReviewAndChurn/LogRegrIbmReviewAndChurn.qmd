@@ -10,7 +10,7 @@ format:
     echo: true
 ---
 
-## What Will You Learn
+## What Will You Learn {.smaller}
 
 -   What distinguishes data with a binary dependent variable (dummy variables) from data with a continuous dependent variable.
 
@@ -172,7 +172,7 @@ head(DataTrain)
 ## Analysis --- Creating Fitted Workflow
 
 ```{r}
-#| code-line-numbers: "1-3|6|8-11"
+#| code-line-numbers: "1|3-5|7-10"
 RecipeChurn=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=DataTrain)
 
 ModelDesignLogistic=logistic_reg() |>
