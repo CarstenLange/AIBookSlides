@@ -1,0 +1,41 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Enrich Existing Points or Polygons with Data Provided by ESRI"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+- How to enrich your polygons or points with dta available from ESRI
+
+- How to **determine the area** that is used for *Enrichment.*
+
+- Understand **Apportioning**
+
+## Enrich Points or Polygons
+
+**Enriching your point or polygon features** means based on variables provided by ESRI, your observations get an extra variables  from nearby polygons.
+
+All ESRI Polygons within a certain distance are considered and an average from these areas is calculated using **Apportioning**.
+
+## Enrich Points or Polygons Using ArcGIS Online {.smaller}
+
+- Click on the `Analysis` icon (right menu panel)
+- Choose `Enrich Data` group
+- Choose `Enrich Layer`
+- Enter the layer to be enriched under `Input features`
+- Choose the `Measurement type` you want to use to define the area to be considered around you points or polygons
+- Enter the `Measurement value` and the `Units` for the area to be considered around you points or polygons
+
+- Choose an `Output name` for the layer that will store your results
+
+- Zoom to your analysis extend and choose `Display extend` under `Environment settings`
+- `Estimate credits` and afterward `Run` the tool

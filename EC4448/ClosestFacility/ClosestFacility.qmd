@@ -1,0 +1,43 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Finding Closest Facility Using  `Find Closest`"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+- How to find the closest *facility* to a given point. E.g., find the closest school to each house.
+
+- How to run the `Find closest` tool in ARCGIS Online (limited to 500 facilities)
+    
+## Closest Facility 
+
+You have a layer (e.g., a point layer) where you want to find the closest feature of another layer.
+
+**Example:** Find closest school to each house
+
+## Finding Closest Facility Using ArcGIS Online Using the `Find Closest` tool {.smaller}
+
+**Example:** Find closest school to each house
+
+- Click on the `Analysis` icon (right menu panel)
+- Choose `Use Proximity` group
+- Choose `Find Closest`
+- Enter the layer for which you would like to find the closes facility into `Input features`
+- Enter the layer with the *facilities* under `Near layer`
+- Choose the `Measurement type` you want to use
+    - Use `Line Distance` because *drive time* **is very expensive !!!***
+- Leave the *switch* `Limit the number of closest locations` to *On* **!!!** and choose `1`
+
+- Choose an `Output name` for the layer that will store your results
+
+- Zoom to your analysis extend and choose `Display extend` under `Environment settings`
+- `Estimate credits` and afterward `Run` the tool

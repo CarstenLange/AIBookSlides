@@ -1,0 +1,43 @@
+---
+title: "GIS - Spatial Econometrics"
+subtitle: "Summarize Points to Polygons"
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    incremental: false
+    scrollable: true
+    footer: "[https://pomona.maps.arcgis.com/](https://pomona.maps.arcgis.com/)"
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+- What is meant whne we say *Summarize* points
+
+- How to use the `Summarize` tool.
+
+## Summarize: Calculate Statistics for Points inside Polygons
+
+**Summarize** means to calculate statistics such as *Sum*, *Min*, *Max* or *Mean* for features inside or nearby other features.
+
+**Example:** Summarize the price of houses (points) inside the *ZIP* code area they are in by calculating the *Mean*
+
+## Summarize Points (or Polygons) Within or Near Ohter features Using ArcGIS Online {.smaller}
+
+**Example:** Summarize the price of houses (points) inside the *ZIP* code area they are in by calculating the *Mean*
+
+- Click on the `Analysis` icon (right menu panel)
+- Choose `Summarize Data` group
+- Choose `Summarize Within`
+- Enter the layer to be *summarized* under `Input features`
+- Leave `Area type` as `Polygon layer`
+- Choose Summary polygons layer` as the layer with the polygons you want to summarize (e.g., ZIP code areas) 
+
+- Check the statistic(s), e.g., `Mean` you want to calcualte 
+
+- Choose an `Output name` for the layer that will store your results
+
+- Zoom to your analysis extend and choose `Display extend` under `Environment settings`
+- `Estimate credits` and afterward `Run` the tool
