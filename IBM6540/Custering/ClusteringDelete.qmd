@@ -1,0 +1,375 @@
+---
+title: "Hirachical Aglomerative Clustering"
+
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+    echo: true
+    incremental: false
+---
+
+
+## What Will You Learn/Review {.scrollable .smaller}
+
+-   How a
+
+## Loading the Libraries and the Data
+
+```{r}
+LinkageMethod="single"
+```
+
+
+```{r}
+library(tidymodels)
+library(tidyclust)
+library(rio)
+library(janitor)
+library(modeldata)
+
+set.seed(888)
+
+N=10 #N=100
+
+DataCustSeg=import("Mall_Customers.xlsx") |>  
+            select(SpendingScore1To100, AnnualIncome)|> 
+            sample_n(N)
+```
+
+https://econ.lange-analytics.com/RData/Datasets/CustSegData.xlsx
+
+Info and source for data: 
+
+https://www.kaggle.com/code/himanshikawade04/customersegmentation
+
+
+
+## How Hierachicle Aglomaritive Clustering Works
+### Each Point is its own Cluster
+
+```{r}
+#| echo: false
+ggplot(DataCustSeg, aes(x=SpendingScore1To100, y=AnnualIncome))+
+geom_point(size=3)+
+theme(aspect.ratio = 1)
+
+RecipeCustSeg=recipe(~SpendingScore1To100+AnnualIncome, data=DataCustSeg) |> 
+              step_range(min = 0, max = 1)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 9 Clusters
+
+
+
+```{r}
+#| echo: false
+NumOfClust=9
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust)
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |> 
+                       cbind(DataCustSeg)
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=6, color="grey")+
+    geom_point(size=3)+
+theme(aspect.ratio = 1)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 8 Clusters
+
+
+
+```{r}
+
+#| echo: false
+NumOfClust=8
+
+
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust)
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 7 Clusters
+
+
+```{r}
+#| echo: false
+NumOfClust=7
+
+
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 6 Clusters
+
+
+```{r}
+#| echo: false
+NumOfClust=6
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 5 Clusters
+
+
+```{r}
+#| echo: false
+NumOfClust=5
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 4 Clusters
+
+
+```{r}
+#| echo: false
+NumOfClust=4
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 3 Clusters
+
+
+```{r}
+#| echo: false
+NumOfClust=3
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+
+
+## How Hierachicle Aglomaritive Clustering Works
+### 2 Clusters
+
+
+```{r}
+#| echo: false
+NumOfClust=2
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+
+## How Hierachicle Aglomaritive Clustering Works
+### 1 Clusters
+
+
+```{r}
+#| echo: false
+NumOfClust=1
+
+ModelDesignClust=hier_clust(num_clusters = NumOfClust,
+                            linkage_method = LinkageMethod)
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+
+
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+
+
+
+## Dendogram 
+### Clustering Pricess in a Graph
+
+```{r}
+#| echo: false
+plot(ModelTrainedClust)
+```
+
+
+## Elbow Method to Determine an Appropiate Number of Clusters
+
+
+```{r}
+#| echo: false
+ggplot(aes(y=Y,x=X), data=tibble(Y=ModelTrainedClust$height, X=c((N-1):1)))+
+       geom_line()+
+        geom_line()+
+        scale_x_continuous(breaks = c(1:(N-1)))
+```
+## How Hierachicle Aglomaritive Clustering Works
+### Appropiate Cluster Number (=4)
+
+
+```{r}
+RecipeCustSeg=recipe(~SpendingScore1To100+AnnualIncome, data=DataCustSeg) |> 
+              step_range(min = 0, max = 1)
+
+
+ModelDesignClust=hier_clust(num_clusters = 4,
+                            linkage_method = "ward.D") |> 
+                 set_engine("stats") |> 
+                 set_mode("partition")
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+ModelTrainedClust=extract_fit_engine(WFModelClust) 
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust)
+```
+
+
+```{r}
+ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=.cluster))+
+    geom_point(data=DataCentroids, aes(x=SpendingScore1To100, y=AnnualIncome, color="Centroids"), 
+               size=8, color="grey")+
+    geom_point(size=3)+
+    theme(aspect.ratio = 1)
+```
+ 
+ ## Muti Variable
