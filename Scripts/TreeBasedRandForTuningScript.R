@@ -2,7 +2,7 @@
 library(tidymodels);library(rio)
 # library(ranger) not needed but needs to be installed.
 
-DataVax=import("https://lange-analytics.com/AIBook/Data/DataVax.rds") %>%   
+DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") %>%   
   select(County, State, PercVacFull, PercRep,
          PercAsian, PercBlack, PercHisp,
          PercYoung25, PercOld65, PercFoodSt, Population) %>% 

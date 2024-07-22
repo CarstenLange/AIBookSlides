@@ -96,6 +96,12 @@ Orders
 NameAdresses
 ```
 
+## Definition Left Join
+
+A **Left Join** on two tables joins the observations from both tables and **keeps all records from the left table and only matching observations from the right table** (the first mentioned table is the left table and the second is the right table)
+
+
+
 ## Joining two Tables (Left Join) {.smaller}
 
 ::: columns
@@ -122,6 +128,10 @@ NameAdresses
 left_join(Orders,NameAdresses, by=join_by(ID==ID))
 ```
 
+## Definition Inner Join
+
+An **Inner Join** on two tables joins the observations from both tables but **keeps only observations that have data in both tables**
+
 ## Joining two Tables (Inner Join) {.smaller}
 
 ::: columns
@@ -147,6 +157,12 @@ NameAdresses
 ```{r}
 inner_join(Orders,NameAdresses, by=join_by(ID==ID))
 ```
+
+## Definition Outer Join
+
+An **Outer Join** on two tables joins the observations from both tables and **keeps all records regardless of a match**
+
+
 
 ## Joining two Tables (Outer Join)
 
