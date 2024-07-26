@@ -1,5 +1,5 @@
 ---
-title: "Hirachical Aglomerative Clustering"
+title: "Hierarchical Agglomerative Clustering"
 
 format: 
   revealjs:
