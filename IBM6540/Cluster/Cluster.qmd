@@ -42,7 +42,6 @@ DataCustSeg=
   sample_n(N)
 ```
 
-https://econ.lange-analytics.com/RData/Datasets/CustSegData.xlsx
 
 Info and source for data: 
 
