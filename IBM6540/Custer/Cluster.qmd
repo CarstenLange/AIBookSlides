@@ -12,7 +12,11 @@ format:
 
 ## What Will You Learn/Review {.scrollable .smaller}
 
--   How a
+- How Hierarchical Cluster Analysis works
+- How to determine a well suited number of clusters
+- How to run a Hierarchical Cluster Analysis on a real world dataset
+
+
 
 ## Loading the Libraries and the Data
 
@@ -32,9 +36,10 @@ set.seed(888)
 
 N=10 #N=100
 
-DataCustSeg=import("Mall_Customers.xlsx") |>  
-            select(SpendingScore1To100, AnnualIncome)|> 
-            sample_n(N)
+DataCustSeg=
+  import("https://econ.lange-analytics.com/RData/Datasets/Mall_Customers.xlsx") |>  
+  select(SpendingScore1To100, AnnualIncome)|> 
+  sample_n(N)
 ```
 
 https://econ.lange-analytics.com/RData/Datasets/CustSegData.xlsx
@@ -376,10 +381,11 @@ ggplot(DataCustSegWithAssignm, aes(x=SpendingScore1To100, y=AnnualIncome, color=
 
 
 ```{r}
-DataCustSeg=import("Mall_Customers.xlsx") |>
-            clean_names("upper_camel")|> 
-              select(-CustomerId) |> 
-            mutate(SexFemale=ifelse(Gender=="Female",1,0), Gender=NULL)
+DataCustSeg=
+  import("https://econ.lange-analytics.com/RData/Datasets/Mall_Customers.xlsx") |>
+  clean_names("upper_camel")|> 
+  select(-CustomerId) |> 
+  mutate(SexFemale=ifelse(Gender=="Female",1,0), Gender=NULL)
 
 RecipeCustSeg=recipe(~., data=DataCustSeg) |> 
               step_range(min = 0, max = 1) 

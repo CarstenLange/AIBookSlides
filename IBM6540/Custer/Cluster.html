@@ -399,7 +399,9 @@
 <section id="what-will-you-learnreview" class="slide level2 scrollable smaller">
 <h2>What Will You Learn/Review</h2>
 <ul>
-<li>How a</li>
+<li>How Hierarchical Cluster Analysis works</li>
+<li>How to determine a well suited number of clusters</li>
+<li>How to run a Hierarchical Cluster Analysis on a real world dataset</li>
 </ul>
 </section>
 <section id="loading-the-libraries-and-the-data" class="slide level2">
@@ -423,9 +425,10 @@
 <span id="cb2-8"><a href="#cb2-8"></a></span>
 <span id="cb2-9"><a href="#cb2-9"></a>N<span class="ot">=</span><span class="dv">10</span> <span class="co">#N=100</span></span>
 <span id="cb2-10"><a href="#cb2-10"></a></span>
-<span id="cb2-11"><a href="#cb2-11"></a>DataCustSeg<span class="ot">=</span><span class="fu">import</span>(<span class="st">"Mall_Customers.xlsx"</span>) <span class="sc">|&gt;</span>  </span>
-<span id="cb2-12"><a href="#cb2-12"></a>            <span class="fu">select</span>(SpendingScore1To100, AnnualIncome)<span class="sc">|&gt;</span> </span>
-<span id="cb2-13"><a href="#cb2-13"></a>            <span class="fu">sample_n</span>(N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-11"><a href="#cb2-11"></a>DataCustSeg<span class="ot">=</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  <span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/Mall_Customers.xlsx"</span>) <span class="sc">|&gt;</span>  </span>
+<span id="cb2-13"><a href="#cb2-13"></a>  <span class="fu">select</span>(SpendingScore1To100, AnnualIncome)<span class="sc">|&gt;</span> </span>
+<span id="cb2-14"><a href="#cb2-14"></a>  <span class="fu">sample_n</span>(N)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>https://econ.lange-analytics.com/RData/Datasets/CustSegData.xlsx</p>
@@ -561,34 +564,35 @@
 <div class="cell">
 <details>
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>DataCustSeg<span class="ot">=</span><span class="fu">import</span>(<span class="st">"Mall_Customers.xlsx"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a>            <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>)<span class="sc">|&gt;</span> </span>
-<span id="cb6-3"><a href="#cb6-3"></a>              <span class="fu">select</span>(<span class="sc">-</span>CustomerId) <span class="sc">|&gt;</span> </span>
-<span id="cb6-4"><a href="#cb6-4"></a>            <span class="fu">mutate</span>(<span class="at">SexFemale=</span><span class="fu">ifelse</span>(Gender<span class="sc">==</span><span class="st">"Female"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Gender=</span><span class="cn">NULL</span>)</span>
-<span id="cb6-5"><a href="#cb6-5"></a></span>
-<span id="cb6-6"><a href="#cb6-6"></a>RecipeCustSeg<span class="ot">=</span><span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data=</span>DataCustSeg) <span class="sc">|&gt;</span> </span>
-<span id="cb6-7"><a href="#cb6-7"></a>              <span class="fu">step_range</span>(<span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>) </span>
-<span id="cb6-8"><a href="#cb6-8"></a></span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>DataCustSeg<span class="ot">=</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/Mall_Customers.xlsx"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>)<span class="sc">|&gt;</span> </span>
+<span id="cb6-4"><a href="#cb6-4"></a>  <span class="fu">select</span>(<span class="sc">-</span>CustomerId) <span class="sc">|&gt;</span> </span>
+<span id="cb6-5"><a href="#cb6-5"></a>  <span class="fu">mutate</span>(<span class="at">SexFemale=</span><span class="fu">ifelse</span>(Gender<span class="sc">==</span><span class="st">"Female"</span>,<span class="dv">1</span>,<span class="dv">0</span>), <span class="at">Gender=</span><span class="cn">NULL</span>)</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a>RecipeCustSeg<span class="ot">=</span><span class="fu">recipe</span>(<span class="sc">~</span>., <span class="at">data=</span>DataCustSeg) <span class="sc">|&gt;</span> </span>
+<span id="cb6-8"><a href="#cb6-8"></a>              <span class="fu">step_range</span>(<span class="at">min =</span> <span class="dv">0</span>, <span class="at">max =</span> <span class="dv">1</span>) </span>
 <span id="cb6-9"><a href="#cb6-9"></a></span>
-<span id="cb6-10"><a href="#cb6-10"></a>ModelDesignClust<span class="ot">=</span><span class="fu">hier_clust</span>(<span class="at">num_clusters =</span> <span class="dv">4</span>,</span>
-<span id="cb6-11"><a href="#cb6-11"></a>                            <span class="at">linkage_method =</span> <span class="st">"ward.D"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-12"><a href="#cb6-12"></a>                 <span class="fu">set_engine</span>(<span class="st">"stats"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-13"><a href="#cb6-13"></a>                 <span class="fu">set_mode</span>(<span class="st">"partition"</span>)</span>
-<span id="cb6-14"><a href="#cb6-14"></a></span>
-<span id="cb6-15"><a href="#cb6-15"></a>WFModelClust<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb6-16"><a href="#cb6-16"></a>             <span class="fu">add_model</span>(ModelDesignClust) <span class="sc">|&gt;</span> </span>
-<span id="cb6-17"><a href="#cb6-17"></a>             <span class="fu">add_recipe</span>(RecipeCustSeg) <span class="sc">|&gt;</span> </span>
-<span id="cb6-18"><a href="#cb6-18"></a>             <span class="fu">fit</span>(DataCustSeg)</span>
-<span id="cb6-19"><a href="#cb6-19"></a></span>
-<span id="cb6-20"><a href="#cb6-20"></a>ModelTrainedClust<span class="ot">=</span><span class="fu">extract_fit_engine</span>(WFModelClust) </span>
-<span id="cb6-21"><a href="#cb6-21"></a>DataCustSegWithAssignm<span class="ot">=</span><span class="fu">extract_cluster_assignment</span>(WFModelClust) <span class="sc">|&gt;</span>                         <span class="fu">cbind</span>(DataCustSeg) </span>
-<span id="cb6-22"><a href="#cb6-22"></a></span>
-<span id="cb6-23"><a href="#cb6-23"></a>DataCentroids<span class="ot">=</span><span class="fu">extract_centroids</span>(WFModelClust) <span class="sc">|&gt;</span> </span>
-<span id="cb6-24"><a href="#cb6-24"></a>              <span class="fu">cbind</span>(<span class="fu">sse_within</span>(WFModelClust))</span>
-<span id="cb6-25"><a href="#cb6-25"></a>DataCentroids<span class="ot">=</span>DataCentroids[<span class="sc">-</span><span class="dv">6</span>] <span class="sc">|&gt;</span> </span>
-<span id="cb6-26"><a href="#cb6-26"></a>              <span class="fu">mutate</span>(<span class="at">AvgWss=</span>wss<span class="sc">/</span>n_members)</span>
-<span id="cb6-27"><a href="#cb6-27"></a></span>
-<span id="cb6-28"><a href="#cb6-28"></a><span class="fu">print</span>(DataCentroids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a>ModelDesignClust<span class="ot">=</span><span class="fu">hier_clust</span>(<span class="at">num_clusters =</span> <span class="dv">4</span>,</span>
+<span id="cb6-12"><a href="#cb6-12"></a>                            <span class="at">linkage_method =</span> <span class="st">"ward.D"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-13"><a href="#cb6-13"></a>                 <span class="fu">set_engine</span>(<span class="st">"stats"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb6-14"><a href="#cb6-14"></a>                 <span class="fu">set_mode</span>(<span class="st">"partition"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15"></a></span>
+<span id="cb6-16"><a href="#cb6-16"></a>WFModelClust<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb6-17"><a href="#cb6-17"></a>             <span class="fu">add_model</span>(ModelDesignClust) <span class="sc">|&gt;</span> </span>
+<span id="cb6-18"><a href="#cb6-18"></a>             <span class="fu">add_recipe</span>(RecipeCustSeg) <span class="sc">|&gt;</span> </span>
+<span id="cb6-19"><a href="#cb6-19"></a>             <span class="fu">fit</span>(DataCustSeg)</span>
+<span id="cb6-20"><a href="#cb6-20"></a></span>
+<span id="cb6-21"><a href="#cb6-21"></a>ModelTrainedClust<span class="ot">=</span><span class="fu">extract_fit_engine</span>(WFModelClust) </span>
+<span id="cb6-22"><a href="#cb6-22"></a>DataCustSegWithAssignm<span class="ot">=</span><span class="fu">extract_cluster_assignment</span>(WFModelClust) <span class="sc">|&gt;</span>                         <span class="fu">cbind</span>(DataCustSeg) </span>
+<span id="cb6-23"><a href="#cb6-23"></a></span>
+<span id="cb6-24"><a href="#cb6-24"></a>DataCentroids<span class="ot">=</span><span class="fu">extract_centroids</span>(WFModelClust) <span class="sc">|&gt;</span> </span>
+<span id="cb6-25"><a href="#cb6-25"></a>              <span class="fu">cbind</span>(<span class="fu">sse_within</span>(WFModelClust))</span>
+<span id="cb6-26"><a href="#cb6-26"></a>DataCentroids<span class="ot">=</span>DataCentroids[<span class="sc">-</span><span class="dv">6</span>] <span class="sc">|&gt;</span> </span>
+<span id="cb6-27"><a href="#cb6-27"></a>              <span class="fu">mutate</span>(<span class="at">AvgWss=</span>wss<span class="sc">/</span>n_members)</span>
+<span id="cb6-28"><a href="#cb6-28"></a></span>
+<span id="cb6-29"><a href="#cb6-29"></a><span class="fu">print</span>(DataCentroids)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   .cluster      Age AnnualIncome SpendingScore1To100 SexFemale       wss
