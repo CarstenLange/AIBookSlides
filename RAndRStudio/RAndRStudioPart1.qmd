@@ -30,9 +30,9 @@ A typical setup to work with R consists of two components:
 -   an integrated development environment (IDE) such as **RStudio**.
 :::
 
-You can download R here: [Download R](https://cran.r-project.org/bin/)
+You can download R here: [Download R](https://cran.r-project.org/bin/){target="_blank"}
 
-You can download RStudio here: [Download RStudio](https://www.rstudio.com/products/rstudio/download/#download)
+You can download RStudio here: [Download RStudio](https://www.rstudio.com/products/rstudio/download/#download){target="_blank"}
 
 Detailed installation guides are provided in the Book and the Online Resources sections of this chapter in book.
 
@@ -41,7 +41,7 @@ Detailed installation guides are provided in the Book and the Online Resources s
 ![RStudio Window](Images/RAndRStudioWindow.PNG)
 
 ::: footer
-See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
 :::
 
 ## Recommended RStudio Settings
@@ -242,7 +242,7 @@ kable(DataTruthTable, caption="Truth Table for AND and OR")|>
 :::
 
 ::: footer
-See: [RandRStudioScriptPart1.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
 :::
 
 ## Data Types & Data Objects
@@ -362,7 +362,7 @@ A few of the differences between *data frames* and *tibbles*:
 
 
 ::: footer
-See: [RandRStudioScriptPart1.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
 :::
 
 ## Summary Data Types and Objects
@@ -434,7 +434,7 @@ cat("Probabilty to get stuck by a lighning on an avg. day:", ProbStruck)
 :::
 
 ::: footer
-See: [RandRStudioScriptPart1.R script400](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R)
+See: [RandRStudioScriptPart1.R script400](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
 :::
 
 ## Questions
