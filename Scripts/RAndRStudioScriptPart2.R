@@ -13,7 +13,7 @@ mean(VecMyData,1/5,TRUE)
 
 ############ script200 ##################
 
-DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv")
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv")
 View(DataTitanic)
 
 

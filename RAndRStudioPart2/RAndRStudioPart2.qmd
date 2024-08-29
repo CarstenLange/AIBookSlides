@@ -103,7 +103,7 @@ All three examples are equivalent
 Try `? mean` in the Rstudio console to see the default values.»
 
 ::: footer
-See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R)
+See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
 :::
 
 ## Important Commands from `tidyverse`/`dplyr` Package
@@ -176,7 +176,7 @@ head(DataTitatincSelVarFemBirthYear)
 ```
 
 ::: footer
-See: [RandRStudioScriptPart2.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R)
+See: [RandRStudioScriptPart2.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
 :::
 »
 
@@ -229,7 +229,7 @@ head(DataTitanicFinal)
 »
 
 ::: footer
-See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R)
+See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
 :::
 
 ## Questions

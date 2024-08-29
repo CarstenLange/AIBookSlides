@@ -93,7 +93,7 @@ NumberOfBestFriends= ...
 # Download the Titatic Dataset
 library(rio)
 library(tidyverse)
-DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv") %>% 
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") %>% 
              mutate(Survived=as.logical(Survived))
 str(DataTitanic)
 
@@ -125,7 +125,7 @@ NumPass= ...
 
 library(rio)
 library(tidyverse)
-DataTitanic=import("https://lange-analytics.com/AIBook/Data/TitanicDataCl.csv") 
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") 
 
 # Did older people pay a higher fare on the Titanic
 
