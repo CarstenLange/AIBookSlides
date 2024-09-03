@@ -510,7 +510,27 @@
 <p>Std: 3.1161309 vs 1.3215915</p>
 </div></div>
 </section>
-<section id="how-are-critical-diabeteschlosterol-values-and-other-blood-test-values-determined" class="slide level2 smaller">
+<section id="measuring-female-height-spread-for-a-small-sample" class="slide level2">
+<h2>Measuring Female Height Spread for a Small Sample</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="columns">
+<div class="column" style="width:40%;">
+<p>Sample Mean: <span class="math inline">\(\bar x=???\)</span></p>
+<p>Range= ???</p>
+<p>Absolute Deviation = ???</p>
+<p>Sample Variance: <span class="math inline">\(Var=\frac{\sum_{i=1}^N (x_i-\bar x)^2}{N-1}=???\)</span></p>
+<p>Sample Standard Deviation: ???</p>
+</div></div><section id="how-are-critical-diabeteschlosterol-values-and-other-blood-test-values-determined" class="slide level2 smaller">
 <h2>How are Critical Diabetes/Chlosterol Values and other Blood Test Values Determined</h2>
 <p>Diabetics values are <em>normal distributed.</em></p>
 <p><strong>Normal Distribution:</strong></p>
@@ -522,8 +542,7 @@
 <li>The distribution is symmetric around the mean, leading to a bell curve.</li>
 </ul>
 <p>For women 45 – 54 years, the mean is 230.5 mg/100 ml cholesterol, and the standard deviation is 50.0 (source: <a href="https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf" class="uri">https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf</a>)</p>
-</section>
-<section id="synthetic-data-for-10000-women-45---54-years" class="slide level2">
+</section><section id="synthetic-data-for-10000-women-45---54-years" class="slide level2">
 <h2>Synthetic Data for 10,000 Women (45 - 54 years)</h2>
 <h3 id="histogram-with-relative-frequencies-as-column-height">Histogram with Relative Frequencies as Column Height</h3>
 <div class="cell">
@@ -534,9 +553,8 @@
 </details>
 
 </div>
-<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"><p>Empirical rule, also known as the&nbsp;68-95-99.7 rule.</p>
-</section>
-<section id="synthetic-data-for-10000-women-45---54-years-1" class="slide level2">
+<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><p>Empirical rule, also known as the&nbsp;68-95-99.7 rule.</p>
+</section><section id="synthetic-data-for-10000-women-45---54-years-1" class="slide level2">
 <h2>Synthetic Data for 10,000 Women (45 - 54 years)</h2>
 <h3 id="histogram-with-relative-frequencies-as-column-area">Histogram with Relative Frequencies as Column Area</h3>
 <div class="cell">
@@ -546,14 +564,12 @@
 </details>
 
 </div>
-<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><p>Try column just right of mean: 0.0068*50=0.34</p>
-</section>
-<section id="synthetic-data-for-10000-women-45---54-years-2" class="slide level2">
+<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><p>Try column just right of mean: 0.0068*50=0.34</p>
+</section><section id="synthetic-data-for-10000-women-45---54-years-2" class="slide level2">
 <h2>Synthetic Data for 10,000 Women (45 - 54 years)</h2>
 <h3 id="histogram-with-relative-frequencies-as-column-area-and-normal-curve">Histogram with Relative Frequencies as Column Area and Normal Curve</h3>
 
-<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"></section>
-<section id="normal-curve" class="slide level2 smaller">
+<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section><section id="normal-curve" class="slide level2 smaller">
 <h2>Normal Curve</h2>
 <ul>
 <li>Most values are in the center.</li>
@@ -567,30 +583,27 @@ Density = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
 \]</span></p>
 <p>where: - <span class="math inline">\(\mu\)</span> is the mean - <span class="math inline">\(\sigma\)</span> is the standard deviation</p>
 
-<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
-<section id="synthetic-data-for-10000-women-45---54-years-3" class="slide level2">
+<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section><section id="synthetic-data-for-10000-women-45---54-years-3" class="slide level2">
 <h2>Synthetic Data for 10,000 Women (45 - 54 years)</h2>
 <h3 class="smaller" id="histogram-with-relative-frequencies-as-column-area-and-normal-curve-1">Histogram with Relative Frequencies as Column Area and Normal Curve</h3>
 
-<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><p><code>pnorm(x, mean=???, sd=???)</code> calculates the probability of getting a value smaller than x. <strong>Try:</strong></p>
+<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><p><code>pnorm(x, mean=???, sd=???)</code> calculates the probability of getting a value smaller than x. <strong>Try:</strong></p>
 <ul>
 <li><p><code>pnorm(480, mean=230.5, sd=50)</code></p></li>
 <li><p><code>pnorm(130.5, mean=230.5, sd=50)</code></p></li>
 <li><p><code>pnorm(330.5, mean=230.5, sd=50)-pnorm(130.5, mean=230.5, sd=50)</code></p></li>
 </ul>
-</section>
-<section id="normal-curve-women-45---54-years-wit-mean-230.5-sd50" class="slide level2">
+</section><section id="normal-curve-women-45---54-years-wit-mean-230.5-sd50" class="slide level2">
 <h2>Normal Curve Women (45 - 54 years) wit Mean: 230.5, SD=50</h2>
 
-<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><p><code>qnorm(x, mean=???, sd=???)</code> calculates the quantity for P percent of the values falling below that quantity.<strong>Try:</strong></p>
+<img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"><p><code>qnorm(x, mean=???, sd=???)</code> calculates the quantity for P percent of the values falling below that quantity.<strong>Try:</strong></p>
 <ul>
 <li><code>qnorm(.5, mean=230.5, sd=50)</code></li>
 <li><code>qnorm(.02, mean=230.5, sd=50)</code></li>
 <li><code>qnorm(.05, mean=230.5, sd=50)</code></li>
 <li><code>qnorm(.95, mean=230.5, sd=50)</code> (meaning 5% are above this level)</li>
 </ul>
-</section>
-<section id="distribution-other-than-normal-distribution" class="slide level2">
+</section><section id="distribution-other-than-normal-distribution" class="slide level2">
 <h2>Distribution Other Than Normal Distribution</h2>
 <ul>
 <li>Bernoulli</li>
@@ -600,6 +613,8 @@ Density = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
+</div>
+</section>
 </div>
 </section>
     </div>

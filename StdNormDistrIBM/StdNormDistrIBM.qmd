@@ -132,6 +132,44 @@ Std: `r StdCrypto` vs `r StdEuro`
 :::
 :::
 
+## Measuring Female Height Spread for a Small Sample
+
+:::: columns
+::: {.column width="60%"}
+
+```{r echo=FALSE}
+#| code-fold: true
+DataSample=data.frame(Height=c(63, 66, 68, 70))
+ggplot(DataSample, aes(x=Height, y=c(1:4)))+
+  geom_vline(xintercept=mean(DataSample$Height), size=2)+
+  geom_point(color="red", size=3)+
+  ylab("")+
+  scale_x_continuous(breaks=seq(63,70))+
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank() 
+        )
+```
+
+:::
+
+:::: columns
+::: {.column width="40%"}
+
+Sample Mean: $\bar x=???$
+
+Range= ???
+
+Absolute Deviation = ???
+
+Sample Variance: $Var=\frac{\sum_{i=1}^N (x_i-\bar x)^2}{N-1}=???$
+
+Sample Standard Deviation: ???
+
+:::
+
+::::
+
+
 ## How are Critical Diabetes/Chlosterol Values and other Blood Test Values Determined {.smaller}
 
 Diabetics values are *normal distributed.*
