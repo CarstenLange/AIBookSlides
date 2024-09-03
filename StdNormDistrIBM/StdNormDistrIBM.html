@@ -403,8 +403,9 @@
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
 <ul>
-<li>You will review the concept of Variance to measure the spread of a variable.</li>
-<li>You will review the concept of Standard Deviation to measure the spread of a variable.</li>
+<li>You will review the concept of Range, Absolute Deviation, Variance and Standard deviation to measure the spread of a variable.</li>
+<li>You will review histogram diagrams</li>
+<li>You will review the concept of Standard Deviation to measure the spread of a variable in more detail.</li>
 <li>You will explain why Standard Deviation is so important for the concept of Normal Distribution.</li>
 </ul>
 </section>
@@ -412,10 +413,20 @@
 <h2>Some Questions to Introduce Center and Spread</h2>
 <div>
 <ul>
-<li class="fragment"><p>Who runs faster, men or women? (true for all men and women?)</p></li>
-<li class="fragment"><p>Who is taller, men or women? (true for all men and women?)</p></li>
-<li class="fragment"><p>What is it the average temperature in Michigan/Coastal California?</p></li>
-<li class="fragment"><p>Which of your products shows high or low volatility in sales? (Why and why is it important?)</p></li>
+<li class="fragment"><p>Who runs faster, men or women?</p>
+<ul>
+<li class="fragment">Is this true for all men and women?</li>
+</ul></li>
+<li class="fragment"><p>Who is taller, men or women?</p>
+<ul>
+<li class="fragment">Is this true for all men and women?</li>
+</ul></li>
+<li class="fragment"><p>What is it the average temperature in Michigan/Coastal California? Why is the climate different in te two states?</p></li>
+<li class="fragment"><p>Which of your products shows high or low volatility in sales?</p>
+<ul>
+<li class="fragment">Why is that?</li>
+<li class="fragment">Why is it important?</li>
+</ul></li>
 </ul>
 </div>
 </section>
@@ -499,8 +510,8 @@
 <p>Std: 3.1161309 vs 1.3215915</p>
 </div></div>
 </section>
-<section id="how-are-critical-diabetes-values-and-other-blood-test-values-determined" class="slide level2 smaller">
-<h2>How are Critical Diabetes Values and other Blood Test Values Determined</h2>
+<section id="how-are-critical-diabeteschlosterol-values-and-other-blood-test-values-determined" class="slide level2 smaller">
+<h2>How are Critical Diabetes/Chlosterol Values and other Blood Test Values Determined</h2>
 <p>Diabetics values are <em>normal distributed.</em></p>
 <p><strong>Normal Distribution:</strong></p>
 <ul>
@@ -510,7 +521,7 @@
 <li>Very few are extremely large or smaller</li>
 <li>The distribution is symmetric around the mean, leading to a bell curve.</li>
 </ul>
-<p>For women 45 – 54 years, the mean is 230.5 mg/100 ml, and the standard deviation is 50.0 (source: <a href="https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf" class="uri">https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf</a>)</p>
+<p>For women 45 – 54 years, the mean is 230.5 mg/100 ml cholesterol, and the standard deviation is 50.0 (source: <a href="https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf" class="uri">https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf</a>)</p>
 </section>
 <section id="synthetic-data-for-10000-women-45---54-years" class="slide level2">
 <h2>Synthetic Data for 10,000 Women (45 - 54 years)</h2>
@@ -563,6 +574,7 @@ Density = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
 
 <img data-src="StdNormDistrIBM_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"><p><code>pnorm(x, mean=???, sd=???)</code> calculates the probability of getting a value smaller than x. <strong>Try:</strong></p>
 <ul>
+<li><p><code>pnorm(480, mean=230.5, sd=50)</code></p></li>
 <li><p><code>pnorm(130.5, mean=230.5, sd=50)</code></p></li>
 <li><p><code>pnorm(330.5, mean=230.5, sd=50)-pnorm(130.5, mean=230.5, sd=50)</code></p></li>
 </ul>

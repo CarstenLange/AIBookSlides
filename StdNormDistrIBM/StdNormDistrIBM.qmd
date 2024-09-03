@@ -19,20 +19,26 @@ library(kableExtra)
 
 
 
--   You will review the concept of Variance to measure the spread of a variable.
--   You will review the concept of Standard Deviation to measure the spread of a variable.
+-   You will review the concept of Range, Absolute Deviation, Variance and Standard deviation to measure the spread of a variable.
+-   You will review histogram diagrams
+-   You will review the concept of Standard Deviation to measure the spread of a variable in more detail.
 -   You will explain why Standard Deviation is so important for the concept of Normal Distribution.
 
 ## Some Questions to Introduce Center and Spread
 
 ::: {.incremental}
--   Who runs faster, men or women? (true for all men and women?)
+-   Who runs faster, men or women? 
+    - Is this true for all men and women?
 
--   Who is taller, men or women? (true for all men and women?)
+-   Who is taller, men or women? 
+    - Is this true for all men and women?
 
--   What is it the average temperature in Michigan/Coastal California?
+-   What is it the average temperature in Michigan/Coastal California? 
+    Why is the climate different in te two states?
 
--   Which of your products shows high or low volatility in sales? (Why and why is it important?)
+-   Which of your products shows high or low volatility in sales? 
+    - Why is that?
+    - Why is it important?
 :::
 
 
@@ -126,7 +132,7 @@ Std: `r StdCrypto` vs `r StdEuro`
 :::
 :::
 
-## How are Critical Diabetes Values and other Blood Test Values Determined {.smaller}
+## How are Critical Diabetes/Chlosterol Values and other Blood Test Values Determined {.smaller}
 
 Diabetics values are *normal distributed.*
 
@@ -138,7 +144,7 @@ Diabetics values are *normal distributed.*
 - Very few are extremely large or smaller
 - The distribution is symmetric around the mean, leading to a bell curve.
 
-For women 45 -- 54 years, the mean is 230.5 mg/100 ml, and the standard deviation is 50.0 (source: <https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf>)
+For women 45 -- 54 years, the mean is 230.5 mg/100 ml cholesterol, and the standard deviation is 50.0 (source: <https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf>)
 
 ## Synthetic Data for 10,000 Women (45 - 54 years)
 
@@ -206,6 +212,8 @@ TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv =
 ```
 
 `pnorm(x, mean=???, sd=???)` calculates the probability of getting a value smaller than x. **Try:**
+
+- `pnorm(480, mean=230.5, sd=50)`
 
 -   `pnorm(130.5, mean=230.5, sd=50)`
 
