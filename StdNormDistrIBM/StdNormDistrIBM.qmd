@@ -47,7 +47,7 @@ library(kableExtra)
 
 ### (1,000 synthetic observations each)
 
-::: columns
+:::: columns
 ::: {.column width="70%"}
 ```{r}
 #| echo: false
@@ -74,13 +74,13 @@ Plot1
 Plot2
 ```
 :::
-:::
+::::
 
 ## How to measure Center and Spread {.smaller}
 
 ### (1,000 synthetic observations each)
 
-::: columns
+:::: columns
 ::: {.column width="60%"}
 ```{r}
 #| echo: false
@@ -130,11 +130,12 @@ Var: `r VarCrypto` vs `r VarEuro`
 
 Std: `r StdCrypto` vs `r StdEuro`
 :::
-:::
+::::
 
 ## Measuring Female Height Spread for a Small Sample
 
 :::: columns
+
 ::: {.column width="60%"}
 
 ```{r echo=FALSE}
@@ -152,7 +153,7 @@ ggplot(DataSample, aes(x=Height, y=c(1:4)))+
 
 :::
 
-:::: columns
+
 ::: {.column width="40%"}
 
 Sample Mean: $\bar x=???$
@@ -193,7 +194,7 @@ library(TeachHist)
 TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000)
 ```
 
-Empirical rule, also known as the 68-95-99.7 rule.
+**Empirical rule**, also known as the 68-95-99.7 rule.
 
 ## Synthetic Data for 10,000 Women (45 - 54 years)
 
