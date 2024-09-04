@@ -1,0 +1,275 @@
+---
+title: "Histogram"
+subtitle: "How to Visualize a Distribution"
+format: 
+  revealjs:
+    code-fold: true
+    incremental: false
+    scrollable: true
+    echo: true
+---
+
+## What Will You Learn {.scrollable .smaller}
+
+```{r}
+#| echo: false
+library(kableExtra)
+
+```
+
+
+
+-   You will review the concept of Range, Absolute Deviation, Variance and Standard deviation to measure the spread of a variable.
+-   You will review histogram diagrams
+-   You will review the concept of Standard Deviation to measure the spread of a variable in more detail.
+-   You will explain why Standard Deviation is so important for the concept of Normal Distribution.
+
+## Some Questions to Introduce Center and Spread
+
+::: {.incremental}
+-   Who runs faster, men or women? 
+    - Is this true for all men and women?
+
+-   Who is taller, men or women? 
+    - Is this true for all men and women?
+
+-   What is it the average temperature in Michigan/Coastal California? 
+    Why is the climate different in te two states?
+
+-   Which of your products shows high or low volatility in sales? 
+    - Why is that?
+    - Why is it important?
+:::
+
+
+
+## How to Display the Distribution of a Variable {.smaller}
+
+### (1,000 synthetic observations each)
+
+:::: columns
+::: {.column width="70%"}
+```{r}
+#| code-fold: true
+library(rio)
+library(tidyverse)
+DataDerivative=import("DataDerivCryptoEuro.csv")
+Plot1=ggplot(DataDerivative, aes(y=1,x=CryptoDeriv))+
+       geom_jitter()+
+       geom_vline(xintercept = mean(DataDerivative$CryptoDeriv), , color="red", linewidth=2)+
+       labs(y="", x="Crypto Derivative in $")+
+       scale_x_continuous(limits = c(10,40))+
+       scale_y_continuous(labels = NULL)
+Plot2=ggplot(DataDerivative, aes(y=1,x=EuroDeriv))+
+       geom_jitter()+
+       geom_vline(xintercept = mean(DataDerivative$EuroDeriv), , color="red", linewidth=2)+
+       labs(y="", x="Euro Derivative in $")+
+       scale_x_continuous(limits = c(10,40))+
+       scale_y_continuous(labels = NULL) 
+Plot1
+Plot2
+```
+
+
+:::
+::::
+
+## How to Display the Distribution of a Variable {.smaller}
+
+### How to Measure Center and Spread
+
+:::: columns
+::: {.column width="60%"}
+```{r}
+#| echo: false
+Plot1
+```
+
+```{r}
+#| echo: false
+Plot2
+```
+:::
+
+::: {.column width="40%"}
+$Range=x_{max}-x_{min}$
+
+$AbsDev=\sum_{i=1}^{1000}|x_i-\overline {x}|$
+
+$Var=\sum_{i=1}^{1000}(x_i-\overline {x})^2$
+
+$Std=\sqrt{Var}$
+
+```{r}
+RangeCrypto=
+  max(DataDerivative$CryptoDeriv)-min(DataDerivative$CryptoDeriv)
+MADCrypto=mad(DataDerivative$CryptoDeriv, 
+          center=mean(DataDerivative$CryptoDeriv), 
+          constant=1)
+VarCrypto=var(DataDerivative$CryptoDeriv)
+StdCrypto=sd(DataDerivative$CryptoDeriv)
+
+RangeEuro=
+  max(DataDerivative$EuroDeriv)-min(DataDerivative$EuroDeriv)
+MADEuro=mad(DataDerivative$EuroDeriv, 
+          center=mean(DataDerivative$EuroDeriv), 
+          constant=1)
+VarEuro=var(DataDerivative$EuroDeriv)
+StdEuro=sd(DataDerivative$EuroDeriv)
+```
+
+**Spread Crypto vs. Euro derivatives:**
+
+Range: `r RangeCrypto` vs. `r RangeEuro`
+
+MAD: `r MADCrypto` vs `r MADEuro`
+
+Var: `r VarCrypto` vs `r VarEuro`
+
+Std: `r StdCrypto` vs `r StdEuro`
+:::
+:::
+
+## Measuring Female Height Spread for a Small Sample
+
+:::: columns
+::: {.column width="60%"}
+
+```{r echo=FALSE}
+#| code-fold: true
+DataSample=data.frame(Height=c(63, 66, 68, 70))
+ggplot(DataSample, aes(x=Height, y=c(1:4)))+
+  geom_vline(xintercept=mean(DataSample$Height), size=2)+
+  geom_point(color="red", size=3)+
+  ylab("")+
+  scale_x_continuous(breaks=seq(63,70))+
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank() 
+        )
+```
+
+:::
+
+:::: columns
+::: {.column width="40%"}
+
+Sample Mean: $\bar x=???$
+
+Range= ???
+
+Absolute Deviation = ???
+
+Sample Variance: $Var=\frac{\sum_{i=1}^N (x_i-\bar x)^2}{N-1}=???$
+
+Sample Standard Deviation: ???
+
+:::
+
+::::
+
+
+## How are Critical Diabetes/Chlosterol Values and other Blood Test Values Determined {.smaller}
+
+Diabetics values are *normal distributed.*
+
+**Normal Distribution:**
+
+- Most values are in the center. 
+- Some are larger or smaller than the center. 
+- Few are a lot larger or smaller than the center. 
+- Very few are extremely large or smaller
+- The distribution is symmetric around the mean, leading to a bell curve.
+
+For women 45 -- 54 years, the mean is 230.5 mg/100 ml cholesterol, and the standard deviation is 50.0 (source: <https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf>)
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+### Histogram with Relative Frequencies as Column Height
+
+```{r}
+library(TeachHist)
+TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000)
+```
+
+Empirical rule, also known as the 68-95-99.7 rule.
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+### Histogram with Relative Frequencies as Column Area
+
+```{r}
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = FALSE)
+```
+
+Try column just right of mean: 0.0068\*50=0.34
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+### Histogram with Relative Frequencies as Column Area and Normal Curve
+
+```{r}
+#| echo: false
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+```
+
+## Normal Curve {.smaller}
+
+- Most values are in the center. 
+- Some are larger or smaller than the center. 
+- Few are a lot larger or smaller than the center. 
+- Very few are extremely large or small.
+- The distribution is symmetric around the mean, leading to a bell curve.
+
+$$
+Density = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+$$
+
+where:
+- $\mu$ is the mean
+- $\sigma$ is the standard deviation
+
+```{r}
+#| echo: false
+ggplot(data.frame(x = c(30.5, 430.5)), aes(x = x)) +
+stat_function(fun = dnorm, args = list(mean = 230.5, sd = 50)) +
+labs(title = "Normal Distribution", x = "x", y = "Density")+
+scale_x_continuous(breaks=seq(0,450,25))+
+geom_vline(xintercept = 230.5, color="red")
+```
+
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+### Histogram with Relative Frequencies as Column Area and Normal Curve {.smaller}
+
+```{r}
+#| echo: false
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+```
+
+`pnorm(x, mean=???, sd=???)` calculates the probability of getting a value smaller than x. **Try:**
+
+- `pnorm(480, mean=230.5, sd=50)`
+
+-   `pnorm(130.5, mean=230.5, sd=50)`
+
+-   `pnorm(330.5, mean=230.5, sd=50)-pnorm(130.5, mean=230.5, sd=50)`
+
+## Normal Curve Women (45 - 54 years) wit Mean: 230.5, SD=50
+
+```{r}
+#| echo: false
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+```
+
+`qnorm(x, mean=???, sd=???)` calculates the quantity for P percent of the values falling below that quantity.**Try:**
+
+-   `qnorm(.5, mean=230.5, sd=50)`
+-   `qnorm(.02, mean=230.5, sd=50)`
+-   `qnorm(.05, mean=230.5, sd=50)`
+-   `qnorm(.95, mean=230.5, sd=50)` (meaning 5% are above this level)
+
+## Distribution Other Than Normal Distribution
+
+- Bernoulli 
+- Uniform
