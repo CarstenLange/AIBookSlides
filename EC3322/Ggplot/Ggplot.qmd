@@ -1,5 +1,5 @@
 ---
-title: "Ggplot2"
+title: "Ggplot"
 subtitle: "Use the Grammar of Graphics to Visualize Data"
 format: 
   revealjs:
