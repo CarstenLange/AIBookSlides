@@ -36,9 +36,7 @@ library(kableExtra)
 -   What is it the average temperature in Michigan/Coastal California? 
     Why is the climate different in te two states?
 
--   Which of your products shows high or low volatility in sales? 
-    - Why is that?
-    - Why is it important?
+
 :::
 
 
