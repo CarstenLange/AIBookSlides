@@ -14,7 +14,20 @@ format:
 
 
 
--   You will r
+-   You understand the idea behind the "Grammar of Graphics"
+
+- You will understand how to map variables to elements of a graph such as x-axis, y-axis, or color.
+
+- You will learn how to use a jitter plot to display points that otherwise would overlap
+
+- You will learn how to design a line plot
+
+- You will learn how to add titles, x- and y axis labels and other components to a ggplot graph
+
+- Tou will learn how to scale an axis
+
+- You will learn how to apply a theme to a ggplot graph
+
 
 ## Loading the Titanic Dataset and Performing Basic DataEngeneering {.smaller}
 

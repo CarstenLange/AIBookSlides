@@ -34,7 +34,7 @@ library(kableExtra)
     - Is this true for all men and women?
 
 -   What is it the average temperature in Michigan/Coastal California? 
-    Why is the climate different in te two states?
+    Why is the climate different in the two states?
 
 
 :::
@@ -154,13 +154,13 @@ ggplot(DataSample, aes(x=Height, y=c(1:4)))+
 
 Sample Mean: $\bar x=???$
 
-Range= ???
+Range= $???$
 
-Absolute Deviation = ???
+Absolute Deviation = $???$
 
 Sample Variance: $Var=\frac{\sum_{i=1}^N (x_i-\bar x)^2}{N-1}=???$
 
-Sample Standard Deviation: ???
+Sample Standard Deviation: $Std=\sqrt{Var}$
 
 :::
 
