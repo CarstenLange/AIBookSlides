@@ -4,6 +4,9 @@ subtitle: "Explained with Linear Regression"
 format: 
   revealjs:
     code-fold: true
+    incremental: false
+    scrollable: true
+    echo: true
 ---
 
 ```{r}
@@ -35,6 +38,85 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 -   Being able to distinguish between dummy encoding and one-hot encoding
 
 -   Using `tidymodels` including model design and data pre-processing (recipes) to analyze housing prices.
+
+## Jumping Right Into It
+
+### Univariate OLS with a Real World Dataset
+
+**Data Description:**
+
+::: {.incremental}
+-   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+
+-   Several predictor variables. For now we use only $Sqft$
+
+-   We will only use 100 randomly chosen observations from the total of 21,613 observations.
+
+-   We only use Sqft as predictor variable for now.
+:::
+
+## Loading the Libraries and the Data
+
+```{r}
+
+
+DataHouses=
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving)
+set.seed(7771)
+DataHouses=sample_n(DataHouses,100)
+head(DataHouses)
+
+```
+
+## How much is a House Worth in King County?
+
+. . .
+
+**A house with average properties should be predicted with an average price!**
+
+```{r}
+MeanSqft=mean(DataHouses$Sqft)
+cat("The mean square footage of a house in King county is:", MeanSqft)
+
+MeanPrice=mean(DataHouses$Price)
+cat("The mean price of a house in King county is:", MeanPrice)
+```
+
+## Predicting the Price of an Average Sized House as the Average of all House Prices
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
+  geom_point(color="red")+
+  geom_hline(yintercept=mean(DataHouses$Price))+
+  geom_vline(xintercept=mean(DataHouses$Sqft))+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
+```
+
+## An Interactive Graph That Explains it All
+
+<https://econ.lange-analytics.com/calcat/linregrmeans>{target="_blank"}
+
+## Same Data with Tidymodels
+
+```{r}
+RecipeHouses= recipe(Price~Sqft, data=DataHouses)
+
+ModelDesignOLS= linear_reg() %>% 
+                set_engine("lm") %>% 
+                set_mode("regression")
+
+WFModelHouses = workflow() %>%  
+  add_recipe(RecipeHouses) %>% 
+  add_model(ModelDesignOLS) %>% 
+  fit(DataHouses)
+
+tidy(WFModelHouses)
+```
+
 
 ## Univariate Linear Regression - Data Table and Goal
 
@@ -271,8 +353,7 @@ DataHousing =
   select(Price, Sqft=SqftLiving, Grade, Waterfront)
 ```
 
-**Unfitted Model:** »
-$$
+**Unfitted Model:** » $$
 Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 $$
 
@@ -314,8 +395,7 @@ print(OneHotTable)
 
 *One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
 
-$$Waterfront_{yes}=1-Waterfront_{no}$$ 
-»
+$$Waterfront_{yes}=1-Waterfront_{no}$$ »
 
 ## Dummy and One-Hot Encoding {.scrollable}
 

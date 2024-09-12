@@ -2,25 +2,27 @@
 
 library(tidymodels)
 library(rio)
-DataMockup=import("https://lange-analytics.com/AIBook/Data/DataStudyTimeMockup.rds")
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 
 ########## Script 100 #############################
 
 ########## Run OLS as Reference  ################## 
 
-RecipeOLs= recipe(Grade~StudyTime, data=DataMockup)
+RecipeMockup= recipe(Grade~StudyTime, data=DataMockup)
 
-ModelDesign= linear_reg() %>% 
-             set_engine("lm") %>% 
-             set_mode("regression")
+ModelDesignOLS= linear_reg() %>% 
+                set_engine("lm") %>% 
+                set_mode("regression")
 
 
-WFModelHouses = workflow() %>%  
-  add_recipe(RecipeOLs) %>% 
-  add_model(ModelDesign) %>% 
-  fit(DataMockup)
+WFModelGrades = workflow() %>%  
+                add_recipe(RecipeMockup) %>% 
+                add_model(ModelDesignOLS) %>% 
+                fit(DataMockup)
 
-print(WFModelHouses)
+print(WFModelGrades)
+
+
 
 ######## Define MSE Command ###########
 
