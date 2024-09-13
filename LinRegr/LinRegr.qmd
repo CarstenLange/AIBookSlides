@@ -9,7 +9,11 @@ format:
     echo: true
 ---
 
+## Loading Required Librarries
+
+
 ```{r}
+#| code-fold: false
 library(tidymodels)
 library(rio)
 library(kableExtra)
@@ -55,18 +59,22 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 -   We only use Sqft as predictor variable for now.
 :::
 
-## Loading the Libraries and the Data
+## Loading the Data and Assigning Training and Testing Data (manually)
 
 ```{r}
+
 
 
 DataHouses=
   import("https://ai.lange-analytics.com/data/HousingData.csv") |>
   clean_names("upper_camel") |>
-  select(Price, Sqft=SqftLiving)
+  select(Price, Sqft=SqftLiving) 
+
+# Manually generating DataTrain and DataTest
 set.seed(7771)
-DataHouses=sample_n(DataHouses,100)
-head(DataHouses)
+DataTrain= sample_n(DataHouses, 100)
+DataTest= sample_n(DataHouses, 50)
+head(DataTrain)
 
 ```
 
@@ -77,10 +85,10 @@ head(DataHouses)
 **A house with average properties should be predicted with an average price!**
 
 ```{r}
-MeanSqft=mean(DataHouses$Sqft)
+MeanSqft=mean(DataTrain$Sqft)
 cat("The mean square footage of a house in King county is:", MeanSqft)
 
-MeanPrice=mean(DataHouses$Price)
+MeanPrice=mean(DataTrain$Price)
 cat("The mean price of a house in King county is:", MeanPrice)
 ```
 
@@ -88,10 +96,10 @@ cat("The mean price of a house in King county is:", MeanPrice)
 
 ```{r}
 #| echo: false
-ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
+ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
   geom_point(color="red")+
-  geom_hline(yintercept=mean(DataHouses$Price))+
-  geom_vline(xintercept=mean(DataHouses$Sqft))+
+  geom_hline(yintercept=mean(DataTrain$Price))+
+  geom_vline(xintercept=mean(DataTrain$Sqft))+
   scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
   scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
 ```
@@ -100,10 +108,18 @@ ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
 
 <https://econ.lange-analytics.com/calcat/linregrmeans>{target="_blank"}
 
-## Same Data with Tidymodels
+## From Unfitted to Fitted Model
+
+### How does the Unfitted Model Looks Like?
+
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+### Fitting theModel with Tidymodels
 
 ```{r}
-RecipeHouses= recipe(Price~Sqft, data=DataHouses)
+RecipeHouses= recipe(Price~Sqft, data=DataTrain)
 
 ModelDesignOLS= linear_reg() %>% 
                 set_engine("lm") %>% 
@@ -112,11 +128,68 @@ ModelDesignOLS= linear_reg() %>%
 WFModelHouses = workflow() %>%  
   add_recipe(RecipeHouses) %>% 
   add_model(ModelDesignOLS) %>% 
-  fit(DataHouses)
+  fit(DataTrain)
 
 tidy(WFModelHouses)
 ```
 
+## Unfitted Model vs Fitted Workflow Model {.smaller}
+
+
+
+Unfitted Model:
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+```{r}
+tidy(WFModelHouses)
+```
+
+Fitted Model:
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
+$$
+
+## Interpretation and Significance {.smaller}
+
+```{r}
+#| echo: false
+tidy(WFModelHouses)
+```
+
+$$
+\begin{align}
+\widehat{Price}&=240 \cdot Sqft +  52509\\
+ (+240)&=240\cdot (+1) +  (+0)\\
+ (+480)&=240\cdot (+2) +  (+0)\\
+ (+720)&=240\cdot (+3) +  (+0)
+\end{align}
+$$
+**For each extra $Sqft$ the predicted price increases by \$240**
+
+**The variable $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.**
+
+## How Does the fitted model that considers SQFT improves the prediction compared to a simple average
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
+  geom_point(color="red")+
+  geom_vline(xintercept=mean(DataTrain$Sqft))+
+  geom_hline(yintercept=mean(DataTrain$Price))+
+  geom_smooth(method="lm", se=FALSE, color="blue")+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
+```
+
+## Evaluating Predictive Quality with the Testing Dataset
+
+```{r}
+#| code-fold: false
+DataTestWithPred=augment(WFModelHouses, new_data=DataTest)
+metrics(DataTestWithPred, truth=Price, estimate=.pred)
+```
 
 ## Univariate Linear Regression - Data Table and Goal
 
