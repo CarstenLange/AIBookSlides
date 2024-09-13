@@ -172,16 +172,9 @@ $$
 
 ## How Does the fitted model that considers SQFT improves the prediction compared to a simple average
 
-```{r}
-#| echo: false
-ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
-  geom_point(color="red")+
-  geom_vline(xintercept=mean(DataTrain$Sqft))+
-  geom_hline(yintercept=mean(DataTrain$Price))+
-  geom_smooth(method="lm", se=FALSE, color="blue")+
-  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
-  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
-```
+Look at the simulation again and choose 240 for beta 1:
+
+<https://econ.lange-analytics.com/calcat/linregrmeans>{target="_blank"}
 
 ## Evaluating Predictive Quality with the Testing Dataset
 
