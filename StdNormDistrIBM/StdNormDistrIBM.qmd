@@ -348,6 +348,12 @@ RelFreq=1-pnorm(72, mean = 70, sd=0.4242641)
 cat("The relative frequency of a group of 50 men  (and thus the probibility)  having a mean of 72 inches or taller is", RelFreq)
 ```
 
+```{r}
+#| output-location: fragment
+TeachHistHypTest(NullHyp=70,StandardError=3/sqrt(50),
+                 SampleMean=72)
+```
+
 ## Another Application: Mean and Standard Deviation not Known {.smaller}
 
 Our daily sales data for a new product are normally distributed. We do not know the *Mean* nor the *Standard Deviation*.
@@ -451,88 +457,4 @@ Let us work with 95% *Confidence*.
 ```{r}
 TeachHistHypTest(NullHyp=85, StandardError=2, SampleMean=90, SeedValue=123)
 ```
-
-## AB-Test {.smaller}
-
-A very powerful and easy to use methodology to compare means of one or more *Treatment* groups to a *Control Group*. 
-
-. . .
-
-**Goal:** Determine if a treatment (e.g., number of conversions for a new  websites (*Treatment*)) is significant compared to the old website (*Control Group*).
-
-. . .
-
-**Methodology:** Two Sample t-Test
-
-. . .
-
-**Requirement:** Participants must be randomly assigned to the groups (no self-selection!).
-
-. . .
-
-**Problem:** While it is easy and technically straightforward to randomly assign website visitors to different webpages, it can be difficult or impossible in other cases. 
-
-. . .
-
-For example, it is not feasible to assign participants of a marketing event into a treatment group (drank a glass of champagne before the talk) and a control group (did not drink a glass of champagne before the talk)
-
-## Example: Conversion Data (synthetic) for a New Website {.smaller}
-
-New website is *Treatment* old website is *Control Group*
-
-**Purchase value data from the last 100 visitors who purchased on each of the websites:**
-
-
-```{r}
-DataWebSites=import("DataWebSites.csv")[,2:3]
-head(DataWebSites)
-```
-
-. . .
-
-**Control Group:**
-```{r}
-cat("Mean of Control Group is:", mean(DataWebSites$PurchAmtControl))
-cat("Standard Error of Control Group is:", sd(DataWebSites$PurchAmtControl)/sqrt(100))
-```
-
-. . .
-
-**Treatment Group:**
-```{r}
-cat("Mean of Treatment Group is:", mean(DataWebSites$PurchAmtTreat))
-cat("Standard Error of Treatment Group is:", sd(DataWebSites$PurchAmtTreat)/sqrt(100))
-```
-
-```{r}
-library(rio)
-DataWebSites=import("DataWebSites.csv")
-```
-
-## Two Sample t-Test
-
-**Assumption:** Same Variance
-
-**Distribution:** Normal
-
-**Method:**
-
-- Calculate difference between means
-
-- Difference between means will also be normal distributed
-
-- Standard error needs to be recalculated for difference and is approxiamtly double the one of the treatment/control group.
-
-- **Hypothesis 0:** Difference is 0
-
-- **Goal:** If Treatment website is better a difference of 0 should be very unlikely.
-
-## Two Sample t-Test
-
-```{r}
-t.test(DataWebSites$PurchAmtControl,
-       DataWebSites$PurchAmtTreat,
-       var.equal=FALSE)
-```
-
 
