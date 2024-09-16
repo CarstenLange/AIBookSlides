@@ -5,15 +5,10 @@ format:
   revealjs:
     code-fold: true
     scrollable: true
+    echo: true
 ---
 
-```{r}
-library(tidymodels)
-library(rio)
-library(kableExtra)
-library(janitor)
-DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
-```
+
 
 ## What Will You Learn {.scrollable .smaller}
 
@@ -36,6 +31,143 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 -   Using `tidymodels` to analyze housing prices.
 
 
+
+## Jumping Right Into It with Real World Data
+
+Univariate OLS with a Real World Realesteate Dataset
+
+**Data Description:**
+
+King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+
+**Simplication:**
+
+- Several predictor variables, but for now we use only $Sqft$
+
+- We will only use 100 randomly chosen observations from the total of 21,613 observations.
+
+## Loading Libraries
+
+```{r}
+#| code-fold: false
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+```
+
+## Loading the Data 
+
+```{r}
+#| code-fold: false
+DataHouses=
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+set.seed(7771)
+Data100Houses=sample_n(DataHouses,100)
+```
+
+**First six observations training data:**
+
+```{r}
+#| echo: false
+
+head(Data100Houses)
+```
+
+
+
+## How much is a House Worth in King County?
+
+
+
+A house with average properties should be predicted with an average price!
+
+
+```{r}
+MeanSqft=mean(Data100Houses$Sqft)
+cat("The mean square footage of a house in King county is:", MeanSqft)
+
+MeanPrice=mean(Data100Houses$Price)
+cat("The mean price of a house in King county is:", MeanPrice)
+```
+
+
+
+
+## Predicting the Price of an Average Sized House as the Average of all House Prices
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+  geom_point(color="red")+
+  geom_hline(yintercept=mean(Data100Houses$Price))+
+  geom_vline(xintercept=mean(Data100Houses$Sqft))+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
+```
+
+## An Interactive Graph That Explains it All
+
+[https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
+
+## From Unfitted to Fitted Model
+
+
+How does the Unfitted Model Looks Like?
+
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+Fitting the Model with lm()
+
+
+```{r}
+ModelOLS=lm(Price~Sqft, data=Data100Houses)
+```
+
+
+## Unfitted Model vs Fitted Workflow Model
+
+Unfitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+
+```{r}
+ModelOLS
+```
+
+
+Fitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
+$$
+
+## Interpretation and Significance
+
+
+```{r}
+#| echo: false
+tidy(ModelOLS)
+```
+
+
+$$
+\begin{align}
+\widehat{Price}&=240 \cdot Sqft +  52509\\
+ (+240)&=240\cdot (+1) +  (+0)\\
+ (+480)&=240\cdot (+2) +  (+0)\\
+ (+720)&=240\cdot (+3) +  (+0)
+\end{align}
+$$ For each extra $Sqft$ the predicted price increases by $240
+
+The variable $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.
+
+
+
 ## Univariate Linear Regression - Data Table and Goal {.smaller}
 
 ::: columns
@@ -44,6 +176,7 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 **The Data Table**
 
 ```{r }
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()), 
     caption="Mockup Training Dataset")|>
   add_header_above(c(" ", "y", "x"), escape=F) |> 
@@ -268,7 +401,9 @@ See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRe
 \beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
 \end{eqnarray*}
 ```
+
 ```{r}
+#| echo: false
 DataTable=DataMockup |>
   mutate(GradeXStudyTime=Grade*StudyTime) |>
   mutate(StudyTimeSquared=StudyTime^2) 
@@ -282,7 +417,7 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
 
 
 
-# Using lm() Command from Base R to Run a Regression {.scrollable}
+## Using lm() Command from Base R to Run a Regression {.scrollable}
 
 ```{r}
 #| echo: true
@@ -294,12 +429,12 @@ summary(ModelStudyTime)
 
 **Unfitted Model**
 
-$$Grade=\beta_1 StudyTime + \beta_2$$
+$$Grade=\beta_1 \cdot StudyTime + \beta_2$$
 
 **Fitted Model**
 
-$$Grade=3.96 StudyTime + 64.18$$
-Coefficient for StudyTime $\beta_1$ should be positive.
+$$Grade=3.96  \cdot StudyTime + 64.18$$
+Coefficient for $StudyTime$ ($\beta_1$) should be positive.
 
 ## Predicting with the Fitted Model - Generated Data {.smaller}
 
@@ -324,7 +459,7 @@ Interpretation of $\beta_1=3.96$:
 ## Predicting with the Fitted Model - Training Data
 
 
-$$Grade=3.96 StudyTime + 64.18$$
+$$Grade=3.96  \cdot StudyTime + 64.18$$
 Generating the predictions:
 
 ```{r}
@@ -338,7 +473,7 @@ print(VecPred)
 
 ## Predicting with the Fitted Model - Training Data
 
-$$Grade=3.96 StudyTime + 64.18$$
+$$Grade=3.96  \cdot StudyTime + 64.18$$
 Augmenting the predictions to the data frame:
 
 ```{r}
@@ -378,19 +513,7 @@ print(ResultsStudyTime)
 ```
 
 
-## Adding Predictions to DataMockup
 
-```{r}
-#| echo: true
-DataMockupWithPred=augment(WFModelStudyTime, DataMockup)
-print(DataMockupWithPred)
-```
-## Evaluating Predictive Quality
-
-```{r}
-#| echo: true
-metrics(DataMockupWithPred, truth=Grade, estimate=.pred)
-```
 
 # Real World Application
 
@@ -402,7 +525,7 @@ metrics(DataMockupWithPred, truth=Grade, estimate=.pred)
 -   Several predictor variables. For now we use only $Sqft$
 -   We will only use 500 randomly chosen observations from the total of 21,613 observations.
 
--We only use Sqft as predictor variable for now.
+-We only use Sqft as predictor variable for now
 
 
 ## Univariate OLS with a Real World Dataset

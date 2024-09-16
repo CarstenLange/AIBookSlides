@@ -24,57 +24,143 @@ format:
 
 - Using metrics to evaluate prediction quality on the testing 
 
-## Loading the Libraries and the Data
+## Jumping Right Into It with Real World Data
 
-```{r}
-library(tidymodels)
-library(rio)
-library(janitor)
-Seed=123
-set.seed(Seed)
-DataHouses=import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
-           clean_names("upper_camel") |> 
-           select(Price,Sqft=SqftLiving,Bedrooms,Condition) |> 
-           sample_n(144) |> 
-           mutate(Price=228*Sqft+32543+rnorm(144,0,50000))
-head(DataHouses)
+Univariate OLS with a Real World Realesteate Dataset
 
-```
-## Splitting in Training and Testing Data:
+**Data Description:**
+
+King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+
+**Simplication:**
+
+- Several predictor variables, but for now we use only $Sqft$
+
+- We will only use 100 randomly chosen observations from the total of 21,613 observations.
+
+## Loading Libraries
 
 ```{r}
 #| code-fold: false
-set.seed(Seed)
-Split7030=initial_split(DataHouses,prop=0.7, strata = Price)
-DataTrain=training(Split7030)
-DataTest=testing(Split7030)
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
 ```
-## How much is a House Worth in King County?
 
-. . .
-
-**A house with average properties should be predicted with an average price!**
+## Loading the Data 
 
 ```{r}
-MeanSqft=mean(DataHouses$Sqft)
+#| code-fold: false
+DataHouses=
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+set.seed(7771)
+DataTrain=sample_n(DataHouses,100)
+DataTest=sample_n(DataHouses,70)
+```
+
+**First six observations training data:**
+
+```{r}
+#| echo: false
+
+head(DataTrain)
+```
+
+
+
+## How much is a House Worth in King County?
+
+
+
+A house with average properties should be predicted with an average price!
+
+
+```{r}
+MeanSqft=mean(DataTrain$Sqft)
 cat("The mean square footage of a house in King county is:", MeanSqft)
 
-MeanPrice=mean(DataHouses$Price)
+MeanPrice=mean(DataTrain$Price)
 cat("The mean price of a house in King county is:", MeanPrice)
 ```
+
+
+
 
 ## Predicting the Price of an Average Sized House as the Average of all House Prices
 
 ```{r}
 #| echo: false
-ggplot(aes(x=Sqft, y=Price), data=DataHouses)+
+ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
   geom_point(color="red")+
-  geom_hline(yintercept=mean(DataHouses$Price))+
-  geom_vline(xintercept=mean(DataHouses$Sqft))+
+  geom_hline(yintercept=mean(DataTrain$Price))+
+  geom_vline(xintercept=mean(DataTrain$Sqft))+
   scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
   scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
 ```
-# How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
+
+## An Interactive Graph That Explains it All
+
+[https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
+
+## From Unfitted to Fitted Model
+
+
+How does the Unfitted Model Looks Like?
+
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+Fitting the Model with lm()
+
+
+```{r}
+ModelOLS=lm(Price~Sqft, data=DataTrain)
+```
+
+
+## Unfitted Model vs Fitted Workflow Model
+
+Unfitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+
+```{r}
+print(ModelOLS)
+```
+
+
+Fitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
+$$
+
+## Interpretation and Significance
+
+
+```{r}
+#| echo: false
+print(ModelOLS)
+```
+
+
+$$
+\begin{align}
+\widehat{Price}&=240 \cdot Sqft +  52509\\
+ (+240)&=240\cdot (+1) +  (+0)\\
+ (+480)&=240\cdot (+2) +  (+0)\\
+ (+720)&=240\cdot (+3) +  (+0)
+\end{align}
+$$ For each extra $Sqft$ the predicted price increases by $240
+
+The variable $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.
+
+
+## How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
 
 ```{=tex}
 \begin{eqnarray*}

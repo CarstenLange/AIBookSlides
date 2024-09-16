@@ -411,74 +411,144 @@
 <li><p>Using metrics to evaluate prediction quality on the testing</p></li>
 </ul>
 </section>
-<section id="loading-the-libraries-and-the-data" class="slide level2">
-<h2>Loading the Libraries and the Data</h2>
+<section id="jumping-right-into-it-with-real-world-data" class="slide level2">
+<h2>Jumping Right Into It with Real World Data</h2>
+<p>Univariate OLS with a Real World Realesteate Dataset</p>
+<p><strong>Data Description:</strong></p>
+<p>King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.</p>
+<p><strong>Simplication:</strong></p>
+<ul>
+<li><p>Several predictor variables, but for now we use only <span class="math inline">\(Sqft\)</span></p></li>
+<li><p>We will only use 100 randomly chosen observations from the total of 21,613 observations.</p></li>
+</ul>
+</section>
+<section id="loading-libraries" class="slide level2">
+<h2>Loading Libraries</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb1-2"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb1-3"><a href=""></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-4"><a href=""></a>Seed<span class="ot">=</span><span class="dv">123</span></span>
-<span id="cb1-5"><a href=""></a><span class="fu">set.seed</span>(Seed)</span>
-<span id="cb1-6"><a href=""></a>DataHouses<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-7"><a href=""></a>           <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-8"><a href=""></a>           <span class="fu">select</span>(Price,<span class="at">Sqft=</span>SqftLiving,Bedrooms,Condition) <span class="sc">|&gt;</span> </span>
-<span id="cb1-9"><a href=""></a>           <span class="fu">sample_n</span>(<span class="dv">144</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-10"><a href=""></a>           <span class="fu">mutate</span>(<span class="at">Price=</span><span class="dv">228</span><span class="sc">*</span>Sqft<span class="sc">+</span><span class="dv">32543</span><span class="sc">+</span><span class="fu">rnorm</span>(<span class="dv">144</span>,<span class="dv">0</span>,<span class="dv">50000</span>))</span>
-<span id="cb1-11"><a href=""></a><span class="fu">head</span>(DataHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>     Price Sqft Bedrooms Condition
-1 523633.4 2040        4         3
-2 530960.7 2120        4         3
-3 523466.8 2130        4         4
-4 759747.7 3330        4         3
-5 546377.8 2440        4         3
-6 186536.6  900        3         4</code></pre>
-</div>
+<span id="cb1-3"><a href=""></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-4"><a href=""></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="splitting-in-training-and-testing-data" class="slide level2">
-<h2>Splitting in Training and Testing Data:</h2>
+<section id="loading-the-data" class="slide level2">
+<h2>Loading the Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">set.seed</span>(Seed)</span>
-<span id="cb3-2"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(DataHouses,<span class="at">prop=</span><span class="fl">0.7</span>, <span class="at">strata =</span> Price)</span>
-<span id="cb3-3"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb3-4"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>DataHouses<span class="ot">=</span></span>
+<span id="cb2-2"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href=""></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving) </span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">7771</span>)</span>
+<span id="cb2-7"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">sample_n</span>(DataHouses,<span class="dv">100</span>)</span>
+<span id="cb2-8"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">sample_n</span>(DataHouses,<span class="dv">70</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><strong>First six observations training data:</strong></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Price Sqft
+1 517000 1180
+2 236000 1300
+3 490000 2800
+4 129000 1150
+5 257000 1400
+6 312500  870</code></pre>
+</div>
 </div>
 </section>
 <section id="how-much-is-a-house-worth-in-king-county" class="slide level2">
 <h2>How much is a House Worth in King County?</h2>
-<div class="fragment">
-<p><strong>A house with average properties should be predicted with an average price!</strong></p>
+<p>A house with average properties should be predicted with an average price!</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>MeanSqft<span class="ot">=</span><span class="fu">mean</span>(DataHouses<span class="sc">$</span>Sqft)</span>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>MeanSqft<span class="ot">=</span><span class="fu">mean</span>(DataTrain<span class="sc">$</span>Sqft)</span>
 <span id="cb4-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean square footage of a house in King county is:"</span>, MeanSqft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>The mean square footage of a house in King county is: 2044.319</code></pre>
+<pre><code>The mean square footage of a house in King county is: 1956.7</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>MeanPrice<span class="ot">=</span><span class="fu">mean</span>(DataHouses<span class="sc">$</span>Price)</span>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>MeanPrice<span class="ot">=</span><span class="fu">mean</span>(DataTrain<span class="sc">$</span>Price)</span>
 <span id="cb6-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean price of a house in King county is:"</span>, MeanPrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
-<pre><code>The mean price of a house in King county is: 497414.9</code></pre>
-</div>
+<pre><code>The mean price of a house in King county is: 521294.2</code></pre>
 </div>
 </div>
 </section>
 <section id="predicting-the-price-of-an-average-sized-house-as-the-average-of-all-house-prices" class="slide level2">
 <h2>Predicting the Price of an Average Sized House as the Average of all House Prices</h2>
 
-<img data-src="LinRegrIBMReview_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
-<section>
-<section id="how-to-measure-prediction-quality-with-the-mean-squared-error-mse" class="title-slide slide level1 smaller center">
-<h1>How to Measure Prediction Quality with the Mean Squared Error (MSE)</h1>
+<img data-src="LinRegrIBMReview_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<section id="an-interactive-graph-that-explains-it-all" class="slide level2">
+<h2>An Interactive Graph That Explains it All</h2>
+<p><a href="https://econ.lange-analytics.com/calcat/linregrmeans" target="_blank">https://econ.lange-analytics.com/calcat/linregrmeans</a></p>
+</section>
+<section id="from-unfitted-to-fitted-model" class="slide level2">
+<h2>From Unfitted to Fitted Model</h2>
+<p>How does the Unfitted Model Looks Like?</p>
+<p><span class="math display">\[
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\]</span></p>
+<p>Fitting the Model with lm()</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>ModelOLS<span class="ot">=</span><span class="fu">lm</span>(Price<span class="sc">~</span>Sqft, <span class="at">data=</span>DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2">
+<h2>Unfitted Model vs Fitted Workflow Model</h2>
+<p>Unfitted Model: <span class="math display">\[
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\]</span></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">print</span>(ModelOLS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Price ~ Sqft, data = DataTrain)
+
+Coefficients:
+(Intercept)         Sqft  
+    52509.1        239.6  </code></pre>
+</div>
+</div>
+<p>Fitted Model: <span class="math display">\[
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
+\]</span></p>
+</section>
+<section id="interpretation-and-significance" class="slide level2">
+<h2>Interpretation and Significance</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Price ~ Sqft, data = DataTrain)
+
+Coefficients:
+(Intercept)         Sqft  
+    52509.1        239.6  </code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{align}
+\widehat{Price}&amp;=240 \cdot Sqft +  52509\\
+(+240)&amp;=240\cdot (+1) +  (+0)\\
+(+480)&amp;=240\cdot (+2) +  (+0)\\
+(+720)&amp;=240\cdot (+3) +  (+0)
+\end{align}
+\]</span> For each extra <span class="math inline">\(Sqft\)</span> the predicted price increases by $240</p>
+<p>The variable <span class="math inline">\(Sqft\)</span> is significant. I.e., the probability that the related coefficient <span class="math inline">\(\beta_1\)</span> equals zero is extremely small.</p>
+</section>
+<section id="how-to-measure-prediction-quality-with-the-mean-squared-error-mse" class="slide level2 smaller">
+<h2>How to Measure Prediction Quality with the Mean Squared Error (MSE)</h2>
 <span class="math display">\[\begin{eqnarray*}
 MSE &amp; = &amp; \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 &amp; \Longleftrightarrow&amp; \\
@@ -491,16 +561,16 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <h3 id="preparing-the-data">Preparing the Data</h3>
 <p>Blueprint for the data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price<span class="sc">~</span>Sqft, <span class="at">data=</span>DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(Price<span class="sc">~</span>Sqft, <span class="at">data=</span>DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="choosing-the-model-blueprint" class="slide level2">
 <h2>Choosing the Model Blueprint</h2>
 <p>Blueprint for the model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>ModelDesignOLS<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>ModelDesignOLS<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="how-does-the-unfitted-model-looks-like" class="slide level2">
@@ -515,13 +585,13 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 \]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>WFModelHouses<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb10-2"><a href=""></a>              <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb10-3"><a href=""></a>              <span class="fu">add_model</span>(ModelDesignOLS) <span class="sc">|&gt;</span> </span>
-<span id="cb10-4"><a href=""></a>              <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>WFModelHouses<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href=""></a>              <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href=""></a>              <span class="fu">add_model</span>(ModelDesignOLS) <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href=""></a>              <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2 smaller">
+<section id="unfitted-model-vs-fitted-workflow-model-1" class="slide level2 smaller">
 <h2>Unfitted Model vs Fitted Workflow Model</h2>
 <p>Unfitted Model: <span class="math display">\[
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
@@ -529,14 +599,14 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">tidy</span>(WFModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)    6584.  12191.       0.540 5.90e- 1
-2 Sqft            238.      5.47    43.5   6.43e-66</code></pre>
+1 (Intercept)   52509.   64183.      0.818 4.15e- 1
+2 Sqft            240.      30.6     7.84  5.67e-12</code></pre>
 </div>
 </div>
 <p>Fitted Model: <span class="math display">\[
@@ -544,15 +614,15 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 \]</span></p>
 <p>Predict the price for a house with 1,000 sqft and send it to me in a private chat!</p>
 </section>
-<section id="interpretation-and-significance" class="slide level2 smaller">
+<section id="interpretation-and-significance-1" class="slide level2 smaller">
 <h2>Interpretation and Significance</h2>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   term        estimate std.error statistic  p.value
   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
-1 (Intercept)    6584.  12191.       0.540 5.90e- 1
-2 Sqft            238.      5.47    43.5   6.43e-66</code></pre>
+1 (Intercept)   52509.   64183.      0.818 4.15e- 1
+2 Sqft            240.      30.6     7.84  5.67e-12</code></pre>
 </div>
 </div>
 <p><span class="math display">\[
@@ -568,38 +638,38 @@ MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_
 <section id="how-does-the-fitted-model-that-considers-sqft-improves-the-prediction-compared-to-a-simple-average" class="slide level2">
 <h2>How Does the fitted model that considers SQFT improves the prediction compared to a simple average</h2>
 
-<img data-src="LinRegrIBMReview_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<img data-src="LinRegrIBMReview_files/figure-revealjs/unnamed-chunk-14-1.png" width="960" class="r-stretch"></section>
 <section id="evaluating-predictive-quality-with-the-testing-dataset" class="slide level2">
 <h2>Evaluating Predictive Quality with the Testing Dataset</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
-<span id="cb14-2"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelHouses, <span class="at">new_data=</span>DataTest)</span>
+<span id="cb18-2"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>Price, <span class="at">estimate=</span>.pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
-  .metric .estimator .estimate
-  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-1 rmse    standard   50915.   
-2 rsq     standard       0.923
-3 mae     standard   39748.   </code></pre>
+  .metric .estimator  .estimate
+  &lt;chr&gt;   &lt;chr&gt;           &lt;dbl&gt;
+1 rmse    standard   169329.   
+2 rsq     standard        0.580
+3 mae     standard   139315.   </code></pre>
 </div>
 </div>
 </section>
 <section id="project-analysis-with-all-variables" class="slide level2">
 <h2>Project: Analysis with all Variables</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb16-2"><a href=""></a><span class="fu">library</span>(janitor)</span>
-<span id="cb16-3"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb16-4"><a href=""></a>DataHouses<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb16-5"><a href=""></a>           <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb16-6"><a href=""></a>           <span class="fu">select</span>(Price,<span class="at">Sqft=</span>SqftLiving,Bedrooms,Condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb20-2"><a href=""></a><span class="fu">library</span>(janitor)</span>
+<span id="cb20-3"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb20-4"><a href=""></a>DataHouses<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-5"><a href=""></a>           <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-6"><a href=""></a>           <span class="fu">select</span>(Price,<span class="at">Sqft=</span>SqftLiving,Bedrooms,Condition)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 

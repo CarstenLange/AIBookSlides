@@ -11,7 +11,6 @@ format:
 
 ## Loading Required Librarries
 
-
 ```{r}
 #| code-fold: false
 library(tidymodels)
@@ -49,7 +48,7 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 
 **Data Description:**
 
-::: {.incremental}
+::: incremental
 -   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
 
 -   Several predictor variables. For now we use only $Sqft$
@@ -60,6 +59,8 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 :::
 
 ## Loading the Data and Assigning Training and Testing Data (manually)
+
+
 
 ```{r}
 
@@ -106,7 +107,7 @@ ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
 
 ## An Interactive Graph That Explains it All
 
-<https://econ.lange-analytics.com/calcat/linregrmeans>{target="_blank"}
+[https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
 
 ## From Unfitted to Fitted Model
 
@@ -135,10 +136,7 @@ tidy(WFModelHouses)
 
 ## Unfitted Model vs Fitted Workflow Model {.smaller}
 
-
-
-Unfitted Model:
-$$
+Unfitted Model: $$
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
 
@@ -146,8 +144,7 @@ $$
 tidy(WFModelHouses)
 ```
 
-Fitted Model:
-$$
+Fitted Model: $$
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
 $$
 
@@ -165,16 +162,15 @@ $$
  (+480)&=240\cdot (+2) +  (+0)\\
  (+720)&=240\cdot (+3) +  (+0)
 \end{align}
-$$
-**For each extra $Sqft$ the predicted price increases by \$240**
+$$ **For each extra** $Sqft$ the predicted price increases by \$240
 
-**The variable $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.**
+**The variable** $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.
 
 ## How Does the fitted model that considers SQFT improves the prediction compared to a simple average
 
 Look at the simulation again and choose 240 for beta 1:
 
-<https://econ.lange-analytics.com/calcat/linregrmeans>{target="_blank"}
+[https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
 
 ## Evaluating Predictive Quality with the Testing Dataset
 
