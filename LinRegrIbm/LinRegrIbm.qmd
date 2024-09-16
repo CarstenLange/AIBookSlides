@@ -422,7 +422,7 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
 ```{r}
 #| echo: true
 ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
-summary(ModelStudyTime)
+print(ModelStudyTime)
 ```
 
 ## Results from OLS Analysis and Sanity Check
@@ -490,6 +490,7 @@ Creating the fitted (workflow) model:
 
 ```{r}
 #| echo: true
+#| code-fold: false
 library(tidymodels)
 DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 RecipeStudyTime=recipe(DataMockup, Grade~StudyTime)
@@ -502,11 +503,11 @@ WFModelStudyTime= workflow() |>
                   fit(DataMockup)
 ```
 
-##
-Getting the Results from a Workflow
+## Getting the Results from a Workflow
 
 ```{r}
 #| echo: true
+#| code-fold: false
 ResultsStudyTime=tidy(WFModelStudyTime)
 print(ResultsStudyTime)
 
@@ -548,6 +549,14 @@ head(DataHousing)
 $$\widehat{Price}=\beta_1 Sqft + \beta_2$$
 **Directed Acyclic Graphs (causal graphs):**
 
+```{r}
+library(ggdag)
+dagify(Price~Sqft,
+       outcome = "Price") |> 
+ggdag(node_size = 22) + theme_void()
+```
+
+
 ## Univariate OLS with a Real World Dataset {.scrollable}
 
 **Splitting in Training and Testing Datasets**
@@ -564,13 +573,13 @@ DataTest=testing(Split7030)
 **DataTrain**
 
 ```{r}
-print(DataTrain, max=6)
+head(DataTrain)
 ```
 
 **DataTest**
 
 ```{r}
-print(DataTest, max=6)
+head(DataTest)
 ```
 
 ## Univariate OLS with a Real World Dataset
@@ -611,14 +620,14 @@ Results=tidy(WFModelHouses)
 print(Results)
 ```
 
-## Predicting with tidymodels Training Data {.scrollable}
+## Predicting with tidymodels Training and Testing Data {.scrollable}
 
 The augment() command first predicts and then augments the results to the related data frame
 
 ```{r}
 #| echo: true
 DataTrainWithPred=augment(WFModelHouses, new_data = DataTrain)
-DataTestWithPred=augment(WFModelHouses, new_data = DataTrain)
+DataTestWithPred=augment(WFModelHouses, new_data = DataTest)
 
 head(DataTrainWithPred)
 head(DataTestWithPred)
