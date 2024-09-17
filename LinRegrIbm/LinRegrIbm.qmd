@@ -16,7 +16,7 @@ format:
 
 -   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
 
--   Understanding the role of in a linear regression model (applies also to other models)
+-   Understanding the role of parameters in a linear regression model (applies also to other models)
 
 -   Calculating optimal regression parameters using OLS
 
@@ -34,7 +34,7 @@ format:
 
 ## Jumping Right Into It with Real World Data
 
-Univariate OLS with a Real World Realesteate Dataset
+Univariate OLS (simple OLS) with a real estate dataset
 
 **Data Description:**
 
@@ -454,7 +454,7 @@ Interpretation of $\beta_1=3.96$:
 
 2. From the formula: Quantitative impact: If $StudyTime$ increases by one unit, Grade increases by $3.96$ units.
 
-3. From the prediction: Above we predicted $Grade$ for $Studyteimes$ of 1,2,3, which confirms point 1) and 2).
+3. From the prediction: Above we predicted $Grade$ for $StudyTime$s of 1,2,3, which confirms point 1) and 2).
 
 ## Predicting with the Fitted Model - Training Data
 
@@ -553,7 +553,7 @@ $$\widehat{Price}=\beta_1 Sqft + \beta_2$$
 library(ggdag)
 dagify(Price~Sqft,
        outcome = "Price") |> 
-ggdag(node_size = 22) + theme_void()
+ggdag(node_size = 22)
 ```
 
 
