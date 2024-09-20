@@ -1,0 +1,66 @@
+---
+title: "KNIME the No Code/Low Code Data Science Platform"
+subtitle: "Create Data Processing and Analytics Workflows with Drag and Drop" 
+
+
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+    echo: true
+---
+
+## What is KNIME?
+
+KNIME is an alternative to R and Python for those who do not want to code.
+
+You can use drag and drop statistical tasks (nodes) to create an analysis workflow.
+
+Knime is free and can be downloaded at: <https://www.knime.com/downloads>
+
+![](images/clipboard-923536296.png)
+
+## KNIME vs. Excel
+
+-   Copy and Paste in Excel is prone to error
+
+-   *EXCEL* research is difficult or impossible to reproduce because it leaves no trail
+
+    -   *R* and *Python* leave the code.
+
+    -   KNIME leaves the workflow nodes
+
+-   Reproducibility is important
+
+    -   for credibility
+    -   for your future you, when you like to work on an older project
+
+## What Will be Covered
+
+-   A Basic Example: Comparing Means with KNIME
+
+-   A linear Regression with KNIME: Wage Discrimination in 1976
+
+-   Comparing the results of a k-Nearest Neighbor Machine Learning model between R and KNIME
+
+## Comparing Male and Female Wages in 1976
+
+## Data
+
+[Wooldridge Dataset](https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf) ([download here](https://econ.lange-analytics.com/RData/Datasets/DataWage.xlsx))
+
+## Comparing Means
+
+Did male workers receive a larger wage than female workers?
+
+## Regression
+
+**Basic Wage Regression:**
+
+$$
+Wage=\beta_1 SexFem+\beta_2 Exp + \beta_3 Educ
+$$ **Advanced Wage Regression:**
+
+$$
+ln(Wage)=\beta_1 SexFem+\beta_2 Exp^2 + \beta_3 Educ+ \beta_4 MSAYes
+$$
