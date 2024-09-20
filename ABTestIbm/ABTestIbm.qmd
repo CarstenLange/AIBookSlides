@@ -120,6 +120,15 @@ cat("Standard Error of Treatment Group is:", sd(DataWebSites$PurchAmtTreat)/sqrt
 
 ## Two Sample t-Test
 
+Here are the first six observations of the data again:
+
+```{r}
+#| echo: false
+head(DataWebSites)
+```
+
+. . .
+
 ```{r}
 #| code-fold: false
 t.test(DataWebSites$PurchAmtControl,
@@ -129,7 +138,7 @@ t.test(DataWebSites$PurchAmtControl,
 
 ## Possible Problems with A/B Testing
 
-### Omitting Variable Bias:
+### Omitted Variable Bias:
 
 Omitting a variable that affects both the Treatment and the Outcome.
 
