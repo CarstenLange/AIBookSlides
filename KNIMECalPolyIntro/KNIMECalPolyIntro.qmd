@@ -1,8 +1,4 @@
 ---
-title: "KNIME the No Code/Low Code Data Science Platform"
-subtitle: "Create Data Processing and Analytics Workflows with Drag and Drop" 
-
-
 format: 
   revealjs:
     code-fold: true
@@ -10,57 +6,192 @@ format:
     echo: true
 ---
 
+## Presentation Link: <https://gg.gg/KNIMEIntroCalPoly>
+
+![](images/clipboard-3674793131.png){fig-align="center"}
+
 ## What is KNIME?
 
-KNIME is an alternative to R and Python for those who do not want to code.
+![](images/clipboard-1899890326.png){fig-align="center"}
 
-You can use drag and drop statistical tasks (nodes) to create an analysis workflow.
 
-Knime is free and can be downloaded at: <https://www.knime.com/downloads>
+-   With drag and drop statistical tasks (nodes) can be combined to an analysis workflow.
 
-![](images/clipboard-923536296.png)
+-   *KNIME* is an alternative to *R* and *Python* for those who do not want to code.
+
+-   *KNIME* is free and can be downloaded at: <https://www.knime.com/downloads>
+
+
 
 ## KNIME vs. Excel
 
 -   Copy and Paste in Excel is prone to error
 
--   *EXCEL* research is difficult or impossible to reproduce because it leaves no trail
+-   *EXCEL* research is difficult or impossible to reproduce because it leaves either a convoluted trail or no trail
 
     -   *R* and *Python* leave the code.
 
-    -   KNIME leaves the workflow nodes
+    -   *KNIME* leaves the workflow nodes
 
 -   Reproducibility is important
 
     -   for credibility
-    -   for your future you, when you like to work on an older project
+    -   for the future you, when you like to work on an older project
 
 ## What Will be Covered
 
--   A Basic Example: Comparing Means with KNIME
+**Part 1:** A basic example to compare means from two samples
+</br></br>
 
--   A linear Regression with KNIME: Wage Discrimination in 1976
+**Part 2:** A linear regression --- Wage Discrimination in 1976
+</br></br>
 
--   Comparing the results of a k-Nearest Neighbor Machine Learning model between R and KNIME
+**Part 3:** Comparing the results of a k-Nearest Neighbor model   
+    between *R* and *KNIME*
 
 ## Comparing Male and Female Wages in 1976
 
-## Data
+**Data**
 
-[Wooldridge Dataset](https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf) ([download here](https://econ.lange-analytics.com/RData/Datasets/DataWage.xlsx))
+-   [Wooldridge Dataset](https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf) (can be downloaded [here](https://econ.lange-analytics.com/RData/Datasets/DataWage.xlsx))
+-   Wage data from 1976 for 526 female and male observations including variables such as Sex, Education, and Experience in years
 
-## Comparing Means
+. . .
 
-Did male workers receive a larger wage than female workers?
+```{r}
+#| echo: false
+library(rio)
+library(tidyverse)
+DataWage=import("https://econ.lange-analytics.com/RData/Datasets/DataWage.xlsx")
+head(DataWage|>select(wage,female))
+```
 
-## Regression
+**Was the female wage lower than the male wage in 1976?**
+
+[KNIME Demo]{style="color:yellow; font-weight:bold"}
+
+## Wage Discrimination
+
+**We saw:** Female wages were lower in 1976 than male wages and that the result was most likely (95%) **not derived by chance**.
+<br><br>
+**Was this wage gap created by discrimination or by a lack of female education and experience?**
+<br><br>
+To answer this question we have to control for education and experience (in years) --- we have to perform a **regression analysis**
+
+## Regression {.smaller}
 
 **Basic Wage Regression:**
 
 $$
-Wage=\beta_1 SexFem+\beta_2 Exp + \beta_3 Educ
+Wage=\beta_1 Sex_{Fem}+\beta_2 Exp + \beta_3 Educ +\beta_0
 $$ **Advanced Wage Regression:**
 
 $$
-ln(Wage)=\beta_1 SexFem+\beta_2 Exp^2 + \beta_3 Educ+ \beta_4 MSAYes
+ln(Wage)=\beta_1 Sex_{Fem}+\beta_2 Exp^2 + \beta_3 Educ+ 
+         \beta_4 MSA_{Yes} +\beta_0
 $$
+<br><br>
+[Load workflow from KNIME Community Hub]{style="color:yellow; font-weight:bold"}
+
+## Part 3: Predicting Wine Color with k-Nearest Neighbor Model
+
+::: columns
+::: {.column width="50%"}
+### Using R
+
+![](images/clipboard-503737577.png){width="200"}
+
+Details: [Chapter 4: k-Nearest Neighbors](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html)\
+The example used here: [Section 4.9: Project: Wine Color](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-AllVar)
+:::
+::: {.column width="50%"}
+### Using KNIME
+
+![](images/clipboard-1273050293.png){fig-align="left" width="700"}
+
+Source for Workflow: [here](https://hub.knime.com/carstenlange/spaces/Workflows%20Related%20to%20the%20Texbook%20Practical%20Machine%20Learning%20with%20R%20by%20Carsten%20Lange/4.1%20k-Nearest%20Neighbors%20with%20k=4%20(WineData)~Y8L041LDt75rNEjS/current-state)
+:::
+:::
+
+## Results for a k-Nearest Neighbor Model from KNIME
+
+[KNIME Demo]{style="color:yellow; font-weight:bold"}
+
+## Results for a k-Nearest Neighbor Model from R
+
+### Loading Libraries, DataTrain, and DataTest
+
+**Data Train:**
+
+```{r}
+library(rio)
+library(tidymodels)
+DataTrain=import("https://econ.lange-analytics.com/RData/Datasets/WineDataTrain.csv") |> 
+          select(-Quality)|> 
+          mutate(WineColor=as.factor(WineColor))
+head(DataTrain)
+```
+
+
+
+```{r}
+DataTest=import("https://econ.lange-analytics.com/RData/Datasets/WineDataTest.csv") |> 
+          select(-Quality) |> 
+          mutate(WineColor=as.factor(WineColor))
+```
+
+
+
+
+## Results for a k-Nearest Neighbor Model from R
+
+### Creating the Recipe, the Model Design, and Executing the Workflow
+
+**Recipe:**
+
+```{r}
+RecipeWine=recipe(WineColor~., data=DataTrain)  |> 
+           step_normalize(all_predictors())
+```
+
+**Model Design:**
+
+```{r}
+ModelDesignKNN=nearest_neighbor(neighbors=4,  
+                                weight_func="rectangular") |>
+               set_engine("kknn") |> 
+               set_mode("classification")
+```
+
+**Putting it all together in a Workflow:**
+
+```{r}
+WFModelWine=workflow() |> 
+            add_recipe(RecipeWine) |>
+            add_model(ModelDesignKNN) |> 
+            fit(DataTrain)
+```
+
+## Predictive Quality
+
+**Predicting the Testing Data:**
+
+```{r}
+#| output-location: fragment
+DataTestWithPred=augment(WFModelWine, DataTest) 
+head(DataTestWithPred, n=3)
+```
+
+. . .
+
+**Creating the Confusion Matrix:**
+
+```{r}
+#| output-location: fragment
+conf_mat(DataTestWithPred, truth=WineColor, estimate=.pred_class)
+```
+
+## Thank you
+
+<br><br><br><br><br><br><br>
+**Your Questions**
