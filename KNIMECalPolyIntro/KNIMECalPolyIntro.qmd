@@ -107,7 +107,7 @@ Source for Workflow: [here](https://hub.knime.com/carstenlange/spaces/Workflows%
 :::
 :::
 
-## The Basic Idea of k_Nearest Neighbors {.smaller}
+## The Basic Idea of k-Nearest Neighbors {.smaller}
 
 ![](images/clipboard-1954796912.png){width="2000"}
 
