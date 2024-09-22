@@ -14,14 +14,11 @@ format:
 
 ![](images/clipboard-1899890326.png){fig-align="center"}
 
-
 -   With drag and drop statistical tasks (nodes) can be combined to an analysis workflow.
 
 -   *KNIME* is an alternative to *R* and *Python* for those who do not want to code.
 
 -   *KNIME* is free and can be downloaded at: <https://www.knime.com/downloads>
-
-
 
 ## KNIME vs. Excel
 
@@ -40,16 +37,14 @@ format:
 
 ## What Will be Covered
 
-**Part 1:** A basic example to compare means from two samples
-</br></br>
+**Part 1:** A basic example to compare means from two samples </br></br>
 
-**Part 2:** A linear regression --- Wage Discrimination in 1976
-</br></br>
+**Part 2:** A linear regression --- Wage Discrimination in 1976 </br></br>
 
-**Part 3:** Comparing the results of a k-Nearest Neighbor model   
-    between *R* and *KNIME*
+**Part 3:** Comparing the results of a k-Nearest Neighbor model\
+between *R* and *KNIME*
 
-## Comparing Male and Female Wages in 1976
+## Comparing Male and Female Wages in 1976 {.smaller}
 
 **Data**
 
@@ -70,28 +65,26 @@ head(DataWage|>select(wage,female))
 
 [KNIME Demo]{style="color:yellow; font-weight:bold"}
 
+Completed workspace: SearchCompareMeans on https://hub.knime.com
+
 ## Wage Discrimination
 
-**We saw:** Female wages were lower in 1976 than male wages and that the result was most likely (95%) **not derived by chance**.
-<br><br>
-**Was this wage gap created by discrimination or by a lack of female education and experience?**
-<br><br>
-To answer this question we have to control for education and experience (in years) --- we have to perform a **regression analysis**
+**We saw:** Female wages were lower in 1976 than male wages and that the result was most likely (95%) **not derived by chance**. <br><br> **Was this wage gap created by discrimination or by a lack of female education and experience?** <br><br> To answer this question we have to control for education and experience (in years) --- we have to perform a **regression analysis**
 
 ## Regression {.smaller}
 
 **Basic Wage Regression:**
 
 $$
-Wage=\beta_1 Sex_{Fem}+\beta_2 Exp + \beta_3 Educ +\beta_0
+Wage=\beta_1 Sex_{Fem}+\beta_2 Exp + \beta_3 Educ +\beta_4
 $$ **Advanced Wage Regression:**
 
 $$
 ln(Wage)=\beta_1 Sex_{Fem}+\beta_2 Exp^2 + \beta_3 Educ+ 
-         \beta_4 MSA_{Yes} +\beta_0
-$$
-<br><br>
-[Load workflow from KNIME Community Hub]{style="color:yellow; font-weight:bold"}
+         \beta_4 MSA_{Yes} +\beta_5
+$$ <br><br> [Load workflow from KNIME Community Hub]{style="color:yellow; font-weight:bold"}
+
+Search: WageRegression on https://hub.knime.com
 
 ## Part 3: Predicting Wine Color with k-Nearest Neighbor Model
 
@@ -104,6 +97,7 @@ $$
 Details: [Chapter 4: k-Nearest Neighbors](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html)\
 The example used here: [Section 4.9: Project: Wine Color](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-AllVar)
 :::
+
 ::: {.column width="50%"}
 ### Using KNIME
 
@@ -112,6 +106,12 @@ The example used here: [Section 4.9: Project: Wine Color](https://ai.lange-analy
 Source for Workflow: [here](https://hub.knime.com/carstenlange/spaces/Workflows%20Related%20to%20the%20Texbook%20Practical%20Machine%20Learning%20with%20R%20by%20Carsten%20Lange/4.1%20k-Nearest%20Neighbors%20with%20k=4%20(WineData)~Y8L041LDt75rNEjS/current-state)
 :::
 :::
+
+## The Basic Idea of k_Nearest Neighbors {.smaller}
+
+![](images/clipboard-1954796912.png){width="2000"}
+
+Source: [Lange, C. Practical Machine Learning with R. Tutorials and Case Studies, Taylor & Francis 2024](https://ai.lange-analytics.com)
 
 ## Results for a k-Nearest Neighbor Model from KNIME
 
@@ -132,16 +132,11 @@ DataTrain=import("https://econ.lange-analytics.com/RData/Datasets/WineDataTrain.
 head(DataTrain)
 ```
 
-
-
 ```{r}
 DataTest=import("https://econ.lange-analytics.com/RData/Datasets/WineDataTest.csv") |> 
           select(-Quality) |> 
           mutate(WineColor=as.factor(WineColor))
 ```
-
-
-
 
 ## Results for a k-Nearest Neighbor Model from R
 
@@ -193,5 +188,4 @@ conf_mat(DataTestWithPred, truth=WineColor, estimate=.pred_class)
 
 ## Thank you
 
-<br><br><br><br><br><br><br>
-**Your Questions**
+<br><br><br><br><br><br><br> **Your Questions**
