@@ -69,12 +69,13 @@ Completed workspace: SearchCompareMeans on https://hub.knime.com
 
 ## Wage Discrimination
 
-**We saw:** Female wages were lower in 1976 than male wages and that the result was most likely (95%) **not derived by chance**. <br><br> **Was this wage gap created by discrimination or by a lack of female education and experience?** <br><br> To answer this question, we have to control for education and experience (in years) --- we have to perform a **regression analysis \*\*\*-\>\***
+**We saw:** Female wages were lower in 1976 than male wages and that the result was most likely (95%) **not derived by chance**. <br><br> **Was this wage gap created by discrimination or by a lack of female education and experience?** <br><br> To answer this question, we have to control for education and experience (in years) --- we have to perform a **regression analysis** 
 
 ## Regression {.smaller}
 
 **Basic Wage Regression:**
 
+\*\*\*-\>\*
 $$
 Wage=\beta_1 Sex_{Fem}+\beta_2 Exp + \beta_3 Educ +\beta_4
 $$ **Advanced Wage Regression:**
@@ -106,6 +107,17 @@ The example used here: [Section 4.9: Project: Wine Color](https://ai.lange-analy
 Source for Workflow: [here](https://hub.knime.com/carstenlange/spaces/Workflows%20Related%20to%20the%20Texbook%20Practical%20Machine%20Learning%20with%20R%20by%20Carsten%20Lange/4.1%20k-Nearest%20Neighbors%20with%20k=4%20(WineData)~Y8L041LDt75rNEjS/current-state)
 :::
 :::
+
+## The Wine Dataset
+
+```{r}
+#| echo: false
+DataTrain=import("https://econ.lange-analytics.com/RData/Datasets/WineDataTrain.csv")
+head(DataTrain)
+```
+
+2238 Training Observations, <br>960 Testing Observations
+
 
 ## The Basic Idea of k-Nearest Neighbors {.smaller}
 

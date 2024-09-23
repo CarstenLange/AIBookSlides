@@ -455,12 +455,12 @@ between <em>R</em> and <em>KNIME</em></p>
 </section>
 <section id="wage-discrimination" class="slide level2">
 <h2>Wage Discrimination</h2>
-<p><strong>We saw:</strong> Female wages were lower in 1976 than male wages and that the result was most likely (95%) <strong>not derived by chance</strong>. <br><br> <strong>Was this wage gap created by discrimination or by a lack of female education and experience?</strong> <br><br> To answer this question, we have to control for education and experience (in years) — we have to perform a <strong>regression analysis ***-&gt;*</strong></p>
+<p><strong>We saw:</strong> Female wages were lower in 1976 than male wages and that the result was most likely (95%) <strong>not derived by chance</strong>. <br><br> <strong>Was this wage gap created by discrimination or by a lack of female education and experience?</strong> <br><br> To answer this question, we have to control for education and experience (in years) — we have to perform a <strong>regression analysis</strong></p>
 </section>
 <section id="regression" class="slide level2 smaller">
 <h2>Regression</h2>
 <p><strong>Basic Wage Regression:</strong></p>
-<p><span class="math display">\[
+<p>***-&gt;* <span class="math display">\[
 Wage=\beta_1 Sex_{Fem}+\beta_2 Exp + \beta_3 Educ +\beta_4
 \]</span> <strong>Advanced Wage Regression:</strong></p>
 <p><span class="math display">\[
@@ -487,6 +487,28 @@ The example used here: <a href="https://ai.lange-analytics.com/htmlbook/KNearNei
 <p>Source for Workflow: <a href="https://hub.knime.com/carstenlange/spaces/Workflows%20Related%20to%20the%20Texbook%20Practical%20Machine%20Learning%20with%20R%20by%20Carsten%20Lange/4.1%20k-Nearest%20Neighbors%20with%20k=4%20(WineData)~Y8L041LDt75rNEjS/current-state">here</a></p>
 </div></div>
 </section>
+<section id="the-wine-dataset" class="slide level2">
+<h2>The Wine Dataset</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  WineColor Acidity VolatileAcidity CitricAcid ResidualSugar Chlorides
+1       red    10.8           0.320       0.44           1.6     0.063
+2       red     6.7           0.855       0.02           1.9     0.064
+3       red     7.5           0.380       0.57           2.3     0.106
+4       red     7.1           0.270       0.60           2.1     0.074
+5       red     8.0           0.580       0.28           3.2     0.066
+6       red     7.6           0.400       0.29           1.9     0.078
+  FreeSulfurDioxide Sulfur Density   PH Sulphates Alcohol Quality
+1                16     37 0.99850 3.22      0.78   10.00       6
+2                29     38 0.99472 3.30      0.56   10.75       6
+3                 5     12 0.99605 3.36      0.55   11.40       6
+4                17     25 0.99814 3.38      0.72   10.60       6
+5                21    114 0.99730 3.22      0.54    9.40       6
+6                29     66 0.99710 3.45      0.59    9.50       6</code></pre>
+</div>
+</div>
+<p>2238 Training Observations, <br>960 Testing Observations</p>
+</section>
 <section id="the-basic-idea-of-k-nearest-neighbors" class="slide level2 smaller">
 <h2>The Basic Idea of k-Nearest Neighbors</h2>
 
@@ -503,12 +525,12 @@ The example used here: <a href="https://ai.lange-analytics.com/htmlbook/KNearNei
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb2-2"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb2-3"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/WineDataTrain.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href=""></a>          <span class="fu">select</span>(<span class="sc">-</span>Quality)<span class="sc">|&gt;</span> </span>
-<span id="cb2-5"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">WineColor=</span><span class="fu">as.factor</span>(WineColor))</span>
-<span id="cb2-6"><a href=""></a><span class="fu">head</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb3-2"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb3-3"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/WineDataTrain.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href=""></a>          <span class="fu">select</span>(<span class="sc">-</span>Quality)<span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">WineColor=</span><span class="fu">as.factor</span>(WineColor))</span>
+<span id="cb3-6"><a href=""></a><span class="fu">head</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  WineColor Acidity VolatileAcidity CitricAcid ResidualSugar Chlorides
@@ -530,9 +552,9 @@ The example used here: <a href="https://ai.lange-analytics.com/htmlbook/KNearNei
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/WineDataTest.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb4-2"><a href=""></a>          <span class="fu">select</span>(<span class="sc">-</span>Quality) <span class="sc">|&gt;</span> </span>
-<span id="cb4-3"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">WineColor=</span><span class="fu">as.factor</span>(WineColor))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/WineDataTest.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href=""></a>          <span class="fu">select</span>(<span class="sc">-</span>Quality) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">WineColor=</span><span class="fu">as.factor</span>(WineColor))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -543,28 +565,28 @@ The example used here: <a href="https://ai.lange-analytics.com/htmlbook/KNearNei
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>., <span class="at">data=</span>DataTrain)  <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href=""></a>           <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>., <span class="at">data=</span>DataTrain)  <span class="sc">|&gt;</span> </span>
+<span id="cb6-2"><a href=""></a>           <span class="fu">step_normalize</span>(<span class="fu">all_predictors</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>Model Design:</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>ModelDesignKNN<span class="ot">=</span><span class="fu">nearest_neighbor</span>(<span class="at">neighbors=</span><span class="dv">4</span>,  </span>
-<span id="cb6-2"><a href=""></a>                                <span class="at">weight_func=</span><span class="st">"rectangular"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb6-3"><a href=""></a>               <span class="fu">set_engine</span>(<span class="st">"kknn"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb6-4"><a href=""></a>               <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>ModelDesignKNN<span class="ot">=</span><span class="fu">nearest_neighbor</span>(<span class="at">neighbors=</span><span class="dv">4</span>,  </span>
+<span id="cb7-2"><a href=""></a>                                <span class="at">weight_func=</span><span class="st">"rectangular"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href=""></a>               <span class="fu">set_engine</span>(<span class="st">"kknn"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-4"><a href=""></a>               <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>Putting it all together in a Workflow:</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href=""></a>            <span class="fu">add_recipe</span>(RecipeWine) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href=""></a>            <span class="fu">add_model</span>(ModelDesignKNN) <span class="sc">|&gt;</span> </span>
-<span id="cb7-4"><a href=""></a>            <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href=""></a>            <span class="fu">add_recipe</span>(RecipeWine) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href=""></a>            <span class="fu">add_model</span>(ModelDesignKNN) <span class="sc">|&gt;</span> </span>
+<span id="cb8-4"><a href=""></a>            <span class="fu">fit</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -574,8 +596,8 @@ The example used here: <a href="https://ai.lange-analytics.com/htmlbook/KNearNei
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest) </span>
-<span id="cb8-2"><a href=""></a><span class="fu">head</span>(DataTestWithPred, <span class="at">n=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest) </span>
+<span id="cb9-2"><a href=""></a><span class="fu">head</span>(DataTestWithPred, <span class="at">n=</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell fragment">
@@ -596,7 +618,7 @@ The example used here: <a href="https://ai.lange-analytics.com/htmlbook/KNearNei
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>WineColor, <span class="at">estimate=</span>.pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>WineColor, <span class="at">estimate=</span>.pred_class)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="cell fragment">
