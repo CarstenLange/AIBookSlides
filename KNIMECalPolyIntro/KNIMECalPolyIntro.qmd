@@ -86,7 +86,7 @@ $$ <br><br> [Load workflow from KNIME Community Hub]{style="color:yellow; font-w
 
 Search: WageRegression on https://hub.knime.com
 
-## Part 3: Predicting Wine Color with k-Nearest Neighbor Model \*\*\*\*
+## Part 3: Predicting Wine Color with k-Nearest Neighbor Model \*\*\*\*-\>\*\*
 
 ::: columns
 ::: {.column width="50%"}
