@@ -61,7 +61,7 @@ DataWage=import("https://econ.lange-analytics.com/RData/Datasets/DataWage.xlsx")
 head(DataWage|>select(wage,female))
 ```
 
-**Was the female wage lower than the male wage in 1976?**
+**Was the female wage lower than the male wage in 1976? \*-\>\*\***
 
 [KNIME Demo]{style="color:yellow; font-weight:bold"}
 
@@ -69,7 +69,7 @@ Completed workspace: SearchCompareMeans on https://hub.knime.com
 
 ## Wage Discrimination
 
-**We saw:** Female wages were lower in 1976 than male wages and that the result was most likely (95%) **not derived by chance**. <br><br> **Was this wage gap created by discrimination or by a lack of female education and experience?** <br><br> To answer this question we have to control for education and experience (in years) --- we have to perform a **regression analysis**
+**We saw:** Female wages were lower in 1976 than male wages and that the result was most likely (95%) **not derived by chance**. <br><br> **Was this wage gap created by discrimination or by a lack of female education and experience?** <br><br> To answer this question, we have to control for education and experience (in years) --- we have to perform a **regression analysis \*\*\*-\>\***
 
 ## Regression {.smaller}
 
@@ -86,7 +86,7 @@ $$ <br><br> [Load workflow from KNIME Community Hub]{style="color:yellow; font-w
 
 Search: WageRegression on https://hub.knime.com
 
-## Part 3: Predicting Wine Color with k-Nearest Neighbor Model
+## Part 3: Predicting Wine Color with k-Nearest Neighbor Model \*\*\*\*
 
 ::: columns
 ::: {.column width="50%"}
