@@ -78,7 +78,7 @@ New website is *Treatment* old website is *Control* group
 library(rio)
 library(tidyverse)
 library(TeachHist)
-DataWebSites=import("DataWebSites.csv")[,2:3]
+DataWebSites=import("https://econ.lange-analytics.com/RData/Datasets/DataWebSites.xlsx")
 head(DataWebSites)
 ```
 

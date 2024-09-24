@@ -6,6 +6,7 @@ format:
     code-fold: true
     scrollable: true
     echo: true
+    incremental: false
 ---
 
 
@@ -30,8 +31,69 @@ format:
 
 -   Using `tidymodels` to analyze housing prices.
 
+## First: A/B Test Revisited
+### Data
+
+-   [Wooldridge Dataset](https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf) (can be downloaded [here](https://econ.lange-analytics.com/RData/Datasets/DataWage.xlsx))
+-   Wage data from 1976 for 526 female and male observations including variables such as Sex, Education, and Experience in years
+
+```{r}
+library(tidyverse)
+library(wooldridge)
+
+DataWage=wage1 |> 
+         filter(smsa==1) |> 
+         select(Wage=wage, SexFem=female)
+head(DataWage)
+```
 
 
+## First: A/B Test Revisited
+### t.test for equal means
+
+
+
+```{r}
+t.test(Wage~SexFem, data=DataWage, var.equal=TRUE)
+```
+
+## First: A/B Test Revisited
+### Linear Regression
+
+```{r}
+library(ggdag)
+DAGSimpleRegression=dagify(Wage~SexFem, outcome="Wage",   
+                           exposure="SexFem",  labels = c(Wage = "Wage", 
+                                                  SexFem = "SexFem"))
+ggdag_status(DAGSimpleRegression, use_labels = "label", 
+             text = FALSE)
+```
+$$\widehat{Wage}=\beta_1 Sex_{Fem}+ \beta_2$$
+
+## First: A/B Test Revisited
+### Linear Regression
+
+$$\widehat{Wage}=\beta_1 Sex_{Fem}+ \beta_2$$
+
+```{r}
+ModelLM=lm(Wage~SexFem, data=DataWage)
+summary(ModelLM)
+```
+
+## First: A/B Test Revisited
+### A/B Test and Simple Linear Regression (one variable) not suitable
+
+```{r}
+library(ggdag)
+DAGSimpleRegression=dagify(Wage~SexFem+Exp+Educ+MSAYex, 
+                           Exp~SexFem, Educ~SexFem, MSAYex~SexFem,
+                           outcome="Wage",   
+                           exposure="SexFem",  
+  labels = c(Wage="Wage", SexFem="SexFem", Exp="Exp", Educ="Educ", MSAYex="MSAYex"))
+set.seed(22)
+ggdag_status(DAGSimpleRegression, use_labels = "label", 
+             text = FALSE) 
+```
 ## Jumping Right Into It with Real World Data
 
 Univariate OLS (simple OLS) with a real estate dataset
