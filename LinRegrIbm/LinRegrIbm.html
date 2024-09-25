@@ -469,6 +469,11 @@ mean in group 0 mean in group 1
        7.685918        4.829728 </code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>The estimated difference between female and male salary is: -2.85619</code></pre>
+</div>
+</div>
 </section>
 <section id="first-ab-test-revisited-2" class="slide level2">
 <h2>First: A/B Test Revisited</h2>
@@ -476,16 +481,16 @@ mean in group 0 mean in group 1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">library</span>(ggdag)</span>
-<span id="cb5-2"><a href=""></a>DAGSimpleRegression<span class="ot">=</span><span class="fu">dagify</span>(Wage<span class="sc">~</span>SexFem, <span class="at">outcome=</span><span class="st">"Wage"</span>,   </span>
-<span id="cb5-3"><a href=""></a>                           <span class="at">exposure=</span><span class="st">"SexFem"</span>,  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Wage =</span> <span class="st">"Wage"</span>, </span>
-<span id="cb5-4"><a href=""></a>                                                  <span class="at">SexFem =</span> <span class="st">"SexFem"</span>))</span>
-<span id="cb5-5"><a href=""></a><span class="fu">ggdag_status</span>(DAGSimpleRegression, <span class="at">use_labels =</span> <span class="st">"label"</span>, </span>
-<span id="cb5-6"><a href=""></a>             <span class="at">text =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb6-2"><a href=""></a>DAGSimpleRegression<span class="ot">=</span><span class="fu">dagify</span>(Wage<span class="sc">~</span>SexFem, <span class="at">outcome=</span><span class="st">"Wage"</span>,   </span>
+<span id="cb6-3"><a href=""></a>                           <span class="at">exposure=</span><span class="st">"SexFem"</span>,  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Wage =</span> <span class="st">"Wage"</span>, </span>
+<span id="cb6-4"><a href=""></a>                                                  <span class="at">SexFem =</span> <span class="st">"SexFem"</span>))</span>
+<span id="cb6-5"><a href=""></a><span class="fu">ggdag_status</span>(DAGSimpleRegression, <span class="at">use_labels =</span> <span class="st">"label"</span>, </span>
+<span id="cb6-6"><a href=""></a>             <span class="at">text =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Wage}=\beta_1 Sex_{Fem}+ \beta_2\]</span></p>
+<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Wage}=\beta_1 Sex_{Fem}+ \beta_2\]</span></p>
 </section>
 <section id="first-ab-test-revisited-3" class="slide level2">
 <h2>First: A/B Test Revisited</h2>
@@ -494,8 +499,8 @@ mean in group 0 mean in group 1
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>ModelLM<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, <span class="at">data=</span>DataWage)</span>
-<span id="cb6-2"><a href=""></a><span class="fu">summary</span>(ModelLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>ModelLM<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>SexFem, <span class="at">data=</span>DataWage)</span>
+<span id="cb7-2"><a href=""></a><span class="fu">summary</span>(ModelLM)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -525,19 +530,18 @@ F-statistic: 58.62 on 1 and 378 DF,  p-value: 1.617e-13</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">library</span>(ggdag)</span>
-<span id="cb8-2"><a href=""></a>DAGSimpleRegression<span class="ot">=</span><span class="fu">dagify</span>(Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Exp<span class="sc">+</span>Educ<span class="sc">+</span>MSAYex, </span>
-<span id="cb8-3"><a href=""></a>                           Exp<span class="sc">~</span>SexFem, Educ<span class="sc">~</span>SexFem, MSAYex<span class="sc">~</span>SexFem,</span>
-<span id="cb8-4"><a href=""></a>                           <span class="at">outcome=</span><span class="st">"Wage"</span>,   </span>
-<span id="cb8-5"><a href=""></a>                           <span class="at">exposure=</span><span class="st">"SexFem"</span>,  </span>
-<span id="cb8-6"><a href=""></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Wage=</span><span class="st">"Wage"</span>, <span class="at">SexFem=</span><span class="st">"SexFem"</span>, <span class="at">Exp=</span><span class="st">"Exp"</span>, <span class="at">Educ=</span><span class="st">"Educ"</span>, <span class="at">MSAYex=</span><span class="st">"MSAYex"</span>))</span>
-<span id="cb8-7"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">22</span>)</span>
-<span id="cb8-8"><a href=""></a><span class="fu">ggdag_status</span>(DAGSimpleRegression, <span class="at">use_labels =</span> <span class="st">"label"</span>, </span>
-<span id="cb8-9"><a href=""></a>             <span class="at">text =</span> <span class="cn">FALSE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb9-2"><a href=""></a>DAGSimpleRegression<span class="ot">=</span><span class="fu">dagify</span>(Wage<span class="sc">~</span>SexFem<span class="sc">+</span>Exp<span class="sc">+</span>Educ<span class="sc">+</span>MSAYex, </span>
+<span id="cb9-3"><a href=""></a>                           <span class="at">outcome=</span><span class="st">"Wage"</span>,   </span>
+<span id="cb9-4"><a href=""></a>                           <span class="at">exposure=</span><span class="st">"SexFem"</span>,  </span>
+<span id="cb9-5"><a href=""></a>  <span class="at">labels =</span> <span class="fu">c</span>(<span class="at">Wage=</span><span class="st">"Wage"</span>, <span class="at">SexFem=</span><span class="st">"SexFem"</span>, <span class="at">Exp=</span><span class="st">"Exp"</span>, <span class="at">Educ=</span><span class="st">"Educ"</span>, <span class="at">MSAYex=</span><span class="st">"MSAYex"</span>))</span>
+<span id="cb9-6"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">22</span>)</span>
+<span id="cb9-7"><a href=""></a><span class="fu">ggdag_status</span>(DAGSimpleRegression, <span class="at">use_labels =</span> <span class="st">"label"</span>, </span>
+<span id="cb9-8"><a href=""></a>             <span class="at">text =</span> <span class="cn">FALSE</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
+<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
 <section id="jumping-right-into-it-with-real-world-data" class="slide level2">
 <h2>Jumping Right Into It with Real World Data</h2>
 <p>Univariate OLS (simple OLS) with a real estate dataset</p>
@@ -552,22 +556,22 @@ F-statistic: 58.62 on 1 and 378 DF,  p-value: 1.617e-13</code></pre>
 <section id="loading-libraries" class="slide level2">
 <h2>Loading Libraries</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb9-2"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb9-3"><a href=""></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb9-4"><a href=""></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb10-2"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb10-3"><a href=""></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb10-4"><a href=""></a><span class="fu">library</span>(janitor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="loading-the-data" class="slide level2">
 <h2>Loading the Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>DataHouses<span class="ot">=</span></span>
-<span id="cb10-2"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-3"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb10-4"><a href=""></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving) </span>
-<span id="cb10-5"><a href=""></a></span>
-<span id="cb10-6"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">7771</span>)</span>
-<span id="cb10-7"><a href=""></a>Data100Houses<span class="ot">=</span><span class="fu">sample_n</span>(DataHouses,<span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>DataHouses<span class="ot">=</span></span>
+<span id="cb11-2"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href=""></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving) </span>
+<span id="cb11-5"><a href=""></a></span>
+<span id="cb11-6"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">7771</span>)</span>
+<span id="cb11-7"><a href=""></a>Data100Houses<span class="ot">=</span><span class="fu">sample_n</span>(DataHouses,<span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>First six observations training data:</strong></p>
 <div class="cell">
@@ -588,16 +592,16 @@ F-statistic: 58.62 on 1 and 378 DF,  p-value: 1.617e-13</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>MeanSqft<span class="ot">=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Sqft)</span>
-<span id="cb12-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean square footage of a house in King county is:"</span>, MeanSqft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>MeanSqft<span class="ot">=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Sqft)</span>
+<span id="cb13-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean square footage of a house in King county is:"</span>, MeanSqft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>The mean square footage of a house in King county is: 1956.7</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>MeanPrice<span class="ot">=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Price)</span>
-<span id="cb14-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean price of a house in King county is:"</span>, MeanPrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>MeanPrice<span class="ot">=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Price)</span>
+<span id="cb15-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean price of a house in King county is:"</span>, MeanPrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>The mean price of a house in King county is: 521294.2</code></pre>
@@ -607,7 +611,7 @@ F-statistic: 58.62 on 1 and 378 DF,  p-value: 1.617e-13</code></pre>
 <section id="predicting-the-price-of-an-average-sized-house-as-the-average-of-all-house-prices" class="slide level2">
 <h2>Predicting the Price of an Average Sized House as the Average of all House Prices</h2>
 
-<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
+<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
 <section id="an-interactive-graph-that-explains-it-all" class="slide level2">
 <h2>An Interactive Graph That Explains it All</h2>
 <p><a href="https://econ.lange-analytics.com/calcat/linregrmeans" target="_blank">https://econ.lange-analytics.com/calcat/linregrmeans</a></p>
@@ -622,11 +626,11 @@ F-statistic: 58.62 on 1 and 378 DF,  p-value: 1.617e-13</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>ModelOLS<span class="ot">=</span><span class="fu">lm</span>(Price<span class="sc">~</span>Sqft, <span class="at">data=</span>Data100Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>ModelOLS<span class="ot">=</span><span class="fu">lm</span>(Price<span class="sc">~</span>Sqft, <span class="at">data=</span>Data100Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
-<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2">
+<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2 smaller">
 <h2>Unfitted Model vs Fitted Workflow Model</h2>
 <p>Unfitted Model: <span class="math display">\[
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
@@ -634,7 +638,7 @@ F-statistic: 58.62 on 1 and 378 DF,  p-value: 1.617e-13</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>ModelOLS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">print</span>(ModelOLS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -679,11 +683,11 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>DataMockup<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds"</span>)</span>
-<span id="cb20-2"><a href=""></a><span class="fu">kbl</span>(DataMockup <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">i=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(i,<span class="fu">everything</span>()), </span>
-<span id="cb20-3"><a href=""></a>    <span class="at">caption=</span><span class="st">"Mockup Training Dataset"</span>)<span class="sc">|&gt;</span></span>
-<span id="cb20-4"><a href=""></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span>, <span class="st">"y"</span>, <span class="st">"x"</span>), <span class="at">escape=</span>F) <span class="sc">|&gt;</span> </span>
-<span id="cb20-5"><a href=""></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options=</span><span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>), <span class="at">full_width =</span> F, <span class="at">position=</span><span class="st">"center"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>DataMockup<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds"</span>)</span>
+<span id="cb21-2"><a href=""></a><span class="fu">kbl</span>(DataMockup <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">i=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(i,<span class="fu">everything</span>()), </span>
+<span id="cb21-3"><a href=""></a>    <span class="at">caption=</span><span class="st">"Mockup Training Dataset"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href=""></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span>, <span class="st">"y"</span>, <span class="st">"x"</span>), <span class="at">escape=</span>F) <span class="sc">|&gt;</span> </span>
+<span id="cb21-5"><a href=""></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options=</span><span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>), <span class="at">full_width =</span> F, <span class="at">position=</span><span class="st">"center"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-striped table-hover caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -753,7 +757,7 @@ x
 <p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the prediction errors <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
 </div></div>
 </section>
-<section id="predict-grade-based-on-study-time-with-eyeballing" class="slide level2 smaller">
+<section id="predict-grade-based-on-study-time-with-eyeballing" class="slide level2">
 <h2>Predict Grade Based on Study Time with Eyeballing</h2>
 <p>Copy the code from the code-section of the slide into an <em>R</em> script and try to adjust <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_1\)</span> to get the best prediction equation.</p>
 <p><span class="math display">\[
@@ -762,12 +766,12 @@ x
 \widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
 \]</span></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a>Beta1<span class="ot">=</span><span class="dv">0</span></span>
-<span id="cb21-2"><a href=""></a>Beta2<span class="ot">=</span><span class="dv">50</span></span>
-<span id="cb21-3"><a href=""></a><span class="fu">source</span>(<span class="st">"https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb22-2"><a href=""></a>DataMockup<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds"</span>)</span>
+<span id="cb22-3"><a href=""></a>Beta1<span class="ot">=</span><span class="dv">0</span></span>
+<span id="cb22-4"><a href=""></a>Beta2<span class="ot">=</span><span class="fu">mean</span>(DataMockup<span class="sc">$</span>Grade)<span class="sc">-</span> Beta1<span class="sc">*</span><span class="fu">mean</span>(DataMockup<span class="sc">$</span>StudyTime)</span>
+<span id="cb22-5"><a href=""></a><span class="fu">cat</span>(<span class="st">"Beta2 ensuring avg. StudyTime leads to avg. Grade prediction:"</span>, Beta2)</span>
+<span id="cb22-6"><a href=""></a><span class="fu">source</span>(<span class="st">"https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="univariate-linear-regression---data-diagram-and-goal" class="slide level2 smaller">
@@ -787,21 +791,21 @@ x
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>Model123<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
-<span id="cb22-2"><a href=""></a>PredGrade<span class="ot">=</span><span class="fu">predict</span>(Model123, DataMockup)</span>
-<span id="cb22-3"><a href=""></a><span class="fu">ggplot</span>(DataMockup, <span class="fu">aes</span>(<span class="at">x=</span>StudyTime,<span class="at">y=</span>Grade)) <span class="sc">+</span></span>
-<span id="cb22-4"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>PredGrade), <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="fl">2.7</span>)<span class="sc">+</span></span>
-<span id="cb22-5"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">5</span>, <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
-<span id="cb22-6"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span>PredGrade), <span class="at">color=</span><span class="st">"black"</span>, <span class="at">size=</span><span class="fl">2.7</span>)<span class="sc">+</span></span>
-<span id="cb22-7"><a href=""></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> StudyTime, <span class="at">y =</span> PredGrade,</span>
-<span id="cb22-8"><a href=""></a>                   <span class="at">xend =</span> StudyTime, <span class="at">yend =</span> Grade),<span class="at">size=</span><span class="fl">1.2</span>)<span class="sc">+</span></span>
-<span id="cb22-9"><a href=""></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"Study Time"</span>, <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">8</span>))<span class="sc">+</span></span>
-<span id="cb22-10"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">110</span>), <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">60</span>,<span class="dv">100</span>,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>Model123<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
+<span id="cb23-2"><a href=""></a>PredGrade<span class="ot">=</span><span class="fu">predict</span>(Model123, DataMockup)</span>
+<span id="cb23-3"><a href=""></a><span class="fu">ggplot</span>(DataMockup, <span class="fu">aes</span>(<span class="at">x=</span>StudyTime,<span class="at">y=</span>Grade)) <span class="sc">+</span></span>
+<span id="cb23-4"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>PredGrade), <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="fl">2.7</span>)<span class="sc">+</span></span>
+<span id="cb23-5"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">5</span>, <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb23-6"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span>PredGrade), <span class="at">color=</span><span class="st">"black"</span>, <span class="at">size=</span><span class="fl">2.7</span>)<span class="sc">+</span></span>
+<span id="cb23-7"><a href=""></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> StudyTime, <span class="at">y =</span> PredGrade,</span>
+<span id="cb23-8"><a href=""></a>                   <span class="at">xend =</span> StudyTime, <span class="at">yend =</span> Grade),<span class="at">size=</span><span class="fl">1.2</span>)<span class="sc">+</span></span>
+<span id="cb23-9"><a href=""></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"Study Time"</span>, <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb23-10"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">110</span>), <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">60</span>,<span class="dv">100</span>,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
+<p><img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -809,8 +813,8 @@ x
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>Beta1<span class="ot">=</span><span class="dv">4</span></span>
-<span id="cb23-2"><a href=""></a>Beta2<span class="ot">=</span><span class="dv">64</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>Beta1<span class="ot">=</span><span class="dv">4</span></span>
+<span id="cb24-2"><a href=""></a>Beta2<span class="ot">=</span><span class="dv">64</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </div></div>
@@ -848,9 +852,9 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>VecBeta<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
-<span id="cb24-2"><a href=""></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBeta, DataMockup)</span>
-<span id="cb24-3"><a href=""></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>VecBeta<span class="ot">=</span><span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">61</span>)</span>
+<span id="cb25-2"><a href=""></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBeta, DataMockup)</span>
+<span id="cb25-3"><a href=""></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 29.8</code></pre>
@@ -860,18 +864,18 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a>FctMSE<span class="ot">=</span><span class="cf">function</span>(VecBeta, data){</span>
-<span id="cb26-2"><a href=""></a>                        Beta1<span class="ot">=</span>VecBeta[<span class="dv">1</span>]</span>
-<span id="cb26-3"><a href=""></a>                        Beta2<span class="ot">=</span>VecBeta[<span class="dv">2</span>]</span>
-<span id="cb26-4"><a href=""></a>                        data<span class="ot">=</span>data <span class="sc">|&gt;</span></span>
-<span id="cb26-5"><a href=""></a>                        <span class="fu">rename</span>(<span class="at">Y=</span><span class="dv">1</span>, <span class="at">X=</span><span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb26-6"><a href=""></a>                        <span class="fu">mutate</span>(<span class="at">YPred=</span>Beta1<span class="sc">*</span>X<span class="sc">+</span>Beta2) <span class="sc">|&gt;</span></span>
-<span id="cb26-7"><a href=""></a>                        <span class="fu">mutate</span>(<span class="at">Error=</span>YPred<span class="sc">-</span>Y) <span class="sc">|&gt;</span></span>
-<span id="cb26-8"><a href=""></a>                        <span class="fu">mutate</span>(<span class="at">ErrorSqt=</span>Error<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb26-9"><a href=""></a>                        </span>
-<span id="cb26-10"><a href=""></a>                        MSE<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ErrorSqt)</span>
-<span id="cb26-11"><a href=""></a>                        </span>
-<span id="cb26-12"><a href=""></a>                        <span class="fu">return</span>(MSE)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>FctMSE<span class="ot">=</span><span class="cf">function</span>(VecBeta, data){</span>
+<span id="cb27-2"><a href=""></a>                        Beta1<span class="ot">=</span>VecBeta[<span class="dv">1</span>]</span>
+<span id="cb27-3"><a href=""></a>                        Beta2<span class="ot">=</span>VecBeta[<span class="dv">2</span>]</span>
+<span id="cb27-4"><a href=""></a>                        data<span class="ot">=</span>data <span class="sc">|&gt;</span></span>
+<span id="cb27-5"><a href=""></a>                        <span class="fu">rename</span>(<span class="at">Y=</span><span class="dv">1</span>, <span class="at">X=</span><span class="dv">2</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb27-6"><a href=""></a>                        <span class="fu">mutate</span>(<span class="at">YPred=</span>Beta1<span class="sc">*</span>X<span class="sc">+</span>Beta2) <span class="sc">|&gt;</span></span>
+<span id="cb27-7"><a href=""></a>                        <span class="fu">mutate</span>(<span class="at">Error=</span>YPred<span class="sc">-</span>Y) <span class="sc">|&gt;</span></span>
+<span id="cb27-8"><a href=""></a>                        <span class="fu">mutate</span>(<span class="at">ErrorSqt=</span>Error<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb27-9"><a href=""></a>                        </span>
+<span id="cb27-10"><a href=""></a>                        MSE<span class="ot">=</span><span class="fu">mean</span>(data<span class="sc">$</span>ErrorSqt)</span>
+<span id="cb27-11"><a href=""></a>                        </span>
+<span id="cb27-12"><a href=""></a>                        <span class="fu">return</span>(MSE)}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -884,11 +888,11 @@ MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb27-2"><a href=""></a>FctMSE<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/source/FctMSE.rds"</span>)</span>
-<span id="cb27-3"><a href=""></a>VecBeta<span class="ot">=</span><span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">60</span>)</span>
-<span id="cb27-4"><a href=""></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBeta, DataMockup)</span>
-<span id="cb27-5"><a href=""></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb28-2"><a href=""></a>FctMSE<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/source/FctMSE.rds"</span>)</span>
+<span id="cb28-3"><a href=""></a>VecBeta<span class="ot">=</span><span class="fu">c</span>(<span class="dv">7</span>,<span class="dv">60</span>)</span>
+<span id="cb28-4"><a href=""></a>ResultMSE<span class="ot">=</span><span class="fu">FctMSE</span>(VecBeta, DataMockup)</span>
+<span id="cb28-5"><a href=""></a><span class="fu">print</span>(ResultMSE)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 178.4</code></pre>
@@ -1007,14 +1011,39 @@ x x
 
 </div>
 </div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Column Sums</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StudyTime</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GradeXStudyTime</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StudyTimeSquared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">416</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">2103</td>
+<td style="text-align: right;">142</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
 </section>
 <section id="using-lm-command-from-base-r-to-run-a-regression" class="slide level2 scrollable">
 <h2>Using lm() Command from Base R to Run a Regression</h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
-<span id="cb29-2"><a href=""></a><span class="fu">print</span>(ModelStudyTime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
+<span id="cb30-2"><a href=""></a><span class="fu">print</span>(ModelStudyTime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1040,11 +1069,11 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
-<span id="cb31-2"><a href=""></a></span>
-<span id="cb31-3"><a href=""></a>DataForPrediction<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">StudyTime=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb31-4"><a href=""></a></span>
-<span id="cb31-5"><a href=""></a><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataForPrediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
+<span id="cb32-2"><a href=""></a></span>
+<span id="cb32-3"><a href=""></a>DataForPrediction<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">StudyTime=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb32-4"><a href=""></a></span>
+<span id="cb32-5"><a href=""></a><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataForPrediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        2        3 
@@ -1064,10 +1093,10 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
-<span id="cb33-2"><a href=""></a></span>
-<span id="cb33-3"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
-<span id="cb33-4"><a href=""></a><span class="fu">print</span>(VecPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
+<span id="cb34-2"><a href=""></a></span>
+<span id="cb34-3"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
+<span id="cb34-4"><a href=""></a><span class="fu">print</span>(VecPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>       1        2        3        4        5 
@@ -1081,10 +1110,10 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
-<span id="cb35-2"><a href=""></a>DataMockup<span class="ot">=</span>DataMockup <span class="sc">|&gt;</span> </span>
-<span id="cb35-3"><a href=""></a>           <span class="fu">mutate</span>(<span class="at">.pred=</span>VecPred)</span>
-<span id="cb35-4"><a href=""></a><span class="fu">print</span>(DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
+<span id="cb36-2"><a href=""></a>DataMockup<span class="ot">=</span>DataMockup <span class="sc">|&gt;</span> </span>
+<span id="cb36-3"><a href=""></a>           <span class="fu">mutate</span>(<span class="at">.pred=</span>VecPred)</span>
+<span id="cb36-4"><a href=""></a><span class="fu">print</span>(DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Grade StudyTime    .pred
@@ -1100,23 +1129,23 @@ Coefficients:
 <h2>Using tidymodels for the Linear Regression</h2>
 <p>Creating the fitted (workflow) model:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb37-2"><a href=""></a>DataMockup<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds"</span>)</span>
-<span id="cb37-3"><a href=""></a>RecipeStudyTime<span class="ot">=</span><span class="fu">recipe</span>(DataMockup, Grade<span class="sc">~</span>StudyTime)</span>
-<span id="cb37-4"><a href=""></a>ModelDesignStudyTime<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb37-5"><a href=""></a>                     <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb37-6"><a href=""></a>                     <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb37-7"><a href=""></a>WFModelStudyTime<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb37-8"><a href=""></a>                  <span class="fu">add_recipe</span>(RecipeStudyTime) <span class="sc">|&gt;</span> </span>
-<span id="cb37-9"><a href=""></a>                  <span class="fu">add_model</span>(ModelDesignStudyTime) <span class="sc">|&gt;</span> </span>
-<span id="cb37-10"><a href=""></a>                  <span class="fu">fit</span>(DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb38-2"><a href=""></a>DataMockup<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds"</span>)</span>
+<span id="cb38-3"><a href=""></a>RecipeStudyTime<span class="ot">=</span><span class="fu">recipe</span>(DataMockup, Grade<span class="sc">~</span>StudyTime)</span>
+<span id="cb38-4"><a href=""></a>ModelDesignStudyTime<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb38-5"><a href=""></a>                     <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb38-6"><a href=""></a>                     <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb38-7"><a href=""></a>WFModelStudyTime<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb38-8"><a href=""></a>                  <span class="fu">add_recipe</span>(RecipeStudyTime) <span class="sc">|&gt;</span> </span>
+<span id="cb38-9"><a href=""></a>                  <span class="fu">add_model</span>(ModelDesignStudyTime) <span class="sc">|&gt;</span> </span>
+<span id="cb38-10"><a href=""></a>                  <span class="fu">fit</span>(DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="getting-the-results-from-a-workflow" class="slide level2">
 <h2>Getting the Results from a Workflow</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>ResultsStudyTime<span class="ot">=</span><span class="fu">tidy</span>(WFModelStudyTime)</span>
-<span id="cb38-2"><a href=""></a><span class="fu">print</span>(ResultsStudyTime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>ResultsStudyTime<span class="ot">=</span><span class="fu">tidy</span>(WFModelStudyTime)</span>
+<span id="cb39-2"><a href=""></a><span class="fu">print</span>(ResultsStudyTime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   term        estimate std.error statistic p.value
@@ -1147,10 +1176,10 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb40-2"><a href=""></a>DataHousing <span class="ot">=</span></span>
-<span id="cb40-3"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span>
-<span id="cb40-4"><a href=""></a><span class="fu">head</span>(DataHousing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb41-2"><a href=""></a>DataHousing <span class="ot">=</span></span>
+<span id="cb41-3"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span>
+<span id="cb41-4"><a href=""></a><span class="fu">head</span>(DataHousing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Price Sqft
@@ -1170,32 +1199,34 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a><span class="fu">library</span>(ggdag)</span>
-<span id="cb42-2"><a href=""></a><span class="fu">dagify</span>(Price<span class="sc">~</span>Sqft,</span>
-<span id="cb42-3"><a href=""></a>       <span class="at">outcome =</span> <span class="st">"Price"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb42-4"><a href=""></a><span class="fu">ggdag</span>(<span class="at">node_size =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb43-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb43-3"><a href=""></a><span class="fu">dagify</span>(Price<span class="sc">~</span>Sqft,</span>
+<span id="cb43-4"><a href=""></a>       <span class="at">exposure=</span> <span class="st">"Sqft"</span>,</span>
+<span id="cb43-5"><a href=""></a>       <span class="at">outcome =</span> <span class="st">"Price"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb43-6"><a href=""></a><span class="fu">ggdag_status</span>(<span class="at">node_size =</span> <span class="dv">22</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 
 </div>
-<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-30-1.png" width="960" class="r-stretch"></section>
+<img data-src="LinRegrIbm_files/figure-revealjs/unnamed-chunk-32-1.png" width="960" class="r-stretch"></section>
 <section id="univariate-ols-with-a-real-world-dataset-3" class="slide level2 scrollable">
 <h2>Univariate OLS with a Real World Dataset</h2>
 <p><strong>Splitting in Training and Testing Datasets</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb43-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb43-3"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb43-4"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb43-5"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb44-2"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
+<span id="cb44-3"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb44-4"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb44-5"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p><strong>DataTrain</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="fu">head</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a><span class="fu">head</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Price Sqft
@@ -1211,7 +1242,7 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a><span class="fu">head</span>(DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="fu">head</span>(DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Price Sqft
@@ -1230,16 +1261,16 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb48-2"><a href=""></a>DataHousing <span class="ot">=</span></span>
-<span id="cb48-3"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span>
-<span id="cb48-4"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb48-5"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb48-6"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb48-7"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span>
-<span id="cb48-8"><a href=""></a></span>
-<span id="cb48-9"><a href=""></a>ModelHouses<span class="ot">=</span><span class="fu">lm</span>(Price <span class="sc">~</span> Sqft, <span class="at">data=</span>DataTrain)</span>
-<span id="cb48-10"><a href=""></a><span class="fu">summary</span>(ModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb49-2"><a href=""></a>DataHousing <span class="ot">=</span></span>
+<span id="cb49-3"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingDataSmall.csv"</span>)</span>
+<span id="cb49-4"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb49-5"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb49-6"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb49-7"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span>
+<span id="cb49-8"><a href=""></a></span>
+<span id="cb49-9"><a href=""></a>ModelHouses<span class="ot">=</span><span class="fu">lm</span>(Price <span class="sc">~</span> Sqft, <span class="at">data=</span>DataTrain)</span>
+<span id="cb49-10"><a href=""></a><span class="fu">summary</span>(ModelHouses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -1268,20 +1299,20 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb50-2"><a href=""></a></span>
-<span id="cb50-3"><a href=""></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, Price<span class="sc">~</span>Sqft)</span>
-<span id="cb50-4"><a href=""></a>ModelDesignHouses<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb50-5"><a href=""></a>                     <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb50-6"><a href=""></a>                     <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb50-7"><a href=""></a></span>
-<span id="cb50-8"><a href=""></a>WFModelHouses<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb50-9"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb50-10"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignHouses) <span class="sc">|&gt;</span> </span>
-<span id="cb50-11"><a href=""></a>               <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb50-12"><a href=""></a></span>
-<span id="cb50-13"><a href=""></a>Results<span class="ot">=</span><span class="fu">tidy</span>(WFModelHouses)</span>
-<span id="cb50-14"><a href=""></a><span class="fu">print</span>(Results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb51-2"><a href=""></a></span>
+<span id="cb51-3"><a href=""></a>RecipeHouses<span class="ot">=</span><span class="fu">recipe</span>(DataTrain, Price<span class="sc">~</span>Sqft)</span>
+<span id="cb51-4"><a href=""></a>ModelDesignHouses<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb51-5"><a href=""></a>                     <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb51-6"><a href=""></a>                     <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb51-7"><a href=""></a></span>
+<span id="cb51-8"><a href=""></a>WFModelHouses<span class="ot">=</span> <span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb51-9"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb51-10"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignHouses) <span class="sc">|&gt;</span> </span>
+<span id="cb51-11"><a href=""></a>               <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb51-12"><a href=""></a></span>
+<span id="cb51-13"><a href=""></a>Results<span class="ot">=</span><span class="fu">tidy</span>(WFModelHouses)</span>
+<span id="cb51-14"><a href=""></a><span class="fu">print</span>(Results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
@@ -1298,10 +1329,10 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>DataTrainWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelHouses, <span class="at">new_data =</span> DataTrain)</span>
-<span id="cb52-2"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelHouses, <span class="at">new_data =</span> DataTest)</span>
-<span id="cb52-3"><a href=""></a></span>
-<span id="cb52-4"><a href=""></a><span class="fu">head</span>(DataTrainWithPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a>DataTrainWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelHouses, <span class="at">new_data =</span> DataTrain)</span>
+<span id="cb53-2"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelHouses, <span class="at">new_data =</span> DataTest)</span>
+<span id="cb53-3"><a href=""></a></span>
+<span id="cb53-4"><a href=""></a><span class="fu">head</span>(DataTrainWithPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
@@ -1316,7 +1347,7 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a><span class="fu">head</span>(DataTestWithPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a><span class="fu">head</span>(DataTestWithPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
@@ -1336,7 +1367,7 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a><span class="fu">metrics</span>(DataTrainWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a><span class="fu">metrics</span>(DataTrainWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
@@ -1353,7 +1384,7 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth =</span> Price, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3

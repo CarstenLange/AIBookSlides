@@ -57,6 +57,16 @@ head(DataWage)
 t.test(Wage~SexFem, data=DataWage, var.equal=TRUE)
 ```
 
+```{r}
+#| echo: false
+library(tidymodels)
+ResultsTTest=tidy(t.test(Wage~SexFem, data=DataWage, var.equal=TRUE))
+cat("The estimated difference between female and male salary is:",
+     ResultsTTest$estimate2-ResultsTTest$estimate1)
+
+```
+
+
 ## First: A/B Test Revisited
 ### Linear Regression
 
@@ -86,7 +96,6 @@ summary(ModelLM)
 ```{r}
 library(ggdag)
 DAGSimpleRegression=dagify(Wage~SexFem+Exp+Educ+MSAYex, 
-                           Exp~SexFem, Educ~SexFem, MSAYex~SexFem,
                            outcome="Wage",   
                            exposure="SexFem",  
   labels = c(Wage="Wage", SexFem="SexFem", Exp="Exp", Educ="Educ", MSAYex="MSAYex"))
@@ -192,7 +201,7 @@ ModelOLS=lm(Price~Sqft, data=Data100Houses)
 ```
 
 
-## Unfitted Model vs Fitted Workflow Model
+## Unfitted Model vs Fitted Workflow Model {.smaller}
 
 Unfitted Model: $$
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
@@ -200,7 +209,7 @@ $$
 
 
 ```{r}
-ModelOLS
+print(ModelOLS)
 ```
 
 
@@ -266,7 +275,7 @@ $$(\widehat{Grade}_{i}-Grade_i)^2$$
 
 :::
 
-## Predict Grade Based on Study Time with Eyeballing {.smaller}
+## Predict Grade Based on Study Time with Eyeballing 
 
 
 Copy the code from the code-section of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
@@ -281,12 +290,14 @@ $$
 ```{r}
 #| eval: false
 #| echo: true
+#| code-fold: false
+library(rio)
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 Beta1=0
-Beta2=50
+Beta2=mean(DataMockup$Grade)- Beta1*mean(DataMockup$StudyTime)
+cat("Beta2 ensuring avg. StudyTime leads to avg. Grade prediction:", Beta2)
 source("https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R")
-
 ```
-
 
 ## Univariate Linear Regression - Data Diagram and Goal {.smaller}
 
@@ -477,6 +488,14 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
+```{r}
+#| echo: false
+kbl(data.frame(as.list(colSums(DataTable))), 
+    caption="Column Sums")|>
+    kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+
+
+```
 
 
 ## Using lm() Command from Base R to Run a Regression {.scrollable}
@@ -613,9 +632,11 @@ $$\widehat{Price}=\beta_1 Sqft + \beta_2$$
 
 ```{r}
 library(ggdag)
+set.seed(123)
 dagify(Price~Sqft,
+       exposure= "Sqft",
        outcome = "Price") |> 
-ggdag(node_size = 22)
+ggdag_status(node_size = 22)
 ```
 
 
