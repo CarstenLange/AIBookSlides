@@ -199,6 +199,7 @@ Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\w
 **The Data Table**
 
 ```{r }
+#| echo: false
 kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()), 
     caption="Mockup Training Dataset")|>
   add_header_above(c(" ", "y", "x"), escape=F) |> 
@@ -250,6 +251,25 @@ MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\bet
 \end{eqnarray*}
 ```
 **Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
+
+## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
+
+```{=tex}
+\begin{eqnarray}
+MSE & = & \frac{(\beta_1x_{1}+\beta_2-y_1)^2
+       +(\beta_1x_{2}+\beta_2-y_2)^2 +  \cdots+
+       (\beta_1x_{5}+\beta_2-y_{5})^2}{5} \nonumber \\
+       & \Longleftrightarrow& \nonumber \\
+MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mbox{Prediction $1$}}-65}_{\mbox{Error $1$}})^2
+       +(\underbrace{\overbrace{\beta_1\cdot 3+\beta_2}^{\mbox{Prediction $2$}}-82}_{\mbox{Error $2$}})^2\right.\nonumber \\
+   &   &\nonumber \\
+       && +
+    (\underbrace{\overbrace{\beta_1\cdot 7+\beta_2}^{\mbox{Prediction $3$}}-93}_{\mbox{Error $3$}})^2 
++(\underbrace{\overbrace{\beta_1\cdot 8+\beta_2}^{\mbox{Prediction $4$}}-93}_{\mbox{Error $4$}})^2\nonumber \\
+   &   &\nonumber \\
+       && +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_2}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
+\end{eqnarray}
+```
 
 ## Custom R Function to Calculate MSE
 
@@ -306,7 +326,7 @@ FctMSE=function(VecBeta, data){
 
 :   We can use a **systematic trial and error process**.
 
-## Method 1: Calculate Optimal Parameters (only for OLS!) {.smaller .scollable}
+## Method 1: Calculate Optimal Parameters (only for OLS!) {.smaller} 
 
 ```{=tex}
 \begin{eqnarray*} 
@@ -329,6 +349,13 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
+```{r}
+#| echo: false
+kbl(data.frame(as.list(colSums(DataTable))), 
+    caption="Column Sums")|>
+    kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+
 ## Method 2: Use a Systematic Trial and Error Process 🤓
 
 -   **Grid Search (aka Brute Force):**
@@ -345,9 +372,9 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
 See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRegrScript.R)
 :::
 
-# Univariate OLS with a Real World Dataset
+# Multivariate OLS with a Real World Dataset
 
-## Univariate OLS with a Real World Dataset
+## Multivariate OLS with a Real World Dataset
 
 **Data**
 
@@ -359,52 +386,18 @@ DataHousing =
 ```
 
 -   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
--   Several predictor variables. For now we use only $Sqft$
--   We will only use 500 randomly chosen observations from the total of 21,613 observations.
+-   Several predictor variables. 
+-   We will use all 21,613 observations.
 
-. . .
 
-**Unfitted Model:**» $$\widehat{Price}=\beta_1 Sqft + \beta_2$$
-
-## Univariate OLS with a Real World Dataset {.scrollable}
-
-**Splitting in Training and Testing Datasets**
-
-```{r}
-#| echo: true
-library(tidymodels)
-Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
-DataTrain=training(Split7030)
-DataTest=testing(Split7030)
-```
-
-**DataTrain**
-
-```{r}
-print(as_tibble(DataTrain))
-```
-
-**DataTest**
-
-```{r}
-print(as_tibble(DataTest))
-```
-
-## Univariate OLS with a Real World Dataset
-
-**Run the Analysis**»
-
-<https://ai.lange-analytics.com/exc/?file=05-LinRegrExerc100.Rmd>
-
-# Multivariate Analysis
 
 ## Multivariate Analysis --- Three Predictor Variables {.scrollable}
 
-`Sqft`: Living square footage of the house.
+`Sqft`: Living square footage of the house
 
-`Grade` Indicates the condition of houses (1 (worst) to 13 (best).
+`Grade` Indicates the condition of houses (1 (worst) to 13 (best))
 
-`Waterfront`: Is house located at the waterfront (`yes` or `no`).
+`Waterfront`: Is house located at the waterfront (`yes` or `no`)
 
 ```{r}
 #| echo: true
@@ -416,7 +409,7 @@ DataHousing =
 ```
 
 **Unfitted Model:** » $$
-Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
+Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront_{yes} +\beta_4
 $$
 
 ## Multivariate Real World Dataset --- Splitting {.scrollable}
@@ -429,21 +422,20 @@ DataTrain=training(Split7030)
 DataTest=testing(Split7030)
 ```
 
-```{r}
-DataTrain=as_tibble(DataTrain)
-DataTest=as_tibble(DataTest)
-```
+
 
 **DataTrain**
 
 ```{r}
-print(DataTrain)
+#| echo: false
+head(DataTrain)
 ```
 
 **DataTest**
 
 ```{r}
-print(DataTest)
+#| echo: false
+head(DataTest)
 ```
 
 ## Dummy and One-Hot Encoding {.scrollable}
@@ -457,7 +449,7 @@ print(OneHotTable)
 
 *One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
 
-$$Waterfront_{yes}=1-Waterfront_{no}$$ »
+$$Waterfront_{yes}=1-Waterfront_{no}$$
 
 ## Dummy and One-Hot Encoding {.scrollable}
 
@@ -478,6 +470,7 @@ print(DummyTable)
 
 ```{r}
 #| echo: true
+#| code-fold: false
 RecipeHouses=recipe(Price ~ ., data=DataTrain) |> 
                     step_dummy(Waterfront)
 ```
@@ -485,7 +478,7 @@ RecipeHouses=recipe(Price ~ ., data=DataTrain) |>
 Here is how the recipe later on (in the workflow) transforms the data:
 
 ```{r}
-juice(RecipeHouses |> prep())
+juice(RecipeHouses |> prep()) |> head()
 ```
 
 ## Multivariate Analysis --- Building the Model Design
@@ -494,6 +487,7 @@ juice(RecipeHouses |> prep())
 
 ```{r}
 #| echo: true
+#| code-fold: false
 ModelDesignHouses=linear_reg() |> 
   set_engine("lm") |> 
   set_mode("regression")
@@ -521,3 +515,10 @@ glance(WFModelHouses)
 DataTestWithPredictions = augment(WFModelHouses, new_data=DataTest)
 metrics(DataTestWithPredictions, truth=Price, estimate=.pred)
 ```
+
+
+## Exercise
+
+**Run the Analysis**»
+
+<https://ai.lange-analytics.com/exc/?file=05-LinRegrExerc100.Rmd>
