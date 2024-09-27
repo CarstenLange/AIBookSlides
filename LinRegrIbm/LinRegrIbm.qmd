@@ -572,16 +572,8 @@ Creating the fitted (workflow) model:
 ```{r}
 #| echo: true
 #| code-fold: false
-library(tidymodels)
 DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
-RecipeStudyTime=recipe(DataMockup, Grade~StudyTime)
-ModelDesignStudyTime=linear_reg() |> 
-                     set_engine("lm") |> 
-                     set_mode("regression")
-WFModelStudyTime= workflow() |> 
-                  add_recipe(RecipeStudyTime) |> 
-                  add_model(ModelDesignStudyTime) |> 
-                  fit(DataMockup)
+ModelMockup=lm(Grade~StudyTime, data=DataMockup)
 ```
 
 ## Getting the Results from a Workflow
@@ -589,8 +581,7 @@ WFModelStudyTime= workflow() |>
 ```{r}
 #| echo: true
 #| code-fold: false
-ResultsStudyTime=tidy(WFModelStudyTime)
-print(ResultsStudyTime)
+summary(ModelMockup)
 
 ```
 
@@ -683,25 +674,7 @@ ModelHouses=lm(Price ~ Sqft, data=DataTrain)
 summary(ModelHouses)
 ```
 
-## The Same Analysis with tidymodels
 
-```{r}
-#| echo: true
-library(tidymodels)
-
-RecipeHouses=recipe(DataTrain, Price~Sqft)
-ModelDesignHouses=linear_reg() |> 
-                     set_engine("lm") |> 
-                     set_mode("regression")
-
-WFModelHouses= workflow() |> 
-               add_recipe(RecipeHouses) |> 
-               add_model(ModelDesignHouses) |> 
-               fit(DataTrain)
-
-Results=tidy(WFModelHouses)
-print(Results)
-```
 
 ## Predicting with tidymodels Training and Testing Data {.scrollable}
 
@@ -709,8 +682,8 @@ The augment() command first predicts and then augments the results to the relate
 
 ```{r}
 #| echo: true
-DataTrainWithPred=augment(WFModelHouses, new_data = DataTrain)
-DataTestWithPred=augment(WFModelHouses, new_data = DataTest)
+DataTrainWithPred=augment(ModelHouses, new_data = DataTrain)
+DataTestWithPred=augment(ModelHouses, new_data = DataTest)
 
 head(DataTrainWithPred)
 head(DataTestWithPred)
@@ -721,14 +694,14 @@ head(DataTestWithPred)
 
 ```{r}
 #| echo: true
-metrics(DataTrainWithPred, truth = Price, estimate = .pred)
+metrics(DataTrainWithPred, truth = Price, estimate = .fitted)
 ```
 
 ## Metrics for Predictive Quality Testing Data
 
 ```{r}
 #| echo: true
-metrics(DataTestWithPred, truth = Price, estimate = .pred)
+metrics(DataTestWithPred, truth = Price, estimate = .fitted)
 
 ```
 
