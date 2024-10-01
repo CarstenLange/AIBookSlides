@@ -28,9 +28,9 @@ library(janitor)
 
 - Experiments and Treatment Effects
 
-- AB-Tests
+- AB-Tests and Univariate Regression with Dummies
 
-- Newest Development from Harvard University
+
 
 
 ## Dummy and One-Hot Encoding {.scrollable}
@@ -62,12 +62,6 @@ DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
 print(DummyTable)
 ```
 
-**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.
-
-For example: 
-`recipe(Data, Y~x) |> `
-
-`step_dummy()`
 »
 
 ## Sex Based Wage Discrimination (univariate)
@@ -101,15 +95,7 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
   geom_jitter(width=0.05, alpha=0.27)
 ```
 
-## Plotting the Data with Transparency (alpha) and Jittered
 
-```{r}
-#| code-fold: true
-library(tidyverse)
-ggplot(DataWage, aes(x=SexFem, y=Wage))+
-  geom_jitter(width=0.05, alpha=0.27)+
-  scale_y_continuous(limits = c(0,8))
-```
 
 ## Plotting the Data with Regression Line
 
@@ -134,11 +120,34 @@ ggplot(DataTemp, aes(x=SexMale, y=Wage))+
 ```
 
 
-## Regression Sex Discrimination
+## Sex Discrimination
 
+### Regression 
 ```{r}
 #| echo: true
 lm(Wage ~ SexFem, data=DataWage)
+```
+
+
+### Comparing Means as in A/B Tests.
+
+```{r}
+#| code-fold: true
+DataWageFem=filter(DataWage, SexFem==1)
+MeanWageFem=mean(DataWageFem$Wage)
+cat("Avg. female wage:",MeanWageFem)
+```
+
+```{r}
+#| code-fold: true
+DataWageMale=filter(DataWage, SexFem==0)
+MeanWageMale=mean(DataWageMale$Wage)
+cat("Avg. male wage:",MeanWageMale)
+```
+
+```{r}
+#| code-fold: true
+cat("Difference between female and male Wage avg.:",MeanWageFem-MeanWageMale)
 ```
 
 
@@ -235,55 +244,20 @@ lm(ConvHours~EducYears, data = DataObserv)
 ```
 If education years increases by one year, monthly services used **increase by 0.49 hours**.
 
-## AB Test - Experiment
+## What to do when AB Test is not possible?
 
-Participants get randomly assigned to *Treatment* and *Non-Treatment* (placebo) group. Education and Age is now irrelevant because it should be equally represented in *Treatment* and *Non-Treatment*, if we have enough observations (hundred(s)): 
 
-```{r}
-#| echo: true
-DataABTest=import("../DataObservAndABTest.xlsx", sheet = "DataABTest")
-print(DataABTest)
-```
 
-## Regression: AB Test - Experiment
+- Participants not randomly assigned but self selected 
 
-```{r}
-#| echo: true
-lm(data = DataABTest, ConvHours ~Treatment)
-```
+- Trial and Control Group are biased
 
-AB Test is very similar to Medical Trials (thus the terminology).
-
-## AB Test or Experiment or Trial
-
-Important:
-
-Assign participants **randomly** to the placebo (old web page) and the trial group (new web page).
-
-Determine the length of the experiment.
-
-Run regression.
-
-- Do not peak!!!
-
-## AB Test (Experiment) Workflow
-
-::: {.incremental}
-1. Assign subjects **randomly** to *Treatment* and *Placebo* group. This ensures that there is no sample bias (if your samples are large enough!!!)
-
-2. Draw acrylic graph (with plus or minus sign). Run uni-variate regression with dummy for *treatment* and *placebo*.
-
-3. Does $\beta_1$ parameter has the expected sign sign from acrylic graph. **If not abort experiment!**
-
-4. Is parameter significant? **If not abort experiment!**
-
-5. Interpret parameter. 
-:::
+- A univariate regression with a dummy variable does not solve the problem, since it gives the same results  
 
 
 ## What to do when AB Test is not possible? {.smaller}
 
-In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* group.
+In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* (*trial* and *control*) group.
 
 Example: Sex based wage discrimination {.smaller}
 
@@ -312,7 +286,7 @@ This might lead to a biased sample!
 
 ## Example: Sex Based Wage Discrimination
 
-Wage is not only determined by $SexFem$, but also  by $Educ$:
+Wage is not only determined by $SexFem$, but also  by other variables such as $Educ$:
 
 ```{r}
 #| output-location: fragment 
@@ -322,7 +296,7 @@ summary(ModelLMWageEduc)
 
 ## Example: Sex Based Wage Discrimination {.smaller}
 
-Correlation Educ and Sex: $Educ$ is determined by $SexFem$:
+Correlation $Educ$ and $SexFem$: $Educ$ is determined by $SexFem$:
 
 ```{r}
 #| output-location: fragment 
@@ -330,6 +304,18 @@ ModelLMEducSex=lm(Educ~SexFem, data=DataWage)
 summary(ModelLMEducSex)
 ```
 
+## DAG for this Situation
+
+```{r}
+#| code-fold: true
+library(ggdag)
+set.seed(123)
+DAGSimpleRegression=dagify(Wage~SexFem+Educ,
+                           Educ~SexFem,
+                           outcome="Wage",   
+                           exposure="SexFem")
+ggdag_status(DAGSimpleRegression, node_size = 22)
+```
 
 
 
@@ -341,7 +327,7 @@ summary(ModelLMEducSex)
 
 Draw Acrylic Graph!
 
-Give it a trial without instrument variable:
+Give it a trial:
 
 ```{r}
 #| output-location: fragment 

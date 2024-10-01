@@ -565,23 +565,14 @@ DataMockup=DataMockup |>
 print(DataMockup)
 ```
 
-## Using tidymodels for the Linear Regression
 
-Creating the fitted (workflow) model:
 
-```{r}
-#| echo: true
-#| code-fold: false
-DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
-ModelMockup=lm(Grade~StudyTime, data=DataMockup)
-```
-
-## Getting the Results from a Workflow
+## Getting the Results from the OLS Model
 
 ```{r}
 #| echo: true
 #| code-fold: false
-summary(ModelMockup)
+summary(ModelStudyTime)
 
 ```
 
@@ -706,4 +697,19 @@ metrics(DataTestWithPred, truth = Price, estimate = .fitted)
 ```
 
 
+## Exercise
+
+Now it is your turn. Pick a value from the housing data set and run a univariate regression to predict the price. 
+
+```{r}
+library(tidymodels)
+library(rio)
+DataHouses=
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel")
+
+Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+```
 
