@@ -11,6 +11,8 @@ format:
 
 
 
+
+
 ## What Will You Learn {.scrollable .smaller}
 
 -   Reviewing the basic idea behind linear regression
@@ -37,6 +39,8 @@ format:
 -   [Wooldridge Dataset](https://cran.r-project.org/web/packages/wooldridge/wooldridge.pdf) (can be downloaded [here](https://econ.lange-analytics.com/RData/Datasets/DataWage.xlsx))
 -   Wage data from 1976 for 526 female and male observations including variables such as Sex, Education, and Experience in years
 
+
+
 ```{r}
 library(tidyverse)
 library(wooldridge)
@@ -48,8 +52,12 @@ head(DataWage)
 ```
 
 
+
+
 ## First: A/B Test Revisited
 ### t.test for equal means
+
+
 
 
 
@@ -67,8 +75,12 @@ cat("The estimated difference between female and male salary is:",
 ```
 
 
+
+
 ## First: A/B Test Revisited
 ### Linear Regression
+
+
 
 ```{r}
 library(ggdag)
@@ -78,6 +90,8 @@ DAGSimpleRegression=dagify(Wage~SexFem, outcome="Wage",
 ggdag_status(DAGSimpleRegression, use_labels = "label", 
              text = FALSE)
 ```
+
+
 $$\widehat{Wage}=\beta_1 Sex_{Fem}+ \beta_2$$
 
 ## First: A/B Test Revisited
@@ -85,13 +99,19 @@ $$\widehat{Wage}=\beta_1 Sex_{Fem}+ \beta_2$$
 
 $$\widehat{Wage}=\beta_1 Sex_{Fem}+ \beta_2$$
 
+
+
 ```{r}
 ModelLM=lm(Wage~SexFem, data=DataWage)
 summary(ModelLM)
 ```
 
+
+
 ## First: A/B Test Revisited
 ### A/B Test and Simple Linear Regression (one variable) not suitable
+
+
 
 ```{r}
 library(ggdag)
@@ -103,6 +123,8 @@ set.seed(22)
 ggdag_status(DAGSimpleRegression, use_labels = "label", 
              text = FALSE) 
 ```
+
+
 ## Jumping Right Into It with Real World Data
 
 Univariate OLS (simple OLS) with a real estate dataset
@@ -119,6 +141,8 @@ King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 t
 
 ## Loading Libraries
 
+
+
 ```{r}
 #| code-fold: false
 library(tidymodels)
@@ -127,7 +151,11 @@ library(kableExtra)
 library(janitor)
 ```
 
+
+
 ## Loading the Data 
+
+
 
 ```{r}
 #| code-fold: false
@@ -140,7 +168,11 @@ set.seed(7771)
 Data100Houses=sample_n(DataHouses,100)
 ```
 
+
+
 **First six observations training data:**
+
+
 
 ```{r}
 #| echo: false
@@ -150,11 +182,15 @@ head(Data100Houses)
 
 
 
+
+
 ## How much is a House Worth in King County?
 
 
 
 A house with average properties should be predicted with an average price!
+
+
 
 
 ```{r}
@@ -168,7 +204,11 @@ cat("The mean price of a house in King county is:", MeanPrice)
 
 
 
+
+
 ## Predicting the Price of an Average Sized House as the Average of all House Prices
+
+
 
 ```{r}
 #| echo: false
@@ -179,6 +219,8 @@ ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
   scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
   scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
 ```
+
+
 
 ## An Interactive Graph That Explains it All
 
@@ -196,9 +238,13 @@ $$
 Fitting the Model with lm()
 
 
+
+
 ```{r}
 ModelOLS=lm(Price~Sqft, data=Data100Houses)
 ```
+
+
 
 
 ## Unfitted Model vs Fitted Workflow Model {.smaller}
@@ -208,9 +254,13 @@ Unfitted Model: $$
 $$
 
 
+
+
 ```{r}
 print(ModelOLS)
 ```
+
+
 
 
 Fitted Model: $$
@@ -220,10 +270,14 @@ $$
 ## Interpretation and Significance
 
 
+
+
 ```{r}
 #| echo: false
 tidy(ModelOLS)
 ```
+
+
 
 
 $$
@@ -246,6 +300,8 @@ The variable $Sqft$ is significant. I.e., the probability that the related coeff
 ::: {.column width="60%"}
 **The Data Table**
 
+
+
 ```{r }
 DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()), 
@@ -253,6 +309,8 @@ kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()),
   add_header_above(c(" ", "y", "x"), escape=F) |> 
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
+
+
 :::
 
 ::: {.column width="40%"}
@@ -287,6 +345,8 @@ $$
 \widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
 $$
 
+
+
 ```{r}
 #| eval: false
 #| echo: true
@@ -298,6 +358,8 @@ Beta2=mean(DataMockup$Grade)- Beta1*mean(DataMockup$StudyTime)
 cat("Beta2 ensuring avg. StudyTime leads to avg. Grade prediction:", Beta2)
 source("https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R")
 ```
+
+
 
 ## Univariate Linear Regression - Data Diagram and Goal {.smaller}
 
@@ -322,6 +384,8 @@ $$(\widehat{Grade}_{i}-Grade_i)^2$$
 ::: {.column width="60%"}
 **The Data Diagram**
 
+
+
 ```{r}
 Model123=lm(Grade~StudyTime, data=DataMockup)
 PredGrade=predict(Model123, DataMockup)
@@ -342,10 +406,14 @@ Beta1=4
 Beta2=64
 ```
 
+
+
 :::
 :::
 
 # How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
+
+
 
 ```{=tex}
 \begin{eqnarray*}
@@ -354,9 +422,13 @@ MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}
 ```
+
+
 **Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
 
 ## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
+
+
 
 ```{=tex}
 \begin{eqnarray}
@@ -376,7 +448,11 @@ MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mb
 ```
 
 
+
+
 ## Custom R Function to Calculate MSE {.scrollable}
+
+
 
 ```{r}
 #| echo: false
@@ -394,7 +470,11 @@ FctMSE=function(VecBeta, data){
                         return(MSE)}
 ```
 
+
+
 Function Call:
+
+
 
 ```{r}
 #| echo: true
@@ -403,7 +483,11 @@ ResultMSE=FctMSE(VecBeta, DataMockup)
 print(ResultMSE)
 ```
 
+
+
 Function Definition:»
+
+
 
 ```{r}
 #| echo: true
@@ -421,11 +505,15 @@ FctMSE=function(VecBeta, data){
                         return(MSE)}
 ```
 
+
+
 ## How to Find Optimal Values for $\beta_1$ and $\beta_2$ {.smaller .scollable}
 
 **Method 0: (not such a good idea)** 
 
 :   We can use **unsystematic trial and error**.
+
+
 
     ```{r}
     #| echo: true
@@ -435,6 +523,8 @@ FctMSE=function(VecBeta, data){
     ResultMSE=FctMSE(VecBeta, DataMockup)
     print(ResultMSE)
     ```
+
+
 
 
 **Method 1:**
@@ -464,6 +554,8 @@ See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRe
 :::
 
 ## Method 2: Calculate Optimal Parameters (only for OLS!){.smaller}
+
+
 
 ```{=tex}
 \begin{eqnarray*} 
@@ -498,13 +590,19 @@ kbl(data.frame(as.list(colSums(DataTable))),
 ```
 
 
+
+
 ## Using lm() Command from Base R to Run a Regression {.scrollable}
+
+
 
 ```{r}
 #| echo: true
 ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
 print(ModelStudyTime)
 ```
+
+
 
 ## Results from OLS Analysis and Sanity Check
 
@@ -519,6 +617,8 @@ Coefficient for $StudyTime$ ($\beta_1$) should be positive.
 
 ## Getting the Results from the OLS Model
 
+
+
 ```{r}
 #| echo: true
 #| code-fold: false
@@ -526,9 +626,13 @@ summary(ModelStudyTime)
 
 ```
 
+
+
 ## Predicting with the Fitted Model - Generated Data {.smaller}
 
 $$Grade=3.96 \cdot StudyTime + 64.18$$
+
+
 ```{r}
 #| echo: true
 ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
@@ -537,6 +641,8 @@ DataForPrediction=data.frame(StudyTime=c(1,2,3))
 
 predict(ModelStudyTime, newdata=DataForPrediction)
 ```
+
+
 
 Interpretation of $\beta_1=3.96$:
 
@@ -552,6 +658,8 @@ Interpretation of $\beta_1=3.96$:
 $$Grade=3.96  \cdot StudyTime + 64.18$$
 Generating the predictions:
 
+
+
 ```{r}
 #| echo: true
 
@@ -561,10 +669,14 @@ VecPred=predict(ModelStudyTime, newdata=DataMockup)
 print(VecPred)
 ```
 
+
+
 ## Predicting with the Fitted Model - Training Data
 
 $$Grade=3.96  \cdot StudyTime + 64.18$$
 Augmenting the predictions to the data frame:
+
+
 
 ```{r}
 #| echo: true
@@ -573,6 +685,8 @@ DataMockup=DataMockup |>
            mutate(.pred=VecPred)
 print(DataMockup)
 ```
+
+
 
 
 
@@ -598,6 +712,8 @@ print(DataMockup)
 
 **Data:**
 
+
+
 ```{r}
 #| echo: true
 library(rio)
@@ -606,6 +722,8 @@ DataHousing =
 head(DataHousing)
 ```
 
+
+
 ## Univariate OLS with a Real World Dataset
 
 
@@ -613,6 +731,8 @@ head(DataHousing)
 
 $$\widehat{Price}=\beta_1 Sqft + \beta_2$$
 **Directed Acyclic Graphs (causal graphs):**
+
+
 
 ```{r}
 library(ggdag)
@@ -624,9 +744,13 @@ ggdag_status(node_size = 22)
 ```
 
 
+
+
 ## Univariate OLS with a Real World Dataset {.scrollable}
 
 **Splitting in Training and Testing Datasets**
+
+
 
 ```{r}
 #| echo: true
@@ -637,21 +761,33 @@ DataTrain=training(Split7030)
 DataTest=testing(Split7030)
 ```
 
+
+
 **DataTrain**
+
+
 
 ```{r}
 head(DataTrain)
 ```
 
+
+
 **DataTest**
+
+
 
 ```{r}
 head(DataTest)
 ```
 
+
+
 ## Univariate OLS with a Real World Dataset
 
 **Run the Analysis with lm()**
+
+
 
 ```{r}
 #| echo: true
@@ -669,9 +805,13 @@ summary(ModelHouses)
 
 
 
+
+
 ## Predicting with tidymodels Training and Testing Data {.scrollable}
 
 The augment() command first predicts and then augments the results to the related data frame
+
+
 
 ```{r}
 #| echo: true
@@ -683,14 +823,22 @@ head(DataTestWithPred)
 
 ```
 
+
+
 ## Metrics for Predictive Quality Training Data
+
+
 
 ```{r}
 #| echo: true
 metrics(DataTrainWithPred, truth = Price, estimate = .fitted)
 ```
 
+
+
 ## Metrics for Predictive Quality Testing Data
+
+
 
 ```{r}
 #| echo: true
@@ -699,9 +847,13 @@ metrics(DataTestWithPred, truth = Price, estimate = .fitted)
 ```
 
 
+
+
 ## Exercise
 
 Now it is your turn. Pick a value from the housing data set and run a univariate regression to predict the price. 
+
+
 
 ```{r}
 library(tidymodels)

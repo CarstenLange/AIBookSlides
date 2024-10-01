@@ -1063,72 +1063,10 @@ Coefficients:
 <p><strong>Fitted Model</strong></p>
 <p><span class="math display">\[Grade=3.96  \cdot StudyTime + 64.18\]</span> Coefficient for <span class="math inline">\(StudyTime\)</span> (<span class="math inline">\(\beta_1\)</span>) should be positive.</p>
 </section>
-<section id="predicting-with-the-fitted-model---generated-data" class="slide level2 smaller scrollable">
-<h2>Predicting with the Fitted Model - Generated Data</h2>
-<p><span class="math display">\[Grade=3.96 \cdot StudyTime + 64.18\]</span></p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
-<span id="cb32-2"><a href=""></a></span>
-<span id="cb32-3"><a href=""></a>DataForPrediction<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">StudyTime=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
-<span id="cb32-4"><a href=""></a></span>
-<span id="cb32-5"><a href=""></a><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataForPrediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>       1        2        3 
-68.14179 72.10448 76.06716 </code></pre>
-</div>
-</div>
-<p>Interpretation of <span class="math inline">\(\beta_1=3.96\)</span>:</p>
-<ol type="1">
-<li><p>From the formula: If <span class="math inline">\(StudyTime\)</span> increases, Grade increases. -&gt; makes sense!</p></li>
-<li><p>From the formula: Quantitative impact: If <span class="math inline">\(StudyTime\)</span> increases by one unit, Grade increases by <span class="math inline">\(3.96\)</span> units.</p></li>
-<li><p>From the prediction: Above we predicted <span class="math inline">\(Grade\)</span> for <span class="math inline">\(StudyTime\)</span>s of 1,2,3, which confirms point 1) and 2).</p></li>
-</ol>
-</section>
-<section id="predicting-with-the-fitted-model---training-data" class="slide level2">
-<h2>Predicting with the Fitted Model - Training Data</h2>
-<p><span class="math display">\[Grade=3.96  \cdot StudyTime + 64.18\]</span> Generating the predictions:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
-<span id="cb34-2"><a href=""></a></span>
-<span id="cb34-3"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
-<span id="cb34-4"><a href=""></a><span class="fu">print</span>(VecPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>       1        2        3        4        5 
-72.10448 76.06716 91.91791 95.88060 80.02985 </code></pre>
-</div>
-</div>
-</section>
-<section id="predicting-with-the-fitted-model---training-data-1" class="slide level2">
-<h2>Predicting with the Fitted Model - Training Data</h2>
-<p><span class="math display">\[Grade=3.96  \cdot StudyTime + 64.18\]</span> Augmenting the predictions to the data frame:</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
-<span id="cb36-2"><a href=""></a>DataMockup<span class="ot">=</span>DataMockup <span class="sc">|&gt;</span> </span>
-<span id="cb36-3"><a href=""></a>           <span class="fu">mutate</span>(<span class="at">.pred=</span>VecPred)</span>
-<span id="cb36-4"><a href=""></a><span class="fu">print</span>(DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>  Grade StudyTime    .pred
-1    65         2 72.10448
-2    82         3 76.06716
-3    93         7 91.91791
-4    93         8 95.88060
-5    83         4 80.02985</code></pre>
-</div>
-</div>
-</section>
 <section id="getting-the-results-from-the-ols-model" class="slide level2">
 <h2>Getting the Results from the OLS Model</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">summary</span>(ModelStudyTime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">summary</span>(ModelStudyTime)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1148,6 +1086,68 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Residual standard error: 5.887 on 3 degrees of freedom
 Multiple R-squared:  0.8019,    Adjusted R-squared:  0.7359 
 F-statistic: 12.14 on 1 and 3 DF,  p-value: 0.03992</code></pre>
+</div>
+</div>
+</section>
+<section id="predicting-with-the-fitted-model---generated-data" class="slide level2 smaller scrollable">
+<h2>Predicting with the Fitted Model - Generated Data</h2>
+<p><span class="math display">\[Grade=3.96 \cdot StudyTime + 64.18\]</span></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
+<span id="cb34-2"><a href=""></a></span>
+<span id="cb34-3"><a href=""></a>DataForPrediction<span class="ot">=</span><span class="fu">data.frame</span>(<span class="at">StudyTime=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb34-4"><a href=""></a></span>
+<span id="cb34-5"><a href=""></a><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataForPrediction)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2        3 
+68.14179 72.10448 76.06716 </code></pre>
+</div>
+</div>
+<p>Interpretation of <span class="math inline">\(\beta_1=3.96\)</span>:</p>
+<ol type="1">
+<li><p>From the formula: If <span class="math inline">\(StudyTime\)</span> increases, Grade increases. -&gt; makes sense!</p></li>
+<li><p>From the formula: Quantitative impact: If <span class="math inline">\(StudyTime\)</span> increases by one unit, Grade increases by <span class="math inline">\(3.96\)</span> units.</p></li>
+<li><p>From the prediction: Above we predicted <span class="math inline">\(Grade\)</span> for <span class="math inline">\(StudyTime\)</span>s of 1,2,3, which confirms point 1) and 2).</p></li>
+</ol>
+</section>
+<section id="predicting-with-the-fitted-model---training-data" class="slide level2">
+<h2>Predicting with the Fitted Model - Training Data</h2>
+<p><span class="math display">\[Grade=3.96  \cdot StudyTime + 64.18\]</span> Generating the predictions:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>ModelStudyTime<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
+<span id="cb36-2"><a href=""></a></span>
+<span id="cb36-3"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
+<span id="cb36-4"><a href=""></a><span class="fu">print</span>(VecPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>       1        2        3        4        5 
+72.10448 76.06716 91.91791 95.88060 80.02985 </code></pre>
+</div>
+</div>
+</section>
+<section id="predicting-with-the-fitted-model---training-data-1" class="slide level2">
+<h2>Predicting with the Fitted Model - Training Data</h2>
+<p><span class="math display">\[Grade=3.96  \cdot StudyTime + 64.18\]</span> Augmenting the predictions to the data frame:</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>VecPred<span class="ot">=</span><span class="fu">predict</span>(ModelStudyTime, <span class="at">newdata=</span>DataMockup)</span>
+<span id="cb38-2"><a href=""></a>DataMockup<span class="ot">=</span>DataMockup <span class="sc">|&gt;</span> </span>
+<span id="cb38-3"><a href=""></a>           <span class="fu">mutate</span>(<span class="at">.pred=</span>VecPred)</span>
+<span id="cb38-4"><a href=""></a><span class="fu">print</span>(DataMockup)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Grade StudyTime    .pred
+1    65         2 72.10448
+2    82         3 76.06716
+3    93         7 91.91791
+4    93         8 95.88060
+5    83         4 80.02985</code></pre>
 </div>
 </div>
 </section></section>
