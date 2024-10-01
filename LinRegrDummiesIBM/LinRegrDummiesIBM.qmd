@@ -26,14 +26,12 @@ library(janitor)
 
 -   Being able to distinguish between dummy encoding and one-hot encoding
 
-- Experiments and Treatment Effects
-
-- AB-Tests and Univariate Regression with Dummies
+- AB-Tests vs Univariate Regression with Dummies
 
 
 
 
-## Dummy and One-Hot Encoding {.scrollable}
+## Dummy and One-Hot Encoding {.smaller}
 
 **One-Hot Encoding**
 
@@ -108,7 +106,7 @@ ggplot(DataWage, aes(x=SexFem, y=Wage))+
 ```
 
 
-## Plotting the Data with Regression Line using SexMale instead of SexFem
+## Plotting the Data with Regression Line using SexMale Rather Than SexFem
 
 ```{r}
 #| code-fold: true
@@ -149,9 +147,21 @@ cat("Avg. male wage:",MeanWageMale)
 #| code-fold: true
 cat("Difference between female and male Wage avg.:",MeanWageFem-MeanWageMale)
 ```
+# A/B-Test vs. Observational Data Analysis {.smaller}
 
+**A/B-Test:** Data derived from an experiment
 
-# Observational Data Analysis vs. AB-Test
+- Assignment to Control and Treatment group must be random and unbiased.
+- Use t-test to see if group means are statitically significant
+- Gold Standard: Use when you can
+
+**Observational Data:**
+
+- Second best
+- Data are from the past
+- Biases can be corrected
+
+# AB-Test vs. Observational Data 
 
 ## Fun Examples 1:
 
@@ -169,7 +179,7 @@ From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/
 
 **Fertility Rate:**
 
-We want to find the average offsprings a mother has (fertility rate) about 30 years ago?:
+We want to find the average offsprings a mother had (fertility rate) about 30 years ago:
 
 We survey 1,000 people age 30 and ask how many offsprings their mother had.
 
@@ -255,14 +265,20 @@ If education years increases by one year, monthly services used **increase by 0.
 - A univariate regression with a dummy variable does not solve the problem, since it gives the same results  
 
 
+
+
+
+
+
 ## What to do when AB Test is not possible? {.smaller}
 
 In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* (*trial* and *control*) group.
 
-Example: Sex based wage discrimination {.smaller}
+This might lead to a biased sample!
+
+**Example: Sex based wage discrimination** 
 
 ```{r}
-#| output-location: fragment
 library(tidymodels)
 library(janitor)
 library(wooldridge)
@@ -271,18 +287,8 @@ DataWage=wage1 |>
          clean_names("upper_camel") |> 
          select(Wage,SexFem=Female, Educ)
   
-ModelLMWageSex=lm(Wage~SexFem, data=DataWage)        
-summary(ModelLMWageSex)
+head(DataWage)
 ```
-
-Does this mean because of sex based wage discrimination women make $2.5 less?
-
-
-## What to do when AB Test is not possible? {.smaller}
-
-In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* group.
-
-This might lead to a biased sample!
 
 ## Example: Sex Based Wage Discrimination
 
@@ -319,7 +325,7 @@ ggdag_status(DAGSimpleRegression, node_size = 22)
 
 
 
-## Second best (since AB Test is not possible) solution: {.smaller}
+## Second best (since AB Test is not possible) {.smaller}
 
 -  Control for the impact of $Educ$ on $Wage$
 
@@ -329,11 +335,93 @@ Draw Acrylic Graph!
 
 Give it a trial:
 
-```{r}
-#| output-location: fragment 
-ModelMultiVar=lm(Wage~SexFem+Educ, DataWage)
-summary(ModelMultiVar)
+We look at two scenarios:
 
+1) Educ not correlated with SexFem (the unrealistic scenario)
+
+2) Educ not correlated with SexFem (the realistic scenario)
+
+## Testing with Synthetic Variables: DAG
+### Assumption: No Correlation Between Educ and SexFem
+```{r}
+#| code-fold: true
+library(ggdag)
+set.seed(123)
+DAGSimpleRegression=dagify(Wage~SexFem+Educ,
+                           outcome="Wage",   
+                           exposure="SexFem")
+ggdag_status(DAGSimpleRegression, node_size = 22)
+```
+
+## Testing with Synthetic Variables: Regression 1a
+### Assumption: With Correlation Between Educ and SexFem
+
+**One Variables:**
+```{r}
+#| code-fold: true
+library(rio)
+library(tidyverse)
+DataWageSynNoCor=import("DataWageSynthetic.csv") |> 
+                 select(Wage, SexFem, Educ)
+
+ModelSexFemNoCor=lm(Wage~SexFem, data=DataWageSynNoCor)
+summary(ModelSexFemNoCor)
+```
+
+## Testing with Synthetic Variables: Regression 1b
+### Assumption: No Correlation Between Educ and SexFem
+
+**Two Variables:**
+
+```{r}
+#| code-fold: true
+ModelSexFemEducNoCor=lm(Wage~SexFem+Educ, data=DataWageSynNoCor)
+summary(ModelSexFemEducNoCor)
 ```
 
 
+
+## Testing with Synthetic Variables: DAG
+### Assumption: With Correlation Between Educ and SexFem
+
+```{r}
+#| code-fold: true
+library(ggdag)
+set.seed(123)
+DAGSimpleRegression=dagify(Wage~SexFem+Educ,
+                           Educ~SexFem,
+                           outcome="Wage",   
+                           exposure="SexFem")
+ggdag_status(DAGSimpleRegression, node_size = 22)
+```
+## Testing with Synthetic Variables: Regression 2a
+### Creating Data with Correlation Between Educ and SexFem
+
+```{r}
+DataWageSynWithCor= arrange(DataWageSynNoCor, SexFem, Educ) |> 
+   tail(-200) |> 
+   head(-200)
+ModelSexEduc=lm(Educ~SexFem, data=DataWageSynWithCor)
+summary(ModelSexEduc)
+```
+
+## Testing with Synthetic Variables: Regression 2a
+### Assumption: No Correlation Between Educ and SexFem
+
+**One Variables:**
+```{r}
+#| code-fold: true
+ModelSexFemWithCor=lm(Wage~SexFem, data=DataWageSynWithCor)
+summary(ModelSexFemWithCor)
+```
+
+## Testing with Synthetic Variables: Regression 2b
+### Assumption: No Correlation Between Educ and SexFem
+
+**Two Variables:**
+
+```{r}
+#| code-fold: true
+ModelSexFemWithCor=lm(Wage~SexFem+Educ, data=DataWageSynWithCor)
+summary(ModelSexFemWithCor)
+```
