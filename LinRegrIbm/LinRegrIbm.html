@@ -1371,13 +1371,14 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
 <span id="cb58-2"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb58-3"><a href=""></a>DataHouses<span class="ot">=</span></span>
-<span id="cb58-4"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb58-5"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>)</span>
-<span id="cb58-6"><a href=""></a></span>
-<span id="cb58-7"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHousing, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
-<span id="cb58-8"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
-<span id="cb58-9"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb58-3"><a href=""></a><span class="fu">library</span>(janitor)</span>
+<span id="cb58-4"><a href=""></a>DataHouses<span class="ot">=</span></span>
+<span id="cb58-5"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb58-6"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>)</span>
+<span id="cb58-7"><a href=""></a></span>
+<span id="cb58-8"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(<span class="fl">0.7</span>,<span class="at">data=</span>DataHouses, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>)</span>
+<span id="cb58-9"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb58-10"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <div class="quarto-auto-generated-content">

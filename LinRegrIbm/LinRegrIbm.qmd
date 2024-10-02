@@ -706,11 +706,12 @@ Now it is your turn. Pick a value from the housing data set and run a univariate
 ```{r}
 library(tidymodels)
 library(rio)
+library(janitor)
 DataHouses=
   import("https://ai.lange-analytics.com/data/HousingData.csv") |>
   clean_names("upper_camel")
 
-Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
+Split7030=initial_split(0.7,data=DataHouses, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
 DataTest=testing(Split7030)
 ```
