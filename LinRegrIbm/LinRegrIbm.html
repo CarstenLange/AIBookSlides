@@ -1290,7 +1290,7 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 </section>
-<section id="predicting-with-tidymodels-training-and-testing-data" class="slide level2 scrollable">
+<section id="predicting-with-tidymodels-training-and-testing-data" class="slide level2 scrollable smaller">
 <h2>Predicting with tidymodels Training and Testing Data</h2>
 <p>The augment() command first predicts and then augments the results to the related data frame</p>
 <div class="cell">
@@ -1362,6 +1362,19 @@ F-statistic: 368.3 on 1 and 347 DF,  p-value: &lt; 2.2e-16</code></pre>
 3 mae     standard   173191.   </code></pre>
 </div>
 </div>
+</section>
+<section id="summary---steps-for-a-linear-regression" class="slide level2 smaller scrollable">
+<h2>Summary - Steps for a Linear Regression</h2>
+<ol type="1">
+<li><p>Draw a DAG (with R or by hand)</p></li>
+<li><p>Mark if the effects in the DAG are expected to be positive or negative</p></li>
+<li><p>Write down the formula for the unfitted model. Such as: <span class="math display">\[Price=\beta_1 Sqft + \beta_2\]</span></p></li>
+<li><p>Run the regression</p></li>
+<li><p>Substitute the <span class="math inline">\(\beta s\)</span> in the formula with the values you got from the regression.</p></li>
+<li><p>Sanity test: Are the signs (positive/negative) what you expected. If not, the related variable does not belong in your model</p></li>
+<li><p>Interpret the <span class="math inline">\(\beta (s)\)</span>. E.g., if predictor variable increases by one unit outcome increases by <span class="math inline">\(\beta\)</span> units. Note, the intercept coefficient cannot be interpreted in almost all cases!</p></li>
+<li><p>Check if P value is low enough (e.g., smaller than 0.05=5%). This is the probability for the related coefficient to be 0 and thus irrelevant. You want a low probability for that event. If P value is too high the related variable does not belong in your model. Note, no need to interpret the P for the intercept.</p></li>
+</ol>
 </section>
 <section id="exercise" class="slide level2">
 <h2>Exercise</h2>

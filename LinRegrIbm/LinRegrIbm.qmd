@@ -669,7 +669,7 @@ summary(ModelHouses)
 
 
 
-## Predicting with tidymodels Training and Testing Data {.scrollable}
+## Predicting with tidymodels Training and Testing Data {.scrollable .smaller}
 
 The augment() command first predicts and then augments the results to the related data frame
 
@@ -698,6 +698,25 @@ metrics(DataTestWithPred, truth = Price, estimate = .fitted)
 
 ```
 
+## Summary - Steps for a Linear Regression {.smaller}
+
+
+1. Draw a DAG (with R or by hand)
+
+2. Mark if the effects in the DAG are expected to be positive or negative
+
+3. Write down the formula for the unfitted model. Such as:
+$$Price=\beta_1 Sqft + \beta_2$$
+
+3. Run the regression
+
+4. Substitute the $\beta s$ in the formula with the values you got from the regression.
+
+5. Sanity test: Are the signs (positive/negative) what you expected. If not,  the related variable does not belong in your model
+
+6. Interpret the $\beta (s)$. E.g., if predictor variable increases by one unit outcome increases by $\beta$ units. Note, the intercept coefficient cannot be interpreted in almost all cases!
+
+7. Check if P value is low enough (e.g., smaller than 0.05=5%). This is the probability for the related coefficient to be 0 and thus irrelevant. You want a low probability for that event. If P value is too high the related variable does not belong in your model. Note, no need to interpret the P for the intercept. 
 
 ## Exercise
 
