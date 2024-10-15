@@ -11,8 +11,6 @@ format:
     smaller: false
 ---
 
-
-
 ## What Will You Learn {.scrollable .smaller}
 
 ```{r}
@@ -24,11 +22,10 @@ library(janitor)
 
 ```
 
-
-- The difference between absolute and relative (measured in percent) change.
-- How to interpret a regression with a logarithmic *independent* variable
-- How to interpret a regression with a logarithmic *dependent* variable
-- How to interpret a regression with a logarithmic *independent and dependent* variables
+-   The difference between absolute and relative (measured in percent) change.
+-   How to interpret a regression with a logarithmic *independent* variable
+-   How to interpret a regression with a logarithmic *dependent* variable
+-   How to interpret a regression with a logarithmic *independent and dependent* variables
 
 # Absolute Change vs. Percentage Change
 
@@ -49,15 +46,14 @@ print(ModelWage)
 The model is based on absolute change. For *each year of experience* (**absolute change**) the wage increases by 0.03.
 
 ## One year Extra Exper Creates the same Chage {.smaller}
+
 ### For an already experinced employee and a not so experienced employee
 
 Does this really make sense when, for example, comparing some body with already 20 years experience to somebody with 2 years experience. An extra year of experience has the same effect???
 
 . . .
 
-More reasonable is to use relative (percentage) change. I.e., the same **relative change** leads to the same effect. For example, and increase of 50% of experience: 
-- 1 year for the young 
-- 10 years for the older employee
+More reasonable is to use relative (percentage) change. I.e., the same **relative change** leads to the same effect. For example, and increase of 50% of experience: - 1 year for the young - 10 years for the older employee
 
 has the same effect. However, we would have to run a different regression (one where we use the logarithm of $Exper$ (`log(Exper)`) instead $Exper$ itself.)
 
@@ -82,7 +78,8 @@ DataExamp=tibble(t=c(0:3), X=c(200, 203, 207, 200)) |>
 print(DataExamp)
 ```
 
-## Plot MPG ~ Weight
+## Plot MPG \~ Weight
+
 ```{r}
 #| echo: false
 # Data source: https://www.kaggle.com/datasets/uciml/autompg-dataset/
@@ -104,49 +101,52 @@ Plot5=Plot4+
       geom_smooth(se=FALSE, method="lm", color="blue")
 ```
 
-::: {.r-stack}
-::: {.fragment}
+::::::::: r-stack
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot1)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot2)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot3)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot1)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot4)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot5)
 ```
 :::
-:::
+:::::::::
 
+## Regression MPG \~ Weight {.smaller}
 
-
-
-## Regression MPG ~ Weight {.smaller}
 ### No Variable Logarithmized
 
 ```{r}
@@ -164,8 +164,10 @@ kbl(tidy(WFModelMPG))
 kbl(glance(WFModelMPG))
 ```
 
-## Regression LNMPG ~ Weight {.smaller}
+## Regression LNMPG \~ Weight {.smaller}
+
 ### Dependent Variable MPG Logarithmized
+
 ```{r}
 ModelDesignLinear=linear_reg() |> 
             set_engine("lm") |> 
@@ -182,9 +184,7 @@ kbl(tidy(WFModelMPG))
 kbl(glance(WFModelMPG))
 ```
 
-
-
-## Plot MPG ~ Displ
+## Plot MPG \~ Displ
 
 ```{r}
 #| echo: false
@@ -202,49 +202,52 @@ Plot5=Plot4+
       geom_smooth(se=FALSE, method="lm", color="blue")
 ```
 
-::: {.r-stack}
-::: {.fragment}
+::::::::: r-stack
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot1)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot2)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot3)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot1)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot4)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot5)
 ```
 :::
-:::
+:::::::::
 
+## Regression MPG \~ Displ {.smaller}
 
-
-
-## Regression MPG ~ Displ {.smaller}
 ### No Variable Logarithmized
 
 ```{r}
@@ -262,7 +265,8 @@ kbl(tidy(WFModelMPG))
 kbl(glance(WFModelMPG))
 ```
 
-## Regression MPG ~ LNDispl {.smaller}
+## Regression MPG \~ LNDispl {.smaller}
+
 ### Independent Variable Displ Logarithmized
 
 ```{r}
@@ -282,7 +286,7 @@ kbl(tidy(WFModelMPG))
 kbl(glance(WFModelMPG))
 ```
 
-## Plot MPG ~ Weight
+## Plot MPG \~ Weight
 
 ```{r}
 #| echo: false
@@ -300,49 +304,54 @@ Plot5=Plot4+
       geom_smooth(se=FALSE, method="lm", color="blue")
 ```
 
-::: {.r-stack}
-::: {.fragment}
+::::::::: r-stack
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot1)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot2)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot3)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot1)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot4)
 ```
 :::
-::: {.fragment}
+
+::: fragment
 ```{r}
 #| echo: false
 plot(Plot5)
 ```
 :::
-:::
+:::::::::
 
+## Regression MPG \~ Weight {.smaller}
 
-
-## Regression MPG ~ Weight {.smaller}
 ### No Variable Logarithmized
+
 ```{r}
 ModelDesignLinear=linear_reg() |> 
             set_engine("lm") |> 
@@ -358,7 +367,8 @@ kbl(tidy(WFModelMPG))
 kbl(glance(WFModelMPG))
 ```
 
-## Regression MPG ~ Weight {.smaller}
+## Regression MPG \~ Weight {.smaller}
+
 ### Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized
 
 ```{r}
@@ -387,30 +397,26 @@ Source: <https://quantifyinghealth.com/interpret-log-transformations-in-linear-r
 
 ## Interpretation of Regression --- No Transformation {.smaller}
 
-$$Y_i = \beta_1 X_i+ \beta_2 $$
-$$\frac{\delta Y}{\delta X}\approx\frac{\Delta Y}{\Delta X}=\beta_1$$
-$$\Delta Y=\beta_1\Delta X$$
-$\Delta X$: change of $X$,$\Delta Y$: change of $Y$, $\frac{\Delta Y}{\Delta X}$: rise over run.
+$$Y_i = \beta_1 X_i+ \beta_2 $$ $$\frac{\delta Y}{\delta X}\approx\frac{\Delta Y}{\Delta X}=\beta_1$$ $$\Delta Y=\beta_1\Delta X$$ $\Delta X$: change of $X$,$\Delta Y$: change of $Y$, $\frac{\Delta Y}{\Delta X}$: rise over run.
 
-**The change of $X$ multiplied with $\beta_1$ equals the change of $Y$.**
+**The change of** $X$ multiplied with $\beta_1$ equals the change of $Y$.
 
 or
 
-**If $X$ changes by one unit ($\Delta X=1$), $\Delta Y$ changes by $\beta_1$ units.**
+**If** $X$ changes by one unit ($\Delta X=1$), $\Delta Y$ changes by $\beta_1$ units.
 
-## Interpretation of Regression --- Log-Transformation of Dependent Variable{.smaller}
+## Interpretation of Regression --- Log-Transformation of Dependent Variable {.smaller}
 
 We define a new variable: $LNY=\ln{Y_i}$
 
-$$LNY_i = \beta_1 X_i+ \beta_2 $$
-$$\frac{\delta LNY}{\delta X}\approx\frac{\Delta LNY}{\Delta X}=\beta_1$$
-$$\Delta LNY=\beta_1\Delta X$$
-$\Delta X$: change of $X$,$\Delta LNY$: change of $LNY$, $\frac{\Delta LNY}{\Delta X}$: rise over run.
+$$LNY_i = \beta_1 X_i+ \beta_2 $$ $$\frac{\delta LNY}{\delta X}\approx\frac{\Delta LNY}{\Delta X}=\beta_1$$ $$\Delta LNY=\beta_1\Delta X$$ $\Delta X$: change of $X$,$\Delta LNY$: change of $LNY$, $\frac{\Delta LNY}{\Delta X}$: rise over run.
 
-**The change of $X$ multiplied with $\beta_1$ equals the change of $LNY$.**
-
-
+**The change of** $X$ multiplied with $\beta_1$ equals the change of $LNY$.
 
 $$\Delta LNY=\beta_1\underbrace{\Delta X}_{+1}$$
 
-**Since we know that the change of a logarithm is a relative (percentage) change, we can say: If $X$ changes by one unit $\Delta X=1$, then $Y$ changes by $\beta_1\cdot 100$%.**
+**Since we know that the change of a logarithm is a relative (percentage) change, we can say: If** $X$ changes by one unit $\Delta X=1$, then $Y$ changes by $\beta_1\cdot 100$%.
+
+## Example Repeated Regression
+
+<https://econ.lange-analytics.com/ibm6510-40/SamplingDistribution.R>

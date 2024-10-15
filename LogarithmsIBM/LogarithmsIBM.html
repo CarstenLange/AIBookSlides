@@ -5,9 +5,10 @@
 <script src="LogarithmsIBM_files/libs/quarto-html/popper.min.js"></script>
 <script src="LogarithmsIBM_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="LogarithmsIBM_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="LogarithmsIBM_files/libs/quarto-html/light-border.css" rel="stylesheet">
 <link href="LogarithmsIBM_files/libs/quarto-html/quarto-html.min.css" rel="stylesheet" data-mode="light">
 <link href="LogarithmsIBM_files/libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.2.247">
+  <meta name="generator" content="quarto-1.5.56">
 
   <title>Expressing Percentage Change with Logarithms</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -24,11 +25,12 @@
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
       width: 0.8em;
-      margin: 0 0.8em 0.2em -1.6em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
     pre > code.sourceCode { white-space: pre; position: relative; }
-    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span { line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
     .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -39,7 +41,7 @@
     }
     @media print {
     pre > code.sourceCode { white-space: pre-wrap; }
-    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
     }
     pre.numberSource code
       { counter-reset: source-line 0; }
@@ -92,7 +94,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="LogarithmsIBM_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="LogarithmsIBM_files/libs/revealjs/dist/theme/quarto.css">
   <link href="LogarithmsIBM_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="LogarithmsIBM_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="LogarithmsIBM_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -137,44 +139,44 @@
     font-weight: 400;
   }
 
-  .callout.callout-captioned.callout-style-simple .callout-body {
+  .callout.callout-titled.callout-style-simple .callout-body {
     margin-top: 0.2em;
   }
 
-  .callout:not(.callout-captioned) .callout-body {
+  .callout:not(.callout-titled) .callout-body {
       display: flex;
   }
 
-  .callout:not(.no-icon).callout-captioned.callout-style-simple .callout-content {
+  .callout:not(.no-icon).callout-titled.callout-style-simple .callout-content {
     padding-left: 1.6em;
   }
 
-  .callout.callout-captioned .callout-header {
+  .callout.callout-titled .callout-header {
     padding-top: 0.2em;
     margin-bottom: -0.2em;
   }
 
-  .callout.callout-captioned .callout-caption  p {
+  .callout.callout-titled .callout-title  p {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
   }
     
-  .callout.callout-captioned.callout-style-simple .callout-content  p {
+  .callout.callout-titled.callout-style-simple .callout-content  p {
     margin-top: 0;
   }
 
-  .callout.callout-captioned.callout-style-default .callout-content  p {
+  .callout.callout-titled.callout-style-default .callout-content  p {
     margin-top: 0.7em;
   }
 
-  .callout.callout-style-simple div.callout-caption {
+  .callout.callout-style-simple div.callout-title {
     border-bottom: none;
     font-size: .9rem;
     font-weight: 600;
     opacity: 75%;
   }
 
-  .callout.callout-style-default  div.callout-caption {
+  .callout.callout-style-default  div.callout-title {
     border-bottom: none;
     font-weight: 600;
     opacity: 85%;
@@ -206,7 +208,7 @@
     background-size: 0.9rem 0.9rem;
   }
 
-  .callout-caption {
+  .callout-title {
     display: flex
   }
     
@@ -219,16 +221,17 @@
     display: none !important;
   }
 
-  .callout.callout-captioned .callout-body > .callout-content > :last-child {
-    margin-bottom: 0.5rem;
+  .callout.callout-titled .callout-body > .callout-content > :last-child {
+    padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
 
-  .callout.callout-captioned .callout-icon::before {
+  .callout.callout-titled .callout-icon::before {
     margin-top: .5rem;
     padding-right: .5rem;
   }
 
-  .callout:not(.callout-captioned) .callout-icon::before {
+  .callout:not(.callout-titled) .callout-icon::before {
     margin-top: 1rem;
     padding-right: .5rem;
   }
@@ -243,7 +246,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEU0lEQVRYCcVXTWhcVRQ+586kSUMMxkyaElstCto2SIhitS5Ek8xUKV2poatCcVHtUlFQk8mbaaziwpWgglJwVaquitBOfhQXFlqlzSJpFSpIYyXNjBNiTCck7x2/8/LeNDOZxDuEkgOXe++553zfefee+/OYLOXFk3+1LLrRdiO81yNqZ6K9cG0P3MeFaMIQjXssE8Z1JzLO9ls20MBZX7oG8w9GxB0goaPrW5aNMp1yOZIa7Wv6o2ykpLtmAPs/vrG14Z+6d4jpbSKuhdcSyq9wGMPXjonwmESXrriLzFGOdDBLB8Y6MNYBu0dRokSygMA/mrun8MGFN3behm6VVAwg4WR3i6FvYK1T7MHo9BK7ydH+1uurECoouk5MPRyVSBrBHMYwVobG2aOXM07sWrn5qgB60rc6mcwIDJtQrnrEr44kmy+UO9r0u9O5/YbkS9juQckLed3DyW2XV/qWBBB3ptvI8EUY3I9p/67OW+g967TNr3Sotn3IuVlfMLVnsBwH4fsnebJvyGm5GeIUA3jljERmrv49SizPYuq+z7c2H/jlGC+Ghhupn/hcapqmcudB9jwJ/3jvnvu6vu5lVzF1fXyZuZZ7U8nRmVzytvT+H3kilYvH09mLWrQdwFSsFEsxFVs5fK7A0g8gMZjbif4ACpKbjv7gNGaD8bUrlk8x+KRflttr22JEMRUbTUwwDQScyzPgedQHZT0xnx7ujw2jfVfExwYHwOsDTjLdJ2ebmeQIlJ7neo41s/DrsL3kl+W2lWvAga0tR3zueGr6GL78M3ifH0rGXrBC2aAR8uYcIA5gwV8zIE8onoh8u0Fca/ciF7j1uOzEnqcIm59sEXoGc0+z6+H45V1CvAvHcD7THztu669cnp+L0okAeIc6zjbM/24LgGM1gZk7jnRu1aQWoU9sfUOuhrmtaPIO3YY1KLLWZaEO5TKUbMY5zx8W9UJ6elpLwKXbsaZ4EFl7B4bMtDv0iRipKoDQT2sNQI9b1utXFdYisi+wzZ/ri/1m7QfDgEuvgUUEIJPq3DhX/5DWNqIXDOweC2wvIR90Oq3lDpdMIgD2r0dXvGdsEW5H6x6HLRJYU7C69VefO1x8Gde1ZFSJLfWS1jbCnhtOPxmpfv2LXOA2Xk2tvnwKKPFuZ/oRmwBwqRQDcKNeVQkYcOjtWVBuM/JuYw5b6isojIkYxyYAFn5K7ZBF10fea52y8QltAg6jnMqNHFBmGkQ1j+U43HMi2xMar1Nv0zGsf1s8nUsmUtPOOrbFIR8bHFDMB5zL13Gmr/kGlCkUzedTzzmzsaJXhYawnA3UmARpiYj5ooJZiUoxFRtK3X6pgNPv+IZVPcnwbOl6f+aBaO1CNvPW9n9LmCp01nuSaTRF2YxHqZ8DYQT6WsXT+RD6eUztwYLZ8rM+rcPxamv1VQzFUkzFXvkiVrySGQgJNvXHJAxiU3/NwiC03rSf05VBaPtu/Z7/B8Yn/w7eguloAAAAAElFTkSuQmCC');
   }
 
-  div.callout-note.callout-style-default .callout-caption {
+  div.callout-note.callout-style-default .callout-title {
     background-color: #dae6fb
   }
 
@@ -255,7 +258,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAEKklEQVRYCcVXTWhcVRS+575MJym48A+hSRFr00ySRQhURRfd2HYjk2SSTokuBCkU2o0LoSKKraKIBTcuFCoidGFD08nkBzdREbpQ1EDNIv8qSGMFUboImMSZd4/f9zJv8ibJMC8xJQfO3HPPPef7zrvvvnvviIkpC9nsw0UttFunbUhpFzFtarSd6WJkStVMw5xyVqYTvkwfzuf/5FgtkVoB0729j1rjXwThS7Vio+Mo6DNnvLfahoZ+i/o32lULuJ3NNiz7q6+pyAUkJaFF6JwaM2lUJlV0MlnQn5aTRbEu0SEqHUa0A4AdiGuB1kFXRfVyg5d87+Dg4DL6m2TLAub60ilj7A1Ec4odSAc8X95sHh7+ZRPCFo6Fnp7HfU/fBng/hi10CjCnWnJjsxvDNxWw0NfV6Rv5GgP3I3jGWXumdTD/3cbEOP2ZbOZp69yniG3FQ9z1jD7bnBu9Fc2tKGC2q+uAJOQHBDRiZX1x36o7fWBs7J9ownbtO+n0/qWkvW7UPIfc37WgT6ZGR++EOJyeQDSb9UB+DZ1G6DdLDzyS+b/kBCYGsYgJbSQHuThGKRcw5xdeQf8YdNHsc6ePXrlSYMBuSIAFTGAtQo+VuALo4BX83N190NWZWbynBjhOHsmNfFWLeL6v+ynsA58zDvvAC8j5PkbOcXCMg2PZFk3q8MjI7WAG/Dp9AwP7jdGBOOQkAvlFUB+irtm16I1Zw9YBcpGTGXYmk3kQIC/Cds55l+iMI3jqhjAuaoe+am2Jw5GT3Nbz3CkE12NavmzN5+erJW7046n/CH1RO/RVa8lBLozXk9uqykkGAyRXLWlLv5jyp4RFsG5vGVzpDLnIjTWgnRy2Rr+tDKvRc7Y8AyZq10jj8DqXdnIRNtFZb+t/ZRtXcDiVnzpqx8mPcDWxgARUqx0W1QB9MeUZiNrV4qP+Ehc+BpNgATsTX8ozYKL2NtFYAHc84fG7ndxUPr+AR/iQSns7uSUufAymwDOb2+NjK27lEFocm/EE2WpyIy/Hi66MWuMKJn8RvxIcj87IM5Vh9663ziW36kR0HNenXuxmfaD8JC7tfKbrhFr7LiZCrMjrzTeGx+PmkosrkNzW94ObzwocJ7A1HokLolY+AvkTiD/q1H0cN48c5EL8Crkttsa/AXQVDmutfyku0E7jShx49XqV3MFK8IryDhYVbj7Sj2P2eBxwcXoe8T8idsKKPRcnZw1b+slFTubwUwhktrfnAt7J++jwQtLZcm3sr9LQrjRzz6cfMv9aLvgmnAGvpoaGLxM4mAEaLV7iAzQ3oU0IvD5x9ix3yF2RAAuYAOO2f7PEFWCXZ4C9Pb2UsgDeVnFSpbFK7/IWu7TPTvBqzbGdCHOJQSxiEjt6IyZmxQyEJHv6xyQsYk//moVFsN2zP6fRImjfq7/n/wFDguUQFNEwugAAAABJRU5ErkJggg==');
   }
 
-  div.callout-important.callout-style-default .callout-caption {
+  div.callout-important.callout-style-default .callout-title {
     background-color: #f7dddc
   }
 
@@ -267,7 +270,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAAETklEQVRYCeVWW2gcVRg+58yaTUnizqbipZeX4uWhBEniBaoUX1Ioze52t7sRq6APio9V9MEaoWlVsFasRq0gltaAPuxms8lu0gcviE/FFOstVbSIxgcv6SU7EZqmdc7v9+9mJtNks51NTUH84ed889/PP+cmxP+d5FIbMJmNbpREu4WUkiTtCicKny0l1pIKmBzovF2S+hIJHX8iEu3hZJ5lNZGqyRrGSIQpq15AzF28jgpeY6yk6GVdrfFqdrD6Iw+QlB8g0YS2g7dyQmXM/IDhBhT0UCiRf59lfqmmDvzRt6kByV/m4JjtzuaujMUM2c5Z2d6JdKrRb3K2q6mA+oYVz8JnDdKPmmNthzkAk/lN63sYPgevrguc72aZX/L9C6x09GYyxBgCX4NlvyGUHOKELlm5rXeR1kchuChJt4SSwyddZRXgvwMGvYo4QSlk3/zkHD8UHxwVJA6zjZZqP8v8kK8OWLnIZtLyCAJagYC4rTGW/9Pqj92N/c+LUaAj27movwbi19tk/whRCIE7Q9vyI6yvRpftAKVTdUjOW40X3h5OXsKCdmFcx0xlLJoSuQngnrJe7Kcjm4OMq9FlC7CMmScQANuNvjfP3PjGXDBaUQmbp296S5L4DrpbrHN1T87ZVEZVCzg1FF0Ft+dKrlLukI+/c9ENo+TvlTDbYFvuKPtQ9+l052rXrgKoWkDAFnvh0wTOmYn8R5f4k/jN/fZiCM1tQx9jQQ4ANhqG4hiL0qIFTGViG9DKB7GYzgubnpofgYRwO+DFjh0Zin2m4b/97EDkXkc+f6xYAPX0KK2I/7fUQuwzuwo/L3AkcjugPNixC8cHf0FyPjWlItmLxWw4Ou9YsQCr5fijMGoD/zpdRy95HRysyXA74MWOnscpO4j2y3HAVisw85hX5+AFBRSHt4ShfLFkIMXTqyKFc46xdzQM6XbAi702a7sy04J0+feReMFKp5q9esYLCqAZYw/k14E/xcLLsFElaornTuJB0svMuJINy8xkIYuL+xPAlWRceH6+HX7THJ0djLUom46zREu7tTkxwmf/FdOZ/sh6Q8qvEAiHpm4PJ4a/doJe0gH1t+aHRgCzOvBvJedEK5OFE5jpm4AGP2a8Dxe3gGJ/pAutug9Gp6he92CsSsWBaEcxGx0FHytmIpuqGkOpldqNYQK8cSoXvd+xLxXADw0kf6UkJNFtdo5MOgaLjiQOQHcn+A6h5NuL2s0qsC2LOM75PcF3yr5STuBSAcGG+meA14K/CI21HcS4LBT6tv0QAh8Dr5l93AhZzG5ZJ4VxAqdZUEl9z7WJ4aN+svMvwHHL21UKTd1mqvChH7/Za5xzXBBKrUcB0TQ+Ulgkfbi/H/YT5EptrGzsEK7tR1B7ln9BBwckYfMiuSqklSznIuoIIOM42MQO+QnduCoFCI0bpkzjCjddHPN/F+2Yu+sd9bKNpVwHhbS3LluK/0zgfwD0xYI5dXuzlQAAAABJRU5ErkJggg==');
   }
 
-  div.callout-warning.callout-style-default .callout-caption {
+  div.callout-warning.callout-style-default .callout-title {
     background-color: #fcefdc
   }
 
@@ -279,7 +282,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAADr0lEQVRYCe1XTWgTQRj9ZjZV8a9SPIkKgj8I1bMHsUWrqYLVg4Ue6v9BwZOxSYsIerFao7UiUryIqJcqgtpimhbBXoSCVxUFe9CTiogUrUp2Pt+3aUI2u5vdNh4dmMzOzHvvezuz8xNFM0mjnbXaNu1MvFWRXkXEyE6aYOYJpdW4IXuA4r0fo8qqSMDBU0v1HJUgVieAXxzCsdE/YJTdFcVIZQNMyhruOMJKXYFoLfIfIvVIMWdsrd+Rpd86ZmyzzjJmLStqRn0v8lzkb4rVIXvnpScOJuAn2ACC65FkPzEdEy4TPWRLJ2h7z4cArXzzaOdKlbOvKKX25Wl00jSnrwVxAg3o4dRxhO13RBSdNvH0xSARv3adTXbBdTf64IWO2vH0LT+cv4GR1DJt+DUItaQogeBX/chhbTBxEiZ6gftlDNXTrvT7co4ub5A6gp9HIcHvzTa46OS5fBeP87Qm0fQkr4FsYgVQ7Qg+ZayaDg9jhg1GkWj8RG6lkeSacrrHgDaxdoBiZPg+NXV/KifMuB6//JmYH4CntVEHy/keA6x4h4CU5oFy8GzrBS18cLJMXcljAKB6INjWsRcuZBWVaS3GDrqB7rdapVIeA+isQ57Eev9eCqzqOa81CY05VLd6SamW2wA2H3SiTbnbSxmzfp7WtKZkqy4mdyAlGx7ennghYf8voqp9cLSgKdqNfa6RdRsAAkPwRuJZNbpByn+RrJi1RXTwdi8RQF6ymDwGMAtZ6TVE+4uoKh+MYkcLsT0Hk8eAienbiGdjJHZTpmNjlbFJNKDVAp2fJlYju6IreQxQ08UJDNYdoLSl6AadO+fFuCQqVMB1NJwPm69T04Wv5WhfcWyfXQB+wXRs1pt+nCknRa0LVzSA/2B+a9+zQJadb7IyyV24YAxKp2Jqs3emZTuNnKxsah+uabKbMk7CbTgJx/zIgQYErIeTKRQ9yD9wxVof5YolPHqaWo7TD6tJlh7jQnK5z2n3+fGdggIOx2kaa2YI9QWarc5Ce1ipNWMKeSG4DysFF52KBmTNMmn5HqCFkwy34rDg05gDwgH3bBi+sgFhN/e8QvRn8kbamCOhgrZ9GJhFDgfcMHzFb6BAtjKpFhzTjwv1KCVuxHvCbsSiEz4CANnj84cwHdFXAbAOJ4LTSAawGWFn5tDhLMYz6nWeU2wJfIhmIJBefcd/A5FWQWGgrWzyORZ3Q6HuV+Jf0Bj+BTX69fm1zWgK7By1YTXchFDORywnfQ7GpzOo6S+qECrsx2ifVQAAAABJRU5ErkJggg==');
   }
 
-  div.callout-tip.callout-style-default .callout-caption {
+  div.callout-tip.callout-style-default .callout-title {
     background-color: #ccf1e3
   }
 
@@ -291,7 +294,7 @@
     background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAERlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAA6ABAAMAAAABAAEAAKACAAQAAAABAAAAIKADAAQAAAABAAAAIAAAAACshmLzAAACV0lEQVRYCdVWzWoUQRCuqp2ICBLJXgITZL1EfQDBW/bkzUMUD7klD+ATSHBEfAIfQO+iXsWDxJsHL96EHAwhgzlkg8nBg25XWb0zIb0zs9muYYWkoKeru+vn664fBqElyZNuyh167NXJ8Ut8McjbmEraKHkd7uAnAFku+VWdb3reSmRV8PKSLfZ0Gjn3a6Xlcq9YGb6tADjn+lUfTXtVmaZ1KwBIvFI11rRXlWlatwIAAv2asaa9mlB9wwygiDX26qaw1yYPzFXg2N1GgG0FMF8Oj+VIx7E/03lHx8UhvYyNZLN7BwSPgekXXLribw7w5/c8EF+DBK5idvDVYtEEwMeYefjjLAdEyQ3M9nfOkgnPTEkYU+sxMq0BxNR6jExrAI31H1rzvLEfRIdgcv1XEdj6QTQAS2wtstEALLG1yEZ3QhH6oDX7ExBSFEkFINXH98NTrme5IOaaA7kIfiu2L8A3qhH9zRbukdCqdsA98TdElyeMe5BI8Rs2xHRIsoTSSVFfCFCWGPn9XHb4cdobRIWABNf0add9jakDjQJpJ1bTXOJXnnRXHRf+dNL1ZV1MBRCXhMbaHqGI1JkKIL7+i8uffuP6wVQAzO7+qVEbF6NbS0LJureYcWXUUhH66nLR5rYmva+2tjRFtojkM2aD76HEGAD3tPtKM309FJg5j/K682ywcWJ3PASCcycH/22u+Bh7Aa0ehM2Fu4z0SAE81HF9RkB21c5bEn4Dzw+/qNOyXr3DCTQDMBOdhi4nAgiFDGCinIa2owCEChUwD8qzd03PG+qdW/4fDzjUMcE1ZpIAAAAASUVORK5CYII=');
   }
 
-  div.callout-caution.callout-style-default .callout-caption {
+  div.callout-caution.callout-style-default .callout-title {
     background-color: #ffe5d0
   }
 
@@ -384,9 +387,10 @@
       margin-right: 0; 
     }
   </style>
-  
   <script src="LogarithmsIBM_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
   <link href="LogarithmsIBM_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -402,9 +406,6 @@
 </section>
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
-<div class="cell">
-
-</div>
 <ul>
 <li>The difference between absolute and relative (measured in percent) change.</li>
 <li>How to interpret a regression with a logarithmic <em>independent</em> variable</li>
@@ -417,16 +418,16 @@
 <h1>Absolute Change vs.&nbsp;Percentage Change</h1>
 <p>Example Wage and Experience Regression</p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(wooldridge)</span>
-<span id="cb1-4"><a href="#cb1-4"></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
-<span id="cb1-5"><a href="#cb1-5"></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-6"><a href="#cb1-6"></a>         <span class="fu">select</span>(Wage, Exper)</span>
-<span id="cb1-7"><a href="#cb1-7"></a>ModelWage<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>Exper, DataWage)</span>
-<span id="cb1-8"><a href="#cb1-8"></a><span class="fu">print</span>(ModelWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-3"><a href=""></a><span class="fu">library</span>(wooldridge)</span>
+<span id="cb1-4"><a href=""></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
+<span id="cb1-5"><a href=""></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-6"><a href=""></a>         <span class="fu">select</span>(Wage, Exper)</span>
+<span id="cb1-7"><a href=""></a>ModelWage<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>Exper, DataWage)</span>
+<span id="cb1-8"><a href=""></a><span class="fu">print</span>(ModelWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -444,27 +445,25 @@ Coefficients:
 <h2>One year Extra Exper Creates the same Chage</h2>
 <h3 id="for-an-already-experinced-employee-and-a-not-so-experienced-employee">For an already experinced employee and a not so experienced employee</h3>
 <p>Does this really make sense when, for example, comparing some body with already 20 years experience to somebody with 2 years experience. An extra year of experience has the same effect???</p>
-<div class="fragment">
+<p>. . .</p>
 <p>More reasonable is to use relative (percentage) change. I.e., the same <strong>relative change</strong> leads to the same effect. For example, and increase of 50% of experience: - 1 year for the young - 10 years for the older employee</p>
 <p>has the same effect. However, we would have to run a different regression (one where we use the logarithm of <span class="math inline">\(Exper\)</span> (<code>log(Exper)</code>) instead <span class="math inline">\(Exper\)</span> itself.)</p>
-</div>
-<div class="fragment">
+<p>. . .</p>
 <p>We can accomplish this in regression by using logarithms:</p>
 <p><strong>A change of a logarithmic variable can be interpreted as relative (percentage) change</strong></p>
-</div>
 </section>
 <section id="important" class="slide level2">
 <h2>Important !!!</h2>
 <h3 id="a-change-of-a-logarithmic-variable-can-be-interpreted-as-relative-percentage-change">A change of a logarithmic variable can be interpreted as relative (percentage) change</h3>
 <p><strong>Example</strong></p>
 <div class="cell">
-<details>
+<details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>DataExamp<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">t=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">X=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">203</span>, <span class="dv">207</span>, <span class="dv">200</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a href="#cb3-2"></a>          <span class="fu">mutate</span>(<span class="at">TradPercChange=</span>(X<span class="sc">-</span><span class="fu">lag</span>(X))<span class="sc">/</span><span class="fu">lag</span>(X)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-3"><a href="#cb3-3"></a>          <span class="fu">mutate</span>(<span class="at">LnX=</span><span class="fu">num</span>(<span class="fu">log</span>(X),<span class="at">digits=</span><span class="dv">5</span>)) <span class="sc">|&gt;</span> <span class="co"># log calculates the natural logarithm ln() in R </span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>          <span class="fu">mutate</span>(<span class="at">ChangeLnX=</span>LnX <span class="sc">-</span> <span class="fu">lag</span>(LnX))</span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="fu">print</span>(DataExamp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>DataExamp<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">t=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">X=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">203</span>, <span class="dv">207</span>, <span class="dv">200</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">TradPercChange=</span>(X<span class="sc">-</span><span class="fu">lag</span>(X))<span class="sc">/</span><span class="fu">lag</span>(X)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">LnX=</span><span class="fu">num</span>(<span class="fu">log</span>(X),<span class="at">digits=</span><span class="dv">5</span>)) <span class="sc">|&gt;</span> <span class="co"># log calculates the natural logarithm ln() in R </span></span>
+<span id="cb3-4"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">ChangeLnX=</span>LnX <span class="sc">-</span> <span class="fu">lag</span>(LnX))</span>
+<span id="cb3-5"><a href=""></a><span class="fu">print</span>(DataExamp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 5
@@ -479,49 +478,70 @@ Coefficients:
 </section>
 <section id="plot-mpg-weight" class="slide level2">
 <h2>Plot MPG ~ Weight</h2>
-<div class="cell">
-
-</div>
 <div class="r-stack">
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-5-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-6-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -531,85 +551,85 @@ Coefficients:
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="no-variable-logarithmized">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href="#cb5-2"></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href="#cb5-3"></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
-<span id="cb5-5"><a href="#cb5-5"></a>              <span class="fu">step_naomit</span>(MPG,Weight)</span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb5-8"><a href="#cb5-8"></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb5-9"><a href="#cb5-9"></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb5-10"><a href="#cb5-10"></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb5-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
+<span id="cb5-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Weight)</span>
+<span id="cb5-6"><a href=""></a></span>
+<span id="cb5-7"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-8"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb5-9"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
+<span id="cb5-10"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
+<span id="cb5-11"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> term </th>
-   <th style="text-align:right;"> estimate </th>
-   <th style="text-align:right;"> std.error </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> (Intercept) </td>
-   <td style="text-align:right;"> 46.3173644 </td>
-   <td style="text-align:right;"> 0.7952452 </td>
-   <td style="text-align:right;"> 58.24287 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Weight </td>
-   <td style="text-align:right;"> -0.0076766 </td>
-   <td style="text-align:right;"> 0.0002575 </td>
-   <td style="text-align:right;"> -29.81360 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">46.3173644</td>
+<td style="text-align: right;">0.7952452</td>
+<td style="text-align: right;">58.24287</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Weight</td>
+<td style="text-align: right;">-0.0076766</td>
+<td style="text-align: right;">0.0002575</td>
+<td style="text-align: right;">-29.81360</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:right;"> r.squared </th>
-   <th style="text-align:right;"> adj.r.squared </th>
-   <th style="text-align:right;"> sigma </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> logLik </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> BIC </th>
-   <th style="text-align:right;"> deviance </th>
-   <th style="text-align:right;"> df.residual </th>
-   <th style="text-align:right;"> nobs </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:right;"> 0.691793 </td>
-   <td style="text-align:right;"> 0.6910147 </td>
-   <td style="text-align:right;"> 4.344628 </td>
-   <td style="text-align:right;"> 888.8507 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> -1148.373 </td>
-   <td style="text-align:right;"> 2302.746 </td>
-   <td style="text-align:right;"> 2314.706 </td>
-   <td style="text-align:right;"> 7474.814 </td>
-   <td style="text-align:right;"> 396 </td>
-   <td style="text-align:right;"> 398 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: right;">0.691793</td>
+<td style="text-align: right;">0.6910147</td>
+<td style="text-align: right;">4.344628</td>
+<td style="text-align: right;">888.8507</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1148.373</td>
+<td style="text-align: right;">2302.746</td>
+<td style="text-align: right;">2314.706</td>
+<td style="text-align: right;">7474.814</td>
+<td style="text-align: right;">396</td>
+<td style="text-align: right;">398</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -618,135 +638,156 @@ Coefficients:
 <h2>Regression LNMPG ~ Weight</h2>
 <h3 id="dependent-variable-mpg-logarithmized">Dependent Variable MPG Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href="#cb7-2"></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href="#cb7-3"></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb7-4"><a href="#cb7-4"></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
-<span id="cb7-5"><a href="#cb7-5"></a>              <span class="fu">step_naomit</span>(MPG,Weight) <span class="sc">|&gt;</span> </span>
-<span id="cb7-6"><a href="#cb7-6"></a>              <span class="fu">step_log</span>(<span class="fu">all_outcomes</span>()) </span>
-<span id="cb7-7"><a href="#cb7-7"></a></span>
-<span id="cb7-8"><a href="#cb7-8"></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-9"><a href="#cb7-9"></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb7-10"><a href="#cb7-10"></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb7-11"><a href="#cb7-11"></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb7-12"><a href="#cb7-12"></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb7-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
+<span id="cb7-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Weight) <span class="sc">|&gt;</span> </span>
+<span id="cb7-6"><a href=""></a>              <span class="fu">step_log</span>(<span class="fu">all_outcomes</span>()) </span>
+<span id="cb7-7"><a href=""></a></span>
+<span id="cb7-8"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb7-9"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb7-10"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
+<span id="cb7-11"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
+<span id="cb7-12"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> term </th>
-   <th style="text-align:right;"> estimate </th>
-   <th style="text-align:right;"> std.error </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> (Intercept) </td>
-   <td style="text-align:right;"> 4.1445310 </td>
-   <td style="text-align:right;"> 0.0300725 </td>
-   <td style="text-align:right;"> 137.81801 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Weight </td>
-   <td style="text-align:right;"> -0.0003512 </td>
-   <td style="text-align:right;"> 0.0000097 </td>
-   <td style="text-align:right;"> -36.06646 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">4.1445310</td>
+<td style="text-align: right;">0.0300725</td>
+<td style="text-align: right;">137.81801</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Weight</td>
+<td style="text-align: right;">-0.0003512</td>
+<td style="text-align: right;">0.0000097</td>
+<td style="text-align: right;">-36.06646</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:right;"> r.squared </th>
-   <th style="text-align:right;"> adj.r.squared </th>
-   <th style="text-align:right;"> sigma </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> logLik </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> BIC </th>
-   <th style="text-align:right;"> deviance </th>
-   <th style="text-align:right;"> df.residual </th>
-   <th style="text-align:right;"> nobs </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:right;"> 0.7666181 </td>
-   <td style="text-align:right;"> 0.7660287 </td>
-   <td style="text-align:right;"> 0.1642937 </td>
-   <td style="text-align:right;"> 1300.789 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 155.0926 </td>
-   <td style="text-align:right;"> -304.1852 </td>
-   <td style="text-align:right;"> -292.2258 </td>
-   <td style="text-align:right;"> 10.689 </td>
-   <td style="text-align:right;"> 396 </td>
-   <td style="text-align:right;"> 398 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: right;">0.7666181</td>
+<td style="text-align: right;">0.7660287</td>
+<td style="text-align: right;">0.1642937</td>
+<td style="text-align: right;">1300.789</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">155.0926</td>
+<td style="text-align: right;">-304.1852</td>
+<td style="text-align: right;">-292.2258</td>
+<td style="text-align: right;">10.689</td>
+<td style="text-align: right;">396</td>
+<td style="text-align: right;">398</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
 </section>
 <section id="plot-mpg-displ" class="slide level2">
 <h2>Plot MPG ~ Displ</h2>
-<div class="cell">
-
-</div>
 <div class="r-stack">
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -756,85 +797,85 @@ Coefficients:
 <h2>Regression MPG ~ Displ</h2>
 <h3 id="no-variable-logarithmized-1">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href="#cb9-2"></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href="#cb9-3"></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb9-4"><a href="#cb9-4"></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
-<span id="cb9-5"><a href="#cb9-5"></a>              <span class="fu">step_naomit</span>(MPG,Displ)</span>
-<span id="cb9-6"><a href="#cb9-6"></a></span>
-<span id="cb9-7"><a href="#cb9-7"></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb9-8"><a href="#cb9-8"></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb9-9"><a href="#cb9-9"></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb9-10"><a href="#cb9-10"></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb9-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
+<span id="cb9-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Displ)</span>
+<span id="cb9-6"><a href=""></a></span>
+<span id="cb9-7"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb9-8"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb9-9"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
+<span id="cb9-10"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
+<span id="cb9-11"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> term </th>
-   <th style="text-align:right;"> estimate </th>
-   <th style="text-align:right;"> std.error </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> (Intercept) </td>
-   <td style="text-align:right;"> 35.1747502 </td>
-   <td style="text-align:right;"> 0.4918243 </td>
-   <td style="text-align:right;"> 71.51894 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Displ </td>
-   <td style="text-align:right;"> -0.0602824 </td>
-   <td style="text-align:right;"> 0.0022388 </td>
-   <td style="text-align:right;"> -26.92572 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">35.1747502</td>
+<td style="text-align: right;">0.4918243</td>
+<td style="text-align: right;">71.51894</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Displ</td>
+<td style="text-align: right;">-0.0602824</td>
+<td style="text-align: right;">0.0022388</td>
+<td style="text-align: right;">-26.92572</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:right;"> r.squared </th>
-   <th style="text-align:right;"> adj.r.squared </th>
-   <th style="text-align:right;"> sigma </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> logLik </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> BIC </th>
-   <th style="text-align:right;"> deviance </th>
-   <th style="text-align:right;"> df.residual </th>
-   <th style="text-align:right;"> nobs </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:right;"> 0.6467422 </td>
-   <td style="text-align:right;"> 0.6458501 </td>
-   <td style="text-align:right;"> 4.651331 </td>
-   <td style="text-align:right;"> 724.9943 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> -1175.522 </td>
-   <td style="text-align:right;"> 2357.044 </td>
-   <td style="text-align:right;"> 2369.003 </td>
-   <td style="text-align:right;"> 8567.412 </td>
-   <td style="text-align:right;"> 396 </td>
-   <td style="text-align:right;"> 398 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: right;">0.6467422</td>
+<td style="text-align: right;">0.6458501</td>
+<td style="text-align: right;">4.651331</td>
+<td style="text-align: right;">724.9943</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1175.522</td>
+<td style="text-align: right;">2357.044</td>
+<td style="text-align: right;">2369.003</td>
+<td style="text-align: right;">8567.412</td>
+<td style="text-align: right;">396</td>
+<td style="text-align: right;">398</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -843,136 +884,157 @@ Coefficients:
 <h2>Regression MPG ~ LNDispl</h2>
 <h3 id="independent-variable-displ-logarithmized">Independent Variable Displ Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href="#cb11-2"></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a href="#cb11-3"></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb11-4"><a href="#cb11-4"></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
-<span id="cb11-5"><a href="#cb11-5"></a>              <span class="fu">step_naomit</span>(MPG,Displ) <span class="sc">|&gt;</span> </span>
-<span id="cb11-6"><a href="#cb11-6"></a>              <span class="fu">step_mutate</span>(<span class="at">LNDispl=</span><span class="fu">log</span>(Displ)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-7"><a href="#cb11-7"></a>              <span class="fu">step_rm</span>(Displ)</span>
-<span id="cb11-8"><a href="#cb11-8"></a></span>
-<span id="cb11-9"><a href="#cb11-9"></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-10"><a href="#cb11-10"></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb11-11"><a href="#cb11-11"></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb11-12"><a href="#cb11-12"></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb11-13"><a href="#cb11-13"></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb11-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
+<span id="cb11-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Displ) <span class="sc">|&gt;</span> </span>
+<span id="cb11-6"><a href=""></a>              <span class="fu">step_mutate</span>(<span class="at">LNDispl=</span><span class="fu">log</span>(Displ)) <span class="sc">|&gt;</span> </span>
+<span id="cb11-7"><a href=""></a>              <span class="fu">step_rm</span>(Displ)</span>
+<span id="cb11-8"><a href=""></a></span>
+<span id="cb11-9"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb11-10"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb11-11"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
+<span id="cb11-12"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
+<span id="cb11-13"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> term </th>
-   <th style="text-align:right;"> estimate </th>
-   <th style="text-align:right;"> std.error </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> (Intercept) </td>
-   <td style="text-align:right;"> 85.95072 </td>
-   <td style="text-align:right;"> 2.1329144 </td>
-   <td style="text-align:right;"> 40.29732 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> LNDispl </td>
-   <td style="text-align:right;"> -12.18701 </td>
-   <td style="text-align:right;"> 0.4141116 </td>
-   <td style="text-align:right;"> -29.42928 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">85.95072</td>
+<td style="text-align: right;">2.1329144</td>
+<td style="text-align: right;">40.29732</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LNDispl</td>
+<td style="text-align: right;">-12.18701</td>
+<td style="text-align: right;">0.4141116</td>
+<td style="text-align: right;">-29.42928</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:right;"> r.squared </th>
-   <th style="text-align:right;"> adj.r.squared </th>
-   <th style="text-align:right;"> sigma </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> logLik </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> BIC </th>
-   <th style="text-align:right;"> deviance </th>
-   <th style="text-align:right;"> df.residual </th>
-   <th style="text-align:right;"> nobs </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:right;"> 0.6862328 </td>
-   <td style="text-align:right;"> 0.6854405 </td>
-   <td style="text-align:right;"> 4.383642 </td>
-   <td style="text-align:right;"> 866.0824 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> -1151.931 </td>
-   <td style="text-align:right;"> 2309.862 </td>
-   <td style="text-align:right;"> 2321.822 </td>
-   <td style="text-align:right;"> 7609.662 </td>
-   <td style="text-align:right;"> 396 </td>
-   <td style="text-align:right;"> 398 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: right;">0.6862328</td>
+<td style="text-align: right;">0.6854405</td>
+<td style="text-align: right;">4.383642</td>
+<td style="text-align: right;">866.0824</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1151.931</td>
+<td style="text-align: right;">2309.862</td>
+<td style="text-align: right;">2321.822</td>
+<td style="text-align: right;">7609.662</td>
+<td style="text-align: right;">396</td>
+<td style="text-align: right;">398</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
 </section>
 <section id="plot-mpg-weight-1" class="slide level2">
 <h2>Plot MPG ~ Weight</h2>
-<div class="cell">
-
-</div>
 <div class="r-stack">
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
+<div>
+<figure>
 <p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
+</figure>
+</div>
 </div>
 </div>
 </div>
@@ -982,85 +1044,85 @@ Coefficients:
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="no-variable-logarithmized-2">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb13-2"><a href="#cb13-2"></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-3"><a href="#cb13-3"></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb13-4"><a href="#cb13-4"></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
-<span id="cb13-5"><a href="#cb13-5"></a>              <span class="fu">step_naomit</span>(MPG,Weight)</span>
-<span id="cb13-6"><a href="#cb13-6"></a></span>
-<span id="cb13-7"><a href="#cb13-7"></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb13-8"><a href="#cb13-8"></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb13-9"><a href="#cb13-9"></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb13-10"><a href="#cb13-10"></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb13-11"><a href="#cb13-11"></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb13-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
+<span id="cb13-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Weight)</span>
+<span id="cb13-6"><a href=""></a></span>
+<span id="cb13-7"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb13-8"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb13-9"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
+<span id="cb13-10"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
+<span id="cb13-11"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> term </th>
-   <th style="text-align:right;"> estimate </th>
-   <th style="text-align:right;"> std.error </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> (Intercept) </td>
-   <td style="text-align:right;"> 46.3173644 </td>
-   <td style="text-align:right;"> 0.7952452 </td>
-   <td style="text-align:right;"> 58.24287 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> Weight </td>
-   <td style="text-align:right;"> -0.0076766 </td>
-   <td style="text-align:right;"> 0.0002575 </td>
-   <td style="text-align:right;"> -29.81360 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">46.3173644</td>
+<td style="text-align: right;">0.7952452</td>
+<td style="text-align: right;">58.24287</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Weight</td>
+<td style="text-align: right;">-0.0076766</td>
+<td style="text-align: right;">0.0002575</td>
+<td style="text-align: right;">-29.81360</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:right;"> r.squared </th>
-   <th style="text-align:right;"> adj.r.squared </th>
-   <th style="text-align:right;"> sigma </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> logLik </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> BIC </th>
-   <th style="text-align:right;"> deviance </th>
-   <th style="text-align:right;"> df.residual </th>
-   <th style="text-align:right;"> nobs </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:right;"> 0.691793 </td>
-   <td style="text-align:right;"> 0.6910147 </td>
-   <td style="text-align:right;"> 4.344628 </td>
-   <td style="text-align:right;"> 888.8507 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> -1148.373 </td>
-   <td style="text-align:right;"> 2302.746 </td>
-   <td style="text-align:right;"> 2314.706 </td>
-   <td style="text-align:right;"> 7474.814 </td>
-   <td style="text-align:right;"> 396 </td>
-   <td style="text-align:right;"> 398 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: right;">0.691793</td>
+<td style="text-align: right;">0.6910147</td>
+<td style="text-align: right;">4.344628</td>
+<td style="text-align: right;">888.8507</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">-1148.373</td>
+<td style="text-align: right;">2302.746</td>
+<td style="text-align: right;">2314.706</td>
+<td style="text-align: right;">7474.814</td>
+<td style="text-align: right;">396</td>
+<td style="text-align: right;">398</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -1069,88 +1131,88 @@ Coefficients:
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="dependend-variable-mpg-and-independent-variable-weight-logarithmized">Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href="#cb15-2"></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb15-3"><a href="#cb15-3"></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb15-4"><a href="#cb15-4"></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
-<span id="cb15-5"><a href="#cb15-5"></a>              <span class="fu">step_naomit</span>(MPG,Displ) <span class="sc">|&gt;</span> </span>
-<span id="cb15-6"><a href="#cb15-6"></a>              <span class="fu">step_mutate</span>(<span class="at">LnDispl=</span><span class="fu">log</span>(Displ)) <span class="sc">|&gt;</span> </span>
-<span id="cb15-7"><a href="#cb15-7"></a>              <span class="fu">step_rm</span>(Displ)<span class="sc">|&gt;</span> </span>
-<span id="cb15-8"><a href="#cb15-8"></a>              <span class="fu">step_log</span>(<span class="fu">all_outcomes</span>()) </span>
-<span id="cb15-9"><a href="#cb15-9"></a></span>
-<span id="cb15-10"><a href="#cb15-10"></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb15-11"><a href="#cb15-11"></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb15-12"><a href="#cb15-12"></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb15-13"><a href="#cb15-13"></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb15-14"><a href="#cb15-14"></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb15-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb15-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
+<span id="cb15-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Displ) <span class="sc">|&gt;</span> </span>
+<span id="cb15-6"><a href=""></a>              <span class="fu">step_mutate</span>(<span class="at">LnDispl=</span><span class="fu">log</span>(Displ)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-7"><a href=""></a>              <span class="fu">step_rm</span>(Displ)<span class="sc">|&gt;</span> </span>
+<span id="cb15-8"><a href=""></a>              <span class="fu">step_log</span>(<span class="fu">all_outcomes</span>()) </span>
+<span id="cb15-9"><a href=""></a></span>
+<span id="cb15-10"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb15-11"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
+<span id="cb15-12"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
+<span id="cb15-13"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
+<span id="cb15-14"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:left;"> term </th>
-   <th style="text-align:right;"> estimate </th>
-   <th style="text-align:right;"> std.error </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:left;"> (Intercept) </td>
-   <td style="text-align:right;"> 5.9200729 </td>
-   <td style="text-align:right;"> 0.0842779 </td>
-   <td style="text-align:right;"> 70.24466 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
-  <tr>
-   <td style="text-align:left;"> LnDispl </td>
-   <td style="text-align:right;"> -0.5501841 </td>
-   <td style="text-align:right;"> 0.0163628 </td>
-   <td style="text-align:right;"> -33.62407 </td>
-   <td style="text-align:right;"> 0 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">5.9200729</td>
+<td style="text-align: right;">0.0842779</td>
+<td style="text-align: right;">70.24466</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">LnDispl</td>
+<td style="text-align: right;">-0.5501841</td>
+<td style="text-align: right;">0.0163628</td>
+<td style="text-align: right;">-33.62407</td>
+<td style="text-align: right;">0</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-
-<table>
- <thead>
-  <tr>
-   <th style="text-align:right;"> r.squared </th>
-   <th style="text-align:right;"> adj.r.squared </th>
-   <th style="text-align:right;"> sigma </th>
-   <th style="text-align:right;"> statistic </th>
-   <th style="text-align:right;"> p.value </th>
-   <th style="text-align:right;"> df </th>
-   <th style="text-align:right;"> logLik </th>
-   <th style="text-align:right;"> AIC </th>
-   <th style="text-align:right;"> BIC </th>
-   <th style="text-align:right;"> deviance </th>
-   <th style="text-align:right;"> df.residual </th>
-   <th style="text-align:right;"> nobs </th>
-  </tr>
- </thead>
+<table class="caption-top" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
+</tr>
+</thead>
 <tbody>
-  <tr>
-   <td style="text-align:right;"> 0.7405963 </td>
-   <td style="text-align:right;"> 0.7399412 </td>
-   <td style="text-align:right;"> 0.173211 </td>
-   <td style="text-align:right;"> 1130.578 </td>
-   <td style="text-align:right;"> 0 </td>
-   <td style="text-align:right;"> 1 </td>
-   <td style="text-align:right;"> 134.0565 </td>
-   <td style="text-align:right;"> -262.1129 </td>
-   <td style="text-align:right;"> -250.1536 </td>
-   <td style="text-align:right;"> 11.88081 </td>
-   <td style="text-align:right;"> 396 </td>
-   <td style="text-align:right;"> 398 </td>
-  </tr>
+<tr class="odd">
+<td style="text-align: right;">0.7405963</td>
+<td style="text-align: right;">0.7399412</td>
+<td style="text-align: right;">0.173211</td>
+<td style="text-align: right;">1130.578</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">134.0565</td>
+<td style="text-align: right;">-262.1129</td>
+<td style="text-align: right;">-250.1536</td>
+<td style="text-align: right;">11.88081</td>
+<td style="text-align: right;">396</td>
+<td style="text-align: right;">398</td>
+</tr>
 </tbody>
 </table>
+
 
 </div>
 </div>
@@ -1163,19 +1225,25 @@ Coefficients:
 <section id="interpretation-of-regression-no-transformation" class="slide level2 smaller">
 <h2>Interpretation of Regression — No Transformation</h2>
 <p><span class="math display">\[Y_i = \beta_1 X_i+ \beta_2 \]</span> <span class="math display">\[\frac{\delta Y}{\delta X}\approx\frac{\Delta Y}{\Delta X}=\beta_1\]</span> <span class="math display">\[\Delta Y=\beta_1\Delta X\]</span> <span class="math inline">\(\Delta X\)</span>: change of <span class="math inline">\(X\)</span>,<span class="math inline">\(\Delta Y\)</span>: change of <span class="math inline">\(Y\)</span>, <span class="math inline">\(\frac{\Delta Y}{\Delta X}\)</span>: rise over run.</p>
-<p><strong>The change of <span class="math inline">\(X\)</span> multiplied with <span class="math inline">\(\beta_1\)</span> equals the change of <span class="math inline">\(Y\)</span>.</strong></p>
+<p><strong>The change of</strong> <span class="math inline">\(X\)</span> multiplied with <span class="math inline">\(\beta_1\)</span> equals the change of <span class="math inline">\(Y\)</span>.</p>
 <p>or</p>
-<p><strong>If <span class="math inline">\(X\)</span> changes by one unit (<span class="math inline">\(\Delta X=1\)</span>), <span class="math inline">\(\Delta Y\)</span> changes by <span class="math inline">\(\beta_1\)</span> units.</strong></p>
+<p><strong>If</strong> <span class="math inline">\(X\)</span> changes by one unit (<span class="math inline">\(\Delta X=1\)</span>), <span class="math inline">\(\Delta Y\)</span> changes by <span class="math inline">\(\beta_1\)</span> units.</p>
 </section>
 <section id="interpretation-of-regression-log-transformation-of-dependent-variable" class="slide level2 smaller">
 <h2>Interpretation of Regression — Log-Transformation of Dependent Variable</h2>
 <p>We define a new variable: <span class="math inline">\(LNY=\ln{Y_i}\)</span></p>
 <p><span class="math display">\[LNY_i = \beta_1 X_i+ \beta_2 \]</span> <span class="math display">\[\frac{\delta LNY}{\delta X}\approx\frac{\Delta LNY}{\Delta X}=\beta_1\]</span> <span class="math display">\[\Delta LNY=\beta_1\Delta X\]</span> <span class="math inline">\(\Delta X\)</span>: change of <span class="math inline">\(X\)</span>,<span class="math inline">\(\Delta LNY\)</span>: change of <span class="math inline">\(LNY\)</span>, <span class="math inline">\(\frac{\Delta LNY}{\Delta X}\)</span>: rise over run.</p>
-<p><strong>The change of <span class="math inline">\(X\)</span> multiplied with <span class="math inline">\(\beta_1\)</span> equals the change of <span class="math inline">\(LNY\)</span>.</strong></p>
+<p><strong>The change of</strong> <span class="math inline">\(X\)</span> multiplied with <span class="math inline">\(\beta_1\)</span> equals the change of <span class="math inline">\(LNY\)</span>.</p>
 <p><span class="math display">\[\Delta LNY=\beta_1\underbrace{\Delta X}_{+1}\]</span></p>
-<p><strong>Since we know that the change of a logarithm is a relative (percentage) change, we can say: If <span class="math inline">\(X\)</span> changes by one unit <span class="math inline">\(\Delta X=1\)</span>, then <span class="math inline">\(Y\)</span> changes by <span class="math inline">\(\beta_1\cdot 100\)</span>%.</strong></p>
+<p><strong>Since we know that the change of a logarithm is a relative (percentage) change, we can say: If</strong> <span class="math inline">\(X\)</span> changes by one unit <span class="math inline">\(\Delta X=1\)</span>, then <span class="math inline">\(Y\)</span> changes by <span class="math inline">\(\beta_1\cdot 100\)</span>%.</p>
+</section>
+<section id="example-repeated-regression" class="slide level2">
+<h2>Example Repeated Regression</h2>
+<p><a href="https://econ.lange-analytics.com/ibm6510-40/SamplingDistribution.R" class="uri">https://econ.lange-analytics.com/ibm6510-40/SamplingDistribution.R</a></p>
+<div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+</div>
 </div>
 </section></section>
     </div>
@@ -1207,12 +1275,11 @@ Coefficients:
       Reveal.initialize({
 'controlsAuto': false,
 'previewLinksAuto': false,
-'smaller': false,
 'pdfSeparateFragments': false,
 'autoAnimateEasing': "ease",
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
 'multiplex': {"secret":null,"id":"ca6504e443f8a0d1","url":"https://reveal-multiplex.glitch.me/"},
 'smaller': false,
@@ -1395,42 +1462,80 @@ Coefficients:
       });
     </script>
     
+
     <script>
+
       // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
       // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
       // slide changes (different for each slide format).
+
       (function () {
+
         // dispatch for htmlwidgets
+
         function fireSlideEnter() {
+
           const event = window.document.createEvent("Event");
+
           event.initEvent("slideenter", true, true);
+
           window.document.dispatchEvent(event);
+
         }
+
+    
 
         function fireSlideChanged(previousSlide, currentSlide) {
+
           fireSlideEnter();
 
+    
+
           // dispatch for shiny
+
           if (window.jQuery) {
+
             if (previousSlide) {
+
               window.jQuery(previousSlide).trigger("hidden");
+
             }
+
             if (currentSlide) {
+
               window.jQuery(currentSlide).trigger("shown");
+
             }
+
           }
+
         }
+
+    
 
         // hookup for slidy
+
         if (window.w3c_slidy) {
+
           window.w3c_slidy.add_observer(function (slide_num) {
+
             // slide_num starts at position 1
+
             fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
           });
+
         }
 
+    
+
       })();
+
     </script>
+
+    
 
     <script id="quarto-html-after-body" type="application/javascript">
     window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -1456,12 +1561,15 @@ Coefficients:
       tabsets.forEach(function(tabset) {
         const tabby = new Tabby('#' + tabset.id);
       });
-      const clipboard = new window.ClipboardJS('.code-copy-button', {
-        target: function(trigger) {
-          return trigger.previousElementSibling;
+      const isCodeAnnotation = (el) => {
+        for (const clz of el.classList) {
+          if (clz.startsWith('code-annotation-')) {                     
+            return true;
+          }
         }
-      });
-      clipboard.on('success', function(e) {
+        return false;
+      }
+      const onCopySuccess = function(e) {
         // button target
         const button = e.trigger;
         // don't keep focus
@@ -1493,11 +1601,50 @@ Coefficients:
         }, 1000);
         // clear code selection
         e.clearSelection();
+      }
+      const getTextToCopy = function(trigger) {
+          const codeEl = trigger.previousElementSibling.cloneNode(true);
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+      }
+      const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+        text: getTextToCopy
       });
-      function tippyHover(el, contentFn) {
+      clipboard.on('success', onCopySuccess);
+      if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+        // For code content inside modals, clipBoardJS needs to be initialized with a container option
+        // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+        const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+          text: getTextToCopy,
+          container: window.document.getElementById('quarto-embedded-source-code-modal')
+        });
+        clipboardModal.on('success', onCopySuccess);
+      }
+        var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+        var mailtoRegex = new RegExp(/^mailto:/);
+          var filterRegex = new RegExp('/' + window.location.host + '/');
+        var isInternal = (href) => {
+            return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+        }
+        // Inspect non-navigation links and adorn them if external
+     	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+        for (var i=0; i<links.length; i++) {
+          const link = links[i];
+          if (!isInternal(link.href)) {
+            // undo the damage that might have been done by quarto-nav.js in the case of
+            // links that we want to consider external
+            if (link.dataset.originalHref !== undefined) {
+              link.href = link.dataset.originalHref;
+            }
+          }
+        }
+      function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
         const config = {
           allowHTML: true,
-          content: contentFn,
           maxWidth: 500,
           delay: 100,
           arrow: false,
@@ -1506,9 +1653,18 @@ Coefficients:
           },
           interactive: true,
           interactiveBorder: 10,
-          theme: 'quarto-reveal',
-          placement: 'bottom-start'
+          theme: 'light-border',
+          placement: 'bottom-start',
         };
+        if (contentFn) {
+          config.content = contentFn;
+        }
+        if (onTriggerFn) {
+          config.onTrigger = onTriggerFn;
+        }
+        if (onUntriggerFn) {
+          config.onUntrigger = onUntriggerFn;
+        }
           config['offset'] = [0,0];
           config['maxWidth'] = 700;
         window.tippy(el, config); 
@@ -1522,7 +1678,11 @@ Coefficients:
           try { href = new URL(href).hash; } catch {}
           const id = href.replace(/^#\/?/, "");
           const note = window.document.getElementById(id);
-          return note.innerHTML;
+          if (note) {
+            return note.innerHTML;
+          } else {
+            return "";
+          }
         });
       }
       const findCites = (el) => {
