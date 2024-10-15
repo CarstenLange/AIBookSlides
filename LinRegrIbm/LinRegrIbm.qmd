@@ -667,7 +667,7 @@ ModelHouses=lm(Price ~ Sqft, data=DataTrain)
 summary(ModelHouses)
 ```
 
-
+## Learn Machine Learning
 
 ## Predicting with tidymodels Training and Testing Data {.scrollable .smaller}
 
