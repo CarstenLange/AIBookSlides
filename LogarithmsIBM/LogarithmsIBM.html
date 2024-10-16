@@ -414,43 +414,13 @@
 </ul>
 </section>
 <section>
-<section id="absolute-change-vs.-percentage-change" class="title-slide slide level1 center">
-<h1>Absolute Change vs.&nbsp;Percentage Change</h1>
-<p>Example Wage and Experience Regression</p>
-<div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
-<span id="cb1-2"><a href=""></a><span class="fu">library</span>(janitor)</span>
-<span id="cb1-3"><a href=""></a><span class="fu">library</span>(wooldridge)</span>
-<span id="cb1-4"><a href=""></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span> </span>
-<span id="cb1-5"><a href=""></a>         <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-6"><a href=""></a>         <span class="fu">select</span>(Wage, Exper)</span>
-<span id="cb1-7"><a href=""></a>ModelWage<span class="ot">=</span><span class="fu">lm</span>(Wage<span class="sc">~</span>Exper, DataWage)</span>
-<span id="cb1-8"><a href=""></a><span class="fu">print</span>(ModelWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ Exper, data = DataWage)
-
-Coefficients:
-(Intercept)        Exper  
-    5.37331      0.03072  </code></pre>
-</div>
-</div>
-<p>The model is based on absolute change. For <em>each year of experience</em> (<strong>absolute change</strong>) the wage increases by 0.03.</p>
-</section>
-<section id="one-year-extra-exper-creates-the-same-chage" class="slide level2 smaller">
-<h2>One year Extra Exper Creates the same Chage</h2>
-<h3 id="for-an-already-experinced-employee-and-a-not-so-experienced-employee">For an already experinced employee and a not so experienced employee</h3>
-<p>Does this really make sense when, for example, comparing some body with already 20 years experience to somebody with 2 years experience. An extra year of experience has the same effect???</p>
-<p>. . .</p>
-<p>More reasonable is to use relative (percentage) change. I.e., the same <strong>relative change</strong> leads to the same effect. For example, and increase of 50% of experience: - 1 year for the young - 10 years for the older employee</p>
-<p>has the same effect. However, we would have to run a different regression (one where we use the logarithm of <span class="math inline">\(Exper\)</span> (<code>log(Exper)</code>) instead <span class="math inline">\(Exper\)</span> itself.)</p>
-<p>. . .</p>
-<p>We can accomplish this in regression by using logarithms:</p>
-<p><strong>A change of a logarithmic variable can be interpreted as relative (percentage) change</strong></p>
+<section id="absolute-change-vs.-relative-change" class="title-slide slide level1 smaller center scrollable">
+<h1>Absolute Change vs.&nbsp;Relative Change</h1>
+<p>Examples:</p>
+<ol type="1">
+<li><p>A stock that you buy for $100 pays you $4 dividend each year. You keep the stock for 5 years and the stock price is still $100</p></li>
+<li><p>A savings account where you deposit $100, pays you 4% interest each year. You keep the stock for 5 years and the stock price is still $100</p></li>
+</ol>
 </section>
 <section id="important" class="slide level2">
 <h2>Important !!!</h2>
@@ -459,11 +429,11 @@ Coefficients:
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>DataExamp<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">t=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">X=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">203</span>, <span class="dv">207</span>, <span class="dv">200</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-2"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">TradPercChange=</span>(X<span class="sc">-</span><span class="fu">lag</span>(X))<span class="sc">/</span><span class="fu">lag</span>(X)) <span class="sc">|&gt;</span> </span>
-<span id="cb3-3"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">LnX=</span><span class="fu">num</span>(<span class="fu">log</span>(X),<span class="at">digits=</span><span class="dv">5</span>)) <span class="sc">|&gt;</span> <span class="co"># log calculates the natural logarithm ln() in R </span></span>
-<span id="cb3-4"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">ChangeLnX=</span>LnX <span class="sc">-</span> <span class="fu">lag</span>(LnX))</span>
-<span id="cb3-5"><a href=""></a><span class="fu">print</span>(DataExamp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>DataExamp<span class="ot">=</span><span class="fu">tibble</span>(<span class="at">t=</span><span class="fu">c</span>(<span class="dv">0</span><span class="sc">:</span><span class="dv">3</span>), <span class="at">X=</span><span class="fu">c</span>(<span class="dv">200</span>, <span class="dv">203</span>, <span class="dv">207</span>, <span class="dv">200</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-2"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">TradPercChange=</span>(X<span class="sc">-</span><span class="fu">lag</span>(X))<span class="sc">/</span><span class="fu">lag</span>(X)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-3"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">LnX=</span><span class="fu">num</span>(<span class="fu">log</span>(X),<span class="at">digits=</span><span class="dv">5</span>)) <span class="sc">|&gt;</span> <span class="co"># log calculates the natural logarithm ln() in R </span></span>
+<span id="cb1-4"><a href=""></a>          <span class="fu">mutate</span>(<span class="at">ChangeLnX=</span>LnX <span class="sc">-</span> <span class="fu">lag</span>(LnX))</span>
+<span id="cb1-5"><a href=""></a><span class="fu">print</span>(DataExamp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 5
@@ -479,6 +449,17 @@ Coefficients:
 <section id="plot-mpg-weight" class="slide level2">
 <h2>Plot MPG ~ Weight</h2>
 <div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-4-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
@@ -534,27 +515,16 @@ Coefficients:
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 </div>
 </section>
 <section id="regression-mpg-weight" class="slide level2 smaller">
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="no-variable-logarithmized">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>Model1<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data =</span> DataAutoMPG) </span>
-<span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a></span>
-<span id="cb5-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>Model1<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data =</span> DataAutoMPG) </span>
+<span id="cb3-2"><a href=""></a></span>
+<span id="cb3-3"><a href=""></a></span>
+<span id="cb3-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -586,7 +556,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -631,10 +601,10 @@ Coefficients:
 <h2>Regression LNMPG ~ Weight</h2>
 <h3 id="dependent-variable-mpg-logarithmized">Dependent Variable MPG Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>Model2<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
-<span id="cb7-2"><a href=""></a></span>
-<span id="cb7-3"><a href=""></a></span>
-<span id="cb7-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>Model2<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb5-2"><a href=""></a></span>
+<span id="cb5-3"><a href=""></a></span>
+<span id="cb5-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -666,7 +636,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -710,6 +680,17 @@ Coefficients:
 <section id="plot-mpg-displ" class="slide level2">
 <h2>Plot MPG ~ Displ</h2>
 <div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
@@ -765,26 +746,15 @@ Coefficients:
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-19-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 </div>
 </section>
 <section id="regression-mpg-displ" class="slide level2 smaller">
 <h2>Regression MPG ~ Displ</h2>
 <h3 id="no-variable-logarithmized-1">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>Model4<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Displ, <span class="at">data=</span>DataAutoMPG) </span>
-<span id="cb9-2"><a href=""></a></span>
-<span id="cb9-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>Model4<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Displ, <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -816,7 +786,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -861,9 +831,9 @@ Coefficients:
 <h2>Regression MPG ~ LNDispl</h2>
 <h3 id="independent-variable-displ-logarithmized">Independent Variable Displ Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>Model5<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span><span class="fu">log</span>(Displ), <span class="at">data=</span>DataAutoMPG) </span>
-<span id="cb11-2"><a href=""></a></span>
-<span id="cb11-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>Model5<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span><span class="fu">log</span>(Displ), <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -895,7 +865,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -939,6 +909,17 @@ Coefficients:
 <section id="plot-mpg-weight-1" class="slide level2">
 <h2>Plot MPG ~ Weight</h2>
 <div class="r-stack">
+<div class="fragment">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
 <div class="fragment">
 <div class="cell">
 <div class="cell-output-display">
@@ -994,26 +975,15 @@ Coefficients:
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 </div>
 </section>
 <section id="regression-mpg-weight-1" class="slide level2 smaller">
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="no-variable-logarithmized-2">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>Model6<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
-<span id="cb13-2"><a href=""></a></span>
-<span id="cb13-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>Model6<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1045,7 +1015,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1090,9 +1060,9 @@ Coefficients:
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="dependend-variable-mpg-and-independent-variable-weight-logarithmized">Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>Model7<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span><span class="fu">log</span>(Weight), <span class="at">data=</span>DataAutoMPG) </span>
-<span id="cb15-2"><a href=""></a></span>
-<span id="cb15-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>Model7<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span><span class="fu">log</span>(Weight), <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb13-2"><a href=""></a></span>
+<span id="cb13-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1124,7 +1094,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1165,11 +1135,7 @@ Coefficients:
 </div>
 </div>
 </section>
-<section id="summary" class="slide level2">
-<h2>Summary</h2>
 
-<img data-src="InterpretLogVarInRegrOverview.png" class="r-stretch quarto-figure-center"><p class="caption">How to Interpret Regressions With Logarithmic Variables</p><p>Source: <a href="https://quantifyinghealth.com/interpret-log-transformations-in-linear-regression/" class="uri">https://quantifyinghealth.com/interpret-log-transformations-in-linear-regression/</a></p>
-</section>
 <section id="interpretation-of-regression-no-transformation" class="slide level2 smaller">
 <h2>Interpretation of Regression — No Transformation</h2>
 <p><span class="math display">\[Y_i = \beta_1 X_i+ \beta_2 \]</span> <span class="math display">\[\frac{\delta Y}{\delta X}\approx\frac{\Delta Y}{\Delta X}=\beta_1\]</span> <span class="math display">\[\Delta Y=\beta_1\Delta X\]</span> <span class="math inline">\(\Delta X\)</span>: change of <span class="math inline">\(X\)</span>,<span class="math inline">\(\Delta Y\)</span>: change of <span class="math inline">\(Y\)</span>, <span class="math inline">\(\frac{\Delta Y}{\Delta X}\)</span>: rise over run.</p>

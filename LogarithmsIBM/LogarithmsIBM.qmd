@@ -27,41 +27,15 @@ library(janitor)
 -   How to interpret a regression with a logarithmic *dependent* variable
 -   How to interpret a regression with a logarithmic *independent and dependent* variables
 
-# Absolute Change vs. Percentage Change
+# Absolute Change vs. Relative Change {.smaller}
 
-Example Wage and Experience Regression
+Examples:
 
-```{r}
-#| code-fold: true
-library(tidymodels)
-library(janitor)
-library(wooldridge)
-DataWage=wage1 |> 
-         clean_names("upper_camel") |> 
-         select(Wage, Exper)
-ModelWage=lm(Wage~Exper, DataWage)
-print(ModelWage)
-```
+1. A stock that you buy for $100 pays you $4 dividend each year. You keep the stock for 5 years and the stock price is still $100
 
-The model is based on absolute change. For *each year of experience* (**absolute change**) the wage increases by 0.03.
+1. A savings account where you deposit $100, pays you 4% interest each year. You keep the stock for 5 years and the stock price is still $100
 
-## One year Extra Exper Creates the same Chage {.smaller}
 
-### For an already experinced employee and a not so experienced employee
-
-Does this really make sense when, for example, comparing some body with already 20 years experience to somebody with 2 years experience. An extra year of experience has the same effect???
-
-. . .
-
-More reasonable is to use relative (percentage) change. I.e., the same **relative change** leads to the same effect. For example, and increase of 50% of experience: - 1 year for the young - 10 years for the older employee
-
-has the same effect. However, we would have to run a different regression (one where we use the logarithm of $Exper$ (`log(Exper)`) instead $Exper$ itself.)
-
-. . .
-
-We can accomplish this in regression by using logarithms:
-
-**A change of a logarithmic variable can be interpreted as relative (percentage) change**
 
 ## Important !!!
 
@@ -85,7 +59,8 @@ print(DataExamp)
 # Data source: https://www.kaggle.com/datasets/uciml/autompg-dataset/
 DataAutoMPG=import("https://econ.lange-analytics.com/RData/Datasets/AutoMpg.csv") |>
             clean_names("upper_camel") |> 
-            select(MPG=Mpg, Displ=Displacement, Weight)
+            select(MPG=Mpg, Displ=Displacement, Weight) |> 
+            mutate(lnMPG=log(MPG), lnDisp=log(Displ), lnWeight=log(Weight))
 
 
 Plot1=ggplot(DataAutoMPG, aes(x=Weight, y=MPG))+
@@ -339,7 +314,7 @@ kbl(tidy(Model7))
 kbl(glance(Model7))
 ```
 
-## Summary
+## Summary {visibility="hidden"}
 
 ![How to Interpret Regressions With Logarithmic Variables](InterpretLogVarInRegrOverview.png)
 
