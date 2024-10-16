@@ -425,8 +425,9 @@
 \end{equation}\]</span>
 <p><span class="math inline">\(\beta_1\)</span> is clearly a <strong>Statistic</strong>!</p>
 </section>
-<section id="example-statistic-beta_1-for-a-sample-of-n100-for-a-univariate-regression-set.seed123" class="slide level2 smaller">
-<h2>Example: Statistic <span class="math inline">\(\beta_1\)</span> for a Sample of N=100 for a Univariate Regression set.seed(123)</h2>
+<section id="example-1" class="slide level2 smaller">
+<h2>Example 1:</h2>
+<h3 id="statistic-beta_1-for-a-sample-of-n100-for-a-univariate-regression-set.seed123">Statistic <span class="math inline">\(\beta_1\)</span> for a Sample of N=100 for a Univariate Regression set.seed(123)</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -470,8 +471,9 @@
 <p><span class="math inline">\(SE_{\beta_1}\)</span> measures the spread of the coefficient <span class="math inline">\(\beta_1\)</span>.</p>
 <p>How can <span class="math inline">\(\beta_1\)</span> have spread, as we have only one sample???</p>
 </section>
-<section id="example-statistic-beta_1-for-a-sample-of-n100-for-a-univariate-regression-set.seed321" class="slide level2 smaller">
-<h2>Example: Statistic <span class="math inline">\(\beta_1\)</span> for a Sample of N=100 for a Univariate Regression set.seed(321)</h2>
+<section id="example-2" class="slide level2 smaller">
+<h2>Example 2:</h2>
+<h3 id="statistic-beta_1-for-a-sample-of-n100-for-a-univariate-regression-set.seed321">Statistic <span class="math inline">\(\beta_1\)</span> for a Sample of N=100 for a Univariate Regression set.seed(321)</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -514,11 +516,6 @@
 <p><span class="math display">\[\beta_1=6.9417371\]</span> <span class="math display">\[std.error=0.8470048\]</span></p>
 <p><span class="math inline">\(SE_{\beta_1}\)</span> measures the spread of <span class="math inline">\(\beta_1\)</span>.</p>
 </section>
-<section id="finding-the-standard-error-with-repeated-sampling" class="slide level2">
-<h2>Finding the Standard Error with Repeated Sampling</h2>
-<h3 id="in-reality-this-is-not-possible-because-we-have-only-on-sample">In reality this is not possible because we have only on sample!</h3>
-<p>Goto <a href="https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R">https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R</a></p>
-</section>
 <section id="how-can-r-estimate-the-se-for-beta_1-based-on-only-one-sample" class="slide level2 smaller">
 <h2>How Can R Estimate the SE for <span class="math inline">\(\beta_1\)</span> Based on only One Sample?</h2>
 <p>The estimated <em>Standard Error</em> for <span class="math inline">\(\beta_1\)</span> is related to the <em>MSE</em> of the regression and the <em>Variance</em> of the <em>dependend variable</em> <span class="math inline">\((Y)\)</span>. The formula for a uni-variate regression is:</p>
@@ -534,15 +531,8 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
 </ul>
 <p>The greater <span class="math inline">\(N\)</span> (the sample size) the smaller is <span class="math inline">\(SE\)</span> (try N=400 instead og N=100) in the simulation and the <span class="math inline">\(SE\)</span> will be cut in half.</p>
 </section>
-<section id="normal-distribution-of-beta_1" class="slide level2">
-<h2>Normal Distribution of <span class="math inline">\(\beta_1\)</span></h2>
-<ul>
-<li>If we can estimate <span class="math inline">\(SE_{\beta_1}\)</span>.</li>
-<li>If we assume the mean is <span class="math inline">\(\beta_1\)</span>.</li>
-<li>If we assume <span class="math inline">\(\beta_1\)</span> is normal distributed.</li>
-</ul>
-<p>We can approximate the <span class="math inline">\(\beta_1\)</span> with a normal curve and calculate areas under the curve.</p>
-<p>Goto <a href="https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R">https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R</a></p>
+<section id="using-the-formulas-from-the-previous-slide" class="slide level2">
+<h2>Using the Formulas from the previous slide</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">print</span>(Results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -555,6 +545,17 @@ SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-
 </div>
 <p>Note, R uses the <span class="math inline">\(t-distribution\)</span> here, instead of the standard normal distribution, because the standard error was not known but estimated. For <span class="math inline">\(N&gt;100\)</span> the two distributions are almost exactly the same.</p>
 <p><strong>t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error</strong></p>
+</section>
+<section id="finding-the-standard-error-with-repeated-sampling" class="slide level2">
+<h2>Finding the Standard Error with Repeated Sampling</h2>
+<h3 id="in-reality-this-is-not-possible-because-we-have-only-on-sample">In reality this is not possible because we have only on sample!</h3>
+<p>Goto <a href="https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R">https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R</a></p>
+<p><strong>Assumption:</strong> <span class="math inline">\(\beta_1\)</span> is normal distributed with repeated sampling.</p>
+<p><strong>Central Limit Theorem:</strong></p>
+<p>If a sufficiently large samples from a population is taken, the sample’s statistics will be normally distributed, even if the population is not normally distributed.</p>
+<div class="smaller">
+<p>In theory <em>sufficiently large</em> means infinity. However, in most cases samples with 30 or more observations are <em>sufficiently large</em>.</p>
+</div>
 </section>
 <section id="coefficient-of-determination" class="slide level2 smaller">
 <h2>Coefficient of Determination</h2>

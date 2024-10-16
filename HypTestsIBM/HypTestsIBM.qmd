@@ -49,7 +49,8 @@ Examples include: mean, standard deviation, or the coefficients from a regressio
 
 $\beta_1$ is clearly a **Statistic**!
 
-## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(123) {.smaller}
+## Example 1: {.smaller}
+### Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(123) 
 
 ```{r}
 #| code-fold: true
@@ -90,7 +91,8 @@ $SE_{\beta_1}$ measures the spread of the coefficient $\beta_1$.
 
 How can $\beta_1$ have spread, as we have only one sample???
 
-## Example: Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(321) {.smaller}
+## Example 2: {.smaller}
+### Statistic $\beta_1$ for a Sample of N=100 for a Univariate Regression set.seed(321) 
 
 ```{r}
 #| code-fold: true
@@ -130,11 +132,7 @@ $$std.error=`r Results[[2,3]]`$$
 $SE_{\beta_1}$ measures the spread of $\beta_1$. 
 
 
-## Finding the Standard Error with Repeated Sampling
-### In reality this is not possible because we have only on sample!
 
-
-Goto [https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R](https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R)
 
 ## How Can R Estimate the SE for $\beta_1$ Based on only One Sample?{.smaller}
 
@@ -156,15 +154,7 @@ $$
 
 The greater $N$ (the sample size)  the smaller is $SE$ (try N=400 instead og N=100) in the simulation and the $SE$ will be cut in half.
 
-## Normal Distribution of $\beta_1$
-
-- If we can estimate $SE_{\beta_1}$.
-- If  we assume the mean is $\beta_1$.
-- If we assume $\beta_1$ is normal distributed.
-
-We can approximate the $\beta_1$ with a normal curve and calculate areas under the curve.
-
-Goto [https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R](https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R)
+## Using the Formulas from the previous slide
 
 ```{r}
 print(Results)
@@ -173,6 +163,26 @@ print(Results)
 Note, R uses the $t-distribution$ here, instead of the standard normal distribution, because the standard error was not known but estimated.  For $N>100$ the two distributions are almost exactly the same.
 
 **t-distribution has slightly fatter tails than the normal distribution to account for the estimation of the standard error**
+
+## Finding the Standard Error with Repeated Sampling
+### In reality this is not possible because we have only on sample!
+
+
+Goto [https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R](https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R)
+
+**Assumption:**
+$\beta_1$ is normal distributed with repeated sampling.
+
+**Central Limit Theorem:**
+
+If a sufficiently large samples from a population is taken, the sample's statistics will be normally distributed, even if the population is not normally distributed.
+
+::: {.smaller}
+In theory *sufficiently large* means infinity. However, in most cases samples with 30 or more observations are *sufficiently large*.
+:::
+
+
+
 
 
 
