@@ -177,9 +177,9 @@ $\beta_1$ is normal distributed with repeated sampling.
 
 If a sufficiently large samples from a population is taken, the sample's statistics will be normally distributed, even if the population is not normally distributed.
 
-::: {.smaller}
+
 In theory *sufficiently large* means infinity. However, in most cases samples with 30 or more observations are *sufficiently large*.
-:::
+
 
 
 
