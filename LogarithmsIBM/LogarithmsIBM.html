@@ -551,17 +551,10 @@ Coefficients:
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="no-variable-logarithmized">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb5-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb5-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb5-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
-<span id="cb5-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Weight)</span>
-<span id="cb5-6"><a href=""></a></span>
-<span id="cb5-7"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb5-8"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb5-9"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb5-10"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb5-11"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>Model1<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data =</span> DataAutoMPG) </span>
+<span id="cb5-2"><a href=""></a></span>
+<span id="cb5-3"><a href=""></a></span>
+<span id="cb5-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -593,7 +586,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -638,18 +631,10 @@ Coefficients:
 <h2>Regression LNMPG ~ Weight</h2>
 <h3 id="dependent-variable-mpg-logarithmized">Dependent Variable MPG Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb7-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb7-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
-<span id="cb7-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Weight) <span class="sc">|&gt;</span> </span>
-<span id="cb7-6"><a href=""></a>              <span class="fu">step_log</span>(<span class="fu">all_outcomes</span>()) </span>
-<span id="cb7-7"><a href=""></a></span>
-<span id="cb7-8"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb7-9"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb7-10"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb7-11"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb7-12"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>Model2<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb7-2"><a href=""></a></span>
+<span id="cb7-3"><a href=""></a></span>
+<span id="cb7-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -681,7 +666,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -797,17 +782,9 @@ Coefficients:
 <h2>Regression MPG ~ Displ</h2>
 <h3 id="no-variable-logarithmized-1">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb9-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb9-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb9-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
-<span id="cb9-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Displ)</span>
-<span id="cb9-6"><a href=""></a></span>
-<span id="cb9-7"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb9-8"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb9-9"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb9-10"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb9-11"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>Model4<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Displ, <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -839,7 +816,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -884,19 +861,9 @@ Coefficients:
 <h2>Regression MPG ~ LNDispl</h2>
 <h3 id="independent-variable-displ-logarithmized">Independent Variable Displ Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb11-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
-<span id="cb11-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Displ) <span class="sc">|&gt;</span> </span>
-<span id="cb11-6"><a href=""></a>              <span class="fu">step_mutate</span>(<span class="at">LNDispl=</span><span class="fu">log</span>(Displ)) <span class="sc">|&gt;</span> </span>
-<span id="cb11-7"><a href=""></a>              <span class="fu">step_rm</span>(Displ)</span>
-<span id="cb11-8"><a href=""></a></span>
-<span id="cb11-9"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb11-10"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb11-11"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb11-12"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb11-13"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>Model5<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span><span class="fu">log</span>(Displ), <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb11-2"><a href=""></a></span>
+<span id="cb11-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -917,7 +884,7 @@ Coefficients:
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">LNDispl</td>
+<td style="text-align: left;">log(Displ)</td>
 <td style="text-align: right;">-12.18701</td>
 <td style="text-align: right;">0.4141116</td>
 <td style="text-align: right;">-29.42928</td>
@@ -928,7 +895,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1044,17 +1011,9 @@ Coefficients:
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="no-variable-logarithmized-2">No Variable Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb13-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb13-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb13-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Weight) <span class="sc">|&gt;</span>      </span>
-<span id="cb13-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Weight)</span>
-<span id="cb13-6"><a href=""></a></span>
-<span id="cb13-7"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb13-8"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb13-9"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb13-10"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb13-11"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>Model6<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb13-2"><a href=""></a></span>
+<span id="cb13-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1086,7 +1045,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1131,20 +1090,9 @@ Coefficients:
 <h2>Regression MPG ~ Weight</h2>
 <h3 id="dependend-variable-mpg-and-independent-variable-weight-logarithmized">Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>ModelDesignLinear<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb15-2"><a href=""></a>            <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb15-3"><a href=""></a>            <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb15-4"><a href=""></a>RecipeMPGDispl<span class="ot">=</span><span class="fu">recipe</span>(DataAutoMPG, MPG<span class="sc">~</span>Displ) <span class="sc">|&gt;</span>      </span>
-<span id="cb15-5"><a href=""></a>              <span class="fu">step_naomit</span>(MPG,Displ) <span class="sc">|&gt;</span> </span>
-<span id="cb15-6"><a href=""></a>              <span class="fu">step_mutate</span>(<span class="at">LnDispl=</span><span class="fu">log</span>(Displ)) <span class="sc">|&gt;</span> </span>
-<span id="cb15-7"><a href=""></a>              <span class="fu">step_rm</span>(Displ)<span class="sc">|&gt;</span> </span>
-<span id="cb15-8"><a href=""></a>              <span class="fu">step_log</span>(<span class="fu">all_outcomes</span>()) </span>
-<span id="cb15-9"><a href=""></a></span>
-<span id="cb15-10"><a href=""></a>WFModelMPG<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb15-11"><a href=""></a>           <span class="fu">add_model</span>(ModelDesignLinear) <span class="sc">|&gt;</span> </span>
-<span id="cb15-12"><a href=""></a>           <span class="fu">add_recipe</span>(RecipeMPGDispl) <span class="sc">|&gt;</span> </span>
-<span id="cb15-13"><a href=""></a>           <span class="fu">fit</span>(DataAutoMPG)</span>
-<span id="cb15-14"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>Model7<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span><span class="fu">log</span>(Weight), <span class="at">data=</span>DataAutoMPG) </span>
+<span id="cb15-2"><a href=""></a></span>
+<span id="cb15-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1159,16 +1107,16 @@ Coefficients:
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">5.9200729</td>
-<td style="text-align: right;">0.0842779</td>
-<td style="text-align: right;">70.24466</td>
+<td style="text-align: right;">11.521907</td>
+<td style="text-align: right;">0.2348723</td>
+<td style="text-align: right;">49.05604</td>
 <td style="text-align: right;">0</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">LnDispl</td>
-<td style="text-align: right;">-0.5501841</td>
-<td style="text-align: right;">0.0163628</td>
-<td style="text-align: right;">-33.62407</td>
+<td style="text-align: left;">log(Weight)</td>
+<td style="text-align: right;">-1.058268</td>
+<td style="text-align: right;">0.0294998</td>
+<td style="text-align: right;">-35.87373</td>
 <td style="text-align: right;">0</td>
 </tr>
 </tbody>
@@ -1176,7 +1124,7 @@ Coefficients:
 
 
 </div>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(WFModelMPG))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -1197,16 +1145,16 @@ Coefficients:
 </thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">0.7405963</td>
-<td style="text-align: right;">0.7399412</td>
-<td style="text-align: right;">0.173211</td>
-<td style="text-align: right;">1130.578</td>
+<td style="text-align: right;">0.7646953</td>
+<td style="text-align: right;">0.7641011</td>
+<td style="text-align: right;">0.1649691</td>
+<td style="text-align: right;">1286.924</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">134.0565</td>
-<td style="text-align: right;">-262.1129</td>
-<td style="text-align: right;">-250.1536</td>
-<td style="text-align: right;">11.88081</td>
+<td style="text-align: right;">153.4598</td>
+<td style="text-align: right;">-300.9197</td>
+<td style="text-align: right;">-288.9603</td>
+<td style="text-align: right;">10.77706</td>
 <td style="text-align: right;">396</td>
 <td style="text-align: right;">398</td>
 </tr>
@@ -1236,10 +1184,6 @@ Coefficients:
 <p><strong>The change of</strong> <span class="math inline">\(X\)</span> multiplied with <span class="math inline">\(\beta_1\)</span> equals the change of <span class="math inline">\(LNY\)</span>.</p>
 <p><span class="math display">\[\Delta LNY=\beta_1\underbrace{\Delta X}_{+1}\]</span></p>
 <p><strong>Since we know that the change of a logarithm is a relative (percentage) change, we can say: If</strong> <span class="math inline">\(X\)</span> changes by one unit <span class="math inline">\(\Delta X=1\)</span>, then <span class="math inline">\(Y\)</span> changes by <span class="math inline">\(\beta_1\cdot 100\)</span>%.</p>
-</section>
-<section id="example-repeated-regression" class="slide level2">
-<h2>Example Repeated Regression</h2>
-<p><a href="https://econ.lange-analytics.com/ibm6510-40/SamplingDistribution.R" class="uri">https://econ.lange-analytics.com/ibm6510-40/SamplingDistribution.R</a></p>
 <div class="quarto-auto-generated-content">
 <div class="footer footer-default">
 <p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>

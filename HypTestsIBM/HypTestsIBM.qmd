@@ -133,7 +133,8 @@ $SE_{\beta_1}$ measures the spread of $\beta_1$.
 ## Finding the Standard Error with Repeated Sampling
 ### In reality this is not possible because we have only on sample!
 
-Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R)
+
+Goto [https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R](https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R)
 
 ## How Can R Estimate the SE for $\beta_1$ Based on only One Sample?{.smaller}
 
@@ -163,7 +164,7 @@ The greater $N$ (the sample size)  the smaller is $SE$ (try N=400 instead og N=1
 
 We can approximate the $\beta_1$ with a normal curve and calculate areas under the curve.
 
-Goto [https:///econ.lange-analytics.com/ibm6510/SamplingDistribution.R](https:///econ.lange-analytics.com/ibm6510/SamplingDistribution)
+Goto [https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R](https://econ.lange-analytics.com/ibm6510-40/SamplingDistributionLM.R)
 
 ```{r}
 print(Results)
@@ -180,8 +181,8 @@ Note, R uses the $t-distribution$ here, instead of the standard normal distribut
 
 ![Source: [https://en.wikipedia.org/wiki/Coefficient_of_determination](https://en.wikipedia.org/wiki/Coefficient_of_determination)](CoefficientOfDetermination.png)
 
-## Coefficient of Determination - Defition
-
+## Coefficient of Determination - Definition
+[https://econ.lange-analytics.com/calcat/linregrmeans/](https://econ.lange-analytics.com/calcat/linregrmeans/)
 
 $$
 R^2=1 - \frac{SSR}{SST}=\frac{SST-SSR}{SST}=\frac{

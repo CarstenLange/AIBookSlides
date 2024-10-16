@@ -150,18 +150,12 @@ plot(Plot5)
 ### No Variable Logarithmized
 
 ```{r}
-ModelDesignLinear=linear_reg() |> 
-            set_engine("lm") |> 
-            set_mode("regression")
-RecipeMPGDispl=recipe(DataAutoMPG, MPG~Weight) |>      
-              step_naomit(MPG,Weight)
 
-WFModelMPG=workflow() |> 
-           add_model(ModelDesignLinear) |> 
-           add_recipe(RecipeMPGDispl) |> 
-           fit(DataAutoMPG)
-kbl(tidy(WFModelMPG))
-kbl(glance(WFModelMPG))
+Model1=lm(MPG~Weight, data = DataAutoMPG) 
+
+
+kbl(tidy(Model1))
+kbl(glance(Model1))
 ```
 
 ## Regression LNMPG \~ Weight {.smaller}
@@ -169,19 +163,12 @@ kbl(glance(WFModelMPG))
 ### Dependent Variable MPG Logarithmized
 
 ```{r}
-ModelDesignLinear=linear_reg() |> 
-            set_engine("lm") |> 
-            set_mode("regression")
-RecipeMPGDispl=recipe(DataAutoMPG, MPG~Weight) |>      
-              step_naomit(MPG,Weight) |> 
-              step_log(all_outcomes()) 
 
-WFModelMPG=workflow() |> 
-           add_model(ModelDesignLinear) |> 
-           add_recipe(RecipeMPGDispl) |> 
-           fit(DataAutoMPG)
-kbl(tidy(WFModelMPG))
-kbl(glance(WFModelMPG))
+Model2=lm(log(MPG)~Weight, data=DataAutoMPG) 
+
+
+kbl(tidy(Model2))
+kbl(glance(Model2))
 ```
 
 ## Plot MPG \~ Displ
@@ -251,18 +238,10 @@ plot(Plot5)
 ### No Variable Logarithmized
 
 ```{r}
-ModelDesignLinear=linear_reg() |> 
-            set_engine("lm") |> 
-            set_mode("regression")
-RecipeMPGDispl=recipe(DataAutoMPG, MPG~Displ) |>      
-              step_naomit(MPG,Displ)
+Model4=lm(MPG~Displ, data=DataAutoMPG) 
 
-WFModelMPG=workflow() |> 
-           add_model(ModelDesignLinear) |> 
-           add_recipe(RecipeMPGDispl) |> 
-           fit(DataAutoMPG)
-kbl(tidy(WFModelMPG))
-kbl(glance(WFModelMPG))
+kbl(tidy(Model4))
+kbl(glance(Model4))
 ```
 
 ## Regression MPG \~ LNDispl {.smaller}
@@ -270,20 +249,10 @@ kbl(glance(WFModelMPG))
 ### Independent Variable Displ Logarithmized
 
 ```{r}
-ModelDesignLinear=linear_reg() |> 
-            set_engine("lm") |> 
-            set_mode("regression")
-RecipeMPGDispl=recipe(DataAutoMPG, MPG~Displ) |>      
-              step_naomit(MPG,Displ) |> 
-              step_mutate(LNDispl=log(Displ)) |> 
-              step_rm(Displ)
+Model5=lm(MPG~log(Displ), data=DataAutoMPG) 
 
-WFModelMPG=workflow() |> 
-           add_model(ModelDesignLinear) |> 
-           add_recipe(RecipeMPGDispl) |> 
-           fit(DataAutoMPG)
-kbl(tidy(WFModelMPG))
-kbl(glance(WFModelMPG))
+kbl(tidy(Model5))
+kbl(glance(Model5))
 ```
 
 ## Plot MPG \~ Weight
@@ -353,18 +322,10 @@ plot(Plot5)
 ### No Variable Logarithmized
 
 ```{r}
-ModelDesignLinear=linear_reg() |> 
-            set_engine("lm") |> 
-            set_mode("regression")
-RecipeMPGDispl=recipe(DataAutoMPG, MPG~Weight) |>      
-              step_naomit(MPG,Weight)
+Model6=lm(MPG~Weight, data=DataAutoMPG) 
 
-WFModelMPG=workflow() |> 
-           add_model(ModelDesignLinear) |> 
-           add_recipe(RecipeMPGDispl) |> 
-           fit(DataAutoMPG)
-kbl(tidy(WFModelMPG))
-kbl(glance(WFModelMPG))
+kbl(tidy(Model6))
+kbl(glance(Model6))
 ```
 
 ## Regression MPG \~ Weight {.smaller}
@@ -372,21 +333,10 @@ kbl(glance(WFModelMPG))
 ### Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized
 
 ```{r}
-ModelDesignLinear=linear_reg() |> 
-            set_engine("lm") |> 
-            set_mode("regression")
-RecipeMPGDispl=recipe(DataAutoMPG, MPG~Displ) |>      
-              step_naomit(MPG,Displ) |> 
-              step_mutate(LnDispl=log(Displ)) |> 
-              step_rm(Displ)|> 
-              step_log(all_outcomes()) 
+Model7=lm(log(MPG)~log(Weight), data=DataAutoMPG) 
 
-WFModelMPG=workflow() |> 
-           add_model(ModelDesignLinear) |> 
-           add_recipe(RecipeMPGDispl) |> 
-           fit(DataAutoMPG)
-kbl(tidy(WFModelMPG))
-kbl(glance(WFModelMPG))
+kbl(tidy(Model7))
+kbl(glance(Model7))
 ```
 
 ## Summary
@@ -417,6 +367,4 @@ $$\Delta LNY=\beta_1\underbrace{\Delta X}_{+1}$$
 
 **Since we know that the change of a logarithm is a relative (percentage) change, we can say: If** $X$ changes by one unit $\Delta X=1$, then $Y$ changes by $\beta_1\cdot 100$%.
 
-## Example Repeated Regression
 
-<https://econ.lange-analytics.com/ibm6510-40/SamplingDistribution.R>
