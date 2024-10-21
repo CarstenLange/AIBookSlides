@@ -17,7 +17,7 @@ format:
 
 ```{r}
 #| echo: false
-library(tidymodels)
+library(tidyverse)
 library(rio)
 library(kableExtra)
 library(janitor)
@@ -54,10 +54,9 @@ $\beta_1$ is clearly a **Statistic**!
 
 ```{r}
 #| code-fold: true
-library(rio);library(janitor);library(tidymodels)
 library(rio)
 library(janitor)
-library(tidymodels)
+library(tidyverse)
 DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
               clean_names("upper_camel") |> 
               select(Height=Heightin, Weight=Weightlbs, Gender)
@@ -65,27 +64,15 @@ set.seed(123)
 
 DataTrain=sample_n(DataSoldiersM,100)
 
-RecipeWeightHeight=recipe(DataTrain, Weight~Height) 
-
-ModelDesignLinear=linear_reg() |> 
-                  set_engine("lm") |> 
-                  set_mode("regression")
-
-
-
-WFModelWeightHeight= workflow() |> 
-                     add_recipe(RecipeWeightHeight) |> 
-                     add_model(ModelDesignLinear) |> 
-                     fit(DataTrain)
-
-Results=tidy(WFModelWeightHeight)
+Results=lm(Weight~Height, data=DataTrain) |> 
+        summary()
 print(Results)
 ```
 
 $$Weight=\beta_1 Height +\beta_2$$
 
-$$\beta_1=`r Results[[2,2]]`$$
-$$std.error=`r Results[[2,3]]`$$ 
+$$\beta_1=`r Results$coefficients[2,1]`$$
+$$std.error=`r Results$coefficients[2,2]`$$ 
 
 $SE_{\beta_1}$ measures the spread of the coefficient $\beta_1$.
 
@@ -96,10 +83,9 @@ How can $\beta_1$ have spread, as we have only one sample???
 
 ```{r}
 #| code-fold: true
-library(rio);library(janitor);library(tidymodels)
 library(rio)
 library(janitor)
-library(tidymodels)
+library(tidyverse)
 DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
               clean_names("upper_camel") |> 
               select(Height=Heightin, Weight=Weightlbs, Gender)
@@ -107,27 +93,15 @@ set.seed(321)
 
 DataTrain=sample_n(DataSoldiersM,100)
 
-RecipeWeightHeight=recipe(DataTrain, Weight~Height) 
-
-ModelDesignLinear=linear_reg() |> 
-                  set_engine("lm") |> 
-                  set_mode("regression")
-
-
-
-WFModelWeightHeight= workflow() |> 
-                     add_recipe(RecipeWeightHeight) |> 
-                     add_model(ModelDesignLinear) |> 
-                     fit(DataTrain)
-
-Results=tidy(WFModelWeightHeight)
+Results=lm(Weight~Height, data=DataTrain) |> 
+        summary()
 print(Results)
 ```
 
 $$Weight=\beta_1 Height +\beta_2$$
 
-$$\beta_1=`r Results[[2,2]]`$$
-$$std.error=`r Results[[2,3]]`$$ 
+$$\beta_1=`r Results$coefficients[2,1]`$$
+$$std.error=`r Results$coefficients[2,2]`$$ 
 
 $SE_{\beta_1}$ measures the spread of $\beta_1$. 
 
@@ -136,7 +110,7 @@ $SE_{\beta_1}$ measures the spread of $\beta_1$.
 
 ## How Can R Estimate the SE for $\beta_1$ Based on only One Sample?{.smaller}
 
-The estimated *Standard Error* for $\beta_1$ is related to the *MSE* of the regression and the *Variance* of the *dependend variable* $(Y)$. The formula for a uni-variate regression is:
+The estimated *Standard Error* for $\beta_1$ is related to the *MSE* of the regression and the *Variance* of the *predictor(independend) variable* $(X)$. The formula for a uni-variate regression is:
 
 $$
 SE_{\beta_1}=\sqrt{\frac{MSE}{VAR_X}\frac{1}{N}}\cdot \underbrace{\sqrt{\frac{N-2}{N-1}}}_{\approx 1}
@@ -154,7 +128,7 @@ $$
 
 The greater $N$ (the sample size)  the smaller is $SE$ (try N=400 instead og N=100) in the simulation and the $SE$ will be cut in half.
 
-## Using the Formulas from the previous slide
+## Using the Formulas from the previous slide {.smaller}
 
 ```{r}
 print(Results)
