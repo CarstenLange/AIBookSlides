@@ -387,10 +387,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="LogarithmsIBM_files/libs/kePrint-0.0.1/kePrint.js"></script>
-
-  <link href="LogarithmsIBM_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
-
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -404,23 +400,25 @@
 </div>
 
 </section>
-<section id="what-will-you-learn" class="slide level2 scrollable smaller">
+<section id="what-will-you-learn" class="slide level2 scrollable">
 <h2>What Will You Learn</h2>
 <ul>
-<li>The difference between absolute and relative (measured in percent) change.</li>
-<li>How to interpret a regression with a logarithmic <em>independent</em> variable</li>
-<li>How to interpret a regression with a logarithmic <em>dependent</em> variable</li>
-<li>How to interpret a regression with a logarithmic <em>independent and dependent</em> variables</li>
+<li><p>The difference between <strong>absolute and relative</strong> (measured in percent) change.</p></li>
+<li><p>How to interpret a regression with a logarithmic <em>outcome</em> (<em>dependent</em>) variable</p></li>
+<li><p>How to interpret a regression with a logarithmic <em>predictor</em> (<em>independent</em>) variable</p></li>
+<li><p>How to interpret a regression with logarithmic <em>predictor and outcome</em> (<em>independent and dependent</em>) variables</p></li>
 </ul>
-</section>
-<section>
-<section id="absolute-change-vs.-relative-change" class="title-slide slide level1 smaller center scrollable">
-<h1>Absolute Change vs.&nbsp;Relative Change</h1>
-<p>Examples:</p>
-<ol type="1">
-<li><p>A stock that you buy for $100 pays you $4 dividend each year. You keep the stock for 5 years and the stock price is still $100</p></li>
-<li><p>A savings account where you deposit $100, pays you 4% interest each year. You keep the stock for 5 years and the stock price is still $100</p></li>
-</ol>
+<div class="quarto-auto-generated-content">
+<div class="footer footer-default">
+<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+</div>
+</div></section>
+<section id="absolute-change-vs.-relative-change" class="slide level2 smaller">
+<h2>Absolute Change vs.&nbsp;Relative Change</h2>
+<p><strong>Examples:</strong></p>
+<p><strong>Absolute Change:</strong> A stock that you buy for $100 pays $4 dividend each year. Assume the stock price does not change. You keep the stock for 5 years.</p>
+<p><strong>Relative Change (percentage change):</strong> A savings account where you deposit $100, pays you 4% interest each year. You keep the savings account for 5 years.</p>
+<p><a href="AbsVsRelChangeStockSavings.xlsx">AbsVsRelChangeStockSavings.xlsx</a></p>
 </section>
 <section id="important" class="slide level2">
 <h2>Important !!!</h2>
@@ -482,680 +480,224 @@
 </div>
 </div>
 </div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
 </div>
 </section>
-<section id="regression-mpg-weight" class="slide level2 smaller">
-<h2>Regression MPG ~ Weight</h2>
-<h3 id="no-variable-logarithmized">No Variable Logarithmized</h3>
+<section id="regression-model1-mpg-weight-no-variable-logarithmized" class="slide level2 smaller">
+<h2>Regression Model1: MPG ~ Weight (No Variable Logarithmized)</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>Model1<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data =</span> DataAutoMPG) </span>
 <span id="cb3-2"><a href=""></a></span>
-<span id="cb3-3"><a href=""></a></span>
-<span id="cb3-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">46.3173644</td>
-<td style="text-align: right;">0.7952452</td>
-<td style="text-align: right;">58.24287</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Weight</td>
-<td style="text-align: right;">-0.0076766</td>
-<td style="text-align: right;">0.0002575</td>
-<td style="text-align: right;">-29.81360</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
+<span id="cb3-3"><a href=""></a><span class="fu">summary</span>(Model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = MPG ~ Weight, data = DataAutoMPG)
 
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-12.012  -2.801  -0.351   2.114  16.480 
 
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0.691793</td>
-<td style="text-align: right;">0.6910147</td>
-<td style="text-align: right;">4.344628</td>
-<td style="text-align: right;">888.8507</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-1148.373</td>
-<td style="text-align: right;">2302.746</td>
-<td style="text-align: right;">2314.706</td>
-<td style="text-align: right;">7474.814</td>
-<td style="text-align: right;">396</td>
-<td style="text-align: right;">398</td>
-</tr>
-</tbody>
-</table>
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 46.3173644  0.7952452   58.24   &lt;2e-16 ***
+Weight      -0.0076766  0.0002575  -29.81   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-
+Residual standard error: 4.345 on 396 degrees of freedom
+Multiple R-squared:  0.6918,    Adjusted R-squared:  0.691 
+F-statistic: 888.9 on 1 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<p><span class="math display">\[
+\underbrace{MPG}_{\substack{\text{Absolute Change:}\\
+\text{-0.0076766}
+\\ \text{(in MPG)}}}=
+-0.00767661
+\underbrace{Weight}_{\substack{\text{Absolute Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +46.3173644
+\]</span></p>
 </section>
-<section id="regression-lnmpg-weight" class="slide level2 smaller">
-<h2>Regression LNMPG ~ Weight</h2>
-<h3 id="dependent-variable-mpg-logarithmized">Dependent Variable MPG Logarithmized</h3>
+<section id="regression-model2-logmpg-weight-outcome-variable-mpg-logarithmized" class="slide level2 smaller">
+<h2>Regression Model2: log(MPG) ~ Weight (Outcome Variable MPG Logarithmized)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>Model2<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>Model2<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span>Weight, <span class="at">data =</span> DataAutoMPG) </span>
 <span id="cb5-2"><a href=""></a></span>
-<span id="cb5-3"><a href=""></a></span>
-<span id="cb5-4"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">4.1445310</td>
-<td style="text-align: right;">0.0300725</td>
-<td style="text-align: right;">137.81801</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Weight</td>
-<td style="text-align: right;">-0.0003512</td>
-<td style="text-align: right;">0.0000097</td>
-<td style="text-align: right;">-36.06646</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
+<span id="cb5-3"><a href=""></a><span class="fu">summary</span>(Model2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(MPG) ~ Weight, data = DataAutoMPG)
 
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.50826 -0.10054 -0.00622  0.10027  0.55186 
 
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model2))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0.7666181</td>
-<td style="text-align: right;">0.7660287</td>
-<td style="text-align: right;">0.1642937</td>
-<td style="text-align: right;">1300.789</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">155.0926</td>
-<td style="text-align: right;">-304.1852</td>
-<td style="text-align: right;">-292.2258</td>
-<td style="text-align: right;">10.689</td>
-<td style="text-align: right;">396</td>
-<td style="text-align: right;">398</td>
-</tr>
-</tbody>
-</table>
+Coefficients:
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  4.145e+00  3.007e-02  137.82   &lt;2e-16 ***
+Weight      -3.512e-04  9.737e-06  -36.07   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-
+Residual standard error: 0.1643 on 396 degrees of freedom
+Multiple R-squared:  0.7666,    Adjusted R-squared:  0.766 
+F-statistic:  1301 on 1 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<p><span class="math display">\[
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{-0.0003511777}
+\\ \text{(=-0.0351178%})}}=
+-0.0003511777
+\underbrace{Weight}_{\substack{\text{Absolut  Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +4.144531
+\]</span></p>
 </section>
-<section id="plot-mpg-displ" class="slide level2">
-<h2>Plot MPG ~ Displ</h2>
-<div class="r-stack">
-<div class="fragment">
+<section id="regression-model3-mpg-logweight-predictor-variable-logarithmized" class="slide level2 smaller">
+<h2>Regression Model3: MPG ~ log(Weight) (Predictor Variable Logarithmized)</h2>
 <div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-13-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-16-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="regression-mpg-displ" class="slide level2 smaller">
-<h2>Regression MPG ~ Displ</h2>
-<h3 id="no-variable-logarithmized-1">No Variable Logarithmized</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>Model4<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Displ, <span class="at">data=</span>DataAutoMPG) </span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>Model3<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span><span class="fu">log</span>(Weight), <span class="at">data =</span> DataAutoMPG) </span>
 <span id="cb7-2"><a href=""></a></span>
-<span id="cb7-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">35.1747502</td>
-<td style="text-align: right;">0.4918243</td>
-<td style="text-align: right;">71.51894</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Displ</td>
-<td style="text-align: right;">-0.0602824</td>
-<td style="text-align: right;">0.0022388</td>
-<td style="text-align: right;">-26.92572</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
+<span id="cb7-3"><a href=""></a><span class="fu">summary</span>(Model3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = MPG ~ log(Weight), data = DataAutoMPG)
 
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-12.4676  -2.6558  -0.2669   1.9333  15.9770 
 
-</div>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model4))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0.6467422</td>
-<td style="text-align: right;">0.6458501</td>
-<td style="text-align: right;">4.651331</td>
-<td style="text-align: right;">724.9943</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-1175.522</td>
-<td style="text-align: right;">2357.044</td>
-<td style="text-align: right;">2369.003</td>
-<td style="text-align: right;">8567.412</td>
-<td style="text-align: right;">396</td>
-<td style="text-align: right;">398</td>
-</tr>
-</tbody>
-</table>
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 210.5270     5.9763   35.23   &lt;2e-16 ***
+log(Weight) -23.5032     0.7506  -31.31   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-
+Residual standard error: 4.198 on 396 degrees of freedom
+Multiple R-squared:  0.7123,    Adjusted R-squared:  0.7116 
+F-statistic: 980.4 on 1 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<p><span class="math display">\[
+\underbrace{MPG}_{\substack{\text{Absolut Change:}\\
+\text{-23.50321}
+\\ \text{(in MPG)}}}=
+-23.50321
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\ \text{(=100% (doubles)}}} +210.527029
+\]</span></p>
 </section>
-<section id="regression-mpg-lndispl" class="slide level2 smaller">
-<h2>Regression MPG ~ LNDispl</h2>
-<h3 id="independent-variable-displ-logarithmized">Independent Variable Displ Logarithmized</h3>
+<section id="regression-model4-logmpg-logweight-predictor-and-outcome-variables-logarithmized" class="slide level2 smaller">
+<h2>Regression Model4: log(MPG) ~ log(Weight) (Predictor and Outcome Variables Logarithmized)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>Model5<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span><span class="fu">log</span>(Displ), <span class="at">data=</span>DataAutoMPG) </span>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>Model4<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span><span class="fu">log</span>(Weight), <span class="at">data =</span> DataAutoMPG) </span>
 <span id="cb9-2"><a href=""></a></span>
-<span id="cb9-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">85.95072</td>
-<td style="text-align: right;">2.1329144</td>
-<td style="text-align: right;">40.29732</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">log(Displ)</td>
-<td style="text-align: right;">-12.18701</td>
-<td style="text-align: right;">0.4141116</td>
-<td style="text-align: right;">-29.42928</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
+<span id="cb9-3"><a href=""></a><span class="fu">summary</span>(Model4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(MPG) ~ log(Weight), data = DataAutoMPG)
 
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.52408 -0.10441 -0.00805  0.10165  0.59384 
 
-</div>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model5))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0.6862328</td>
-<td style="text-align: right;">0.6854405</td>
-<td style="text-align: right;">4.383642</td>
-<td style="text-align: right;">866.0824</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-1151.931</td>
-<td style="text-align: right;">2309.862</td>
-<td style="text-align: right;">2321.822</td>
-<td style="text-align: right;">7609.662</td>
-<td style="text-align: right;">396</td>
-<td style="text-align: right;">398</td>
-</tr>
-</tbody>
-</table>
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  11.5219     0.2349   49.06   &lt;2e-16 ***
+log(Weight)  -1.0583     0.0295  -35.87   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-
+Residual standard error: 0.165 on 396 degrees of freedom
+Multiple R-squared:  0.7647,    Adjusted R-squared:  0.7641 
+F-statistic:  1287 on 1 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
+<p><span class="math display">\[
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{-1.058268} \\
+\text{(105% reduction)}\\
+\text{---------------------------}\\
+\text{-0.01058268}\\
+\\
+\text{(1.05% reduction)}}}=
+-1.058268
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\
+\text{(+100% (doubles))}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(+1%)}
+}} +11.5219067
+\]</span></p>
 </section>
-<section id="plot-mpg-weight-1" class="slide level2">
-<h2>Plot MPG ~ Weight</h2>
-<div class="r-stack">
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-22-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-23-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-24-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-25-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="LogarithmsIBM_files/figure-revealjs/unnamed-chunk-27-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<section id="regression-mpg-weight-1" class="slide level2 smaller">
-<h2>Regression MPG ~ Weight</h2>
-<h3 id="no-variable-logarithmized-2">No Variable Logarithmized</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>Model6<span class="ot">=</span><span class="fu">lm</span>(MPG<span class="sc">~</span>Weight, <span class="at">data=</span>DataAutoMPG) </span>
-<span id="cb11-2"><a href=""></a></span>
-<span id="cb11-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">46.3173644</td>
-<td style="text-align: right;">0.7952452</td>
-<td style="text-align: right;">58.24287</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Weight</td>
-<td style="text-align: right;">-0.0076766</td>
-<td style="text-align: right;">0.0002575</td>
-<td style="text-align: right;">-29.81360</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model6))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0.691793</td>
-<td style="text-align: right;">0.6910147</td>
-<td style="text-align: right;">4.344628</td>
-<td style="text-align: right;">888.8507</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">-1148.373</td>
-<td style="text-align: right;">2302.746</td>
-<td style="text-align: right;">2314.706</td>
-<td style="text-align: right;">7474.814</td>
-<td style="text-align: right;">396</td>
-<td style="text-align: right;">398</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-</section>
-<section id="regression-mpg-weight-2" class="slide level2 smaller">
-<h2>Regression MPG ~ Weight</h2>
-<h3 id="dependend-variable-mpg-and-independent-variable-weight-logarithmized">Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized</h3>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>Model7<span class="ot">=</span><span class="fu">lm</span>(<span class="fu">log</span>(MPG)<span class="sc">~</span><span class="fu">log</span>(Weight), <span class="at">data=</span>DataAutoMPG) </span>
-<span id="cb13-2"><a href=""></a></span>
-<span id="cb13-3"><a href=""></a><span class="fu">kbl</span>(<span class="fu">tidy</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">term</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">estimate</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">std.error</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">(Intercept)</td>
-<td style="text-align: right;">11.521907</td>
-<td style="text-align: right;">0.2348723</td>
-<td style="text-align: right;">49.05604</td>
-<td style="text-align: right;">0</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">log(Weight)</td>
-<td style="text-align: right;">-1.058268</td>
-<td style="text-align: right;">0.0294998</td>
-<td style="text-align: right;">-35.87373</td>
-<td style="text-align: right;">0</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">kbl</span>(<span class="fu">glance</span>(Model7))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<table class="caption-top" data-quarto-postprocess="true">
-<thead>
-<tr class="header">
-<th style="text-align: right;" data-quarto-table-cell-role="th">r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">adj.r.squared</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">sigma</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">statistic</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">p.value</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">logLik</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">AIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">BIC</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">deviance</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">df.residual</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">nobs</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: right;">0.7646953</td>
-<td style="text-align: right;">0.7641011</td>
-<td style="text-align: right;">0.1649691</td>
-<td style="text-align: right;">1286.924</td>
-<td style="text-align: right;">0</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">153.4598</td>
-<td style="text-align: right;">-300.9197</td>
-<td style="text-align: right;">-288.9603</td>
-<td style="text-align: right;">10.77706</td>
-<td style="text-align: right;">396</td>
-<td style="text-align: right;">398</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
+<section id="summary" class="slide level2 smaller">
+<h2>Summary</h2>
+<p><strong>Model 1: no logs (<span class="math inline">\(r^2= 0.691793\)</span>)</strong></p>
+<p><span class="math display">\[
+\underbrace{MPG}_{\substack{\text{Absolute Change:}\\
+\text{-0.0076766}
+\\ \text{(in MPG)}}}=
+-0.00767661
+\underbrace{Weight}_{\substack{\text{Absolute Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +46.3173644
+\]</span></p>
+<p><strong>Model 2: only outcome MPG logarithmic (<span class="math inline">\(r^2= 0.7666181\)</span>)</strong></p>
+<p><span class="math display">\[
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{-0.0003511777}
+\\ \text{(=-0.0351178%})}}=
+-0.0003511777
+\underbrace{Weight}_{\substack{\text{Absolut  Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +4.144531
+\]</span></p>
+<p><strong>Model 3: only predictor Weight logarithmic (<span class="math inline">\(r^2= 0.7123007\)</span>)</strong></p>
+<p><span class="math display">\[
+\underbrace{MPG}_{\substack{\text{Absolut Change:}\\
+\text{-23.50321}
+\\ \text{(in MPG)}}}=
+-23.50321
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\ \text{(=100% (doubles)}}} +210.527029
+\]</span></p>
+<p><strong>Model 4: only predictor Weight logarithmic (<span class="math inline">\(r^2= 0.7646953\)</span>)</strong></p>
+<p><span class="math display">\[
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{-1.058268} \\
+\text{(105% reduction)}\\
+\text{---------------------------}\\
+\text{-0.01058268}\\
+\\
+\text{(1.05% reduction)}}}=
+-1.058268
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\
+\text{(+100% (doubles))}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(+1%)}
+}} +11.5219067
+\]</span></p>
 </section>
 
-<section id="interpretation-of-regression-no-transformation" class="slide level2 smaller">
-<h2>Interpretation of Regression — No Transformation</h2>
-<p><span class="math display">\[Y_i = \beta_1 X_i+ \beta_2 \]</span> <span class="math display">\[\frac{\delta Y}{\delta X}\approx\frac{\Delta Y}{\Delta X}=\beta_1\]</span> <span class="math display">\[\Delta Y=\beta_1\Delta X\]</span> <span class="math inline">\(\Delta X\)</span>: change of <span class="math inline">\(X\)</span>,<span class="math inline">\(\Delta Y\)</span>: change of <span class="math inline">\(Y\)</span>, <span class="math inline">\(\frac{\Delta Y}{\Delta X}\)</span>: rise over run.</p>
-<p><strong>The change of</strong> <span class="math inline">\(X\)</span> multiplied with <span class="math inline">\(\beta_1\)</span> equals the change of <span class="math inline">\(Y\)</span>.</p>
-<p>or</p>
-<p><strong>If</strong> <span class="math inline">\(X\)</span> changes by one unit (<span class="math inline">\(\Delta X=1\)</span>), <span class="math inline">\(\Delta Y\)</span> changes by <span class="math inline">\(\beta_1\)</span> units.</p>
-</section>
-<section id="interpretation-of-regression-log-transformation-of-dependent-variable" class="slide level2 smaller">
-<h2>Interpretation of Regression — Log-Transformation of Dependent Variable</h2>
-<p>We define a new variable: <span class="math inline">\(LNY=\ln{Y_i}\)</span></p>
-<p><span class="math display">\[LNY_i = \beta_1 X_i+ \beta_2 \]</span> <span class="math display">\[\frac{\delta LNY}{\delta X}\approx\frac{\Delta LNY}{\Delta X}=\beta_1\]</span> <span class="math display">\[\Delta LNY=\beta_1\Delta X\]</span> <span class="math inline">\(\Delta X\)</span>: change of <span class="math inline">\(X\)</span>,<span class="math inline">\(\Delta LNY\)</span>: change of <span class="math inline">\(LNY\)</span>, <span class="math inline">\(\frac{\Delta LNY}{\Delta X}\)</span>: rise over run.</p>
-<p><strong>The change of</strong> <span class="math inline">\(X\)</span> multiplied with <span class="math inline">\(\beta_1\)</span> equals the change of <span class="math inline">\(LNY\)</span>.</p>
-<p><span class="math display">\[\Delta LNY=\beta_1\underbrace{\Delta X}_{+1}\]</span></p>
-<p><strong>Since we know that the change of a logarithm is a relative (percentage) change, we can say: If</strong> <span class="math inline">\(X\)</span> changes by one unit <span class="math inline">\(\Delta X=1\)</span>, then <span class="math inline">\(Y\)</span> changes by <span class="math inline">\(\beta_1\cdot 100\)</span>%.</p>
-<div class="quarto-auto-generated-content">
-<div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
-</div>
-</div>
-</section></section>
+
+
     </div>
   </div>
 

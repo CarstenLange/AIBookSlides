@@ -11,7 +11,7 @@ format:
     smaller: false
 ---
 
-## What Will You Learn {.scrollable .smaller}
+## What Will You Learn {.scrollable }
 
 ```{r}
 #| echo: false
@@ -22,20 +22,23 @@ library(janitor)
 
 ```
 
--   The difference between absolute and relative (measured in percent) change.
--   How to interpret a regression with a logarithmic *independent* variable
--   How to interpret a regression with a logarithmic *dependent* variable
--   How to interpret a regression with a logarithmic *independent and dependent* variables
+-   The difference between **absolute and relative** (measured in percent) change.
 
-# Absolute Change vs. Relative Change {.smaller}
+-   How to interpret a regression with a logarithmic *outcome* (*dependent*) variable
 
-Examples:
+-   How to interpret a regression with a logarithmic *predictor* (*independent*) variable
 
-1. A stock that you buy for $100 pays you $4 dividend each year. You keep the stock for 5 years and the stock price is still $100
+-   How to interpret a regression with logarithmic *predictor and outcome* (*independent and dependent*) variables
 
-1. A savings account where you deposit $100, pays you 4% interest each year. You keep the stock for 5 years and the stock price is still $100
+## Absolute Change vs. Relative Change {.smaller}
 
+**Examples:**
 
+**Absolute Change:**  A stock that you buy for \$100 pays \$4 dividend each year. Assume the stock price does not change. You keep the stock for 5 years.
+
+**Relative Change (percentage change):** A savings account where you deposit \$100, pays you 4% interest each year. You keep the savings account for 5 years.
+
+[AbsVsRelChangeStockSavings.xlsx](AbsVsRelChangeStockSavings.xlsx)
 
 ## Important !!!
 
@@ -59,9 +62,7 @@ print(DataExamp)
 # Data source: https://www.kaggle.com/datasets/uciml/autompg-dataset/
 DataAutoMPG=import("https://econ.lange-analytics.com/RData/Datasets/AutoMpg.csv") |>
             clean_names("upper_camel") |> 
-            select(MPG=Mpg, Displ=Displacement, Weight) |> 
-            mutate(lnMPG=log(MPG), lnDisp=log(Displ), lnWeight=log(Weight))
-
+            select(MPG=Mpg,  Weight)
 
 Plot1=ggplot(DataAutoMPG, aes(x=Weight, y=MPG))+
       geom_point()+
@@ -70,10 +71,7 @@ Plot2=Plot1+
       geom_smooth(se=FALSE, method="lm", color="blue") 
 Plot3=Plot2+
       geom_smooth(se=FALSE, color="red") 
-Plot4=ggplot(DataAutoMPG, aes(x=Weight, y=log(MPG)))+
-      geom_point()
-Plot5=Plot4+
-      geom_smooth(se=FALSE, method="lm", color="blue")
+
 ```
 
 ::::::::: r-stack
@@ -98,221 +96,148 @@ plot(Plot3)
 ```
 :::
 
-::: fragment
-```{r}
-#| echo: false
-plot(Plot1)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot4)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot5)
-```
-:::
 :::::::::
 
-## Regression MPG \~ Weight {.smaller}
+## Regression Model1: MPG \~ Weight (No Variable Logarithmized){.smaller}
 
-### No Variable Logarithmized
+
 
 ```{r}
-
+#| code-fold: true
 Model1=lm(MPG~Weight, data = DataAutoMPG) 
 
-
-kbl(tidy(Model1))
-kbl(glance(Model1))
+summary(Model1)
 ```
 
-## Regression LNMPG \~ Weight {.smaller}
+$$
+\underbrace{MPG}_{\substack{\text{Absolute Change:}\\
+\text{`r summary(Model1)$coefficients[2,1]`} 
+\\ \text{(in MPG)}}}=
+`r format(summary(Model1)$coefficients[2,1], scientific = FALSE)`
+\underbrace{Weight}_{\substack{\text{Absolute Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +`r summary(Model1)$coefficients[1,1]`
+$$
 
-### Dependent Variable MPG Logarithmized
+
+
+## Regression Model2: log(MPG) \~ Weight (Outcome Variable MPG Logarithmized){.smaller}
 
 ```{r}
+#| code-fold: true
+Model2=lm(log(MPG)~Weight, data = DataAutoMPG) 
 
-Model2=lm(log(MPG)~Weight, data=DataAutoMPG) 
-
-
-kbl(tidy(Model2))
-kbl(glance(Model2))
+summary(Model2)
 ```
 
-## Plot MPG \~ Displ
+$$
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{`r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`} 
+\\ \text{(=`r 100*summary(Model2)$coefficients[2,1]`%})}}=
+`r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`
+\underbrace{Weight}_{\substack{\text{Absolut  Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +`r summary(Model2)$coefficients[1,1]`
+$$
+
+## Regression Model3: MPG \~ log(Weight) (Predictor Variable Logarithmized){.smaller}
 
 ```{r}
-#| echo: false
+#| code-fold: true
+Model3=lm(MPG~log(Weight), data = DataAutoMPG) 
 
-Plot1=ggplot(DataAutoMPG, aes(x=Displ, y=MPG))+
-      geom_point()+
-      scale_y_continuous(limits=c(0,50))
-Plot2=Plot1+
-      geom_smooth(se=FALSE, method="lm", color="blue") 
-Plot3=Plot2+
-      geom_smooth(se=FALSE, color="red") 
-Plot4=ggplot(DataAutoMPG, aes(x=log(Displ), y=MPG))+
-      geom_point()
-Plot5=Plot4+
-      geom_smooth(se=FALSE, method="lm", color="blue")
+summary(Model3)
 ```
 
-::::::::: r-stack
-::: fragment
-```{r}
-#| echo: false
-plot(Plot1)
-```
-:::
+$$
+\underbrace{MPG}_{\substack{\text{Absolut Change:}\\
+\text{`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`} 
+\\ \text{(in MPG)}}}=
+`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\ \text{(=100% (doubles)}}} +`r summary(Model3)$coefficients[1,1]`
+$$
 
-::: fragment
-```{r}
-#| echo: false
-plot(Plot2)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot3)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot1)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot4)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot5)
-```
-:::
-:::::::::
-
-## Regression MPG \~ Displ {.smaller}
-
-### No Variable Logarithmized
+## Regression Model4: log(MPG) \~ log(Weight) (Predictor and Outcome Variables Logarithmized){.smaller}
 
 ```{r}
-Model4=lm(MPG~Displ, data=DataAutoMPG) 
+#| code-fold: true
+Model4=lm(log(MPG)~log(Weight), data = DataAutoMPG) 
 
-kbl(tidy(Model4))
-kbl(glance(Model4))
+summary(Model4)
 ```
 
-## Regression MPG \~ LNDispl {.smaller}
+$$
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{`r format(summary(Model4)$coefficients[2,1], scientific = FALSE)`} \\ 
+\text{(105% reduction)}\\
+\text{---------------------------}\\
+\text{`r format(summary(Model4)$coefficients[2,1]/100, scientific = FALSE)`}\\
+\\ 
+\text{(1.05% reduction)}}}=
+`r format(summary(Model4)$coefficients[2,1], scientific = FALSE)`
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\ 
+\text{(+100% (doubles))}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(+1%)}
+}} +`r summary(Model4)$coefficients[1,1]`
+$$
 
-### Independent Variable Displ Logarithmized
+## Summary {.smaller}
 
-```{r}
-Model5=lm(MPG~log(Displ), data=DataAutoMPG) 
+**Model 1: no logs ($r^2= `r summary(Model1)$r.squared`$)**
 
-kbl(tidy(Model5))
-kbl(glance(Model5))
-```
+$$
+\underbrace{MPG}_{\substack{\text{Absolute Change:}\\
+\text{`r summary(Model1)$coefficients[2,1]`} 
+\\ \text{(in MPG)}}}=
+`r format(summary(Model1)$coefficients[2,1], scientific = FALSE)`
+\underbrace{Weight}_{\substack{\text{Absolute Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +`r summary(Model1)$coefficients[1,1]`
+$$
 
-## Plot MPG \~ Weight
+**Model 2: only outcome MPG logarithmic ($r^2= `r summary(Model2)$r.squared`$)**
 
-```{r}
-#| echo: false
+$$
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{`r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`} 
+\\ \text{(=`r 100*summary(Model2)$coefficients[2,1]`%})}}=
+`r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`
+\underbrace{Weight}_{\substack{\text{Absolut  Change:}\\
+\text{+1} \\ \text{(weight in pounds)}}} +`r summary(Model2)$coefficients[1,1]`
+$$
 
-Plot1=ggplot(DataAutoMPG, aes(x=Weight, y=MPG))+
-      geom_point()+
-      scale_y_continuous(limits=c(0,50))
-Plot2=Plot1+
-      geom_smooth(se=FALSE, method="lm", color="blue") 
-Plot3=Plot2+
-      geom_smooth(se=FALSE, color="red") 
-Plot4=ggplot(DataAutoMPG, aes(x=log(Weight), y=log(MPG)))+
-      geom_point()
-Plot5=Plot4+
-      geom_smooth(se=FALSE, method="lm", color="blue")
-```
+**Model 3: only predictor Weight logarithmic ($r^2= `r summary(Model3)$r.squared`$)**
 
-::::::::: r-stack
-::: fragment
-```{r}
-#| echo: false
-plot(Plot1)
-```
-:::
+$$
+\underbrace{MPG}_{\substack{\text{Absolut Change:}\\
+\text{`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`} 
+\\ \text{(in MPG)}}}=
+`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\ \text{(=100% (doubles)}}} +`r summary(Model3)$coefficients[1,1]`
+$$
 
-::: fragment
-```{r}
-#| echo: false
-plot(Plot2)
-```
-:::
+**Model 4: only predictor Weight logarithmic ($r^2= `r summary(Model4)$r.squared`$)**
 
-::: fragment
-```{r}
-#| echo: false
-plot(Plot3)
-```
-:::
+$$
+\underbrace{log(MPG)}_{\substack{\text{Relative Change:}\\
+\text{`r format(summary(Model4)$coefficients[2,1], scientific = FALSE)`} \\ 
+\text{(105% reduction)}\\
+\text{---------------------------}\\
+\text{`r format(summary(Model4)$coefficients[2,1]/100, scientific = FALSE)`}\\
+\\ 
+\text{(1.05% reduction)}}}=
+`r format(summary(Model4)$coefficients[2,1], scientific = FALSE)`
+\underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
+\text{+1} \\ 
+\text{(+100% (doubles))}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(+1%)}
+}} +`r summary(Model4)$coefficients[1,1]`
+$$
 
-::: fragment
-```{r}
-#| echo: false
-plot(Plot1)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot4)
-```
-:::
-
-::: fragment
-```{r}
-#| echo: false
-plot(Plot5)
-```
-:::
-:::::::::
-
-## Regression MPG \~ Weight {.smaller}
-
-### No Variable Logarithmized
-
-```{r}
-Model6=lm(MPG~Weight, data=DataAutoMPG) 
-
-kbl(tidy(Model6))
-kbl(glance(Model6))
-```
-
-## Regression MPG \~ Weight {.smaller}
-
-### Dependend Variable (MPG) and Independent Variable (Weight) Logarithmized
-
-```{r}
-Model7=lm(log(MPG)~log(Weight), data=DataAutoMPG) 
-
-kbl(tidy(Model7))
-kbl(glance(Model7))
-```
 
 ## Summary {visibility="hidden"}
 
@@ -320,7 +245,7 @@ kbl(glance(Model7))
 
 Source: <https://quantifyinghealth.com/interpret-log-transformations-in-linear-regression/>
 
-## Interpretation of Regression --- No Transformation {.smaller}
+## Interpretation of Regression --- No Transformation {visibility="hidden" .smaller}
 
 $$Y_i = \beta_1 X_i+ \beta_2 $$ $$\frac{\delta Y}{\delta X}\approx\frac{\Delta Y}{\Delta X}=\beta_1$$ $$\Delta Y=\beta_1\Delta X$$ $\Delta X$: change of $X$,$\Delta Y$: change of $Y$, $\frac{\Delta Y}{\Delta X}$: rise over run.
 
@@ -330,7 +255,7 @@ or
 
 **If** $X$ changes by one unit ($\Delta X=1$), $\Delta Y$ changes by $\beta_1$ units.
 
-## Interpretation of Regression --- Log-Transformation of Dependent Variable {.smaller}
+## Interpretation of Regression --- Log-Transformation of Dependent Variable {visibility="hidden" .smaller}
 
 We define a new variable: $LNY=\ln{Y_i}$
 
@@ -341,5 +266,3 @@ $$LNY_i = \beta_1 X_i+ \beta_2 $$ $$\frac{\delta LNY}{\delta X}\approx\frac{\Del
 $$\Delta LNY=\beta_1\underbrace{\Delta X}_{+1}$$
 
 **Since we know that the change of a logarithm is a relative (percentage) change, we can say: If** $X$ changes by one unit $\Delta X=1$, then $Y$ changes by $\beta_1\cdot 100$%.
-
-
