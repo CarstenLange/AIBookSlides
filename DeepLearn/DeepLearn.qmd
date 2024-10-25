@@ -411,7 +411,7 @@ To run the R-script with an example to see how well a Neural Network can approxi
 Click the link in the footer of this slide.
 
 ::: footer
-See: [Neural Network Appoximation R Script](https://www.lange-analytics.com/AIBook/Scripts/DeepLearnScript1.R)
+See: [Neural Network Appoximation R Script](https://aibookslides.netlify.app/scripts/DeepLearnScript1.R)
 :::
 
 # Theorem: Approximation Properties of Neural Networks
