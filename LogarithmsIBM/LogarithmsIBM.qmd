@@ -55,6 +55,42 @@ DataExamp=tibble(t=c(0:3), X=c(200, 203, 207, 200)) |>
 print(DataExamp)
 ```
 
+
+    
+## When to Use Absulute and When to Use Realtive Measures
+
+If **Absolute Change** and or **Relative Change** is the better measure depends on the situation.
+
+**When Young is too Young? - an example of a 80 year and 72 year old couple:**
+
+. . .
+
+**Absolute Measure (not well suited):** The younger is 8 years younger than the older. When both were young the older was 25 and the younger was 17. 
+
+. . .
+
+**Relative Measure (better suited):** The younger is 10%  younger than the older. 
+
+Another, but younger couple, that is also 10% apart would be 25 years and 22.5 years old, receptively.
+
+## When to Use Absulute and When to Use Realtive Measures
+
+If **Absolute Change** and or **Relative Change** is the better measure depends on the situation.
+
+**Infant Mortality:** A developing country has about 200,000 newborn babies from which about 200 babies die. A new technology reduces the number to 175.
+
+. . .
+
+**Relative Measure (not well suited):** The new technology reduced the infant mortality from 0.1% to  0.09%. This seems not to be a lot.
+
+. . .
+
+**Absolute Measure (better suited):** The lives of 25 babies were saved!!!
+
+
+    
+
+
 ## Plot MPG \~ Weight
 
 ```{r}
