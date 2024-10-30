@@ -44,7 +44,7 @@ In the early days of artificial neural networks, data scientists tried to mimic 
 # Multi-Layer Perceptrons (MLP) Neural Network
 
 -   **Input Layer:** with one or more input neurons.
--   **Hidden Layer(s)** one or more hiden layers with one or more hidden neurons.
+-   **Hidden Layer(s)** one or more hidden layers with one or more hidden neurons.
 -   **Output Layer:** with one or more output neurons.
 -   **Fully connected:** each neuron in each of the layers is connected to all neurons of the following layer.
 
