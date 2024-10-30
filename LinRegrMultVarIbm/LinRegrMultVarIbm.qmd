@@ -339,7 +339,7 @@ ExpReport(DataWage, op_file = "EDAReport")
 CorMatrix=cor(DataWage)
 corrplot(CorMatrix)
 
-ModelMine=lm(~,data = )
+#ModelMine=lm(~,data = )
 
-summary(ModelMine)
+#summary(ModelMine)
 ```
