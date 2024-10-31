@@ -41,17 +41,17 @@ library(janitor)
 
 ![Source: Medium: <https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f>](images/clipboard-1934318519.png)
 
-## Image Recognition (Cat, Dog, Bird)
+## Before we cover LLMs: Image Recognition (Cat, Dog, Bird)
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
 ![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-2629028543.png)
 
-## First Image Recognition (Cat, Dog, Bird)
+## Before we cover LLMs: First Image Recognition (Cat, Dog, Bird)
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
-**Neural Network:** MLP with only twohidden layers (in reality: Convolutional NN)
+**Neural Network:** MLP with only two hidden layers (in reality: Convolutional NN)
 
 **Inputs:** 150,528
 
@@ -61,29 +61,61 @@ library(janitor)
 
 **Parameters:** 150,528 \**150,528+ 150,528+*150,528 \**150,528+ 150,528 + 150,528*4 + 3=45,318,110,209
 
-## First Image Recognition (Cat, Dog, Bird)
+## Before we cover LLMs: First Image Recognition (Cat, Dog, Bird)
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
-![Source: Medium<https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f>](images/clipboard-1198050597.png)
+![Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1198050597.png) \# Large Language Models
 
-## Word Encoding for Sentiment Analysis
+GPT stands for **Generative Pre-trained Transformer**
 
-![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-2372440190.png)
+## Prep-Step: Tokenizing and Sub-Tokenizing
 
-Note, that similar words will have similar encoding vectors (similarity can be measured by Euclidean Distance)
+Each (sub)-word (e.g., 200,000 words in the English language) gets a number because computers can only process numbers. For example "cat" gets the number 2345. "dog" gets 6452.
 
-## (Large) Language Generation/ (L)LM
+Instead of assigning four numbers to "dog", "dogs", "cat", and "cats" we create a sub-token "s". E.g., "cat"=2345, "dog"=6452, and "s"=99,323
+
+\*\*Problem:\* Cats and dogs are similar. They are both animals, they both a small to medium size, they live in our house, they have personalities, etc. Unfortunately, the similarity cannot be seen from their numbers 2345 and 6452, respectively.
+
+## Step 1: Word Embedding to Provide Sentiment to the Words
+
+![](images/clipboard-1219101407.png)
+
+Similar words will have similar encoding vectors. "great" should be similar than "amazing". "The vector for "tomato" should be similar to the one for "apple". Similarity can be measured by Euclidean Distance or similar measures (LLMs often use the dot-product).
+
+Use exaple with scrambled prompt:
+
+## Step 2: Finding the Correct Positioning for Words
+
+Recurrent neural networks, the predecessor of Transformers, processed the prompt one by one, which took a long time, given that prompts of 32,000 tokensa re common now.
+
+Transformers process all tokens simulatnously, tus losing the order.
+
+Step 02 attempt to restores the order of the prompts and stores it in a separate vector.
+
+## Step 3: Adding Context
+
+**Example 1:** The dog did not cross the street because it was to tired.
+
+**Example 2:** The dog did not cross the street because it was to wide.
+
+Step 3 uses a vector for each word, identifying the word(s) in commonly goes with, then finds if this word is in the sentence, and then uses a vector to point to it. Simplified, in example 1 the word "it" points to "tired". In example 2 the word "it" points to "wide". 
+
+
+
+## Step 4 and 5: Generate Nonlinearity and Predict the Next Word {.smaller}
 
 ![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-3769778131.png)
 
-Hurrah, our Neural Network can speak. Except it babbles :)
+Interesting fact: Not only the next word for "the" is predicted but also the next words for all other words in the sentence. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word's following word), the GPT can learn the next word for the complete Context Window. It can learn 32,000 words in one run and the process can easily parallelized!!!
 
 ## Generative Pre-Trained Transformer (e.g., ChatGPT)
 
+Hurrah, our neural network can talk, but it is still a babbling machine.
+
 ![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-2130675056.png)
 
-Still: A babbling machine
+
 
 ## Alignment and Reinforcement Learning
 
