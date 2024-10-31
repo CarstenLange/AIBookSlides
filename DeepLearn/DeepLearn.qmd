@@ -510,4 +510,4 @@ geom_function(fun = FctReLu, color="blue", size=1.2)+
 
 # Now It's Time to Run the Real-World Analysis
 
-[Neural Network Real World Application](https://aibookslides.netlify.app/scripts/DeepLearnScript1.R) <br><br> Alternatively you can run an uncommented R-script with the same code [here](https://aibookslides.netlify.app/scripts/deeplearnscript2.R).
+[Neural Network Real World Application](https://aibookslides.netlify.app/scripts/deeplearnscript2.R) 
