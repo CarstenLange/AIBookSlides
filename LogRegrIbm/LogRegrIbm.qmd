@@ -183,12 +183,13 @@ Should seniors be treated differently when it comes to churn prevention?
 ## Churn at the Telco Company --- Digital Acylical Graph
 
 ```{r}
-#| output-location: slide
-#| code-line-numbers: "2|3"
 library(ggdag)
-dagify(Churn~SexMale+SeniorYes+MonChar+TotChar+Tenure,
-       TotChar~MonChar+Tenure) |> 
-ggdag(node_size = 22) + theme_void()
+library(tidyverse)
+dagify(Churn~SexMale+SeniorY+MonChar+TotChar+Tenure,
+       TotChar~MonChar+Tenure,
+       outcome = "Churn",
+       exposure = "SeniorY") |>  
+ggdag_status(node_size = 22) + theme_void()
 ```
 
 
@@ -214,11 +215,13 @@ ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
 
 ## Data Engineering 
 ```{r}
-#| code-line-numbers: "2,3|4|5|6|7"
+#| code-line-numbers: "3,4|5|6|7|8"
 #| output-location: fragment
+library(tidymodels)
 library(corrplot)
 DataChurn=DataChurnOrg |>
-          select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) |>
+          select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,
+                 MonthlyCharges, TotalCharges) |>
           mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |>
           mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |>
           na.omit(TotalCharges)
@@ -240,45 +243,22 @@ DataTest=testing(Split3070)
 head(DataTrain)
 ```
 
-## Analysis --- Creating Fitted Workflow
+## Analysis --- Fitting a Model
 
 ```{r}
-#| code-line-numbers: "1-3|6|8-11"
-ModelDesignLogistic=logistic_reg() |>
-                    set_engine("glm") |> 
-                    set_mode("classification")
-
-
-RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure)
-
-WFModelChurn=workflow() |>
-             add_recipe(RecipeChurn) |>
-             add_model(ModelDesignLogistic) |>
-             fit(DataTrain)
+ModelLogisticChurn=glm(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data = DataTrain, family = "binomial")
+summary(ModelLogisticChurn)
 
 ```
-## Testing for Multicolinearity
+
+## Predicting with the Fitted Logistic Model
 
 ```{r}
-#| output-location: fragment
-library(car)
-vif(extract_fit_engine(WFModelChurn))
-```
-
-## Analysis Results 
-
-
-```{r}
-#| output-location: fragment
-tidy(WFModelChurn)
-```
-
-. . .
-
-```{r}
-#| output-location: fragment
-DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
-head(DataTestWithPred[,-4])
+PredProb=predict(ModelLogisticChurn, newdata=DataTest, type="response")
+DataTestWithPred=cbind(PredProb,DataTest) |> 
+                 mutate(PredChurn=ifelse(PredProb>=0.5,1,0)) |> 
+                mutate(PredChurn=as.factor(PredChurn))
+head(DataTestWithPred)
 ```
 
 ## Analysis --- Summary Result
@@ -286,96 +266,95 @@ head(DataTestWithPred[,-4])
 **Confusion Matrix:**
 
 ```{r}
-#| output-location: fragment
-conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
-```
-
-. . .
-
-**Selected Metrics:**
-
-```{r}
-#| output-location: fragment
-#| code-line-numbers: "1|2"
-FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
-FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+conf_mat(DataTestWithPred, truth=ChurnYes, estimate= PredChurn)
 ```
 
 
-## Fixing the Problem of Unbalanced Data - Code 
 
-```{r}
-#| output-location: fragment
-count(DataTrain, ChurnYes)
-```
+<!-- ## Selected Metrics  {visibility="hidden"} -->
 
-
-::: {.incremental}
-1. `step_downsample():` Delete observations. from the majority class.
-
-2. `step_upsample():`  Copy/Paste observations. from the minority class.
-
-3. `step_smote():` Create records similar to existing minority class observations.
-:::
-
-## Fixing the Problem of Unbalanced Data - Code
-
-```{r}
-#| eval: false
-library(rio)
-library(janitor)
-library(tidymodels)
-
-DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |>
-clean_names("upper_camel") 
-
-DataChurn=DataChurnOrg |>
-          select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) |>
-          mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |>
-          mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |>
-          na.omit(TotalCharges)
-
-library(corrplot)
-corrplot(cor(DataChurn))
-
-library(SmartEDA)
-ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
-
-DataChurn=DataChurn |> 
-mutate(ChurnYes=as.factor(ChurnYes))
-
-set.seed(789)
-Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
-DataTrain=training(Split3070)
-DataTest=testing(Split3070)
+<!-- ```{r} -->
+<!-- #| output-location: fragment -->
+<!-- #| code-line-numbers: "1|2" -->
+<!-- FctMetricsCL=metric_set(accuracy, sensitivity, specificity) -->
+<!-- FctMetricsCL(DataTestWithPred, truth=PredChurn, estimate= .pred_class) -->
+<!-- ``` -->
 
 
-ModelDesignLogistic=logistic_reg() |>
-                    set_engine("glm") |> 
-                    set_mode("classification")
+<!-- ## Fixing the Problem of Unbalanced Data - Code  {visibility="hidden"} -->
 
-library(themis) #needed for step_smote
-
-count(DataTrain,ChurnYes) 
-
-set.seed(789)
-RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure) |>       
-  step_downsample(ChurnYes, under_ratio=2) |>          
-  step_smote(ChurnYes, over_ratio=0.75)
-
-count(RecipeChurn|>prep()|>juice(),ChurnYes)  
-  
-WFModelChurn=workflow() |>
-             add_recipe(RecipeChurn) |>
-             add_model(ModelDesignLogistic) |>
-             fit(DataTrain)
+<!-- ```{r} -->
+<!-- #| output-location: fragment -->
+<!-- count(DataTrain, ChurnYes) -->
+<!-- ``` -->
 
 
-DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
+<!-- ::: {.incremental} -->
+<!-- 1. `step_downsample():` Delete observations. from the majority class. -->
 
-conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
+<!-- 2. `step_upsample():`  Copy/Paste observations. from the minority class. -->
 
-FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
-FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
-```
+<!-- 3. `step_smote():` Create records similar to existing minority class observations. -->
+<!-- ::: -->
+
+<!-- ## Fixing the Problem of Unbalanced Data - Code {visibility="hidden"} -->
+
+<!-- ```{r} -->
+<!-- #| eval: false -->
+<!-- library(rio) -->
+<!-- library(janitor) -->
+<!-- library(tidymodels) -->
+
+<!-- DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |> -->
+<!-- clean_names("upper_camel")  -->
+
+<!-- DataChurn=DataChurnOrg |> -->
+<!--           select(Churn,Gender,SeniorYes=SeniorCitizen,Tenure,MonthlyCharges, TotalCharges) |> -->
+<!--           mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |> -->
+<!--           mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |> -->
+<!--           na.omit(TotalCharges) -->
+
+<!-- library(corrplot) -->
+<!-- corrplot(cor(DataChurn)) -->
+
+<!-- library(SmartEDA) -->
+<!-- ExpReport(DataChurnOrg, op_file="EDAChurnData.html") -->
+
+<!-- DataChurn=DataChurn |>  -->
+<!-- mutate(ChurnYes=as.factor(ChurnYes)) -->
+
+<!-- set.seed(789) -->
+<!-- Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes) -->
+<!-- DataTrain=training(Split3070) -->
+<!-- DataTest=testing(Split3070) -->
+
+
+<!-- ModelDesignLogistic=logistic_reg() |> -->
+<!--                     set_engine("glm") |>  -->
+<!--                     set_mode("classification") -->
+
+<!-- library(themis) #needed for step_smote -->
+
+<!-- count(DataTrain,ChurnYes)  -->
+
+<!-- set.seed(789) -->
+<!-- RecipeChurn=recipe(DataTrain, ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure) |>        -->
+<!--   step_downsample(ChurnYes, under_ratio=2) |>           -->
+<!--   step_smote(ChurnYes, over_ratio=0.75) -->
+
+<!-- count(RecipeChurn|>prep()|>juice(),ChurnYes)   -->
+
+<!-- WFModelChurn=workflow() |> -->
+<!--              add_recipe(RecipeChurn) |> -->
+<!--              add_model(ModelDesignLogistic) |> -->
+<!--              fit(DataTrain) -->
+
+
+<!-- DataTestWithPred=augment(WFModelChurn, new_data = DataTest) -->
+
+<!-- conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class) -->
+
+<!-- FctMetricsCL=metric_set(accuracy, sensitivity, specificity) -->
+<!-- FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class) -->
+<!-- ``` -->
 

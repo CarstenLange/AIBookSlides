@@ -110,6 +110,7 @@ lm(LogWage~Wage, data=DataOrgUpperCase) |> summary()
 **Incomplete DAG**
 ```{r}
 #| code-fold: true
+library(tidyverse)
 library(ggdag)
 set.seed(123)
 dagify(Wage~SexFem+Ten+Educ+Exp+Talent+SglPar,
