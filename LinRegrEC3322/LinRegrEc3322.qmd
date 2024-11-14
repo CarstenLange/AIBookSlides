@@ -7,34 +7,39 @@ format:
     scrollable: true
     echo: true
     incremental: false
+editor: 
+  markdown: 
+    wrap: 72
 ---
-
-
 
 ## What Will You Learn {.scrollable .smaller}
 
--   Reviewing the basic idea behind linear regression
+-   The basic idea behind linear regression
 
--   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
+-   Learning how how to measure predictive quality with Mean Square
+    Error ($MSE$).
 
--   Understanding the role of parameters in a linear regression model (applies also to other models)
+-   Understanding the role of parameters in a linear regression model
+    (applies also to other models)
 
 -   Calculating optimal regression parameters using OLS
 
--   Finding optimal regression parameters by trial and error
-
--   Finding optimal regression parameters with `lm` and `tidymodels`.
-
 -   Distinguish between unfitted and fitted models
 
--   Using `tidymodels` to split observations randomly into a training and testing dataset.
+-   Using `tidymodels` to split observations randomly into a training
+    and testing dataset.
 
--   Using `tidymodels` to analyze housing prices.
+## Jumping Right Into It with Real World Data
 
+Univariate OLS (simple OLS) with a real estate dataset
 
+**Data Description:**
 
+King County House Sale dataset (Kaggle 2015). House sales prices from
+May 2014 to May 2015 for King County in Washington State.
 
 ## A Graph Showing Causality --- Digital Acylical Graph (DAG)
+
 ### House Price Estimate
 
 ```{r}
@@ -46,19 +51,22 @@ DAGSimpleRegression=dagify(Price~Sqft+Bedr+Grade,
 set.seed(22)
 ggdag_status(DAGSimpleRegression, node_size = 22) + theme_void()
 ```
+
 ## Jumping Right Into It with Real World Data
 
 Univariate OLS (simple OLS) with a real estate dataset
 
 **Data Description:**
 
-King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+King County House Sale dataset (Kaggle 2015). House sales prices from
+May 2014 to May 2015 for King County in Washington State.
 
 **Simplication:**
 
-- Several predictor variables, but for now we use only $Sqft$
+-   Several predictor variables, but for now we use only $Sqft$
 
-- We will only use 100 randomly chosen observations from the total of 21,613 observations.
+-   We will only use 100 randomly chosen observations from the total of
+    21,613 observations.
 
 ## Loading Libraries
 
@@ -70,7 +78,7 @@ library(kableExtra)
 library(janitor)
 ```
 
-## Loading the Data 
+## Loading the Data
 
 ```{r}
 #| code-fold: false
@@ -91,14 +99,10 @@ Data100Houses=sample_n(DataHouses,100)
 head(Data100Houses)
 ```
 
-
-
 ## How much is a House Worth in King County?
 
-
-
-A house with average properties should be predicted with an average price!
-
+A house with average properties should be predicted with an average
+price!
 
 ```{r}
 MeanSqft=mean(Data100Houses$Sqft)
@@ -107,9 +111,6 @@ cat("The mean square footage of a house in King county is:", MeanSqft)
 MeanPrice=mean(Data100Houses$Price)
 cat("The mean price of a house in King county is:", MeanPrice)
 ```
-
-
-
 
 ## Predicting the Price of an Average Sized House as the Average of all House Prices
 
@@ -129,7 +130,6 @@ ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
 
 ## From Unfitted to Fitted Model
 
-
 How does the Unfitted Model Looks Like?
 
 $$
@@ -138,11 +138,9 @@ $$
 
 Fitting the Model with lm()
 
-
 ```{r}
 ModelOLS=lm(Price~Sqft, data=Data100Houses)
 ```
-
 
 ## Unfitted Model vs Fitted Workflow Model {.smaller}
 
@@ -150,11 +148,9 @@ Unfitted Model: $$
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
 
-
 ```{r}
 print(ModelOLS)
 ```
-
 
 Fitted Model: $$
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
@@ -162,12 +158,9 @@ $$
 
 ## Interpretation and Significance
 
-
 ```{r}
-#| echo: false
-tidy(ModelOLS)
+print(ModelOLS)
 ```
-
 
 $$
 \begin{align}
@@ -176,16 +169,90 @@ $$
  (+480)&=240\cdot (+2) +  (+0)\\
  (+720)&=240\cdot (+3) +  (+0)
 \end{align}
-$$ For each extra $Sqft$ the predicted price increases by $240
+$$ For each extra $Sqft$ the predicted price increases by \$240
 
-The variable $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.
+The variable $Sqft$ is significant. I.e., the probability that the
+related coefficient $\beta_1$ equals zero is extremely small.
 
+## The Summary Command Provides More Information
+
+```{r}
+summary(ModelOLS)
+```
+
+**Coefficients have a Standard Error???**\*
+
+## Coefficients are Calculated from a Sample
+
+**Different Sample =\> Different Coefficient**
+
+[SamplingDistributionCoeff.R](SamplingDistributionCoeff.R)
+
+## Calculating Confidence Interval for Coefficients
+
+```{r}
+print(ModelOLS)
+confint(ModelOLS, level = 0.95)
+```
+
+## Visualizing the Results from our Original Regression
+
+```{r}
+ggplot(aes(x=Sqft,y=Price), data=Data100Houses)+
+  geom_point()+
+  geom_smooth(method ="lm", , se=FALSE)
+```
+
+## How can We Calcualte the Confidence Interval for the Predictions with R (e.g. Sqft of 100,2000,3000,4000){.smaller}
+
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft,y=Price), data=Data100Houses)+
+  geom_point()+
+  geom_smooth(method ="lm", se=FALSE)
+```
+
+```{r}
+# Example new data points
+DataToPredict <- data.frame(Sqft = c(1000,2000,3000,4000))  
+
+# Using our fitted model to predict and estimate prediction ConfInt
+predict(ModelOLS, newdata = DataToPredict, interval = "predict", level = 0.95)
+```
+
+## Intuition Behind Prediction Interval --- Wage Data for Male and Female
+Wooldridge dataset:
+```{r}
+library(tidyverse)
+library(wooldridge)
+
+DataWage=wage1 |> 
+         filter(smsa==1) |> 
+         select(Wage=wage, SexFem=female)
+head(DataWage)
+```
+
+# Intuition Behind Prediction Interval --- Regression and Data
+
+```{r}
+ggplot(aes(x=SexFem, y=Wage), data=DataWage)+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_point()
+```
+
+# Intuition Behind Prediction Interval --- Regression and Data
+
+```{r}
+ggplot(aes(x=SexFem, y=Wage), data=DataWage)+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_jitter(width=0.03, alpha=0.2)
+```
 
 
 ## Univariate Linear Regression - Data Table and Goal {.smaller}
 
-::: columns
-
+::::: columns
 ::: {.column width="60%"}
 **The Data Table**
 
@@ -211,22 +278,20 @@ $$
 
 **The Goal**
 
-Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
-$$(\widehat{Grade}_{i}-Grade_i)^2$$
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction
+errors $$(\widehat{y}_{i}-y_i)^2$$ $$(\widehat{Grade}_{i}-Grade_i)^2$$
 :::
+:::::
 
+## Predict Grade Based on Study Time with Eyeballing
 
-:::
-
-## Predict Grade Based on Study Time with Eyeballing 
-
-
-Copy the code from the code-section of the slide into an *R* script and try to adjust $\beta_1$ and $\beta_1$ to get the best prediction equation.
+Copy the code from the code-section of the slide into an *R* script and
+try to adjust $\beta_1$ and $\beta_1$ to get the best prediction
+equation.
 
 $$
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
-$$
-$$
+$$ $$
 \widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
 $$
 
@@ -244,21 +309,20 @@ source("https://ai.lange-analytics.com/source/RegrLinePlot4Slides.R")
 
 ## Univariate Linear Regression - Data Diagram and Goal {.smaller}
 
-::: columns
+::::: columns
 ::: {.column width="40%"}
 **The Regression:**
 
 $$
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
-$$
-$$
+$$ $$
 \widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
 $$
 
 **The Goal**
 
-Find values for $\beta_0$ and $\beta_1$ that minimize the individual (squared) prediction errors: 
-$$(\widehat{y}_{i}-y_i)^2$$
+Find values for $\beta_0$ and $\beta_1$ that minimize the individual
+(squared) prediction errors: $$(\widehat{y}_{i}-y_i)^2$$
 $$(\widehat{Grade}_{i}-Grade_i)^2$$
 :::
 
@@ -284,24 +348,22 @@ ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
 Beta1=4
 Beta2=64
 ```
-
 :::
-:::
+:::::
 
 # How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
 
-```{=tex}
 \begin{eqnarray*}
 MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
  & \Longleftrightarrow& \\
 MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}
-```
-**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
+
+**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the
+$MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
 
 ## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
 
-```{=tex}
 \begin{eqnarray}
 MSE & = & \frac{(\beta_1x_{1}+\beta_2-y_1)^2
        +(\beta_1x_{2}+\beta_2-y_2)^2 +  \cdots+
@@ -316,8 +378,6 @@ MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mb
    &   &\nonumber \\
        && +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_2}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
 \end{eqnarray}
-```
-
 
 ## Custom R Function to Calculate MSE {.scrollable}
 
@@ -366,7 +426,7 @@ FctMSE=function(VecBeta, data){
 
 ## How to Find Optimal Values for $\beta_1$ and $\beta_2$ {.smaller .scollable}
 
-**Method 0: (not such a good idea)** 
+**Method 0: (not such a good idea)**
 
 :   We can use **unsystematic trial and error**.
 
@@ -379,36 +439,39 @@ FctMSE=function(VecBeta, data){
     print(ResultMSE)
     ```
 
-
 **Method 1:**
 
 :   We can use a **systematic trial and error process**.
 
 **Method 2:**
 
-:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
-
-
+:   **Calculate optimal values** for the parameters (the $\beta s$)
+    based on Ordinary Least Squares (OLS) using two formulas (**Note,**
+    this method works only for linear regression)
 
 ## Method 1: Use a Systematic Trial and Error Process 🤓
 
 -   **Grid Search (aka Brute Force):**
 
-    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
-    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
+    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a
+        table with pairs of all combinations of these $\beta s$.
+    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for
+        each $\beta$ pair.
     3.  Find the $\beta$ pair with the lowest $MSE$
 
--   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
+-   **Optimizer:** Use the R build-in optimizer. Push the start values
+    for $\beta_1$ and $\beta_2$ together with the data to the optimizer
+    as arguments. The rest is done by the optimizer.
 
 -   See the R script in the footnote to see both algorithms in action.»
 
 ::: footer
-See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRegrScript.R)
+See: [LinRegrScript.R
+script100](https://econ.lange-analytics.com/RScripts/LinRegrScript.R)
 :::
 
-## Method 2: Calculate Optimal Parameters (only for OLS!){.smaller}
+## Method 2: Calculate Optimal Parameters (only for OLS!) {.smaller}
 
-```{=tex}
 \begin{eqnarray*} 
 \beta_{1,opt}&=& \frac
 {N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
@@ -416,7 +479,6 @@ See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRe
 && \nonumber \\
 \beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
 \end{eqnarray*}
-```
 
 ```{r}
 #| echo: false
@@ -440,7 +502,6 @@ kbl(data.frame(as.list(colSums(DataTable))),
 
 ```
 
-
 ## Using lm() Command from Base R to Run a Regression {.scrollable}
 
 ```{r}
@@ -457,8 +518,8 @@ $$Grade=\beta_1 \cdot StudyTime + \beta_2$$
 
 **Fitted Model**
 
-$$Grade=3.96  \cdot StudyTime + 64.18$$
-Coefficient for $StudyTime$ ($\beta_1$) should be positive.
+$$Grade=3.96  \cdot StudyTime + 64.18$$ Coefficient for $StudyTime$
+($\beta_1$) should be positive.
 
 ## Getting the Results from the OLS Model
 
@@ -472,6 +533,7 @@ summary(ModelStudyTime)
 ## Predicting with the Fitted Model - Generated Data {.smaller}
 
 $$Grade=3.96 \cdot StudyTime + 64.18$$
+
 ```{r}
 #| echo: true
 ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
@@ -483,17 +545,18 @@ predict(ModelStudyTime, newdata=DataForPrediction)
 
 Interpretation of $\beta_1=3.96$:
 
-1. From the formula: If $StudyTime$ increases, Grade increases. -> makes sense!
+1.  From the formula: If $StudyTime$ increases, Grade increases. -\>
+    makes sense!
 
-2. From the formula: Quantitative impact: If $StudyTime$ increases by one unit, Grade increases by $3.96$ units.
+2.  From the formula: Quantitative impact: If $StudyTime$ increases by
+    one unit, Grade increases by $3.96$ units.
 
-3. From the prediction: Above we predicted $Grade$ for $StudyTime$s of 1,2,3, which confirms point 1) and 2).
+3.  From the prediction: Above we predicted $Grade$ for $StudyTime$s of
+    1,2,3, which confirms point 1) and 2).
 
 ## Predicting with the Fitted Model - Training Data
 
-
-$$Grade=3.96  \cdot StudyTime + 64.18$$
-Generating the predictions:
+$$Grade=3.96  \cdot StudyTime + 64.18$$ Generating the predictions:
 
 ```{r}
 #| echo: true
@@ -506,8 +569,8 @@ print(VecPred)
 
 ## Predicting with the Fitted Model - Training Data
 
-$$Grade=3.96  \cdot StudyTime + 64.18$$
-Augmenting the predictions to the data frame:
+$$Grade=3.96  \cdot StudyTime + 64.18$$ Augmenting the predictions to
+the data frame:
 
 ```{r}
 #| echo: true
@@ -517,25 +580,19 @@ DataMockup=DataMockup |>
 print(DataMockup)
 ```
 
-
-
-
-
-
-
-
 # Real World Application
 
 ## Univariate OLS with a Real World Dataset
 
 **Data Description:**
 
--   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+-   King County House Sale dataset (Kaggle 2015). House sales prices
+    from May 2014 to May 2015 for King County in Washington State.
 -   Several predictor variables. For now we use only $Sqft$
--   We will only use 500 randomly chosen observations from the total of 21,613 observations.
+-   We will only use 500 randomly chosen observations from the total of
+    21,613 observations.
 
 -We only use Sqft as predictor variable for now
-
 
 ## Univariate OLS with a Real World Dataset
 
@@ -551,11 +608,10 @@ head(DataHousing)
 
 ## Univariate OLS with a Real World Dataset
 
+**Unfitted Model:**
 
-**Unfitted Model:** 
-
-$$\widehat{Price}=\beta_1 Sqft + \beta_2$$
-**Directed Acyclic Graphs (causal graphs):**
+$$\widehat{Price}=\beta_1 Sqft + \beta_2$$ **Directed Acyclic Graphs
+(causal graphs):**
 
 ```{r}
 library(ggdag)
@@ -565,7 +621,6 @@ dagify(Price~Sqft,
        outcome = "Price") |> 
 ggdag_status(node_size = 22)
 ```
-
 
 ## Univariate OLS with a Real World Dataset {.scrollable}
 
@@ -614,7 +669,8 @@ summary(ModelHouses)
 
 ## Predicting with tidymodels Training and Testing Data {.scrollable .smaller}
 
-The augment() command first predicts and then augments the results to the related data frame
+The augment() command first predicts and then augments the results to
+the related data frame
 
 ```{r}
 #| echo: true
@@ -643,27 +699,36 @@ metrics(DataTestWithPred, truth = Price, estimate = .fitted)
 
 ## Summary - Steps for a Linear Regression {.smaller}
 
+1.  Draw a DAG (with R or by hand)
 
-1. Draw a DAG (with R or by hand)
+2.  Mark if the effects in the DAG are expected to be positive or
+    negative
 
-2. Mark if the effects in the DAG are expected to be positive or negative
+3.  Write down the formula for the unfitted model. Such as:
+    $$Price=\beta_1 Sqft + \beta_2$$
 
-3. Write down the formula for the unfitted model. Such as:
-$$Price=\beta_1 Sqft + \beta_2$$
+4.  Run the regression
 
-3. Run the regression
+5.  Substitute the $\beta s$ in the formula with the values you got from
+    the regression.
 
-4. Substitute the $\beta s$ in the formula with the values you got from the regression.
+6.  Sanity test: Are the signs (positive/negative) what you expected. If
+    not, the related variable does not belong in your model
 
-5. Sanity test: Are the signs (positive/negative) what you expected. If not,  the related variable does not belong in your model
+7.  Interpret the $\beta (s)$. E.g., if predictor variable increases by
+    one unit outcome increases by $\beta$ units. Note, the intercept
+    coefficient cannot be interpreted in almost all cases!
 
-6. Interpret the $\beta (s)$. E.g., if predictor variable increases by one unit outcome increases by $\beta$ units. Note, the intercept coefficient cannot be interpreted in almost all cases!
-
-7. Check if P value is low enough (e.g., smaller than 0.05=5%). This is the probability for the related coefficient to be 0 and thus irrelevant. You want a low probability for that event. If P value is too high the related variable does not belong in your model. Note, no need to interpret the P for the intercept. 
+8.  Check if P value is low enough (e.g., smaller than 0.05=5%). This is
+    the probability for the related coefficient to be 0 and thus
+    irrelevant. You want a low probability for that event. If P value is
+    too high the related variable does not belong in your model. Note,
+    no need to interpret the P for the intercept.
 
 ## Exercise
 
-Now it is your turn. Pick a value from the housing data set and run a univariate regression to predict the price. 
+Now it is your turn. Pick a value from the housing data set and run a
+univariate regression to predict the price.
 
 ```{r}
 library(tidymodels)
@@ -677,4 +742,3 @@ Split7030=initial_split(0.7,data=DataHouses, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
 DataTest=testing(Split7030)
 ```
-
