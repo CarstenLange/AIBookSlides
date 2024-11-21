@@ -4,6 +4,7 @@ subtitle: ""
 format: 
   revealjs:
     code-fold: true
+    
 ---
 
 ## From Blackbox to Interpretation
@@ -17,17 +18,115 @@ library(plotly)
 
 ## Types of Interpretation
 
--   Model specific
+![](images/clipboard-4215941220.png)
 
-    -   Global
-    -   Local
+## Types of Interpretation
 
--   Model agnostic
+![](images/clipboard-2435355569.png)
 
-    -   Global
-    -   Local
+## Ceteris Paribus Plot (Local and Model Agnostic)
+### Loading the Data and Libraries
+```{r}
+library(rio)
+library(janitor)
+library(tidymodels)
+library(wooldridge)
+DataWage=wage1 |> 
+         clean_names("upper_camel") |> 
+         select(Wage, Educ, Tenure, Female) |>
+         mutate(Female=as.factor(Female))
+```
 
-## Loading the Data and Libraries
+## Ceteris Paribus Plot (Local and Model Agnostic)
+### Generating Training/Tesing Data and Identifying a Observation of Interest
+
+```{r}
+set.seed(777)
+Split7525=initial_split(DataWage, prop=0.75, strata=Wage)
+DataTrain=training(Split7525)
+DataTest=testing(Split7525)
+head(DataTrain)
+```
+
+**Variable of Interest (Helga)**
+
+```{r}
+ObsHelga=tibble(Wage=8.9, Educ=17, Tenure=18, 
+                Female=factor(1, levels=c(0,1)))
+print(ObsHelga)
+```
+
+## Ceteris Paribus Plot (Local and Model Agnostic)
+### Estimating Wage with a Random Forest Model
+
+```{r}
+#| echo: true
+library(parallel)
+ModelDesignRF=rand_forest() |> 
+              set_engine("ranger", num.threads=detectCores(), 
+                         importance="impurity") |>   
+              set_mode("regression")
+
+RecipeWage=recipe(Wage~., data=DataTrain)
+
+set.seed(777)
+WfModelWageRF=workflow() |> 
+              add_model(ModelDesignRF)|> 
+              add_recipe(RecipeWage) |>  
+              fit(DataTrain)
+```
+
+## Ceteris Paribus Plot (Local and Model Agnostic)
+### Idea
+
+```{r}
+#| echo: false
+print(ObsHelga)
+```
+
+What is the impact of Tenure for this observation?
+
+Idea: Substitute Tenure with different values by leaving the other values the same and predicting for each value the wage using the trained (Random Forest) model.
+
+## Ceteris Paribus Plot (Local and Model Agnostic)
+### Result
+
+```{r}
+#| echo: true
+#| output: false
+library(DALEX)
+ExplainerRF=DALEX::explain(extract_fit_engine(WfModelWageRF), 
+                           data=DataTrain, y=DataTrain$Wage)
+
+CPPlot=predict_profile(explainer=ExplainerRF, 
+                       new_observation=ObsHelga, 
+                       variables="Tenure")
+```
+
+```{r}
+#| echo: true
+plot(CPPlot, variables="Tenure")
+```
+
+## Partial Dependency Plot (Global and Model Agnostic)
+### Idea
+
+The idea behind *Partial Dependence Plots* is first to create a *Ceteris Paribus Plot* for every or at least many observations from the training dataset and then create an average of these individual plots.
+
+## Partial Dependency Plot (Global and Model Agnostic)
+### Result
+
+```{r}
+#| echo: true
+library(DALEX)
+ICEPDPPlot=model_profile(explainer=ExplainerRF, variables="Tenure", 
+                         N=NULL)
+plot(ICEPDPPlot,geom="profiles")+ggtitle("ICE & PDP for Tenure")
+```
+
+
+## Variable Importance (Global )
+### Loading the Data and Libraries
 
 ```{r }
 #| echo: true
@@ -51,10 +150,9 @@ DataTrain=training(Split85)
 DataTest=testing(Split85)
 ```
 
-
-
 ## Global/Model Specific: Interpreting Coefficients and t-Values {.smaller}
-###  Linear Regresiion
+
+### Linear Regresiion
 
 ```{r}
 #| echo: true
@@ -137,6 +235,7 @@ vip(extract_fit_parsnip(WfModelVax))
 
 ## Shapley Values from a Game Theory Approach {.smaller}
 
+
 ### Bruce, Carsten, and Greg are Players contributing to the profit
 
 ![](Images/PermShapleyChartCropped.png){fig-align="center"}
@@ -145,77 +244,68 @@ vip(extract_fit_parsnip(WfModelVax))
 
 ### Estimating Carsten's Contribution
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 ![](Images/ShapleyChartCropped.png)
 :::
 
 ::: {.column width="40%" incremental="true"}
-
 We do not know at which level Carsten joins:
 
 -   Carsten joins last: $\Delta P^{rofit}_{BGC}=5$ <br><br>
 
--   Carsten joins second: <br>
-    $\Delta P^{rofit}_{BC}=7$ or $\Delta ^{rofit}_{GC}=8$ <br><br>
+-   Carsten joins second: <br> $\Delta P^{rofit}_{BC}=7$ or $\Delta ^{rofit}_{GC}=8$ <br><br>
 
 -   Carsten joins first: $\Delta P^{rofit}_{C}=17$ <br><br>
 
 -   Carsten's average contribution (Shapley value):<br> $S^{hap}_C=\frac{1}{3}17+\frac{1}{6}7+\frac{1}{6}8+\frac{1}{3}5=9.83$
 :::
-:::
+:::::
 
 ## Shapley Values from a Game Theory Approach {.smaller}
 
 ### Estimating Bruces's Contribution
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 ![](Images/PermShapleyChartCropped.png)
 :::
 
 ::: {.column width="40%" incremental="true"}
-
 Calculate Bruce' contribution as an exercise:
-
-
 
 -   Spoiler Alert (below is the result):
 -   Bruces's average contribution (Shapley value):<br> $S^{hap}_B=12.33$
 :::
-:::
+:::::
 
 ## Shapley Values from a Game Theory Approach {.smaller}
 
 ### Estimating Greg's Contribution
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 ![](Images/PermShapleyChartCropped.png)
 :::
 
 ::: {.column width="40%" incremental="true"}
-
 Calculate Greg' contribution as an exercise:
-
-
 
 -   Spoiler Alert (below is the result):
 -   Greg's average contribution (Shapley value):<br> $S^{hap}_G=13.83$
 :::
-:::
+:::::
 
 ## Shapley Values from a Game Theory Approach {.smaller}
 
 ### Starting Profit --- SHAP values --- Final Profit
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 ![](Images/PermShapleyChartCropped.png)
 :::
 
 ::: {.column width="40%" incremental="true"}
-
 Initial Profit: $Profit_0=56$
 
 Bruce's SHAP: $S^{hap}_B=12.33$
@@ -224,20 +314,17 @@ Carsten's SHAP: $S^{hap}_B=9.83$
 
 Greg's SHAP: $S^{hap}_G=13.83$ <br>
 
------------------------------------------------------------------------
+------------------------------------------------------------------------
 
 Profit with 3: $Profit_3=92$
-
 :::
-:::
-
-
+:::::
 
 ## Shapley Values from a Game Theory Approach {.smaller}
 
 ### Coalitions and Permutations
 
-::: columns
+::::: columns
 ::: {.column width="60%"}
 ![](Images/PermShapleyChartCropped.png)
 :::
@@ -245,28 +332,25 @@ Profit with 3: $Profit_3=92$
 ::: {.column width="40%"}
 -   Number of coalitions: $N_{coalition }= 2^k=2^3=8$<br><br>
 
--   Number of *joining* scenarios: $k!=3!=1\cdot 2\cdot 3=6$   <br>$BCG$,$BGC$, <br>$CBG$, $CGB$, <br>$GBC$, $GCB$
+-   Number of *joining* scenarios: $k!=3!=1\cdot 2\cdot 3=6$ <br>$BCG$,$BGC$, <br>$CBG$, $CGB$, <br>$GBC$, $GCB$
 
-- If all 6 scenarios are calculated, one can can calculate *SHAPley* values for all contributors (variables).
+-   If all 6 scenarios are calculated, one can can calculate *SHAPley* values for all contributors (variables).
 
-- If less than 6 scenarios are calculated, one can can estimate *SHAPley* values for all contributors (variables).
-
+-   If less than 6 scenarios are calculated, one can can estimate *SHAPley* values for all contributors (variables).
 :::
-:::
+:::::
 
 ## SHAPley vs SHAP {.smaller}
 
 -   **SHAPley Values** estimate contribution of players
 
--   **SHAP** is a computer implementation to estimate *SHAPley* values for predictors. 
+-   **SHAP** is a computer implementation to estimate *SHAPley* values for predictors.
 
-    - The predictors become the players.
-    - The contributions become the *SHAP* values.
-    - For convinience we will use the terms *SHAPley Values* and *SHAP Values* interchangeable. 
-    - We will use the term  **SHAP Values** to measure the contribution of specific variables-value combinations.
-    - The average prediction (average outcome training data) plus all *SHAP* values equals the final prediction for the observation.. 
-
-
+    -   The predictors become the players.
+    -   The contributions become the *SHAP* values.
+    -   For convinience we will use the terms *SHAPley Values* and *SHAP Values* interchangeable.
+    -   We will use the term **SHAP Values** to measure the contribution of specific variables-value combinations.
+    -   The average prediction (average outcome training data) plus all *SHAP* values equals the final prediction for the observation..
 
 . . .
 
@@ -275,6 +359,7 @@ Profit with 3: $Profit_3=92$
 ## Local/Model Agnostic: Shap Values for Orange County {.smaller}
 
 <!-- Orange row: 141 -->
+
 ```{r}
 #| echo: true
 if (!DraftMode){
@@ -296,12 +381,11 @@ ShapValuesID141 = predict_parts(
 
 # to plot use plot(ShapValuesID141)
 ```
-:::: {.columns}
 
+::::: columns
 ::: {.column width="70%"}
-
-
 ```{r}
+#| echo: false
 # Printing line above diagram
 cat("County: ", DataVaxFull[[141,2]], ", ", DataVaxFull[[141,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[141,])[[1,1]],2), sep="")
 
@@ -316,12 +400,11 @@ plot(ShapPlot11, width=700, height=400)
 cat("Pred. Vac. Rate (all U.S. counties):",round(weighted.mean(DataTrain$PercVacFull,
                     as.numeric(DataTrain$Population)),2))
 ```
-
-
 :::
 
 ::: {.column width="30%"}
-Mean PercRep: `r round(weighted.mean(DataTrain$PercRep, as.numeric(DataTrain$Population)),2)`
+Mean PercRep: `r
+round(weighted.mean(DataTrain$PercRep, as.numeric(DataTrain$Population)),2)`
 
 Mean PercAsian: `r round(weighted.mean(DataTrain$PercAsian, as.numeric(DataTrain$Population)),2)`
 
@@ -334,20 +417,15 @@ Mean PercOld65: `r round(weighted.mean(DataTrain$PercOld65, as.numeric(DataTrain
 Mean PercOld65: `r round(weighted.mean(DataTrain$PercHisp, as.numeric(DataTrain$Population)),2)`
 
 Mean PercYoung25: `r round(weighted.mean(DataTrain$PercYoung25, as.numeric(DataTrain$Population)),2)`
-
 :::
-
-::::
+:::::
 
 ## Shap Values for Orange County {.smaller}
 
 <!-- Orange row: 141 -->
 
-:::: {.columns}
-
+::::: columns
 ::: {.column width="70%"}
-
-
 ```{r}
 # Printing line above diagram
 cat("County: ", DataVaxFull[[141,2]], ", ", DataVaxFull[[141,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVax[141,])[[1,1]],2), sep="")
@@ -359,8 +437,6 @@ ggplotly(ShapPlot11, width=700, height=400)
 cat("Pred. Vac. Rate (all U.S. counties; unweighted):", 
 round(mean(DataTrain$PercVacFull),2))
 ```
-
-
 :::
 
 ::: {.column width="30%"}
@@ -372,10 +448,9 @@ print(levels(ShapPlot11$data[1:7,]$variable)[5])
 print(levels(ShapPlot11$data[1:7,]$variable)[6])
 print(levels(ShapPlot11$data[1:7,]$variable)[7])
 ```
-
 :::
+:::::
 
-::::
 🤓 Below is a link to an R script that allows you to create your own SHAP values in R.
 
 ::: footer
@@ -401,7 +476,7 @@ ShapValuesJ = predict_parts(
     }
 ```
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ```{r}
 cat("County: ", DataVaxFull[[i,2]], ", ", DataVaxFull[[i,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[i,])[[1,1]],2), sep="")
@@ -429,7 +504,7 @@ ggplotly(ShapPlot12, width=470, height=230)
 cat("Pred. Vac. Rate (all U.S. counties):",  round(weighted.mean(DataTrain$PercVacFull,                     as.numeric(DataTrain$Population)),2))
 ```
 :::
-:::
+:::::
 
 ## Shap Values for Two Counties (different Asian Impact)
 
@@ -453,7 +528,7 @@ ShapValuesJ = predict_parts(
     }
 ```
 
-::: columns
+::::: columns
 ::: {.column width="50%"}
 ```{r}
 cat("County: ", DataVaxFull[[i,2]], ", ", DataVaxFull[[i,3]], ", Pred. Vac.: ", round(predict(WfModelVax, new_data = DataVaxFull[i,])[[1,1]],2), sep="")
@@ -480,9 +555,8 @@ if (!DraftMode){
 ggplotly(ShapPlot22, width=470, height=230)
 cat("Pred. Vac. Rate (all U.S. counties):",  round(weighted.mean(DataTrain$PercVacFull,                     as.numeric(DataTrain$Population)),2))
 ```
-
 :::
-:::
+:::::
 
 ## Shap Values by Variable {.srollable}
 
