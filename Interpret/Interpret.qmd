@@ -27,6 +27,7 @@ library(plotly)
 ## Ceteris Paribus Plot (Local and Model Agnostic)
 ### Loading the Data and Libraries
 ```{r}
+#| echo: true
 library(rio)
 library(janitor)
 library(tidymodels)
@@ -41,6 +42,7 @@ DataWage=wage1 |>
 ### Generating Training/Tesing Data and Identifying a Observation of Interest
 
 ```{r}
+#| echo: true
 set.seed(777)
 Split7525=initial_split(DataWage, prop=0.75, strata=Wage)
 DataTrain=training(Split7525)
@@ -103,6 +105,9 @@ CPPlot=predict_profile(explainer=ExplainerRF,
                        variables="Tenure")
 ```
 
+## Ceteris Paribus Plot (Local and Model Agnostic)
+### Result
+
 ```{r}
 #| echo: true
 plot(CPPlot, variables="Tenure")
@@ -150,7 +155,7 @@ DataTrain=training(Split85)
 DataTest=testing(Split85)
 ```
 
-## Global/Model Specific: Interpreting Coefficients and t-Values {.smaller}
+## Global/Model Specific: Interpreting Coefficients and t-Values {.smaller .scrollable}
 
 ### Linear Regresiion
 
