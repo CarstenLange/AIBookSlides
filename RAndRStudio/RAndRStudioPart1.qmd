@@ -4,6 +4,7 @@ title: "Introduction to R and RStudio"
 subtitle: "Part 1: Basics (follow along in RStudio)"
 
 format: revealjs
+scroll: true
 ---
 
 ## Learning Outcomes
