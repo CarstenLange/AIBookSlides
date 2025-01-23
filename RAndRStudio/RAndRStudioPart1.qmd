@@ -40,6 +40,8 @@ Detailed installation guides are provided in the Book and the Online Resources s
 
 ![RStudio Window](Images/RAndRStudioWindow.PNG)
 
+First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
+
 ::: footer
 See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
 :::
@@ -51,7 +53,7 @@ See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScri
 
 2.  **Work with R Projects:** This assigns a directory on your hard drive to your R analysis: `File -> New Project`
 
-
+First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
 
 ## R Packages {.smaller}
 
@@ -74,6 +76,12 @@ Packages frequently used in this course (**please install soon**):
 ## Example: the `rio` and the `tidyverse` Package
 
 Assuming the `rio` packages is already installed.
+
+Example: How to install the tidyverse package: [Click here](https://youtu.be/tAGoThXF2Os)
+
+Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE)
+
+
 
 ```{r}
 #| echo: true
