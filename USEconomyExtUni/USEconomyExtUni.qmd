@@ -165,11 +165,10 @@ PlotDebt18=PlotDebt+
            hjust = 1.1, vjust = -1.1, size = 3, color = "blue")
 ggplotly(PlotDebt18, width=900, height=500)
 ```
-## Increasing Government Debt: Normal Process v. Quantitative Easing 
-
+## Increasing Government Debt: Normal Process v. Finacing Through M2 Increase
 **Normal:** Government sells Treasuries in national and international bond markets.
 
-**Quantitative Easing in 2009 and CARES Act 2020:** Central bank bought treasuries and mortgage backed securities to keep interest rate down
+**CARES Act 2020:** Central bank bought treasuries and mortgage backed securities to keep interest rate down
 
 
 ## Monetary Base {.smaller}
