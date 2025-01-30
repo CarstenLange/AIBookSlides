@@ -384,6 +384,42 @@ PlotlyInterestInfl$x$data[[3]]$visible <- "legendonly"
 PlotlyInterestInfl
 ```
 
+## Case/Schiller House Price Index
+
+```{r}
+DataHouses=import("data/CaseSchillerNational.xlsx") |>
+           select(Date,HouseIdx=CSUSHPINSA) |>                     mutate(Date=as_date(Date)) |> 
+           filter(Date>="2000-01-01")
+library(scales)
+PlotHouses=
+ggplot(DataHouses, aes(x=Date, y=HouseIdx, group = 1))+
+    geom_line()+
+    geom_smooth(se=FALSE)+
+    scale_x_date(date_breaks = "3 years", date_labels = "%m/%Y")+
+        labs(title = "House Price Development", 
+         x= "Date", y = "Case/Schiller Index")+
+  annotate("text", x = as_date("2024-01-01"), y = 100, label = "Source: FRED", 
+           hjust = 1.1, vjust = -1.1, size = 3, color = "blue")
+ggplotly(PlotHouses, width=900, height=500)
+```
+## S&P 500 Stock Price Development
+
+```{r}
+DataSP500=import("data/SP500.xlsx") |>
+           select(Date,SP500=SP500) |>                     mutate(Date=as_date(Date)) |> 
+           filter(Date>="2000-01-01")
+library(scales)
+PlotSp500=
+ggplot(DataSP500, aes(x=Date, y=SP500, group = 1))+
+    geom_line()+
+    geom_smooth(se=FALSE)+
+    scale_x_date(date_breaks = "6 month", date_labels = "%m/%y")+
+        labs(title = "Stock Price Development", 
+         x= "Date", y = "S&P 500 Index")+
+  annotate("text", x = as_date("2024-01-01"), y = 2000, label = "Source: FRED", 
+           hjust = 1.1, vjust = -1.1, size = 3, color = "blue")
+ggplotly(PlotSp500, width=900, height=500)
+```
 
 ## Your questions
 
