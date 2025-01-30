@@ -1,12 +1,13 @@
 ---
-title: "Intro to Machine Learning"
-subtitle: "Types, Tasks, Terminology"
+title: "The State of the U.S. Economy"
+subtitle: "Current State & Expectations for the Future "
 format: 
   revealjs:
     code-fold: true
+    scrollable: false
 ---
 
-## Topics {.smaller .scrollable}
+## Topics {.smaller}
 
 ```{r}
 #| echo: false
@@ -18,31 +19,27 @@ library(plotly)
 ```
 
 -   Economic Activity in the United States
-    -   Current State
-    -   Future Expectations
-    -   Discussion
--   Employment
-    -   Current and Historic States
-    -   Future Expectations
-    -   Discussion
--   Inflation, Monetary Policy, and Government Debt in the United States
-    -   Current and Historic States
-    -   Future Expectations
-    -   Discussion
--   Investment Climate --- Interest Rate, Regulations, Uncertainty
-    -   Current and Historic States
-    -   Future Expectations
-    -   Discussion
--   International Trade --- Trade Balance, Exchange Rate, Tariffs, Globalization
-    -   Current and Historic States
-    -   Future Expectations
-    -   Discussion
--   Opportunities
-    -   Start Ups, Entrepreneurship, Innovations, AI
+    -   Economic Growth
+    -   Employment
+
+-   Government Expenditures & Debt
+    - Monetary Policy  
+    - Inflation 
+
+-   International Trade and Globalization
+    - Trade Balance 
+    - Tariffs
+    - Globalization
+
+- Opportunities
+    -   Start Ups & Entrepreneurship
+    -   Innovations
+    -   AI
+    
 -   What does this mean for China and Korea
     -   Discussion
 
-## GDP Growth
+## Real GDP Growth {.smaller}
 
 ```{r}
 #| echo: false
@@ -58,13 +55,13 @@ geom_line(aes(color="Growth Rate"))+
 scale_y_continuous(labels = scales::percent, 
                      breaks = seq(-0.3, 0.3, 0.05)) +
 scale_x_date(date_breaks = "2 years", date_labels = "%Y") + 
-labs(title = "GDP Growth in the USA", 
-     x = "Date", y = "Real GDP Growth(in %)")  
+labs(title = "Real GDP Growth in the USA", 
+     x = "Date", y = "Real GDP Growth (in %)")  
 
-ggplotly(PlotGDP)
+ggplotly(PlotGDP, width=900, height=500)
 ```
 
-## GDP Growth
+## Real GDP Growth
 
 ```{r}
 PlotGDPAdj=PlotGDP+ 
@@ -79,26 +76,32 @@ scale_color_manual(name = "Legend",
                               "Smoothed Growth" = "green"))+
 coord_cartesian(ylim = c(-0.07,0.07))
 
-ggplotly(PlotGDPAdj)
+PlotlyGDPAdj=ggplotly(PlotGDPAdj, width=900, height=500)
+PlotlyGDPAdj$x$data[[2]]$visible <- "legendonly"
+PlotlyGDPAdj$x$data[[3]]$visible <- "legendonly"
+PlotlyGDPAdj
 ```
 
-## Employment
+## Unemployment
 
 ```{r}
 #| echo: false
 #| warning: false
 DataUnempl=import("data/UnemploymentUS.xlsx") |>
            select(Date,UnRate=UNRATE) |> 
+          mutate(UnRate=UnRate/100) |> 
            mutate(Date=as_date(Date))|>                 
            filter(Date>as_date("2000-01-01"))
 
-PlotUN=ggplot(DataUnempl,aes(x=Date, y=UnRate)) +
+PlotUnEmpl=ggplot(DataUnempl,aes(x=Date, y=UnRate)) +
        geom_line(color="red")+
-scale_x_date(date_breaks = "3 years", date_labels = "%Y") + 
+scale_x_date(date_breaks = "3 years", date_labels = "%Y") +
+scale_y_continuous(labels = scales::percent,
+                     breaks = seq(0, 0.15, 0.01))+  
 labs(title = "Unemployment in the USA", 
-     x = "Date", y = "Unemployment Rate(in %)")  
+     x = "Date", y = "Unemployment Rate (in %)")  
 
-ggplotly(PlotUN)
+ggplotly(PlotUnEmpl, width=900, height=500)
 ```
 
 ## Furture Outlook for the U.S Economy
@@ -108,5 +111,254 @@ ggplotly(PlotUN)
 . . .
 
 ![](PapaSmurf.mp4){width="480" height="360" }
+
+# Government Debt, Monetary Policy, and Inflation in the United States
+
+## Government Expenditures Increased Dramatically in the U.S.
+
+- **Great Recession 2008: American Recovery and Reinvestment Act of 2009** (Obama Administration): 891 billion U.S. Dollars
+
+- **CARES Act and other COVID legislation** (first quarter of 2020; Trump Administration):  more than two Trillion US Dollars (10% of GDP) almost three times  the 2009 package
+
+- **Inflation Reduction Act** (August 2022; Biden Administration): 891 Billion U.S. Dollars (not all spent at this point). Expenditures were supposed to be compensated by tax reform and lower cost on prescription drugs.
+
+- **War Expenditures** (ongoing) Ukraine and Israel
+
+## Government Debt
+
+```{r}
+#| echo: false
+#| warning: false
+DataDebt=import("data/DebtFedsUS.xlsx") |>
+           select(Date,Debt=GFDEBTN) |> 
+           mutate(Date=as_date(Date))|>  
+           mutate(Debt=Debt/1000) |> 
+           filter(Date>as_date("2000-01-01"))
+
+PlotDebt=ggplot(DataDebt,aes(x=Date, y=Debt)) +
+       geom_line(color="red")+
+scale_x_date(date_breaks = "3 years", date_labels = "%m/%Y") + 
+labs(title = "Federal Debt", 
+     x = "Date", y = "Fed. Debt (in Billions of Dollars)")  
+
+ggplotly(PlotDebt, width=900, height=500)
+```
+## Government Debt
+
+```{r}
+PlotDebt18=PlotDebt+
+    scale_x_date(date_breaks = "1 years", 
+      date_labels = "%m/%Y",
+      limits = as_date(c("2018-01-01","2024-01-01")))+
+    scale_y_continuous(limits = c(20000,35000))
+ggplotly(PlotDebt18, width=900, height=500)
+```
+## Increasing Government Debt: Normal Process v. Quantitative Easing 
+
+**Normal:** Government sells Treasuries in national and international bond markets.
+
+**Quantitative Easing in 2009 and CARES Act 2020:** Central bank bought treasuries and mortgage backed securities to keep interest rate down
+
+
+## Monetary Base {.smaller}
+
+$$Monetary Base = Currency + DepositsBanks$$
+Commercial Banks Deposits with the Federal Reserve can be transformed to cash instantly
+
+## Monetary Base {.smaller}
+
+```{r}
+#| echo: false
+#| warning: false
+DataMonBase=import("data/MonetaryBase.xlsx") |>
+           select(Date,MonBase=BOGMBASE) |> 
+           mutate(Date=as_date(Date)) |> 
+           filter(Date>as_date("2005-01-01"))
+
+PlotMonBase=ggplot(DataMonBase,aes(x=Date, y=MonBase)) +
+            geom_line(color="red")+
+            scale_x_date(date_breaks = "3 years", 
+                         date_labels = "%Y") + 
+            labs(title = "Monetary Base", 
+              x = "Date", 
+              y = "Monetary Base (in Billions of Dollars)")  
+
+ggplotly(PlotMonBase, width=900, height=500)
+```
+## Money --- M2 (Currency, Time Deposits, Savings at U.S. Banks) {.smaller}
+
+```{r}
+#| echo: false
+#| warning: false
+DataM2=import("data/M2US.xlsx") |>
+           select(Date,M2=WM2NS) |> 
+           mutate(Date=as_date(Date)) |> 
+           filter(Date>as_date("2018-01-01"))
+
+PlotM2=ggplot(DataM2,aes(x=Date, y=M2)) +
+       geom_line(color="red")+
+scale_x_date(date_breaks = "6 month", date_labels = "%m/%y") + 
+labs(title = "Monetary Base", 
+     x = "Date", y = "M2 (in Billions of Dollars)")  
+
+ggplotly(PlotM2, width=900, height=500)
+```
+
+## Inflation
+
+```{r}
+#| echo: false
+#| warning: false
+DataCPICore=import("data/CPIUSCore.xlsx") |>
+           select(Date,CPICore=CPILFESL) |> 
+           mutate(Date=as_date(Date))|> 
+           mutate(CPICore=CPICore/266.98*100)|> 
+           mutate(Inflation=(CPICore-lag(CPICore,12))/lag(CPICore,12)) |> 
+           filter(Date>=as_date("2005-01-01"))
+
+DataCPIAll=import("data/CPIUSAll.xlsx") |>
+           select(Date,CPIAll=CPIAUCSL) |> 
+           mutate(Date=as_date(Date))|> 
+           mutate(CPIAll=CPIAll/258.906*100) |> 
+           mutate(Inflation=(CPIAll-lag(CPIAll,12))/lag(CPIAll,12)) |> 
+           filter(Date>=as_date("2005-01-01"))
+
+PlotInflation=
+ggplot(DataCPICore, aes(x=Date, y=Inflation))+
+    geom_line(color="red")+
+    scale_y_continuous(labels = scales::percent,
+                     breaks = seq(0, 0.07, 0.01))+ 
+    scale_x_date(date_breaks = "1 years", date_labels = "%Y")+
+    labs(title = "Yearly Core Inflation", 
+       x= "Date", y = "Inflation")
+
+ggplotly(PlotInflation, width=900, height=500)
+```
+
+## CPI Core and CPI All {.smaller}
+
+```{r}
+PlotCPIs=
+ggplot(DataCPIAll|> filter(Date>=as_date("2020-01-01")), 
+       aes(x=Date, y=CPIAll))+
+    geom_line(aes(color = "CPI (all goods)"))+
+    geom_line(data=DataCPICore |> filter(Date>=as_date("2020-01-01")), 
+              mapping=aes(x=Date, y=CPICore, color = "Core CPI")) +   
+    scale_color_manual(values = c("CPI (all goods)"= "blue", 
+                                  "Core CPI" = "red")) +
+  guides(color = guide_legend(title = "Legend"))+
+    scale_x_date(date_breaks = "1 years", date_labels = "%y")+
+  labs(title = "Consumer Price Index All and CPI (01/01/2022=100)", 
+       x= "Date", y = "CPI")
+
+PlotlyCPIs=ggplotly(PlotCPIs, width=900, height=500)
+PlotlyCPIs$x$data[[1]]$visible <- "legendonly" 
+PlotlyCPIs
+```
+
+# International Trade and Globalization
+
+## U.S Trade Balance (Exports - Imports)
+
+```{r}
+DataBalOfTrade=import("data/BalOfTrade.xlsx") |>
+           select(Date,ExpMinusImp=BOPGSTB) |>                     mutate(Date=as_date(Date)) |> 
+           filter(Date>="2020-01-01")
+library(scales)
+PlotBalOfTrade=
+ggplot(DataBalOfTrade, aes(x=Date, y=ExpMinusImp, group = 1))+
+    geom_line()+
+    geom_smooth(se=FALSE)+
+    scale_x_date(date_breaks = "6 month", date_labels = "%m/%y")+
+    scale_y_continuous(labels = label_comma())+
+    labs(title = "Trade Balance (Exp.-Imp.)", 
+         x= "Date", y = "Trade Balance (in Billions of U.S. Dollars")
+ggplotly(PlotBalOfTrade, width=900, height=500)
+```
+
+## Problems of the Trade Deficit
+   - Trade Deficit Automatically Triggers Surplus in Capital Balance
+     1. Foreigners buy more bonds than residents buy abroad
+     2. Foreigners buy more stocks or direct investments than residence buy abroad
+     
+     - Empirically it is a mix of both
+
+## Ingenius (???) Idea to Improve Trade Balance
+
+**Charge tariffs of imports**
+
+- Income for the U.S. government
+- Less imports
+- More business for U.S. import competing industries
+
+
+. . .
+
+President Trump:  Tariff is "... the most beautiful word in the dictionary ..." [moneywise.com](https://moneywise.com/news/economy/donald-trump-calls-tariff-the-most-beautiful-word?form=MG0AV3) 
+
+. . .
+
+President Trump even said tariffs are "... more beautiful than love ..." [www.mediaite.com](https://www.mediaite.com/trump/its-more-beautiful-than-love-trump-tells-rogan-massive-tariffs-could-fix-everything-and-replace-income-tax-why-not/?form=MG0AV3)
+
+## Tariffs are not  an Ingeniuos Idea {.smaller}
+
+- Retaliation (WTO allows it)
+- If less goods are imported from a specific goods, the demand does not    necessarily shifts to U.S. companies. It might shift to other countries.
+- Extra income for the U.S. government most likely works
+  - the more effective a tariff the less income for the government
+  - Q: Who pays? The foreign industry or the U.S. customer?
+  - A: Both pay in any case! Balance depends manly on demand elasticity?
+- If tarif is payed by consumers or U.S. companies:
+  - Tariff is a tax on consumption
+  - Tariffs makes U.S. industries which import intermediate good less internationally competitive
+- If tariff is successful the value of the dollar would increase and make U.S. exports more expensive and imports less expensive. Thus, partially compensating the effect of the tariff.
+
+
+# Opportunities
+
+## U.s the Land of Unlimeted Opportunities
+
+- Start Ups and Venture Capitalists
+
+- Top Universities, J1 Immigration, Agglomaritive Effects
+
+- AI, AI Agents, Agentic Intelligence 
+
+# Interest Rate Stimulated Investments
+
+## Real Interest Rate
+
+```{r}
+DataMorgRate=import("data/MORTGAGE30US.xlsx") |>            
+             select(Date,Interest30=MORTGAGE30US) |>                      mutate(Date=as_date(Date)) |> 
+             mutate(Interest30=Interest30/100) |> 
+             filter(Date>="2005-01-01")
+  
+DataInflationInterest=left_join(DataCPICore,
+                                DataMorgRate) |> 
+                mutate(Interest30Real=Interest30-Inflation)
+
+PlotInterestInfl=ggplot(DataInflationInterest, aes(x=Date))+
+                 geom_line(aes(y=Interest30, 
+                           color="30-Year Mortgage Rate"))+
+                 geom_line(aes(y=Inflation, 
+                           color="Inflation Rate"))+
+                 geom_line(aes(y=Interest30Real, 
+                           color="Real 30-Year Interest Rate"))+   
+    scale_color_manual(values = c("30-Year Mortgage Rate"= "blue", 
+                                  "Inflation Rate" = "red",
+                                  "Real 30-Year Interest Rate"="gold"))+
+    scale_y_continuous(labels = scales::percent,
+                       breaks = seq(-0.07, 0.07, 0.01))+ 
+    scale_x_date(date_breaks = "1 years", date_labels = "%Y")+
+    labs(title = "Interest Rate, Inflation, and Real Interest Rate", 
+       x= "Date", y = "Inflation")
+PlotlyInterestInfl=ggplotly(PlotInterestInfl, 
+                            width=900, height=500)
+PlotlyInterestInfl$x$data[[2]]$visible <- "legendonly" 
+PlotlyInterestInfl$x$data[[3]]$visible <- "legendonly" 
+PlotlyInterestInfl
+```
+
 
 ## Your questions
