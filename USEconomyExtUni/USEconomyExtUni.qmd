@@ -84,6 +84,7 @@ coord_cartesian(ylim = c(-0.07,0.07))+
 PlotlyGDPAdj=ggplotly(PlotGDPAdj, width=900, height=500)
 PlotlyGDPAdj$x$data[[2]]$visible <- "legendonly"
 PlotlyGDPAdj$x$data[[3]]$visible <- "legendonly"
+PlotlyGDPAdj$x$data[[4]]$visible <- "legendonly"
 PlotlyGDPAdj
 ```
 
