@@ -2,13 +2,13 @@
 title: "Hypothesis Tests"
 subtitle: "Inference, Sigificance, Coefficient of Determination ($R^2$)"
 format: 
-  revealjs:
-    multiplex: true
-    code-fold: false
-    scrollable: true
-    echo: true
-    incremental: false
-    smaller: false
+  revealjs
+multiplex: true
+code-fold: false
+scrollable: true
+echo: true
+incremental: false
+smaller: false
 ---
 
 
