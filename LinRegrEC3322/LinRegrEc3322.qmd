@@ -1,0 +1,283 @@
+---
+title: "Linear Regression"
+subtitle: "Univariate"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+    echo: true
+    incremental: false
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## What Will You Learn {.scrollable .smaller}
+
+-   The basic idea behind linear regression
+
+-   Learning how how to measure predictive quality with Mean Square
+    Error ($MSE$).
+
+-   Understanding the role of parameters in a linear regression model
+    (applies also to other models)
+
+-   Calculating optimal regression parameters using OLS
+
+-   Distinguish between unfitted and fitted models
+
+-   Using `tidymodels` to split observations randomly into a training
+    and testing dataset.
+
+## Jumping Right Into It with Real World Data
+
+Univariate OLS (simple OLS) with a real estate dataset
+
+**Data Description:**
+
+King County House Sale dataset (Kaggle 2015). House sales prices from
+May 2014 to May 2015 for King County in Washington State.
+
+## A Graph Showing Causality --- Digital Acylical Graph (DAG)
+
+### House Price Estimate
+
+```{r}
+library(ggdag)
+library(tidyverse)
+DAGSimpleRegression=dagify(Price~Sqft+Bedr+Grade,
+                           Sqft~Bedr,
+                           outcome="Price")
+set.seed(22)
+ggdag_status(DAGSimpleRegression, node_size = 22) + theme_void()
+```
+
+## Jumping Right Into It with Real World Data
+
+Univariate OLS (simple OLS) with a real estate dataset
+
+**Data Description:**
+
+King County House Sale dataset (Kaggle 2015). House sales prices from
+May 2014 to May 2015 for King County in Washington State.
+
+**Simplication:**
+
+-   Several predictor variables, but for now we use only $Sqft$
+
+-   We will only use 100 randomly chosen observations from the total of
+    21,613 observations.
+
+## Loading Libraries
+
+```{r}
+#| code-fold: false
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+```
+
+## Loading the Data
+
+```{r}
+#| code-fold: false
+DataHouses=
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+set.seed(7771)
+Data100Houses=sample_n(DataHouses,100)
+```
+
+**First six observations training data:**
+
+```{r}
+#| echo: false
+
+head(Data100Houses)
+```
+
+## How much is a House Worth in King County?
+
+A house with average properties should be predicted with an average
+price!
+
+```{r}
+MeanSqft=mean(Data100Houses$Sqft)
+cat("The mean square footage of a house in King county is:", MeanSqft)
+
+MeanPrice=mean(Data100Houses$Price)
+cat("The mean price of a house in King county is:", MeanPrice)
+```
+
+## Predicting the Price of an Average Sized House as the Average of all House Prices
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+  geom_point(color="red")+
+  geom_hline(yintercept=mean(Data100Houses$Price))+
+  geom_vline(xintercept=mean(Data100Houses$Sqft))+
+  scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
+  scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
+```
+
+## An Interactive Graph That Explains it All
+
+[https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
+
+## From Unfitted to Fitted Model
+
+How does the Unfitted Model Looks Like?
+
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+Fitting the Model with lm()
+
+```{r}
+ModelOLS=lm(Price~Sqft, data=Data100Houses)
+```
+
+## Unfitted Model vs Fitted Workflow Model {.smaller}
+
+Unfitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+$$
+
+```{r}
+print(ModelOLS)
+```
+
+Fitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
+$$
+
+## Interpretation and Significance
+
+```{r}
+print(ModelOLS)
+```
+
+$$
+\begin{align}
+\widehat{Price}&=240 \cdot Sqft +  52509\\
+ (+240)&=240\cdot (+1) +  (+0)\\
+ (+480)&=240\cdot (+2) +  (+0)\\
+ (+720)&=240\cdot (+3) +  (+0)
+\end{align}
+$$ For each extra $Sqft$ the predicted price increases by \$240
+
+The variable $Sqft$ is significant. I.e., the probability that the
+related coefficient $\beta_1$ equals zero is extremely small.
+
+## The Summary Command Provides More Information
+
+```{r}
+summary(ModelOLS)
+```
+
+**Coefficients have a Standard Error???**\*
+
+## Coefficients are Calculated from a Sample
+
+**Different Sample =\> Different Coefficient**
+
+[SamplingDistributionCoeff.R](SamplingDistributionCoeff.R){target="_blank"}
+
+## Calculating Confidence Interval for Coefficients
+
+```{r}
+print(ModelOLS)
+confint(ModelOLS, level = 0.95)
+```
+
+## Visualizing the Results from our Original Regression
+
+```{r}
+ggplot(aes(x=Sqft,y=Price), data=Data100Houses)+
+  geom_point()+
+  geom_smooth(method ="lm", , se=FALSE)
+```
+
+## How can We Calcualte the Confidence Interval for the Predictions with R (e.g. Sqft of 100,2000,3000,4000){.smaller}
+
+
+```{r}
+#| echo: false
+ggplot(aes(x=Sqft,y=Price), data=Data100Houses)+
+  geom_point()+
+  geom_smooth(method ="lm", se=FALSE)
+```
+
+```{r}
+# Example new data points
+DataToPredict <- data.frame(Sqft = c(1000,2000,3000,4000))  
+
+# Using our fitted model to predict and estimate prediction ConfInt
+predict(ModelOLS, newdata = DataToPredict, interval = "predict", level = 0.95)
+```
+
+## Intuition Behind Prediction Interval --- Wage Data for Male and Female
+Wooldridge dataset:
+```{r}
+library(tidyverse)
+library(wooldridge)
+
+DataWage=wage1 |> 
+         filter(smsa==1) |> 
+         select(Wage=wage, SexFem=female)
+head(DataWage)
+```
+
+# Intuition Behind Prediction Interval --- Regression and Data
+
+```{r}
+ggplot(aes(x=SexFem, y=Wage), data=DataWage)+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_point()
+```
+
+# Intuition Behind Prediction Interval --- Regression and Data
+
+```{r}
+ggplot(aes(x=SexFem, y=Wage), data=DataWage)+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_jitter(width=0.03, alpha=0.2)
+```
+
+
+
+
+## Summary - Steps for a Linear Regression {.smaller}
+
+1.  Draw a DAG (with R or by hand)
+
+2.  Mark if the effects in the DAG are expected to be positive or
+    negative
+
+3.  Write down the formula for the unfitted model. Such as:
+    $$Price=\beta_1 Sqft + \beta_0$$
+
+4.  Run the regression
+
+5.  Substitute the $\beta s$ in the formula with the values you got from
+    the regression.
+
+6.  Sanity test: Are the signs (positive/negative) what you expected. If
+    not, the related variable does not belong in your model
+
+7.  Interpret the $\beta (s)$. E.g., if predictor variable increases by
+    one unit outcome increases by $\beta$ units. Note, the intercept
+    coefficient cannot be interpreted in almost all cases!
+
+8.  Check if P value is low enough (e.g., smaller than 0.05=5%). This is
+    the probability for the related coefficient to be 0 and thus
+    irrelevant. You want a low probability for that event. If P value is
+    too high the related variable does not belong in your model. Note,
+    no need to interpret the P for the intercept.
+
+

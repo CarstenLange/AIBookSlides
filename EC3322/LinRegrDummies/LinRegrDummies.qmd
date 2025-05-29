@@ -1,0 +1,209 @@
+---
+title: "Qualitative Independent Variables (Dummy Variables)"
+subtitle: "Regression, Dummies, One-Hot Encoding, AB-Tests"
+format: 
+  revealjs:
+    code-fold: false
+    scrollable: true
+    echo: true
+    incremental: false
+---
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+```{r}
+#| echo: false
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+```
+
+
+-   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
+
+-   Being able to distinguish between dummy encoding and one-hot encoding
+
+- AB-Tests vs Univariate Regression with Dummies
+
+
+
+
+## Dummy and One-Hot Encoding {.smaller}
+
+**One-Hot Encoding**
+
+```{r}
+#| code-fold: true
+OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
+print(OneHotTable)
+```
+
+*One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
+
+$$Waterfront_{yes}=1-Waterfront_{no}$$ 
+»
+
+## Dummy and One-Hot Encoding {.scrollable}
+
+**Dummy Coding**
+
+We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
+
+**Dummy Encoding Example**
+
+```{r}
+#| code-fold: true
+DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
+print(DummyTable)
+```
+
+»
+
+## Sex Based Wage Discrimination (univariate)
+
+```{r}
+#| echo: true
+library(wooldridge)
+library(janitor)
+DataWage=wage1 %>%
+clean_names("upper_camel") %>%
+select(Wage, SexFem=Female)
+head(DataWage)
+```
+
+## Plotting the Data
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_point()
+```
+
+
+## Plotting the Data with Transparency (alpha) and Jittered
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)
+```
+
+
+
+## Plotting the Data with Regression Line
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)+
+  geom_smooth(method = "lm", se=FALSE)
+```
+
+
+## Plotting the Data with Regression Line using SexMale Rather Than SexFem
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+DataTemp=DataWage |> mutate(SexMale=1-SexFem)
+ggplot(DataTemp, aes(x=SexMale, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)+
+  geom_smooth(method = "lm", se=FALSE)
+```
+
+
+## Sex Discrimination {.smaller}
+
+### Regression 
+```{r}
+#| echo: true
+lm(Wage ~ SexFem, data=DataWage)
+```
+
+
+### Comparing Means
+
+```{r}
+#| code-fold: true
+DataWageFem=filter(DataWage, SexFem==1)
+MeanWageFem=mean(DataWageFem$Wage)
+cat("Avg. female wage:",MeanWageFem)
+```
+
+```{r}
+#| code-fold: true
+DataWageMale=filter(DataWage, SexFem==0)
+MeanWageMale=mean(DataWageMale$Wage)
+cat("Avg. male wage:",MeanWageMale)
+```
+
+```{r}
+#| code-fold: true
+cat("Difference between female and male Wage avg.:",MeanWageFem-MeanWageMale)
+```
+
+## Multivariate Regression
+
+Wage is not only determined by $SexFem$, but also  by other variables such as $Educ$.
+
+**DAG:**
+
+```{r}
+#| code-fold: true
+library(ggdag)
+set.seed(123)
+DAGSimpleRegression=dagify(Wage~SexFem+Educ,
+                           Educ~SexFem,
+                           outcome="Wage",   
+                           exposure="SexFem")
+ggdag_status(DAGSimpleRegression, node_size = 22)
+```
+
+
+## Multivariate Regression {.smaller}
+
+**Example: Sex based wage discrimination with education**
+
+- Dummy Variable: 1 for female, 0 for male (`SexFem`)
+
+- Continuous Variable: Education (`Educ`)
+
+
+
+
+
+ 
+
+```{r}
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+
+DataWage=wage1 |> 
+         clean_names("upper_camel") |> 
+         select(Wage,SexFem=Female, Educ)
+  
+head(DataWage)
+```
+
+## Multivariate Regression {.smaller}
+
+**Example: Sex based wage discrimination with education**
+
+- Dummy Variable: 1 for female, 0 for male (`SexFem`)
+
+- Continuous Variable: Education (`Educ`)
+
+```{r}
+#| code-fold: false
+ModelLMWageEduc=lm(Wage~SexFem+Educ, data=DataWage)        
+summary(ModelLMWageEduc)
+```
+
+
