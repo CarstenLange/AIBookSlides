@@ -1,0 +1,371 @@
+---
+title: "Review for R and RStudio/ Intro to tidymodels" 
+
+
+format: revealjs
+---
+
+## Learning Outcomes {.small .scrollable} 
+
+What you will learn in this session:
+
+-   The Structure of R commands
+-   About the `tidyverse` package for data frames
+    -   `select()` and rename columns (variables)
+    -   `filter()` rows (observations)
+    -   `mutate()` (define columns (variables); overwrite old or create new)
+    -   piping (connecting commands) with `|>`.
+- Working with the tidymodels package
+  - Seperating data into *training data* and *testing data*
+  - Defining a workflow *model design*
+  - Defining a *recipe* for data engineering
+  - Combining *model design* and *recipe* in a *workflow*
+  - training a workflow
+  
+
+
+## Basics of R Commands
+
+R commands consists of the **command's name followed by a pair of parentheses**: `command()`
+
+. . .
+
+Inside the `()` we can define one or more **arguments** for the command.
+
+. . .
+
+```{r}
+#| echo: true
+VecTest=c(1,2,3)
+```
+
+<p>
+
+```{r}
+#| echo: true
+sum(x=VecTest)
+mean(VecTest)
+```
+
+-   Arguments in a command usually have names such as `x=` or `data=`
+
+-   R does not require to use the argument's name, but **order matters**
+
+-   R commands have many arguments. Most have default values
+
+-   We can nest commands. However, nesting too deeply makes code difficult to read.»
+
+:::
+
+## Structure of R Commands {.smaller}
+
+Most R commands have the following structure: \begin{equation}
+\underbrace{DataNew}_{\text{R object storing the result}}=
+\underbrace{Command}_{\text{Name of the command}}
+\underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
+\overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
+\end{equation}
+
+Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.»
+
+## Use a Command with and without Argument Names 🤓
+
+```{r}
+#| echo: true
+VecTest=c(1,2,3)
+```
+
+<br>
+
+```{r}
+#| echo: true
+Result=mean(x=VecTest, trim=0, na.rm=FALSE)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+
+<p>
+
+. . .
+
+```{r}
+#| echo: true
+Result=mean(VecTest, 0, FALSE)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+
+<p>
+
+. . .
+
+```{r}
+#| echo: true
+Result=mean(VecTest)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+
+. . .
+
+All three examples are equivalent
+
+Try `? mean` in the Rstudio console to see the default values.»
+
+::: footer
+See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
+:::
+
+## Important Commands from `tidyverse`/`dplyr` Package
+
+-   `dplyr` package is part of the `tidyverse` (meta) package
+-   `library(tidyverse)` (loads the `tidyverse` and its packages)
+-   `select()` selects columns (variables) from a data frame
+-   `filter()` filters rows (observations) for specific criteria
+-   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel).»
+
+## Titanic Dataset
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+library(rio)
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") |> 
+            select(-Name, -SiblingsSpousesAboard)
+head(DataTitanic)
+```
+»
+
+## The `select()` Command {.scrollable}
+
+-   `select(DataMine, Var1, Var2)` selects columns (variables) `Var1` and `Var2` from a data frame `DataMine`. The first argument is the `data=` argument followed by the names of the selected variables.
+
+-   `select(Data, -Var1, -Var2)` selects all columns (variables) except `Var1` and `Var2` from a data frame `DataMine`.
+
+. . .
+
+Here is an example using the `DataTitanic` data frame from the previous slide:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicSelVar=select(DataTitanic,FareInPounds, Sex, Age)
+head(DataTitanicSelVar)
+```
+»
+
+## The `filter()` Command
+
+The `filter()` command filters rows (observations) of a data frame for specific criteria. The first argument is the `data=` argument followed by the filter criteria.
+
+. . .
+
+E.g., *filter* for female passengers from the dataset: Use `DataTitanicSelVar` that we created in the previous slide (note that we have to use `==` instead of `=` for the criteria):
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitanicSelVarFem=filter(DataTitanicSelVar, Sex=="female")
+head(DataTitanicSelVarFem)
+```
+»
+
+## The `mutate()` Command 🤓
+
+`mutate()` creates or overwrites columns (variables) based on other columns (just like Excel). The first argument is the `data=` argument followed by the instructions on how to create/overwrite the new variable.
+
+. . .
+
+E.g., *mutate* calculates new column `SexFem` as a dummy that is `0` for males and `1` for females. It also deletes the variable `Sex` by assigning `Null`:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitatincSelVarFemAsDummy=mutate(DataTitanicSelVarFem, 
+                                    SexFem=ifelse(Sex=="female", 1, 0),         
+                                    Sex=NULL)
+head(DataTitatincSelVarFemAsDummy)
+```
+
+::: footer
+See: [RandRStudioScriptPart2.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
+:::
+»
+
+## Summary
+
+1.  We selected variables $FareInPounds$, $Sex$, $Age$ and saved in `DataTitanicSelVar`
+2.  We filtered for females and saved in `DataTitanicSelVarFem`
+3.  We mutated to calculate new variable and saved finally in `DataTitanicSelVarFemFemFareInDollar`
+
+. . .
+
+Could this be done easier?
+
+Note, overwriting data frames such as `DataTitanic` is usually a bad idea!»
+
+## Alternative: Nesting
+
+#### (I am not serious)
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicFinal= mutate(
+                  filter(select(DataTitanic,FareInPounds, Sex, Age),
+                         Sex=="female"), 
+                         SexFem=ifelse(Sex=="female", 1, 0),         
+                            Sex=NULL)
+head(DataTitanicFinal)
+```
+»
+
+## Piping Schema {background-color="#648787"}
+
+![Piping Schema](Images/Piping.png){background-color="aquamarine" fig-alt="Piping Schema" fig-align="center"}
+
+## Alternative: Piping
+
+#### (will be used throughout the course/book) 🤓
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicFinal= DataTitanic |> 
+                  select(FareInPounds, Sex, Age) |> 
+                  filter(Sex=="female")  |>  
+                  mutate(SexFem=ifelse(Sex=="female", 1, 0), Sex=NULL)
+  
+head(DataTitanicFinal)
+```
+»
+
+::: footer
+See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
+:::
+
+## Regression in Base R
+
+**Data Engineering (Cleaning):**
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitanicAnalysis= DataTitanic |> 
+                     select(FareInPounds, Sex, Age) |>  
+                     mutate(SexFem=ifelse(Sex=="female", 1, 0), Sex=NULL) |> 
+                     na.omit()
+head(DataTitanicAnalysis)
+```
+
+## Regression in Base R
+
+**Running the Regression**
+
+```{r}
+#| echo: true
+#| output-location: fragment
+
+ModelOLS=lm(FareInPounds~SexFem+Age, data = DataTitanicAnalysis)
+summary(ModelOLS)
+```
+
+## Regression in tidymodels
+
+### Seperating Data in Training and Testing Data {.smaller}
+
+Using the same data to assess the model's quality that were used to train the model is problematic:
+
+- *overlearning* (example from real live: train with 200 index cards for a science test. Then use the same cards to see if you are well trained for the test)
+- model approximates the data instead of learning the underlying structure
+- **Solution:** Randomly choose a subset of the data (15% - 20%) and do not use them to train the model (*testing data*).Later these data are used to assess the model's quality. Only the remaining 85% - 80% of data are used to train te model (*training data*).
+
+
+## Regression in tidymodels
+
+### Seperating Data in Training and Testing Data
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidymodels)
+
+Split8020=initial_split(DataTitanic, prop = 0.8, strat=FareInPounds)
+DataTrain=training(Split8020)
+DataTest=testing(Split8020)
+print(Split8020)
+```
+
+
+## Regression in tidymodels
+
+### Data Engineering with a recipe
+
+```{r}
+#| echo: true
+#| output-location: fragment
+RecipeTitanic=recipe(FareInPounds~Sex+Age, data = DataTrain) |>
+              step_select(FareInPounds, Sex, Age)   |>                           
+              step_mutate(Sex=ifelse(Sex=="female", 1, 0)) |>
+              step_naomit()
+```
+
+## Regression in tidymodels
+### Designing a Model
+
+```{r}
+#| echo: true
+#| output-location: fragment
+ModelDesignOLS=linear_reg() |> 
+               set_engine("lm") |> 
+               set_mode("regression")
+print(ModelDesignOLS)
+```
+
+
+## Regression in tidymodels
+### Creating  and Training a `workflow` 
+
+```{r}
+#| echo: true
+#| output-location: fragment
+WFModelTitanic=workflow() |> 
+               add_recipe(RecipeTitanic) |> 
+               add_model(ModelDesignOLS) |> 
+               fit(DataTitanic)
+tidy(WFModelTitanic)
+```
+
+
+## Regression in tidymodels
+
+
+## Assessing Model Quality with Testing Data 
+
+**Original testing data:**
+```{r}
+#| echo: true
+#| output-location: fragment
+head(DataTest)
+```
+## Assessing Model Quality with Testing Data 
+
+**Testing Data with Predictions**
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTestWithPred=augment(WFModelTitanic, DataTest)
+head(DataTestWithPred)
+```
+## Regression in tidymodels
+
+
+## Assessing Model Quality with Testing Data 
+
+
+```{r}
+#| echo: true
+#| output-location: fragment
+metrics(DataTestWithPred, truth=FareInPounds, estimate = .pred)
+```
+
