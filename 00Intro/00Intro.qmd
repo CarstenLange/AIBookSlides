@@ -19,7 +19,7 @@ format:
 
 - Materials
    - The book is available for free online:
-       <https://econ.lange-analytics.com/htmlbook>. Shameless          self promotion: You can buy the book from Francis & Taylor. 
+       <https://ai.lange-analytics.com/htmlbook>. Shameless          self promotion: You can buy the book from Francis & Taylor. 
    - Presentation slides are available online. Use the Learning Guide in Canvas
 
 

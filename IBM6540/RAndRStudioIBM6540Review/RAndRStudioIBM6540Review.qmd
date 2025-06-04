@@ -297,6 +297,17 @@ print(Split8020)
 ```
 
 
+```{r}
+#| echo: true
+#| output-location: fragment
+cat("Number of Observations in DataTrain:", nrow(DataTrain))
+cat("Number of Observations in DataTest:", nrow(DataTest))
+```
+
+
+
+
+
 ## Regression in tidymodels
 
 ### Data Engineering with a recipe

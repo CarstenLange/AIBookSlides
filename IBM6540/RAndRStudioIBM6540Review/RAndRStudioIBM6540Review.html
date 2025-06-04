@@ -561,15 +561,27 @@ F-statistic: 23.06 on 2 and 884 DF,  p-value: 1.728e-10</code></pre>
 &lt;707/180/887&gt;</code></pre>
 </div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Number of Observations in DataTrain:"</span>, <span class="fu">nrow</span>(DataTrain))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of Observations in DataTrain: 707</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Number of Observations in DataTest:"</span>, <span class="fu">nrow</span>(DataTest))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of Observations in DataTest: 180</code></pre>
+</div>
+</div>
 </section>
 <section id="regression-in-tidymodels-2" class="slide level2">
 <h2>Regression in tidymodels</h2>
 <h3 id="data-engineering-with-a-recipe">Data Engineering with a recipe</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>RecipeTitanic<span class="ot">=</span><span class="fu">recipe</span>(FareInPounds<span class="sc">~</span>Sex<span class="sc">+</span>Age, <span class="at">data =</span> DataTrain) <span class="sc">|&gt;</span></span>
-<span id="cb31-2"><a href=""></a>              <span class="fu">step_select</span>(FareInPounds, Sex, Age)   <span class="sc">|&gt;</span>                           </span>
-<span id="cb31-3"><a href=""></a>              <span class="fu">step_mutate</span>(<span class="at">Sex=</span><span class="fu">ifelse</span>(Sex<span class="sc">==</span><span class="st">"female"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb31-4"><a href=""></a>              <span class="fu">step_naomit</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>RecipeTitanic<span class="ot">=</span><span class="fu">recipe</span>(FareInPounds<span class="sc">~</span>Sex<span class="sc">+</span>Age, <span class="at">data =</span> DataTrain) <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href=""></a>              <span class="fu">step_select</span>(FareInPounds, Sex, Age)   <span class="sc">|&gt;</span>                           </span>
+<span id="cb35-3"><a href=""></a>              <span class="fu">step_mutate</span>(<span class="at">Sex=</span><span class="fu">ifelse</span>(Sex<span class="sc">==</span><span class="st">"female"</span>, <span class="dv">1</span>, <span class="dv">0</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href=""></a>              <span class="fu">step_naomit</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 
@@ -579,10 +591,10 @@ F-statistic: 23.06 on 2 and 884 DF,  p-value: 1.728e-10</code></pre>
 <h2>Regression in tidymodels</h2>
 <h3 id="designing-a-model">Designing a Model</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>ModelDesignOLS<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb32-2"><a href=""></a>               <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb32-3"><a href=""></a>               <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb32-4"><a href=""></a><span class="fu">print</span>(ModelDesignOLS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>ModelDesignOLS<span class="ot">=</span><span class="fu">linear_reg</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href=""></a>               <span class="fu">set_engine</span>(<span class="st">"lm"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb36-3"><a href=""></a>               <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb36-4"><a href=""></a><span class="fu">print</span>(ModelDesignOLS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -596,11 +608,11 @@ Computational engine: lm </code></pre>
 <h2>Regression in tidymodels</h2>
 <h3 id="creating-and-training-a-workflow">Creating and Training a <code>workflow</code></h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>WFModelTitanic<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
-<span id="cb34-2"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeTitanic) <span class="sc">|&gt;</span> </span>
-<span id="cb34-3"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignOLS) <span class="sc">|&gt;</span> </span>
-<span id="cb34-4"><a href=""></a>               <span class="fu">fit</span>(DataTitanic)</span>
-<span id="cb34-5"><a href=""></a><span class="fu">tidy</span>(WFModelTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>WFModelTitanic<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeTitanic) <span class="sc">|&gt;</span> </span>
+<span id="cb38-3"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignOLS) <span class="sc">|&gt;</span> </span>
+<span id="cb38-4"><a href=""></a>               <span class="fu">fit</span>(DataTitanic)</span>
+<span id="cb38-5"><a href=""></a><span class="fu">tidy</span>(WFModelTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -620,17 +632,17 @@ Computational engine: lm </code></pre>
 <h2>Assessing Model Quality with Testing Data</h2>
 <p><strong>Original testing data:</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a><span class="fu">head</span>(DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="fu">head</span>(DataTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>  Survived Pclass    Sex Age ParentsChildrenAboard FareInPounds
-1        0      3   male  22                     0       7.2500
-2        0      3   male  35                     0       8.0500
-3        1      2 female  14                     0      30.0708
-4        0      3   male  39                     5      31.2750
-5        0      3   male   2                     1      29.1250
-6        0      3 female   8                     1      21.0750</code></pre>
+1        0      3   male  27                     0       8.4583
+2        1      1 female  58                     0      26.5500
+3        0      3   male  20                     0       8.0500
+4        0      2   male  35                     0      26.0000
+5        0      3 female   8                     1      21.0750
+6        0      3   male  26                     0       7.2250</code></pre>
 </div>
 </div>
 </section>
@@ -638,20 +650,20 @@ Computational engine: lm </code></pre>
 <h2>Assessing Model Quality with Testing Data</h2>
 <p><strong>Testing Data with Predictions</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelTitanic, DataTest)</span>
-<span id="cb38-2"><a href=""></a><span class="fu">head</span>(DataTestWithPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelTitanic, DataTest)</span>
+<span id="cb42-2"><a href=""></a><span class="fu">head</span>(DataTestWithPred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 8
   .pred .resid Survived Pclass Sex      Age ParentsChildrenAboard FareInPounds
   &lt;dbl&gt;  &lt;dbl&gt;    &lt;int&gt;  &lt;int&gt; &lt;chr&gt;  &lt;dbl&gt;                 &lt;int&gt;        &lt;dbl&gt;
-1  21.8 -14.5         0      3 male      22                     0         7.25
-2  27.7 -19.7         0      3 male      35                     0         8.05
-3  38.2  -8.12        1      2 female    14                     0        30.1 
-4  29.6   1.71        0      3 male      39                     5        31.3 
-5  12.6  16.5         0      3 male       2                     1        29.1 
-6  35.4 -14.4         0      3 female     8                     1        21.1 </code></pre>
+1  24.1 -15.6         0      3 male      27                     0         8.46
+2  58.4 -31.8         1      1 female    58                     0        26.6 
+3  20.9 -12.8         0      3 male      20                     0         8.05
+4  27.7  -1.73        0      2 male      35                     0        26   
+5  35.4 -14.4         0      3 female     8                     1        21.1 
+6  23.6 -16.4         0      3 male      26                     0         7.22</code></pre>
 </div>
 </div>
 </section>
@@ -661,16 +673,16 @@ Computational engine: lm </code></pre>
 <section id="assessing-model-quality-with-testing-data-2" class="slide level2">
 <h2>Assessing Model Quality with Testing Data</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>FareInPounds, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>FareInPounds, <span class="at">estimate =</span> .pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   .metric .estimator .estimate
   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-1 rmse    standard      43.5  
-2 rsq     standard       0.129
-3 mae     standard      26.9  </code></pre>
+1 rmse    standard     41.5   
+2 rsq     standard      0.0569
+3 mae     standard     26.3   </code></pre>
 </div>
 </div>
 

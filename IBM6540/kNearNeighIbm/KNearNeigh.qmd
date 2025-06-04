@@ -6,28 +6,33 @@ format:
     code-fold: false
 ---
 
-## Before We Begin: Let Us Run an Experiment
+## Before We Begin: Let Us Run an Experiment {.smaller .scrollable }
 
-I need two volunteers who are willing to reveal their political opinion and for which party they would vote, if we had elections today (ideally one Democrat and one Republican).
 
-The survey questions are below (wait for instructions before you take the survey and
-record your answers from the digital survey **also on a piece of paper**):
+Image you have small dating service and for tonight three man are looking for a date. Their interest are rated on a scale of 1 - 10 (10 reflecting higest interest):
 
--   Survey for all students (except the two volunteers):\
-    [https://tinyurl.com/KNearNeighTrain](https://tinyurl.com/KNearNeighTrain){target="_blank"}
+**Man 1:** Sport: 2, Reading: 8
 
--   Survey for the two volunteers\
-    [https://tinyurl.com/KNearNeighTest](https://tinyurl.com/KNearNeighTest){target="_blank"}
+**Man 2:** Sport: 6, Reading: 5
+   
+**Man 3:** Sport: 10, Reading: 1
+   
+You try to match one woman to one of the three Man. Her Interest is:
 
-## Ideas on How to Identify the 2 Volunteers Political Affiliation?
+**Women:** Sport: 9, Reading 1
 
-    -   CL: Ask volunteers what their answers were and find nearest neighbor(s) (volunteers: do not reveal political affiliation yet).
+```{r}
+library(tidyverse)
+ggplot() +
+  xlim(0, 10) + 
+  ylim(0, 10) +
+  labs(x = "Reading", y = "Sport")
+```
+
+
+
+
   
-
-    -   What were the shortcomings of the survey
-    
-    -   CL: Run R Script
-
 
 ## Overwiew {.smaller .scrollable}
 
@@ -84,9 +89,9 @@ Note we use `clean_names("upper_camel")` from the `janitor` package to change al
 #| echo: true
 #| output-location: fragment
 library(tidyverse); library(rio);library(janitor)
-DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") %>% 
-  clean_names("upper_camel") %>% 
-  select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) %>% 
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") |> 
+  clean_names("upper_camel") |> 
+  select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) |> 
   mutate(WineColor=as.factor(WineColor))
 print(DataWine)
 ```
@@ -356,9 +361,9 @@ ggplot(DataTrain |>
 #| echo: true
 #| output-location: fragment
 library(tidyverse); library(rio);library(janitor)
-DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") %>% 
-         clean_names("upper_camel") %>% 
-         select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) %>% 
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") |> 
+         clean_names("upper_camel") |> 
+         select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) |> 
   mutate(WineColor=as.factor(WineColor))
 print(DataWine)
 ```
@@ -391,13 +396,13 @@ Recipe: Prepare Data for Analysis:
 ```{r}
 #| echo: true
 #| output-location: fragment
-RecipeWine=recipe(WineColor~Acidity+Sulfur, data = DataTrain) %>%
-            step_naomit() %>% 
+RecipeWine=recipe(WineColor~Acidity+Sulfur, data = DataTrain) |>
+            step_naomit() |> 
             step_normalize(all_predictors())
 # or
 
-RecipeWine=recipe(WineColor~., data = DataTrain) %>%
-            step_naomit() %>% 
+RecipeWine=recipe(WineColor~., data = DataTrain) |>
+            step_naomit() |> 
             step_normalize(all_predictors()) 
 print(RecipeWine)
 ```
@@ -412,8 +417,8 @@ Creating a Model Design:
 ```{r}
 #| echo: true
 #| output-location: fragment
-ModelDesignKNN=nearest_neighbor(neighbors = 4, weight_func = "rectangular") %>%
-               set_engine("kknn") %>% 
+ModelDesignKNN=nearest_neighbor(neighbors = 4, weight_func = "rectangular") |>
+               set_engine("kknn") |> 
                set_mode("classification")
 print(ModelDesignKNN)
 ```
@@ -426,9 +431,9 @@ Putting it all together in a **fitted** `workflow`:
 #| echo: true
 #| output-location: fragment
 #| 
-WFModelWine=workflow() %>% 
-             add_recipe(RecipeWine) %>%
-             add_model(ModelDesignKNN) %>% 
+WFModelWine=workflow() |> 
+             add_recipe(RecipeWine) |>
+             add_model(ModelDesignKNN) |> 
              fit(DataTrain)
 print(WFModelWine)
 ```
@@ -619,14 +624,14 @@ We will use only the first 500 images of the original MNIST dataset to speed up 
 ```{r}
 #|echo: false
 FctPlotImages=function(Data){
-  MnistLong = Data %>% 
-    mutate(instance = row_number()) %>%
-    gather(pixel, value, -Label, -instance) %>%
-    tidyr::extract(pixel, "pixel", "(\\d+)", convert = TRUE) %>%
+  MnistLong = Data |> 
+    mutate(instance = row_number()) |>
+    gather(pixel, value, -Label, -instance) |>
+    tidyr::extract(pixel, "pixel", "(\\d+)", convert = TRUE) |>
     mutate(pixel = pixel - 2,
            x = pixel %% 28,
            y = 28 - pixel %/% 28) 
-  Plot=MnistLong %>% ggplot(aes(x, y, fill = value)) +
+  Plot=MnistLong |> ggplot(aes(x, y, fill = value)) +
     geom_tile() +
     facet_wrap(~ instance + Label)+
     scale_fill_gradient(
