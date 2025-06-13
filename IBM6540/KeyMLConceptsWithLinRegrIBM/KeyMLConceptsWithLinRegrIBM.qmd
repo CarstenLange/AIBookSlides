@@ -85,7 +85,7 @@ head(DataTrain)
 ### How does the Unfitted Model Looks Like?
 
 $$
-\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_1}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_2}_b
 $$
 
 ### Fitting the Model with Tidymodels
@@ -108,7 +108,7 @@ tidy(WFModelHouses)
 ## Unfitted Model vs Fitted Workflow Model {.smaller}
 
 Unfitted Model: $$
-\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_1}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_2}_b
 $$
 
 ```{r}
