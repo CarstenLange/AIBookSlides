@@ -1,0 +1,495 @@
+---
+title: "Key Machine Learning Concepts"
+subtitle: "Explained with Linear Regression"
+format: 
+  revealjs:
+    code-fold: true
+    incremental: false
+    scrollable: true
+    echo: true
+---
+
+## Loading Required Librarries
+
+```{r}
+#| code-fold: false
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
+```
+
+## What Will You Learn {.scrollable .smaller}
+
+-   Reviewing the basic idea behind linear regression
+
+-   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
+
+-   Understanding the role of parameters in a machine learning model in general and in linear regression in particular
+
+-   Calculating optimal regression parameters using OLS
+
+-   Finding optimal regression parameters by trial and error
+
+-   Distinguish between unfitted and fitted models
+
+-   Using the `tidymodels` package to split observations from a dataset randomly into a training and testing dataset.
+
+-   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
+
+-   Being able to distinguish between dummy encoding and one-hot encoding
+
+-   Using `tidymodels` including model design and data pre-processing (recipes) to analyze housing prices.
+
+## Jumping Right Into It
+
+### Univariate OLS with a Real World Dataset
+
+**Data Description:**
+
+::: incremental
+-   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+
+-   Several predictor variables. For now we use only $Sqft$
+
+-   We will only use 100 randomly chosen observations from the total of 21,613 observations.
+
+-   We only use Sqft as predictor variable for now.
+:::
+
+## Loading the Data and Assigning Training and Testing Data (manually)
+
+
+
+```{r}
+
+
+
+DataHouses=
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+# Manually generating DataTrain and DataTest
+set.seed(7771)
+DataTrain= sample_n(DataHouses, 100)
+DataTest= sample_n(DataHouses, 50)
+head(DataTrain)
+
+```
+
+
+## From Unfitted to Fitted Model
+
+### How does the Unfitted Model Looks Like?
+
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_1}_b
+$$
+
+### Fitting the Model with Tidymodels
+
+```{r}
+RecipeHouses= recipe(Price~Sqft, data=DataTrain)
+
+ModelDesignOLS= linear_reg() %>% 
+                set_engine("lm") %>% 
+                set_mode("regression")
+
+WFModelHouses = workflow() %>%  
+  add_recipe(RecipeHouses) %>% 
+  add_model(ModelDesignOLS) %>% 
+  fit(DataTrain)
+
+tidy(WFModelHouses)
+```
+
+## Unfitted Model vs Fitted Workflow Model {.smaller}
+
+Unfitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_1}_b
+$$
+
+```{r}
+tidy(WFModelHouses)
+```
+
+Fitted Model: $$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
+$$
+
+## Interpretation and Significance 
+
+```{r}
+#| echo: false
+tidy(WFModelHouses)
+```
+
+$$
+\begin{align}
+\widehat{Price}&=240 \cdot Sqft +  52509\\
+ (+240)&=240\cdot (+1) +  (+0)\\
+ (+480)&=240\cdot (+2) +  (+0)\\
+ (+720)&=240\cdot (+3) +  (+0)
+\end{align}
+$$ **For each extra** $Sqft$ the predicted price increases by \$240
+
+**The variable** $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.
+
+
+## Evaluating Predictive Quality with the Testing Dataset
+
+```{r}
+#| code-fold: false
+DataTestWithPred=augment(WFModelHouses, new_data=DataTest)
+metrics(DataTestWithPred, truth=Price, estimate=.pred)
+```
+
+## Univariate Linear Regression - Data Table and Goal {.smaller}
+
+::: columns
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+$$
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\widehat{y}_{i}-y_i)^2$
+:::
+
+::: {.column width="60%"}
+**The Data Table**
+
+```{r }
+#| echo: false
+kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset")|>
+  add_header_above(c(" ", "y", "x"), escape=F) |> 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+:::
+:::
+
+## Univariate Linear Regression - Data Diagram and Goal {.smaller}
+
+::: columns
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\widehat{y}_{i}-y_i)^2$
+:::
+
+::: {.column width="60%"}
+**The Data Diagram**
+
+```{r}
+Model123=lm(Grade~StudyTime, data=DataMockup)
+PredGrade=predict(Model123, DataMockup)
+ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
+  geom_line(aes(y=PredGrade), color="red", size=2.7)+
+  geom_point(size=5, color="blue")+
+  geom_point(aes(y=PredGrade), color="black", size=2.7)+
+  geom_segment(aes(x = StudyTime, y = PredGrade,
+                   xend = StudyTime, yend = Grade),size=1.2)+
+  scale_x_continuous("Study Time", breaks=seq(1,8))+
+  scale_y_continuous(limits=c(65,110), breaks=seq(60,100,5))
+```
+:::
+:::
+
+# How to Measure Prediction Quality
+
+```{=tex}
+\begin{eqnarray*}
+MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+ & \Longleftrightarrow& \\
+MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}
+```
+**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
+
+## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
+
+```{=tex}
+\begin{eqnarray}
+MSE & = & \frac{(\beta_1x_{1}+\beta_2-y_1)^2
+       +(\beta_1x_{2}+\beta_2-y_2)^2 +  \cdots+
+       (\beta_1x_{5}+\beta_2-y_{5})^2}{5} \nonumber \\
+       & \Longleftrightarrow& \nonumber \\
+MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mbox{Prediction $1$}}-65}_{\mbox{Error $1$}})^2
+       +(\underbrace{\overbrace{\beta_1\cdot 3+\beta_2}^{\mbox{Prediction $2$}}-82}_{\mbox{Error $2$}})^2\right.\nonumber \\
+   &   &\nonumber \\
+       && +
+    (\underbrace{\overbrace{\beta_1\cdot 7+\beta_2}^{\mbox{Prediction $3$}}-93}_{\mbox{Error $3$}})^2 
++(\underbrace{\overbrace{\beta_1\cdot 8+\beta_2}^{\mbox{Prediction $4$}}-93}_{\mbox{Error $4$}})^2\nonumber \\
+   &   &\nonumber \\
+       && +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_2}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
+\end{eqnarray}
+```
+
+## Custom R Function to Calculate MSE
+
+```{r}
+#| echo: false
+FctMSE=function(VecBeta, data){
+                        Beta1=VecBeta[1]
+                        Beta2=VecBeta[2]
+                        data=data |>
+                        rename(Y=1, X=2) |> 
+                        mutate(YPred=Beta1*X+Beta2) |>
+                        mutate(Error=YPred-Y) |>
+                        mutate(ErrorSqt=Error^2)
+                        
+                        MSE=mean(data$ErrorSqt)
+                        
+                        return(MSE)}
+```
+
+Function Call:
+
+```{r}
+#| echo: true
+VecBetaTest=c(4,61)
+ResultMSE=FctMSE(VecBetaTest, DataMockup)
+print(ResultMSE)
+```
+
+Function Definition:»
+
+```{r}
+#| echo: true
+FctMSE=function(VecBeta, data){
+                        Beta1=VecBeta[1]
+                        Beta2=VecBeta[2]
+                        data=data |>
+                        rename(Y=1, X=2) |> 
+                        mutate(YPred=Beta1*X+Beta2) |>
+                        mutate(Error=YPred-Y) |>
+                        mutate(ErrorSqt=Error^2)
+                        
+                        MSE=mean(data$ErrorSqt)
+                        
+                        return(MSE)}
+```
+
+## How to Find Optimal Values for $\beta_1$ and $\beta_2$
+
+**Method 1:**
+
+:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
+
+**Method 2:**
+
+:   We can use a **systematic trial and error process**.
+
+## Method 1: Calculate Optimal Parameters (only for OLS!)  {.smaller} 
+
+```{=tex}
+\begin{eqnarray*} 
+\beta_{1,opt}&=& \frac
+{N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
+&& \nonumber \\
+\beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
+\end{eqnarray*}
+```
+```{r}
+#| echo: false
+DataTable=DataMockup |>
+  mutate(GradeXStudyTime=Grade*StudyTime) |>
+  mutate(StudyTimeSquared=StudyTime^2) 
+
+
+kbl(DataTable |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset ")|>
+  add_header_above(c(" ", "y", "x", "y x","x x"), escape=F) |> 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+
+```{r}
+#| echo: false
+kbl(data.frame(as.list(colSums(DataTable))), 
+    caption="Column Sums")|>
+    kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+
+## Method 2: Use a Systematic Trial and Error Process 🤓
+
+-   **Grid Search (aka Brute Force):**
+
+    1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
+    2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
+    3.  Find the $\beta$ pair with the lowest $MSE$
+
+-   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
+
+-   See the R script in the footnote to see both algorithms in action.»
+
+::: footer
+See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRegrScript.R)
+:::
+
+# Multivariate OLS with a Real World Dataset
+
+## Multivariate OLS with a Real World Dataset
+
+**Data**
+
+```{r}
+#| echo: true
+library(rio)
+DataHousing =
+  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
+```
+
+-   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+-   Several predictor variables. 
+-   We will use all 21,613 observations.
+
+
+
+## Multivariate Analysis --- Three Predictor Variables {.scrollable}
+
+`Sqft`: Living square footage of the house
+
+`Grade` Indicates the condition of houses (1 (worst) to 13 (best))
+
+`Waterfront`: Is house located at the waterfront (`yes` or `no`)
+
+```{r}
+#| echo: true
+library(tidyverse);library(rio);library(janitor);library(tidymodels)
+DataHousing =
+  import("https://ai.lange-analytics.com/data/HousingData.csv")|>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving, Grade, Waterfront)
+```
+
+**Unfitted Model:** » $$
+Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront_{yes} +\beta_4
+$$
+
+## Multivariate Real World Dataset --- Splitting {.scrollable}
+
+```{r}
+#| echo: true
+set.seed(777)
+Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+```
+
+
+
+**DataTrain**
+
+```{r}
+#| echo: false
+head(DataTrain)
+```
+
+**DataTest**
+
+```{r}
+#| echo: false
+head(DataTest)
+```
+
+## Dummy and One-Hot Encoding {.scrollable}
+
+**One-Hot Encoding**
+
+```{r}
+OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
+print(OneHotTable)
+```
+
+*One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
+
+$$Waterfront_{yes}=1-Waterfront_{no}$$
+
+## Dummy and One-Hot Encoding {.scrollable}
+
+**Dummy Coding**
+
+We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
+
+**Dummy Encoding Example**
+
+```{r}
+DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
+print(DummyTable)
+```
+
+**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.»
+
+## Multivariate Analysis --- Building the Recipe
+
+```{r}
+#| echo: true
+#| code-fold: false
+RecipeHouses=recipe(Price ~ ., data=DataTrain) |> 
+                    step_dummy(Waterfront)
+```
+
+Here is how the recipe later on (in the workflow) transforms the data:
+
+```{r}
+juice(RecipeHouses |> prep()) |> head()
+```
+
+## Multivariate Analysis --- Building the Model Design
+
+**Unfitted Model:**
+
+```{r}
+#| echo: true
+#| code-fold: false
+ModelDesignHouses=linear_reg() |> 
+  set_engine("lm") |> 
+  set_mode("regression")
+print(ModelDesignHouses)
+```
+
+»
+
+## Multivariate Analysis --- Creating Workflow & Fitting to the Training Data
+
+```{r}
+#| echo: true
+WFModelHouses = workflow() |>  
+      add_recipe(RecipeHouses) |> 
+      add_model(ModelDesignHouses) |> 
+      fit(DataTrain)
+tidy(WFModelHouses)
+glance(WFModelHouses)
+```
+
+## Multivariate Analysis --- Predicting Testing Data and Metrics
+
+```{r}
+#| echo: true
+DataTestWithPredictions = augment(WFModelHouses, new_data=DataTest)
+metrics(DataTestWithPredictions, truth=Price, estimate=.pred)
+```
+
+
+## Exercise
+
+**Run the Analysis**»
+
+<https://ai.lange-analytics.com/exc/?file=05-LinRegrExerc100.Rmd>
