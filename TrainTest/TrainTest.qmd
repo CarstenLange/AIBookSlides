@@ -302,9 +302,9 @@ The **10 general steps** are:
 
 2. Create **recipe** to determine predictor and outcome variables. Optionally add one or more `step_X()` commands.
 
-3. Create  **model design** and mark parameters to be tuned (use `tune()`) without `fit()`
+3. Create  **model design** and mark parameters to be tuned (use `tune()`) 
 
-4. Create **workflow** by `add_recipe()` and `add_model()`
+4. Create **workflow** by `add_recipe()` and `add_model()` without `fit()`
 
 5. Create a **hyper-parameter grid** containing the hyper-parameter combinations to be validated.
 
