@@ -8,7 +8,9 @@ format:
     echo: true
     incremental: false
 ---
+## Packages Needed
 
+Install the `glmnet` package to run the code from the following slides.
 
 ## What Will You Learn/Review {.scrollable .smaller}
 
@@ -117,7 +119,7 @@ Two Goals: Minimize $MSE$ and Minimize Penalty (small or zero $\beta s$)
 
 $T^{arget}$ value still only depends on data.
 
-Note, reducing a large or a small $\beta$ parameter by the same amount has the same impact on the *penalty*.
+Note, when reducing a large and a small parameter by the same amount, the impact of reducing the large parameter has a bigger impact on the *penalty* than reducing the  small parameter. This is the reason that *Ridge* has a tendency to reduce large rather than small parameters. 
 
 
 ## Running the Ridge Model
