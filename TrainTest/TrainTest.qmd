@@ -287,7 +287,7 @@ $$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4$$
 
 $$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}$$
 
-# CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY REALESTATE DATASET
+# CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY Real Estate DATASET
 
 ## MORE REALISTIC DATASPLIT: 80% TRAINING, 20% TESTING
 
@@ -340,7 +340,98 @@ print(Split80)
 
 ![](Images/4FoldsDegree2F4.png)
 
-$$MSE_{degree=1}= \frac{40100+40200+40050+40010}{4}$$
+$$MSE_{degree=2}= \frac{70,800,900+72,400,500+70,200,100+68,480,100}{4}=
+70,470,400$$
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3)
+
+
+![](Images/4Folds.png)
+
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3 / Fold 1)
+
+
+![](Images/4FoldsDegree3F1.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3  / Fold 2)
+
+
+![](Images/4FoldsDegree3F2.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3  / Fold 3)
+
+
+![](Images/4FoldsDegree3F3.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3  / Fold 4)
+
+
+![](Images/4FoldsDegree3F4.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3  / All Folds) {.smaller}
+
+
+![](Images/4FoldsDegree3F4.png)
+
+$$MSE_{degree=3}= \frac{60,700,900+62,200,500+67,200,100+61,100,100}{4}=
+62,800,400$$
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5)
+
+
+![](Images/4Folds.png)
+
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5 / Fold 1)
+
+
+![](Images/4FoldsDegree5F1.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5  / Fold 2)
+
+
+![](Images/4FoldsDegree5F2.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5  / Fold 3)
+
+
+![](Images/4FoldsDegree5F3.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5  / Fold 4)
+
+
+![](Images/4FoldsDegree5F4.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5  / All Folds) {.smaller}
+
+
+![](Images/4FoldsDegree5F4.png)
+
+$$MSE_{degree=5}= \frac{40,280,900+42,400,500+47,200,100+41,700,100}{4}=
+42,895,400$$
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (Results) {.smaller}
+
+**degree 2:**
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3$$
+
+$$MSE_{degree=2}=70,470,400$$
+
+**degree 3:**
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4$$
+
+$$MSE_{degree=3}=62,800,400$$
+
+**degree 5:**
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}$$
+
+$$MSE_{degree=5}=42,895,400$$
+
+
 
 ## 10 Steps to Create a Model, Tune it, and Predict {.smaller}
 

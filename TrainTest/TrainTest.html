@@ -422,8 +422,8 @@
 </section>
 
 <section>
-<section id="cross-validation-for-polynomial-regression-and-the-king-county-realestate-dataset" class="title-slide slide level1 center">
-<h1>CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY REALESTATE DATASET</h1>
+<section id="cross-validation-for-polynomial-regression-and-the-king-county-real-estate-dataset" class="title-slide slide level1 center">
+<h1>CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY Real Estate DATASET</h1>
 
 </section>
 <section id="more-realistic-datasplit-80-training-20-testing" class="slide level2">
@@ -447,30 +447,95 @@
 <h2>Crossvalidation — The Idea Behind It</h2>
 
 <img data-src="Images/4Folds.png" class="r-stretch"></section>
-<section id="trying-hyper-parameters-for-degree-235-using-crossvalidation-degree-2" class="slide level2">
-<h2>Trying Hyper-Parameters for Degree (2,3,5) Using Crossvalidation (degree = 2)</h2>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-2" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2)</h2>
 
 <img data-src="Images/4Folds.png" class="r-stretch"></section>
-<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-1" class="slide level2">
-<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 1)</h2>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-2-fold-1" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2 / Fold 1)</h2>
 
 <img data-src="Images/4FoldsDegree2F1.png" class="r-stretch"></section>
-<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-2" class="slide level2">
-<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 2)</h2>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-2-fold-2" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2 / Fold 2)</h2>
 
 <img data-src="Images/4FoldsDegree2F2.png" class="r-stretch"></section>
-<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-3" class="slide level2">
-<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 3)</h2>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-2-fold-3" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2 / Fold 3)</h2>
 
 <img data-src="Images/4FoldsDegree2F3.png" class="r-stretch"></section>
-<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-4" class="slide level2">
-<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 4)</h2>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-2-fold-4" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2 / Fold 4)</h2>
 
 <img data-src="Images/4FoldsDegree2F4.png" class="r-stretch"></section>
-<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-all-folds" class="slide level2 smaller">
-<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / All Folds)</h2>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-2-all-folds" class="slide level2 smaller">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2 / All Folds)</h2>
 
-<img data-src="Images/4FoldsDegree2F4.png" class="r-stretch"><p><span class="math display">\[MSE_{degree=1}= \frac{40100+40200+40050+40010}{4}\]</span></p>
+<img data-src="Images/4FoldsDegree2F4.png" class="r-stretch"><p><span class="math display">\[MSE_{degree=2}= \frac{70,800,900+72,400,500+70,200,100+68,480,100}{4}=
+70,470,400\]</span></p>
+</section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-3" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3)</h2>
+
+<img data-src="Images/4Folds.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-3-fold-1" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3 / Fold 1)</h2>
+
+<img data-src="Images/4FoldsDegree3F1.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-3-fold-2" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3 / Fold 2)</h2>
+
+<img data-src="Images/4FoldsDegree3F2.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-3-fold-3" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3 / Fold 3)</h2>
+
+<img data-src="Images/4FoldsDegree3F3.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-3-fold-4" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3 / Fold 4)</h2>
+
+<img data-src="Images/4FoldsDegree3F4.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-3-all-folds" class="slide level2 smaller">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 3 / All Folds)</h2>
+
+<img data-src="Images/4FoldsDegree3F4.png" class="r-stretch"><p><span class="math display">\[MSE_{degree=3}= \frac{60,700,900+62,200,500+67,200,100+61,100,100}{4}=
+62,800,400\]</span></p>
+</section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-5" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5)</h2>
+
+<img data-src="Images/4Folds.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-5-fold-1" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5 / Fold 1)</h2>
+
+<img data-src="Images/4FoldsDegree5F1.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-5-fold-2" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5 / Fold 2)</h2>
+
+<img data-src="Images/4FoldsDegree5F2.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-5-fold-3" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5 / Fold 3)</h2>
+
+<img data-src="Images/4FoldsDegree5F3.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-5-fold-4" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5 / Fold 4)</h2>
+
+<img data-src="Images/4FoldsDegree5F4.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-degree-5-all-folds" class="slide level2 smaller">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 5 / All Folds)</h2>
+
+<img data-src="Images/4FoldsDegree5F4.png" class="r-stretch"><p><span class="math display">\[MSE_{degree=5}= \frac{40,280,900+42,400,500+47,200,100+41,700,100}{4}=
+42,895,400\]</span></p>
+</section>
+<section id="trying-hyper-parameters-for-degree-2-3-5-using-crossvalidation-results" class="slide level2 smaller">
+<h2>Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (Results)</h2>
+<p><strong>degree 2:</strong></p>
+<p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3\]</span></p>
+<p><span class="math display">\[MSE_{degree=2}=70,470,400\]</span></p>
+<p><strong>degree 3:</strong></p>
+<p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4\]</span></p>
+<p><span class="math display">\[MSE_{degree=3}=62,800,400\]</span></p>
+<p><strong>degree 5:</strong></p>
+<p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}\]</span></p>
+<p><span class="math display">\[MSE_{degree=5}=42,895,400\]</span></p>
 </section>
 <section id="steps-to-create-a-model-tune-it-and-predict" class="slide level2 smaller">
 <h2>10 Steps to Create a Model, Tune it, and Predict</h2>
