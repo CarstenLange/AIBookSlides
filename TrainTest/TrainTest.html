@@ -237,9 +237,11 @@
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidymodels); <span class="fu">library</span>(rio); <span class="fu">library</span>(janitor)</span>
 <span id="cb1-2"><a href=""></a></span>
-<span id="cb1-3"><a href=""></a>DataHousing <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb1-4"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-5"><a href=""></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href=""></a>DataHousing <span class="ot">=</span></span>
+<span id="cb1-4"><a href=""></a>  <span class="fu">import</span>(<span class="st">"../Data/DataHousingBig.rds"</span>) <span class="sc">|&gt;</span>  </span>
+<span id="cb1-5"><a href=""></a>  <span class="co">#import("https://ai.lange-analytics.com/data/HousingData.csv") |&gt; </span></span>
+<span id="cb1-6"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>)  <span class="sc">|&gt;</span> </span>
+<span id="cb1-7"><a href=""></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 <p>We want to demonstrate <em>overfitting</em>. Therefore, we ceate conditions that <strong>likely trigger overfitting</strong>. Consequently, we work only with a very small training dataset (20 observations are 0.1% of total observations). All other observations become testing data:</p>
@@ -248,10 +250,10 @@
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
 <span id="cb2-2"><a href=""></a><span class="co"># initial_split(prop = 0.001, ...) randomly chooses 20 training observations</span></span>
-<span id="cb2-3"><a href=""></a>Split001<span class="ot">=</span>DataHousing <span class="sc">%&gt;%</span> </span>
-<span id="cb2-4"><a href=""></a>  <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.001</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
-<span id="cb2-5"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split001)</span>
-<span id="cb2-6"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split001)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-3"><a href=""></a>Split001<span class="ot">=</span>DataHousing <span class="sc">|&gt;</span> </span>
+<span id="cb2-4"><a href=""></a>        <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.001</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
+<span id="cb2-5"><a href=""></a>        DataTrain<span class="ot">=</span><span class="fu">training</span>(Split001)</span>
+<span id="cb2-6"><a href=""></a>        DataTest<span class="ot">=</span><span class="fu">testing</span>(Split001)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
 </section>
@@ -299,19 +301,19 @@
 \]</span></p>
 <div class="fragment">
 <p>Polynomial univariate prediction equation (degree 5):</p>
-<span class="math display">\[\begin{eqnarray*}
+<p><span class="math display">\[\begin{eqnarray*}
 \widehat{Price}&amp;=&amp;\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 \\
   &amp;&amp; +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
-\end{eqnarray*}\]</span>
+\end{eqnarray*}\]</span></p>
 </div>
 </section>
 <section id="polynomial-regression-1" class="slide level2">
 <h2>Polynomial Regression</h2>
 <p>Polynomial univariate prediction equation (degree 5):</p>
-<span class="math display">\[\begin{eqnarray*}
+<p><span class="math display">\[\begin{eqnarray*}
 \widehat{Price}&amp;=&amp;\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3\\
   &amp;&amp; +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
-\end{eqnarray*}\]</span>
+\end{eqnarray*}\]</span></p>
 <div class="fragment">
 <p>We create <span class="math inline">\(Sqft^2\)</span>, <span class="math inline">\(Sqft^3\)</span>, <span class="math inline">\(Sqft^4\)</span>, and <span class="math inline">\(Sqft^5\)</span> as new variables in the data and treat them as they were separate variables in a multivariate regression.</p>
 </div>
@@ -327,7 +329,7 @@
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">head</span>(DataHousing <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">Sqft2=</span>Sqft<span class="sc">^</span><span class="dv">2</span>,<span class="at">Sqft3=</span>Sqft<span class="sc">^</span><span class="dv">3</span>,<span class="at">Sqft4=</span>Sqft<span class="sc">^</span><span class="dv">4</span>,<span class="at">Sqft5=</span>Sqft<span class="sc">^</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">head</span>(DataHousing <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Sqft2=</span>Sqft<span class="sc">^</span><span class="dv">2</span>,<span class="at">Sqft3=</span>Sqft<span class="sc">^</span><span class="dv">3</span>,<span class="at">Sqft4=</span>Sqft<span class="sc">^</span><span class="dv">4</span>,<span class="at">Sqft5=</span>Sqft<span class="sc">^</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    Price Sqft    Sqft2        Sqft3        Sqft4        Sqft5
@@ -408,6 +410,17 @@
 <p>We end up with four results for each hyper-parameter setting. We calculate the average of the four results as an result for that specific hyper parameter.</p>
 </div>
 </section>
+<section id="mock-up-cross-validation" class="title-slide slide level1 smaller center">
+<h1>Mock-up CROSS VALIDATION</h1>
+<p>What follows is a mock-up <em>Cross-Validation</em> for the <em>King County</em> real estate dataset.</p>
+<p>We try out three hyper-parameter values for the degree of the polynomial regression.</p>
+<p><strong>degree 2:</strong></p>
+<p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3\]</span></p>
+<p><strong>degree 3:</strong></p>
+<p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4\]</span> <strong>degree 5:</strong></p>
+<p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}\]</span></p>
+</section>
+
 <section>
 <section id="cross-validation-for-polynomial-regression-and-the-king-county-realestate-dataset" class="title-slide slide level1 center">
 <h1>CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY REALESTATE DATASET</h1>
@@ -418,7 +431,7 @@
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
 <span id="cb7-2"><a href=""></a></span>
-<span id="cb7-3"><a href=""></a>Split80<span class="ot">=</span>DataHousing <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href=""></a>Split80<span class="ot">=</span>DataHousing <span class="sc">|&gt;</span> </span>
 <span id="cb7-4"><a href=""></a>  <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
 <span id="cb7-5"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split80)</span>
 <span id="cb7-6"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split80) </span>
@@ -434,20 +447,45 @@
 <h2>Crossvalidation — The Idea Behind It</h2>
 
 <img data-src="Images/4Folds.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-235-using-crossvalidation-degree-2" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2,3,5) Using Crossvalidation (degree = 2)</h2>
+
+<img data-src="Images/4Folds.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-1" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 1)</h2>
+
+<img data-src="Images/4FoldsDegree2F1.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-2" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 2)</h2>
+
+<img data-src="Images/4FoldsDegree2F2.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-3" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 3)</h2>
+
+<img data-src="Images/4FoldsDegree2F3.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-fold-4" class="slide level2">
+<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / Fold 4)</h2>
+
+<img data-src="Images/4FoldsDegree2F4.png" class="r-stretch"></section>
+<section id="trying-hyper-parameters-for-degree-2510-using-crossvalidation-degree-2-all-folds" class="slide level2 smaller">
+<h2>Trying Hyper-Parameters for Degree (2,5,10) Using Crossvalidation (degree = 2 / All Folds)</h2>
+
+<img data-src="Images/4FoldsDegree2F4.png" class="r-stretch"><p><span class="math display">\[MSE_{degree=1}= \frac{40100+40200+40050+40010}{4}\]</span></p>
+</section>
 <section id="steps-to-create-a-model-tune-it-and-predict" class="slide level2 smaller">
 <h2>10 Steps to Create a Model, Tune it, and Predict</h2>
 <p>The <strong>10 general steps</strong> are:</p>
 <ol type="1">
-<li class="fragment"><p>Generating <strong>training and testing data</strong> with <code>initial_split()</code>, <code>training()</code>, <code>testing()</code>.</p></li>
-<li class="fragment"><p>Create <strong>recipe</strong> to determine predictor and outcome variables. Optionally add one or more <code>step_X()</code> commands.</p></li>
-<li class="fragment"><p>Create <strong>model design</strong> and mark parameters to be tuned (use <code>tune()</code>)</p></li>
-<li class="fragment"><p>Create <strong>workflow</strong> by <code>add_recipe()</code> and <code>add_model()</code> without <code>fit()</code></p></li>
-<li class="fragment"><p>Create a <strong>hyper-parameter grid</strong> containing the hyper-parameter combinations to be validated.</p></li>
-<li class="fragment"><p>Create <strong>cross validation datasets</strong> (aka <em>resamples</em>) containing the folds (use command <code>vfold()</code>).</p></li>
+<li class="fragment"><p>Generating <strong>training and testing data</strong> with <code>initial_split()</code>, <code>training()</code>, <code>testing()</code></p></li>
+<li class="fragment"><p>Create <strong>recipe</strong> to determine predictor and outcome variables. Optionally add one or more <code>step_X()</code> commands. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
+<li class="fragment"><p>Create <strong>model design</strong>. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
+<li class="fragment"><p>Create <strong>workflow</strong> with <code>workflow()</code>, add_recipe()<code>and</code>add_model()<code>without</code>fit()`</p></li>
+<li class="fragment"><p>Create a <strong>hyper-parameter grid</strong> containing the hyper-parameter combinations to be validated</p></li>
+<li class="fragment"><p>Create <strong>cross validation datasets</strong> (aka <em>resamples</em>) containing the folds (use command <code>vfold()</code>)</p></li>
 <li class="fragment"><p><strong>Tune</strong> the machine learning model with <code>tune_grid()</code> and track specific metrics defined by <code>metric_set()</code>. <strong>Runs all hyper-parameter combinations for all folds.</strong></p></li>
 <li class="fragment"><p><strong>Extract the best hyper-parameter combination</strong> from the tuning results based on selected metrics (use <code>select_best()</code>)</p></li>
-<li class="fragment"><p><strong>Finalize the model</strong> by training it with the full set of training data with the best hyper-parameter combination (see <code>finalize_workflow() %&gt;% fit()</code>).</p></li>
-<li class="fragment"><p><strong>Assessing predictive quality</strong> of the final model by using the testing dataset to predict (see <code>augment() %&gt;% metrics()</code>).</p></li>
+<li class="fragment"><p><strong>Finalize the model</strong> by training it with the full set of training data with the best hyper-parameter combination (see <code>finalize_workflow() |&gt; fit()</code>).</p></li>
+<li class="fragment"><p><strong>Assessing predictive quality</strong> of the final model by using the testing dataset to predict (see <code>augment() |&gt; metrics()</code>).</p></li>
 </ol>
 </section>
 <section id="run-all-10-steps-to-tune-the-real-estate-model" class="slide level2">

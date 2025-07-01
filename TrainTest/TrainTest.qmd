@@ -45,8 +45,10 @@ In what follows we use the Kings County Real Estate dataset.
 #| echo: true
 library(tidymodels); library(rio); library(janitor)
 
-DataHousing = import("https://ai.lange-analytics.com/data/HousingData.csv")%>%
-  clean_names("upper_camel") %>%
+DataHousing =
+  import("../Data/DataHousingBig.rds") |>  
+  #import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
+  clean_names("upper_camel")  |> 
   select(Price, Sqft=SqftLiving)
 ```
 
@@ -56,10 +58,10 @@ We want to demonstrate *overfitting*. Therefore, we ceate conditions that **like
 #| echo: true
 set.seed(777)
 # initial_split(prop = 0.001, ...) randomly chooses 20 training observations
-Split001=DataHousing %>% 
-  initial_split(prop = 0.001, strata = Price, breaks = 5) 
-DataTrain=training(Split001)
-DataTest=testing(Split001)
+Split001=DataHousing |> 
+        initial_split(prop = 0.001, strata = Price, breaks = 5) 
+        DataTrain=training(Split001)
+        DataTest=testing(Split001)
 ```
 
 ## Data Visualization
@@ -81,31 +83,28 @@ print(DataTrain)
 
 ## Polynomial Regression
 
-Regular univariate prediction equation: 
-$$
+Regular univariate prediction equation: $$
 \widehat{Price}=\beta_1 Sqft+\beta_2
-$$ 
+$$
 
 . . .
 
 Polynomial univariate prediction equation (degree 5):
 
-```{=tex}
 \begin{eqnarray*}
 \widehat{Price}&=&\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 \\
   && +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
 \end{eqnarray*}
-```
+
 ## Polynomial Regression
 
 Polynomial univariate prediction equation (degree 5):
 
-```{=tex}
 \begin{eqnarray*}
 \widehat{Price}&=&\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3\\
   && +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
 \end{eqnarray*}
-```
+
 . . .
 
 We create $Sqft^2$, $Sqft^3$, $Sqft^4$, and $Sqft^5$ as new variables in the data and treat them as they were separate variables in a multivariate regression.
@@ -122,7 +121,7 @@ Consequently, we can use OLS to find the optimal $\beta s$.»
 
 ```{r}
 #| echo: true
-head(DataHousing %>% mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5))
+head(DataHousing |> mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5))
 ```
 
 ## Comparing Regular OLS and Polynominal Regression (degree=5) 🤓
@@ -138,24 +137,24 @@ See: [TrainTestScript.R Script100](https://econ.lange-analytics.com/RScripts/Tra
 ### Aproximation of the Training Data
 
 ```{r}
-ModelDesignLinRegr=linear_reg() %>% 
-  set_engine("lm") %>% 
+ModelDesignLinRegr=linear_reg() |> 
+  set_engine("lm") |> 
   set_mode("regression")
 
 RecipeHousesBenchmOLS=recipe(Price ~ Sqft, data=DataTrain)
 
-RecipeHousesPolynomOLS=recipe(Price ~ ., data=DataTrain) %>% 
+RecipeHousesPolynomOLS=recipe(Price ~ ., data=DataTrain) |> 
   step_mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
 
 ######## Fitted Workflows
-WFModelHousesBenchmOLS=workflow() %>% 
-  add_model(ModelDesignLinRegr) %>% 
-  add_recipe(RecipeHousesBenchmOLS) %>% 
+WFModelHousesBenchmOLS=workflow() |> 
+  add_model(ModelDesignLinRegr) |> 
+  add_recipe(RecipeHousesBenchmOLS) |> 
   fit(DataTrain)
 
-WFModelHousesPolynomOLS=workflow() %>% 
-  add_model(ModelDesignLinRegr) %>% 
-  add_recipe(RecipeHousesPolynomOLS) %>% 
+WFModelHousesPolynomOLS=workflow() |> 
+  add_model(ModelDesignLinRegr) |> 
+  add_recipe(RecipeHousesPolynomOLS) |> 
   fit(DataTrain)
 
 ####### Generating Predictions #######
@@ -168,13 +167,13 @@ DataTestWithPredPolynomOLS=augment(WFModelHousesPolynomOLS, DataTest)
 
 ########## Polynomial degree 10
 
-RecipeHousesPolynom10OLS=recipe(Price ~ ., data=DataTrain) %>% 
+RecipeHousesPolynom10OLS=recipe(Price ~ ., data=DataTrain) |> 
   step_poly(Sqft, degree = 10, options = list(raw = TRUE))
   
   
-WFModelHousesPolynom10OLS=workflow() %>% 
-  add_model(ModelDesignLinRegr)%>%            
-  add_recipe(RecipeHousesPolynom10OLS) %>% 
+WFModelHousesPolynom10OLS=workflow() |> 
+  add_model(ModelDesignLinRegr) |>            
+  add_recipe(RecipeHousesPolynom10OLS) |> 
   fit(DataTrain)
 
 DataTrainWithPredPolynom10OLS=augment(WFModelHousesPolynom10OLS, DataTrain)
@@ -271,6 +270,23 @@ For each hyper-parameter setting:
 
 We end up with four results for each hyper-parameter setting. We calculate the average of the four results as an result for that specific hyper parameter.
 
+# Mock-up CROSS VALIDATION {.smaller}
+
+What follows is a mock-up *Cross-Validation* for the *King County* real estate dataset.
+
+We try out three hyper-parameter values for the degree of the polynomial regression. 
+
+**degree 2:**
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3$$
+
+**degree 3:**
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4$$
+**degree 5:**
+
+$$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}$$
+
 # CROSS VALIDATION FOR POLYNOMIAL REGRESSION AND THE KING COUNTY REALESTATE DATASET
 
 ## MORE REALISTIC DATASPLIT: 80% TRAINING, 20% TESTING
@@ -280,7 +296,7 @@ We end up with four results for each hyper-parameter setting. We calculate the a
 #| code-fold: false
 set.seed(987)
 
-Split80=DataHousing %>% 
+Split80=DataHousing |> 
   initial_split(prop = 0.8, strata = Price, breaks = 5) 
 DataTrain=training(Split80)
 DataTest=testing(Split80) 
@@ -291,33 +307,64 @@ print(Split80)
 
 ## Crossvalidation --- The Idea Behind It
 
+![](Images/4Folds.png) 
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2)
+
+
 ![](Images/4Folds.png)
 
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2 / Fold 1)
+
+
+![](Images/4FoldsDegree2F1.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2  / Fold 2)
+
+
+![](Images/4FoldsDegree2F2.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2  / Fold 3)
+
+
+![](Images/4FoldsDegree2F3.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2  / Fold 4)
+
+
+![](Images/4FoldsDegree2F4.png)
+
+## Trying Hyper-Parameters for Degree (2, 3, 5) Using Crossvalidation (degree = 2  / All Folds) {.smaller}
+
+
+![](Images/4FoldsDegree2F4.png)
+
+$$MSE_{degree=1}= \frac{40100+40200+40050+40010}{4}$$
 
 ## 10 Steps to Create a Model, Tune it, and Predict {.smaller}
 
 The **10 general steps** are:
 
-1. Generating **training and testing data** with `initial_split()`, `training()`, `testing()`.
+1.  Generating **training and testing data** with `initial_split()`, `training()`, `testing()`
 
-2. Create **recipe** to determine predictor and outcome variables. Optionally add one or more `step_X()` commands.
+2.  Create **recipe** to determine predictor and outcome variables. Optionally add one or more `step_X()` commands. If needed, mark parameters to be tuned with `tune()` 
 
-3. Create  **model design** and mark parameters to be tuned (use `tune()`) 
+3.  Create **model design**. If needed, mark parameters to be tuned with `tune()`
 
-4. Create **workflow** by `add_recipe()` and `add_model()` without `fit()`
+4.  Create **workflow** with `workflow()`, add_recipe()` and `add_model()` without `fit()`
 
-5. Create a **hyper-parameter grid** containing the hyper-parameter combinations to be validated.
+5.  Create a **hyper-parameter grid** containing the hyper-parameter combinations to be validated
 
-6. Create **cross validation datasets** (aka *resamples*) containing the folds (use command `vfold()`).
+6.  Create **cross validation datasets** (aka *resamples*) containing the folds (use command `vfold()`)
 
-7. **Tune** the machine learning model with `tune_grid()` and track specific metrics defined by `metric_set()`. **Runs all hyper-parameter combinations for all folds.**
+7.  **Tune** the machine learning model with `tune_grid()` and track specific metrics defined by `metric_set()`. **Runs all hyper-parameter combinations for all folds.**
 
-8. **Extract the best hyper-parameter combination** from the tuning results based on selected metrics (use `select_best()`)
+8.  **Extract the best hyper-parameter combination** from the tuning results based on selected metrics (use `select_best()`)
 
+9.  **Finalize the model** by training it with the full set of training data with the best hyper-parameter combination (see `finalize_workflow() |> fit()`).
 
-9. **Finalize the model** by training it with the full set of training data with the best hyper-parameter combination (see `finalize_workflow() %>% fit()`).
-
-10.  **Assessing predictive quality** of the final model by using the testing dataset to predict (see `augment() %>% metrics()`).
+10. **Assessing predictive quality** of the final model by using the testing dataset to predict (see `augment() |> metrics()`).
 
 ## Run all 10 Steps to Tune the Real Estate Model 🤓
 
@@ -337,7 +384,7 @@ Click the link in the footer of this slide to start the exercise.
 See: [Exercise from AI Book](https://ai.lange-analytics.com/exc/?file=06-TrainTestExerc100.Rmd)
 :::
 
-## Research Project  🤓
+## Research Project 🤓
 
 Click the link in the footer of this slide to download a skeleton of the R script for the research project.
 
