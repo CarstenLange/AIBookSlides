@@ -45,11 +45,9 @@ In what follows we use the Kings County Real Estate dataset.
 #| echo: true
 library(tidymodels); library(rio); library(janitor)
 
-DataHousing =
-  import("../Data/DataHousingBig.rds") |>  
-  #import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
-  clean_names("upper_camel")  |> 
-  select(Price, Sqft=SqftLiving)
+DataHousing = import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
+              clean_names("upper_camel")  |> 
+              select(Price, Sqft=SqftLiving)
 ```
 
 We want to demonstrate *overfitting*. Therefore, we ceate conditions that **likely trigger overfitting**. Consequently, we work only with a very small training dataset (20 observations are 0.1% of total observations). All other observations become testing data:

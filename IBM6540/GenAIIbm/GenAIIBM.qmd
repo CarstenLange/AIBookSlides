@@ -9,9 +9,13 @@ format:
     incremental: false
 ---
 
-## Source
+## Source:
 
-The presentation is based on the Article: [How Large Language Models Work by Andreas Schoeffelbauer](https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f)
+The presentation is based on:
+
+-   [How Large Language Models Work by Andreas Schoeffelbauer](https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f)
+
+-   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br> **Strongly recommended**
 
 ## What Will You Learn/Review {.scrollable .smaller}
 
@@ -25,23 +29,15 @@ The presentation is based on the Article: [How Large Language Models Work by And
 
 -   Examples of gen AI
 
--   How post-prepossessing can avoid discrimination, derogative language, and racism
-
-## Loading the Libraries and the Data
-
-```{r}
-library(tidymodels)
-library(rio)
-library(janitor)
-
-
-```
+-   How post-prepossessing can avoid discrimination, derogatory language, and racism
 
 ## Large Language Models in Context
 
 ![Source: Medium: <https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f>](images/clipboard-1934318519.png)
 
-## Before we cover LLMs: Image Recognition (Cat, Dog, Bird)
+# Prelude: Simple Image Recognition with Neural Network {.smaller}
+
+## Before we cover LLMs: Image Recognition (Cat, Dog, Bird) and One-Hot Encoding
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
@@ -51,7 +47,7 @@ library(janitor)
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
-**Neural Network:** MLP with only two hidden layers (in reality: Convolutional NN)
+**Neural Network:** MLP with only two hidden layers (in reality: Convolutional Neural Network)
 
 **Inputs:** 150,528
 
@@ -69,63 +65,345 @@ library(janitor)
 
 GPT stands for **Generative Pre-trained Transformer**
 
-## Prep-Step: Tokenizing and Sub-Tokenizing
+# Large Language Models (Transformers)
 
-Each (sub)-word (e.g., 200,000 words in the English language) gets a number because computers can only process numbers. For example "cat" gets the number 2345. "dog" gets 6452.
+## Step 0a: Tokenization
 
-Instead of assigning four numbers to "dog", "dogs", "cat", and "cats" we create a sub-token "s". E.g., "cat"=2345, "dog"=6452, and "s"=99,323
+1.  Tokenization: The words (and subwords) of a language are simplified. Each (sub)word becomes a token. E.g.:
 
-\*\*Problem:\* Cats and dogs are similar. They are both animals, they both a small to medium size, they live in our house, they have personalities, etc. Unfortunately, the similarity cannot be seen from their numbers 2345 and 6452, respectively.
+    "An example: untrained horses eat apples, but apples do not eat untrained horses"
 
-## Step 1: Word Embedding to Provide Sentiment to the Words
+![](images/clipboard-3146099741.png){width="696"}
 
-![](images/clipboard-1219101407.png)
+For more examples like this, see: [https://platform.openai.com/tokenizer](https://platform.openai.com/tokenizer){target="_blank"}
 
-Similar words will have similar encoding vectors. "great" should be similar than "amazing". "The vector for "tomato" should be similar to the one for "apple". Similarity can be measured by Euclidean Distance or similar measures (LLMs often use the dot-product).
+## Step 0b: One-Hot Encoding {.columns}
 
-Use exaple with scrambled prompt:
+::: {.column width="80%"}
+### Procedure
+
+A vector with the length of the tokens for the language is created (e.g., for English, about 200,000 words/tokens)
+
+The value for all words/tokens is zero with the exception of the word/token of interest (One-Hot)
+:::
+
+::: {.column width="20%"}
+### Example:
+
+![](images/clipboard-1984520822.png)
+:::
+
+## Ridiculous Simple Example - untrained (Guess the Next Word) {auto-animate="true"}
+
+![](images/clipboard-2369666718.png)
+
+## Ridiculous Simple Example - untrained (Guess the Next Word) {auto-animate="true"}
+
+![](images/clipboard-2369666718.png){width="166" height="106"}
+
+## Ridiculous Simple Example - trained (Guess the Next Word) {auto-animate="true"}
+
+![](images/clipboard-2592421233.png)
+
+## Problems with the Simple Example {.columns .smaller}
+
+::: {.column width="80%"}
+### Problems and Solutions
+
+1.  On-Hot Vectors have **no semantics**. E.g., *Queen* and *King* should be encoded in a similar way, but with *One-Hot*, they are not. Idealy, the resulting vectors should be similar (possible measures: *Euclidean Distance* or *Dot Product*)<br> **Solution:** `Word Embedding`. Helps with semantic interpretation.
+2.  In contrast to *Recurrent Neural Networks*, *Transformers* read the whole prompt at once and therefore do not maintain order.<br> **Solution:** `Positional Encoding`
+3.  **Context is ignored.** <br>E.g.: <br> `The animal didn't cross the road because it is too tired`<br> or <br> `The animal didn't cross the road because it is too wide`<br> **Solution:** `Attention` (stores for each word which words from the prompt are important and which are not)
+:::
+
+::: {.column width="20%"}
+### Simple Model:
+
+![](images/clipboard-2592421233.png)
+:::
+
+## History
+
+**2003:** Bengio, Y., Neural Probabilistic Language Models (very basic)
+
+**2014:** Sutskever, I.: Recurrent Neural Networks - LSTM (mainly used for translation; slow and not easy to parallelize)
+
+**2014:** Bahdanu, D.: Still Recurrent Neural Networks but with Attention - LSTM (still slow and not easy to parallelize, but more powerful)
+
+**2014:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)
+
+[Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E]{style="font-size:70%"}
+
+## Step 1: Word Embedding to Provide Sentiment
+
+`King + Female - Male = ???`
+
+. . .
+
+`King + Female - Male = Queen`
+
+. . .
+
+<small>Similar words should have similar encoding vectors:<br><br> `great` should be similar to `amazing`. The input vector for `tomato` should be similar to the one for `apple`, and the input vectors for `queen` and `king` should also be similar.\
+Similarity can be measured by *Euclidean Distance* or similar measures (LLMs often use the *Dot-Product*).</small>
+
+[This and the explanation of the following steps is based on the *Super Data Science* course [GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt "GenAI Course from Super DataDataScience"){target="_blank"}]{style="font-size:42%"}
+
+## (Step 1): Hire a Linguist to do the Word Embedding
+
+The linguist performs *Word Embedding* into 512 categories of their choice.
+
+This method is prohibitively slow but bear with me.
+
+## (Step 1): Hire a Linguist - Possible Word Embedding {.smaller}
+
+Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `amazing`, `great`
+
+![](images/clipboard-1636635893.png)
+
+## Step 1: Use a Neural Network - Possible Word Embedding {.smaller}
+
+Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `amazing`, `great`
+
+![](images/clipboard-3233943967.png)
+
+## Step 1: Word Embedding with Bag of Words {.smaller}
+
+### (Window Size = 3 --- Amazing, Great, and Delisious are coded similary)
+
+![](images/clipboard-1212096732.png)
+
+## Step 1: Word Embedding Real World Example {.smaller}
+
+<https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz>
 
 ## Step 2: Finding the Correct Positioning for Words
 
-Recurrent neural networks, the predecessor of Transformers, processed the prompt one by one, which took a long time, given that prompts of 32,000 tokensa re common now.
+**Recurrent Neural Networks** (predecessor of *Transformers*), processed the prompt word by word and had a memory of previous processed words. Thus they **maintained the order of the words in the prompt**. Unfortunately, this took a long time (note, prompts of 32,000 tokens are common now).
 
-Transformers process all tokens simulatnously, tus losing the order.
+**Transformers** process all tokens simultaneously, thus **losing the order of the words in the prompt**.
 
-Step 02 attempt to restores the order of the prompts and stores it in a separate vector.
+**For more details:** Paleti, Nikhil Chowdary. “Positional Encoding Explained: A Deep Dive into Transformer PE.” The Deep Hub (blog), July 12, 2024. [https://medium.com/thedeephub/positional-encoding-explained-a-deep-dive-into-transformer-pe-65cfe8cfe10b](https://medium.com/thedeephub/positional-encoding-explained-a-deep-dive-into-transformer-pe-65cfe8cfe10b){target="_blank"}
+
+## Step 2: Generate Position-Aware Embedding {.smaller}
+
+Add a Position Vector (512 x 1) to each word embedding (512 x 1).
+
+The Position Vector reflects the word position in the prompt (prompt size = 32,000 in ChatGPT).
+
+![](images/clipboard-1514739384.png)
+
+## Step 2: Generate Position-Aware Embedding
+
+### Example Specifications
+
+**Prompt Size:** 0 to 300 words/tokens (32,000 in *ChatGPT*)
+
+**Position Vector Size:** 0 to 16 (512 in *ChatGPT*)
+
+## Step 2: Generate Position-Aware Embedding {.smaller .columns}
+
+::: {.column width="65%"}
+#### Example: Position Table with 1, 10, 100 Digits
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(kableExtra)
+TablePos=data.frame(WordPosition = 0:300)
+
+# Extract digits
+TablePos$Hundreds  <- (TablePos$WordPosition %% 1000) %/% 100
+TablePos$Tens   <- (TablePos$WordPosition %% 100) %/% 10
+TablePos$Ones    <- TablePos$WordPosition %% 10
+
+# View the first few rows
+kbl(TablePos)
+
+```
+:::
+
+::: {.column width="30%"}
+#### Problems
+
+-   For efficient trainig in Neural Networks numbers should be between 1 and -1
+
+-   For the *Position Vector* 17 (0 to 16) dimensions are needed (512 for *ChatGPT*). Here, the positional encoding  produces only 3 dimensions.
+
+#### Note:
+
+The three digits (dimensions) have repeating cycles with different frequencies. This is how we encode numbers.
+:::
+
+::: {.column width="5%"}
+:::
+
+## Step 2: Generate Position-Aware Embedding
+
+### Frequency of Digits
+
+```{r}
+#| echo: false
+Plot=ggplot(aes(x=WordPosition, y=Ones), size=9, data=filter(TablePos, WordPosition<300))+
+  geom_line(aes(x=WordPosition, y=Ones), color="blue", size=0.7)+
+  geom_line(aes(x=WordPosition, y=Tens), color="red", size=1.2)+
+  geom_line(aes(x=WordPosition, y=Hundreds), color="magenta", size=1.8)+
+  scale_x_continuous(breaks = seq(0,300,10))+
+  scale_y_continuous(breaks = seq(0,10,1))+
+  labs(title = "Digits One (blue), Ten (red), and Hundred (magenta)",
+       x = "Word Position",
+       y = "Value") 
+Plot
+
+```
+
+## Step 2: Generate Position-Aware Embedding
+
+### Sinusoidal Positional Encoding in Transformers - Example
+
+$$
+PE_{(pos, i)} = 
+\begin{cases}
+\sin\left( \frac{Pos}{10000^{i/\text{Dim}}} \right) & \text{if } i \text{ is even} \\
+\cos\left( \frac{Pos}{10000^{(i-1)/\text{Dim}}} \right) & \text{if } i \text{ is odd}
+\end{cases}
+$$ $Pos :=$ The position of the word/token in the prompt. Numbered from $0$ to $300$ (32,000 in *ChatGPT*)
+
+$i :=$ The Row in the *Position Vector* numbered from $0$ to $16$ (512 in *ChatGPT*)
+
+## Step 2: Generate Position-Aware Embedding {.smaller}
+
+### Sinusoidal Positional Encoding in Transformers - Example
+
+```{r}
+#| echo: false
+# Set parameters
+positions <- 301
+d_model <- 17
+
+# Initialize a matrix for positional encodings
+PE <- matrix(0, nrow = positions, ncol = d_model)
+
+# Compute positional encodings
+for (pos in c(0:(positions-1))) {
+  for (i in c(0:(d_model-1))) {
+    
+    if (i %% 2 == 0) {
+      angle_rate <- pos / (10000 ^ (i / d_model))
+      PE[pos+1,i+1] <- sin(angle_rate)
+    } else {
+      angle_rate <- pos / (10000 ^ ((i-1) / d_model))
+      PE[pos+1,i+1] <- cos(angle_rate)
+    }
+  }
+}
+
+# Create a data frame with positions and PE values
+PE_df <- data.frame(position = c(0:(positions-1)), PE)
+ColTitles= c("WordPosition", paste0("X", 0:(d_model-1)))
+colnames(PE_df)=ColTitles
+# View first few rows
+#kbl(PE_df)
+
+```
+
+```{r}
+#| echo: false
+library(knitr)
+
+kable(PE_df, format = "html") %>%
+  kable_styling(full_width = TRUE) %>%
+  scroll_box(width = "100%", height = "500px", box_css = "overflow-x: auto;")
+
+```
+
+## Step 2: Generate Position-Aware Embedding
+
+### Frequency of Digits
+
+```{r}
+#| echo: false
+Plot=ggplot(aes(x=WordPosition, y=X2), size=9, data=PE_df)+
+  geom_line(aes(x=WordPosition, y=X2), color="blue", size=0.7)+
+  geom_line(aes(x=WordPosition, y=X5), color="red", size=1.2)+
+  geom_line(aes(x=WordPosition, y=X8), color="magenta", size=1.8)+
+  geom_line(aes(x=WordPosition, y=X16), color="pink", size=1.8)+
+  scale_x_continuous(breaks = seq(0,300,10))+
+  scale_y_continuous(breaks = seq(-1,1,0.2))+
+  labs(title = "Digits X2 (blue), X5 (red), X8 (magenta), and X16 (pink)",
+       x = "Word Position",
+       y = "Value") +
+  geom_vline(xintercept = 100, size=0.8) +
+  annotate("text", x = 100, y = max(0.9), label = "Pos=100", 
+           angle = 90, vjust = -0.5, color = "black")
+Plot
+
+```
 
 ## Step 3: Adding Context
 
-**Example 1:** The dog did not cross the street because it was to tired.
+**Example 1:**<br>The **animal** didn’t cross the road because **it** was too **tired**.
 
-**Example 2:** The dog did not cross the street because it was to wide.
+**Example 2:**<br>The animal didn’t  cross the **road** because **it** was too **wide**.
 
-Step 3 uses a vector for each word, identifying the word(s) in commonly goes with, then finds if this word is in the sentence, and then uses a vector to point to it. Simplified, in example 1 the word "it" points to "tired". In example 2 the word "it" points to "wide". 
+Step 3 identifies for each word in the prompt other words in the prompt that are relevant (**Context**)
 
+Simplified, in **Example 1** the word **it** points to **tired**. In **Example 2** the word **it** points to **wide**.
 
+## Step 3: Adding Context {.smaller}
 
-## Step 4 and 5: Generate Nonlinearity and Predict the Next Word {.smaller}
+Using `Position Aware` `Vector X` and a *Neural Net* to create new vectors `q` (what the word searches for), `k-Vector` (what the word has to offer),`v-Vector` (content of Vector X slightly modified).
 
-![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-3769778131.png)
+![](images/clipboard-2021075770.png)
 
-Interesting fact: Not only the next word for "the" is predicted but also the next words for all other words in the sentence. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word's following word), the GPT can learn the next word for the complete Context Window. It can learn 32,000 words in one run and the process can easily parallelized!!!
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"})</small>
 
-## Generative Pre-Trained Transformer (e.g., ChatGPT)
+## Step 3: Adding Context {.smaller}
 
-Hurrah, our neural network can talk, but it is still a babbling machine.
+Comparing a words `q-Vector` (what it wants) with all other words `k-Vectors`, including its own, using the **Dot Product**. The results are processed via *SoftMax* for all words and are written in an *importance vector* (see the yello framed vector). It shows the importance of each other word in the prompt for the analyzed word (`It`).
 
-![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-2130675056.png)
+![](images/clipboard-3133032979.png)
 
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"})</small>
 
+## Step 3: Adding Context {.smaller}
 
-## Alignment and Reinforcement Learning
+The final Position and Context Aware `Vector A` for the word of interest (`it`) is created as a weighted sum from all `v-Vectors` in the prompt.
 
-![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-969541608.png)
+The procedure described above is applied to all words in the prompt.
 
-## Truthfulness
+![](images/clipboard-3133032979.png)
 
-![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-4292482624.png)
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"})</small>
 
-## Prompt Engineering (Example Search Engine)
+## Step 4 and 5: Multi Head Processing and Residual Connection {.smaller}
+
+**Multi Head Processing:** Use several parts (`Heads`) to add more **Attention**
+
+**Residual Connection:** Add information from previous step (again) to the system.
+
+## Step 6: Training {.smaller}
+
+All words (position and context aware vectors) - `A-Vectors` - from the prompt are simultaneously moved through a non-linear model, and the next word for each word in the prompt is predicted.
+
+![](images/clipboard-480391752.png)asdf
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=130](https://online.fliphtml5.com/grdgl/qhfw/#p=130){target="_blank"})</small>
+
+## Parallelization
+
+Most tasks such as *Content Awareness* and *Position Awareness* are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of **Parallelization**
+
+Not only the next word of a prompt is predicted but also the next words for all other words in the prompts. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word's following word), the GPT can learn the next word for the complete *Context Window*. **A Transformer can learn 32,000 words in one run**.
+
+## Where to Larn More About Transformers
+
+**GenAI & LLMs A-Z (Advanced Technical Course)** 
+<br>
+A Super Data Science course. The course is not free but a free trial of Super DataScience is available.
+
+[https://community.superdatascience.com/c/llm-gpt](https://community.superdatascience.com/c/llm-gpt){target="blank_"}
+
+## RAGs - Prompt Engineering in Combination with Search Engine
 
 ![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1202208612.png)
 
@@ -166,254 +444,6 @@ $prompt = "
 ```         
   ";
 ```
-
-## Prompt Engineering (Example: AI Book Marketing)
-
-<https://ai.lange-analytics.com>
-
-## Prompt Engineering (Example: AI Book Marketing) {.smaller}
-
-Proceed step by step:
-
-First, answer the following question: \<{question}\>?
-
-Second step: report in which section of Machine Learning with R. Tutorials and Case Studies by Carsten Lange is this topic covered?
-
-\*\*\*\*\*\*\*\*\*\*\*\*\*\*
-
-To find the section in the book that coveres the question use the following information from the book Machine Learning with R. Tutorials and Case Studies by Carsten Lange:
-
-Carsten Lange is an economics professor at Cal Poly Pomona with a keen interest in making data science and machine learning more accessible. He has authored multiple refereed articles and four books, including his 2004 book on applying neural networks for economics. Carsten is passionate about teaching machine learning and artificial intelligence with a focus on practical applications and hands-on learning.
-
-Max Lange, tirelessly wrote Python programs for the book Machine Learning with R and designed the website. These Python programs automated many tasks of the interactive and the digital resource sections, which made it possible to integrate these sections seamlessly into the book.
-
-Chapter 1 Section 1.0:
-
-With rapid advancements in recent years, machine learning and artificial intelligence (AI) have become increasingly relevant and have already started transforming many businesses. Knowledge about machine learning and AI is critical not just for STEM (science, technology, engineering, and mathematics) majors but also in many other fields, including business, economics, and other social science majors.
-
-To better prepare students for a future with AI, Machine Learning with R by Carsten Lange introduces and applies fundamental machine learning principles. The goal of Machine Learning with R is to combine theoretical concepts with hands-on projects to equip the students with the skills to solve real-world problems. Recognizing that there is a need for a machine learning textbook that implements a hands-on approach, where students can interactively work step-by-step, and that introduces the quantitative concepts in a less mathematical way gave the idea to write the book Machine Learning with R.
-
-This book introduces machine learning algorithms and explains the underlying concepts without using higher mathematics concepts like matrix algebra or calculus. Each chapter provides examples, case studies, and interactive tutorials. The examples and hands-on tutorials use the statistical programming language R, which is widely used for statistical analysis and data science. R has a relatively simple syntax. R is easy to learn easy for beginners, making R a good choice for teaching machine learning. No prior programming skills are required to work with the book Machine Learning with R. Tutorials and Case Studies by Carsten Lange. A designated R chapter introduces the R skills needed for the course. In addition, each chapter offers one or more interactive R tutorials. Students can work with real-world data and use the interactive environment to learn and experiment with R code in a web browser.
-
-In Chapter 2: Introduction to Machine Learning, you will learn:
-
-\- Section 2.2 shows the difference between Machine Learning vs. Artificial Intelligence vs.Deep Learning.
-
-\- Section 2.3 categorizes machine learning tasks into regression, classification, and clustering algorithms.
-
-\- Section 2.4 covers using important terminology correctly.
-
-In Chapter 3: R and RStudio, you will learn:
-
-\- Section 3.2 covers installing R and RStudio.
-
-\- Section 3.3 explains the standard window layout in RStudio.
-
-\- Section 3.3 shows setting up RStudio.
-
-\- Section 3.3 shows creating a project in R.
-
-\- Section 3.3 explains the major functionalities of RStudio.
-
-\- Section 3.4 explains extending R functionality with R packages.
-
-\- Section 3.5 shows how R stores different data types.
-
-\- Section 3.6 suggests a systematic to name R variables and objects.
-
-\- Section 3.7 shows how R displays very big and very small numerical values.
-
-\- Section 3.8 shows the structure of R commands.
-
-\- Section 3.9 introduces the tidymodels package.
-
-\- Section 3.9 explains data processing using the tidyverse package.
-
-\- Section 3.9 explains machine learning analysis using the tidyverse package.
-
-\- Section 3.10 uses a small machine learning project to analyze the Titanic disaster.
-
-\- Section 3.11 provides short, interactive exercises to learn R.
-
-In Chapter 4: k-Nearest Neighbors, you will learn:
-
-\- Section 4.3 covers splitting your observations into training and testing data and why this is essential The details will be covered in Chapter 6.
-
-\- Section 4.5 covers the underlying idea of k-Nearest Neighbors.
-
-\- Section covers how similarity can be measured with Euclidean Distance.
-
-\- Section 4.6 covers scaling predictor variables and the reason scaling is essential for some machine learning models.
-
-\- Section 4.7.1 covers the tidymodels package to work with machine learning models.
-
-\- Section 4.7.1 covers defining a recipe to pre-process data with the tidymodels package.
-
-\- Section 4.7.1 covers defining a model design with the tidymodels package.
-
-\- Section 4.7.1 covers creating a machine learning workflow with the tidymodels package.
-
-\- Section 4.8 covers confusion matrix.
-
--   Section 4.8 covers metrics derived from a confusion matrix to evaluate prediction quality.
-
-\- Section 4.8 covers the reason to be careful when interpreting accuracy when working with unbalanced observations.
-
-\- Section 4.10 covers the process of a machine learning model processing images.
-
-\- Section 4.10 covers how OCR works﻿ \## What is a recipe and where is it covered in Machine Learning with R?
-
-In Chapter 5: Linear Regression - Key Machine Learning Concepts, you will learn:
-
-\- Section 5.3 covers the basic concepts of linear regression.
-
-\- Section 5.3 shows how machine learning model calibrates and optimizes parameters to improve predictive quality.
-
-\- Section 5.4.2 shows calculating optimal regression parameters using OLS (Ordinary Least Square Regression).
-
-\- Section 5.4.2 distinguishes between unfitted and fitted machine learning models.
-
-\- Section 5.4.3.1 uses a trial-and-error algorithm called Grid Search to find optimal OLS (Ordinary Least Square) Regression regression parameters.
-
-\- Section 5.4.3.2 uses a trial-and-error Optimizer algorithm to find optimal OLS (Ordinary Least Square) Regression parameters.
-
-\- Section 5.4.2 uses the R tidymodels package to process data with recipes.
-
-\- Section 5.4.2 uses the R tidymodels package to create a model design for OLS (Ordinary Least Square) Regression.
-
-\- Section 5.4.2 uses the R tidymodels package to add a recipe and a model design to a workflow and to optimize/calibrate the parameters.
-
-\- Section 5.5 shows how to transform categorical data into numerical dummy variables or one-hot encoded variables. Examples include: Titanic passengers (died/survived) or the waterfront location of a house.
-
-\- Section 5.5 distinguishes between dummy encoding and one-hot encoding.
-
-In Chapter 6: Polynomial Regression - Overfitting and Tuning Explained, you will learn:
-
-\- Section 6.3 identifies under which circumstances overfitting occurs (see ).
-
-\- Section 6.4 uses a Polynomial Regression Model to predict house prices.
-
-\- Section 6.4 uses a Polynomial Regression Model to explain overfitting in detail.
-
-\- Section 6.5 shows how overfitting can compromise the prediction quality for new data.
-
-\- Section 6.5 explains hyper-parameter tuning to avoid overfitting.
-
-\- Section 6.5 provides a 10-Step Tuning Template for R to tune hyper-parameters for various types of machine learning models.
-
-\- Section 6.7 show how to use the 10-Step Tuning Template for R to work with a real-world dataset to tune a k-Nearest Neighbors model.
-
-In Chapter 7: Ridge, Lasso, and Elastic Net - Regularization Explained, you will learn:
-
-\- Section 7.4 covers the basic idea behind regularization.
-
-\- Section 7.4 shows the difference between the penalty terms for Lasso regression models and Ridge regression models.
-
-\- Section 7.4.1 explains how the target function for Lasso regularized regression models differs from the MSE function of an unregularized model.
-
-\- Section 7.4.1 shows how to create a workflow for a Lasso regularized regression using the R tidymodels framework.
-
-\- Section 7.4.1 covers how Lasso regularized parameter estimates are affected by the value of the Lasso penalty hyper-parameter.
-
-\- Section 7.4.2 explains how the target function for Ridge regularized regression model differs from the MSE function of an unregularized model.
-
-\- Section 7.4.2 shows how to create a workflow for a Ridge regularized model using the R tidymodels framework.
-
-\- Section 7.4.2 covers how Ridge regularized parameter estimates are affected by the value of the Ridge penalty hyper-parameter.
-
-\- Section 7.5.3 explains how Elastic-Net regularization combines elements of both Lasso and Ridge to create a more flexible regularization function.
-
-\- Section 7.5.3 shows how to create a workflow for a Elastic-Net regularized model using the R tidymodels framework.
-
-\- Section 7.5.4 covers how to tune Elastic-Net hyper-parameters and how to measure the final predictive performance.
-
-In Chapter 8: Logistic Regression - Handling Imbalanced Data, you will learn:
-
-\- Section 8.3 explains the basic ideas behind Logistic Regression.
-
-\- Section 8.3 shows why Logistic Regression is better suited than OLS for predicting categorical variables.
-
-\- Section 8.3 covers how to distinguish between probabilities and odds.
-
-\- Section 8.3 explains how to convert probabilities to odds.
-
-\- Section 8.3 shows how you can transform the Logistic Regression equation into a form that is similar to the linear OLS regression equation.
-
-\- Section 8.3 shows how you can use the transformed equation to interpret a Logistic Regression’s model-parameters.
-
-\- Section 8.4 covers how to create a tidymodels workflow for Logistic Regression to analyze churn at the TELCO telecommunications company.
-
-\- Section 8.4 covers how to identify problems related to imbalanced data — unequal distribution of the binary classification variable.
-
-\- Section 8.5 shows how to troubleshoot an imbalanced Logistic Regression, when predictive quality varies dramatically between sensitivity and specificity49.
-
-\- Section 8.5 shows how to use downsampling and upsampling to adjust an imbalanced dataset.
-
-In Chapter 9: Deep Learning - MLP Neural Networks Explained, you will learn:
-
-\- Section 9.4.1 shows how to work with a graphical representation of a Neural Network.
-
-\- Section 9.4.2 covers how to transform the graphical representation into a Neural Network prediction function.
-
-\- Section 9.4.4 explains how to use an Optimizer in a Neural Network to change the parameters of a network to step-wise improve the approximation quality
-
-\- Section 9.4.4 explains the basic idea of Steepest Gradient Decent Algorithm or Back Propagation Algorithm.
-
-\- Section 9.5 explains why Neural Networks have outstanding approximation qualities that allow them to approximate any continuous function with any degree of accuracy.
-
-\- Section 9.5 covers how and why the outstanding approximation quality of Neural Networks makes them prone to overfitting.
-
-\- Section 9.5 shows how to work with the R nnet package to design and execute and run a Neural Network.
-
-\- Section 9.7 shows how to work with Pytorch from the R brulee package to design and execute and run a Neural Network.
-
-\- Section 9.6 covers why a Neural Network with ReLU (Rectified Linear Unit) activation functions has the same outstanding approximation properties as a Neural Network with classic Sigmoid activation functions.
-
-\- Section 9.6 explains why ReLU (Rectified Linear Unit) functions mitigate the possible inability of the Optimizer to change the values for the parameters of the Neural Net (Vanishing Gradient problem).
-
-\- Section 9.7 shows how to use PyTorch in an interactive project to estimate the prices of more than 50,000 diamonds based on four common predictors used in the appraisal industry (Carat, Clarity, Cut, and Color).
-
-In Chapter 10: Tree-Based Models - Decision Trees, Random Forest, Boosting Trees (XGBoost) - you will learn:
-
-\- Section 10.3.1 shows how you can guide an observation through a Decision Tree.
-
-\- Section 10.3.1 covers how to use decision rules when observations are guided through a Decision Tree.
-
-\- Section 10.3.1 explains how you can use a training dataset to train a Decision Tree.
-
-\- Section 10.3.1 shows how to use a trained Decision Tree to make predictions for new observations.
-
-\- Section 10.3.1 explains how to interpret the structure of a trained Decision Tree to gain insight into the underlying causality implications.
-
-\- Section 10.3.2 shows how sensitive the structure of a Decision Tree can react to small changes in the data or the hyper-parameters.
-
-\- Section 10.4.1 explains how several Decision Trees can be combined into an ensemble model like a Random Forest.
-
-\- Section 10.4.1 shows how you can use the Subspace Method and Bagging to create slightly different Decision Trees for a Random Forest.
-
-\- Section 10.4.1 shows how you can use Bootstrapping to create multiple Bootstrap samples and Out of Bag samples from one training dataset.
-
-\- Section 10.4.2 explains how to use a Random Forest model to predict vaccination behavior for the continental U.S. counties.
-
-\- Section 10.5 shows how you can use Gradient Boosting to combine Decison Trees into an ensemble where each Decision Tree adjusts for the errors of the previous Decision Tree.
-
-\- Section 10.5.2 shows how you use an interactive project to predict vaccination behavior with the \*\*XGBoost algorithm for the continental U.S. counties.
-
-In Chapter 11: Interpretation of Machine Learning Results, you will learn:
-
-\- Section 11.3 explains how machine learning interpretation methodologies can be categorized into model-agnostic and model-specific methods.
-
-\- Section 11.3 covers how machine learning interpretation methodologies can be categorized into local methods (i.e., related to a specific observation) and global methods (i.e., related to the complete model).
-
-\- Section 11.5.1 shows how you can generate and interpret Ceteris Paribus Plots to analyze the impact of changing predictor variables related to a specific observation.
-
-\- Section 11.5.2 shows how you can generate and interpret Partial Dependence Plots to analyze the impact of changing predictor variables for a machine learning model.
-
-\- Section 11.6 shows how you can use Variable Importance Plots (VIP) to identify predictor variables that are more or less important for the prediction. The less important variables are potential candidates to be dropped from the analysis.
-
-\- Section 11.7 shows how you can use SHAP values to quantify the contribution of each predictor variable to the prediction of a specific observation of interest.
-
-\- Section 11.8 shows how you can use the Local Interpretable Model-agnostic Explanations (LIME) methodology to approximate a non-linear machine learning model with a linear OLS model. The latter can then be used to interpret the related impacts of the predictor variables.
 
 ## Post Processing: Bias, Discrimination, Derogatory Language
 
