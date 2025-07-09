@@ -35,7 +35,7 @@ In the early days of artificial neural networks, data scientists tried to mimic 
 # Types of Neural Networks
 
 -   **Multi-Layer Perceptrons (MLP)** neural networks (covered here)
--   [Convolutional Neural Networks (CNN)](https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html)
+-   [Convolutional Neural Networks (CNN)](https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html){target="blank_"}
 -   Recurrent Neural Networks (e.g. Long Short Term Memory recurrent networks)
 -   Generative Adversarial Networks
 -   AutoEncoders
@@ -63,7 +63,7 @@ str(diamonds)
 ```
 
 ::: footer
-See: [Source: `diamonds` dataset:](https://ggplot2.tidyverse.org/reference/diamonds.html)
+See: [Source: `diamonds` dataset:](https://ggplot2.tidyverse.org/reference/diamonds.html){target="blank_"}
 :::
 
 # Domain Knowledge: The Four C s to Appraise a Diamond
@@ -77,7 +77,7 @@ See: [Source: `diamonds` dataset:](https://ggplot2.tidyverse.org/reference/diamo
 4.  **Carat:** Is the unit of measurement used to describe the weight of a diamond. It is often the most visually apparent factor when comparing diamonds.
 
 ::: footer
-See: [Source: Brilliant Earth](https://www.brilliantearth.com/diamond/buying-guide/?gclid=CjwKCAjw79iaBhAJEiwAPYwoCCtVM1dC2gPVa-iqaLjcBzcuLiRvBOuKj_qa3eMoKoyMxX-W4MXQPRoCGp0QAvD_BwE)
+See: [Source: Brilliant Earth](https://www.brilliantearth.com/diamond/buying-guide/?gclid=CjwKCAjw79iaBhAJEiwAPYwoCCtVM1dC2gPVa-iqaLjcBzcuLiRvBOuKj_qa3eMoKoyMxX-W4MXQPRoCGp0QAvD_BwE){target="blank_"}
 :::
 
 # Data Engeneering
@@ -411,7 +411,7 @@ To run the R-script with an example to see how well a Neural Network can approxi
 Click the link in the footer of this slide.
 
 ::: footer
-See: [Neural Network Appoximation R Script](https://aibookslides.netlify.app/scripts/DeepLearnScript1.R)
+See: [Neural Network Appoximation R Script](https://aibookslides.netlify.app/scripts/DeepLearnScript1.R){target="blank_"}
 :::
 
 # Theorem: Approximation Properties of Neural Networks
@@ -420,7 +420,7 @@ See: [Neural Network Appoximation R Script](https://aibookslides.netlify.app/scr
 
 I.e.: Single hidden layer feedforward networks can approximate any measurable function arbitrarily well.
 
-[Kurt Hornik, Maxwell Stinchcombe and Halber White (1989), p. 361](https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf)
+[Kurt Hornik, Maxwell Stinchcombe and Halber White (1989), p. 361](https://www.cs.cmu.edu/~epxing/Class/10715/reading/Kornick_et_al.pdf){target="blank_"}
 
 # Intuition: Approximation Properties of Neural Networks
 
@@ -443,7 +443,7 @@ I.e.: Single hidden layer feedforward networks can approximate any measurable fu
 The app linked in the footer of this slide provides intuition for the Hornik, Stinchcombe, White proof.
 
 ::: footer
-See: [Neural Network Appoximation App](https://econ.lange-analytics.com/calcat/horstiwhi)
+See: [Neural Network Appoximation App](https://econ.lange-analytics.com/calcat/horstiwhi){target="blank_"}
 :::
 
 # Real World Example to Estimate Diamond Prices
@@ -482,7 +482,7 @@ Two *ReLU* functions can be combined into one step function similar to *sigmoid*
 See the link in the footer for a demo.
 
 ::: footer
-See: [Combine two ReLu functions into one step function](https://econ.lange-analytics.com/calcat/relu)
+See: [Combine two ReLu functions into one step function](https://econ.lange-analytics.com/calcat/relu){target="blank_"}
 :::
 
 # Logistic Activation Function: Problem of Vanishing Gradient
@@ -510,4 +510,4 @@ geom_function(fun = FctReLu, color="blue", size=1.2)+
 
 # Now It's Time to Run the Real-World Analysis
 
-[Neural Network Real World Application](https://aibookslides.netlify.app/scripts/deeplearnscript2.R) 
+[Neural Network Real World Application](https://aibookslides.netlify.app/scripts/deeplearnscript2.R){target="blank_"} 
