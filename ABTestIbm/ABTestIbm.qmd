@@ -8,7 +8,7 @@ format:
     echo: true
 ---
 
-## What Will You Learn 
+## What Will You Learn  
 
 - How the logic of Treatment and Control leads to *A/B Testing*
 
