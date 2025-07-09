@@ -139,22 +139,18 @@
 </div>
 
 </section>
-<section id="source" class="slide level2">
-<h2>Source:</h2>
-<p>The presentation is based on:</p>
-<ul>
-<li><p><a href="https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f">How Large Language Models Work by Andreas Schoeffelbauer</a></p></li>
-<li><p><a href="https://community.superdatascience.com/c/llm-gpt">Super Data Science Course: GenAI &amp; LLMs A-Z</a><br> <strong>Strongly recommended</strong></p></li>
-</ul>
-</section>
 <section id="what-will-you-learnreview" class="slide level2 scrollable smaller">
 <h2>What Will You Learn/Review</h2>
 <ul>
-<li><p>How a Large Language Model Works</p></li>
-<li><p>How words can be embedded as vectors to code similar meanings.</p></li>
-<li><p>How a LLM guesses the next word?</p></li>
-<li><p>How fine tuning allos LLM to become “intelligent”</p></li>
-<li><p>Examples of gen AI</p></li>
+<li><p>Why <em>Deep Learning</em> models have so many parameters</p></li>
+<li><p>Understanding the Role of <em>Large Language Models</em> (<em>LLM</em>) in the <em>AI</em> Landscape</p></li>
+<li><p><em>Tokenization</em> of the English language</p></li>
+<li><p><em>One-Hot Encoding</em> of the English language</p></li>
+<li><p>How an <em>LLM</em> guesses the next word?</p></li>
+<li><p>How words can be embedded as vectors to code similar meanings (<em>Input Embedding</em>)<br> <code>Queen</code>, <code>King</code>, <code>Male</code>, <code>Female</code> but <code>Sand</code></p></li>
+<li><p>How the words position in a prompt can be embedded as vectors (<em>Positional Encoding</em>)<br> <code>Dog bites child</code> but <code>Child bites dog</code></p></li>
+<li><p>How context of words in a prompt can be encoded (<em>Attention Mechanism</em>)<br> “The cat sits on the <code>mat</code> because <code>it</code> is soft”</p></li>
+<li><p>How to create applications of <em>genAI</em></p></li>
 <li><p>How post-prepossessing can avoid discrimination, derogatory language, and racism</p></li>
 </ul>
 </section>
@@ -184,9 +180,8 @@
 <section id="before-we-cover-llms-first-image-recognition-cat-dog-bird-1" class="slide level2">
 <h2>Before we cover LLMs: First Image Recognition (Cat, Dog, Bird)</h2>
 <h3 id="size-224-x-224-and-3-colors-150528-pixels-2">Size 224 x 224 and 3 colors = 150,528 Pixels</h3>
-<p><img data-src="images/clipboard-1198050597.png" alt="Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f"> # Large Language Models</p>
-<p>GPT stands for <strong>Generative Pre-trained Transformer</strong></p>
-</section></section>
+
+<img data-src="images/clipboard-1198050597.png" class="r-stretch quarto-figure-center"><p class="caption">Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f</p></section></section>
 <section>
 <section id="large-language-models-transformers" class="title-slide slide level1 center">
 <h1>Large Language Models (Transformers)</h1>
@@ -236,12 +231,20 @@
 <h3 id="simple-model">Simple Model:</h3>
 <p><img data-src="images/clipboard-2592421233.png"></p>
 </div></section>
+<section id="source" class="slide level2">
+<h2>Source</h2>
+<p>The following is based on:</p>
+<ul>
+<li><a href="https://community.superdatascience.com/c/llm-gpt">Super Data Science Course: GenAI &amp; LLMs A-Z</a><br></li>
+</ul>
+<p>The course is not free, but a free trial exist. The 4 hour course is <strong>strongly recommended</strong> to dive deeper.</p>
+</section>
 <section id="history" class="slide level2">
 <h2>History</h2>
 <p><strong>2003:</strong> Bengio, Y., Neural Probabilistic Language Models (very basic)</p>
 <p><strong>2014:</strong> Sutskever, I.: Recurrent Neural Networks - LSTM (mainly used for translation; slow and not easy to parallelize)</p>
 <p><strong>2014:</strong> Bahdanu, D.: Still Recurrent Neural Networks but with Attention - LSTM (still slow and not easy to parallelize, but more powerful)</p>
-<p><strong>2014:</strong> Google Team, “Attention is All you Need”, Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)</p>
+<p><strong>2017:</strong> Google Team, “Attention is All you Need”, Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)</p>
 <p><span style="font-size:70%">Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E</span></p>
 </section>
 <section id="step-1-word-embedding-to-provide-sentiment" class="slide level2">
@@ -2150,7 +2153,8 @@ PE_{(pos, i)} =
 \cos\left( \frac{Pos}{10000^{(i-1)/\text{Dim}}} \right) &amp; \text{if } i \text{ is odd}
 \end{cases}
 \]</span> <span class="math inline">\(Pos :=\)</span> The position of the word/token in the prompt. Numbered from <span class="math inline">\(0\)</span> to <span class="math inline">\(300\)</span> (32,000 in <em>ChatGPT</em>)</p>
-<p><span class="math inline">\(i :=\)</span> The Row in the <em>Position Vector</em> numbered from <span class="math inline">\(0\)</span> to <span class="math inline">\(16\)</span> (512 in <em>ChatGPT</em>)</p>
+<p><span class="math inline">\(i :=\)</span> The row (dimension) in the <em>Position Vector</em> numbered from <span class="math inline">\(0\)</span> to <span class="math inline">\(16\)</span> (512 in <em>ChatGPT</em>)</p>
+<p><span class="math inline">\(Dim :=\)</span> The number of dimension (<em>length</em>) in the <em>Position Vector</em>. Here: <span class="math inline">\(17\)</span> (<span class="math inline">\(512\)</span> in <em>ChatGPT</em>)</p>
 </section>
 <section id="step-2-generate-position-aware-embedding-5" class="slide level2 smaller">
 <h2>Step 2: Generate Position-Aware Embedding</h2>
@@ -8218,7 +8222,9 @@ PE_{(pos, i)} =
 <p><strong>Example 1:</strong><br>The <strong>animal</strong> didn’t cross the road because <strong>it</strong> was too <strong>tired</strong>.</p>
 <p><strong>Example 2:</strong><br>The animal didn’t cross the <strong>road</strong> because <strong>it</strong> was too <strong>wide</strong>.</p>
 <p>Step 3 identifies for each word in the prompt other words in the prompt that are relevant (<strong>Context</strong>)</p>
-<p>Simplified, in <strong>Example 1</strong> the word <strong>it</strong> points to <strong>tired</strong>. In <strong>Example 2</strong> the word <strong>it</strong> points to <strong>wide</strong>.</p>
+<p>Simplified:</p>
+<p><strong>In Example 1</strong> the word <strong>it</strong> points to <strong>animal</strong>.</p>
+<p><strong>In Example 2</strong> the word <strong>it</strong> points to <strong>road</strong>.</p>
 </section>
 <section id="step-3-adding-context-1" class="slide level2 smaller">
 <h2>Step 3: Adding Context</h2>
@@ -8228,7 +8234,7 @@ PE_{(pos, i)} =
 </section>
 <section id="step-3-adding-context-2" class="slide level2 smaller">
 <h2>Step 3: Adding Context</h2>
-<p>Comparing a words <code>q-Vector</code> (what it wants) with all other words <code>k-Vectors</code>, including its own, using the <strong>Dot Product</strong>. The results are processed via <em>SoftMax</em> for all words and are written in an <em>importance vector</em> (see the yello framed vector). It shows the importance of each other word in the prompt for the analyzed word (<code>It</code>).</p>
+<p>Comparing a words <code>q-Vector</code> (what it wants) with all other words <code>k-Vectors</code>, including its own, using the <strong>Dot Product</strong>. The results are processed via <em>SoftMax</em> for all words and are written in an <em>importance vector</em> (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (<code>It</code>).</p>
 
 <img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=72" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=72</a>)</small></p>
 </section>
@@ -8239,10 +8245,15 @@ PE_{(pos, i)} =
 
 <img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=72" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=72</a>)</small></p>
 </section>
-<section id="step-4-and-5-multi-head-processing-and-residual-connection" class="slide level2 smaller">
-<h2>Step 4 and 5: Multi Head Processing and Residual Connection</h2>
-<p><strong>Multi Head Processing:</strong> Use several parts (<code>Heads</code>) to add more <strong>Attention</strong></p>
-<p><strong>Residual Connection:</strong> Add information from previous step (again) to the system.</p>
+<section id="step-4-multi-head-processing" class="slide level2 smaller">
+<h2>Step 4: Multi Head Processing</h2>
+<p><strong>Multi Head Processing:</strong> Run <em>Self-Attention</em> in different blocks (<code>Heads</code>) to add more <strong>Attention</strong> with different focus</p>
+
+<img data-src="images/clipboard-3133032979.png" class="r-stretch"></section></section>
+<section>
+<section id="step-5-residual-connection" class="title-slide slide level1 smaller center">
+<h1>Step 5: Residual Connection</h1>
+<p><strong>Residual Connection:</strong> Add information from previous steps (again) to the system. In case it got lost during training.</p>
 </section>
 <section id="step-6-training" class="slide level2 smaller">
 <h2>Step 6: Training</h2>
@@ -8266,7 +8277,7 @@ PE_{(pos, i)} =
 <img data-src="images/clipboard-1202208612.png" class="r-stretch quarto-figure-center"><p class="caption">Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f</p></section>
 <section id="prompt-engineering-example-gift-recommender" class="slide level2">
 <h2>Prompt Engineering (Example: Gift Recommender)</h2>
-<p><a href="https://ai.centillionware.com/gift/" class="uri">https://ai.centillionware.com/gift/</a></p>
+<p><a href="https://ai.centillionware.com/gift/" target="blank_">https://ai.centillionware.com/gift/</a></p>
 </section>
 <section id="prompt-engineering-example-gift-recommender-1" class="slide level2">
 <h2>Prompt Engineering (Example: Gift Recommender)</h2>

@@ -9,25 +9,34 @@ format:
     incremental: false
 ---
 
-## Source:
 
-The presentation is based on:
-
--   [How Large Language Models Work by Andreas Schoeffelbauer](https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f)
-
--   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br> **Strongly recommended**
 
 ## What Will You Learn/Review {.scrollable .smaller}
 
--   How a Large Language Model Works
 
--   How words can be embedded as vectors to code similar meanings.
 
--   How a LLM guesses the next word?
+-   Why *Deep Learning* models have so many parameters
 
--   How fine tuning allos LLM to become "intelligent"
 
--   Examples of gen AI
+- Understanding the Role of *Large Language Models* (*LLM*) in the *AI* Landscape
+
+-   *Tokenization* of the English language 
+
+- *One-Hot Encoding* of the English language
+
+-   How an *LLM* guesses the next word?
+
+- How words can be embedded as vectors to code similar meanings (*Input Embedding*)<br>
+`Queen`, `King`, `Male`, `Female` but `Sand`
+
+- How the words position in a prompt can be embedded as vectors  (*Positional Encoding*)<br>
+`Dog bites child` but `Child bites dog`
+
+- How context of words in a prompt can be encoded (*Attention Mechanism*)<br>
+"The cat sits on the `mat` because `it` is soft"
+
+
+-   How to create applications of *genAI*
 
 -   How post-prepossessing can avoid discrimination, derogatory language, and racism
 
@@ -61,9 +70,7 @@ The presentation is based on:
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
-![Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1198050597.png) \# Large Language Models
-
-GPT stands for **Generative Pre-trained Transformer**
+![Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1198050597.png) 
 
 # Large Language Models (Transformers)
 
@@ -121,6 +128,14 @@ The value for all words/tokens is zero with the exception of the word/token of i
 ![](images/clipboard-2592421233.png)
 :::
 
+## Source
+
+The following is based on:
+
+-   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br> 
+
+The course is not free, but a free trial exist. The 4 hour course is **strongly recommended** to dive deeper.
+
 ## History
 
 **2003:** Bengio, Y., Neural Probabilistic Language Models (very basic)
@@ -129,7 +144,7 @@ The value for all words/tokens is zero with the exception of the word/token of i
 
 **2014:** Bahdanu, D.: Still Recurrent Neural Networks but with Attention - LSTM (still slow and not easy to parallelize, but more powerful)
 
-**2014:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)
+**2017:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)
 
 [Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E]{style="font-size:70%"}
 
@@ -268,7 +283,9 @@ PE_{(pos, i)} =
 \end{cases}
 $$ $Pos :=$ The position of the word/token in the prompt. Numbered from $0$ to $300$ (32,000 in *ChatGPT*)
 
-$i :=$ The Row in the *Position Vector* numbered from $0$ to $16$ (512 in *ChatGPT*)
+$i :=$ The row (dimension) in the *Position Vector* numbered from $0$ to $16$ (512 in *ChatGPT*)
+
+$Dim :=$ The number of dimension (*length*) in the *Position Vector*. Here: $17$ ($512$ in *ChatGPT*)
 
 ## Step 2: Generate Position-Aware Embedding {.smaller}
 
@@ -347,7 +364,11 @@ Plot
 
 Step 3 identifies for each word in the prompt other words in the prompt that are relevant (**Context**)
 
-Simplified, in **Example 1** the word **it** points to **tired**. In **Example 2** the word **it** points to **wide**.
+Simplified:
+
+**In Example 1** the word **it** points to **animal**. 
+
+**In Example 2** the word **it** points to **road**. 
 
 ## Step 3: Adding Context {.smaller}
 
@@ -359,7 +380,7 @@ Using `Position Aware` `Vector X` and a *Neural Net* to create new vectors `q` (
 
 ## Step 3: Adding Context {.smaller}
 
-Comparing a words `q-Vector` (what it wants) with all other words `k-Vectors`, including its own, using the **Dot Product**. The results are processed via *SoftMax* for all words and are written in an *importance vector* (see the yello framed vector). It shows the importance of each other word in the prompt for the analyzed word (`It`).
+Comparing a words `q-Vector` (what it wants) with all other words `k-Vectors`, including its own, using the **Dot Product**. The results are processed via *SoftMax* for all words and are written in an *importance vector* (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (`It`).
 
 ![](images/clipboard-3133032979.png)
 
@@ -375,11 +396,15 @@ The procedure described above is applied to all words in the prompt.
 
 <small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"})</small>
 
-## Step 4 and 5: Multi Head Processing and Residual Connection {.smaller}
+## Step 4: Multi Head Processing  {.smaller}
 
-**Multi Head Processing:** Use several parts (`Heads`) to add more **Attention**
+**Multi Head Processing:** Run *Self-Attention* in different blocks (`Heads`) to add more **Attention** with different focus
 
-**Residual Connection:** Add information from previous step (again) to the system.
+![](images/clipboard-3133032979.png)
+
+# Step  5: Residual Connection {.smaller}
+
+**Residual Connection:** Add information from previous steps (again) to the system. In case it got lost during training.
 
 ## Step 6: Training {.smaller}
 
@@ -409,7 +434,7 @@ A Super Data Science course. The course is not free but a free trial of Super Da
 
 ## Prompt Engineering (Example: Gift Recommender)
 
-<https://ai.centillionware.com/gift/>
+[https://ai.centillionware.com/gift/](https://ai.centillionware.com/gift/){target="blank_"}
 
 ## Prompt Engineering (Example: Gift Recommender)
 
