@@ -57,7 +57,7 @@ TuneResultsDiamonds=tune_grid(WFModelNN,  resamples=FoldsDiamonds,
 
 # Above, the control argument "control = control_grid(verbose = TRUE)"
 # enables reporting to the console. It has no other function.
-# You can ommit it. Then it is just not as entertaining.
+# You can omit it. Then it is just not as entertaining.
 
 print(TuneResultsDiamonds)
 
