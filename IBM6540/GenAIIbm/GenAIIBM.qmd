@@ -486,6 +486,21 @@ After a model is trained with *language* (i.e., the complete Internet), it needs
 
 ![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1202208612.png)
 
+## Prompt Engineering (Example)
+
+
+
+Use to *ChatGPT* Windows with these propmpts:
+
+**1. Window**
+
+1. "Tell me about Monserat"
+
+**2. Window**
+
+1. "Tell me about Times Roman"
+2. "Tell me about Monserat"
+
 ## Prompt Engineering (Example: Gift Recommender)
 
 [https://ai.centillionware.com/gift/](https://ai.centillionware.com/gift/){target="blank_"}
@@ -527,3 +542,4 @@ $prompt = "
 ## Post Processing: Bias, Discrimination, Derogatory Language
 
 Example: Pi chat bot
+
