@@ -9,32 +9,23 @@ format:
     incremental: false
 ---
 
-
-
 ## What Will You Learn/Review {.scrollable .smaller}
-
-
 
 -   Why *Deep Learning* models have so many parameters
 
+-   Understanding the Role of *Large Language Models* (*LLM*) in the *AI* Landscape
 
-- Understanding the Role of *Large Language Models* (*LLM*) in the *AI* Landscape
+-   *Tokenization* of the English language
 
--   *Tokenization* of the English language 
-
-- *One-Hot Encoding* of the English language
+-   *One-Hot Encoding* of the English language
 
 -   How an *LLM* guesses the next word?
 
-- How words can be embedded as vectors to code similar meanings (*Input Embedding*)<br>
-`Queen`, `King`, `Male`, `Female` but `Sand`
+-   How words can be embedded as vectors to code similar meanings (*Input Embedding*)<br> `Queen`, `King`, `Male`, `Female` but `Sand`
 
-- How the words position in a prompt can be embedded as vectors  (*Positional Encoding*)<br>
-`Dog bites child` but `Child bites dog`
+-   How the words position in a prompt can be embedded as vectors (*Positional Encoding*)<br> `Dog bites child` but `Child bites dog`
 
-- How context of words in a prompt can be encoded (*Attention Mechanism*)<br>
-"The cat sits on the `mat` because `it` is soft"
-
+-   How attention of words in a prompt can be encoded (*Attention Mechanism*)<br> "The cat sits on the `mat` because `it` is soft"
 
 -   How to create applications of *genAI*
 
@@ -70,9 +61,9 @@ format:
 
 ### Size 224 x 224 and 3 colors = 150,528 Pixels
 
-![Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1198050597.png) 
+![Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1198050597.png)
 
-# Large Language Models (Transformers)
+# Large Language Models and GenAI
 
 ## Step 0a: Tokenization
 
@@ -119,7 +110,7 @@ The value for all words/tokens is zero with the exception of the word/token of i
 
 1.  On-Hot Vectors have **no semantics**. E.g., *Queen* and *King* should be encoded in a similar way, but with *One-Hot*, they are not. Idealy, the resulting vectors should be similar (possible measures: *Euclidean Distance* or *Dot Product*)<br> **Solution:** `Word Embedding`. Helps with semantic interpretation.
 2.  In contrast to *Recurrent Neural Networks*, *Transformers* read the whole prompt at once and therefore do not maintain order.<br> **Solution:** `Positional Encoding`
-3.  **Context is ignored.** <br>E.g.: <br> `The animal didn't cross the road because it is too tired`<br> or <br> `The animal didn't cross the road because it is too wide`<br> **Solution:** `Attention` (stores for each word which words from the prompt are important and which are not)
+3.  **Attention is ignored.** <br>E.g.: <br> `The animal didn't cross the road because it is too tired`<br> or <br> `The animal didn't cross the road because it is too wide`<br> **Solution:** `Attention` (stores for each word which words from the prompt are important and which are not)
 :::
 
 ::: {.column width="20%"}
@@ -132,7 +123,7 @@ The value for all words/tokens is zero with the exception of the word/token of i
 
 The following is based on:
 
--   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br> 
+-   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br>
 
 The course is not free, but a free trial exist. The 4 hour course is **strongly recommended** to dive deeper.
 
@@ -147,6 +138,12 @@ The course is not free, but a free trial exist. The 4 hour course is **strongly 
 **2017:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)
 
 [Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E]{style="font-size:70%"}
+
+## Overview LLMs {.smaller}
+
+![](images/clipboard-340487702.png)
+
+Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}
 
 ## Step 1: Word Embedding to Provide Sentiment
 
@@ -201,9 +198,9 @@ Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `am
 
 ## Step 2: Generate Position-Aware Embedding {.smaller}
 
-Add a Position Vector (512 x 1) to each word embedding (512 x 1).
+Add a *Position-Vector* (512 x 1) to each word embedding (512 x 1).
 
-The Position Vector reflects the word position in the prompt (prompt size = 32,000 in ChatGPT).
+The *Position-Vector* reflects the word position in the prompt (prompt size = 32,000 in ChatGPT).
 
 ![](images/clipboard-1514739384.png)
 
@@ -211,14 +208,14 @@ The Position Vector reflects the word position in the prompt (prompt size = 32,0
 
 ### Example Specifications
 
-**Prompt Size:** 0 to 300 words/tokens (32,000 in *ChatGPT*)
+**Prompt Size is 301:** Possible positions 0 to 300 (Prompt Size: 32,000 in *ChatGPT*)
 
-**Position Vector Size:** 0 to 16 (512 in *ChatGPT*)
+**Position-Vector Size is 17:** Dimensions 0 to 16 (512 dimensions in *ChatGPT*)
 
 ## Step 2: Generate Position-Aware Embedding {.smaller .columns}
 
 ::: {.column width="65%"}
-#### Example: Position Table with 1, 10, 100 Digits
+#### Example (not what GPT uses): Position Table with 1, 10, 100 Digits
 
 ```{r}
 #| echo: false
@@ -242,7 +239,7 @@ kbl(TablePos)
 
 -   For efficient trainig in Neural Networks numbers should be between 1 and -1
 
--   For the *Position Vector* 17 (0 to 16) dimensions are needed (512 for *ChatGPT*). Here, the positional encoding  produces only 3 dimensions.
+-   For the *Position Vector* 17 (0 to 16) dimensions are needed (512 for *ChatGPT*). Here, the positional encoding produces only 3 dimensions.
 
 #### Note:
 
@@ -254,11 +251,11 @@ The three digits (dimensions) have repeating cycles with different frequencies. 
 
 ## Step 2: Generate Position-Aware Embedding
 
-### Frequency of Digits
+### Frequency of Digits for 1, 10, 100 Digits (not what GPT uses)
 
 ```{r}
 #| echo: false
-Plot=ggplot(aes(x=WordPosition, y=Ones), size=9, data=filter(TablePos, WordPosition<300))+
+Plot=ggplot(aes(x=WordPosition, y=Ones), linesize=9, data=filter(TablePos, WordPosition<300))+
   geom_line(aes(x=WordPosition, y=Ones), color="blue", size=0.7)+
   geom_line(aes(x=WordPosition, y=Tens), color="red", size=1.2)+
   geom_line(aes(x=WordPosition, y=Hundreds), color="magenta", size=1.8)+
@@ -356,75 +353,97 @@ Plot
 
 ```
 
-## Step 3: Adding Context
+## Step 3: Adding Attention
 
 **Example 1:**<br>The **animal** didn’t cross the road because **it** was too **tired**.
 
-**Example 2:**<br>The animal didn’t  cross the **road** because **it** was too **wide**.
+**Example 2:**<br>The animal didn’t cross the **road** because **it** was too **wide**.
 
-Step 3 identifies for each word in the prompt other words in the prompt that are relevant (**Context**)
+Step 3 identifies for each word in the prompt other words in the prompt that are relevant (**Attention**)
 
 Simplified:
 
-**In Example 1** the word **it** points to **animal**. 
+**In Example 1** the word **it** points to **animal**.
 
-**In Example 2** the word **it** points to **road**. 
+**In Example 2** the word **it** points to **road**.
 
-## Step 3: Adding Context {.smaller}
+## Step 3: Adding Attention {.smaller}
 
-Using `Position Aware` `Vector X` and a *Neural Net* to create new vectors `q` (what the word searches for), `k-Vector` (what the word has to offer),`v-Vector` (content of Vector X slightly modified).
+Using `Position-Aware` `Vector X` and a  *linear Neural Network* ($Act_i=Inp^{eff}_i$) to create new vectors `Q-Vector` (what the word searches for), `K-Vector` (what the word has to offer),`V-Vector` (content of Vector X slightly modified).
 
 ![](images/clipboard-2021075770.png)
 
-<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"})</small>
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"}</small>
 
-## Step 3: Adding Context {.smaller}
+## Step 3: Adding Attention {.smaller}
 
-Comparing a words `q-Vector` (what it wants) with all other words `k-Vectors`, including its own, using the **Dot Product**. The results are processed via *SoftMax* for all words and are written in an *importance vector* (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (`It`).
+Comparing a words `Q-Vector` (what it wants) with all other words `K-Vectors`, including its own, using the **Dot Product**. The results are processed via *SoftMax* for all words and are written in an *importance vector* (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (`it`).
 
 ![](images/clipboard-3133032979.png)
 
-<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"})</small>
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=73](https://online.fliphtml5.com/grdgl/qhfw/#p=73){target="Blank_"}</small>
 
-## Step 3: Adding Context {.smaller}
+## Step 3: Adding Attention {.smaller}
 
-The final Position and Context Aware `Vector A` for the word of interest (`it`) is created as a weighted sum from all `v-Vectors` in the prompt.
+The final *Position* and *Attention-Aware* `Vector A` for the word of interest (`it`) is created as a weighted sum from all `V-Vectors` in the prompt.
 
 The procedure described above is applied to all words in the prompt.
 
 ![](images/clipboard-3133032979.png)
 
-<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"})</small>
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=73](https://online.fliphtml5.com/grdgl/qhfw/#p=73){target="Blank_"}</small>
 
-## Step 4: Multi Head Processing  {.smaller}
+## Step 4: Multi Head Processing {.smaller}
 
-**Multi Head Processing:** Run *Self-Attention* in different blocks (`Heads`) to add more **Attention** with different focus
+**Multi Head Processing:** When creating `Q`, `K` and `V` vectors, they are created with a smaller dimensionality. Here 8 vectors with dimension 64 each.
 
-![](images/clipboard-3133032979.png)
+This allows *Self-Attention* to use different focus for each section.
 
-# Step  5: Residual Connection {.smaller}
+![](images/clipboard-3812760553.png)
 
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=75](https://online.fliphtml5.com/grdgl/qhfw/#p=75){target="_Blank"}</small>
+
+## Step 4: Multi Head Processing (Visualization from Google)
+
+[https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC](https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC){target="\"Blank_"}
+
+## Steps 5a, 5b, 5c, 5d {.columns .smaller}
+
+::: {.column width="60%"}
 **Residual Connection:** Add information from previous steps (again) to the system. In case it got lost during training.
+
+**Normalization** of *attention-aware* vector
+
+**Feed Forward Neural Network (MLP)** to add non-linearity
+
+**Multiple Layers with Self Attention** (96 in *GPT3*)
+:::
+
+::: {.column width="40%"}
+
+![](images/clipboard-2833345460.png) 
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}</small>
+
+:::
 
 ## Step 6: Training {.smaller}
 
-All words (position and context aware vectors) - `A-Vectors` - from the prompt are simultaneously moved through a non-linear model, and the next word for each word in the prompt is predicted.
+All words (*position* and *attention-aware vectors*) - `A-Vectors` - from the prompt are simultaneously moved through a non-linear model, and the next word for each word in the prompt is predicted.
 
-![](images/clipboard-480391752.png)asdf
+![](images/clipboard-480391752.png)
 
-<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=130](https://online.fliphtml5.com/grdgl/qhfw/#p=130){target="_blank"})</small>
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=130](https://online.fliphtml5.com/grdgl/qhfw/#p=130){target="_blank"}</small>
 
 ## Parallelization
 
-Most tasks such as *Content Awareness* and *Position Awareness* are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of **Parallelization**
+Most tasks such as *Content-Awareness* and *Position Awareness* are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of **Parallelization**
 
 Not only the next word of a prompt is predicted but also the next words for all other words in the prompts. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word's following word), the GPT can learn the next word for the complete *Context Window*. **A Transformer can learn 32,000 words in one run**.
 
-## Where to Larn More About Transformers
+## Where to Learn More About Transformers and LLM
 
-**GenAI & LLMs A-Z (Advanced Technical Course)** 
-<br>
-A Super Data Science course. The course is not free but a free trial of Super DataScience is available.
+**GenAI & LLMs A-Z (Advanced Technical Course)** <br> A Super Data Science course. The course is not free but a free trial of Super DataScience is available.
 
 [https://community.superdatascience.com/c/llm-gpt](https://community.superdatascience.com/c/llm-gpt){target="blank_"}
 

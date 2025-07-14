@@ -149,7 +149,7 @@
 <li><p>How an <em>LLM</em> guesses the next word?</p></li>
 <li><p>How words can be embedded as vectors to code similar meanings (<em>Input Embedding</em>)<br> <code>Queen</code>, <code>King</code>, <code>Male</code>, <code>Female</code> but <code>Sand</code></p></li>
 <li><p>How the words position in a prompt can be embedded as vectors (<em>Positional Encoding</em>)<br> <code>Dog bites child</code> but <code>Child bites dog</code></p></li>
-<li><p>How context of words in a prompt can be encoded (<em>Attention Mechanism</em>)<br> “The cat sits on the <code>mat</code> because <code>it</code> is soft”</p></li>
+<li><p>How attention of words in a prompt can be encoded (<em>Attention Mechanism</em>)<br> “The cat sits on the <code>mat</code> because <code>it</code> is soft”</p></li>
 <li><p>How to create applications of <em>genAI</em></p></li>
 <li><p>How post-prepossessing can avoid discrimination, derogatory language, and racism</p></li>
 </ul>
@@ -183,8 +183,8 @@
 
 <img data-src="images/clipboard-1198050597.png" class="r-stretch quarto-figure-center"><p class="caption">Source: Mediumhttps://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f</p></section></section>
 <section>
-<section id="large-language-models-transformers" class="title-slide slide level1 center">
-<h1>Large Language Models (Transformers)</h1>
+<section id="large-language-models-and-genai" class="title-slide slide level1 center">
+<h1>Large Language Models and GenAI</h1>
 
 </section>
 <section id="step-0a-tokenization" class="slide level2 scrollable">
@@ -225,7 +225,7 @@
 <ol type="1">
 <li>On-Hot Vectors have <strong>no semantics</strong>. E.g., <em>Queen</em> and <em>King</em> should be encoded in a similar way, but with <em>One-Hot</em>, they are not. Idealy, the resulting vectors should be similar (possible measures: <em>Euclidean Distance</em> or <em>Dot Product</em>)<br> <strong>Solution:</strong> <code>Word Embedding</code>. Helps with semantic interpretation.</li>
 <li>In contrast to <em>Recurrent Neural Networks</em>, <em>Transformers</em> read the whole prompt at once and therefore do not maintain order.<br> <strong>Solution:</strong> <code>Positional Encoding</code></li>
-<li><strong>Context is ignored.</strong> <br>E.g.: <br> <code>The animal didn't cross the road because it is too tired</code><br> or <br> <code>The animal didn't cross the road because it is too wide</code><br> <strong>Solution:</strong> <code>Attention</code> (stores for each word which words from the prompt are important and which are not)</li>
+<li><strong>Attention is ignored.</strong> <br>E.g.: <br> <code>The animal didn't cross the road because it is too tired</code><br> or <br> <code>The animal didn't cross the road because it is too wide</code><br> <strong>Solution:</strong> <code>Attention</code> (stores for each word which words from the prompt are important and which are not)</li>
 </ol>
 </div><div class="column" style="width:20%;">
 <h3 id="simple-model">Simple Model:</h3>
@@ -246,6 +246,11 @@
 <p><strong>2014:</strong> Bahdanu, D.: Still Recurrent Neural Networks but with Attention - LSTM (still slow and not easy to parallelize, but more powerful)</p>
 <p><strong>2017:</strong> Google Team, “Attention is All you Need”, Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)</p>
 <p><span style="font-size:70%">Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E</span></p>
+</section>
+<section id="overview-llms" class="slide level2 smaller">
+<h2>Overview LLMs</h2>
+
+<img data-src="images/clipboard-340487702.png" class="r-stretch"><p>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=12" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=12</a></p>
 </section>
 <section id="step-1-word-embedding-to-provide-sentiment" class="slide level2">
 <h2>Step 1: Word Embedding to Provide Sentiment</h2>
@@ -291,20 +296,20 @@ Similarity can be measured by <em>Euclidean Distance</em> or similar measures (L
 </section>
 <section id="step-2-generate-position-aware-embedding" class="slide level2 smaller">
 <h2>Step 2: Generate Position-Aware Embedding</h2>
-<p>Add a Position Vector (512 x 1) to each word embedding (512 x 1).</p>
-<p>The Position Vector reflects the word position in the prompt (prompt size = 32,000 in ChatGPT).</p>
+<p>Add a <em>Position-Vector</em> (512 x 1) to each word embedding (512 x 1).</p>
+<p>The <em>Position-Vector</em> reflects the word position in the prompt (prompt size = 32,000 in ChatGPT).</p>
 
 <img data-src="images/clipboard-1514739384.png" class="r-stretch"></section>
 <section id="step-2-generate-position-aware-embedding-1" class="slide level2">
 <h2>Step 2: Generate Position-Aware Embedding</h2>
 <h3 id="example-specifications">Example Specifications</h3>
-<p><strong>Prompt Size:</strong> 0 to 300 words/tokens (32,000 in <em>ChatGPT</em>)</p>
-<p><strong>Position Vector Size:</strong> 0 to 16 (512 in <em>ChatGPT</em>)</p>
+<p><strong>Prompt Size is 301:</strong> Possible positions 0 to 300 (Prompt Size: 32,000 in <em>ChatGPT</em>)</p>
+<p><strong>Position-Vector Size is 17:</strong> Dimensions 0 to 16 (512 dimensions in <em>ChatGPT</em>)</p>
 </section>
 <section id="step-2-generate-position-aware-embedding-2" class="slide level2 smaller columns">
 <h2>Step 2: Generate Position-Aware Embedding</h2>
 <div class="column" style="width:65%;">
-<h4 id="example-position-table-with-1-10-100-digits">Example: Position Table with 1, 10, 100 Digits</h4>
+<h4 id="example-not-what-gpt-uses-position-table-with-1-10-100-digits">Example (not what GPT uses): Position Table with 1, 10, 100 Digits</h4>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
@@ -2140,7 +2145,7 @@ Similarity can be measured by <em>Euclidean Distance</em> or similar measures (L
 </div></section>
 <section id="step-2-generate-position-aware-embedding-3" class="slide level2">
 <h2>Step 2: Generate Position-Aware Embedding</h2>
-<h3 id="frequency-of-digits">Frequency of Digits</h3>
+<h3 id="frequency-of-digits-for-1-10-100-digits-not-what-gpt-uses">Frequency of Digits for 1, 10, 100 Digits (not what GPT uses)</h3>
 
 <img data-src="GenAIIBM_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"></section>
 <section id="step-2-generate-position-aware-embedding-4" class="slide level2">
@@ -8214,60 +8219,72 @@ PE_{(pos, i)} =
 </section>
 <section id="step-2-generate-position-aware-embedding-6" class="slide level2">
 <h2>Step 2: Generate Position-Aware Embedding</h2>
-<h3 id="frequency-of-digits-1">Frequency of Digits</h3>
+<h3 id="frequency-of-digits">Frequency of Digits</h3>
 
 <img data-src="GenAIIBM_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"></section>
-<section id="step-3-adding-context" class="slide level2">
-<h2>Step 3: Adding Context</h2>
+<section id="step-3-adding-attention" class="slide level2">
+<h2>Step 3: Adding Attention</h2>
 <p><strong>Example 1:</strong><br>The <strong>animal</strong> didn’t cross the road because <strong>it</strong> was too <strong>tired</strong>.</p>
 <p><strong>Example 2:</strong><br>The animal didn’t cross the <strong>road</strong> because <strong>it</strong> was too <strong>wide</strong>.</p>
-<p>Step 3 identifies for each word in the prompt other words in the prompt that are relevant (<strong>Context</strong>)</p>
+<p>Step 3 identifies for each word in the prompt other words in the prompt that are relevant (<strong>Attention</strong>)</p>
 <p>Simplified:</p>
 <p><strong>In Example 1</strong> the word <strong>it</strong> points to <strong>animal</strong>.</p>
 <p><strong>In Example 2</strong> the word <strong>it</strong> points to <strong>road</strong>.</p>
 </section>
-<section id="step-3-adding-context-1" class="slide level2 smaller">
-<h2>Step 3: Adding Context</h2>
-<p>Using <code>Position Aware</code> <code>Vector X</code> and a <em>Neural Net</em> to create new vectors <code>q</code> (what the word searches for), <code>k-Vector</code> (what the word has to offer),<code>v-Vector</code> (content of Vector X slightly modified).</p>
+<section id="step-3-adding-attention-1" class="slide level2 smaller">
+<h2>Step 3: Adding Attention</h2>
+<p>Using <code>Position-Aware</code> <code>Vector X</code> and a <em>linear Neural Network</em> (<span class="math inline">\(Act_i=Inp^{eff}_i\)</span>) to create new vectors <code>Q-Vector</code> (what the word searches for), <code>K-Vector</code> (what the word has to offer),<code>V-Vector</code> (content of Vector X slightly modified).</p>
 
-<img data-src="images/clipboard-2021075770.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=72" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=72</a>)</small></p>
+<img data-src="images/clipboard-2021075770.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=72" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=72</a></small></p>
 </section>
-<section id="step-3-adding-context-2" class="slide level2 smaller">
-<h2>Step 3: Adding Context</h2>
-<p>Comparing a words <code>q-Vector</code> (what it wants) with all other words <code>k-Vectors</code>, including its own, using the <strong>Dot Product</strong>. The results are processed via <em>SoftMax</em> for all words and are written in an <em>importance vector</em> (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (<code>It</code>).</p>
+<section id="step-3-adding-attention-2" class="slide level2 smaller">
+<h2>Step 3: Adding Attention</h2>
+<p>Comparing a words <code>Q-Vector</code> (what it wants) with all other words <code>K-Vectors</code>, including its own, using the <strong>Dot Product</strong>. The results are processed via <em>SoftMax</em> for all words and are written in an <em>importance vector</em> (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (<code>it</code>).</p>
 
-<img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=72" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=72</a>)</small></p>
+<img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=73" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=73</a></small></p>
 </section>
-<section id="step-3-adding-context-3" class="slide level2 smaller">
-<h2>Step 3: Adding Context</h2>
-<p>The final Position and Context Aware <code>Vector A</code> for the word of interest (<code>it</code>) is created as a weighted sum from all <code>v-Vectors</code> in the prompt.</p>
+<section id="step-3-adding-attention-3" class="slide level2 smaller">
+<h2>Step 3: Adding Attention</h2>
+<p>The final <em>Position</em> and <em>Attention-Aware</em> <code>Vector A</code> for the word of interest (<code>it</code>) is created as a weighted sum from all <code>V-Vectors</code> in the prompt.</p>
 <p>The procedure described above is applied to all words in the prompt.</p>
 
-<img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=72" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=72</a>)</small></p>
+<img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=73" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=73</a></small></p>
 </section>
 <section id="step-4-multi-head-processing" class="slide level2 smaller">
 <h2>Step 4: Multi Head Processing</h2>
-<p><strong>Multi Head Processing:</strong> Run <em>Self-Attention</em> in different blocks (<code>Heads</code>) to add more <strong>Attention</strong> with different focus</p>
+<p><strong>Multi Head Processing:</strong> When creating <code>Q</code>, <code>K</code> and <code>V</code> vectors, they are created with a smaller dimensionality. Here 8 vectors with dimension 64 each.</p>
+<p>This allows <em>Self-Attention</em> to use different focus for each section.</p>
 
-<img data-src="images/clipboard-3133032979.png" class="r-stretch"></section></section>
-<section>
-<section id="step-5-residual-connection" class="title-slide slide level1 smaller center">
-<h1>Step 5: Residual Connection</h1>
-<p><strong>Residual Connection:</strong> Add information from previous steps (again) to the system. In case it got lost during training.</p>
+<img data-src="images/clipboard-3812760553.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=75" target="_Blank">https://online.fliphtml5.com/grdgl/qhfw/#p=75</a></small></p>
 </section>
+<section id="step-4-multi-head-processing-visualization-from-google" class="slide level2">
+<h2>Step 4: Multi Head Processing (Visualization from Google)</h2>
+<p><a href="https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC" target="&quot;Blank_">https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC</a></p>
+</section>
+<section id="steps-5a-5b-5c-5d" class="slide level2 columns smaller">
+<h2>Steps 5a, 5b, 5c, 5d</h2>
+<div class="column" style="width:60%;">
+<p><strong>Residual Connection:</strong> Add information from previous steps (again) to the system. In case it got lost during training.</p>
+<p><strong>Normalization</strong> of <em>attention-aware</em> vector</p>
+<p><strong>Feed Forward Neural Network (MLP)</strong> to add non-linearity</p>
+<p><strong>Multiple Layers with Self Attention</strong> (96 in <em>GPT3</em>)</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="images/clipboard-2833345460.png"></p>
+<p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=12" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=12</a></small></p>
+</div></section>
 <section id="step-6-training" class="slide level2 smaller">
 <h2>Step 6: Training</h2>
-<p>All words (position and context aware vectors) - <code>A-Vectors</code> - from the prompt are simultaneously moved through a non-linear model, and the next word for each word in the prompt is predicted.</p>
-<p><img data-src="images/clipboard-480391752.png">asdf</p>
-<p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=130" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=130</a>)</small></p>
+<p>All words (<em>position</em> and <em>attention-aware vectors</em>) - <code>A-Vectors</code> - from the prompt are simultaneously moved through a non-linear model, and the next word for each word in the prompt is predicted.</p>
+
+<img data-src="images/clipboard-480391752.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=130" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=130</a></small></p>
 </section>
 <section id="parallelization" class="slide level2">
 <h2>Parallelization</h2>
-<p>Most tasks such as <em>Content Awareness</em> and <em>Position Awareness</em> are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of <strong>Parallelization</strong></p>
+<p>Most tasks such as <em>Content-Awareness</em> and <em>Position Awareness</em> are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of <strong>Parallelization</strong></p>
 <p>Not only the next word of a prompt is predicted but also the next words for all other words in the prompts. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word’s following word), the GPT can learn the next word for the complete <em>Context Window</em>. <strong>A Transformer can learn 32,000 words in one run</strong>.</p>
 </section>
-<section id="where-to-larn-more-about-transformers" class="slide level2">
-<h2>Where to Larn More About Transformers</h2>
+<section id="where-to-learn-more-about-transformers-and-llm" class="slide level2">
+<h2>Where to Learn More About Transformers and LLM</h2>
 <p><strong>GenAI &amp; LLMs A-Z (Advanced Technical Course)</strong> <br> A Super Data Science course. The course is not free but a free trial of Super DataScience is available.</p>
 <p><a href="https://community.superdatascience.com/c/llm-gpt" target="blank_">https://community.superdatascience.com/c/llm-gpt</a></p>
 </section>
