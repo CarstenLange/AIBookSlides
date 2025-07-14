@@ -8283,6 +8283,32 @@ PE_{(pos, i)} =
 <p>Most tasks such as <em>Content-Awareness</em> and <em>Position Awareness</em> are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of <strong>Parallelization</strong></p>
 <p>Not only the next word of a prompt is predicted but also the next words for all other words in the prompts. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word’s following word), the GPT can learn the next word for the complete <em>Context Window</em>. <strong>A Transformer can learn 32,000 words in one run</strong>.</p>
 </section>
+<section id="llm-fine-tuning" class="slide level2 smaller scrollable">
+<h2>LLM (Fine) Tuning</h2>
+<p>After a model is trained with <em>language</em> (i.e., the complete Internet), it needs to be <em>fine-tuned</em> to perform specific tasks:</p>
+<p><strong>Self-supervised:</strong> Train on the desired data from the beginning (extremely expensive)</p>
+<p><strong>Reinforcement Learning from Human Feedback (RLHF):</strong></p>
+<ol type="1">
+<li>Work with labeled data from humans</li>
+<li>Create reward model</li>
+<li>Adjust original model</li>
+</ol>
+<p><strong>Supervised Learning</strong></p>
+</section>
+<section id="supervised-learning" class="slide level2 smaller scrollable">
+<h2>Supervised Learning</h2>
+<p><strong>Transfer Learning:</strong></p>
+<ul>
+<li>Freeze all parameters except the last one or two layers (could also be different layers)</li>
+<li>retrain last one or two layers with new data</li>
+</ul>
+<p><strong>Parameter Efficient Fine Tuning (PEFT) Methods</strong></p>
+<ol type="1">
+<li><p><strong>Adapters:</strong> Freeze parameters. Then add adapters to the model, and train the parameters of the <em>adapters</em> with the new data</p></li>
+<li><p><strong>Low-Rank Adaptation:</strong> Generate for each parameter matrix in the model, two matrices that when multiplied give the values of the matrix (<em>decomposing</em> <span class="math inline">\(A\)</span>). E.g., <span class="math inline">\(A\)</span> has the dimension <span class="math inline">\(512\times 512\)</span> and <span class="math inline">\(B\)</span> has <span class="math inline">\(512\times2\)</span> and <span class="math inline">\(C\)</span> has <span class="math inline">\(2\times512\)</span>. So that <span class="math inline">\(B\cdot C=A\)</span>. Freeze <span class="math inline">\(A\)</span> and train <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> with new data (these are 2048 elements rather than 262144 elements). Multiply <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> and add it to <span class="math inline">\(A\)</span>. This gives the <em>fine-tuned</em> weights.</p></li>
+<li><p><strong>Prompt Tuning:</strong> E.g. <em>RAGs</em></p></li>
+</ol>
+</section>
 <section id="where-to-learn-more-about-transformers-and-llm" class="slide level2">
 <h2>Where to Learn More About Transformers and LLM</h2>
 <p><strong>GenAI &amp; LLMs A-Z (Advanced Technical Course)</strong> <br> A Super Data Science course. The course is not free but a free trial of Super DataScience is available.</p>

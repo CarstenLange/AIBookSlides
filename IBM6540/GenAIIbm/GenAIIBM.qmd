@@ -441,6 +441,41 @@ Most tasks such as *Content-Awareness* and *Position Awareness* are processed fo
 
 Not only the next word of a prompt is predicted but also the next words for all other words in the prompts. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word's following word), the GPT can learn the next word for the complete *Context Window*. **A Transformer can learn 32,000 words in one run**.
 
+## LLM (Fine) Tuning {.smaller}
+
+After a model is trained with *language* (i.e., the complete Internet), it needs to be *fine-tuned* to perform specific tasks:
+
+**Self-supervised:** Train on the desired data from the beginning (extremely expensive)
+
+**Reinforcement Learning from Human Feedback (RLHF):**
+
+1) Work with labeled data from humans
+2) Create reward model
+3) Adjust original model
+
+**Supervised Learning**
+
+## Supervised Learning {.smaller}
+
+**Transfer Learning:** 
+
+- Freeze all parameters except the last one or two layers (could also be different layers)
+- retrain last  one or two layers with new data
+
+**Parameter Efficient Fine Tuning (PEFT) Methods**
+
+1) **Adapters:** Freeze parameters. Then add adapters to the model, and train the parameters of the *adapters* with the new data
+2) **Low-Rank Adaptation:** Generate for each parameter matrix in the model, two matrices that when multiplied give the values of the matrix (*decomposing* $A$). E.g., $A$ has the dimension $512\times 512$ and $B$ has $512\times2$ and $C$ has $2\times512$. So that $B\cdot C=A$. Freeze $A$ and train $B$ and $C$ with new data (these are 2048 elements rather than 262144 elements). Multiply $B$ and $C$ and add it to $A$. This gives the *fine-tuned* weights.
+
+
+
+3) **Prompt Tuning:** E.g. *RAGs*
+
+
+
+
+
+
 ## Where to Learn More About Transformers and LLM
 
 **GenAI & LLMs A-Z (Advanced Technical Course)** <br> A Super Data Science course. The course is not free but a free trial of Super DataScience is available.
