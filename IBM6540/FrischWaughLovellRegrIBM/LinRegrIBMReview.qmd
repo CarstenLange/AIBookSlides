@@ -171,9 +171,9 @@ summary(ModelSqftCond100Cor)
 $$\widehat{Price}_i= NA \cdot Sqft + 78,289 \cdot Cond_i + 304,917$$
 
 ## Now the Same in 3D/Virtual Reality
-::: {style="overflow: hidden;"}
+
 ![![](images/clipboard-1227717430.png)](Diagram3DAppScreenShot.jpg)
-:::
+
 
 ## Now the Same in 3D/Virtual Reality
 
