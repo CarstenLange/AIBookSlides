@@ -153,7 +153,7 @@ ModelSqftCond100Cor=lm(Price~Sqft+Rooms, data = DataHouseSqftRooms100Cor)
 summary(ModelSqftCond100Cor)
 ```
 
-$$\widehat{Price}_i= 196 \cdot Sqft + NA \cdot Cond_i + 304,917$$
+$$\widehat{Price}_i= 196 \cdot Sqft + NA \cdot Rooms_i + 304,917$$
 
 ## Confirming the results with a Multivariate Regression {.smaller}
 
@@ -168,7 +168,7 @@ ModelSqftCond100Cor=lm(Price~Rooms+Sqft, data = DataHouseSqftRooms100Cor)
 summary(ModelSqftCond100Cor)
 ```
 
-$$\widehat{Price}_i= NA \cdot Sqft + 78,289 \cdot Cond_i + 304,917$$
+$$\widehat{Price}_i= NA \cdot Sqft + 78,289 \cdot Rooms_i + 304,917$$
 
 ## Now the Same in 3D/Virtual Reality
 
