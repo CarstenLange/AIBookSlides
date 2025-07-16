@@ -1,0 +1,180 @@
+---
+title: "Linear Regression with Frisch Waugh Lovell Theorem"
+subtitle: "Review"
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+    echo: true
+    incremental: false
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+## Frisch-Waugh-Lovell Theorem {.smaller}
+
+**Frisch-Waugh-Lovell (FWL) Theorem in a Nutshell:**
+
+When the predictor variables in an *OLS* regression are not correlated,
+we can run $j$ (e.g., two) Simple Regressions (regressions with only one
+predictor variable) and use the resulting $\beta$-coefficients for a
+joint multivariate regression.
+
+**Example:** ($Sft$ and $Cond$ are not correlated:)
+
+$$\widehat{Price}_i= \beta_{Sqft} \cdot Sqft_i + \beta_{01}$$
+$$\widehat{Price}_i= \beta_{Cond} \cdot Cond_i + \beta_{02}$$
+$$\widehat{Price}_i= \beta_{Sqft} \cdot Sqft_i+\beta_{Cond} \cdot Cond_i + \beta_0$$
+The resulting $\beta_0$ can be calculated based on the average of Price,
+Square Feet, and Condition, <br> <br> $\overline{Price}$,
+$\overline{Sqft}$ and $\overline{Cond}$, respectively.
+
+$$\beta_0=\overline{Price}-\beta_{Sqft} \cdot \overline{Sqft} - \beta_{Cond} \overline{Cond}$$
+
+## FWL Theorem with a Syntetic Dataset
+
+We have a dataset for house prices ($Price_i$) together with predictor
+variables for the houses' condition ($Cond_i$; 1 -- 20) and their square
+footage ($Sqft_i$).
+
+$Cond_i$ and $Sqft_i$ are not correlated:
+
+```{r}
+library(rio)
+library(tidyverse)
+DataHouseSqftCond=import(
+  "https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/Data/DataDiagram.csv") |>   rename(Cond=Grade)
+cat("Correlation between Sqft and Cond =",cor(DataHouseSqftCond$Sqft, DataHouseSqftCond$Cond))
+
+```
+
+## How much is a House Worth?
+
+**This works for all OLS regressions:**
+
+A house with average properties should be predicted with an average
+price!
+
+```{r}
+MeanSqft=mean(DataHouseSqftCond$Sqft)
+cat("The mean square footage in the dataset is:", MeanSqft)
+
+MeanCond=mean(DataHouseSqftCond$Cond)
+cat("The mean house condition in the dataset is:", MeanCond)
+
+MeanPrice=mean(DataHouseSqftCond$Price)
+cat("The mean house price in the dataset is:", MeanPrice)
+```
+
+## Running the Two Simple Regressions Visually
+
+**Price on Square Feet:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly){target="Blank_"}<br>
+<small>210</small> <br><br> **Price on Condition:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/CondOnly](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/CondOnly){target="Blank_"}<br>
+<small>15,000</small>
+
+## Confirming the results with a Multivariate Regression {.smaller}
+
+From the visual Simple Regressions we got:
+
+$\beta_{Sqft}=210$ and $\beta_{Cond}=15,000$
+
+From the multivariate regression we get:
+
+```{r}
+ModelSqftCond=lm(Price~Sqft+Cond, data = DataHouseSqftCond)
+summary(ModelSqftCond)
+```
+
+$$\widehat{Price}_i= 212 \cdot Sqft + 15,001 \cdot Cond_i + 298,100$$
+
+## FWL Theorem with a Another Syntetic Dataset
+
+We have another dataset for house prices ($Price_i$) together with
+predictor variables for the houses' condition ($Rooms_i$; 1 -- 20) and
+square footage ($Sqft_i$).
+
+$Rooms_i$ and $Sqft_i$ are correlated. Each room has always 400 Sqft:
+
+$$Sqft_i=400\cdot Rooms + 0$$
+
+```{r}
+library(rio)
+library(tidyverse)
+DataHouseSqftRooms100Cor=import(
+  "https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/Data/DataDiagram100Cor.csv") 
+cat("Correlation between Sqft and Cond =",cor(DataHouseSqftRooms100Cor$Sqft, DataHouseSqftRooms100Cor$Rooms))
+
+```
+
+**Note**, because of predictor correlation $\neq$ 0. *FWL* Theorem is
+not applicable.
+
+## How much is a House Worth?
+
+**This works for all OLS regressions:**
+
+A house with average properties should be predicted with an average
+price!
+
+```{r}
+MeanSqft=mean(DataHouseSqftRooms100Cor$Sqft)
+cat("The mean square footage in the new dataset is:", MeanSqft)
+
+MeanRooms=mean(DataHouseSqftRooms100Cor$Rooms)
+cat("The mean number of rooms in the new dataset is:", MeanRooms)
+
+MeanPrice=mean(DataHouseSqftRooms100Cor$Price)
+cat("The mean house price in the dataset is:", MeanPrice)
+```
+
+## Running the Two Simple Regressions Visually
+
+**Price on Square Feet:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly100Cor](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly100Cor){target="Blank_"}<br>
+<small>200</small> <br><br>
+
+**Price on Rooms:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/RoomsOnly100Cor](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/RoomsOnly100Cor){target="Blank_"}<br>
+<small>78,000</small>
+
+## Confirming the results with a Multivariate Regression {.smaller}
+
+From the visual Simple Regressions we got:
+
+$\beta_{Sqft}=200$ and $\beta_{Rooms}=78000$
+
+From the multivariate regression we get:
+
+```{r}
+ModelSqftCond100Cor=lm(Price~Sqft+Rooms, data = DataHouseSqftRooms100Cor)
+summary(ModelSqftCond100Cor)
+```
+
+$$\widehat{Price}_i= 196 \cdot Sqft + NA \cdot Cond_i + 304,917$$
+
+## Confirming the results with a Multivariate Regression {.smaller}
+
+From the visual Simple Regressions we got:
+
+$\beta_{Rooms}=78000$ and $\beta_{Sqft}=200$
+
+From the multivariate regression we get:
+
+```{r}
+ModelSqftCond100Cor=lm(Price~Rooms+Sqft, data = DataHouseSqftRooms100Cor)
+summary(ModelSqftCond100Cor)
+```
+
+$$\widehat{Price}_i= NA \cdot Sqft + 78,289 \cdot Cond_i + 304,917$$
+
+## Now the Same in 3D/Virtual Reality
+::: {style="overflow: hidden;"}
+![![](images/clipboard-1227717430.png)](Diagram3DAppScreenShot.jpg)
+:::
+
+## Now the Same in 3D/Virtual Reality
+
+![](images/clipboard-2215799233.png)
