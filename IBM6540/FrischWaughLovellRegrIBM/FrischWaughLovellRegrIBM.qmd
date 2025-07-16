@@ -12,6 +12,14 @@ editor:
     wrap: 72
 ---
 
+## Learning Outcomes
+
+- Combine two *Simple Equations* (one predictor) into one multivariate OLS regression (only possible if predictors are uncorrelated)
+
+- See what happens if two *Simple Equations* (one predictor) are combined into one multivariate OLS regression, when predictors are perfectly correlated
+
+- Use Virtual Reality to perform the same tasks named in the learning outcomes above with 3D-diagrams
+
 ## Frisch-Waugh-Lovell Theorem {.smaller}
 
 **Frisch-Waugh-Lovell (FWL) Theorem in a Nutshell:**
