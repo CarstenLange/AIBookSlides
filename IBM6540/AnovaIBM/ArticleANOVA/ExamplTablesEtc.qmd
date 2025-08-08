@@ -1,0 +1,50 @@
+---
+title: "Untitled"
+format:
+  html:
+    number-sections: true
+    table-cap-location: top
+  pdf: default
+---
+
+Inside the chunk: Label has to be in the chunk options. Captions has to be within the kable command.
+
+```{r}
+#| label: tbl-firstsix
+#| echo: false
+
+library(knitr)
+# library(kableExtra)
+library(tibble)
+
+MyData <- tibble(x = 1:3, y = 1:3)
+
+kable(MyData, caption = "Observations from the Dataset")
+```
+
+See @tbl-firstsix
+
+```{r}
+#| label: tbl-cars
+#| tbl-cap: "Cars"
+#| tbl-colwidths: [10,10]
+
+kable(head(cars))
+```
+
+
+To reference correctly in LaTex:
+
+$$
+C^2=a^2+b^2 \label{eq-einstein}
+$$ 
+Pythagoras in Equation \eqref{eq-einstein} in LaTex. This will not work in html.
+
+To reference correctly in HTML and LaTex (but no () around equation):
+
+$$
+C^2=a^2+b^2 
+$$ {#eq-einstein2}
+
+Pythagoras in  @eq-einstein2. 
+

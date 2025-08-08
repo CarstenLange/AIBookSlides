@@ -1,12 +1,18 @@
 ---
 title: "Multimedia ANOVA Testing for Website Conversions"
-format: html
-number-sections: true
-equation-numbering: true
+author: "Carsten Lange, <br> Cal Poly, Pomona"
+format: 
+  html:
+    number-sections: true
+    equation-numbering: true
+    table-cap-location: top
+  pdf: 
+    number-sections: true
+    equation-numbering: true
 ---
 
 
-## Introduction
+# Introduction
 
 Imagine you are in charge of optimizing a company’s website. The goal is simple: increase conversions --- defined here as users clicking on the ordering form. The marketing team proposes a solution: **Enhance the website with either audio or video content to better engage visitors.\
 **But will these multimedia upgrades actually drive more clicks, or will the effort fall flat?
@@ -22,7 +28,7 @@ Afterward, the team tracks hourly conversions for each of the three scenarios (*
 In this article, we will walk through a simulated version of this marketing experiment using artificial data adapted from the well-known Palmer Penguins dataset. The setup mirrors how real companies might structure and evaluate a digital content strategy.
 
 
-## Experimental Design
+# Experimental Design
 
 To assess the impact of multimedia content on user behavior, the company conducted a randomized test involving three website variants:
 
@@ -33,7 +39,7 @@ To assess the impact of multimedia content on user behavior, the company conduct
 Every visitor arriving at the website was randomly assigned to one of these three groups. The primary metric of **conversion** was defined as whether users clicked on the ordering form. Each record reflects one hour of user data for the three scenarios leading to a total of 342 observations.
 
 
-## Data Generation and Structure
+# Data Generation and Structure
 
 To simulate this experiment, a proxy dataset was created using the well-known **Palmer Penguins** dataset. In this synthetic version:
 
@@ -48,35 +54,37 @@ The code below shows how the Palmer Penguin dataset was used to generate the dat
 #| code-fold: true
 #| warning: false
 #| message: false
+library(knitr)
+library(kableExtra)
 library(tidyverse)
 library(palmerpenguins)
-library(kableExtra)
+
 DataWeb=penguins |> 
        select(Conversions=flipper_length_mm, Treatment=species) |> 
        drop_na()
 levels(DataWeb$Treatment)=c("Control", "Audio", "Video")
 ```
 
-In the table below, each record shows for different web design scenarios how many conversions resulted within 1 hour. The experiment lasted a many hours producing $342$ observations. The first 6 records are shown:
+Each observation shows for different web design scenarios how many conversions resulted within 1 hour. The first 6 records are shown n @tbl-firstsix:
 
 ```{r}
 #| code-fold: true
+#| label: tbl-firstsix
 #| warning: false
 #| message: false
 set.seed(123)
-kbl(sample_n(DataWeb,6)) |> 
-   kable_styling(full_width = FALSE, position = "center")%>%
-   scroll_box(width = "400px")
+kable(sample_n(DataWeb,6), caption = "First Six Observations from the Dataset") 
 ```
 
-## Group and Overall Means
+# Group and Overall Means
 
-The code below generates group means for the *Control*, *Audio*, and *Video* groups, together with the overall mean (*GrandMean*) across all groups and outputs the results in a table:
+The code below generates group means for the *Control*, *Audio*, and *Video* groups, together with the overall mean (*GrandMean*) across all groups and outputs the results in @tbl-means:
 
 ```{r}
 #| code-fold: true
 #| warning: false
 #| message: false
+#| label: tbl-means
 
 GrandMean  = mean(DataWeb$Conversions)
 
@@ -91,7 +99,7 @@ MeansByTreatment <- DataWeb %>%
   ))
 N=342
 # View results
-kbl(MeansByTreatment)|> 
+kbl(MeansByTreatment, caption="Overall Mean and Means  of the Treatments")|> 
    kable_styling(full_width = FALSE, position = "center")%>%    scroll_box(width = "400px")
 ```
 
@@ -105,12 +113,15 @@ The Control group had the lowest mean but the largest sample size.
 
 The Grand Mean of 200.92 provides a useful benchmark for understanding overall performance across all treatments, especially when considering statistical comparisons or variance analysis.
 
-The figure below provides additional evidence for this impression:
+@fig-treatmentmeans provides additional evidence for this impression:
 
 ```{r}
 #| code-fold: true 
 #| warning: false 
 #| message: false
+#| label: fig-treatmentmeans
+#| fig-cap: "Treatment Means and Grand Means with Data Distribution"
+
 ggplot(DataWeb, aes(y=0, x = Conversions, color = Treatment)) +
   geom_jitter(width = 0.1) +
   geom_vline(xintercept = MeansByTreatment[[1,2]], color = "red",linewidth=0.7) +
@@ -134,7 +145,7 @@ ggplot(DataWeb, aes(y=0, x = Conversions, color = Treatment)) +
 
 **Can we scientifically determine whether these observed differences are statistically significant?**
 
-## Why Not Use Pairwise A/B Tests?
+# Why Not Use Pairwise A/B Tests?
 
 A tempting idea in this setting is to run multiple pairwise **A/B Tests** to compare each design against the *Control*:
 
@@ -166,7 +177,7 @@ Testing all treatments at once** instead of running several separate tests. This
 
 However, if the ANOVA result is significant, we know only that at least one, but not which one(s) of the variables are significant. Afterward, more testing is needed to find out which variable is significant.
 
-## Regression and ANOVA
+# Regression and ANOVA
 
 One way to approach *ANOVA* is through regression analysis. The idea is simple: if any of the treatment types (*Audio* or *Video*) has an impact on conversions, then including these variables in a regression model should improve its explanatory power.
 
@@ -174,24 +185,25 @@ This is exactly what we explore below. We fit a linear model with **Treatment** 
 
 $$Conv_i=\beta_1 Audio_i+\beta_2 Video_i+ \beta_0$$ Here, $Audio_i$ and $Video_i$ are dummy variables for group membership. The **Control group** is omitted and serves as the **reference category**.
 
-The code below runs the analysis in *R*, stores the model in the object `ModelLM`, and displays the summary output with `summary()`.
+The code below runs the analysis in *R*, stores the model in the object `ModelLM`, and displays the summary output in @tbl-LM with `summary()`.
 
 ```{r}
 #| code-fold: true
 #| warning: false
 #| message: false
+#| label: tbl-LM
 ModelLM = lm(Conversions ~ Treatment, data = DataWeb)
 
 summary(ModelLM) |> 
 broom::tidy() |> 
-kbl() |> 
+kable(caption="Output from the Linear Regression") |> 
 kable_styling(full_width = FALSE, position = "center")%>%
 scroll_box(width = "600px")
 ```
 
 At first glance, the *t-values* for the treatment coefficients may suggest statistical significance. However, due to the **multiple testing problem**, we cannot rely on these individual *t-tests* for a *multi-variable* comparison. Doing so would increase the risk of an inflated *Type I error* — falsely concluding that a difference exists when it does not.
 
-### From Regression to ANOVA
+## From Regression to ANOVA
 
 So, if multiple *t-test* are not an option:
 
@@ -214,8 +226,8 @@ In other words, the *restricted model* predicts every observation using only the
 To quantify the improvement of the *Full* model over the *Restricted* model based on the Total Sum of Squared Errors ($SSE$), we calculate the *F-value* as follows:
 
 $$
-F = \left(\frac{SSE_{restr}-SSE_{full}}{df_{full}} \right )\div
-     \left(\frac{SSE_{full}}{df_{restr}-df_{full}} \right )
+F = \left(\frac{SSE_{restr}-SSE_{full}}{df_{restr}-df_{full}} \right ) \div
+     \left(\frac{SSE_{full}}{df_{full}} \right )
 $$ {#eq-FValueOrg}
 $$
 \Longleftrightarrow$$ 
@@ -234,13 +246,14 @@ Source: <https://online.stat.psu.edu/stat501/lesson/6/6.2>
 :::
   
   
-### Break Down the F-Value Formula
+## Break Down the F-Value Formula
  
 **The Right Multiplier (is constant):**
 
 > The second term in the formula — the right-hand multiplier — is constant once the experimental design is fixed. It depends only on the degrees of freedom of the models:  
 >
-> - **Number of observations:** $N = 342$  
+> - **Number of observations:** 
+    $N = 342$  
 > - **Degrees of freedom for the restricted model (intercept only):**  
 >   $df_{\text{restr}} = 342 - 1 = 341$  
 > - **Degrees of freedom for the full model (intercept + 2 treatments):**  
@@ -258,10 +271,11 @@ Source: <https://online.stat.psu.edu/stat501/lesson/6/6.2>
 **The Left Multiplier: Model Improvement** 
 
 > The left term in the formula captures how much better the full model is in reducing the squared error:
-
+>
 > $$
 > \frac{SSE_{restr}-SSE_{full}}{SSE_{full}}
 > $$ {#eq-ProportionOfImprovement} 
+<br>
 <br>
 
 ::: {.p-3 .bg-secondary .rounded}
@@ -276,7 +290,7 @@ $$
    \overbrace{\frac{df_{full}}{df_{restr}-df_{full}}}^{C_{onst}}
 $$
 
-### Calculating the SSEs in R
+## Calculating the SSEs in R
 
 To compute the $SSE$ values for both models and derive the F-statistic, we use the `anova()` function for a linear model:
 
@@ -289,6 +303,7 @@ The code below outputs the related *ANOVA* table and adds a row for the *restric
 #| code-fold: true
 #| warning: false
 #| message: false
+#| label: tbl-ANOVA
 ModelAnovaRestr=anova(lm(Conversions~1, data=DataWeb))
 
 FancyOutput=rbind(broom::tidy(ModelAnovaRestr), 
@@ -297,30 +312,30 @@ FancyOutput=rbind(broom::tidy(ModelAnovaRestr),
 FancyOutput[1,1]="Intercept (ModelRestr)"
 FancyOutput[3,1]="Residuals (ModelFull)"
 colnames(FancyOutput)=c("Term","df", "SSE","MeanSq","F-Value")
-kbl(FancyOutput) |> 
+kbl(FancyOutput, caption = "Ammended anova() Output") |> 
    kable_styling(full_width = FALSE, position = "center")%>%    scroll_box(width = "600px")                 
 ```
 <br><br>
 
-In the ANOVA output generated by `anova(ModelLM)`, the **F-value** is already reported. However, we recalculate it here to illustrate the procedure *under the hood* of the `anova()` function.
+In the ANOVA output generated by `anova(ModelLM)`, the **F-value** is already reported. However, we will recalculate it below to illustrate the procedure *under the hood* of the `anova()` function.
 
 ---
 
 **Step 1:**  
-The **Sum of Squared Errors** for the **restricted model**, which includes only the intercept (i.e., the grand mean of conversions), is found in the **first row** of the ANOVA table, under the $SSE$ column ($SSE_{\text{restr}} = 67,\!426$).
+The **Sum of Squared Errors** for the **restricted model**, which includes only the intercept (i.e., the grand mean of conversions), is found in the **first row** of the ANOVA @tbl-ANOVA , under the $SSE$ column $(SSE_{\text{restr}} = 67,\!426)$.
 
 **Step 2:**  
-The **Sum of Squared Errors** for the **full model**, which includes the predictors *Audio* and *Video*, is listed in the **Residuals** row (third row) of the same table ($SSE_{\text{full}} = 14,\!953$).
+The **Sum of Squared Errors** for the **full model**, which includes the predictors *Audio* and *Video*, is listed in the **Residuals** row (third row) of @tbl-ANOVA ($SSE_{\text{full}} = 14,\!953$).
 
 
-> 🔍 **Note:** The first row of the table (labeled *Intercept*) is included primarily for convenience and interpretability. However, all values required to compute the F-statistic using @eq-FValue can be derived entirely from the **second and third rows** which is the output produced by `anova()`.
+> 🔍 **Note:** The first row of the @tbl-ANOVA (labeled *Intercept*) is included primarily for convenience and interpretability. However, all values required to compute the F-statistic using @eq-FValue can be derived entirely from the **second and third rows** which is the output produced by `anova()`.
 >
 > Specifically:
 >
 > - $SSE_{restr}-SE_{full}=67,\!426-14,\!953=52,\!473.28$ and 
 > - $df_{restr}-df_{full}= 341-339=2$ 
 > 
-> are both reported in  row 2.
+> are both reported in  row 2 of @tbl-ANOVA.
 
 
 **Step 3:**  
@@ -356,85 +371,112 @@ The sum of squared errors ($SSE$) in the restricted model is approximately **3.5
 
 Multiplying this improvement factor by the constant $(169.5)$ yields the **F-value of 594.8**, as reported in the ANOVA output. This same value also appears in the `summary()` output for the linear regression model, confirming consistency across both methods of evaluation.
 
-## F-value: When is Large Large Enough for Significance (needs editing work by CL!)
+# F-value: When is Large Large Enough for Significance (needs editing work by CL!)
 
-### Calculating the p-value for the F-statistic
+In the previous section we derived an F-value of $F=594.8$ and an F-value of that the **sum of squared errors** in the restricted model was approximately **3.5 times larger** than in the model that included the treatment groups: *Audio*, *Video*, and (implicitly) *Control*. 
 
-While the F-value quantifies how much better the full model fits the data compared to the restricted model, we still need to assess whether this improvement is **statistically significant**.
+This suggests that the chance of all three group means being equal — and thus, their inclusion in the *full model* having no impact — is **extremely small**.
 
-This is done by computing a **p-value**, which represents the probability of observing an F-statistic as large as (or larger than) the one we calculated — **assuming the null hypothesis is true**.
+Still, in order to make a **scientific claim**, we need to test this assumption formally by stating and rejecting an (admittedly ridiculous)  null hypothesis:
 
-#### Null Hypothesis
+$$
+\begin{align}
+& \text{Hypothesis 0:}\\
+\\
+&Mean(Conv_{Control})=Mean(Conv_{Audio})=Mean(Conv_{Video})
+\end{align}
+$$
+If **Hypothesis 0** were true, then including the treatment variables in the model would **not** reduce the error. The full model would perform just as poorly as the restricted one — meaning the F-statistic should be around **1**. Thus, we can simplify our **Hypothesis 0** to:
 
-The null hypothesis in this context is:
+$$
+\begin{align}
+&\text{Hypothesis 0:}\\
+\\
+&F=1
+\end{align}
+$$
 
-> All group means are equal — the *Audio* and *Video* treatments have no effect on conversions.
+> 🤓 **Only for the curious reader:** You might wonder — should the F-value be 0 under *Hypothesis 0*? After all, if there is no improvement, the numerator of the F-value (i.e., $SSE_{\text{restr}} - SSE_{\text{full}}$) in @eq-FValue would be zero.  
+>
+> That intuition is partly correct: if  *Hypothesis 0* is true, the **expected value** of this difference is indeed zero:
+> $$
+> E(SSE_{\text{restr}} - SSE_{\text{full}}) = 0
+> $$
+>
+> However, the **variance** of 
+> $(SSE_{\text{restr}} - SSE_{\text{full}})$
+> is **not zero**, because repeated  sampling would yield slightly different SSEs for each model. In fact, $SSE_{\text{restr}} - SSE_{\text{full}}$ if *Hypothesis 0* is true:
+> $$Var(SSE_{restr}-SSE_{Full})=Var(SSE_{Full})$$
+> 
+> Since we find these two variances in the divident and divisor of @eq-FValueOrg, $F=1$ --- if the *Hypothesis 0* is true.
 
-If this were true, any differences in the model fit between groups would be due to random chance.
+Although we obtained an F-value of $F = 594.8$, we cannot immediately rule out the possibility that this result was due to **random chance** — that is, a fluke in our sample — and that the true *F-value* might still be 1.
 
-------------------------------------------------------------------------
+**However, we can assess how (un)likely it would be to obtain such a high *F-value* if *Hypothesis 0* were true.**
 
-#### Degrees of Freedom
+To do this, we calculate a **p-value**, which represents the probability of observing an *F-value* as extreme as the one we found — **assuming Hypothesis 0 is true**.
 
-To compute the p-value from the F-distribution, we need to know the degrees of freedom for both models:
+To compute the *p-value* from the *F-distribution*, we need to know the degrees of freedom for the two variances we compare according to @eq-FValue. The first one is $df_{restr}-df_{full}$ (341-339=2) and the second one is $df_{full}$ (339).
 
--   **Numerator degrees of freedom (df1):** This corresponds to the number of treatment groups minus 1.\
-    Since we compare 3 groups (*Control*, *Audio*, *Video*), we have:
-
-    $$
-    df_1 = 3 - 1 = 2
-    $$
-
--   **Denominator degrees of freedom (df2):** This is the residual degrees of freedom from the full model:\
-    \[ df_2 = 342 \text{ (observations)} - 3 \text{ (parameters: Intercept + 2 treatments)} = 339 \]
-
-#### Calculating the p-value in R
-
-We can now calculate the upper-tail probability — i.e., the **p-value** — using the `pf()` function:
+Since we trying to reject the hypothesis with a sample *F-value* that is far to the right of $F=1$ we are performing a *right-tail* test. Below is the related code and the result:
 
 ```{r}
-#| code-fold: true
-#| warning: false
-#| message: false
-1 - pf(594.8, df1 = 2, df2 = 339)
+PValue=pf(594.8, df1 = 2, df2 = 339, lower.tail = FALSE)
 ```
 
-<!-- **Anova:** -->
 
-<!-- Sum of Errors: -->
+```{r}
+#| code-fold: true 
+#| warning: false
+#| message: false
 
-<!-- ```{r} -->
-<!-- #| code-fold: true -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- DataErrors=tibble( -->
-<!-- ConversActual= ModelLM$model[[1]], -->
-<!-- ConversPredicted = fitted(ModelLM), -->
-<!-- ConversResiduals =residuals(ModelLM)) -->
-<!-- head(DataErrors) -->
-<!-- ``` -->
+cat("The probability to get such an high F-Value, \nif the Hyppothesis 0 were true,
+is (in scientific notation):\n", PValue)
 
-<!-- **Sum of Squared Errors:** -->
+cat("The probability to get such an high F-Value, \nif the Hyppothesis 0 were true,
+is (written out):\n", format(PValue, scientific = FALSE))
 
-<!-- ```{r} -->
-<!-- #| code-fold: true -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- SSEFull=sum(DataErrors$ConversResiduals^2) -->
-<!-- SSERestr=sum((DataErrors$ConversActual- -->
-<!--                   mean(DataErrors$ConversActual))^2) -->
-<!-- cat("SSEFull:",SSEFull) -->
-<!-- cat("SSERestr:",SSERestr) -->
-<!-- ``` -->
+```
+
+With such a low probability for a *Type-1* error we can safely state:
+
+**One of our treatments, did significantly influence the conversions**
+
+To identify which treatment *Audio* or *Video* (or possibly both) influenced conversions, we need further testing, which exceeds the scope of this article.
+
+Happy analytics!
 
 
-<!-- ```{r} -->
-<!-- #| code-fold: true -->
-<!-- #| warning: false -->
-<!-- #| message: false -->
-<!-- F=((SSERestr - SSEFull)/2) / (SSEFull/339) -->
-<!-- cat("F Value:", F) -->
-<!-- ``` -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- ## Within Between -->
 

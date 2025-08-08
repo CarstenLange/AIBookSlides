@@ -2,28 +2,26 @@
 title: "Untitled"
 format: html
 ---
+Although we obtained an F-value of $F = 594.8$, we cannot immediately rule out the possibility that this result was due to **random chance** — that is, a fluke in our sample — and that the true F-value under the null hypothesis might still be 1.
 
-## Quarto
+**However, we can assess how likely it would be to obtain such a high F-value if Hypothesis 0 were true.**
 
-**Step 2:**  
-The **Sum of Squared Errors** for the **full model**, which includes the predictors *Audio* and *Video*, is listed in the **Residuals** row (third row) of the ANOVA table:
+To do this, we calculate a **p-value**, which represents the probability of observing an F-statistic as extreme as the one we found — **assuming the null hypothesis is true**.
 
-\[
-SSE_{\text{full}} = 14,\!953
-\]
+According to @eq-FValue, the F-distribution for this test depends on two degrees of freedom:
 
-> 🔍 **Note:** The first row of the table (often labeled *Treatment*) is included primarily for convenience and interpretability. However, all values required to compute the F-statistic using @eq-FValue can be derived entirely from the **second and third rows** of the output produced by `anova()`.
+- The numerator degrees of freedom (between-group):  
+  $df_1 = df_{\text{restr}} - df_{\text{full}} = 341 - 339 = 2$
+  
+- The denominator degrees of freedom (within-group/residual):  
+  $df_2 = df_{\text{full}} = 339$
 
-Specifically:
+Since our observed F-value is far greater than 1, we are conducting a **right-tailed test** — testing the probability of observing an F-value as large as 594.8 or larger.
 
-- The numerator of the F formula:  
-  \[
-  SSE_{\text{restr}} - SSE_{\text{full}} = 67,\!426 - 14,\!953 = 52,\!473
-  \]
-  comes directly from the **Treatment row**.
+We can compute this in *R* using the `pf()` function:
 
-- The difference in degrees of freedom:
-  \[
-  df_{\text{restr}} - df_{\text{full}} = 341 - 339 = 2
-  \]
-  also appears in the table, allowing you to compute the F-statistic **without needing to extract separate model components manually**.
+```{r}
+#| warning: false
+#| message: false
+PValue = pf(594.8, df1 = 2, df2 = 339, lower.tail = FALSE)
+cat("The chance to get such a high F-value if Hypothesis 0 were true is (in scientific notation):", PValue)
