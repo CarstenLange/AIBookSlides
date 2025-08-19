@@ -1,0 +1,41 @@
+---
+title: "Hierachical Cluster Analysis"
+format: html
+---
+
+library(tidymodels)
+library(rio)
+library(janitor)
+library(tidyclust)
+library(factoextra)
+DataCustSeg=
+  import("https://econ.lange-analytics.com/RData/Datasets/Mall_Customers.xlsx") |>
+  clean_names("upper_camel")|> 
+  select(-CustomerId) |> 
+  mutate(SexFemale=ifelse(Gender=="Female",1,0), Gender=NULL)
+
+RecipeCustSeg=recipe(~., data=DataCustSeg) |> 
+              step_range(min = 0, max = 1) 
+
+
+ModelDesignClust=hier_clust(num_clusters = 4,
+                            linkage_method = "ward.D") |> 
+                 set_engine("stats") |> 
+                 set_mode("partition")
+
+WFModelClust=workflow() |> 
+             add_model(ModelDesignClust) |> 
+             add_recipe(RecipeCustSeg) |> 
+             fit(DataCustSeg)
+
+ModelTrainedClust=extract_fit_engine(WFModelClust)
+fviz_dend(ModelTrainedClust, k=4, rect=TRUE, show_labels = FALSE,  palette = c("red","green","blue", "yellow") )
+
+DataCustSegWithAssignm=extract_cluster_assignment(WFModelClust) |>                         cbind(DataCustSeg) 
+
+DataCentroids=extract_centroids(WFModelClust) |> 
+              cbind(sse_within(WFModelClust))
+DataCentroids=DataCentroids[-6] |> 
+              mutate(AvgWss=wss/n_members)
+
+print(DataCentroids)

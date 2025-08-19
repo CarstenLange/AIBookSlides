@@ -1,0 +1,9 @@
+---
+title: "The Grammar of Graphics for Creaating Graphs"
+format: 
+  revealjs:
+    code-fold: true
+    navigation-mode: vertical
+---
+
+# 
