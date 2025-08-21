@@ -1,0 +1,188 @@
+---
+title: "Sample Statistics and Pivot Tables"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    output-location: fragment
+    incremental: false
+    warning: false
+    message: false
+    navigation-mode: vertical
+    scrollable: true
+    smaller: true
+include-in-header:
+  text: |
+    <style>
+    .reveal .slides section:not(:first-of-type) h1,
+    .reveal .slides section:not(:first-of-type) h2,
+    .reveal .slides section:not(:first-of-type) h3,
+    .reveal .slides section:not(:first-of-type) h4,
+    .reveal .slides section:not(:first-of-type) h5,
+    .reveal .slides section:not(:first-of-type) h6 {
+      font-size: 142% !important;
+    }
+    </style>
+---
+
+## Loading Libraries and Data
+
+```{r}
+library(knitr)
+library(tidyverse)
+library(janitor)
+library(rio)
+DataSalesOrg=import("ProductSalesRegion.xlsx") |> 
+          clean_names("upper_camel") |> 
+          select(Date, Product,Region, SalesPerson=Salesperson, 
+                 Quantity, Price=UnitPrice) |> 
+          mutate(Amount=Price*Quantity)
+kable(head(DataSalesOrg))
+```
+
+## Working with a Data Subset `DataSales`
+
+```{r}
+DataSales=DataSalesOrg |> 
+             select(Region, SalesPerson, Quantity, Amount)
+
+kable(head(DataSales))
+```
+
+## Sample Statistics with `summarize()`
+
+```{r}
+DataSalesGrandTotal=DataSales |> 
+                    summarise(Region="Total", SalesPerson="Total", 
+                              N=n(),
+                              QuantitySum=sum(Quantity), AmountSum=sum(Amount), 
+                              QuantityMean=mean(Quantity), AmountMean=mean(Amount))
+kable(DataSalesGrandTotal)
+```
+
+## Sample Statistics with `skimr()`
+
+```{r}
+library(skimr)
+DataSkim=skim(DataSales)
+kable(DataSkim)
+```
+
+## Pivot Table: Combining `grouped_by()` (SalesPerson) , `summarise()`, and Row Bind Totals
+
+```{r}
+DataGroupedBySalPer= DataSales |>
+                        group_by(SalesPerson) |> 
+                        summarise(N=n(),
+                              QuantitySum=sum(Quantity), 
+                              AmountSum=sum(Amount), 
+                              QuantityMean=mean(Quantity),   
+                              AmountMean=mean(Amount))
+DataGroupedBySalPer=rbind(DataGroupedBySalPer,DataSalesGrandTotal[-1])                       
+kable(DataGroupedBySalPer)
+```
+
+## Bar Plot from Pivot Table
+
+```{r}
+library(ggplot2)
+library(ggbreak)
+library(scales)
+
+ggplot(DataGroupedBySalPer, aes(x = SalesPerson, y = AmountSum, fill = SalesPerson)) +
+  geom_col() +
+  scale_fill_manual(values = c("#999999","#E69F00","#56B4E9","green","blue","#56B4E9","red")) +
+  scale_y_break(c(0, 700000),  space = 0.2) +
+  scale_y_break(c(900000, 4500000), space = 0.2) +
+  scale_y_continuous(
+    limits = c(0, 4750000),
+    breaks = seq(0, 5000000, 100000),
+    labels = comma
+  ) +
+  theme(
+    axis.title.y.right = element_blank(),
+    axis.text.y.right  = element_blank(),
+    axis.ticks.y.right = element_blank()
+  )
+```
+
+## Pivot Table: Combining `grouped_by()` (Region),  `summarise()`, and binding Totals
+
+```{r}
+DataGroupedBySalPer= DataSales |>
+                        group_by(Region) |> 
+                        summarise(N=n(),
+                                  QuantitySum=sum(Quantity), 
+                                  AmountSum=sum(Amount), 
+                                  QuantityMean=mean(Quantity),   
+                                  AmountMean=mean(Amount))
+
+DataGroupedBySalPer=rbind(DataGroupedBySalPer,DataSalesGrandTotal[-2])                       
+kable(DataGroupedBySalPer)
+```
+
+## Pivot Table: Combining `grouped_by()` (Region/SalesPerson) and `summarise()`
+
+```{r}
+DataGroupedByRegSalPers=DataSales |>
+                        group_by(Region,SalesPerson) |> 
+                        summarise(N=n(),
+                        QuantitySum=sum(Quantity), AmountSum=sum(Amount))
+                        
+kable(DataGroupedByRegSalPers)
+```
+
+## Pivot Table: Combining `grouped_by()` (SalesPerson/Region) and `summarise()`
+
+```{r}
+DataGroupedBySalPersReg=DataSales |>
+                        group_by(SalesPerson, Region) |> 
+                        summarise(N=n(),
+                        QuantitySum=sum(Quantity), AmountSum=sum(Amount))
+                        
+kable(DataGroupedBySalPersReg)
+```
+
+## Adding SubTotals to Pivot `grouped_by()` (SalesPerson/Region) 
+
+```{r}
+DataSalesSubTot=DataSales |>
+                        group_by(SalesPerson) |> 
+                        summarise(Region="ZZZubTotal", N=n(),
+                        QuantitySum=sum(Quantity), AmountSum=sum(Amount))
+kable(DataSalesSubTot)
+```
+
+
+```{r}
+DataGroupedBySalPersReg=DataSales |>
+                        group_by(SalesPerson, Region) |> 
+                        summarise(N=n(),
+                              QuantitySum=sum(Quantity), AmountSum=sum(Amount))
+                        
+kable(DataGroupedBySalPersReg)
+```
+
+## Row Binding SubTotals to Pivot `grouped_by()` (**SalesPerson and Region**) 
+
+```{r}
+DataSalesFinalPivot=rbind(DataGroupedBySalPersReg, DataSalesSubTot)
+kable(DataSalesFinalPivot)
+```
+
+## Arranging (sorting) the `rbind()` Observations `grouped_by()` (**SalesPerson and Region**) and Adding Grand Total
+
+```{r}
+DataSalesFinalPivot=rbind(DataGroupedBySalPersReg, DataSalesSubTot) |> 
+                    arrange(SalesPerson, Region) |> 
+                    mutate(Region=str_replace_all(Region, "ZZZ", "S")) |> 
+                    rbind(DataSalesGrandTotal)
+
+kable(DataSalesFinalPivot) 
+  
+```
