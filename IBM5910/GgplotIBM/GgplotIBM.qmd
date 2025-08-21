@@ -16,6 +16,10 @@ format:
     navigation-mode: vertical
     scrollable: true
     smaller: true
+    footer: '<a href="https://r4ds.hadley.nz/data-visualize.html" target="_blank">Read Textbook</a>'
+
+  
+    
 include-in-header:
   text: |
     <style>
@@ -208,7 +212,7 @@ geom_smooth(aes(color = Treatment), method = "lm", se = FALSE)
 ```
 
 # Step 3: Scaling `x`-axis and `y`-axis 
-`scale
+
 ```{r}
 ggplot(DataWebPurch, mapping=aes(x=Purchases, y=Revenue)) +
 geom_point(mapping=aes(color = Treatment)) +
@@ -220,12 +224,12 @@ scale_y_continuous(limits = c(3000,6000), breaks = seq(3000,6000,500),
 
 ```
 
-# Step 4: Adding Labels with `lab()`
-`scale
+## Step 4: Adding Labels with `lab()`
+
 ```{r}
 ggplot(DataWebPurch, mapping=aes(x=Purchases, y=Revenue)) +
 geom_point(mapping=aes(color = Treatment)) +
-geom_smooth(aes(color = Treatment), method = "lm", se = FALSE)+
+geom_smooth(mapping=aes(color = Treatment), method = "lm", se = FALSE)+
 scale_x_continuous(limits = c(12,24), breaks = seq(12,24,1), 
                    minor_breaks = seq(12,24,1) )+
 scale_y_continuous(limits = c(3000,6000), breaks = seq(3000,6000,500), 
@@ -237,5 +241,47 @@ labs(
   x = "Purchases per Day",
   y = "Revenue in US$"
 )
+
+```
+
+## Bar Chart and Column Chart
+
+These charts have a categorical variable as the x-axis possibly encoded as a `factor`.
+
+- A Bar chart has counts (or count related), pseudo-continuous  y-axis
+
+- A Col chart displays predetermined continuous variable on the y-axis
+
+## Bar Chart
+
+```{r}
+ggplot(DataWebPurch, mapping=aes(x=Treatment, fill=Treatment))+
+geom_bar()+
+scale_fill_viridis_d(option="magma")
+
+```
+## Col Chart (with Assessible Colors)
+
+```{r}
+# Summarize by Treatment
+DataWebPurchMeans <- DataWebPurch |> 
+  group_by(Treatment) |> 
+  summarise(
+    MeanRevenue = mean(Revenue)
+  )
+kable(DataWebPurchMeans)
+```
+
+## Plot MeanRevenue by Treatment
+```{r}
+ggplot(DataWebPurchMeans, aes(x = Treatment, y = MeanRevenue, fill = Treatment)) +
+  geom_col() +
+  scale_fill_manual(values = c("red","green","blue")) +
+  labs(
+    title = "Mean Revenue by Treatment",
+    x = "Treatment",
+    y = "Mean Revenue"
+  )
+
 
 ```

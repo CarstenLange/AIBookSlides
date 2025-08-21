@@ -9,7 +9,7 @@
 <link href="GgplotIBM_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.31">
 
-  <meta name="author" content="Carsten  Lange">
+  <meta name="author" content="Carsten Lange">
   <title>The Grammar of Graphics for Creating Graphs</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -588,9 +588,9 @@ Non–data elements: fonts, grid lines, background, legend placement, axis styli
 </div>
 </section>
 
+<section>
 <section id="step-3-scaling-x-axis-and-y-axis-1" class="title-slide slide level1 center">
 <h1>Step 3: Scaling <code>x</code>-axis and <code>y</code>-axis</h1>
-<p>`scale</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
@@ -613,16 +613,14 @@ Non–data elements: fonts, grid lines, background, legend placement, axis styli
 </div>
 </div>
 </section>
-
-<section id="step-4-adding-labels-with-lab" class="title-slide slide level1 center">
-<h1>Step 4: Adding Labels with <code>lab()</code></h1>
-<p>`scale</p>
+<section id="step-4-adding-labels-with-lab" class="slide level2">
+<h2>Step 4: Adding Labels with <code>lab()</code></h2>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">ggplot</span>(DataWebPurch, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Purchases, <span class="at">y=</span>Revenue)) <span class="sc">+</span></span>
 <span id="cb14-2"><a href=""></a><span class="fu">geom_point</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">color =</span> Treatment)) <span class="sc">+</span></span>
-<span id="cb14-3"><a href=""></a><span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">color =</span> Treatment), <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb14-3"><a href=""></a><span class="fu">geom_smooth</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">color =</span> Treatment), <span class="at">method =</span> <span class="st">"lm"</span>, <span class="at">se =</span> <span class="cn">FALSE</span>)<span class="sc">+</span></span>
 <span id="cb14-4"><a href=""></a><span class="fu">scale_x_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">24</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">12</span>,<span class="dv">24</span>,<span class="dv">1</span>), </span>
 <span id="cb14-5"><a href=""></a>                   <span class="at">minor_breaks =</span> <span class="fu">seq</span>(<span class="dv">12</span>,<span class="dv">24</span>,<span class="dv">1</span>) )<span class="sc">+</span></span>
 <span id="cb14-6"><a href=""></a><span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">3000</span>,<span class="dv">6000</span>), <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">3000</span>,<span class="dv">6000</span>,<span class="dv">500</span>), </span>
@@ -645,12 +643,106 @@ Non–data elements: fonts, grid lines, background, legend placement, axis styli
 </div>
 </div>
 </div>
-
 </section>
+<section id="bar-chart-and-column-chart" class="slide level2">
+<h2>Bar Chart and Column Chart</h2>
+<p>These charts have a categorical variable as the x-axis possibly encoded as a <code>factor</code>.</p>
+<ul>
+<li><p>A Bar chart has counts (or count related), pseudo-continuous y-axis</p></li>
+<li><p>A Col chart displays predetermined continuous variable on the y-axis</p></li>
+</ul>
+</section>
+<section id="bar-chart" class="slide level2">
+<h2>Bar Chart</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">ggplot</span>(DataWebPurch, <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Treatment, <span class="at">fill=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb15-2"><a href=""></a><span class="fu">geom_bar</span>()<span class="sc">+</span></span>
+<span id="cb15-3"><a href=""></a><span class="fu">scale_fill_viridis_d</span>(<span class="at">option=</span><span class="st">"magma"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="GgplotIBM_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="col-chart-with-assessible-colors" class="slide level2">
+<h2>Col Chart (with Assessible Colors)</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="co"># Summarize by Treatment</span></span>
+<span id="cb16-2"><a href=""></a>DataWebPurchMeans <span class="ot">&lt;-</span> DataWebPurch <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href=""></a>  <span class="fu">group_by</span>(Treatment) <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a href=""></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-5"><a href=""></a>    <span class="at">MeanRevenue =</span> <span class="fu">mean</span>(Revenue)</span>
+<span id="cb16-6"><a href=""></a>  )</span>
+<span id="cb16-7"><a href=""></a><span class="fu">kable</span>(DataWebPurchMeans)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Treatment</th>
+<th style="text-align: right;">MeanRevenue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Control</td>
+<td style="text-align: right;">3879.139</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Audio</td>
+<td style="text-align: right;">4883.382</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Video</td>
+<td style="text-align: right;">4750.488</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="plot-meanrevenue-by-treatment" class="slide level2">
+<h2>Plot MeanRevenue by Treatment</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a><span class="fu">ggplot</span>(DataWebPurchMeans, <span class="fu">aes</span>(<span class="at">x =</span> Treatment, <span class="at">y =</span> MeanRevenue, <span class="at">fill =</span> Treatment)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href=""></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb17-3"><a href=""></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"red"</span>,<span class="st">"green"</span>,<span class="st">"blue"</span>)) <span class="sc">+</span></span>
+<span id="cb17-4"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb17-5"><a href=""></a>    <span class="at">title =</span> <span class="st">"Mean Revenue by Treatment"</span>,</span>
+<span id="cb17-6"><a href=""></a>    <span class="at">x =</span> <span class="st">"Treatment"</span>,</span>
+<span id="cb17-7"><a href=""></a>    <span class="at">y =</span> <span class="st">"Mean Revenue"</span></span>
+<span id="cb17-8"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="GgplotIBM_files/figure-revealjs/unnamed-chunk-17-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+<p><a href="https://r4ds.hadley.nz/data-visualize.html" target="_blank">Read Textbook</a></p>
 </div>
 </div></div>
 
