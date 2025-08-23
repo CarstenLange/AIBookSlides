@@ -16,6 +16,8 @@ format:
     navigation-mode: vertical
     scrollable: true
     smaller: true
+    footer: '<a href="https://r4ds.hadley.nz/data-transform.html#groups" target="_blank">Read Textbook</a>'
+    
 include-in-header:
   text: |
     <style>
