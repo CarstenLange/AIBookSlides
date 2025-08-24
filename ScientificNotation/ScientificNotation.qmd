@@ -1,0 +1,103 @@
+---
+title: Scientific Notation
+subtitle: "How are Very Small and Very Big Numbers Displayed in R and Ohter Statistics Apps?" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    output-location: fragment
+    incremental: false
+    warning: false
+    message: false
+    navigation-mode: vertical
+    scrollable: true
+    smaller: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+    
+include-in-header:
+  text: |
+    <style>
+    .reveal .slides section:not(:first-of-type) h1,
+    .reveal .slides section:not(:first-of-type) h2,
+    .reveal .slides section:not(:first-of-type) h3,
+    .reveal .slides section:not(:first-of-type) h4,
+    .reveal .slides section:not(:first-of-type) h5,
+    .reveal .slides section:not(:first-of-type) h6 {
+      font-size: 142% !important;
+    }
+    </style>
+---
+
+## Learning Outcomes
+
+-  
+
+## How are Very Big Numbers Presented {.smaller}
+
+
+The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)
+
+\begin{eqnarray*}
+GDP&=&2.2996086 \cdot 10000000000000\\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10 \\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10^{13}
+\end{eqnarray*}
+
+Let us see what R does:
+
+```{r}
+#| echo: true
+GDPUS=22996086000000
+print(GDPUS)
+
+```
+
+
+
+
+## How are Very Small Numbers Presented 🤓 {.smaller}
+
+::: {.panel-tabset}
+
+### Main 
+
+The probability of getting struck by lightning in the US is about $0.000000000365$ on any randomly chosen day.
+
+\begin{eqnarray*}
+ProbLight&=&\frac{3.65}{10000000000} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10\cdot 10\cdot 10\cdot 10\cdot 10\cdot                              10\cdot 10\cdot 10\cdot 10\cdot 10} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10^{10}}\\
+&\Longleftrightarrow&\\
+ProbLight&=&3.65 \cdot 10^{-10}
+\end{eqnarray*}
+
+
+### Why?
+
+In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:
+
+$$\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365$$
+### What R Does  
+
+Let us see what R does:
+
+```{r}
+#| echo: true
+ProbStruck=0.000000000365
+cat("Probabilty to get stuck by a lighning on an avg. day:", ProbStruck)
+```
+
+:::
+
+::: footer
+See: [RandRStudioScriptPart1.R script400](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
+:::
