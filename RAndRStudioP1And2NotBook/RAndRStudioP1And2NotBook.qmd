@@ -1,0 +1,676 @@
+---
+title: "Introduction to R and RStudio" 
+
+subtitle: "Part 1: Basics (follow along in RStudio)"
+
+format: revealjs
+scroll: true
+---
+
+## Learning Outcomes
+
+What you will learn in this session:
+
+-   How to install R and RStudio
+-   What is the windows layout of RStudio
+-   How to setup RStudio
+-   How to create a project (folder) in RStudio
+-   How to use major functionalities of RStudio
+-   How to extend R's functionality with R-packages
+-   Which packages you should install for this book
+-   Data types and data objects in R
+-   How very big and very small numbers can be displayed
+
+What you will learn in this session:
+
+-   The Structure of R commands
+-   About the `tidyverse` package for data frames
+    -   `select()` and rename columns (variables)
+    -   `filter()` rows (observations)
+    -   `mutate()` (define columns (variables); overwrite old or create new)
+    -   piping (connecting commands) with `|>`.»
+
+## Install and Setup R and RStudio
+
+A typical setup to work with R consists of two components:
+
+::: nonincremental
+-   the **R Console** which executes R code and
+
+-   an integrated development environment (IDE) such as **RStudio**.
+:::
+
+You can download R here: [Download R](https://cran.r-project.org/bin/){target="_blank"}
+
+You can download RStudio here: [Download RStudio](https://www.rstudio.com/products/rstudio/download/#download){target="_blank"}
+
+Detailed installation guides are provided in the Book and the Online Resources sections of this chapter in book.
+
+## RStudio --- Integrated Development Environment (IDE) 🤓
+
+![RStudio Window](Images/RAndRStudioWindow.PNG)
+
+First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
+
+::: footer
+See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
+:::
+
+## Recommended RStudio Settings
+
+1.**Do not Restore .RData into workspace at startup:**\
+`Tools -> GlobalOptions`.
+
+2.  **Work with R Projects:** This assigns a directory on your hard drive to your R analysis: `File -> New Project`
+
+First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
+
+## R Packages {.smaller}
+
+R Packages extend R's functionality. They have to be **installed** only once:
+
+`Tools -> Install Packages ...`
+
+After installation they need to be **loaded** in every new R script with `library()`.
+
+Packages frequently used in this course (**please install soon**):
+
+-   `tidyverse`: supports easy data processing .
+-   `rio`: allows loading various data resources with one `import()` command from the user's hard drive or the Internet.
+-   `janitor`: provides functionality to clean data and rename variable names to avoid spaces and special characters.
+-   `tidymodels`: streamlines data engineering and machine learning tasks.
+-   `kableExtra`: supports rendering tables in HTML.
+-   `shiny`: needed together with the `learnr` package for the interactive exercises in the book.
+-   `learnr` package: together with the `shiny` package for the interactive exercises in the book.
+
+## Example: the `rio` and the `tidyverse` Package
+
+Assuming the `rio` packages is already installed.
+
+Example: How to install the tidyverse package: [Click here](https://youtu.be/tAGoThXF2Os)
+
+Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE)
+
+
+
+```{r}
+#| echo: true
+library(rio);library(tidyverse)
+DataHousing =
+  import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
+  select(Price=price, Sqft=sqft_living, Bedrooms=bedrooms,Waterfront=waterfront)
+print(DataHousing[1:3,])
+```
+
+`import()` would not work if the `rio` package were not loaded.
+
+`select()` would not work if the `tidyverse` package were not loaded.
+
+## Data Types & Data Objects
+
+::: nonincremental
+-   **Data Types:** What can R store?
+
+    -   numerical `num`
+    -   character `chr`
+    -   `factor`
+    -   `logic`
+
+-   **Data Objects:** What are the **containers** R uses to store data?
+
+    -   `single entry` single variable
+    -   list of entries `vectors`
+    -   table `dataframe` and `tibble`
+    -   *advanced objects*. E.g., for plot, models, prediction results
+:::
+
+## Data Types  🤓 {.scrollable .smaller}
+
+::: panel-tabset
+### Main
+
+**Numerical Data Type (`num`):** Numerical values (e.g., 1, 523, 3.45) are used for calculation. In contrast, ZIP-Codes are not numerical data type.
+
+**Character Data Type (`chr`):** Storing sequence of characters, numbers, and/or symbols to form a word or even a sentence is called a `character` data type (e.g. first or last names, street addresses, or Zip-codes)
+
+**Factor Data Type (`factor`):** A `factor` is an R data type that stores *categorical* data in an effective way. `factor` data types are also required by many classification models in R.
+
+**Logic Data Type(`logic`):** A data type that stores the logic states `TRUE` and `FALSE` is called a `logic` object (sometimes called Boolean)
+
+### Numerical
+
+**Numerical Data Type (`num`):** Numerical values are used for calculations (therefore ZIP-Codes are not numerical). Numerical data can be discrete (`integer`) or continuous (`double`).
+
+```{r}
+#| output-location: fragment
+#| echo: true
+A=as.integer(2)
+B=as.integer(3)
+str(A) # str() returns structure of a variable
+C=1.23
+str(C) # str() returns structure of a variable
+print(A*C)
+A^B
+A/B # Returns num type
+```
+
+### Character
+
+**Character Data Type (`chr`):**
+
+Note that what is called a `character` in R is often called a *string* in other programming languages.
+
+`character` data types must be surrounded by quotes:
+
+```{r}
+#| output-location: fragment
+#| echo: true
+MyText="Hello world!"
+print(MyText)
+```
+
+Character variables can be concatenated with the `cat()` command:
+
+```{r}
+#| output-location: fragment
+#| echo: true
+FirstName="Carsten"
+LastName="Lange"
+cat(FirstName, LastName) # R adds a space automatically
+```
+
+### Factor
+
+A `factor` is an R data type that stores *categorical* data in an effective way. *Categorical* data are `character` type data covering a few categories such as hair color (blonde, braun, red, black). They can be coded with numbers (e.g., from 1-5 for hair color) and thus use less memory. Another example is sex (male, female).
+
+```{r }
+#| code-fold: true
+#| echo: true
+People=tribble(~Name,~Sex,
+                  "John", "male",
+                  "Jane", "female",
+                  "Mia", "female",
+                  "Brid", "female",
+                  "Greg", "male")
+print(People)
+```
+
+Sex is a `charcter` variable in the dataset `People`
+
+```{r}
+#| output-location: fragment
+#| echo: true
+str(People$Sex)
+
+```
+
+Transforming the variable $Sex$ to a factor and looking at its structure (`str()`) again:
+
+```{r}
+#| output-location: fragment
+#| echo: true
+str(as.factor(People$Sex))
+```
+
+### Logic
+
+**Logic variables**: Store `TRUE` and `FALSE`. They can be combined with `and`/`or`. Internally `True` is stored as $1$ and `False` is stored as $0$
+
+```{r}
+#| output-location: fragment
+#| echo: true
+IsConcertGood=FALSE 
+IsCompanyGood=TRUE
+cat("Is the concert good?", IsConcertGood, "Is the company good?", IsCompanyGood)
+```
+
+```{r}
+#| output-location: fragment
+#| echo: true
+IsEveningAmazing=IsConcertGood & IsCompanyGood
+cat("Is the evening amazing?", IsEveningAmazing)
+```
+
+```{r}
+#| output-location: fragment
+#| echo: true
+IsEveningGood=IsConcertGood | IsCompanyGood # | stands for "or"
+cat("Is the evening good?", IsEveningGood)
+```
+
+```{r}
+#| output-location: fragment
+#| echo: true
+IsConcertGood+IsCompanyGood+17
+```
+
+### Truth Table
+
+```{r}
+library(kableExtra)
+DataTruthTable=tribble(~A,~B,~"A&B",~"A|B",
+                       T,T,T,T,
+                       T,F,F,T,
+                       F,T,F,T,
+                       F,F,F,F)
+kable(DataTruthTable, caption="Truth Table for AND and OR")|>
+  add_header_above(c("R object A","R object B","A and B","A or B")) |> 
+  kable_styling(bootstrap_options=c("striped","hover"), position="center", full_width = F)
+```
+:::
+
+::: footer
+See: [RandRStudioScriptPart1.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
+:::
+
+## Data Types & Data Objects
+
+**Data Types:** What can R store?
+
+**Data Objects:** What are the containers R uses to store data?
+
+## Data Objects 
+
+-   **Single Value Object**
+-   **Vector Object**
+-   **Data Frame (Tibble) Object**
+-   **List Object** (not covered in this course)
+-   **Advanced Object** such as plots, models, recipes
+
+
+
+## Single Value Object
+
+Object just stores a single value:
+
+```{r}
+#| echo: true
+A=123.768
+B=3
+C="Hello World"
+IsLifeGood=TRUE
+```
+
+## Vector-Objects
+
+A vector object stores a list of values (numerical, character, factor, or logic)
+
+Example: Weather during the last three days in Stattown:
+
+```{r}
+#| echo: true
+VecTemp=c(70, 68, 55)
+VecWindSpeed=c("low","low","high")
+VecIsSunny=c(TRUE,TRUE,FALSE)
+```
+
+Vector objects can be used as arguments for an R command to calculate:
+
+```{r}
+#| echo: true
+#| code-fold: true
+MeanForecTemp=mean(VecTemp)
+cat("The average forecasted temperature is", MeanForecTemp)
+```
+
+```{r}
+#| echo: true
+#| code-fold: true
+ForecDays=length(VecTemp)
+cat("The forecast is for", ForecDays, "days.")
+```
+
+## Data Frames (tibbles)
+
+A data frame is similar to an Excel table (note not all columns of the Titanic data frame are shown).
+
+```{r}
+library(rio); library(kableExtra)
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") |> 
+  select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
+kbl(DataTitanic[1:12,])
+```
+
+A data frame consist of vectors making up the columns. These are the variables for the data analysis (remember: observations are in the rows, variables are in the columns).
+
+```{r}
+#| echo: true
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv")
+str(DataTitanic)
+```
+
+## Extracting the Vectors and Perform Calculations (numerical Vectors)
+
+```{r}
+#| echo: true
+#| output-location: fragment
+VecFareInPounds=DataTitanic$FareInPounds
+AvgFare=mean(VecFareInPounds)
+cat("The average fare of Titanic passengers was:", AvgFare, "British Pounds")
+```
+
+## Extracting the Vectors and Perform Calculations (logical Vectors)
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitanic$Survived=as.logical(DataTitanic$Survived)
+str(DataTitanic)
+```
+
+```{r }
+#| echo: true
+#| output-location: fragment
+SurvRate=mean(DataTitanic$Survived)
+cat("The average survival rate of Titanic passengers was:", SurvRate)
+```
+
+## Data Frames vs. Tibbles 🤓 {.smaller .scrollable}
+
+A **tibble** is a more advanced sub-type of a *data frame*. If needed, a regular *data frame* can be coerced into a *tibble* with the `as_tibble()` command.
+
+A few of the differences between *data frames* and *tibbles*:
+
+1.  A *data frame* outputs all its rows and columns by default. A *tibble* outputs only the first 10 rows and the variables that fit on the screen but provides information about omitted variables and rows.
+
+2.  A *data frame* can have row names, while a *tibble* cannot.
+
+3.  In R version \<4.1 a *data frame* converts all *character* values to *factor* type. This conversion was often confusing and annoying. In contrast, a *tibble* only coerces *character* values into *factor* on demand. Since R version 4.1 regular `data frames` behave the same as `tibbles`.
+
+
+
+::: footer
+See: [RandRStudioScriptPart1.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
+:::
+
+## Summary Data Types and Objects
+
+```{r}
+knitr::include_graphics("Images/DataObjectDataTypes.png")
+```
+
+
+## How are Very Big Numbers Presented {.smaller}
+
+
+The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)
+
+\begin{eqnarray*}
+GDP&=&2.2996086 \cdot 10000000000000\\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10 \\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10^{13}
+\end{eqnarray*}
+
+Let us see what R does:
+
+```{r}
+#| echo: true
+GDPUS=22996086000000
+print(GDPUS)
+
+```
+
+
+
+
+## How are Very Small Numbers Presented 🤓 {.smaller}
+
+::: {.panel-tabset}
+
+### Main 
+
+The probability of getting struck by lightning in the US is about $0.000000000365$ on any randomly chosen day.
+
+\begin{eqnarray*}
+ProbLight&=&\frac{3.65}{10000000000} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10\cdot 10\cdot 10\cdot 10\cdot 10\cdot                              10\cdot 10\cdot 10\cdot 10\cdot 10} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10^{10}}\\
+&\Longleftrightarrow&\\
+ProbLight&=&3.65 \cdot 10^{-10}
+\end{eqnarray*}
+
+
+### Why?
+
+In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:
+
+$$\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365$$
+### What R Does  
+
+Let us see what R does:
+
+```{r}
+#| echo: true
+ProbStruck=0.000000000365
+cat("Probabilty to get stuck by a lighning on an avg. day:", ProbStruck)
+```
+
+:::
+
+::: footer
+See: [RandRStudioScriptPart1.R script400](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
+:::
+
+
+
+
+## Basics of R Commands
+
+R commands consists of the **command's name followed by a pair of parentheses**: `command()`
+
+. . .
+
+Inside the `()` we can define one or more **arguments** for the command.
+
+. . .
+
+```{r}
+#| echo: true
+VecTest=c(1,2,3)
+```
+
+<p>
+
+```{r}
+#| echo: true
+sum(x=VecTest)
+mean(VecTest)
+```
+
+-   Arguments in a command usually have names such as `x=` or `data=`
+
+-   R does not require to use the argument's name, but **order matters**
+
+-   R commands have many arguments. Most have default values
+
+-   We can nest commands. However, nesting too deeply makes code difficult to read.»
+
+:::
+
+## Structure of R Commands {.smaller}
+
+Most R commands have the following structure: \begin{equation}
+\underbrace{DataNew}_{\text{R object storing the result}}=
+\underbrace{Command}_{\text{Name of the command}}
+\underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
+\overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
+\end{equation}
+
+Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.»
+
+## Use a Command with and without Argument Names 🤓
+
+```{r}
+#| echo: true
+VecTest=c(1,2,3)
+```
+
+<br>
+
+```{r}
+#| echo: true
+Result=mean(x=VecTest, trim=0, na.rm=FALSE)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+
+<p>
+
+. . .
+
+```{r}
+#| echo: true
+Result=mean(VecTest, 0, FALSE)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+
+<p>
+
+. . .
+
+```{r}
+#| echo: true
+Result=mean(VecTest)
+cat("The mean of the values in vector VecTest is:", Result)
+```
+
+. . .
+
+All three examples are equivalent
+
+Try `? mean` in the Rstudio console to see the default values.»
+
+::: footer
+See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
+:::
+
+## Important Commands from `tidyverse`/`dplyr` Package
+
+-   `dplyr` package is part of the `tidyverse` (meta) package
+-   `library(tidyverse)` (loads the `tidyverse` and its packages)
+-   `select()` selects columns (variables) from a data frame
+-   `filter()` filters rows (observations) for specific criteria
+-   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel).»
+
+## Titanic Dataset
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(rio)
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv")
+head(DataTitanic)
+```
+»
+
+## The `select()` Command {.scrollable}
+
+-   `select(DataMine, Var1, Var2)` selects columns (variables) `Var1` and `Var2` from a data frame `DataMine`. The first argument is the `data=` argument followed by the names of the selected variables.
+
+-   `select(Data, -Var1, -Var2)` selects all columns (variables) except `Var1` and `Var2` from a data frame `DataMine`.
+
+. . .
+
+Here is an example using the `DataTitanic` data frame from the previous slide:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicSelVar=select(DataTitanic,Survived, Name, Sex, Age)
+head(DataTitanicSelVar)
+```
+»
+
+## The `filter()` Command
+
+The `filter()` command filters rows (observations) of a data frame for specific criteria. The first argument is the `data=` argument followed by the filter criteria.
+
+. . .
+
+E.g., *filter* for female passengers from the dataset: Use `DataTitanicSelVar` that we created in the previous slide (note that we have to use `==` instead of `=` for the criteria):
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitanicSelVarFem=filter(DataTitanicSelVar, Sex=="female")
+head(DataTitanicSelVarFem)
+```
+»
+
+## The `mutate()` Command 🤓
+
+`mutate()` creates or overwrites columns (variables) based on other columns (just like Excel). The first argument is the `data=` argument followed by the instructions on how to create the new variable.
+
+. . .
+
+E.g., *mutate* calculates new column `Born` based on `Age` during Titanic disaster (1912). Uses `DataTitanicSelVarFem` from previous slide:
+
+```{r}
+#| echo: true
+#| output-location: fragment
+DataTitatincSelVarFemBirthYear=mutate(DataTitanicSelVarFem, Born=1912-Age)
+head(DataTitatincSelVarFemBirthYear)
+```
+
+::: footer
+See: [RandRStudioScriptPart2.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
+:::
+»
+
+## Summary
+
+1.  We selected variables $Survived$, $Name$, $Sex$, $Age$ and saved in `DataTitanicSelVar`
+2.  We filtered for females and saved in `DataTitanicSelVarFem`
+3.  We mutated to calculate new variable and saved finally in `DataTitanicSelVarFemBirthYear`
+
+. . .
+
+Could this be done easier?
+
+Note, overwriting data frames such as `DataTitanic` is usually a bad idea!»
+
+## Alternative: Nesting
+
+#### (I am not serious)
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicFinal= mutate(
+        filter(select(DataTitanic,Survived, Name, Sex, Age),
+               Sex=="female"), 
+                        Born=1912-Age)
+head(DataTitanicFinal)
+```
+»
+
+## Piping Schema {background-color="#648787"}
+
+![Piping Schema](Images/Piping.png){background-color="aquamarine" fig-alt="Piping Schema" fig-align="center"}
+
+## Alternative: Piping
+
+#### (will be used throughout the course/book) 🤓
+
+```{r}
+#| echo: true
+#| output-location: fragment
+library(tidyverse)
+DataTitanicFinal= DataTitanic |> 
+                  select(Survived, Name, Sex, Age) |> 
+                  filter(Sex=="female") |> 
+                  mutate(Born=1912-Age)
+head(DataTitanicFinal)
+```
+»
+
+::: footer
+See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
+:::
+
+## Questions
