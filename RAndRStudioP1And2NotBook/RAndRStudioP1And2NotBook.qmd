@@ -1,15 +1,38 @@
 ---
 title: "Introduction to R and RStudio" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
 
-subtitle: "Part 1: Basics (follow along in RStudio)"
-
-format: revealjs
-scroll: true
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    output-location: fragment
+    incremental: false
+    warning: false
+    message: false
+    navigation-mode: vertical
+    scrollable: true
+    smaller: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+    
+include-in-header:
+  text: |
+    <style>
+    .reveal .slides section:not(:first-of-type) h1,
+    .reveal .slides section:not(:first-of-type) h2,
+    .reveal .slides section:not(:first-of-type) h3,
+    .reveal .slides section:not(:first-of-type) h4,
+    .reveal .slides section:not(:first-of-type) h5,
+    .reveal .slides section:not(:first-of-type) h6 {
+      font-size: 142% !important;
+    }
+    </style>
 ---
 
 ## Learning Outcomes
-
-What you will learn in this session:
 
 -   How to install R and RStudio
 -   What is the windows layout of RStudio
@@ -19,16 +42,13 @@ What you will learn in this session:
 -   How to extend R's functionality with R-packages
 -   Which packages you should install for this book
 -   Data types and data objects in R
--   How very big and very small numbers can be displayed
-
-What you will learn in this session:
-
 -   The Structure of R commands
 -   About the `tidyverse` package for data frames
     -   `select()` and rename columns (variables)
     -   `filter()` rows (observations)
     -   `mutate()` (define columns (variables); overwrite old or create new)
-    -   piping (connecting commands) with `|>`.»
+    -   `arrange()` sort observations in a data frame.
+    -   piping (connecting commands) with `|>`.
 
 ## Install and Setup R and RStudio
 
@@ -94,7 +114,6 @@ Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE)
 
 
 ```{r}
-#| echo: true
 library(rio);library(tidyverse)
 DataHousing =
   import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
@@ -124,9 +143,10 @@ print(DataHousing[1:3,])
     -   *advanced objects*. E.g., for plot, models, prediction results
 :::
 
-## Data Types  🤓 {.scrollable .smaller}
+## Data Types  🤓 
 
 ::: panel-tabset
+
 ### Main
 
 **Numerical Data Type (`num`):** Numerical values (e.g., 1, 523, 3.45) are used for calculation. In contrast, ZIP-Codes are not numerical data type.
@@ -142,8 +162,7 @@ print(DataHousing[1:3,])
 **Numerical Data Type (`num`):** Numerical values are used for calculations (therefore ZIP-Codes are not numerical). Numerical data can be discrete (`integer`) or continuous (`double`).
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 A=as.integer(2)
 B=as.integer(3)
 str(A) # str() returns structure of a variable
@@ -163,8 +182,7 @@ Note that what is called a `character` in R is often called a *string* in other 
 `character` data types must be surrounded by quotes:
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 MyText="Hello world!"
 print(MyText)
 ```
@@ -172,8 +190,7 @@ print(MyText)
 Character variables can be concatenated with the `cat()` command:
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 FirstName="Carsten"
 LastName="Lange"
 cat(FirstName, LastName) # R adds a space automatically
@@ -184,8 +201,7 @@ cat(FirstName, LastName) # R adds a space automatically
 A `factor` is an R data type that stores *categorical* data in an effective way. *Categorical* data are `character` type data covering a few categories such as hair color (blonde, braun, red, black). They can be coded with numbers (e.g., from 1-5 for hair color) and thus use less memory. Another example is sex (male, female).
 
 ```{r }
-#| code-fold: true
-#| echo: true
+#| output-location: default
 People=tribble(~Name,~Sex,
                   "John", "male",
                   "Jane", "female",
@@ -198,8 +214,7 @@ print(People)
 Sex is a `charcter` variable in the dataset `People`
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 str(People$Sex)
 
 ```
@@ -207,8 +222,7 @@ str(People$Sex)
 Transforming the variable $Sex$ to a factor and looking at its structure (`str()`) again:
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 str(as.factor(People$Sex))
 ```
 
@@ -217,36 +231,33 @@ str(as.factor(People$Sex))
 **Logic variables**: Store `TRUE` and `FALSE`. They can be combined with `and`/`or`. Internally `True` is stored as $1$ and `False` is stored as $0$
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 IsConcertGood=FALSE 
 IsCompanyGood=TRUE
 cat("Is the concert good?", IsConcertGood, "Is the company good?", IsCompanyGood)
 ```
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 IsEveningAmazing=IsConcertGood & IsCompanyGood
 cat("Is the evening amazing?", IsEveningAmazing)
 ```
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 IsEveningGood=IsConcertGood | IsCompanyGood # | stands for "or"
 cat("Is the evening good?", IsEveningGood)
 ```
 
 ```{r}
-#| output-location: fragment
-#| echo: true
+#| output-location: default
 IsConcertGood+IsCompanyGood+17
 ```
 
 ### Truth Table
 
 ```{r}
+#| output-location: default
 library(kableExtra)
 DataTruthTable=tribble(~A,~B,~"A&B",~"A|B",
                        T,T,T,T,
@@ -257,6 +268,7 @@ kable(DataTruthTable, caption="Truth Table for AND and OR")|>
   add_header_above(c("R object A","R object B","A and B","A or B")) |> 
   kable_styling(bootstrap_options=c("striped","hover"), position="center", full_width = F)
 ```
+
 :::
 
 ::: footer
@@ -284,7 +296,7 @@ See: [RandRStudioScriptPart1.R script200](https://econ.lange-analytics.com/RScri
 Object just stores a single value:
 
 ```{r}
-#| echo: true
+#| output-location: fragment
 A=123.768
 B=3
 C="Hello World"
@@ -298,7 +310,6 @@ A vector object stores a list of values (numerical, character, factor, or logic)
 Example: Weather during the last three days in Stattown:
 
 ```{r}
-#| echo: true
 VecTemp=c(70, 68, 55)
 VecWindSpeed=c("low","low","high")
 VecIsSunny=c(TRUE,TRUE,FALSE)
@@ -307,8 +318,6 @@ VecIsSunny=c(TRUE,TRUE,FALSE)
 Vector objects can be used as arguments for an R command to calculate:
 
 ```{r}
-#| echo: true
-#| code-fold: true
 MeanForecTemp=mean(VecTemp)
 cat("The average forecasted temperature is", MeanForecTemp)
 ```
@@ -383,7 +392,7 @@ A few of the differences between *data frames* and *tibbles*:
 See: [RandRStudioScriptPart1.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
 :::
 
-## Summary Data Types and Objects
+## Summary Data Types and Objects {background-color="#648787"}
 
 ```{r}
 knitr::include_graphics("Images/DataObjectDataTypes.png")
@@ -489,7 +498,7 @@ mean(VecTest)
 
 -   We can nest commands. However, nesting too deeply makes code difficult to read.»
 
-:::
+
 
 ## Structure of R Commands {.smaller}
 

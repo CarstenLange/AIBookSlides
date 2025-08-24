@@ -9,6 +9,7 @@
 <link href="RAndRStudioP1And2NotBook_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.7.31">
 
+  <meta name="author" content="Carsten Lange">
   <title>Introduction to R and RStudio</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -112,6 +113,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -192,6 +194,16 @@
 
   <link href="RAndRStudioP1And2NotBook_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
 
+  <style>
+  .reveal .slides section:not(:first-of-type) h1,
+  .reveal .slides section:not(:first-of-type) h2,
+  .reveal .slides section:not(:first-of-type) h3,
+  .reveal .slides section:not(:first-of-type) h4,
+  .reveal .slides section:not(:first-of-type) h5,
+  .reveal .slides section:not(:first-of-type) h6 {
+    font-size: 142% !important;
+  }
+  </style>
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -199,35 +211,41 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Introduction to R and RStudio</h1>
-  <p class="subtitle">Part 1: Basics (follow along in RStudio)</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Carsten Lange 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Cal Poly, Pomona
+          </p>
+    </div>
 </div>
 
 </section>
 <section id="learning-outcomes" class="slide level2">
 <h2>Learning Outcomes</h2>
-<p>What you will learn in this session:</p>
 <ul>
-<li class="fragment">How to install R and RStudio</li>
-<li class="fragment">What is the windows layout of RStudio</li>
-<li class="fragment">How to setup RStudio</li>
-<li class="fragment">How to create a project (folder) in RStudio</li>
-<li class="fragment">How to use major functionalities of RStudio</li>
-<li class="fragment">How to extend R’s functionality with R-packages</li>
-<li class="fragment">Which packages you should install for this book</li>
-<li class="fragment">Data types and data objects in R</li>
-<li class="fragment">How very big and very small numbers can be displayed</li>
-</ul>
-<p>What you will learn in this session:</p>
+<li>How to install R and RStudio</li>
+<li>What is the windows layout of RStudio</li>
+<li>How to setup RStudio</li>
+<li>How to create a project (folder) in RStudio</li>
+<li>How to use major functionalities of RStudio</li>
+<li>How to extend R’s functionality with R-packages</li>
+<li>Which packages you should install for this book</li>
+<li>Data types and data objects in R</li>
+<li>The Structure of R commands</li>
+<li>About the <code>tidyverse</code> package for data frames
 <ul>
-<li class="fragment">The Structure of R commands</li>
-<li class="fragment">About the <code>tidyverse</code> package for data frames
-<ul>
-<li class="fragment"><code>select()</code> and rename columns (variables)</li>
-<li class="fragment"><code>filter()</code> rows (observations)</li>
-<li class="fragment"><code>mutate()</code> (define columns (variables); overwrite old or create new)</li>
-<li class="fragment">piping (connecting commands) with <code>|&gt;</code>.»</li>
+<li><code>select()</code> and rename columns (variables)</li>
+<li><code>filter()</code> rows (observations)</li>
+<li><code>mutate()</code> (define columns (variables); overwrite old or create new)</li>
+<li><code>arrange()</code> sort observations in a data frame.</li>
+<li>piping (connecting commands) with <code>|&gt;</code>.</li>
 </ul></li>
 </ul>
 </section>
@@ -250,12 +268,12 @@
 <p>See: <a href="https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R" target="_blank">RandRStudioScriptPart1.R script100</a></p>
 </div>
 </section>
-<section id="recommended-rstudio-settings" class="slide level2">
+<section id="recommended-rstudio-settings" class="slide level2 scrollable">
 <h2>Recommended RStudio Settings</h2>
 <p>1.<strong>Do not Restore .RData into workspace at startup:</strong><br>
 <code>Tools -&gt; GlobalOptions</code>.</p>
 <ol start="2" type="1">
-<li class="fragment"><strong>Work with R Projects:</strong> This assigns a directory on your hard drive to your R analysis: <code>File -&gt; New Project</code></li>
+<li><strong>Work with R Projects:</strong> This assigns a directory on your hard drive to your R analysis: <code>File -&gt; New Project</code></li>
 </ol>
 <p>First steps to setup R can be found in this video: <a href="https://youtu.be/LmRtTkD5E6M">Click here</a></p>
 </section>
@@ -266,13 +284,13 @@
 <p>After installation they need to be <strong>loaded</strong> in every new R script with <code>library()</code>.</p>
 <p>Packages frequently used in this course (<strong>please install soon</strong>):</p>
 <ul>
-<li class="fragment"><code>tidyverse</code>: supports easy data processing .</li>
-<li class="fragment"><code>rio</code>: allows loading various data resources with one <code>import()</code> command from the user’s hard drive or the Internet.</li>
-<li class="fragment"><code>janitor</code>: provides functionality to clean data and rename variable names to avoid spaces and special characters.</li>
-<li class="fragment"><code>tidymodels</code>: streamlines data engineering and machine learning tasks.</li>
-<li class="fragment"><code>kableExtra</code>: supports rendering tables in HTML.</li>
-<li class="fragment"><code>shiny</code>: needed together with the <code>learnr</code> package for the interactive exercises in the book.</li>
-<li class="fragment"><code>learnr</code> package: together with the <code>shiny</code> package for the interactive exercises in the book.</li>
+<li><code>tidyverse</code>: supports easy data processing .</li>
+<li><code>rio</code>: allows loading various data resources with one <code>import()</code> command from the user’s hard drive or the Internet.</li>
+<li><code>janitor</code>: provides functionality to clean data and rename variable names to avoid spaces and special characters.</li>
+<li><code>tidymodels</code>: streamlines data engineering and machine learning tasks.</li>
+<li><code>kableExtra</code>: supports rendering tables in HTML.</li>
+<li><code>shiny</code>: needed together with the <code>learnr</code> package for the interactive exercises in the book.</li>
+<li><code>learnr</code> package: together with the <code>shiny</code> package for the interactive exercises in the book.</li>
 </ul>
 </section>
 <section id="example-the-rio-and-the-tidyverse-package" class="slide level2">
@@ -281,11 +299,16 @@
 <p>Example: How to install the tidyverse package: <a href="https://youtu.be/tAGoThXF2Os">Click here</a></p>
 <p>Video about the rio package: <a href="https://youtu.be/8N_5sR4s8XE">Click here</a></p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(rio);<span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href=""></a>DataHousing <span class="ot">=</span></span>
 <span id="cb1-3"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb1-4"><a href=""></a>  <span class="fu">select</span>(<span class="at">Price=</span>price, <span class="at">Sqft=</span>sqft_living, <span class="at">Bedrooms=</span>bedrooms,<span class="at">Waterfront=</span>waterfront)</span>
 <span id="cb1-5"><a href=""></a><span class="fu">print</span>(DataHousing[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>,])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>   Price Sqft Bedrooms Waterfront
 1 221900 1180        3         no
@@ -315,7 +338,7 @@
 </ul></li>
 </ul>
 </section>
-<section id="data-types" class="slide level2 scrollable smaller">
+<section id="data-types" class="slide level2">
 <h2>Data Types 🤓</h2>
 <div class="panel-tabset">
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Main</a></li><li><a href="#tabset-1-2">Numerical</a></li><li><a href="#tabset-1-3">Character</a></li><li><a href="#tabset-1-4">Factor</a></li><li><a href="#tabset-1-5">Logic</a></li><li><a href="#tabset-1-6">Truth Table</a></li></ul>
@@ -329,28 +352,41 @@
 <div id="tabset-1-2">
 <p><strong>Numerical Data Type (<code>num</code>):</strong> Numerical values are used for calculations (therefore ZIP-Codes are not numerical). Numerical data can be discrete (<code>integer</code>) or continuous (<code>double</code>).</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>A<span class="ot">=</span><span class="fu">as.integer</span>(<span class="dv">2</span>)</span>
 <span id="cb3-2"><a href=""></a>B<span class="ot">=</span><span class="fu">as.integer</span>(<span class="dv">3</span>)</span>
 <span id="cb3-3"><a href=""></a><span class="fu">str</span>(A) <span class="co"># str() returns structure of a variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code> int 2</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>C<span class="ot">=</span><span class="fl">1.23</span></span>
 <span id="cb5-2"><a href=""></a><span class="fu">str</span>(C) <span class="co"># str() returns structure of a variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code> num 1.23</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">print</span>(A<span class="sc">*</span>C)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.46</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>A<span class="sc">^</span>B</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 8</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>A<span class="sc">/</span>B <span class="co"># Returns num type</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6666667</code></pre>
 </div>
@@ -361,21 +397,23 @@
 <p>Note that what is called a <code>character</code> in R is often called a <em>string</em> in other programming languages.</p>
 <p><code>character</code> data types must be surrounded by quotes:</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>MyText<span class="ot">=</span><span class="st">"Hello world!"</span></span>
 <span id="cb13-2"><a href=""></a><span class="fu">print</span>(MyText)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Hello world!"</code></pre>
 </div>
 </div>
 <p>Character variables can be concatenated with the <code>cat()</code> command:</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>FirstName<span class="ot">=</span><span class="st">"Carsten"</span></span>
 <span id="cb15-2"><a href=""></a>LastName<span class="ot">=</span><span class="st">"Lange"</span></span>
 <span id="cb15-3"><a href=""></a><span class="fu">cat</span>(FirstName, LastName) <span class="co"># R adds a space automatically</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Carsten Lange</code></pre>
 </div>
@@ -407,18 +445,20 @@
 </div>
 <p>Sex is a <code>charcter</code> variable in the dataset <code>People</code></p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="fu">str</span>(People<span class="sc">$</span>Sex)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code> chr [1:5] "male" "female" "female" "female" "male"</code></pre>
 </div>
 </div>
 <p>Transforming the variable <span class="math inline">\(Sex\)</span> to a factor and looking at its structure (<code>str()</code>) again:</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="fu">str</span>(<span class="fu">as.factor</span>(People<span class="sc">$</span>Sex))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code> Factor w/ 2 levels "female","male": 2 1 1 1 2</code></pre>
 </div>
@@ -427,37 +467,41 @@
 <div id="tabset-1-5">
 <p><strong>Logic variables</strong>: Store <code>TRUE</code> and <code>FALSE</code>. They can be combined with <code>and</code>/<code>or</code>. Internally <code>True</code> is stored as <span class="math inline">\(1\)</span> and <code>False</code> is stored as <span class="math inline">\(0\)</span></p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href=""></a>IsConcertGood<span class="ot">=</span><span class="cn">FALSE</span> </span>
 <span id="cb23-2"><a href=""></a>IsCompanyGood<span class="ot">=</span><span class="cn">TRUE</span></span>
 <span id="cb23-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"Is the concert good?"</span>, IsConcertGood, <span class="st">"Is the company good?"</span>, IsCompanyGood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Is the concert good? FALSE Is the company good? TRUE</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a>IsEveningAmazing<span class="ot">=</span>IsConcertGood <span class="sc">&amp;</span> IsCompanyGood</span>
 <span id="cb25-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Is the evening amazing?"</span>, IsEveningAmazing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Is the evening amazing? FALSE</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>IsEveningGood<span class="ot">=</span>IsConcertGood <span class="sc">|</span> IsCompanyGood <span class="co"># | stands for "or"</span></span>
 <span id="cb27-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Is the evening good?"</span>, IsEveningGood)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Is the evening good? TRUE</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>IsConcertGood<span class="sc">+</span>IsCompanyGood<span class="sc">+</span><span class="dv">17</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell fragment">
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 18</code></pre>
 </div>
@@ -465,6 +509,18 @@
 </div>
 <div id="tabset-1-6">
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb31-2"><a href=""></a>DataTruthTable<span class="ot">=</span><span class="fu">tribble</span>(<span class="sc">~</span>A,<span class="sc">~</span>B,<span class="sc">~</span><span class="st">"A&amp;B"</span>,<span class="sc">~</span><span class="st">"A|B"</span>,</span>
+<span id="cb31-3"><a href=""></a>                       T,T,T,T,</span>
+<span id="cb31-4"><a href=""></a>                       T,F,F,T,</span>
+<span id="cb31-5"><a href=""></a>                       F,T,F,T,</span>
+<span id="cb31-6"><a href=""></a>                       F,F,F,F)</span>
+<span id="cb31-7"><a href=""></a><span class="fu">kable</span>(DataTruthTable, <span class="at">caption=</span><span class="st">"Truth Table for AND and OR"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb31-8"><a href=""></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">"R object A"</span>,<span class="st">"R object B"</span>,<span class="st">"A and B"</span>,<span class="st">"A or B"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb31-9"><a href=""></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options=</span><span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>), <span class="at">position=</span><span class="st">"center"</span>, <span class="at">full_width =</span> F)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <table class="table table-striped table-hover caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>Truth Table for AND and OR</caption>
@@ -540,21 +596,27 @@ A or B
 <section id="data-objects" class="slide level2">
 <h2>Data Objects</h2>
 <ul>
-<li class="fragment"><strong>Single Value Object</strong></li>
-<li class="fragment"><strong>Vector Object</strong></li>
-<li class="fragment"><strong>Data Frame (Tibble) Object</strong></li>
-<li class="fragment"><strong>List Object</strong> (not covered in this course)</li>
-<li class="fragment"><strong>Advanced Object</strong> such as plots, models, recipes</li>
+<li><strong>Single Value Object</strong></li>
+<li><strong>Vector Object</strong></li>
+<li><strong>Data Frame (Tibble) Object</strong></li>
+<li><strong>List Object</strong> (not covered in this course)</li>
+<li><strong>Advanced Object</strong> such as plots, models, recipes</li>
 </ul>
 </section>
 <section id="single-value-object" class="slide level2">
 <h2>Single Value Object</h2>
 <p>Object just stores a single value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>A<span class="ot">=</span><span class="fl">123.768</span></span>
-<span id="cb31-2"><a href=""></a>B<span class="ot">=</span><span class="dv">3</span></span>
-<span id="cb31-3"><a href=""></a>C<span class="ot">=</span><span class="st">"Hello World"</span></span>
-<span id="cb31-4"><a href=""></a>IsLifeGood<span class="ot">=</span><span class="cn">TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>A<span class="ot">=</span><span class="fl">123.768</span></span>
+<span id="cb32-2"><a href=""></a>B<span class="ot">=</span><span class="dv">3</span></span>
+<span id="cb32-3"><a href=""></a>C<span class="ot">=</span><span class="st">"Hello World"</span></span>
+<span id="cb32-4"><a href=""></a>IsLifeGood<span class="ot">=</span><span class="cn">TRUE</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+
 </div>
 </section>
 <section id="vector-objects" class="slide level2">
@@ -562,17 +624,25 @@ A or B
 <p>A vector object stores a list of values (numerical, character, factor, or logic)</p>
 <p>Example: Weather during the last three days in Stattown:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a>VecTemp<span class="ot">=</span><span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">68</span>, <span class="dv">55</span>)</span>
-<span id="cb32-2"><a href=""></a>VecWindSpeed<span class="ot">=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"low"</span>,<span class="st">"high"</span>)</span>
-<span id="cb32-3"><a href=""></a>VecIsSunny<span class="ot">=</span><span class="fu">c</span>(<span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>VecTemp<span class="ot">=</span><span class="fu">c</span>(<span class="dv">70</span>, <span class="dv">68</span>, <span class="dv">55</span>)</span>
+<span id="cb33-2"><a href=""></a>VecWindSpeed<span class="ot">=</span><span class="fu">c</span>(<span class="st">"low"</span>,<span class="st">"low"</span>,<span class="st">"high"</span>)</span>
+<span id="cb33-3"><a href=""></a>VecIsSunny<span class="ot">=</span><span class="fu">c</span>(<span class="cn">TRUE</span>,<span class="cn">TRUE</span>,<span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+
 </div>
 <p>Vector objects can be used as arguments for an R command to calculate:</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>MeanForecTemp<span class="ot">=</span><span class="fu">mean</span>(VecTemp)</span>
-<span id="cb33-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The average forecasted temperature is"</span>, MeanForecTemp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href=""></a>MeanForecTemp<span class="ot">=</span><span class="fu">mean</span>(VecTemp)</span>
+<span id="cb34-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The average forecasted temperature is"</span>, MeanForecTemp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>The average forecasted temperature is 64.33333</code></pre>
 </div>
@@ -580,9 +650,11 @@ A or B
 <div class="cell">
 <details class="code-fold">
 <summary>Code</summary>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>ForecDays<span class="ot">=</span><span class="fu">length</span>(VecTemp)</span>
-<span id="cb35-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The forecast is for"</span>, ForecDays, <span class="st">"days."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href=""></a>ForecDays<span class="ot">=</span><span class="fu">length</span>(VecTemp)</span>
+<span id="cb36-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The forecast is for"</span>, ForecDays, <span class="st">"days."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>The forecast is for 3 days.</code></pre>
 </div>
@@ -592,6 +664,15 @@ A or B
 <h2>Data Frames (tibbles)</h2>
 <p>A data frame is similar to an Excel table (note not all columns of the Titanic data frame are shown).</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a><span class="fu">library</span>(rio); <span class="fu">library</span>(kableExtra)</span>
+<span id="cb38-2"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb38-3"><a href=""></a>  <span class="fu">select</span>(<span class="sc">-</span>Name, <span class="sc">-</span>SiblingsSpousesAboard, <span class="sc">-</span>ParentsChildrenAboard)</span>
+<span id="cb38-4"><a href=""></a><span class="fu">kbl</span>(DataTitanic[<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>,])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output-display">
 <table class="caption-top" data-quarto-postprocess="true">
 <thead>
@@ -694,8 +775,13 @@ A or B
 </div>
 <p>A data frame consist of vectors making up the columns. These are the variables for the data analysis (remember: observations are in the rows, variables are in the columns).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>)</span>
-<span id="cb37-2"><a href=""></a><span class="fu">str</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>)</span>
+<span id="cb39-2"><a href=""></a><span class="fu">str</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   887 obs. of  8 variables:
  $ Survived             : int  0 1 1 1 0 0 0 0 1 1 ...
@@ -712,9 +798,12 @@ A or B
 <section id="extracting-the-vectors-and-perform-calculations-numerical-vectors" class="slide level2">
 <h2>Extracting the Vectors and Perform Calculations (numerical Vectors)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>VecFareInPounds<span class="ot">=</span>DataTitanic<span class="sc">$</span>FareInPounds</span>
-<span id="cb39-2"><a href=""></a>AvgFare<span class="ot">=</span><span class="fu">mean</span>(VecFareInPounds)</span>
-<span id="cb39-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"The average fare of Titanic passengers was:"</span>, AvgFare, <span class="st">"British Pounds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>VecFareInPounds<span class="ot">=</span>DataTitanic<span class="sc">$</span>FareInPounds</span>
+<span id="cb41-2"><a href=""></a>AvgFare<span class="ot">=</span><span class="fu">mean</span>(VecFareInPounds)</span>
+<span id="cb41-3"><a href=""></a><span class="fu">cat</span>(<span class="st">"The average fare of Titanic passengers was:"</span>, AvgFare, <span class="st">"British Pounds"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -725,8 +814,11 @@ A or B
 <section id="extracting-the-vectors-and-perform-calculations-logical-vectors" class="slide level2">
 <h2>Extracting the Vectors and Perform Calculations (logical Vectors)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>DataTitanic<span class="sc">$</span>Survived<span class="ot">=</span><span class="fu">as.logical</span>(DataTitanic<span class="sc">$</span>Survived)</span>
-<span id="cb41-2"><a href=""></a><span class="fu">str</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>DataTitanic<span class="sc">$</span>Survived<span class="ot">=</span><span class="fu">as.logical</span>(DataTitanic<span class="sc">$</span>Survived)</span>
+<span id="cb43-2"><a href=""></a><span class="fu">str</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -742,8 +834,11 @@ A or B
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>SurvRate<span class="ot">=</span><span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Survived)</span>
-<span id="cb43-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The average survival rate of Titanic passengers was:"</span>, SurvRate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>SurvRate<span class="ot">=</span><span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Survived)</span>
+<span id="cb45-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The average survival rate of Titanic passengers was:"</span>, SurvRate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -756,18 +851,32 @@ A or B
 <p>A <strong>tibble</strong> is a more advanced sub-type of a <em>data frame</em>. If needed, a regular <em>data frame</em> can be coerced into a <em>tibble</em> with the <code>as_tibble()</code> command.</p>
 <p>A few of the differences between <em>data frames</em> and <em>tibbles</em>:</p>
 <ol type="1">
-<li class="fragment"><p>A <em>data frame</em> outputs all its rows and columns by default. A <em>tibble</em> outputs only the first 10 rows and the variables that fit on the screen but provides information about omitted variables and rows.</p></li>
-<li class="fragment"><p>A <em>data frame</em> can have row names, while a <em>tibble</em> cannot.</p></li>
-<li class="fragment"><p>In R version &lt;4.1 a <em>data frame</em> converts all <em>character</em> values to <em>factor</em> type. This conversion was often confusing and annoying. In contrast, a <em>tibble</em> only coerces <em>character</em> values into <em>factor</em> on demand. Since R version 4.1 regular <code>data frames</code> behave the same as <code>tibbles</code>.</p></li>
+<li><p>A <em>data frame</em> outputs all its rows and columns by default. A <em>tibble</em> outputs only the first 10 rows and the variables that fit on the screen but provides information about omitted variables and rows.</p></li>
+<li><p>A <em>data frame</em> can have row names, while a <em>tibble</em> cannot.</p></li>
+<li><p>In R version &lt;4.1 a <em>data frame</em> converts all <em>character</em> values to <em>factor</em> type. This conversion was often confusing and annoying. In contrast, a <em>tibble</em> only coerces <em>character</em> values into <em>factor</em> on demand. Since R version 4.1 regular <code>data frames</code> behave the same as <code>tibbles</code>.</p></li>
 </ol>
 <div class="footer">
 <p>See: <a href="https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R" target="_blank">RandRStudioScriptPart1.R script300</a></p>
 </div>
 </section>
-<section id="summary-data-types-and-objects" class="slide level2">
+<section id="summary-data-types-and-objects" class="slide level2" data-background-color="#648787">
 <h2>Summary Data Types and Objects</h2>
-
-<img data-src="Images/DataObjectDataTypes.png" class="r-stretch"></section>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">"Images/DataObjectDataTypes.png"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Images/DataObjectDataTypes.png"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
 <section id="how-are-very-big-numbers-presented" class="slide level2 smaller">
 <h2>How are Very Big Numbers Presented</h2>
 <p>The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)</p>
@@ -780,8 +889,13 @@ GDP&amp;=&amp;2.2996086 \cdot 10^{13}
 \end{eqnarray*}\]</span></p>
 <p>Let us see what R does:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>GDPUS<span class="ot">=</span><span class="dv">22996086000000</span></span>
-<span id="cb45-2"><a href=""></a><span class="fu">print</span>(GDPUS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>GDPUS<span class="ot">=</span><span class="dv">22996086000000</span></span>
+<span id="cb48-2"><a href=""></a><span class="fu">print</span>(GDPUS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.299609e+13</code></pre>
 </div>
@@ -809,8 +923,13 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <p><span class="math display">\[\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365\]</span> ### What R Does</p>
 <p>Let us see what R does:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a>ProbStruck<span class="ot">=</span><span class="fl">0.000000000365</span></span>
-<span id="cb47-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Probabilty to get stuck by a lighning on an avg. day:"</span>, ProbStruck)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>ProbStruck<span class="ot">=</span><span class="fl">0.000000000365</span></span>
+<span id="cb50-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"Probabilty to get stuck by a lighning on an avg. day:"</span>, ProbStruck)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>Probabilty to get stuck by a lighning on an avg. day: 3.65e-10</code></pre>
 </div>
@@ -830,26 +949,39 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>VecTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>VecTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+
 </div>
 <p>
 </p><div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a><span class="fu">sum</span>(<span class="at">x=</span>VecTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="fu">sum</span>(<span class="at">x=</span>VecTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a><span class="fu">mean</span>(VecTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a><span class="fu">mean</span>(VecTest)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2</code></pre>
 </div>
 </div>
 <ul>
-<li class="fragment"><p>Arguments in a command usually have names such as <code>x=</code> or <code>data=</code></p></li>
-<li class="fragment"><p>R does not require to use the argument’s name, but <strong>order matters</strong></p></li>
-<li class="fragment"><p>R commands have many arguments. Most have default values</p></li>
-<li class="fragment"><p>We can nest commands. However, nesting too deeply makes code difficult to read.»</p></li>
+<li><p>Arguments in a command usually have names such as <code>x=</code> or <code>data=</code></p></li>
+<li><p>R does not require to use the argument’s name, but <strong>order matters</strong></p></li>
+<li><p>R commands have many arguments. Most have default values</p></li>
+<li><p>We can nest commands. However, nesting too deeply makes code difficult to read.»</p></li>
 </ul>
-<p>:::</p>
 </div>
 </section>
 <section id="structure-of-r-commands" class="slide level2 smaller">
@@ -865,12 +997,23 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <section id="use-a-command-with-and-without-argument-names" class="slide level2">
 <h2>Use a Command with and without Argument Names 🤓</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>VecTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a>VecTest<span class="ot">=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
+
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a>Result<span class="ot">=</span><span class="fu">mean</span>(<span class="at">x=</span>VecTest, <span class="at">trim=</span><span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>)</span>
-<span id="cb55-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean of the values in vector VecTest is:"</span>, Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href=""></a>Result<span class="ot">=</span><span class="fu">mean</span>(<span class="at">x=</span>VecTest, <span class="at">trim=</span><span class="dv">0</span>, <span class="at">na.rm=</span><span class="cn">FALSE</span>)</span>
+<span id="cb58-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean of the values in vector VecTest is:"</span>, Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>The mean of the values in vector VecTest is: 2</code></pre>
 </div>
@@ -878,8 +1021,13 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <p>
 </p><div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a>Result<span class="ot">=</span><span class="fu">mean</span>(VecTest, <span class="dv">0</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb57-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean of the values in vector VecTest is:"</span>, Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href=""></a>Result<span class="ot">=</span><span class="fu">mean</span>(VecTest, <span class="dv">0</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb60-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean of the values in vector VecTest is:"</span>, Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>The mean of the values in vector VecTest is: 2</code></pre>
 </div>
@@ -888,8 +1036,13 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 </p></div>
 <div class="fragment">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a>Result<span class="ot">=</span><span class="fu">mean</span>(VecTest)</span>
-<span id="cb59-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean of the values in vector VecTest is:"</span>, Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href=""></a>Result<span class="ot">=</span><span class="fu">mean</span>(VecTest)</span>
+<span id="cb62-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean of the values in vector VecTest is:"</span>, Result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>The mean of the values in vector VecTest is: 2</code></pre>
 </div>
@@ -906,19 +1059,22 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <section id="important-commands-from-tidyversedplyr-package" class="slide level2">
 <h2>Important Commands from <code>tidyverse</code>/<code>dplyr</code> Package</h2>
 <ul>
-<li class="fragment"><code>dplyr</code> package is part of the <code>tidyverse</code> (meta) package</li>
-<li class="fragment"><code>library(tidyverse)</code> (loads the <code>tidyverse</code> and its packages)</li>
-<li class="fragment"><code>select()</code> selects columns (variables) from a data frame</li>
-<li class="fragment"><code>filter()</code> filters rows (observations) for specific criteria</li>
-<li class="fragment"><code>mutate()</code> calculates new or overwrites existing columns (variables) based on other columns (just like Excel).»</li>
+<li><code>dplyr</code> package is part of the <code>tidyverse</code> (meta) package</li>
+<li><code>library(tidyverse)</code> (loads the <code>tidyverse</code> and its packages)</li>
+<li><code>select()</code> selects columns (variables) from a data frame</li>
+<li><code>filter()</code> filters rows (observations) for specific criteria</li>
+<li><code>mutate()</code> calculates new or overwrites existing columns (variables) based on other columns (just like Excel).»</li>
 </ul>
 </section>
 <section id="titanic-dataset" class="slide level2">
 <h2>Titanic Dataset</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb61-2"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>)</span>
-<span id="cb61-3"><a href=""></a><span class="fu">head</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb64-2"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>)</span>
+<span id="cb64-3"><a href=""></a><span class="fu">head</span>(DataTitanic)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -943,15 +1099,18 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <section id="the-select-command" class="slide level2 scrollable">
 <h2>The <code>select()</code> Command</h2>
 <ul>
-<li class="fragment"><p><code>select(DataMine, Var1, Var2)</code> selects columns (variables) <code>Var1</code> and <code>Var2</code> from a data frame <code>DataMine</code>. The first argument is the <code>data=</code> argument followed by the names of the selected variables.</p></li>
-<li class="fragment"><p><code>select(Data, -Var1, -Var2)</code> selects all columns (variables) except <code>Var1</code> and <code>Var2</code> from a data frame <code>DataMine</code>.</p></li>
+<li><p><code>select(DataMine, Var1, Var2)</code> selects columns (variables) <code>Var1</code> and <code>Var2</code> from a data frame <code>DataMine</code>. The first argument is the <code>data=</code> argument followed by the names of the selected variables.</p></li>
+<li><p><code>select(Data, -Var1, -Var2)</code> selects all columns (variables) except <code>Var1</code> and <code>Var2</code> from a data frame <code>DataMine</code>.</p></li>
 </ul>
 <div class="fragment">
 <p>Here is an example using the <code>DataTitanic</code> data frame from the previous slide:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb63-2"><a href=""></a>DataTitanicSelVar<span class="ot">=</span><span class="fu">select</span>(DataTitanic,Survived, Name, Sex, Age)</span>
-<span id="cb63-3"><a href=""></a><span class="fu">head</span>(DataTitanicSelVar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb66-2"><a href=""></a>DataTitanicSelVar<span class="ot">=</span><span class="fu">select</span>(DataTitanic,Survived, Name, Sex, Age)</span>
+<span id="cb66-3"><a href=""></a><span class="fu">head</span>(DataTitanicSelVar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -973,8 +1132,11 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <div class="fragment">
 <p>E.g., <em>filter</em> for female passengers from the dataset: Use <code>DataTitanicSelVar</code> that we created in the previous slide (note that we have to use <code>==</code> instead of <code>=</code> for the criteria):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href=""></a>DataTitanicSelVarFem<span class="ot">=</span><span class="fu">filter</span>(DataTitanicSelVar, Sex<span class="sc">==</span><span class="st">"female"</span>)</span>
-<span id="cb65-2"><a href=""></a><span class="fu">head</span>(DataTitanicSelVarFem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href=""></a>DataTitanicSelVarFem<span class="ot">=</span><span class="fu">filter</span>(DataTitanicSelVar, Sex<span class="sc">==</span><span class="st">"female"</span>)</span>
+<span id="cb68-2"><a href=""></a><span class="fu">head</span>(DataTitanicSelVarFem)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -996,8 +1158,11 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <div class="fragment">
 <p>E.g., <em>mutate</em> calculates new column <code>Born</code> based on <code>Age</code> during Titanic disaster (1912). Uses <code>DataTitanicSelVarFem</code> from previous slide:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a>DataTitatincSelVarFemBirthYear<span class="ot">=</span><span class="fu">mutate</span>(DataTitanicSelVarFem, <span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
-<span id="cb67-2"><a href=""></a><span class="fu">head</span>(DataTitatincSelVarFemBirthYear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href=""></a>DataTitatincSelVarFemBirthYear<span class="ot">=</span><span class="fu">mutate</span>(DataTitanicSelVarFem, <span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
+<span id="cb70-2"><a href=""></a><span class="fu">head</span>(DataTitatincSelVarFemBirthYear)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -1016,12 +1181,12 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <p>»</p>
 </div>
 </section>
-<section id="summary" class="slide level2">
+<section id="summary" class="slide level2 scrollable">
 <h2>Summary</h2>
 <ol type="1">
-<li class="fragment">We selected variables <span class="math inline">\(Survived\)</span>, <span class="math inline">\(Name\)</span>, <span class="math inline">\(Sex\)</span>, <span class="math inline">\(Age\)</span> and saved in <code>DataTitanicSelVar</code></li>
-<li class="fragment">We filtered for females and saved in <code>DataTitanicSelVarFem</code></li>
-<li class="fragment">We mutated to calculate new variable and saved finally in <code>DataTitanicSelVarFemBirthYear</code></li>
+<li>We selected variables <span class="math inline">\(Survived\)</span>, <span class="math inline">\(Name\)</span>, <span class="math inline">\(Sex\)</span>, <span class="math inline">\(Age\)</span> and saved in <code>DataTitanicSelVar</code></li>
+<li>We filtered for females and saved in <code>DataTitanicSelVarFem</code></li>
+<li>We mutated to calculate new variable and saved finally in <code>DataTitanicSelVarFemBirthYear</code></li>
 </ol>
 <div class="fragment">
 <p>Could this be done easier?</p>
@@ -1032,12 +1197,15 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <h2>Alternative: Nesting</h2>
 <h4 id="i-am-not-serious">(I am not serious)</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb69-2"><a href=""></a>DataTitanicFinal<span class="ot">=</span> <span class="fu">mutate</span>(</span>
-<span id="cb69-3"><a href=""></a>        <span class="fu">filter</span>(<span class="fu">select</span>(DataTitanic,Survived, Name, Sex, Age),</span>
-<span id="cb69-4"><a href=""></a>               Sex<span class="sc">==</span><span class="st">"female"</span>), </span>
-<span id="cb69-5"><a href=""></a>                        <span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
-<span id="cb69-6"><a href=""></a><span class="fu">head</span>(DataTitanicFinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb72-2"><a href=""></a>DataTitanicFinal<span class="ot">=</span> <span class="fu">mutate</span>(</span>
+<span id="cb72-3"><a href=""></a>        <span class="fu">filter</span>(<span class="fu">select</span>(DataTitanic,Survived, Name, Sex, Age),</span>
+<span id="cb72-4"><a href=""></a>               Sex<span class="sc">==</span><span class="st">"female"</span>), </span>
+<span id="cb72-5"><a href=""></a>                        <span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
+<span id="cb72-6"><a href=""></a><span class="fu">head</span>(DataTitanicFinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -1060,12 +1228,15 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 <h2>Alternative: Piping</h2>
 <h4 id="will-be-used-throughout-the-coursebook">(will be used throughout the course/book) 🤓</h4>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb71-2"><a href=""></a>DataTitanicFinal<span class="ot">=</span> DataTitanic <span class="sc">|&gt;</span> </span>
-<span id="cb71-3"><a href=""></a>                  <span class="fu">select</span>(Survived, Name, Sex, Age) <span class="sc">|&gt;</span> </span>
-<span id="cb71-4"><a href=""></a>                  <span class="fu">filter</span>(Sex<span class="sc">==</span><span class="st">"female"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb71-5"><a href=""></a>                  <span class="fu">mutate</span>(<span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
-<span id="cb71-6"><a href=""></a><span class="fu">head</span>(DataTitanicFinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb74-2"><a href=""></a>DataTitanicFinal<span class="ot">=</span> DataTitanic <span class="sc">|&gt;</span> </span>
+<span id="cb74-3"><a href=""></a>                  <span class="fu">select</span>(Survived, Name, Sex, Age) <span class="sc">|&gt;</span> </span>
+<span id="cb74-4"><a href=""></a>                  <span class="fu">filter</span>(Sex<span class="sc">==</span><span class="st">"female"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb74-5"><a href=""></a>                  <span class="fu">mutate</span>(<span class="at">Born=</span><span class="dv">1912</span><span class="sc">-</span>Age)</span>
+<span id="cb74-6"><a href=""></a><span class="fu">head</span>(DataTitanicFinal)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell fragment">
 <div class="cell-output cell-output-stdout">
@@ -1090,7 +1261,7 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+<p><a href="https://ai.lange-analytics.com/htmlbook/RAndRStudio.html">Textbook </a></p>
 </div>
 </div></div>
 
@@ -1125,7 +1296,7 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: true,
@@ -1145,7 +1316,7 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: 'c/t',
+        slideNumber: 'h.v',
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -1186,7 +1357,7 @@ ProbLight&amp;=&amp;3.65 \cdot 10^{-10}
         rtl: false,
 
         // see https://revealjs.com/vertical-slides/#navigation-mode
-        navigationMode: 'linear',
+        navigationMode: 'default',
 
         // Randomizes the order of slides each time the presentation loads
         shuffle: false,
