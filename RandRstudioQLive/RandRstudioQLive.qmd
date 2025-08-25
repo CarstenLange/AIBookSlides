@@ -22,7 +22,6 @@ webr:
     - tidyverse
     - rio
     - kableExtra
-    - svDialogs
 resources: 
   - Data
     
@@ -79,7 +78,7 @@ See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScri
 
 2.  **Work with R Projects:** This assigns a directory on your hard drive to your R analysis: `File -> New Project`
 
-First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
+First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M){target="_blank"}
 
 ## R Packages {.smaller}
 
@@ -151,17 +150,19 @@ print(DataHousing[1:3,])
 
 ### Numerical {.smaller}
 
-**Numerical Data Type (`num`):** Numerical values are used for calculations (therefore ZIP-Codes are not numerical). Numerical data can be discrete (`integer`) or continuous (`double`).
+**Numerical Data Type (`num`):** Numerical values are used for calculations (therefore ZIP-Codes are not numerical). The numerical data type is `num` and in some cases `int` (full number). In most of the cases you do not have to differentiate between `int` and `num`.
 
 ```{webr}
-A=as.integer(2)
-B=as.integer(3)
+A=1.23
 str(A) # str() returns structure of a variable
-C=1.23
-str(C) # str() returns structure of a variable
+B=2
+str(2) # str() returns structure of a variable
+C=as.integer(3)
+str(C)
 print(A*C)
-A^B
-A/B # Returns num type
+print(C^B)
+D=C/A # Returns num type
+str(D)
 ```
 
 ### Character {.smaller}
@@ -356,8 +357,6 @@ cat("The average forecasted temperature is", MeanForecTemp)
 ```
 
 ```{webr}
-#| echo: true
-#| code-fold: true
 ForecDays=length(VecTemp)
 cat("The forecast is for", ForecDays, "days.")
 ```
@@ -368,7 +367,7 @@ A data frame is similar to an Excel table (note not all columns of the Titanic d
 
 ```{webr}
 library(rio); library(kableExtra)
-DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") |> 
+DataTitanic=import("Data/Titanic.csv") |> 
   select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
 kbl(DataTitanic[1:12,])
 ```
@@ -376,8 +375,8 @@ kbl(DataTitanic[1:12,])
 A data frame consist of vectors making up the columns. These are the variables for the data analysis (remember: observations are in the rows, variables are in the columns).
 
 ```{webr}
-#| echo: true
-DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv")
+#| echcode-fold: true
+DataTitanic=import("Data/Titanic.csv")
 str(DataTitanic)
 ```
 
@@ -407,23 +406,6 @@ SurvRate=mean(DataTitanic$Survived)
 cat("The average survival rate of Titanic passengers was:", SurvRate)
 ```
 
-## Data Frames vs. Tibbles 🤓 {.smaller .scrollable}
-
-A **tibble** is a more advanced sub-type of a *data frame*. If needed, a regular *data frame* can be coerced into a *tibble* with the `as_tibble()` command.
-
-A few of the differences between *data frames* and *tibbles*:
-
-1.  A *data frame* outputs all its rows and columns by default. A *tibble* outputs only the first 10 rows and the variables that fit on the screen but provides information about omitted variables and rows.
-
-2.  A *data frame* can have row names, while a *tibble* cannot.
-
-3.  In R version \<4.1 a *data frame* converts all *character* values to *factor* type. This conversion was often confusing and annoying. In contrast, a *tibble* only coerces *character* values into *factor* on demand. Since R version 4.1 regular `data frames` behave the same as `tibbles`.
-
-
-
-::: footer
-See: [RandRStudioScriptPart1.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
-:::
 
 ## Summary Data Types and Objects {background-color="#648787"}
 
@@ -432,71 +414,7 @@ knitr::include_graphics("Images/DataObjectDataTypes.png")
 ```
 
 
-## How are Very Big Numbers Presented {.smaller}
-
-
-The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)
-
-\begin{eqnarray*}
-GDP&=&2.2996086 \cdot 10000000000000\\
-&\Longleftrightarrow&\\
-GDP&=&2.2996086 \cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10 \\
-&\Longleftrightarrow&\\
-GDP&=&2.2996086 \cdot 10^{13}
-\end{eqnarray*}
-
-Let us see what R does:
-
-```{webr}
-#| echo: true
-GDPUS=22996086000000
-print(GDPUS)
-
-```
-
-
-
-
-## How are Very Small Numbers Presented 🤓 {.smaller}
-
-::: {.panel-tabset}
-
-### Main 
-
-The probability of getting struck by lightning in the US is about $0.000000000365$ on any randomly chosen day.
-
-\begin{eqnarray*}
-ProbLight&=&\frac{3.65}{10000000000} \\
-&\Longleftrightarrow&\\
-ProbLight&=&\frac{3.65}{10\cdot 10\cdot 10\cdot 10\cdot 10\cdot                              10\cdot 10\cdot 10\cdot 10\cdot 10} \\
-&\Longleftrightarrow&\\
-ProbLight&=&\frac{3.65}{10^{10}}\\
-&\Longleftrightarrow&\\
-ProbLight&=&3.65 \cdot 10^{-10}
-\end{eqnarray*}
-
-
-### Why?
-
-In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:
-
-$$\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365$$
-### What R Does  
-
-Let us see what R does:
-
-```{webr}
-#| echo: true
-ProbStruck=0.000000000365
-cat("Probabilty to get stuck by a lighning on an avg. day:", ProbStruck)
-```
-
-:::
-
-::: footer
-See: [RandRStudioScriptPart1.R script400](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
-:::
-
+# The `tidyverse` and Piping
 
 
 
@@ -603,7 +521,7 @@ See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScri
 #| echo: true
 
 library(rio)
-DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv")
+DataTitanic=import("Data/Titanic.csv")
 head(DataTitanic)
 ```
 »
