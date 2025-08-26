@@ -1,0 +1,99 @@
+---
+title: "Introduction"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+format: 
+  revealjs:
+    echo: true
+    code-fold: true
+    output-location: fragment
+    incremental: false
+    warning: false
+    message: false
+    navigation-mode: vertical
+    scrollable: true
+    smaller: true
+    footer: '<a href="https://r4ds.hadley.nz/data-transform.html#groups" target="_blank">Read Textbook</a>'
+    
+include-in-header:
+  text: |
+    <style>
+    .reveal .slides section:not(:first-of-type) h1,
+    .reveal .slides section:not(:first-of-type) h2,
+    .reveal .slides section:not(:first-of-type) h3,
+    .reveal .slides section:not(:first-of-type) h4,
+    .reveal .slides section:not(:first-of-type) h5,
+    .reveal .slides section:not(:first-of-type) h6 {
+      font-size: 142% !important;
+    }
+    </style>
+---
+
+## Success in The Course
+
+::: incremental
+- Use AI responsible
+- Read the textbook
+- Follow the Learning Guide!!!
+- Read read the syllabus
+:::
+
+## Course Content
+
+::: incremental
+
+- Basic Statistics Concept
+- Data Engineering with R
+- Data Visualization
+- Data reporting with Quarto
+  - Writing Paper
+  - Developing Power Point Slides
+
+:::
+
+## Why R?
+
+::: incremental
+
+- Excel analytics is not reproducible
+- SPSS focuses on surveys
+- STATA and SAS are commercial products
+  - not free
+  - progress has to go through the corporate hierachie and therefore is slower
+  - limited support community
+
+:::
+
+## R and/or Python
+
+::: incremental
+- Analysis is always reproducible with little effort
+- free
+- extensive support
+- R or Python
+  - R is easier to understand for users with limited coding experience
+  - Python is faster in incorporating cutting-edge algorithms
+  - transfer from R to Python or vice versa is easy
+  - Quarto supports both R and Python even simultaneously in the same project
+
+:::
+
+## Quantitative Analysis
+
+
+::: incremental
+
+1. **Logical Model** based on domain knowledge.  
+   *Example:* A new webdesign should help increase sales.
+   
+2. **Quantitative Model** that is general. It is not fitted to data (*unfitted model*)  
+   *Example:* The daily mean the sales amount for the new webdesign should be higher than the one for the original webdesign
+   
+3. **Sample Statitics** based on a samble of $N$ observations that confirms what was stated under topic 2 (or not)  
+   **Example:** Track sales on both websites with randomly assigned users over 365 days and calculate the sample means. Compare the sample means and *additionally* run tests if your results are rleible (significant).  
+   **Note:** The means you calculated from the sample are not the same as the means mentioned under topic 2. They are only **estimates** of the general (population) means.
+   
+:::
