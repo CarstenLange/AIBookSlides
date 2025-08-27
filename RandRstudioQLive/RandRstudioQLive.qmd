@@ -5,6 +5,10 @@ author:
   email: "clange@cpp.edu"
   affiliation: "Cal Poly, Pomona"
 
+execute:
+  message: false
+  warning: false
+
 format: 
   live-revealjs:
     theme: [moon,../CustomCL.scss]
@@ -13,7 +17,6 @@ format:
     chalkboard:
       theme: whiteboard
       boardmarker-width: 2.7
-    message: false
     incremental: false
     scrollable: true
     footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
@@ -21,6 +24,8 @@ webr:
   packages:
     - tidyverse
     - rio
+    - ggdag
+    
 resources: 
   - Data
 engine: knitr    
@@ -251,7 +256,7 @@ IsConcertGood+IsCompanyGood+17
 
 ```{webr}
 #| echo: false
-#| memessage: false
+#| message: false
 #| warning: false
 library(kableExtra)
 DataTruthTable=tribble(~A,~B,~"A&B",~"A|B",
@@ -617,7 +622,7 @@ Note, overwriting data frames such as `DataTitanic` is usually a bad idea!
 library(tidyverse)
 DataTitanicFinal = mutate(
                    filter(select(DataTitanic, Survived, PasClass=Pclass , 
-                                 Sex, Age, FareInPounds), Sex=="female"), 
+                                 Sex, PasClass, FareInPounds), Sex=="female"), 
                    FareIn2021Dollars=164.1*FareInPounds,                   
                    FareInPounds=NULL)
 head(DataTitanicFinal)
@@ -633,10 +638,10 @@ head(DataTitanicFinal)
 
 ```{webr}
 library(tidyverse)
-DataTitanicFinal = DataTitanic |> 
-                   select(Survived, PasClass=Pclass , Sex, Age, FareInPounds) |> 
-                   filter(Sex=="female") |> 
-                   mutate(FareIn2021Dollars=164.1*FareInPounds, FareInPounds=NULL)
+DataTitanicFinal=DataTitanic |> 
+                 select(Survived, PasClass=Pclass , Sex, Age, FareInPounds) |> 
+                 filter(Sex=="female") |> 
+                 mutate(FareIn2021Dollars=164.1*FareInPounds, FareInPounds=NULL)
 head(DataTitanicFinal)
 ```
 
@@ -649,53 +654,125 @@ See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScri
 
 To answer the question, we develop a male and a female data frame and compare the survival rates.
 
-In each data frame we would need only the variables `Sex` and `Survived` but we add also `Age` for additional analysis.
+In each data frame we would need only the variables `Sex` and `Survived` but we add also `PasClass` for additional analysis.
 
 ## The Male Data Frame
 
-We select `Sex`,  `Survived`, and `Age` and filter for "male":
+We select `Sex`,  `Survived`, and `PasClass=Pclass` and filter for `male`:
 
 ```{webr}
 #| echo: false
 DataMale=DataTitanic |> 
-         select(Sex,  Survived, Age) |> 
+         select(Sex,  Survived, PasClass=Pclass) |> 
          filter(Sex=="male")
 ```
 
 ```{webr}
-DataMale = @@@
-print(DataMale)
+DataMale = DataTitanic |> 
+           select(@@@) |> 
+           filter(@@@)
+head(DataMale)
 ```
+
 
 ## The Female Data Frame
 
-We select `Sex`,  `Survived`, and `Age` and filter for "female":
+We select `Sex`,  `Survived`, and `PasClass=Pclass` and filter for `female`:
 
 ```{webr}
 #| echo: false
 DataFemale=DataTitanic |> 
-         select(Sex,  Survived, Age) |> 
+         select(Sex,  Survived, PasClass=Pclass) |> 
          filter(Sex=="female")
 ```
 
 ```{webr}
-DataFemale = @@@
-print(DataFemale)
+DataFemale = DataTitanic |> 
+             select(@@@) |> 
+             filter(@@@)
+head(DataFemale)
 ```
 
 ## Comparing the Survival Proportion of Males to Females
 
+**Hint:** You could either calculate the female proportion as `sum(DataFemale$Survived/nrow(DataFemale))` or `mean(DataFemale$Survived)`.
 ```{webr}
-FemSurvProp = @@@
-MaleSurProp = @@@
+PropFemSurv = @@@
+PropMaleSurv = @@@
 cat(@@@, @@@)
 cat(@@@, @@@)
 ```
 
-## Bonus: Comparing the Average Age of Males to Females
+## Be critical with your own research {.smaller}
+### `PasClass` is a Confounder
+
+The third class was deep in the hull of the Titanic with low survival chances and more men were traveling in that class. This makes `PasClass` a confounder. Therefore we have to analyse male and female survival by class: We have to filter for `Sex` and `PasClass`.
+
+```{r}
+library(ggdag)
+library(ggplot2)
+set.seed(123)
+dagify(
+  Survived ~ Sex + PClass,
+  Sex ~ PClass,
+  exposure = "Sex",
+  outcome = "Survived"
+)|> 
+ggdag_status(node_size = 22) + theme_void()
+```
+
+
+
+
+
+
+## Survival Research for Passenger Class 1 
+
+Filter for `PasClass` and `Sex` (`female` and `male`)
 
 ```{webr}
-FemAvgAge = @@@
-MaleAvgAge = @@@
-cat(@@@, @@@)
-cat(@@@, @@@)
+DataFemaleClass1=DataTitanic |> 
+                 select(@@@, @@@, PasClass=Pclass) |> 
+                 filter(@@@) |> 
+                 filter(@@@)
+DataMaleClass1=DataTitanic |> 
+               select(@@@, @@@, PasClass=Pclass) |> 
+               filter(@@@) |> 
+               filter(@@@)
+cat(" Female Survival Poportion in Class 1:", mean(DataFemaleClass1$Survived), "\n",
+    "Male Survival Poportion in Class 1:", mean(DataMaleClass1$Survived))
+```
+
+## Survival Research for Passenger Class 2 
+
+Filter for `PasClass` and `Sex` (`female` and `male`)
+
+```{webr}
+DataFemaleClass2=DataTitanic |> 
+                 select(@@@, @@@, PasClass=Pclass) |> 
+                 filter(@@@) |> 
+                 filter(@@@)
+DataMaleClass2=DataTitanic |> 
+               select(@@@, @@@, PasClass=Pclass) |> 
+               filter(@@@) |> 
+               filter(@@@)
+cat(" Female Survival Poportion in Class 2:", mean(DataFemaleClass2$Survived), "\n",
+    "Male Survival Poportion in Class 2:", mean(DataMaleClass2$Survived))
+```
+
+## Survival Research for Passenger Class 3 
+
+Filter for `PasClass` and `Sex` (`female` and `male`)
+
+```{webr}
+DataFemaleClass3=DataTitanic |> 
+                 select(@@@, @@@, PasClass=Pclass) |> 
+                 filter(@@@) |> 
+                 filter(@@@)
+DataMaleClass3=DataTitanic |> 
+               select(@@@, @@@, PasClass=Pclass) |> 
+               filter(@@@) |> 
+               filter(@@@)
+cat(" Female Survival Poportion in Class 3:", mean(DataFemaleClass3$Survived), "\n",
+    "Male Survival Poportion in Class 3:", mean(DataMaleClass3$Survived))
+```
