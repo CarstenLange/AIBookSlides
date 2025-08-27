@@ -7,6 +7,7 @@ author:
 
 format: 
   live-revealjs:
+    multiplex: true
     theme: [moon,../CustomCL.scss]
     warning: false
     controls: true
@@ -21,13 +22,21 @@ webr:
   packages:
     - tidyverse
     - rio
-    - kableExtra
 resources: 
   - Data
-    
+engine: knitr    
 ---
 
-## Learning Outcomes
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Learning Outcomes {.smaller}
+
+```{webr}
+#| echo: false
+DataTitanic=import("Data/Titanic.csv") |> 
+  select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
+```
+
 
 -   How to install R and RStudio
 -   What is the windows layout of RStudio
@@ -45,7 +54,7 @@ resources:
     -   `arrange()` sort observations in a data frame.
     -   piping (connecting commands) with `|>`.
 
-## Install and Setup R and RStudio
+## Install and Setup R and RStudio {.smaller}
 
 A typical setup to work with R consists of two components:
 
@@ -61,7 +70,7 @@ You can download RStudio here: [Download RStudio](https://www.rstudio.com/produc
 
 Detailed installation guides are provided in the Book and the Online Resources sections of this chapter in book.
 
-## RStudio --- Integrated Development Environment (IDE) 🤓
+## RStudio --- Integrated Development Environment (IDE) 🤓  {.smaller}
 
 ![RStudio Window](Images/RAndRStudioWindow.PNG)
 
@@ -71,7 +80,7 @@ First steps to setup R can be found in this video: [Click here](https://youtu.be
 See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
 :::
 
-## Recommended RStudio Settings
+## Recommended RStudio Settings  {.smaller}
 
 1.**Do not Restore .RData into workspace at startup:**\
 `Tools -> GlobalOptions`.
@@ -102,6 +111,8 @@ Example: How to install the tidyverse package: [Click here](https://youtu.be/tAG
 
 Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE)
 
+`import()` would not work if the `rio` package were not loaded.  
+`select()` would not work if the `tidyverse` package were not loaded.
 
 
 ```{webr}
@@ -112,26 +123,21 @@ DataHousing =
 print(DataHousing[1:3,])
 ```
 
-`import()` would not work if the `rio` package were not loaded.
 
-`select()` would not work if the `tidyverse` package were not loaded.
+## Data Types & Data Objects {.smaller}
 
-## Data Types & Data Objects
-
-::: nonincremental
+::: incremental
 -   **Data Types:** What can R store?
-
     -   numerical `num`
     -   character `chr`
     -   `factor`
     -   `logic`
-
 -   **Data Objects:** What are the **containers** R uses to store data?
-
     -   `single entry` single variable
     -   list of entries `vectors`
     -   table `dataframe` and `tibble`
     -   *advanced objects*. E.g., for plot, models, prediction results
+
 :::
 
 ## Data Types  🤓 {.smaller}
@@ -167,14 +173,13 @@ str(D)
 
 ### Character {.smaller}
 
-**Character Data Type (`chr`):**
+**Character Data Type (`chr`) a.k.a Labels:**
 
 Note that what is called a `character` in R is often called a *string* in other programming languages.
 
 `character` data types must be surrounded by quotes:
 
 ```{webr}
-#| output-location: default
 MyText="Hello world!"
 print(MyText)
 ```
@@ -182,7 +187,6 @@ print(MyText)
 Character variables can be concatenated with the `cat()` command:
 
 ```{webr}
-#| output-location: default
 FirstName="Carsten"
 LastName="Lange"
 cat(FirstName, LastName) # R adds a space automatically
@@ -190,32 +194,34 @@ cat(FirstName, LastName) # R adds a space automatically
 
 ### Factor {.smaller}
 
-A `factor` is an R data type that stores *categorical* data in an effective way. *Categorical* data are `character` type data covering a few categories such as hair color (blonde, braun, red, black). They can be coded with numbers (e.g., from 1-5 for hair color) and thus use less memory. Another example is sex (male, female).
+A `factor` is an R data type that stores **categorical** content. It is used to signal certain R commands that the variable is **categorical rather than character**.  
+**Note,** some *R* commands recognize *categorical* variables automatically and a conversion to *factor* is not needed.  
 
 ```{webr}
-#| output-location: default
-People=tribble(~Name,~Sex,
-                  "John", "male",
-                  "Jane", "female",
-                  "Mia", "female",
-                  "Brid", "female",
-                  "Greg", "male")
+People=data.frame(Name= c("John","Jane","Mia","Brid"),              
+                  Sex=c("male","female","female","female"))
 print(People)
 ```
 
-Sex is a `charcter` variable in the dataset `People`
+***
+
+***
+
+Sex is a `character` variable in the dataset `People`
 
 ```{webr}
-#| output-location: default
 str(People$Sex)
-
 ```
+
+***
+
+***
 
 Transforming the variable $Sex$ to a factor and looking at its structure (`str()`) again:
 
 ```{webr}
-#| output-location: default
-str(as.factor(People$Sex))
+FactorSex=as.factor(People$Sex)
+str(FactorSex)
 ```
 
 ### Logic {.smaller}
@@ -223,33 +229,31 @@ str(as.factor(People$Sex))
 **Logic variables**: Store `TRUE` and `FALSE`. They can be combined with `and`/`or`. Internally `True` is stored as $1$ and `False` is stored as $0$
 
 ```{webr}
-#| output-location: default
 IsConcertGood=FALSE 
 IsCompanyGood=TRUE
 cat("Is the concert good?", IsConcertGood, "Is the company good?", IsCompanyGood)
 ```
 
 ```{webr}
-#| output-location: default
 IsEveningAmazing=IsConcertGood & IsCompanyGood
 cat("Is the evening amazing?", IsEveningAmazing)
 ```
 
 ```{webr}
-#| output-location: default
 IsEveningGood=IsConcertGood | IsCompanyGood # | stands for "or"
 cat("Is the evening good?", IsEveningGood)
 ```
 
 ```{webr}
-#| output-location: default
 IsConcertGood+IsCompanyGood+17
 ```
 
 ### Truth Table {.smaller}
 
 ```{webr}
-#| output-location: default
+#| echo: false
+#| memessage: false
+#| warning: false
 library(kableExtra)
 DataTruthTable=tribble(~A,~B,~"A&B",~"A|B",
                        T,T,T,T,
@@ -287,7 +291,7 @@ A rectangular lot has a width of 200 feet (`Width`) and a length (`Length`) of 3
 cat("The area of the lot is", @@@, "square feet.")
 ```
 
-## Exercise: `cat()` command and Single Value Objects with Different Types {.smaller}
+## Exercise: `cat()` command and Single Value Objects with Different Data Types {.smaller}
 
 Assign your own first and last name, your ZIP code, and your your age, to three character variables (first name, last name, Zip code) and one numerical variable (age). Use `var1`, `var2`, `var3`, `var4.` Afterward, use `Cat()` to output a sentence like `Carsten Lange is 55 years old and lives in ZIP code 92656` using the variables you had created.
 
@@ -303,16 +307,11 @@ cat(@@@, @@@, "is", @@@, "years old and lives in ZIP code", @@@)
 ```
 
 
-
-## Excercise: Different Data Types
-
-
-
-
 ## Data Types & Data Objects
 
+<br><br>
 **Data Types:** What can R store?
-
+<br><br>
 **Data Objects:** What are the containers R uses to store data?
 
 ## Data Objects 
@@ -327,17 +326,16 @@ cat(@@@, @@@, "is", @@@, "years old and lives in ZIP code", @@@)
 
 ## Single Value Object
 
-Object just stores a single value:
+Objects just store a single value:
 
 ```{webr}
-
-A=123.768
-B=3
-C="Hello World"
-IsLifeGood=TRUE
+A=1.5
+B="beers is too much to drive?"
+C=TRUE
+cat(A, B, "Answer:", C)
 ```
 
-## Vector-Objects
+## Vector-Objects {.smaller}
 
 A vector object stores a list of values (numerical, character, factor, or logic)
 
@@ -349,6 +347,9 @@ VecWindSpeed=c("low","low","high")
 VecIsSunny=c(TRUE,TRUE,FALSE)
 ```
 
+<hr><hr>
+
+
 Vector objects can be used as arguments for an R command to calculate:
 
 ```{webr}
@@ -356,26 +357,30 @@ MeanForecTemp=mean(VecTemp)
 cat("The average forecasted temperature is", MeanForecTemp)
 ```
 
+<hr><hr>
+
 ```{webr}
 ForecDays=length(VecTemp)
 cat("The forecast is for", ForecDays, "days.")
 ```
 
-## Data Frames (tibbles)
+## Data Frames (tibbles) {.smaller}
 
 A data frame is similar to an Excel table (note not all columns of the Titanic data frame are shown).
 
 ```{webr}
-library(rio); library(kableExtra)
+library(rio)
 DataTitanic=import("Data/Titanic.csv") |> 
   select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
-kbl(DataTitanic[1:12,])
+kable(DataTitanic[1:12,])
 ```
+
+
+. . .
 
 A data frame consist of vectors making up the columns. These are the variables for the data analysis (remember: observations are in the rows, variables are in the columns).
 
 ```{webr}
-#| echcode-fold: true
 DataTitanic=import("Data/Titanic.csv")
 str(DataTitanic)
 ```
@@ -383,18 +388,14 @@ str(DataTitanic)
 ## Extracting the Vectors and Perform Calculations (numerical Vectors)
 
 ```{webr}
-#| echo: true
-
 VecFareInPounds=DataTitanic$FareInPounds
 AvgFare=mean(VecFareInPounds)
 cat("The average fare of Titanic passengers was:", AvgFare, "British Pounds")
 ```
 
-## Extracting the Vectors and Perform Calculations (logical Vectors)
+## Extracting the Vectors and Perform Calculations (logical Vectors){.smaller}
 
 ```{webr}
-#| echo: true
-
 DataTitanic$Survived=as.logical(DataTitanic$Survived)
 str(DataTitanic)
 ```
@@ -409,16 +410,15 @@ cat("The average survival rate of Titanic passengers was:", SurvRate)
 
 ## Summary Data Types and Objects {background-color="#648787"}
 
-```{webr}
-knitr::include_graphics("Images/DataObjectDataTypes.png")
-```
+![](Images/DataObjectDataTypes.png)
+
 
 
 # The `tidyverse` and Piping
 
 
 
-## Basics of R Commands
+## Basics of R Commands {.smaller}
 
 R commands consists of the **command's name followed by a pair of parentheses**: `command()`
 
@@ -429,11 +429,11 @@ Inside the `()` we can define one or more **arguments** for the command.
 . . .
 
 ```{webr}
-#| echo: true
 VecTest=c(1,2,3)
+print(VecTest)
 ```
 
-<p>
+. . .
 
 ```{webr}
 #| echo: true
@@ -462,37 +462,33 @@ Most R commands have the following structure: \begin{equation}
 
 Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.»
 
-## Use a Command with and without Argument Names 🤓
+## Use a Command with and without Argument Names 🤓 {.smaller}
 
 ```{webr}
-#| echo: true
+#| edit: false
 VecTest=c(1,2,3)
 ```
 
-<br>
+
 
 ```{webr}
-#| echo: true
 Result=mean(x=VecTest, trim=0, na.rm=FALSE)
 cat("The mean of the values in vector VecTest is:", Result)
 ```
 
-<p>
 
 . . .
 
 ```{webr}
-#| echo: true
 Result=mean(VecTest, 0, FALSE)
 cat("The mean of the values in vector VecTest is:", Result)
 ```
 
-<p>
+
 
 . . .
 
 ```{webr}
-#| echo: true
 Result=mean(VecTest)
 cat("The mean of the values in vector VecTest is:", Result)
 ```
@@ -513,101 +509,120 @@ See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScri
 -   `library(tidyverse)` (loads the `tidyverse` and its packages)
 -   `select()` selects columns (variables) from a data frame
 -   `filter()` filters rows (observations) for specific criteria
--   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel).»
+-   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel)
+-   `arrange()` sorts a data frame  according to one or more colums in ascending order (use argumend `desc()` for descentig order)
+
 
 ## Titanic Dataset
 
 ```{webr}
-#| echo: true
+#| echo: false
+DataTitanic=import("Data/Titanic.csv")
+```
 
+```{webr}
 library(rio)
 DataTitanic=import("Data/Titanic.csv")
 head(DataTitanic)
 ```
-»
 
-## The `select()` Command {.scrollable}
+
+## The `select()` Command {.smaller}
 
 -   `select(DataMine, Var1, Var2)` selects columns (variables) `Var1` and `Var2` from a data frame `DataMine`. The first argument is the `data=` argument followed by the names of the selected variables.
 
--   `select(Data, -Var1, -Var2)` selects all columns (variables) except `Var1` and `Var2` from a data frame `DataMine`.
+-   `select(DataMine, -Var1, -Var2)` selects all columns (variables) except `Var1` and `Var2` from a data frame `DataMine`.
 
 . . .
 
 Here is an example using the `DataTitanic` data frame from the previous slide:
 
 ```{webr}
-#| echo: true
+#| echo: false
+DataTitanicSelVar=select(DataTitanic, Survived, PasClass=Pclass , Sex, Age, FareInPounds)
+```
 
+```{webr}
 library(tidyverse)
-DataTitanicSelVar=select(DataTitanic,Survived, Name, Sex, Age)
+DataTitanicSelVar=select(DataTitanic, Survived,PasClass=Pclass,Sex,Age,FareInPounds)
 head(DataTitanicSelVar)
 ```
-»
 
-## The `filter()` Command
+
+## The `filter()` Command {.smaller}
 
 The `filter()` command filters rows (observations) of a data frame for specific criteria. The first argument is the `data=` argument followed by the filter criteria.
 
 . . .
 
-E.g., *filter* for female passengers from the dataset: Use `DataTitanicSelVar` that we created in the previous slide (note that we have to use `==` instead of `=` for the criteria):
+E.g., *filter* for female passengers: <br>
+We use `DataTitanicSelVar` that we created in the previous slide at as a starting dataframe and save the result in `DataTitanicSelVarFem`.<br>
+**Note,** we have to use `==` instead of `=` for the criteria):
 
 ```{webr}
-#| echo: true
-
 DataTitanicSelVarFem=filter(DataTitanicSelVar, Sex=="female")
 head(DataTitanicSelVarFem)
 ```
-»
 
-## The `mutate()` Command 🤓
+```{webr} 
+#| echo: false
+DataTitanicSelVarFem=filter(DataTitanicSelVar, Sex=="female") 
+# needed in case somebody start on next slide
+```
+
+
+## The `mutate()` Command 🤓 {.smaller}
 
 `mutate()` creates or overwrites columns (variables) based on other columns (just like Excel). The first argument is the `data=` argument followed by the instructions on how to create the new variable.
 
 . . .
 
-E.g., *mutate* calculates new column `Born` based on `Age` during Titanic disaster (1912). Uses `DataTitanicSelVarFem` from previous slide:
+E.g., *mutate* calculates the `FareIn2021Dollars` by multiplying `FareInPounds` by $164.1.  
+The command uses `DataTitanicSelVarFem` from the previous slide:
 
 ```{webr}
-#| echo: true
-
-DataTitatincSelVarFemBirthYear=mutate(DataTitanicSelVarFem, Born=1912-Age)
-head(DataTitatincSelVarFemBirthYear)
+DataTitatincSelVarFemDolFare=mutate(DataTitanicSelVarFem,
+                                    FareIn2021Dollars=164.1*FareInPounds, 
+                                    FareInPounds=NULL)
+head(DataTitatincSelVarFemDolFare)
 ```
+
+
 
 ::: footer
 See: [RandRStudioScriptPart2.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
 :::
-»
 
-## Summary
 
-1.  We selected variables $Survived$, $Name$, $Sex$, $Age$ and saved in `DataTitanicSelVar`
+## Summary {.smaller}
+
+We now have a data frame with only women and columns $Survived$, $PasClass$, $Sex$, $Age$, and $FareIn2021Dollas$.
+
+How did we get there:
+
+1.  We selected variables $Survived$, $PasClass$, $Sex$, $Age$, $FareInPounds$ and saved in `DataTitanicSelVar`
 2.  We filtered for females and saved in `DataTitanicSelVarFem`
-3.  We mutated to calculate new variable and saved finally in `DataTitanicSelVarFemBirthYear`
+3.  We mutated to calculate  a new variable $FareIn2021Dollas$ and saved finally in `DataTitatincSelVarFemDolFare`
 
 . . .
 
 Could this be done easier?
 
-Note, overwriting data frames such as `DataTitanic` is usually a bad idea!»
+Note, overwriting data frames such as `DataTitanic` is usually a bad idea!
 
-## Alternative: Nesting
+## Alternative: Nesting {.smaller}
 
 #### (I am not serious)
 
 ```{webr}
-#| echo: true
-
 library(tidyverse)
-DataTitanicFinal= mutate(
-        filter(select(DataTitanic,Survived, Name, Sex, Age),
-               Sex=="female"), 
-                        Born=1912-Age)
+DataTitanicFinal = mutate(
+                   filter(select(DataTitanic, Survived, PasClass=Pclass , 
+                                 Sex, Age, FareInPounds), Sex=="female"), 
+                   FareIn2021Dollars=164.1*FareInPounds,                   
+                   FareInPounds=NULL)
 head(DataTitanicFinal)
 ```
-»
 
 ## Piping Schema {background-color="#648787"}
 
@@ -618,19 +633,70 @@ head(DataTitanicFinal)
 #### (will be used throughout the course/book) 🤓
 
 ```{webr}
-#| echo: true
-
 library(tidyverse)
-DataTitanicFinal= DataTitanic |> 
-                  select(Survived, Name, Sex, Age) |> 
-                  filter(Sex=="female") |> 
-                  mutate(Born=1912-Age)
+DataTitanicFinal = DataTitanic |> 
+                   select(Survived, PasClass=Pclass , Sex, Age, FareInPounds) |> 
+                   filter(Sex=="female") |> 
+                   mutate(FareIn2021Dollars=164.1*FareInPounds, FareInPounds=NULL)
 head(DataTitanicFinal)
 ```
-»
+
 
 ::: footer
 See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
 :::
 
-## Questions
+## Was Chivary Dead in 1912?
+
+To answer the question, we develop a male and a female data frame and compare the survival rates.
+
+In each data frame we would need only the variables `Sex` and `Survived` but we add also `Age` for additional analysis.
+
+## The Male Data Frame
+
+We select `Sex`,  `Survived`, and `Age` and filter for "male":
+
+```{webr}
+#| echo: false
+DataMale=DataTitanic |> 
+         select(Sex,  Survived, Age) |> 
+         filter(Sex=="male")
+```
+
+```{webr}
+DataMale = @@@
+print(DataMale)
+```
+
+## The Female Data Frame
+
+We select `Sex`,  `Survived`, and `Age` and filter for "female":
+
+```{webr}
+#| echo: false
+DataFemale=DataTitanic |> 
+         select(Sex,  Survived, Age) |> 
+         filter(Sex=="female")
+```
+
+```{webr}
+DataFemale = @@@
+print(DataFemale)
+```
+
+## Comparing the Survival Proportion of Males to Females
+
+```{webr}
+FemSurvProp = @@@
+MaleSurProp = @@@
+cat(@@@, @@@)
+cat(@@@, @@@)
+```
+
+## Bonus: Comparing the Average Age of Males to Females
+
+```{webr}
+FemAvgAge = @@@
+MaleAvgAge = @@@
+cat(@@@, @@@)
+cat(@@@, @@@)
