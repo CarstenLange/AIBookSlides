@@ -17,6 +17,7 @@ format:
     scrollable: true
     smaller: true
     footer: '<a href="https://r4ds.hadley.nz/data-transform.html#groups" target="_blank">Read Textbook</a>'
+  
     
 include-in-header:
   text: |
@@ -30,6 +31,7 @@ include-in-header:
       font-size: 142% !important;
     }
     </style>
+    
 ---
 
 ## Success in The Course
@@ -97,3 +99,38 @@ include-in-header:
    **Note:** The means you calculated from the sample are not the same as the means mentioned under topic 2. They are only **estimates** of the general (population) means.
    
 :::
+
+## Major Data Types
+
+
+
+
+```{mermaid, echo=false, code-fold=false}
+graph TD
+VarGeneral["Data in General"]
+VarChar["Labels/Char:<br/>- Last names<br/>- ZIP-codes<br/>- ID-numbers"]
+VarCategory["Categorical/Factors<br/>limited number of variations:<br/>- Sex (male/female)<br/>- Grades (A, B, C, D, F)<br/>- Gender (Male, Female, Non-binary)"]
+VarNumeric["Numerical Data<br/>- Counts (number of accident)<br/>- Measures (e.g., Weight; 160.8)"]
+VarNumericCon["Continous/Num<br/>- Measures (e.g., Weight; 160.8)"]
+VarInt["Discrete/Int<br/>- Counts (e.g., Number of accidents)"]
+
+
+VarGeneral --> VarChar
+VarGeneral --> VarCategory
+VarGeneral --> VarNumeric
+VarNumeric --> VarInt
+VarNumeric --> VarNumericCon
+
+
+%% Define one reusable style
+classDef ClassTopNodeCL text-align:center,color:#000000,fill:#ffffff,stroke:#000000,stroke-width:3.8px;
+
+classDef ClassLowNodesCL text-align:left,color:#0000dd,fill:#dedea9,stroke:#ffffff,stroke-width:3.8px;
+
+classDef ClassLowestNodesCL text-align:left,color:#0000dd,fill:#b3672b,stroke:#ffffff,stroke-width:3.8px;
+
+%% Apply it to multiple nodes
+class VarChar,VarNumeric,VarNumericCon,VarInt,VarCategory ClassLowNodesCL;
+class VarGeneral ClassTopNodeCL;
+class VarNumericCon,VarInt ClassLowestNodesCL
+```
