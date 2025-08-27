@@ -7,7 +7,6 @@ author:
 
 format: 
   live-revealjs:
-    multiplex: true
     theme: [moon,../CustomCL.scss]
     warning: false
     controls: true
