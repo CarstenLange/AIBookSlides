@@ -131,7 +131,7 @@ print(DataHousing[1:3,])
 ## Data Types & Data Objects {.smaller}
 
 ::: incremental
--   **Data Types:** What can R store?
+-   **Data Types:** Which type of values can R store?
     -   numerical `num`
     -   character `chr`
     -   `factor`
@@ -314,7 +314,7 @@ cat(@@@, @@@, "is", @@@, "years old and lives in ZIP code", @@@)
 ## Data Types & Data Objects
 
 <br><br>
-**Data Types:** What can R store?
+**Data Types:** Which type of values can R store?
 <br><br>
 **Data Objects:** What are the containers R uses to store data?
 
@@ -341,20 +341,30 @@ cat(A, B, "Answer:", C)
 
 ## Vector-Objects {.smaller}
 
-A vector object stores a list of values (numerical, character, factor, or logic)
+A vector object stores a list of values (numerical, character, factor, or logic; mixing of data types is not allowed)
 
 Example: Weather during the last three days in Stattown:
 
 ```{webr}
+#| echo: false
+VecDay=c(1,2,3)
 VecTemp=c(70, 68, 55)
 VecWindSpeed=c("low","low","high")
 VecIsSunny=c(TRUE,TRUE,FALSE)
 ```
 
+```{webr}
+VecDay=c(1,2,3)
+VecTemp=c(70, 68, 55)
+VecWindSpeed=c("low","low","high")
+VecIsSunny=c(TRUE,TRUE,FALSE)
+print("Four vectors successfully defined!")
+```
+
 <hr><hr>
 
 
-Vector objects can be used as arguments for an R command to calculate:
+Vector objects can be used as arguments for an R command to calculate statistics such as the `mean()` or the number of entries in the *vector* (`length()`):
 
 ```{webr}
 MeanForecTemp=mean(VecTemp)
@@ -370,7 +380,26 @@ cat("The forecast is for", ForecDays, "days.")
 
 ## Data Frames (tibbles) {.smaller}
 
-A data frame is similar to an Excel table (note not all columns of the Titanic data frame are shown).
+A data frame is similar to an Excel table. **A data frame stores the values of R Vectors as variables entries in  its columns** .
+
+Below we show how the **values from the four vectors** `VecDay`, `VecTemp`, `VecWindSpeed`, and `VevIsSunny` are stored in the *data frame* `DataWeather`.
+
+The columns hold the values from the four vectors and the rows (with the exception of the first row), hold the observations for the various days. The first row contains the variable names:
+
+```{webr}
+DataWeather=data.frame(Day=c(1,2,3), Temp=c(70,68,55), 
+                       WindSpeed=c("low","low","high"),
+                       IsSunny=c(TRUE,TRUE,FALSE))
+kable(DataWeather)
+```
+
+
+
+## Data Frame from Titanic Data {.smaller}
+
+Most of the times, we do not build a *data frame* from its vectors (columns). Instead we load the *data frame* from a file (for example, a `csv` file.
+
+Below we load the *Titanic* dataset. Note, not all columns of the *Titanic* data frame are used, and only the first twelve observations are shown.
 
 ```{webr}
 library(rio)
@@ -379,17 +408,17 @@ DataTitanic=import("Data/Titanic.csv") |>
 kable(DataTitanic[1:12,])
 ```
 
-
-. . .
-
-A data frame consist of vectors making up the columns. These are the variables for the data analysis (remember: observations are in the rows, variables are in the columns).
+We can see the *structure* of the data frame by using the `str()` command. This includes the type of iths variables/vectors:
 
 ```{webr}
 DataTitanic=import("Data/Titanic.csv")
 str(DataTitanic)
 ```
 
-## Extracting the Vectors and Perform Calculations (numerical Vectors)
+## Extracting the Vectors and Performing Calculations (numerical Vectors) {.smaller}
+Since the columns of a data frame are made up of *vectors*, we can extract these vectors, and use the values  for data analysis (remember: observations are in the rows, variables are in the columns).
+
+We can use the  notation `DataFrameName$VectorName` to extract the vectors: 
 
 ```{webr}
 VecFareInPounds=DataTitanic$FareInPounds
@@ -397,21 +426,21 @@ AvgFare=mean(VecFareInPounds)
 cat("The average fare of Titanic passengers was:", AvgFare, "British Pounds")
 ```
 
-## Extracting the Vectors and Perform Calculations (logical Vectors){.smaller}
+## Extracting the Vectors and Performing Calculations (logical Vectors){.smaller}
+
+
+
+```{webr}
+SurvRate=mean(DataTitanic$Survived)
+cat("The average survival rate of Titanic passengers was:", SurvRate)
+```
+
+We can also change a vector inside a data frame:
 
 ```{webr}
 DataTitanic$Survived=as.logical(DataTitanic$Survived)
 str(DataTitanic)
 ```
-
-```{webr}
-#| echo: true
-
-SurvRate=mean(DataTitanic$Survived)
-cat("The average survival rate of Titanic passengers was:", SurvRate)
-```
-
-
 ## Summary Data Types and Objects {background-color="#648787"}
 
 ![](Images/DataObjectDataTypes.png)
@@ -440,7 +469,6 @@ print(VecTest)
 . . .
 
 ```{webr}
-#| echo: true
 sum(x=VecTest)
 mean(VecTest)
 ```
@@ -649,6 +677,45 @@ head(DataTitanicFinal)
 ::: footer
 See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
 :::
+
+## Python vs. R --- The task
+
+Let us compare  code for the same tasks between  *R* and *Python*:  
+
+
+- Download the Titanic dataset 
+
+- select the variables `Sex`, `FareInPounds`, `Survived` (renamed to: `Surv`)
+
+- Calculate a new column `FareInDollars` by multiplying `FareInPounds` by $164.5$
+
+- Filter for `Sex` beeing *female*
+
+- Calculate the mean of `FareInDollars` 
+
+## Python vs. R --- The results {.smaller}
+
+```{webr}
+library(tidyverse); library(rio)
+DataTitanic=import("Data/Titanic.csv") |> 
+            select(Sex, FareInPounds, Surv = Survived) |> 
+            mutate(FareInDollars = FareInPounds*164.5) |> 
+            filter(Sex=="female")
+MeanFareWomen=mean(DataTitanic$FareInDollars)
+print(MeanFareWomen)
+```
+
+```{pyodide}
+import pandas as pd
+DataTitanic=pd.read_csv("Data/Titanic.csv") \
+            .rename(columns={"Survived": "Surv"}) [["Sex", "FareInPounds", "Surv"]] \
+            .assign(FareInDollars=lambda df: df["FareInPounds"]*164.5) \
+            .query("Sex=='female'")
+MeanFareWomen=DataTitanic["FareInDollars"].mean()
+print(MeanFareWomen)     
+```
+
+
 
 ## Was Chivary Dead in 1912?
 
