@@ -1,0 +1,51 @@
+---
+title: "SQL"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+---
+
+```{r}
+install.packages(c("DBI", "RSQLite"))
+library(DBI)
+library(RSQLite)
+# Create a connection to an in-memory SQLite database
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+
+# Write an R data frame to the database as a table
+DataSample=data.frame(name=c("Carsten", "Jane", "Joe"), 
+       age=c(55,23,21))
+dbWriteTable(con, "DBTableSample", DataSample)
+
+# Execute a SQL query on the database table
+query_result <- dbGetQuery(con, "SELECT name, age FROM DBTableSample WHERE age < 30")
+View(query_result)
+
+#
+
+# Close the database connection
+dbDisconnect(con)
+```
+
+```{r}
+#library(DBI)
+library(RPostgres)
+# DriverPostGr <- DBI::dbDriver("PostgreSQL")
+conPostGr <- dbConnect(RPostgres::Postgres(), 
+                          host = "samples.mindsdb.com", 
+                          port = 5432, # Default PostgreSQL port
+                          dbname = "demo", 
+                          user = "demo_user", 
+                          password = "demo_password") # never write PW into code
+
+
+
+query_result <- RPostgres::dbGetQuery(conPostGr, "SELECT * FROM demo.customer_churn")
+
+dbDisconnect(conPostGr)
+
+
+# Docs: https://docs.mindsdb.com/integrations/sample-database?utm_source=chatgpt.com
+```
+

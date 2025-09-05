@@ -693,7 +693,7 @@ Let us compare  code for the same tasks between  *R* and *Python*:
 
 - Calculate the mean of `FareInDollars` 
 
-## Python vs. R --- The results {.smaller}
+## Python vs. R --- The Results (using pandas) {.smaller}
 
 ```{webr}
 library(tidyverse); library(rio)
@@ -711,6 +711,28 @@ DataTitanic=pd.read_csv("Data/Titanic.csv") \
             .rename(columns={"Survived": "Surv"}) [["Sex", "FareInPounds", "Surv"]] \
             .assign(FareInDollars=lambda df: df["FareInPounds"]*164.5) \
             .query("Sex=='female'")
+MeanFareWomen=DataTitanic["FareInDollars"].mean()
+print(MeanFareWomen)     
+```
+
+## Python vs. R --- The Results (using polars){.smaller}
+
+```{webr}
+library(tidyverse); library(rio)
+DataTitanic=import("Data/Titanic.csv") |> 
+            select(Sex, FareInPounds, Surv = Survived) |> 
+            mutate(FareInDollars = FareInPounds*164.5) |> 
+            filter(Sex=="female")
+MeanFareWomen=mean(DataTitanic$FareInDollars)
+print(MeanFareWomen)
+```
+
+```{pyodide}
+import polars as pl
+DataTitanic=pl.read_csv("Data/Titanic.csv", infer_schema_length=None) \
+            .select(pl.col("Survived").alias("Surv"), pl.col("Sex"), pl.col("FareInPounds"),
+                   (pl.col("FareInPounds")*164.5).alias("FareInDollars")) \
+            .filter(pl.col("Sex") == "female")
 MeanFareWomen=DataTitanic["FareInDollars"].mean()
 print(MeanFareWomen)     
 ```
