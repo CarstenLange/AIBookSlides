@@ -109,10 +109,10 @@ include-in-header:
 graph TD
 VarGeneral["Data in General"]
 VarChar["Labels/Char:<br/>- Last names<br/>- ZIP-codes<br/>- ID-numbers"]
-VarCategory["Categorical/Factors<br/>limited number of variations:<br/>- Sex (male/female)<br/>- Grades (A, B, C, D, F)<br/>- Gender (Male, Female, Non-binary)"]
-VarNumeric["Numerical Data<br/>- Counts (number of accident)<br/>- Measures (e.g., Weight; 160.8)"]
-VarNumericCon["Continous/Num<br/>- Measures (e.g., Weight; 160.8)"]
-VarInt["Discrete/Int<br/>- Counts (e.g., Number of accidents)"]
+VarCategory["Categorical/Factors<br/>limited number of variations:<br/>- Sex (M/F)<br/>- Grades (A, B, C, D, F)<br/>- Gender (M, F, NonBin)"]
+VarNumeric["Numerical Data<br/>- Counts (# of accident)<br/>- Measures<br/>  (e.g., Weight=160.8)"]
+VarNumericCon["Continous/Num<br/>- Measures<br>  (e.g., Weight=160.8)"]
+VarInt["Discrete/Int<br/>- Counts<br>  (e.g., # accidents)"]
 
 
 VarGeneral --> VarChar
