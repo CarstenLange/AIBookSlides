@@ -403,7 +403,7 @@ Below we load the *Titanic* dataset. Note, not all columns of the *Titanic* data
 
 ```{webr}
 library(rio)
-DataTitanic=import("Data/Titanic.csv") |> 
+DataTitanicSelVar=import("Data/Titanic.csv") |> 
   select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
 kable(DataTitanic[1:12,])
 ```
@@ -547,10 +547,7 @@ See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScri
 
 ## Titanic Dataset
 
-```{webr}
-#| echo: false
-DataTitanic=import("Data/Titanic.csv")
-```
+
 
 ```{webr}
 library(rio)
@@ -695,45 +692,48 @@ Let us compare  code for the same tasks between  *R* and *Python*:
 
 ## Python vs. R --- The Results (using pandas) {.smaller}
 
-```{webr}
+```{r}
+#| echo: true
 library(tidyverse); library(rio)
-DataTitanic=import("Data/Titanic.csv") |> 
+DataTitanicR=import("Data/Titanic.csv") |> 
             select(Sex, FareInPounds, Surv = Survived) |> 
             mutate(FareInDollars = FareInPounds*164.5) |> 
             filter(Sex=="female")
-MeanFareWomen=mean(DataTitanic$FareInDollars)
+MeanFareWomen=mean(DataTitanicR$FareInDollars)
 print(MeanFareWomen)
 ```
 
 ```{pyodide}
 import pandas as pd
-DataTitanic=pd.read_csv("Data/Titanic.csv") \
-            .rename(columns={"Survived": "Surv"}) [["Sex", "FareInPounds", "Surv"]] \
-            .assign(FareInDollars=lambda df: df["FareInPounds"]*164.5) \
+DataTitanicPy=pd.read_csv("Data/Titanic.csv") 
+DataTitanicPy=DataTitanicPy[["Sex", "FareInPounds", "Survived"]] \
+            .rename(columns={"Survived": "Surv"}) \
+            .assign(FareInDollars = DataTitanicPy["FareInPounds"] * 164.5) \
             .query("Sex=='female'")
-MeanFareWomen=DataTitanic["FareInDollars"].mean()
-print(MeanFareWomen)     
+MeanFareWomen=DataTitanicPy["FareInDollars"].mean()
+print(MeanFareWomen)            
 ```
 
 ## Python vs. R --- The Results (using polars){.smaller}
 
-```{webr}
+```{r}
+#| echo: true
 library(tidyverse); library(rio)
-DataTitanic=import("Data/Titanic.csv") |> 
+DataTitanicR=import("Data/Titanic.csv") |> 
             select(Sex, FareInPounds, Surv = Survived) |> 
             mutate(FareInDollars = FareInPounds*164.5) |> 
             filter(Sex=="female")
-MeanFareWomen=mean(DataTitanic$FareInDollars)
+MeanFareWomen=mean(DataTitanicR$FareInDollars)
 print(MeanFareWomen)
 ```
 
 ```{pyodide}
 import polars as pl
-DataTitanic=pl.read_csv("Data/Titanic.csv", infer_schema_length=None) \
+DataTitanicPy=pl.read_csv("Data/Titanic.csv", infer_schema_length=None) \
             .select(pl.col("Survived").alias("Surv"), pl.col("Sex"), pl.col("FareInPounds"),
                    (pl.col("FareInPounds")*164.5).alias("FareInDollars")) \
             .filter(pl.col("Sex") == "female")
-MeanFareWomen=DataTitanic["FareInDollars"].mean()
+MeanFareWomen=DataTitanicPy["FareInDollars"].mean()
 print(MeanFareWomen)     
 ```
 
@@ -771,8 +771,8 @@ We select `Sex`,  `Survived`, and `PasClass=Pclass` and filter for `female`:
 ```{webr}
 #| echo: false
 DataFemale=DataTitanic |> 
-         select(Sex,  Survived, PasClass=Pclass) |> 
-         filter(Sex=="female")
+           select(Sex,  Survived, PasClass=Pclass) |> 
+           filter(Sex=="female")
 ```
 
 ```{webr}
@@ -816,8 +816,8 @@ ggdag_status(node_size = 22) + theme_void()
 
 
 ## Survival Research for Passenger Class 1 
-
-Filter for `PasClass` and `Sex` (`female` and `male`)
+- Select `Survived`, `Sex`, `PasClass=Pclass`
+- Filter for `PasClass` and `Sex` (`female` and `male`)
 
 ```{webr}
 DataFemaleClass1=DataTitanic |> 
@@ -834,7 +834,8 @@ cat(" Female Survival Poportion in Class 1:", mean(DataFemaleClass1$Survived), "
 
 ## Survival Research for Passenger Class 2 
 
-Filter for `PasClass` and `Sex` (`female` and `male`)
+- Select `Survived`, `Sex`, `PasClass=Pclass`
+- Filter for `PasClass` and `Sex` (`female` and `male`)
 
 ```{webr}
 DataFemaleClass2=DataTitanic |> 
@@ -851,7 +852,8 @@ cat(" Female Survival Poportion in Class 2:", mean(DataFemaleClass2$Survived), "
 
 ## Survival Research for Passenger Class 3 
 
-Filter for `PasClass` and `Sex` (`female` and `male`)
+- Select `Survived`, `Sex`, `PasClass=Pclass`
+- Filter for `PasClass` and `Sex` (`female` and `male`)
 
 ```{webr}
 DataFemaleClass3=DataTitanic |> 
