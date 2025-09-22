@@ -1,0 +1,492 @@
+---
+title: "Standard Deviation and Normal Distribution" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon,../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+webr:
+  packages:
+    - tidyverse
+    - rio
+    
+resources: 
+  - Data
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+## What Will You Learn {.scrollable .smaller}
+
+```{r}
+#| echo: false
+library(TeachHist)
+
+```
+
+-   You will review the concept of *Range*, *Absolute Deviation*, *Variance*, and *Standard Deviation* to measure the spread of a variable.
+
+-   You will review histogram diagrams
+
+-   You will review the concept of *Standard Deviation* to measure the spread of a variable in connection with the Normal Distribution.
+
+-   You will use the *Normal Distribution* to predict individual variables.
+
+-   You will use the *Normal Distribution* to predict properties of a sample such as the *Mean*.
+
+-   You will distinguish between *Standard Deviation* and *Standard Error* and learn how to calculate the *Standard Error*
+
+-   You will distinguish between *Normal Distribution* and *t-Distribution*
+
+-   You will calculate a *Confidence Interval*
+
+-   You be able to understand and perform a *Hypothesis Test*
+
+## Some Questions to Introduce Center and Spread
+
+::: incremental
+-   Who runs faster, men or women?
+    -   Is this true for all men and women?
+-   Who is taller, men or women?
+    -   Is this true for all men and women?
+-   What is it the average temperature in Michigan/Coastal California?
+    -   Why is the climate different in the two states?
+-   Which of your products shows high or low volatility in sales?
+    -   Why is that?
+    -   Why is it important?
+:::
+
+## How to measure Center and Spread {.smaller}
+
+### (1,000 synthetic observations each)
+
+::: columns
+::: {.column width="70%"}
+```{r}
+#| echo: false
+library(rio)
+library(tidyverse)
+DataDerivative=import("Data/DataDerivCryptoEuro.csv")
+Plot1=ggplot(DataDerivative, aes(y=1,x=CryptoDeriv))+
+       geom_jitter()+
+       geom_vline(xintercept = mean(DataDerivative$CryptoDeriv), , color="red", linewidth=2)+
+       labs(y="", x="Crypto Derivative in $")+
+       scale_x_continuous(limits = c(10,40))+
+       scale_y_continuous(labels = NULL)
+Plot2=ggplot(DataDerivative, aes(y=1,x=EuroDeriv))+
+       geom_jitter()+
+       geom_vline(xintercept = mean(DataDerivative$EuroDeriv), , color="red", linewidth=2)+
+       labs(y="", x="Euro Derivative in $")+
+       scale_x_continuous(limits = c(10,40))+
+       scale_y_continuous(labels = NULL) 
+Plot1
+```
+
+```{r}
+#| echo: false
+Plot2
+```
+:::
+:::
+
+## How to measure Center and Spread {.smaller}
+
+### (1,000 synthetic observations each)
+
+::: columns
+::: {.column width="60%"}
+```{r}
+#| echo: false
+Plot1
+```
+
+```{r}
+#| echo: false
+Plot2
+```
+:::
+
+::: {.column width="40%"}
+$Range=x_{max}-x_{min}$
+
+$AbsDev=\sum_{i=1}^{1000}|x_i-\overline {x}|$
+
+$Var=\sum_{i=1}^{1000}(x_i-\overline {x})^2$
+
+$Std=\sqrt{Var}$
+
+```{r}
+RangeCrypto=
+  max(DataDerivative$CryptoDeriv)-min(DataDerivative$CryptoDeriv)
+MADCrypto=mad(DataDerivative$CryptoDeriv, 
+          center=mean(DataDerivative$CryptoDeriv), 
+          constant=1)
+VarCrypto=var(DataDerivative$CryptoDeriv)
+StdCrypto=sd(DataDerivative$CryptoDeriv)
+
+RangeEuro=
+  max(DataDerivative$EuroDeriv)-min(DataDerivative$EuroDeriv)
+MADEuro=mad(DataDerivative$EuroDeriv, 
+          center=mean(DataDerivative$EuroDeriv), 
+          constant=1)
+VarEuro=var(DataDerivative$EuroDeriv)
+StdEuro=sd(DataDerivative$EuroDeriv)
+```
+
+**Spread Crypto vs. Euro derivatives:**
+
+Range: `r RangeCrypto` vs. `r RangeEuro`
+
+MAD: `r MADCrypto` vs `r MADEuro`
+
+Var: `r VarCrypto` vs `r VarEuro`
+
+Std: `r StdCrypto` vs `r StdEuro`
+:::
+:::
+
+## Measuring Female Height Spread for a Small Sample
+
+::: columns
+::: {.column width="60%"}
+```{r echo=FALSE}
+#| code-fold: true
+DataSample=data.frame(Height=c(63, 66, 68, 70))
+ggplot(DataSample, aes(x=Height, y=c(1:4)))+
+  geom_vline(xintercept=mean(DataSample$Height), size=2)+
+  geom_point(color="red", size=3)+
+  ylab("")+
+  scale_x_continuous(breaks=seq(63,70))+
+  theme(axis.text.y=element_blank(),
+        axis.ticks.y=element_blank() 
+        )
+```
+:::
+
+::: {.column width="40%"}
+Sample Mean: $\bar x=???$
+
+Range= ???
+
+Absolute Deviation = ???
+
+Sample Variance: $Var=\frac{\sum_{i=1}^N (x_i-\bar x)^2}{N-1}=???$
+
+Sample Standard Deviation: ???
+:::
+:::
+
+## How are Critical Chlosterol Values and other Blood Test Values Determined {.smaller}
+
+**Assumption:** Cholesterol values are *normal distributed.*
+
+**Normal Distribution:**
+
+-   Most values are in the center.
+-   Some are larger or smaller than the center.
+-   Few are a lot larger or smaller than the center.
+-   Very few are extremely large or smaller
+-   The distribution is symmetric around the mean, leading to a bell curve.
+
+For women 45 -- 54 years, the mean is 230.5 mg/100 ml cholesterol, and the standard deviation is 50.0 (source: <https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf>)
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+```{r}
+library(TeachHist)
+TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000)
+```
+
+**Empirical Rule**, also known as the $68-95-99.7$ rule.
+
+. . .
+
+**0.95 Confidence Interval:** <br> $Mean \pm 1.96 \cdot StdDev$ <br> In this example $230.5 - 50 \cdot 1.96= 182.5$ and $230.5 + 50\cdot 1.96= 378.5$ <br> 95% of all 45 - 54 year women have a Cholesterol level higher than 182.5 and lower than 378.5.
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+### Histogram with Relative Frequencies as Column Area
+
+```{r}
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = FALSE)
+```
+
+Try column just right of mean: $0.0068\cdot 50=0.34$
+
+Try changing the `BinWidth` for `TeachHistDensity()` and `TeachHistRelFreq()`
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+### Histogram with Relative Frequencies as Column Area and Normal Curve
+
+```{r}
+#| echo: false
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+```
+
+## Normal Curve {.smaller}
+
+-   Most values are in the center.
+-   Some are larger or smaller than the center.
+-   Few are a lot larger or smaller than the center.
+-   Very few are extremely large or small.
+-   The distribution is symmetric around the mean, leading to a bell curve.
+
+$$
+Density = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+$$
+
+where: $\mu$ is the mean and $\sigma$ is the standard deviation
+
+```{r}
+#| echo: false
+ggplot(data.frame(x = c(30.5, 430.5)), aes(x = x)) +
+stat_function(fun = dnorm, args = list(mean = 230.5, sd = 50)) +
+labs(title = "Normal Distribution", x = "x", y = "Density")+
+scale_x_continuous(breaks=seq(0,450,25))+
+geom_vline(xintercept = 230.5, color="red")
+```
+
+## Synthetic Data for 10,000 Women (45 - 54 years)
+
+### Histogram with Relative Frequencies as Column Area and Normal Curve {.smaller}
+
+```{r}
+#| echo: false
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+```
+
+`pnorm(x, mean=???, sd=???)` calculates the probability of getting a value smaller than x. **Try:**
+
+-   `pnorm(480, mean=230.5, sd=50)`
+
+-   `pnorm(130.5, mean=230.5, sd=50)`
+
+-   `pnorm(330.5, mean=230.5, sd=50)-pnorm(130.5, mean=230.5, sd=50)`
+
+## Test
+
+```{webr}
+
+```
+
+
+
+## Normal Curve Women (45 - 54 years) with Mean: 230.5, SD=50
+
+```{r}
+#| echo: false
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+```
+
+`qnorm(x, mean=???, sd=???)` calculates the quantity for P percent of the values falling below that quantity.**Try:**
+
+-   `qnorm(.5, mean=230.5, sd=50)`
+-   `qnorm(.02, mean=230.5, sd=50)`
+-   `qnorm(.05, mean=230.5, sd=50)` (meaning 5% are above this level)
+-   `qnorm(.95, mean=230.5, sd=50)` (meaning 5% are above this level)
+-   `qnorm(.977, mean=230.5, sd=50)- qnorm(.025, mean=230.5, sd=50)` (meaning 95% are in between this levels)
+
+## Frequentists Statistics
+
+*Frequentist Statistics* uses **Relative Frequency** to estimate **Probability**
+
+## Applications/Exercise {.smaller}
+
+Mean of male height in the U.S. is $70$ inches with a Standard Deviation of 3 inches ([click for source](https://tasks.illustrativemathematics.org/content-standards/tasks/1020#:~:text=The%20heights%20of%20adult%20men,standard%20deviation%20of%202.5%20inches):).
+
+-   What is the probability to randomly meeting an U.S. male with a height smaller than 50 inches assuming height is normal distributed
+
+-   What is the probability to randomly meeting an U.S. male with a height bigger than 80 inches assuming height is normal distributed
+
+-   What is the probability to randomly meeting an U.S. male with a height bigger than 120 inches assuming height is normal distributed
+
+-   What is the probability to randomly meeting an U.S. male with a height between 67 and 73 inches assuming height is normal distributed
+
+-   What is the height range that 95% all men fall in
+
+## Research about Groups (Samples) is Moe Important than Individuals {.smaller}
+
+A group of 50 men are taking a class at Cal Poly. The average height in this class is 72 inches (remember the Mean of all men is $70$ inches and the Standard Deviation is $3$ inches.
+
+. . .
+
+**The mean of the sample is different than the mean of all men.** This should not come as surprise. If we had sampled another class, we would have measured a **different** mean.
+
+. . .
+
+**So, by how much would the *Sample Mean* spread, if we considered more courses?**
+<br>
+(Note, the spread of a sample mean is called *Standard Error*)
+
+. . .
+
+-   **Standard Error is less than the Standard Deviation of the population** (*mean of men height*). <br> 
+**Reason:** In a group, tall and small men partially cancel out.
+
+. . .
+
+
+
+. . .
+
+-   The *Standard Error* is smaller when the sample size ($N$) is bigger.
+
+
+
+
+
+
+. . .
+
+-   The *Standard Error* is bigger when the *Standard Deviation* of the population is bigger.
+
+
+
+. . .
+
+$$SE=\frac{StdDev}{\sqrt{N}}$$
+
+
+
+## Back to the Male Students at Cal Poly
+
+A group of 50 men are taking a class at Cal Poly. The average height in this class is 72 inches (remember the Mean of all men is $70$ inches and the Standard Deviation is $3$ inches).
+
+Sample Mean: $\bar x =72$
+
+Standard Error: $SE=\frac{Std}{\sqrt{N}}=\frac{3}{\sqrt{50}}=0.4242641$
+
+```{r}
+#| output-location: fragment
+RelFreq=1-pnorm(72, mean = 70, sd=0.4242641)
+cat("The relative frequency of a group of 50 men  (and thus the probibility)  having a mean of 72 inches or taller is", RelFreq)
+```
+
+```{r}
+#| output-location: fragment
+TeachHistHypTest(NullHyp=70,StandardError=3/sqrt(50),
+                 SampleMean=72)
+```
+
+## Another Application: Mean and Standard Deviation not Known {.smaller}
+
+Our daily sales data for a new product are normally distributed. We do not know the *Mean* nor the *Standard Deviation*.
+
+. . .
+
+However, we have data from the last 36 days to estimate the *Mean* and *Standard Deviation* based on our sample data.
+
+. . .
+
+**Sample Size:** $N=36$
+
+**Estimated Mean in (\$ 1,000):** $\bar x= 90$
+
+**Estimated Standard Deviation:** $StdDev= 12$
+
+**Estimated Standard Error:** $SE= \frac{12}{\sqrt{36}}=2$
+
+## t-Distribution vs. Normal Distribution
+
+**If the Standard Deviation is not known and is estimated from the sample:** <br> Normal Distribution changes to a t-Distribution
+
+**However, Normal Distribution and t-Distribution are very similar with the t-Distribution having fatter tails.**
+
+
+
+## t-Distribution vs. Normal Distribution ($N=10$)
+
+```{r}
+#| echo: false
+DataPlot=data.frame(Sales=seq(90-5*2, 90+5*2, 0.1)) |> 
+             mutate(SalesStd=(Sales-90)/2) |> 
+             mutate(DensityNorm=dnorm(SalesStd)) |> 
+             mutate(DensityT=dt(SalesStd, df=9))
+
+ggplot(DataPlot, aes(x=Sales, y=DensityNorm))+
+       geom_line(color="red", linewidth=2)+
+       geom_line(aes(x=Sales, y=DensityT), color="blue", linewidth=1)
+```
+
+## t-Distribution vs. Normal Distribution ($N=36$)
+
+```{r}
+#| echo: false
+DataPlot=data.frame(Sales=seq(90-5*2, 90+5*2, 0.1)) |> 
+             mutate(SalesStd=(Sales-90)/2) |> 
+             mutate(DensityNorm=dnorm(SalesStd)) |> 
+             mutate(DensityT=dt(SalesStd, df=35))
+
+ggplot(DataPlot, aes(x=Sales, y=DensityNorm))+
+       geom_line(color="red", linewidth=2)+
+       geom_line(aes(x=Sales, y=DensityT), color="blue", linewidth=1)
+```
+
+## Calculating the 95% Confidence Interval for Mean {.smaller}
+
+```{r}
+#| echo: false
+set.seed(777)
+DataSales=data.frame(Sales=rnorm(36, 90,12))
+TeachHistDens(Mean = 90, Sd=2)
+```
+
+**Sample Size:** $N=36$
+**Estimated Mean in (\$ 1,000):** $\bar x= 90$
+
+**Estimated Standard Deviation:** $StdDev= 12$
+
+**Estimated Standard Error:** $SE= \frac{12}{\sqrt{36}}=2$
+
+Confidence Interval based on `qnorm()`:
+
+```{r}
+LowerBound=qnorm(0.025, 90, 2)
+UpperBound=qnorm(0.975, 90, 2)
+cat("95% Confidence Interval:", LowerBound, UpperBound)
+```
+
+. . .
+
+Confidence Interval based on `t.test()`:
+
+```{r}
+t.test(DataSales$Sales)
+```
+
+## Hypothesis Test
+
+**H0:** Before the sample of 36 days was taken, it was believed that the *Mean* for sales is 85?
+
+**A (Research):** Research of the 36 days suggests that the *Mean* is different $(\bar x=90)$.
+
+. . .
+
+Is the mean from the sample just by accident different from 80 or is there more behind it? The latter would mean the H0 is likely wrong.
+
+. . .
+
+Let us work with 95% *Confidence*.
+
+```{r}
+TeachHistHypTest(NullHyp=85, StandardError=2, SampleMean=90, SeedValue=123)
+```
+
