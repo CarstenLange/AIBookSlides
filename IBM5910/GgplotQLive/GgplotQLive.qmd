@@ -15,15 +15,14 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
-
-
+    footer: "<a href='https://ggplot2-book.org/getting-started.html'>Textbook </a> "
   
 webr:
   packages:
     - tidyverse
     - rio
     - palmerpenguins
+    - TeachHist
 
 engine: knitr 
 ---
@@ -312,5 +311,45 @@ ggplot(DataWebPurchMeans, aes(x = Treatment, y = MeanRevenue, fill = Treatment))
   )
 
 
+```
+
+## Histogram ggplot
+
+```{webr}
+#| warning: false
+#| message: false
+ggplot(DataWebPurch, aes(x = Revenue)) +
+  geom_histogram(binwidth = 300, fill="red", color="black")
+```
+## Histogram-Count with `TeachHistCount`
+
+```{webr}
+TeachHistCounts(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
+```
+
+## Histogram - Relative Frequecies with `TeachHistRelFreq`
+
+```{webr}
+TeachHistRelFreq(PlotData=DataWebPurch["Revenue"],  VLine1=4938, PrintZAxis = FALSE)
+```
+
+## Histogram - Densities with `TeachHistDens`
+
+```{webr}
+TeachHistDens(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
+```
+
+## Histogram - Densities with TeachHistDens
+
+```{webr}
+TeachHistDens(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
+```
+
+```{webr}
+MeanRev=mean(DataWebPurch$Revenue)
+StdRev=sd(DataWebPurch$Revenue)
+cat("Mean:", MeanRev)
+cat("Stand. Dev.:", StdRev)
+cat("Prob. Rev.<4938: ", pnorm(4938, MeanRev, StdRev))
 ```
 
