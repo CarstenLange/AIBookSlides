@@ -2,10 +2,10 @@ library(rio)
 library(janitor)
 library(tidymodels)
 library(TeachHist)
-DataSoldiersM=import("https://ai.lange-analytics.com/data/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
+DataSoldiersM=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataMale")|> 
   clean_names("upper_camel") |> 
   select(Height=Heightin, Weight=Weightlbs, Gender)
-DataSoldiersF=import("https://ai.lange-analytics.com/data/DataUSArmyBodyMeasures.xlsx", sheet="DataFemale")|> 
+DataSoldiersF=import("https://econ.lange-analytics.com/RData/Datasets/DataUSArmyBodyMeasures.xlsx", sheet="DataFemale")|> 
   clean_names("upper_camel") |> 
   select(Height=Heightin, Weight=Weightlbs, Gender)
 
@@ -142,3 +142,4 @@ ggplot(data, aes(x = x)) +
   labs(title = "Two Normal Curves",
        x = "X-axis",
        y = "Density") 
+
