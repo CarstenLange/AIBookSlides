@@ -218,7 +218,7 @@ TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000)
 
 . . .
 
-**0.95 Confidence Interval:** <br> $Mean \pm 1.96 \cdot StdDev$ <br> In this example $230.5 - 50 \cdot 1.96= 182.5$ and $230.5 + 50\cdot 1.96= 378.5$ <br> 95% of all 45 - 54 year women have a Cholesterol level higher than 182.5 and lower than 378.5.
+**0.95 Confidence Interval:** <br> $Mean \pm 1.96 \cdot StdDev$ <br> In this example $230.5 - 50 \cdot 1.96= 132.5$ and $230.5 + 50\cdot 1.96= 328.5$ <br> 95% of all 45 - 54 year women have a Cholesterol level higher than 182.5 and lower than 378.5.
 
 ## Synthetic Data for 10,000 Women (45 - 54 years)
 
