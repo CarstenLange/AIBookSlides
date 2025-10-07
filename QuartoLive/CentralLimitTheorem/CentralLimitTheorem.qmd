@@ -1,0 +1,350 @@
+---
+title: "Central Limit Theorem" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon,../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - plotly
+    - TeachHist
+    - ggdist
+    
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+## What Will You Learn {.scrollable .smaller}
+
+```{r}
+#| echo: false
+library(TeachHist)
+
+```
+
+- You will learn how to work with sample measurements (called: "statistics")
+
+- You learned already to calculate these *statistics*, such as the sample mean
+
+- You will learn that *statistics* vary with different samples and that you can estimate the *Standard Error* even when you can see only one sample
+
+-   You will distinguish between *Standard Deviation* and *Standard Error* and learn how to calculate the *Standard Error*
+
+-   You will distinguish between *Normal Distribution* and *t-Distribution*
+
+-   You will calculate a *Confidence Interval* for a mean based on its *Standard Error*
+
+-   You will learn that means from multiple samples are *normal distributed* even when the original data are not *normal distributed*
+
+
+
+## Histogram Cholesterol with Density as Column Height and Rel. Freq./Probability as Column Area plus Normal Curve {.smaller}
+
+```{r}
+#| echo: false
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, VLine1 = 360, PlotNormCurv = TRUE)
+```
+
+`pnorm(x, mean=?, sd=?)` calculates the probability of getting a value smaller than x. <br> **Try:** Probability of a value of smaller than 360 when the mean is 230.5 and the standard deviation is 50
+
+
+```{webr}
+pnorm(@@@,@@@,@@@)
+```
+
+
+## Research about Groups (Samples) is More Important than Individuals {.smaller}
+
+A survey of 50 customers from a branch leads to average sentiment score of 72 (inches)scale 0 - 100). It is known that the Mean for all customers is $70$ and the Standard Deviation is $3$.
+
+. . .
+
+**The mean of the sample is different than the mean of all customers** This should not come as surprise. If we had used another sample, we would have measured a **different** mean.
+
+. . .
+
+**So, by how much would the *Sample Mean* spread, if we considered surveys?**
+<br>
+(Note, the spread of a sample mean is called *Standard Error*)
+
+. . .
+
+-   **Standard Error is less than the Standard Deviation of the population** (*mean of men height*). <br> 
+**Reason:** In a survey (sample), customers with a high and low sentiment score cancel out.
+
+. . .
+
+
+
+. . .
+
+-   The *Standard Error* is smaller when the sample size ($N$) is bigger.
+
+
+
+
+
+
+. . .
+
+-   The *Standard Error* is bigger when the *Standard Deviation* of the population is bigger.
+
+
+
+. . .
+
+$$SE=\frac{StdDev}{\sqrt{N}}$$
+
+## Experiment: Heigths in Inches in this Course (CL: backup student heights!)
+
+**Provide Data for 3 Samples (A, B, C):**
+
+```{webr}
+#| autorun: true
+DataCourseHeight=tribble(~Sample, ~Height,
+                           "A", 71,
+                           "A", 68,
+                           "A", 68,
+                           "A", 66,
+                           "A", 77,
+                           "B", 69,
+                           "B", 72,
+                           "B", 74, 
+                           "B", 70,
+                           "B", 72,
+                           "C", 70,
+                           "C", 69,
+                           "C", 72,
+                           "C", 75,
+                           "C", 68)
+```
+
+## Standard Deviation for All
+
+```{webr}
+SdHeightAll=sd(DataCourseHeight$Height)
+MeanHeightAll=mean(DataCourseHeight$Height)
+cat("Mean Height for All", MeanHeightAll)
+cat("Std. Height for All", SdHeightAll)
+```
+
+```{webr}
+#| max-lines: 0
+PlotHeight=ggplot(DataCourseHeight, aes(x=Height, y=5))+
+  scale_y_continuous(limits = c(0,10))+
+  geom_jitter(height = 1)+
+  geom_vline(xintercept = MeanHeightAll)+
+  labs(x = "Height", y = "Observation (jittered)")+
+  theme_minimal() +
+  theme(
+    axis.text.y  = element_blank(), 
+    axis.ticks.y = element_blank(),  
+    panel.grid.major.y = element_blank(),   
+    panel.grid.minor.y = element_blank())
+ggplotly(PlotHeight)
+```
+## Mean and Standard Error for the 3 Samples
+
+```{webr}
+GroupMeans=group_by(DataCourseHeight, Sample) |> 
+  summarise(MeanHeight = mean(Height))
+print(GroupMeans)
+cat("Standard Error (Group Means)", sd(GroupMeans$MeanHeight))
+```
+
+```{webr}
+#| max-lines: 0
+library(plotly)
+ggplotly(ggplot(DataCourseHeight, aes(x=Height, y=5, color=Sample))+
+  scale_y_continuous(limits = c(0,10))+
+  geom_jitter(size=2, height = 1)+
+  geom_vline(xintercept = MeanHeightAll)+
+  geom_vline(xintercept = GroupMeans[[1,2]], color="red")+
+  geom_vline(xintercept = GroupMeans[[2,2]], color="green")+
+  geom_vline(xintercept = GroupMeans[[3,2]], color="blue")+
+  labs(x = "Height", y = "Observation (jittered)")+
+  theme_minimal() +
+  theme(
+    axis.text.y  = element_blank(), 
+    axis.ticks.y = element_blank(),  
+    panel.grid.major.y = element_blank(),   
+    panel.grid.minor.y = element_blank(),
+    legend.position = c(0.95, 0.95)))
+```
+
+## In reality We See Only One Sample (e.g. the red sample)
+
+```{webr}
+#| max-lines: 0
+library(plotly)
+DataRedSample=filter(DataCourseHeight, Sample=="A")
+PlotRedOnly=ggplot(DataRedSample, aes(x=Height, y=5))+
+  scale_y_continuous(limits = c(0,10))+
+  geom_jitter(size=2, height = 1, color="red")+
+  geom_vline(xintercept = GroupMeans[[1,2]], color="red")+
+  labs(x = "Height", y = "Observation (jittered)")+
+  theme_minimal() +
+  theme(
+    axis.text.y  = element_blank(), 
+    axis.ticks.y = element_blank(),  
+    panel.grid.major.y = element_blank(),   
+    panel.grid.minor.y = element_blank(),
+    legend.position = c(0.95, 0.95))
+ggplotly(PlotRedOnly)
+```
+
+```{webr}
+#| max-lines: 0
+cat("Known Standard Deviation:", SdHeightAll)
+```
+
+$$SE=\frac{StdDev}{\sqrt{N}}$$
+```{webr}
+StdError=SdHeightAll/sqrt(5)
+print(StdError)
+```
+
+## Application: Why Does it Help to Know the Standard Error and the Sample Mean
+
+Since the sample mean is often *normal distributed* ($N>30$ as a rule of thumb), we can use all the instruments we learned:
+
+```{webr}
+#| max-lines: 0
+PlotConf=invisible(TeachHistConfInterv(SampleMean = mean(DataRedSample$Height) , StandardError=StdError))
+```
+```{webr}
+ggplotly(PlotConf)
+```
+
+`qnorm(ProbNotExceeded,Mean,Std/SE)`
+
+```{webr}
+qnorm(@@@,@@@,@@@)
+```
+
+
+
+
+## Another Application: Mean and Standard Deviation not Known {.smaller}
+
+Our daily sales data for a new product are normally distributed. We **do not know** the *Mean* nor the *Standard Deviation*.
+
+. . .
+
+However, we have data from the last 36 days to estimate the *Mean* and *Standard Deviation* based on our sample data.
+
+. . .
+
+**Sample Size:** $N=36$
+
+**Estimated Mean in (\$ 1,000):** $\bar x= 90$
+
+**Estimated Standard Deviation:** $StdDev= 12$
+
+**Estimated Standard Error:** $SE= \frac{12}{\sqrt{36}}=2$
+
+## t-Distribution vs. Normal Distribution
+
+**If the Standard Deviation is not known and is estimated from the sample:** <br> Normal Distribution changes to a t-Distribution
+
+**However, Normal Distribution and t-Distribution are very similar with the t-Distribution having fatter tails.**
+
+
+
+## t-Distribution vs. Normal Distribution ($N=10$)
+
+```{r}
+#| echo: false
+DataPlot=data.frame(Sales=seq(90-5*2, 90+5*2, 0.1)) |> 
+             mutate(SalesStd=(Sales-90)/2) |> 
+             mutate(DensityNorm=dnorm(SalesStd)) |> 
+             mutate(DensityT=dt(SalesStd, df=9))
+
+ggplot(DataPlot, aes(x=Sales, y=DensityNorm))+
+       geom_line(color="red", linewidth=2)+
+       geom_line(aes(x=Sales, y=DensityT), color="blue", linewidth=1)
+```
+
+## t-Distribution vs. Normal Distribution ($N=36$)
+
+```{r}
+#| echo: false
+DataPlot=data.frame(Sales=seq(90-5*2, 90+5*2, 0.1)) |> 
+             mutate(SalesStd=(Sales-90)/2) |> 
+             mutate(DensityNorm=dnorm(SalesStd)) |> 
+             mutate(DensityT=dt(SalesStd, df=35))
+
+ggplot(DataPlot, aes(x=Sales, y=DensityNorm))+
+       geom_line(color="red", linewidth=2)+
+       geom_line(aes(x=Sales, y=DensityT), color="blue", linewidth=1)
+```
+
+## Calculating the 95% Confidence Interval for Mean {.smaller}
+
+
+
+
+**Sample Size:** $N=36$
+**Estimated Mean in (\$ 1,000):** $\bar x= 90$
+
+**Estimated Standard Deviation:** $StdDev= 12$
+
+**Estimated Standard Error:** $SE= \frac{12}{\sqrt{36}}=2$
+
+**Not correct:** Confidence Interval based on `qnorm()`:
+
+```{webr}
+LowerBound=qnorm(0.025, 90, 2)
+UpperBound=qnorm(0.975, 90, 2)
+cat("The confidence interval based on normal-distribution:", LowerBound, UpperBound)
+```
+
+. . .
+
+Confidence Interval based on `t.test()`:
+
+
+```{webr}
+library(ggdist)
+qstudent_t(p = 0.975, df = 36-1, mu = 90, sigma = 2)
+```
+
+## Hypothesis Test
+
+**H0:** Before the sample of 36 days was taken, it was believed that the *Mean* for sales is 85?
+
+**A (Research):** Research of the 36 days suggests that the *Mean* is different $(\bar x=90)$.
+
+. . .
+
+Is the mean from the sample just by accident different from 80 or is there more behind it? The latter would mean the H0 is likely wrong.
+
+. . .
+
+Let us work with 95% *Confidence*.
+
+```{r}
+TeachHistHypTest(NullHyp=85, StandardError=2, SampleMean=90, SeedValue=123)
+```
+
