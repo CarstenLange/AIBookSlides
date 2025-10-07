@@ -76,7 +76,7 @@ pnorm(@@@,@@@,@@@)
 
 ## Research about Groups (Samples) is More Important than Individuals {.smaller}
 
-A survey of 50 customers from a branch leads to average sentiment score of 72 (inches)scale 0 - 100). It is known that the Mean for all customers is $70$ and the Standard Deviation is $3$.
+A survey of 50 customers from a branch leads to average sentiment score of 72 (scale 0 - 100). It is known that the Mean for all customers is $70$ and the Standard Deviation is $3$.
 
 . . .
 
@@ -84,13 +84,13 @@ A survey of 50 customers from a branch leads to average sentiment score of 72 (i
 
 . . .
 
-**So, by how much would the *Sample Mean* spread, if we considered surveys?**
+**So, by how much would the *Sample Mean* spread, if we considered several surveys each with $N=50$?**
 <br>
 (Note, the spread of a sample mean is called *Standard Error*)
 
 . . .
 
--   **Standard Error is less than the Standard Deviation of the population** (*mean of men height*). <br> 
+-   **Standard Error is less than the Standard Deviation of the population**. <br> 
 **Reason:** In a survey (sample), customers with a high and low sentiment score cancel out.
 
 . . .
@@ -322,7 +322,7 @@ cat("The confidence interval based on normal-distribution:", LowerBound, UpperBo
 
 . . .
 
-Confidence Interval based on `t.test()`:
+Confidence Interval based on `qstudent_t()`:
 
 
 ```{webr}

@@ -180,16 +180,16 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicG5vcm0oQEBALEBAQCxAQEAp
 </section>
 <section id="research-about-groups-samples-is-more-important-than-individuals" class="slide level2 smaller">
 <h2>Research about Groups (Samples) is More Important than Individuals</h2>
-<p>A survey of 50 customers from a branch leads to average sentiment score of 72 (inches)scale 0 - 100). It is known that the Mean for all customers is <span class="math inline">\(70\)</span> and the Standard Deviation is <span class="math inline">\(3\)</span>.</p>
+<p>A survey of 50 customers from a branch leads to average sentiment score of 72 (scale 0 - 100). It is known that the Mean for all customers is <span class="math inline">\(70\)</span> and the Standard Deviation is <span class="math inline">\(3\)</span>.</p>
 <div class="fragment">
 <p><strong>The mean of the sample is different than the mean of all customers</strong> This should not come as surprise. If we had used another sample, we would have measured a <strong>different</strong> mean.</p>
 </div>
 <div class="fragment">
-<p><strong>So, by how much would the <em>Sample Mean</em> spread, if we considered surveys?</strong> <br> (Note, the spread of a sample mean is called <em>Standard Error</em>)</p>
+<p><strong>So, by how much would the <em>Sample Mean</em> spread, if we considered several surveys each with <span class="math inline">\(N=50\)</span>?</strong> <br> (Note, the spread of a sample mean is called <em>Standard Error</em>)</p>
 </div>
 <div class="fragment">
 <ul>
-<li><strong>Standard Error is less than the Standard Deviation of the population</strong> (<em>mean of men height</em>). <br> <strong>Reason:</strong> In a survey (sample), customers with a high and low sentiment score cancel out.</li>
+<li><strong>Standard Error is less than the Standard Deviation of the population</strong>. <br> <strong>Reason:</strong> In a survey (sample), customers with a high and low sentiment score cancel out.</li>
 </ul>
 </div>
 <div class="fragment">
@@ -378,7 +378,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiTG93ZXJCb3VuZD1xbm9ybSgw
 </div>
 </div>
 <div class="fragment">
-<p>Confidence Interval based on <code>t.test()</code>:</p>
+<p>Confidence Interval based on <code>qstudent_t()</code>:</p>
 <div class="cell">
 <div>
 <div id="webr-14" class="exercise-cell">
