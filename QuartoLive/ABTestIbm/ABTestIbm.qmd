@@ -1,0 +1,210 @@
+---
+title: "A/B Test"
+subtitle: "The Goldstandard to Assess Treatment Effects in Marketing or Medicine"
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon,../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - plotly
+    - TeachHist
+    - ggdist
+    
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+---
+
+## What Will You Learn  
+
+- How the logic of Treatment and Control leads to *A/B Testing*
+
+- Requirements for a successful A/B test
+
+- Possible violations of the requirements and the consequences
+
+- What one can do when it is not possible to fulfill the requirements
+
+## A/B-Test
+
+A very powerful and easy to use methodology to compare means of one or more *Treatment* groups to a *Control Group*.
+
+. . .
+
+**Goal:** Determine if a treatment (e.g., number of conversions for a new websites (*Treatment*)) is significant compared to the old website (*Control Group*).
+
+. . .
+
+**Methodology:** Two Sample t-Test
+
+. . .
+
+**Requirement:** Participants must be randomly assigned to the groups (no self-selection!).
+
+. . .
+
+**Problem:** While it is easy and technically straightforward to randomly assign website visitors to different webpages, it can be difficult or impossible in other cases.
+
+. . .
+
+For example, it is not feasible to assign participants of a marketing event into a treatment group (drank a glass of champagne before the talk) and a control group (did not drink a glass of champagne before the talk)
+
+## The Idea Behind A/B Tests
+
+### Ideal: Parallel Universes
+
+![](images/clipboard-2793122789.png) 
+
+**Problem:** We cannot observe counterfactuals 
+
+::: footer 
+[Source: Samuele Mazzanti, Using Causal ML Instead of A/B Testing, Towards Data Science](https://towardsdatascience.com/using-causal-ml-instead-of-a-b-testing-eeb1067d7fc0){target="_blank"} 
+:::
+
+## The Idea Behind A/B Tests {.smaller}
+
+### Second Best: Randomly Chosen Subjects
+
+![](images/clipboard-1689822553.png)
+
+If *Treatment* and *Control* group subjects are chosen entirely at random and if we have a large number of subjects, we can assume that any characteristics of subjects that influence the outcome is equally present in *Treatment* and *Control* group
+
+::: footer
+Source: [Samuele Mazzanti, Using Causal ML Instead of A/B Testing, Towards Data Science](https://towardsdatascience.com/using-causal-ml-instead-of-a-b-testing-eeb1067d7fc0){target="_blank"}
+:::
+
+## Example: Webdesign in Marketing
+
+### Conversion Data (synthetic) for a New Website Compared to the Original Website
+
+New website is *Treatment* old website is *Control* group
+
+**Purchase value data from the last 100 visitors who purchased on each of the websites:**
+
+```{r}
+library(rio)
+library(tidyverse)
+library(TeachHist)
+DataWebSites=import("https://econ.lange-analytics.com/RData/Datasets/DataWebSites.xlsx")
+head(DataWebSites)
+```
+
+## Mean and Standard Errors for Control and Treatment
+
+**Control Group:**
+
+```{r}
+cat("Mean of Control Group is:", mean(DataWebSites$PurchAmtControl))
+cat("Standard Error of Control Group is:", sd(DataWebSites$PurchAmtControl)/sqrt(100))
+```
+
+. . .
+
+**Treatment Group:**
+
+```{r}
+cat("Mean of Treatment Group is:", mean(DataWebSites$PurchAmtTreat))
+cat("Standard Error of Treatment Group is:", sd(DataWebSites$PurchAmtTreat)/sqrt(100))
+```
+
+## Two Sample t-Test
+
+**Assumption:** Same Variance
+
+**Distribution:** Normal
+
+**Method:**
+
+-   Calculate difference between means
+
+-   Difference between means will also be normal distributed
+
+-   Standard error needs to be recalculated for difference and is approximately double the one of the treatment/control group.
+
+-   **Hypothesis 0:** Difference is 0
+
+-   **Goal:** If Treatment website is better, a difference of 0 should be very unlikely. (we reject the Null Hypothesis as being too unlikely)
+
+## Two Sample t-Test
+
+Here are the first six observations of the data again:
+
+```{r}
+#| echo: false
+head(DataWebSites)
+```
+
+. . .
+
+```{r}
+#| code-fold: false
+t.test(DataWebSites$PurchAmtControl,
+       DataWebSites$PurchAmtTreat,
+       var.equal=TRUE)
+```
+
+## Possible Problems with A/B Testing
+
+### Omitted Variable Bias:
+
+Omitting a variable that affects both the Treatment and the Outcome.
+
+![](images/clipboard-3345635073.png){width="485"}
+
+::: footer
+Source: [Robson Tigre, Part 1: Simplifying causal inference to connect stakeholders and data scientists, Medium](https://medium.com/@robson.tigre0/part-1-simplifying-causal-inference-to-connect-stakeholders-and-data-scientists-e119856f0f61){target="_blank"}
+:::
+
+## Possible Problems with A/B Testing
+
+### Imperfect Compliance and Selection Bias:
+
+Imperfect compliance occurs when not all participants of an experiment adhere to their assigned treatment.
+
+![](images/clipboard-3488515422.png)
+
+::: footer
+Source: [Robson Tigre, Part 1: Simplifying causal inference to connect stakeholders and data scientists, Medium](https://medium.com/@robson.tigre0/part-1-simplifying-causal-inference-to-connect-stakeholders-and-data-scientists-e119856f0f61){target="_blank"}
+:::
+
+## Possible Problems with A/B Testing
+
+### **Attrition Bias** :
+
+When participants in the Control and Treatment groups leave but the dropout is not balanced (e.g.,unhappy customers leave):
+
+![](images/clipboard-3739776556.png)
+
+::: footer
+Source: [Robson Tigre, Part 1: Simplifying causal inference to connect stakeholders and data scientists, Medium](https://medium.com/@robson.tigre0/part-1-simplifying-causal-inference-to-connect-stakeholders-and-data-scientists-e119856f0f61){target="_blank"}
+:::
+
+
+## Possible Problems with A/B Testing
+
+### Consequences
+
+If biases exist we have to use techniques that can control for these biases, e.g., *Linear Regression*

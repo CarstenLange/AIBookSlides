@@ -146,7 +146,7 @@ DataCourseHeight=tribble(~Sample, ~Height,
 SdHeightAll=sd(DataCourseHeight$Height)
 MeanHeightAll=mean(DataCourseHeight$Height)
 cat("Mean Height for All", MeanHeightAll)
-cat("Std. Height for All", SdHeightAll)
+cat("Std. Dev.: Height for All", SdHeightAll)
 ```
 
 ```{webr}
@@ -193,7 +193,25 @@ ggplotly(ggplot(DataCourseHeight, aes(x=Height, y=5, color=Sample))+
     legend.position = c(0.95, 0.95)))
 ```
 
-## In reality We See Only One Sample (e.g. the red sample)
+
+## Central Limit Theorem and Why It Is Usefull
+
+> If the original variable is normal distributed (e.g., persons'height) **or** the sample size is greater than 30 (rule of thumb). **Then** *statistics* such as mean and proportion are also normal distributed.
+
+The rule that statistics are normal distribute when the sample size is big enough $\approx > 30$ is called the **Central Limit Theorem**
+
+>Given normal-distributed statistics, we can apply confidence intervals, hypothesis test, and others procedures to statistics (such as means and proportions) although they original variables are not normal-disttributed.
+
+## Estimated Standard Error for Means and Proportions
+**Means**
+$$SE_{Means}=\frac{StdDev}{\sqrt{n}}$$
+**Proportions:**
+
+$$SE_{Prop.}=
+\sqrt{\frac{p(1-p)}{N}}$$
+
+## Application: Estimating Mean Height from Sample A 
+### (the only sample we can see, but we know the overall Std.Dev.)
 
 ```{webr}
 #| max-lines: 0
@@ -225,9 +243,9 @@ StdError=SdHeightAll/sqrt(5)
 print(StdError)
 ```
 
-## Application: Why Does it Help to Know the Standard Error and the Sample Mean
 
-Since the sample mean is often *normal distributed* ($N>30$ as a rule of thumb), we can use all the instruments we learned:
+
+## Application: Estimating Confidence Intervall for Mean Height from Sample A 
 
 ```{webr}
 #| max-lines: 0
@@ -247,6 +265,7 @@ qnorm(@@@,@@@,@@@)
 
 
 ## Another Application: Mean and Standard Deviation not Known {.smaller}
+### (but we have sample data to estimate both)
 
 Our daily sales data for a new product are normally distributed. We **do not know** the *Mean* nor the *Standard Deviation*.
 
@@ -258,9 +277,9 @@ However, we have data from the last 36 days to estimate the *Mean* and *Standard
 
 **Sample Size:** $N=36$
 
-**Estimated Mean in (\$ 1,000):** $\bar x= 90$
+**Estimated Mean (in \$ 1,000):** $\bar x= 90$
 
-**Estimated Standard Deviation:** $StdDev= 12$
+**Estimated Standard Deviation (in \$ 1,000):** $StdDev= 12$
 
 **Estimated Standard Error:** $SE= \frac{12}{\sqrt{36}}=2$
 
@@ -322,13 +341,29 @@ cat("The confidence interval based on normal-distribution:", LowerBound, UpperBo
 
 . . .
 
-Confidence Interval based on `qstudent_t()`:
+Confidence Interval based on *t-distribution* (our data are in:
 
 
 ```{webr}
-library(ggdist)
-qstudent_t(p = 0.975, df = 36-1, mu = 90, sigma = 2)
+#| echo: false
+Sales <- seq(from = -3.5, to = 3.5, length.out = 36)
+Sales <- (Sales - mean(Sales)) / sd(Sales) * 12 + 90
 ```
+
+```{webr}
+mean(Sales)
+sd(Sales)
+SESales=Sales/6
+```
+
+```{webr}
+t.test(Sales, conf.level=0.95)
+```
+
+## Missing Link: Indication that Central Limit Theorem Works
+
+DieDrawVsSample
+
 
 ## Hypothesis Test
 
