@@ -1,6 +1,6 @@
 ---
 title: Scientific Notation
-subtitle: "How are Very Small and Very Big Numbers Displayed in R and Ohter Statistics Apps?" 
+subtitle: "How are Very Small and Very Big Numbers Displayed in R and Other Statistics Apps?" 
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
