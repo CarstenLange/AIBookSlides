@@ -1,0 +1,125 @@
+---
+title: "Hypothesis Testing" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon,../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - plotly
+    - TeachHist
+
+resources: 
+  - Data   
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+
+
+
+
+## Estimated Standard Error for Means and Proportions
+**Means**
+$$SE_{Means}=\frac{StdDev}{\sqrt{n}}$$
+**Proportions:**
+
+$$SE_{Prop.}=
+\sqrt{\frac{p(1-p)}{N}}$$
+
+
+
+
+## Application: Sales Mean and Standard Deviation not Known {.smaller}
+### (but we have sample data to estimate both)
+
+Sales Data from one month;
+
+```{webr}
+#| echo: false
+set.seed(123)
+DataSales=data.frame(Sales=rnorm(31,20000,1800), Day=c(1:31))
+```
+
+```{webr}
+StdSales=sd(DataSales$Sales)
+MeanSales=mean(DataSales$Sales)
+cat("Mean:", MeanSales)
+cat("Std. Dev.:", StdSales)
+```
+
+```{webr}
+TeachHistHypTest(NullHyp = 19000, StandardError = StdSales/sqrt(31), 
+  SampleMean = MeanSales, Confidence = 0.95,
+  BinWidth = 1, 
+  TestType = "RightTail", IsSdEstimated = TRUE,
+  DegreeFreedom = 35, SeedValue = 123)
+```
+## Hypothesis Test
+
+**H0:** Before the sample of 31 days was taken, it was believed that the *Mean* for sales is 19,000
+
+**HA (Research):** Research of the 31 days suggests that the *Mean* is greater $(\bar x=19,977$ suggest that is true).
+
+Is this by accident or can we exclude the accident.
+
+What was accepted before the research becomes the null hypothesis.
+
+**H0=19000=mu**
+
+**HA>1900**
+
+## Running t-test
+
+```{webr}
+t.test(DataSales$Sales, mu=19000, alternative = "greater",
+       conf.level = 0.95)
+```
+
+
+
+## Proportion: The 2020 Presidental Election
+
+```{webr}
+library(rio)
+DataElection=import("Data/DataElection2020.csv")
+
+p= mean(DataElection$TrumpTrue)
+cat("Prop Trump", p)
+cat("SE:", sqrt(p*(1-p)/5000))
+head(select(DataElection, TrumpTrue), n=20)
+```
+
+## Proportion: The 2020 Presidental Election
+
+```{webr}
+t.test(DataElection$TrumpTrue, mu=0.5, alternative = "greater")
+```
+
+## ConFounders
+
+Problem `Rural` was a confounder.
+
+See [https://dagitty.net/](https://dagitty.net/)
+
