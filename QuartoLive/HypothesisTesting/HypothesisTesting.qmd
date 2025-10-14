@@ -42,7 +42,7 @@ engine: knitr
 
 ## Estimated Standard Error for Means and Proportions
 **Means**
-$$SE_{Means}=\frac{StdDev}{\sqrt{n}}$$
+$$SE_{Means}=\frac{StdDev}{\sqrt{N}}$$
 **Proportions:**
 
 $$SE_{Prop.}=
