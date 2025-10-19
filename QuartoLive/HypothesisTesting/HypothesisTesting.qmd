@@ -25,6 +25,8 @@ webr:
     - tidyverse
     - rio
     - plotly
+    - dagitty
+    - ggdag
     - TeachHist
 
 resources: 
@@ -117,9 +119,23 @@ head(select(DataElection, TrumpTrue), n=20)
 t.test(DataElection$TrumpTrue, mu=0.5, alternative = "greater")
 ```
 
-## ConFounders
+## ConFounders at the Eve of the 2020 Election
 
-Problem `Rural` was a confounder.
+**Problem:** `Rural` was a confounder because at the eve of the 2020 election day more rural precincts than non-rural precincts were counted and rural precincts usually have a higher outcome for Republican than for Democrats.
 
-See [https://dagitty.net/](https://dagitty.net/)
+
+```{r}
+#| code-fold: true
+library(dagitty)
+library(ggdag)
+library(tidyverse)
+set.seed(123)
+dagify(TrumpY~Rural,
+       Pred~Rural, TrumpY~Pred,
+       outcome = "TrumpY",
+       exposure = "Pred"
+      ) |> 
+ggdag_status(node_size = 22) + theme_void()  
+```
+
 
