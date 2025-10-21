@@ -1,21 +1,19 @@
 ---
-title: "Simmple Linear Regression"
+title: "Simmple Linear Regression" 
 subtitle: "Analyzing the Correlation between One Outcome Variable and One Predictor Variable"
-
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
   affiliation: "Cal Poly, Pomona"
 
+execute:
+  message: false
+  warning: false
 
 format: 
   live-revealjs:
     theme: [moon,../../CustomCL.scss]
-    warning: false
-    message: false
     controls: true
-    echo: true
-    code-fold: true
     chalkboard:
       theme: whiteboard
       boardmarker-width: 2.7
@@ -24,22 +22,17 @@ format:
     footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
 webr:
   packages:
-    - rio
     - tidyverse
-    - janitor
+    - rio
+    - ggdag
     - plotly
-
+    
 resources: 
   - Data
-    
-
 engine: knitr    
 ---
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
-
-
-
 
 ## What Will You Learn {.scrollable .smaller}
 -   The basic idea behind linear regression
@@ -111,8 +104,6 @@ head(Data100Houses)
 
 ```{r}
 #| echo: false
-#| out-width: 50%
-#| fig-align: center
 library(plotly)
 
 Plot2Means=ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
@@ -272,6 +263,9 @@ Do not interpret $b$ as it makes no sence in most cases!!!
 ## Run Your Own Simple Regression to Estimate House Price
 
 ```{webr}
+library(rio)
+library(tidyverse)
+library(janitor)
 set.seed(7771)
 Data100Houses=import("Data/DataHouses.csv")|> 
            clean_names("upper_camel") |> 
@@ -446,207 +440,8 @@ kbl(data.frame(as.list(colSums(DataTable))),
 
 [https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
 
-## Using lm() Command from Base R to Run a Regression {.scrollable visibility="hidden"}
 
-```{r}
-#| echo: true
-ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
-print(ModelStudyTime)
-```
-
-## Results from OLS Analysis and Sanity Check {visibility="hidden"}
-
-**Unfitted Model**
-
-$$Grade=\beta_1 \cdot StudyTime + \beta_2$$
-
-**Fitted Model**
-
-$$Grade=3.96  \cdot StudyTime + 64.18$$
-Coefficient for $StudyTime$ ($\beta_1$) should be positive.
-
-## Getting the Results from the OLS Model {visibility="hidden"}
-
-```{r}
-#| echo: true
-#| code-fold: false
-summary(ModelStudyTime)
-
-```
-
-## Predicting with the Fitted Model - Generated Data {.smaller visibility="hidden"}
-
-$$Grade=3.96 \cdot StudyTime + 64.18$$
-```{r}
-#| echo: true
-ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
-
-DataForPrediction=data.frame(StudyTime=c(1,2,3))
-
-predict(ModelStudyTime, newdata=DataForPrediction)
-```
-
-Interpretation of $\beta_1=3.96$:
-
-1. From the formula: If $StudyTime$ increases, Grade increases. -> makes sense!
-
-2. From the formula: Quantitative impact: If $StudyTime$ increases by one unit, Grade increases by $3.96$ units.
-
-3. From the prediction: Above we predicted $Grade$ for $StudyTime$s of 1,2,3, which confirms point 1) and 2).
-
-## Predicting with the Fitted Model - Training Data {visibility="hidden"}
-
-
-$$Grade=3.96  \cdot StudyTime + 64.18$$
-Generating the predictions:
-
-```{r}
-#| echo: true
-
-ModelStudyTime=lm(Grade~StudyTime, data=DataMockup)
-
-VecPred=predict(ModelStudyTime, newdata=DataMockup)
-print(VecPred)
-```
-
-## Predicting with the Fitted Model - Training Data {visibility="hidden"}
-
-$$Grade=3.96  \cdot StudyTime + 64.18$$
-Augmenting the predictions to the data frame:
-
-```{r}
-#| echo: true
-VecPred=predict(ModelStudyTime, newdata=DataMockup)
-DataMockup=DataMockup |> 
-           mutate(.pred=VecPred)
-print(DataMockup)
-```
-
-
-
-
-
-
-
-
-## Real World Application {visibility="hidden"}
-
-## Univariate OLS with a Real World Dataset {visibility="hidden"}
-
-**Data Description:**
-
--   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
--   Several predictor variables. For now we use only $Sqft$
--   We will only use 500 randomly chosen observations from the total of 21,613 observations.
-
--We only use Sqft as predictor variable for now
-
-
-## Univariate OLS with a Real World Dataset {visibility="hidden"}
-
-**Data:**
-
-```{r}
-#| echo: true
-library(rio)
-DataHousing =
-  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
-head(DataHousing)
-```
-
-## Univariate OLS with a Real World Dataset {visibility="hidden"}
-
-
-**Unfitted Model:** 
-
-$$\widehat{Price}=\beta_1 Sqft + \beta_2$$
-**Directed Acyclic Graphs (causal graphs):**
-
-```{r}
-library(ggdag)
-set.seed(123)
-dagify(Price~Sqft,
-       exposure= "Sqft",
-       outcome = "Price") |> 
-ggdag_status(node_size = 22)
-```
-
-
-## Univariate OLS with a Real World Dataset {.scrollable visibility="hidden"}
-
-**Splitting in Training and Testing Datasets**
-
-```{r}
-#| echo: true
-library(tidymodels)
-set.seed(777)
-Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
-DataTrain=training(Split7030)
-DataTest=testing(Split7030)
-```
-
-**DataTrain**
-
-```{r}
-head(DataTrain)
-```
-
-**DataTest**
-
-```{r}
-head(DataTest)
-```
-
-## Univariate OLS with a Real World Dataset {visibility="hidden"}
-
-**Run the Analysis with lm()**
-
-```{r}
-#| echo: true
-library(rio)
-DataHousing =
-  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
-library(tidymodels)
-Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
-DataTrain=training(Split7030)
-DataTest=testing(Split7030)
-
-ModelHouses=lm(Price ~ Sqft, data=DataTrain)
-summary(ModelHouses)
-```
-
-## Learn Machine Learning {visibility="hidden"}
-
-## Predicting with tidymodels Training and Testing Data {.scrollable .smaller visibility="hidden"}
-
-The augment() command first predicts and then augments the results to the related data frame
-
-```{r}
-#| echo: true
-DataTrainWithPred=augment(ModelHouses, new_data = DataTrain)
-DataTestWithPred=augment(ModelHouses, new_data = DataTest)
-
-head(DataTrainWithPred)
-head(DataTestWithPred)
-
-```
-
-## Metrics for Predictive Quality Training Data {visibility="hidden"}
-
-```{r}
-#| echo: true
-metrics(DataTrainWithPred, truth = Price, estimate = .fitted)
-```
-
-## Metrics for Predictive Quality Testing Data {visibility="hidden"}
-
-```{r}
-#| echo: true
-metrics(DataTestWithPred, truth = Price, estimate = .fitted)
-
-```
-
-## Summary - Steps for a Linear Regression {.smaller visibility="hidden"}
+## Summary - Steps for a Linear Regression {.smaller}
 
 
 1. Draw a DAG (with R or by hand)
@@ -665,21 +460,4 @@ $$Price=\beta_1 Sqft + \beta_2$$
 6. Interpret the $\beta (s)$. E.g., if predictor variable increases by one unit outcome increases by $\beta$ units. Note, the intercept coefficient cannot be interpreted in almost all cases!
 
 7. Check if P value is low enough (e.g., smaller than 0.05=5%). This is the probability for the related coefficient to be 0 and thus irrelevant. You want a low probability for that event. If P value is too high the related variable does not belong in your model. Note, no need to interpret the P for the intercept. 
-
-## Exercise {visibility="hidden"}
-
-Now it is your turn. Pick a value from the housing data set and run a univariate regression to predict the price. 
-
-```{r}
-library(tidymodels)
-library(rio)
-library(janitor)
-DataHouses=
-  import("https://ai.lange-analytics.com/data/HousingData.csv") |>
-  clean_names("upper_camel")
-
-Split7030=initial_split(0.7,data=DataHouses, strata = Price, breaks = 5)
-DataTrain=training(Split7030)
-DataTest=testing(Split7030)
-```
 
