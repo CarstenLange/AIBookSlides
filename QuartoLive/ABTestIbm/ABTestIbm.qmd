@@ -21,7 +21,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+    footer: "<a href='https://medium.com/data-science/using-causal-ml-instead-of-a-b-testing-eeb1067d7fc0'>Textbook </a> "
 webr:
   packages:
     - rio
@@ -79,7 +79,7 @@ A very powerful and easy to use methodology to compare means of one or more *Tre
 **Problem:** We cannot observe counterfactuals
 
 ::: footer
-[Source: Samuele Mazzanti, Using Causal ML Instead of A/B Testing, Towards Data Science](https://towardsdatascience.com/using-causal-ml-instead-of-a-b-testing-eeb1067d7fc0){target="_blank"}
+[Source: Samuele Mazzanti, Using Causal ML Instead of A/B Testing, Medium](https://medium.com/data-science/using-causal-ml-instead-of-a-b-testing-eeb1067d7fc0){target="_blank"}
 :::
 
 ## The Idea Behind A/B Tests {.smaller}
@@ -91,7 +91,7 @@ A very powerful and easy to use methodology to compare means of one or more *Tre
 If *Treatment* and *Control* group subjects are chosen entirely at random and if we have a large number of subjects, we can assume that any characteristics of subjects that influence the outcome is equally present in *Treatment* and *Control* group (we assume that the red, green, blue, and magenta persons are at least similar when it comes to the outcome)
 
 ::: footer
-Source: [Samuele Mazzanti, Using Causal ML Instead of A/B Testing, Towards Data Science](https://towardsdatascience.com/using-causal-ml-instead-of-a-b-testing-eeb1067d7fc0){target="_blank"}
+[Source: Samuele Mazzanti, Using Causal ML Instead of A/B Testing, Medium](https://medium.com/data-science/using-causal-ml-instead-of-a-b-testing-eeb1067d7fc0){target="_blank"}
 :::
 
 ## Example: Webdesign in Marketing
