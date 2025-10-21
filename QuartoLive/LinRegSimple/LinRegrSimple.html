@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="LinRegrSimple_files/libs/clipboard/clipboard.min.js"></script>
+<script src="LinRegrSimple_files/libs/quarto-html/tabby.min.js"></script>
+<script src="LinRegrSimple_files/libs/quarto-html/popper.min.js"></script>
+<script src="LinRegrSimple_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="LinRegrSimple_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="LinRegrSimple_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="LinRegrSimple_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="LinRegrSimple_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="LinRegrSimple_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.7.31">
+
+  <meta name="author" content="Carsten Lange">
+  <title>Simmple Linear Regression</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="LinRegrSimple_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="LinRegrSimple_files/libs/revealjs/dist/reveal.css">
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #f8f8f2;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #f8f8f2; } /* Normal */
+    code span.al { color: #f07178; } /* Alert */
+    code span.an { color: #d4d0ab; } /* Annotation */
+    code span.at { color: #00e0e0; } /* Attribute */
+    code span.bn { color: #d4d0ab; } /* BaseN */
+    code span.bu { color: #abe338; } /* BuiltIn */
+    code span.cf { color: #ffa07a; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #abe338; } /* Char */
+    code span.cn { color: #ffd700; } /* Constant */
+    code span.co { color: #f8f8f2; font-style: italic; } /* Comment */
+    code span.cv { color: #ffd700; } /* CommentVar */
+    code span.do { color: #f8f8f2; } /* Documentation */
+    code span.dt { color: #ffa07a; } /* DataType */
+    code span.dv { color: #d4d0ab; } /* DecVal */
+    code span.er { color: #f07178; text-decoration: underline; } /* Error */
+    code span.ex { color: #00e0e0; font-weight: bold; } /* Extension */
+    code span.fl { color: #d4d0ab; } /* Float */
+    code span.fu { color: #ffa07a; } /* Function */
+    code span.im { color: #abe338; } /* Import */
+    code span.in { color: #d4d0ab; } /* Information */
+    code span.kw { color: #ffa07a; font-weight: bold; } /* Keyword */
+    code span.op { color: #ffa07a; } /* Operator */
+    code span.ot { color: #00e0e0; } /* Other */
+    code span.pp { color: #dcc6e0; } /* Preprocessor */
+    code span.re { color: #00e0e0; background-color: #f8f8f2; } /* RegionMarker */
+    code span.sc { color: #abe338; } /* SpecialChar */
+    code span.ss { color: #abe338; } /* SpecialString */
+    code span.st { color: #abe338; } /* String */
+    code span.va { color: #00e0e0; } /* Variable */
+    code span.vs { color: #abe338; } /* VerbatimString */
+    code span.wa { color: #dcc6e0; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="LinRegrSimple_files/libs/revealjs/dist/theme/quarto-4b8217244be6dee95f534ad2017c9ddb.css">
+  <link href="LinRegrSimple_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="LinRegrSimple_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="LinRegrSimple_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="LinRegrSimple_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="LinRegrSimple_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="LinRegrSimple_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+  <script type="module" src="LinRegrSimple_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="LinRegrSimple_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+  <link href="LinRegrSimple_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+
+  <script src="LinRegrSimple_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+  <script src="LinRegrSimple_files/libs/plotly-binding-4.11.0/plotly.js"></script>
+
+  <script src="LinRegrSimple_files/libs/typedarray-0.1/typedarray.min.js"></script>
+
+  <script src="LinRegrSimple_files/libs/jquery-3.5.1/jquery.min.js"></script>
+
+  <link href="LinRegrSimple_files/libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet">
+
+  <script src="LinRegrSimple_files/libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+
+  <link href="LinRegrSimple_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+
+  <script src="LinRegrSimple_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+  <script src="LinRegrSimple_files/libs/kePrint-0.0.1/kePrint.js"></script>
+
+  <link href="LinRegrSimple_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
+</head>
+<body class="quarto-dark">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Simmple Linear Regression</h1>
+  <p class="subtitle">Analyzing the Correlation between One Outcome Variable and One Predictor Variable</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Carsten Lange 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Cal Poly, Pomona
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="what-will-you-learn" class="slide level2 scrollable smaller">
+<h2>What Will You Learn</h2>
+<ul>
+<li><p>The basic idea behind linear regression</p></li>
+<li><p>Distinguish between unfitted and fitted models</p></li>
+<li><p>Understanding the role of parameters in a linear regression model (applies also to other models)</p></li>
+<li><p>Finding optimal regression parameters with <code>lm</code></p></li>
+<li><p>Learning how how to measure predictive quality with Mean Square Error (<span class="math inline">\(MSE\)</span>)</p></li>
+<li><p>Using <code>lm</code> to analyze the correlation between square footage and housing prices.</p></li>
+</ul>
+</section>
+<section id="jumping-right-into-it-with-real-world-data" class="slide level2">
+<h2>Jumping Right Into It with Real World Data</h2>
+<p>Univariate OLS (simple OLS) with a real estate dataset</p>
+<p><strong>Data Description:</strong></p>
+<p>King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.</p>
+<p><strong>Simplication:</strong></p>
+<ul>
+<li><p>Several predictor variables, but for now we use only <span class="math inline">\(Sqft\)</span></p></li>
+<li><p>We will only use 100 randomly chosen observations from the total of 21,613 observations.</p></li>
+</ul>
+</section>
+<section id="loading-libraries" class="slide level2">
+<h2>Loading Libraries</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb1-3"><a href=""></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-4"><a href=""></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-5"><a href=""></a><span class="fu">library</span>(plotly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="loading-the-data" class="slide level2">
+<h2>Loading the Data</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>DataHouses<span class="ot">=</span></span>
+<span id="cb2-2"><a href=""></a>  <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href=""></a>  <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-4"><a href=""></a>  <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving) </span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">7771</span>)</span>
+<span id="cb2-7"><a href=""></a>Data100Houses<span class="ot">=</span><span class="fu">sample_n</span>(DataHouses,<span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>First six observations training data:</strong></p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>   Price Sqft
+1 517000 1180
+2 236000 1300
+3 490000 2800
+4 129000 1150
+5 257000 1400
+6 312500  870</code></pre>
+</div>
+</div>
+</section>
+<section id="finding-a-regression-lineregression-function" class="slide level2 smaller">
+<h2>Finding a Regression Line/Regression Function</h2>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-75855d53f919405478ea" style="width:50%;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-75855d53f919405478ea">{"x":{"data":[{"x":[1180,1300,2800,1150,1400,870,1240,1670,3520,1980,2690,2030,1720,1520,4270,1630,1190,1120,930,2060,1210,550,1500,1860,1710,1370,1620,1710,1660,4020,3040,2790,1550,2790,2980,840,2140,2350,2990,920,1820,2050,1870,2050,1900,3200,2440,1280,1800,1400,2840,2110,3630,1260,1270,1700,3180,1190,1310,2600,1590,2940,1670,1800,3630,1640,2570,1410,2030,1440,1740,1990,1250,2120,2400,2100,1270,3350,2300,940,920,2720,1370,1340,1590,1350,1560,3470,3040,1570,1800,2210,2360,2430,2230,1780,2080,1400,1870,1630],"y":[517000,236000,490000,129000,257000,312500,525000,661000,859990,239000,730000,199000,499000,672600,null,422120,320000,750000,200000,459500,230000,353000,736000,799950,560000,460000,780000,450000,220000,null,null,533380,613000,null,574000,130000,350000,649950,514500,250000,625000,623000,289950,383000,190000,515000,525000,443000,335000,575000,665000,305000,null,412000,404500,245000,775000,166950,237950,722500,783200,590000,235000,360000,null,349000,275000,429000,685000,375000,450000,245000,370000,693000,852000,420000,599380,845000,325000,375000,265000,560000,219000,315000,300000,250000,430000,455000,840000,325000,754300,432900,435000,305000,590000,null,null,279000,592500,464000],"text":["Sqft: 1180<br />Price:  517000","Sqft: 1300<br />Price:  236000","Sqft: 2800<br />Price:  490000","Sqft: 1150<br />Price:  129000","Sqft: 1400<br />Price:  257000","Sqft:  870<br />Price:  312500","Sqft: 1240<br />Price:  525000","Sqft: 1670<br />Price:  661000","Sqft: 3520<br />Price:  859990","Sqft: 1980<br />Price:  239000","Sqft: 2690<br />Price:  730000","Sqft: 2030<br />Price:  199000","Sqft: 1720<br />Price:  499000","Sqft: 1520<br />Price:  672600","Sqft: 4270<br />Price: 1600000","Sqft: 1630<br />Price:  422120","Sqft: 1190<br />Price:  320000","Sqft: 1120<br />Price:  750000","Sqft:  930<br />Price:  200000","Sqft: 2060<br />Price:  459500","Sqft: 1210<br />Price:  230000","Sqft:  550<br />Price:  353000","Sqft: 1500<br />Price:  736000","Sqft: 1860<br />Price:  799950","Sqft: 1710<br />Price:  560000","Sqft: 1370<br />Price:  460000","Sqft: 1620<br />Price:  780000","Sqft: 1710<br />Price:  450000","Sqft: 1660<br />Price:  220000","Sqft: 4020<br />Price: 1420000","Sqft: 3040<br />Price: 1740000","Sqft: 2790<br />Price:  533380","Sqft: 1550<br />Price:  613000","Sqft: 2790<br />Price: 1130000","Sqft: 2980<br />Price:  574000","Sqft:  840<br />Price:  130000","Sqft: 2140<br />Price:  350000","Sqft: 2350<br />Price:  649950","Sqft: 2990<br />Price:  514500","Sqft:  920<br />Price:  250000","Sqft: 1820<br />Price:  625000","Sqft: 2050<br />Price:  623000","Sqft: 1870<br />Price:  289950","Sqft: 2050<br />Price:  383000","Sqft: 1900<br />Price:  190000","Sqft: 3200<br />Price:  515000","Sqft: 2440<br />Price:  525000","Sqft: 1280<br />Price:  443000","Sqft: 1800<br />Price:  335000","Sqft: 1400<br />Price:  575000","Sqft: 2840<br />Price:  665000","Sqft: 2110<br />Price:  305000","Sqft: 3630<br />Price:  962800","Sqft: 1260<br />Price:  412000","Sqft: 1270<br />Price:  404500","Sqft: 1700<br />Price:  245000","Sqft: 3180<br />Price:  775000","Sqft: 1190<br />Price:  166950","Sqft: 1310<br />Price:  237950","Sqft: 2600<br />Price:  722500","Sqft: 1590<br />Price:  783200","Sqft: 2940<br />Price:  590000","Sqft: 1670<br />Price:  235000","Sqft: 1800<br />Price:  360000","Sqft: 3630<br />Price:  964000","Sqft: 1640<br />Price:  349000","Sqft: 2570<br />Price:  275000","Sqft: 1410<br />Price:  429000","Sqft: 2030<br />Price:  685000","Sqft: 1440<br />Price:  375000","Sqft: 1740<br />Price:  450000","Sqft: 1990<br />Price:  245000","Sqft: 1250<br />Price:  370000","Sqft: 2120<br />Price:  693000","Sqft: 2400<br />Price:  852000","Sqft: 2100<br />Price:  420000","Sqft: 1270<br />Price:  599380","Sqft: 3350<br />Price:  845000","Sqft: 2300<br />Price:  325000","Sqft:  940<br />Price:  375000","Sqft:  920<br />Price:  265000","Sqft: 2720<br />Price:  560000","Sqft: 1370<br />Price:  219000","Sqft: 1340<br />Price:  315000","Sqft: 1590<br />Price:  300000","Sqft: 1350<br />Price:  250000","Sqft: 1560<br />Price:  430000","Sqft: 3470<br />Price:  455000","Sqft: 3040<br />Price:  840000","Sqft: 1570<br />Price:  325000","Sqft: 1800<br />Price:  754300","Sqft: 2210<br />Price:  432900","Sqft: 2360<br />Price:  435000","Sqft: 2430<br />Price:  305000","Sqft: 2230<br />Price:  590000","Sqft: 1780<br />Price:  935000","Sqft: 2080<br />Price: 1190000","Sqft: 1400<br />Price:  279000","Sqft: 1870<br />Price:  592500","Sqft: 1630<br />Price:  464000"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":66.484018264840202},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-250,5250],"tickmode":"array","ticktext":["0","500","1,000","1,500","2,000","2,500","3,000","3,500","4,000","4,500","5,000"],"tickvals":[0,500,1000,1500,2000,2500,3000,3499.9999999999995,4000,4500,5000],"categoryorder":"array","categoryarray":["0","500","1,000","1,500","2,000","2,500","3,000","3,500","4,000","4,500","5,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Sqft","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-45000,945000],"tickmode":"array","ticktext":["0","100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"tickvals":[0,100000,200000,300000,400000,500000,600000,700000,800000,900000],"categoryorder":"array","categoryarray":["0","100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Price","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"67a45ca95923":{"x":{},"y":{},"type":"scatter"}},"cur_data":"67a45ca95923","visdat":{"67a45ca95923":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>We need a (linear regression) that produces predictions (<span class="math inline">\(\widehat{Price_i}\)</span>)that fit the true prices (<span class="math inline">\(Price_i\)</span>) as good as possible.</p>
+<p>In other words, find a linear function: <span class="math display">\[
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+\]</span></p>
+</section>
+<section id="finding-a-regression-lineregression-function-1" class="slide level2 smaller">
+<h2>Finding a Regression Line/Regression Function</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-6f6620fb3fffcee6ef43" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-6f6620fb3fffcee6ef43">{"x":{"data":[{"x":[1180,1300,2800,1150,1400,870,1240,1670,3520,1980,2690,2030,1720,1520,4270,1630,1190,1120,930,2060,1210,550,1500,1860,1710,1370,1620,1710,1660,4020,3040,2790,1550,2790,2980,840,2140,2350,2990,920,1820,2050,1870,2050,1900,3200,2440,1280,1800,1400,2840,2110,3630,1260,1270,1700,3180,1190,1310,2600,1590,2940,1670,1800,3630,1640,2570,1410,2030,1440,1740,1990,1250,2120,2400,2100,1270,3350,2300,940,920,2720,1370,1340,1590,1350,1560,3470,3040,1570,1800,2210,2360,2430,2230,1780,2080,1400,1870,1630],"y":[517000,236000,490000,129000,257000,312500,525000,661000,859990,239000,730000,199000,499000,672600,null,422120,320000,750000,200000,459500,230000,353000,736000,799950,560000,460000,780000,450000,220000,null,null,533380,613000,null,574000,130000,350000,649950,514500,250000,625000,623000,289950,383000,190000,515000,525000,443000,335000,575000,665000,305000,null,412000,404500,245000,775000,166950,237950,722500,783200,590000,235000,360000,null,349000,275000,429000,685000,375000,450000,245000,370000,693000,852000,420000,599380,845000,325000,375000,265000,560000,219000,315000,300000,250000,430000,455000,840000,325000,754300,432900,435000,305000,590000,null,null,279000,592500,464000],"text":["Sqft: 1180<br />Price:  517000","Sqft: 1300<br />Price:  236000","Sqft: 2800<br />Price:  490000","Sqft: 1150<br />Price:  129000","Sqft: 1400<br />Price:  257000","Sqft:  870<br />Price:  312500","Sqft: 1240<br />Price:  525000","Sqft: 1670<br />Price:  661000","Sqft: 3520<br />Price:  859990","Sqft: 1980<br />Price:  239000","Sqft: 2690<br />Price:  730000","Sqft: 2030<br />Price:  199000","Sqft: 1720<br />Price:  499000","Sqft: 1520<br />Price:  672600","Sqft: 4270<br />Price: 1600000","Sqft: 1630<br />Price:  422120","Sqft: 1190<br />Price:  320000","Sqft: 1120<br />Price:  750000","Sqft:  930<br />Price:  200000","Sqft: 2060<br />Price:  459500","Sqft: 1210<br />Price:  230000","Sqft:  550<br />Price:  353000","Sqft: 1500<br />Price:  736000","Sqft: 1860<br />Price:  799950","Sqft: 1710<br />Price:  560000","Sqft: 1370<br />Price:  460000","Sqft: 1620<br />Price:  780000","Sqft: 1710<br />Price:  450000","Sqft: 1660<br />Price:  220000","Sqft: 4020<br />Price: 1420000","Sqft: 3040<br />Price: 1740000","Sqft: 2790<br />Price:  533380","Sqft: 1550<br />Price:  613000","Sqft: 2790<br />Price: 1130000","Sqft: 2980<br />Price:  574000","Sqft:  840<br />Price:  130000","Sqft: 2140<br />Price:  350000","Sqft: 2350<br />Price:  649950","Sqft: 2990<br />Price:  514500","Sqft:  920<br />Price:  250000","Sqft: 1820<br />Price:  625000","Sqft: 2050<br />Price:  623000","Sqft: 1870<br />Price:  289950","Sqft: 2050<br />Price:  383000","Sqft: 1900<br />Price:  190000","Sqft: 3200<br />Price:  515000","Sqft: 2440<br />Price:  525000","Sqft: 1280<br />Price:  443000","Sqft: 1800<br />Price:  335000","Sqft: 1400<br />Price:  575000","Sqft: 2840<br />Price:  665000","Sqft: 2110<br />Price:  305000","Sqft: 3630<br />Price:  962800","Sqft: 1260<br />Price:  412000","Sqft: 1270<br />Price:  404500","Sqft: 1700<br />Price:  245000","Sqft: 3180<br />Price:  775000","Sqft: 1190<br />Price:  166950","Sqft: 1310<br />Price:  237950","Sqft: 2600<br />Price:  722500","Sqft: 1590<br />Price:  783200","Sqft: 2940<br />Price:  590000","Sqft: 1670<br />Price:  235000","Sqft: 1800<br />Price:  360000","Sqft: 3630<br />Price:  964000","Sqft: 1640<br />Price:  349000","Sqft: 2570<br />Price:  275000","Sqft: 1410<br />Price:  429000","Sqft: 2030<br />Price:  685000","Sqft: 1440<br />Price:  375000","Sqft: 1740<br />Price:  450000","Sqft: 1990<br />Price:  245000","Sqft: 1250<br />Price:  370000","Sqft: 2120<br />Price:  693000","Sqft: 2400<br />Price:  852000","Sqft: 2100<br />Price:  420000","Sqft: 1270<br />Price:  599380","Sqft: 3350<br />Price:  845000","Sqft: 2300<br />Price:  325000","Sqft:  940<br />Price:  375000","Sqft:  920<br />Price:  265000","Sqft: 2720<br />Price:  560000","Sqft: 1370<br />Price:  219000","Sqft: 1340<br />Price:  315000","Sqft: 1590<br />Price:  300000","Sqft: 1350<br />Price:  250000","Sqft: 1560<br />Price:  430000","Sqft: 3470<br />Price:  455000","Sqft: 3040<br />Price:  840000","Sqft: 1570<br />Price:  325000","Sqft: 1800<br />Price:  754300","Sqft: 2210<br />Price:  432900","Sqft: 2360<br />Price:  435000","Sqft: 2430<br />Price:  305000","Sqft: 2230<br />Price:  590000","Sqft: 1780<br />Price:  935000","Sqft: 2080<br />Price: 1190000","Sqft: 1400<br />Price:  279000","Sqft: 1870<br />Price:  592500","Sqft: 1630<br />Price:  464000"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[550,587.59493670886081,625.18987341772151,662.78481012658222,700.37974683544303,737.97468354430384,775.56962025316454,813.16455696202524,850.75949367088606,888.35443037974687,925.94936708860757,963.54430379746827,1001.1392405063291,1038.7341772151899,1076.3291139240505,1113.9240506329113,1151.5189873417721,1189.1139240506329,1226.7088607594937,1264.3037974683543,1301.8987341772151,1339.493670886076,1377.0886075949365,1414.6835443037974,1452.2784810126582,1489.873417721519,1527.4683544303798,1565.0632911392404,1602.6582278481012,1640.253164556962,1677.8481012658226,1715.4430379746834,1753.0379746835442,1790.632911392405,1828.2278481012659,1865.8227848101264,1903.4177215189873,1941.0126582278481,1978.6075949367087,2016.2025316455695,2053.7974683544303,2091.3924050632913,2128.9873417721519,2166.5822784810125,2204.1772151898731,2241.7721518987341,2279.3670886075947,2316.9620253164558,2354.5569620253164,2392.1518987341769,2429.746835443038,2467.3417721518986,2504.9367088607596,2542.5316455696202,2580.1265822784808,2617.7215189873418,2655.3164556962024,2692.911392405063,2730.506329113924,2768.1012658227846,2805.6962025316452,2843.2911392405063,2880.8860759493668,2918.4810126582279,2956.0759493670885,2993.6708860759491,3031.2658227848101,3068.8607594936707,3106.4556962025317,3144.0506329113923,3181.6455696202529,3219.2405063291139,3256.8354430379745,3294.4303797468351,3332.0253164556962,3369.6202531645567,3407.2151898734173,3444.8101265822784,3482.405063291139,3520],"y":[275354.10601598374,280642.1327745872,285930.15953319066,291218.18629179406,296506.21305039752,301794.23980900098,307082.26656760444,312370.2933262079,317658.3200848113,322946.34684341477,328234.37360201823,333522.40036062163,338810.42711922515,344098.45387782855,349386.48063643201,354674.50739503547,359962.53415363887,365250.56091224239,370538.58767084579,375826.6144294492,381114.64118805272,386402.66794665612,391690.69470525958,396978.72146386304,402266.74822246644,407554.77498106996,412842.80173967336,418130.82849827682,423418.85525688028,428706.88201548369,433994.90877408715,439282.93553269061,444570.96229129407,449858.98904989753,455147.01580850093,460435.04256710445,465723.06932570785,471011.09608431126,476299.12284291477,481587.14960151818,486875.1763601217,492163.2031187251,497451.2298773285,502739.25663593202,508027.28339453542,513315.31015313882,518603.33691174234,523891.36367034575,529179.39042894926,534467.41718755267,539755.44394615607,545043.47070475959,550331.49746336299,555619.52422196651,560907.55098056991,566195.57773917331,571483.60449777683,576771.63125638023,582059.65801498375,587347.68477358716,592635.71153219056,597923.73829079408,603211.76504939748,608499.791808001,613787.8185666044,619075.8453252078,624363.87208381132,629651.89884241472,634939.92560101824,640227.95235962165,645515.97911822505,650804.00587682857,656092.03263543197,661380.05939403537,666668.08615263889,671956.11291124229,677244.1396698457,682532.16642844921,687820.19318705262,693108.21994565614],"text":["Sqft:  550.0000<br />Price: 275354.1","Sqft:  587.5949<br />Price: 280642.1","Sqft:  625.1899<br />Price: 285930.2","Sqft:  662.7848<br />Price: 291218.2","Sqft:  700.3797<br />Price: 296506.2","Sqft:  737.9747<br />Price: 301794.2","Sqft:  775.5696<br />Price: 307082.3","Sqft:  813.1646<br />Price: 312370.3","Sqft:  850.7595<br />Price: 317658.3","Sqft:  888.3544<br />Price: 322946.3","Sqft:  925.9494<br />Price: 328234.4","Sqft:  963.5443<br />Price: 333522.4","Sqft: 1001.1392<br />Price: 338810.4","Sqft: 1038.7342<br />Price: 344098.5","Sqft: 1076.3291<br />Price: 349386.5","Sqft: 1113.9241<br />Price: 354674.5","Sqft: 1151.5190<br />Price: 359962.5","Sqft: 1189.1139<br />Price: 365250.6","Sqft: 1226.7089<br />Price: 370538.6","Sqft: 1264.3038<br />Price: 375826.6","Sqft: 1301.8987<br />Price: 381114.6","Sqft: 1339.4937<br />Price: 386402.7","Sqft: 1377.0886<br />Price: 391690.7","Sqft: 1414.6835<br />Price: 396978.7","Sqft: 1452.2785<br />Price: 402266.7","Sqft: 1489.8734<br />Price: 407554.8","Sqft: 1527.4684<br />Price: 412842.8","Sqft: 1565.0633<br />Price: 418130.8","Sqft: 1602.6582<br />Price: 423418.9","Sqft: 1640.2532<br />Price: 428706.9","Sqft: 1677.8481<br />Price: 433994.9","Sqft: 1715.4430<br />Price: 439282.9","Sqft: 1753.0380<br />Price: 444571.0","Sqft: 1790.6329<br />Price: 449859.0","Sqft: 1828.2278<br />Price: 455147.0","Sqft: 1865.8228<br />Price: 460435.0","Sqft: 1903.4177<br />Price: 465723.1","Sqft: 1941.0127<br />Price: 471011.1","Sqft: 1978.6076<br />Price: 476299.1","Sqft: 2016.2025<br />Price: 481587.1","Sqft: 2053.7975<br />Price: 486875.2","Sqft: 2091.3924<br />Price: 492163.2","Sqft: 2128.9873<br />Price: 497451.2","Sqft: 2166.5823<br />Price: 502739.3","Sqft: 2204.1772<br />Price: 508027.3","Sqft: 2241.7722<br />Price: 513315.3","Sqft: 2279.3671<br />Price: 518603.3","Sqft: 2316.9620<br />Price: 523891.4","Sqft: 2354.5570<br />Price: 529179.4","Sqft: 2392.1519<br />Price: 534467.4","Sqft: 2429.7468<br />Price: 539755.4","Sqft: 2467.3418<br />Price: 545043.5","Sqft: 2504.9367<br />Price: 550331.5","Sqft: 2542.5316<br />Price: 555619.5","Sqft: 2580.1266<br />Price: 560907.6","Sqft: 2617.7215<br />Price: 566195.6","Sqft: 2655.3165<br />Price: 571483.6","Sqft: 2692.9114<br />Price: 576771.6","Sqft: 2730.5063<br />Price: 582059.7","Sqft: 2768.1013<br />Price: 587347.7","Sqft: 2805.6962<br />Price: 592635.7","Sqft: 2843.2911<br />Price: 597923.7","Sqft: 2880.8861<br />Price: 603211.8","Sqft: 2918.4810<br />Price: 608499.8","Sqft: 2956.0759<br />Price: 613787.8","Sqft: 2993.6709<br />Price: 619075.8","Sqft: 3031.2658<br />Price: 624363.9","Sqft: 3068.8608<br />Price: 629651.9","Sqft: 3106.4557<br />Price: 634939.9","Sqft: 3144.0506<br />Price: 640228.0","Sqft: 3181.6456<br />Price: 645516.0","Sqft: 3219.2405<br />Price: 650804.0","Sqft: 3256.8354<br />Price: 656092.0","Sqft: 3294.4304<br />Price: 661380.1","Sqft: 3332.0253<br />Price: 666668.1","Sqft: 3369.6203<br />Price: 671956.1","Sqft: 3407.2152<br />Price: 677244.1","Sqft: 3444.8101<br />Price: 682532.2","Sqft: 3482.4051<br />Price: 687820.2","Sqft: 3520.0000<br />Price: 693108.2"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":3.7795275590551185,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":66.484018264840202},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-250,5250],"tickmode":"array","ticktext":["0","500","1,000","1,500","2,000","2,500","3,000","3,500","4,000","4,500","5,000"],"tickvals":[0,500,1000,1500,2000,2500,3000,3499.9999999999995,4000,4500,5000],"categoryorder":"array","categoryarray":["0","500","1,000","1,500","2,000","2,500","3,000","3,500","4,000","4,500","5,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Sqft","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-45000,945000],"tickmode":"array","ticktext":["0","100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"tickvals":[0,100000,200000,300000,400000,500000,600000,700000,800000,900000],"categoryorder":"array","categoryarray":["0","100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Price","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"67a43b465de3":{"x":{},"y":{},"type":"scatter"},"67a49302c4b":{"x":{},"y":{}}},"cur_data":"67a43b465de3","visdat":{"67a43b465de3":["function (y) ","x"],"67a49302c4b":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>We need a (linear regression) line that produces predictions (<span class="math inline">\(\widehat{Price_i}\)</span>) that fit the true prices <span class="math inline">\((Price_i)\)</span> as good as possible.</p>
+<p>In other words, find a linear function: <span class="math display">\[
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+\]</span></p>
+</section>
+<section id="how-much-is-a-house-worth-in-king-county" class="slide level2">
+<h2>How much is a House Worth in King County?</h2>
+<p>A house with average properties should be predicted with an average price!</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>MeanSqft<span class="ot">=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Sqft)</span>
+<span id="cb4-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean square footage of a house in King county is:"</span>, MeanSqft)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The mean square footage of a house in King county is: 1956.7</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>MeanPrice<span class="ot">=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Price)</span>
+<span id="cb6-2"><a href=""></a><span class="fu">cat</span>(<span class="st">"The mean price of a house in King county is:"</span>, MeanPrice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>The mean price of a house in King county is: 521294.2</code></pre>
+</div>
+</div>
+</section>
+<section id="predicting-price-of-an-average-size-house-as-average-of-prices" class="slide level2 smaller">
+<h2>Predicting Price of an Average-Size House as Average of Prices</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">library</span>(plotly)</span>
+<span id="cb8-2"><a href=""></a></span>
+<span id="cb8-3"><a href=""></a>Plot2Means<span class="ot">=</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sqft, <span class="at">y=</span>Price), <span class="at">data=</span>Data100Houses)<span class="sc">+</span></span>
+<span id="cb8-4"><a href=""></a>           <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb8-5"><a href=""></a>           <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Price))<span class="sc">+</span></span>
+<span id="cb8-6"><a href=""></a>           <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Sqft))<span class="sc">+</span></span>
+<span id="cb8-7"><a href=""></a>           <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">900000</span>),  </span>
+<span id="cb8-8"><a href=""></a>                              <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">900000</span>,<span class="dv">100000</span>), </span>
+<span id="cb8-9"><a href=""></a>                              <span class="at">labels =</span> scales<span class="sc">::</span>comma)<span class="sc">+</span></span>
+<span id="cb8-10"><a href=""></a>           <span class="fu">scale_x_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5000</span>),  </span>
+<span id="cb8-11"><a href=""></a>                              <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5000</span>,<span class="dv">500</span>), </span>
+<span id="cb8-12"><a href=""></a>                              <span class="at">labels =</span> scales<span class="sc">::</span>comma)</span>
+<span id="cb8-13"><a href=""></a><span class="fu">ggplotly</span>(Plot2Means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-aa85e8528958524ddfd8" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-aa85e8528958524ddfd8">{"x":{"data":[{"x":[1180,1300,2800,1150,1400,870,1240,1670,3520,1980,2690,2030,1720,1520,4270,1630,1190,1120,930,2060,1210,550,1500,1860,1710,1370,1620,1710,1660,4020,3040,2790,1550,2790,2980,840,2140,2350,2990,920,1820,2050,1870,2050,1900,3200,2440,1280,1800,1400,2840,2110,3630,1260,1270,1700,3180,1190,1310,2600,1590,2940,1670,1800,3630,1640,2570,1410,2030,1440,1740,1990,1250,2120,2400,2100,1270,3350,2300,940,920,2720,1370,1340,1590,1350,1560,3470,3040,1570,1800,2210,2360,2430,2230,1780,2080,1400,1870,1630],"y":[517000,236000,490000,129000,257000,312500,525000,661000,859990,239000,730000,199000,499000,672600,null,422120,320000,750000,200000,459500,230000,353000,736000,799950,560000,460000,780000,450000,220000,null,null,533380,613000,null,574000,130000,350000,649950,514500,250000,625000,623000,289950,383000,190000,515000,525000,443000,335000,575000,665000,305000,null,412000,404500,245000,775000,166950,237950,722500,783200,590000,235000,360000,null,349000,275000,429000,685000,375000,450000,245000,370000,693000,852000,420000,599380,845000,325000,375000,265000,560000,219000,315000,300000,250000,430000,455000,840000,325000,754300,432900,435000,305000,590000,null,null,279000,592500,464000],"text":["Sqft: 1180<br />Price:  517000","Sqft: 1300<br />Price:  236000","Sqft: 2800<br />Price:  490000","Sqft: 1150<br />Price:  129000","Sqft: 1400<br />Price:  257000","Sqft:  870<br />Price:  312500","Sqft: 1240<br />Price:  525000","Sqft: 1670<br />Price:  661000","Sqft: 3520<br />Price:  859990","Sqft: 1980<br />Price:  239000","Sqft: 2690<br />Price:  730000","Sqft: 2030<br />Price:  199000","Sqft: 1720<br />Price:  499000","Sqft: 1520<br />Price:  672600","Sqft: 4270<br />Price: 1600000","Sqft: 1630<br />Price:  422120","Sqft: 1190<br />Price:  320000","Sqft: 1120<br />Price:  750000","Sqft:  930<br />Price:  200000","Sqft: 2060<br />Price:  459500","Sqft: 1210<br />Price:  230000","Sqft:  550<br />Price:  353000","Sqft: 1500<br />Price:  736000","Sqft: 1860<br />Price:  799950","Sqft: 1710<br />Price:  560000","Sqft: 1370<br />Price:  460000","Sqft: 1620<br />Price:  780000","Sqft: 1710<br />Price:  450000","Sqft: 1660<br />Price:  220000","Sqft: 4020<br />Price: 1420000","Sqft: 3040<br />Price: 1740000","Sqft: 2790<br />Price:  533380","Sqft: 1550<br />Price:  613000","Sqft: 2790<br />Price: 1130000","Sqft: 2980<br />Price:  574000","Sqft:  840<br />Price:  130000","Sqft: 2140<br />Price:  350000","Sqft: 2350<br />Price:  649950","Sqft: 2990<br />Price:  514500","Sqft:  920<br />Price:  250000","Sqft: 1820<br />Price:  625000","Sqft: 2050<br />Price:  623000","Sqft: 1870<br />Price:  289950","Sqft: 2050<br />Price:  383000","Sqft: 1900<br />Price:  190000","Sqft: 3200<br />Price:  515000","Sqft: 2440<br />Price:  525000","Sqft: 1280<br />Price:  443000","Sqft: 1800<br />Price:  335000","Sqft: 1400<br />Price:  575000","Sqft: 2840<br />Price:  665000","Sqft: 2110<br />Price:  305000","Sqft: 3630<br />Price:  962800","Sqft: 1260<br />Price:  412000","Sqft: 1270<br />Price:  404500","Sqft: 1700<br />Price:  245000","Sqft: 3180<br />Price:  775000","Sqft: 1190<br />Price:  166950","Sqft: 1310<br />Price:  237950","Sqft: 2600<br />Price:  722500","Sqft: 1590<br />Price:  783200","Sqft: 2940<br />Price:  590000","Sqft: 1670<br />Price:  235000","Sqft: 1800<br />Price:  360000","Sqft: 3630<br />Price:  964000","Sqft: 1640<br />Price:  349000","Sqft: 2570<br />Price:  275000","Sqft: 1410<br />Price:  429000","Sqft: 2030<br />Price:  685000","Sqft: 1440<br />Price:  375000","Sqft: 1740<br />Price:  450000","Sqft: 1990<br />Price:  245000","Sqft: 1250<br />Price:  370000","Sqft: 2120<br />Price:  693000","Sqft: 2400<br />Price:  852000","Sqft: 2100<br />Price:  420000","Sqft: 1270<br />Price:  599380","Sqft: 3350<br />Price:  845000","Sqft: 2300<br />Price:  325000","Sqft:  940<br />Price:  375000","Sqft:  920<br />Price:  265000","Sqft: 2720<br />Price:  560000","Sqft: 1370<br />Price:  219000","Sqft: 1340<br />Price:  315000","Sqft: 1590<br />Price:  300000","Sqft: 1350<br />Price:  250000","Sqft: 1560<br />Price:  430000","Sqft: 3470<br />Price:  455000","Sqft: 3040<br />Price:  840000","Sqft: 1570<br />Price:  325000","Sqft: 1800<br />Price:  754300","Sqft: 2210<br />Price:  432900","Sqft: 2360<br />Price:  435000","Sqft: 2430<br />Price:  305000","Sqft: 2230<br />Price:  590000","Sqft: 1780<br />Price:  935000","Sqft: 2080<br />Price: 1190000","Sqft: 1400<br />Price:  279000","Sqft: 1870<br />Price:  592500","Sqft: 1630<br />Price:  464000"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-250,5250],"y":[521294.20000000001,521294.20000000001],"text":"yintercept: 521294.2","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1956.7,1956.7],"y":[-45000,945000],"text":"xintercept: 1956.7","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":66.484018264840202},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-250,5250],"tickmode":"array","ticktext":["0","500","1,000","1,500","2,000","2,500","3,000","3,500","4,000","4,500","5,000"],"tickvals":[0,500,1000,1500,2000,2500,3000,3499.9999999999995,4000,4500,5000],"categoryorder":"array","categoryarray":["0","500","1,000","1,500","2,000","2,500","3,000","3,500","4,000","4,500","5,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Sqft","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-45000,945000],"tickmode":"array","ticktext":["0","100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"tickvals":[0,100000,200000,300000,400000,500000,600000,700000,800000,900000],"categoryorder":"array","categoryarray":["0","100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Price","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"67a45a285d61":{"x":{},"y":{},"type":"scatter"},"67a43a8a3c00":{"yintercept":{}},"67a444783d75":{"xintercept":{}}},"cur_data":"67a45a285d61","visdat":{"67a45a285d61":["function (y) ","x"],"67a43a8a3c00":["function (y) ","x"],"67a444783d75":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="regression-line-always-goes-through-the-data-centroid" class="slide level2 smaller">
+<h2>Regression Line Always Goes Through the Data Centroid</h2>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">library</span>(plotly)</span>
+<span id="cb9-2"><a href=""></a></span>
+<span id="cb9-3"><a href=""></a>Plot2Means<span class="ot">=</span><span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Sqft, <span class="at">y=</span>Price), <span class="at">data=</span>Data100Houses)<span class="sc">+</span></span>
+<span id="cb9-4"><a href=""></a>           <span class="fu">geom_point</span>(<span class="at">color=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb9-5"><a href=""></a>           <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Price))<span class="sc">+</span></span>
+<span id="cb9-6"><a href=""></a>           <span class="fu">geom_vline</span>(<span class="at">xintercept=</span><span class="fu">mean</span>(Data100Houses<span class="sc">$</span>Sqft))<span class="sc">+</span></span>
+<span id="cb9-7"><a href=""></a>           <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>, <span class="at">se=</span><span class="cn">FALSE</span>)<span class="sc">+</span></span>
+<span id="cb9-8"><a href=""></a>           <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">900000</span>,<span class="dv">100000</span>), </span>
+<span id="cb9-9"><a href=""></a>                              <span class="at">labels =</span> scales<span class="sc">::</span>comma)<span class="sc">+</span></span>
+<span id="cb9-10"><a href=""></a>           <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>,<span class="dv">5000</span>,<span class="dv">500</span>), </span>
+<span id="cb9-11"><a href=""></a>                              <span class="at">labels =</span> scales<span class="sc">::</span>comma)</span>
+<span id="cb9-12"><a href=""></a><span class="fu">ggplotly</span>(Plot2Means)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-1f1ed431a07881cf44b7" style="width:960px;height:480px;"></div>
+<script type="application/json" data-for="htmlwidget-1f1ed431a07881cf44b7">{"x":{"data":[{"x":[1180,1300,2800,1150,1400,870,1240,1670,3520,1980,2690,2030,1720,1520,4270,1630,1190,1120,930,2060,1210,550,1500,1860,1710,1370,1620,1710,1660,4020,3040,2790,1550,2790,2980,840,2140,2350,2990,920,1820,2050,1870,2050,1900,3200,2440,1280,1800,1400,2840,2110,3630,1260,1270,1700,3180,1190,1310,2600,1590,2940,1670,1800,3630,1640,2570,1410,2030,1440,1740,1990,1250,2120,2400,2100,1270,3350,2300,940,920,2720,1370,1340,1590,1350,1560,3470,3040,1570,1800,2210,2360,2430,2230,1780,2080,1400,1870,1630],"y":[517000,236000,490000,129000,257000,312500,525000,661000,859990,239000,730000,199000,499000,672600,1600000,422120,320000,750000,200000,459500,230000,353000,736000,799950,560000,460000,780000,450000,220000,1420000,1740000,533380,613000,1130000,574000,130000,350000,649950,514500,250000,625000,623000,289950,383000,190000,515000,525000,443000,335000,575000,665000,305000,962800,412000,404500,245000,775000,166950,237950,722500,783200,590000,235000,360000,964000,349000,275000,429000,685000,375000,450000,245000,370000,693000,852000,420000,599380,845000,325000,375000,265000,560000,219000,315000,300000,250000,430000,455000,840000,325000,754300,432900,435000,305000,590000,935000,1190000,279000,592500,464000],"text":["Sqft: 1180<br />Price:  517000","Sqft: 1300<br />Price:  236000","Sqft: 2800<br />Price:  490000","Sqft: 1150<br />Price:  129000","Sqft: 1400<br />Price:  257000","Sqft:  870<br />Price:  312500","Sqft: 1240<br />Price:  525000","Sqft: 1670<br />Price:  661000","Sqft: 3520<br />Price:  859990","Sqft: 1980<br />Price:  239000","Sqft: 2690<br />Price:  730000","Sqft: 2030<br />Price:  199000","Sqft: 1720<br />Price:  499000","Sqft: 1520<br />Price:  672600","Sqft: 4270<br />Price: 1600000","Sqft: 1630<br />Price:  422120","Sqft: 1190<br />Price:  320000","Sqft: 1120<br />Price:  750000","Sqft:  930<br />Price:  200000","Sqft: 2060<br />Price:  459500","Sqft: 1210<br />Price:  230000","Sqft:  550<br />Price:  353000","Sqft: 1500<br />Price:  736000","Sqft: 1860<br />Price:  799950","Sqft: 1710<br />Price:  560000","Sqft: 1370<br />Price:  460000","Sqft: 1620<br />Price:  780000","Sqft: 1710<br />Price:  450000","Sqft: 1660<br />Price:  220000","Sqft: 4020<br />Price: 1420000","Sqft: 3040<br />Price: 1740000","Sqft: 2790<br />Price:  533380","Sqft: 1550<br />Price:  613000","Sqft: 2790<br />Price: 1130000","Sqft: 2980<br />Price:  574000","Sqft:  840<br />Price:  130000","Sqft: 2140<br />Price:  350000","Sqft: 2350<br />Price:  649950","Sqft: 2990<br />Price:  514500","Sqft:  920<br />Price:  250000","Sqft: 1820<br />Price:  625000","Sqft: 2050<br />Price:  623000","Sqft: 1870<br />Price:  289950","Sqft: 2050<br />Price:  383000","Sqft: 1900<br />Price:  190000","Sqft: 3200<br />Price:  515000","Sqft: 2440<br />Price:  525000","Sqft: 1280<br />Price:  443000","Sqft: 1800<br />Price:  335000","Sqft: 1400<br />Price:  575000","Sqft: 2840<br />Price:  665000","Sqft: 2110<br />Price:  305000","Sqft: 3630<br />Price:  962800","Sqft: 1260<br />Price:  412000","Sqft: 1270<br />Price:  404500","Sqft: 1700<br />Price:  245000","Sqft: 3180<br />Price:  775000","Sqft: 1190<br />Price:  166950","Sqft: 1310<br />Price:  237950","Sqft: 2600<br />Price:  722500","Sqft: 1590<br />Price:  783200","Sqft: 2940<br />Price:  590000","Sqft: 1670<br />Price:  235000","Sqft: 1800<br />Price:  360000","Sqft: 3630<br />Price:  964000","Sqft: 1640<br />Price:  349000","Sqft: 2570<br />Price:  275000","Sqft: 1410<br />Price:  429000","Sqft: 2030<br />Price:  685000","Sqft: 1440<br />Price:  375000","Sqft: 1740<br />Price:  450000","Sqft: 1990<br />Price:  245000","Sqft: 1250<br />Price:  370000","Sqft: 2120<br />Price:  693000","Sqft: 2400<br />Price:  852000","Sqft: 2100<br />Price:  420000","Sqft: 1270<br />Price:  599380","Sqft: 3350<br />Price:  845000","Sqft: 2300<br />Price:  325000","Sqft:  940<br />Price:  375000","Sqft:  920<br />Price:  265000","Sqft: 2720<br />Price:  560000","Sqft: 1370<br />Price:  219000","Sqft: 1340<br />Price:  315000","Sqft: 1590<br />Price:  300000","Sqft: 1350<br />Price:  250000","Sqft: 1560<br />Price:  430000","Sqft: 3470<br />Price:  455000","Sqft: 3040<br />Price:  840000","Sqft: 1570<br />Price:  325000","Sqft: 1800<br />Price:  754300","Sqft: 2210<br />Price:  432900","Sqft: 2360<br />Price:  435000","Sqft: 2430<br />Price:  305000","Sqft: 2230<br />Price:  590000","Sqft: 1780<br />Price:  935000","Sqft: 2080<br />Price: 1190000","Sqft: 1400<br />Price:  279000","Sqft: 1870<br />Price:  592500","Sqft: 1630<br />Price:  464000"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(255,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[364,4456],"y":[521294.20000000001,521294.20000000001],"text":"yintercept: 521294.2","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[1956.7,1956.7],"y":[48450,1820550],"text":"xintercept: 1956.7","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[550,597.08860759493666,644.17721518987344,691.2658227848101,738.35443037974687,785.44303797468353,832.5316455696202,879.62025316455697,926.70886075949375,973.79746835443041,1020.8860759493671,1067.9746835443038,1115.0632911392404,1162.1518987341774,1209.2405063291139,1256.3291139240507,1303.4177215189875,1350.506329113924,1397.5949367088608,1444.6835443037976,1491.7721518987341,1538.8607594936709,1585.9493670886077,1633.0379746835445,1680.126582278481,1727.2151898734178,1774.3037974683546,1821.3924050632911,1868.4810126582279,1915.5696202531647,1962.6582278481014,2009.746835443038,2056.835443037975,2103.9240506329115,2151.0126582278481,2198.1012658227846,2245.1898734177216,2292.2784810126586,2339.3670886075952,2386.4556962025317,2433.5443037974683,2480.6329113924048,2527.7215189873418,2574.8101265822788,2621.8987341772154,2668.9873417721519,2716.0759493670889,2763.1645569620255,2810.253164556962,2857.341772151899,2904.4303797468356,2951.5189873417721,2998.6075949367091,3045.6962025316457,3092.7848101265822,3139.8734177215192,3186.9620253164558,3234.0506329113923,3281.1392405063293,3328.2278481012659,3375.3164556962029,3422.4050632911394,3469.493670886076,3516.582278481013,3563.6708860759495,3610.7594936708861,3657.8481012658231,3704.9367088607596,3752.0253164556962,3799.1139240506332,3846.2025316455697,3893.2911392405067,3940.3797468354433,3987.4683544303798,4034.5569620253168,4081.6455696202534,4128.7341772151904,4175.8227848101269,4222.9113924050635,4270],"y":[184277.79729629497,195559.25968342225,206840.72207054953,218122.18445767678,229403.64684480405,240685.10923193133,251966.57161905858,263248.03400618589,274529.49639331317,285810.95878044044,297092.42116756772,308373.883554695,319655.34594182222,330936.80832894956,342218.27071607677,353499.73310320411,364781.19549033139,376062.65787745861,387344.12026458589,398625.58265171316,409907.04503884038,421188.50742596772,432469.969813095,443751.43220022228,455032.8945873495,466314.35697447677,477595.81936160405,488877.28174873133,500158.74413585861,511440.20652298589,522721.66891011316,534003.13129724038,545284.59368436772,556566.05607149494,567847.51845862216,579128.98084574949,590410.44323287683,601691.90562000417,612973.36800713139,624254.83039425861,635536.29278138583,646817.75516851305,658099.21755564038,669380.67994276772,680662.14232989494,691943.60471702216,703225.06710414949,714506.52949127671,725787.99187840405,737069.45426553139,748350.91665265861,759632.37903978582,770913.84142691316,782195.30381404038,793476.7662011676,804758.22858829494,816039.69097542216,827321.15336254938,838602.61574967671,849884.07813680393,861165.54052393138,872447.0029110586,883728.46529818582,895009.92768531316,906291.39007244038,917572.8524595676,928854.31484669494,940135.77723382215,951417.23962094937,962698.70200807671,973980.16439520393,985261.62678233127,996543.0891694586,1007824.5515565858,1019106.0139437132,1030387.4763308404,1041668.9387179677,1052950.4011050949,1064231.863492222,1075513.3258793494],"text":["Sqft:  550.0000<br />Price:  184277.8","Sqft:  597.0886<br />Price:  195559.3","Sqft:  644.1772<br />Price:  206840.7","Sqft:  691.2658<br />Price:  218122.2","Sqft:  738.3544<br />Price:  229403.6","Sqft:  785.4430<br />Price:  240685.1","Sqft:  832.5316<br />Price:  251966.6","Sqft:  879.6203<br />Price:  263248.0","Sqft:  926.7089<br />Price:  274529.5","Sqft:  973.7975<br />Price:  285811.0","Sqft: 1020.8861<br />Price:  297092.4","Sqft: 1067.9747<br />Price:  308373.9","Sqft: 1115.0633<br />Price:  319655.3","Sqft: 1162.1519<br />Price:  330936.8","Sqft: 1209.2405<br />Price:  342218.3","Sqft: 1256.3291<br />Price:  353499.7","Sqft: 1303.4177<br />Price:  364781.2","Sqft: 1350.5063<br />Price:  376062.7","Sqft: 1397.5949<br />Price:  387344.1","Sqft: 1444.6835<br />Price:  398625.6","Sqft: 1491.7722<br />Price:  409907.0","Sqft: 1538.8608<br />Price:  421188.5","Sqft: 1585.9494<br />Price:  432470.0","Sqft: 1633.0380<br />Price:  443751.4","Sqft: 1680.1266<br />Price:  455032.9","Sqft: 1727.2152<br />Price:  466314.4","Sqft: 1774.3038<br />Price:  477595.8","Sqft: 1821.3924<br />Price:  488877.3","Sqft: 1868.4810<br />Price:  500158.7","Sqft: 1915.5696<br />Price:  511440.2","Sqft: 1962.6582<br />Price:  522721.7","Sqft: 2009.7468<br />Price:  534003.1","Sqft: 2056.8354<br />Price:  545284.6","Sqft: 2103.9241<br />Price:  556566.1","Sqft: 2151.0127<br />Price:  567847.5","Sqft: 2198.1013<br />Price:  579129.0","Sqft: 2245.1899<br />Price:  590410.4","Sqft: 2292.2785<br />Price:  601691.9","Sqft: 2339.3671<br />Price:  612973.4","Sqft: 2386.4557<br />Price:  624254.8","Sqft: 2433.5443<br />Price:  635536.3","Sqft: 2480.6329<br />Price:  646817.8","Sqft: 2527.7215<br />Price:  658099.2","Sqft: 2574.8101<br />Price:  669380.7","Sqft: 2621.8987<br />Price:  680662.1","Sqft: 2668.9873<br />Price:  691943.6","Sqft: 2716.0759<br />Price:  703225.1","Sqft: 2763.1646<br />Price:  714506.5","Sqft: 2810.2532<br />Price:  725788.0","Sqft: 2857.3418<br />Price:  737069.5","Sqft: 2904.4304<br />Price:  748350.9","Sqft: 2951.5190<br />Price:  759632.4","Sqft: 2998.6076<br />Price:  770913.8","Sqft: 3045.6962<br />Price:  782195.3","Sqft: 3092.7848<br />Price:  793476.8","Sqft: 3139.8734<br />Price:  804758.2","Sqft: 3186.9620<br />Price:  816039.7","Sqft: 3234.0506<br />Price:  827321.2","Sqft: 3281.1392<br />Price:  838602.6","Sqft: 3328.2278<br />Price:  849884.1","Sqft: 3375.3165<br />Price:  861165.5","Sqft: 3422.4051<br />Price:  872447.0","Sqft: 3469.4937<br />Price:  883728.5","Sqft: 3516.5823<br />Price:  895009.9","Sqft: 3563.6709<br />Price:  906291.4","Sqft: 3610.7595<br />Price:  917572.9","Sqft: 3657.8481<br />Price:  928854.3","Sqft: 3704.9367<br />Price:  940135.8","Sqft: 3752.0253<br />Price:  951417.2","Sqft: 3799.1139<br />Price:  962698.7","Sqft: 3846.2025<br />Price:  973980.2","Sqft: 3893.2911<br />Price:  985261.6","Sqft: 3940.3797<br />Price:  996543.1","Sqft: 3987.4684<br />Price: 1007824.6","Sqft: 4034.5570<br />Price: 1019106.0","Sqft: 4081.6456<br />Price: 1030387.5","Sqft: 4128.7342<br />Price: 1041668.9","Sqft: 4175.8228<br />Price: 1052950.4","Sqft: 4222.9114<br />Price: 1064231.9","Sqft: 4270.0000<br />Price: 1075513.3"],"type":"scatter","mode":"lines","name":"fitted values","line":{"width":3.7795275590551185,"color":"rgba(51,102,255,1)","dash":"solid"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":30.611872146118724,"r":7.3059360730593621,"b":44.56621004566211,"l":66.484018264840202},"plot_bgcolor":"rgba(235,235,235,1)","paper_bgcolor":"rgba(255,255,255,1)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[364,4456],"tickmode":"array","ticktext":["500","1,000","1,500","2,000","2,500","3,000","3,500","4,000"],"tickvals":[500,1000,1500,2000,2500,3000,3500,4000],"categoryorder":"array","categoryarray":["500","1,000","1,500","2,000","2,500","3,000","3,500","4,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Sqft","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[48450,1820550],"tickmode":"array","ticktext":["100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"tickvals":[100000,200000,300000,400000,499999.99999999994,600000,700000,800000,900000],"categoryorder":"array","categoryarray":["100,000","200,000","300,000","400,000","500,000","600,000","700,000","800,000","900,000"],"nticks":null,"ticks":"outside","tickcolor":"rgba(51,51,51,1)","ticklen":3.6529680365296811,"tickwidth":0.66417600664176002,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(255,255,255,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Price","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","layer":"below","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":"rgba(255,255,255,1)","bordercolor":"transparent","borderwidth":1.8897637795275593,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"67a47dfe78fa":{"x":{},"y":{},"type":"scatter"},"67a43aa7a31":{"yintercept":{}},"67a41895650":{"xintercept":{}},"67a429b4cb5":{"x":{},"y":{}}},"cur_data":"67a47dfe78fa","visdat":{"67a47dfe78fa":["function (y) ","x"],"67a43aa7a31":["function (y) ","x"],"67a41895650":["function (y) ","x"],"67a429b4cb5":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="an-interactive-3d-game-that-explains-it-all" class="slide level2">
+<h2>An Interactive 3D Game That Explains it All</h2>
+<p><a href="https://horizon.meta.com/world/647544861765620/?locale=en_US" target="_blank">https://horizon.meta.com/world/647544861765620/?locale=en_US</a></p>
+</section>
+<section id="from-unfitted-to-fitted-model" class="slide level2">
+<h2>From Unfitted to Fitted Model</h2>
+<p>How does the Unfitted Model Looks Like?</p>
+<p><span class="math display">\[
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+\]</span></p>
+<p>Fitting the Model with lm()</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>ModelOLS<span class="ot">=</span><span class="fu">lm</span>(Price<span class="sc">~</span>Sqft, <span class="at">data=</span>Data100Houses)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="unfitted-model-vs-fitted-workflow-model" class="slide level2 smaller">
+<h2>Unfitted Model vs Fitted Workflow Model</h2>
+<p>Unfitted Model: <span class="math display">\[
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+\]</span></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">print</span>(ModelOLS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = Price ~ Sqft, data = Data100Houses)
+
+Coefficients:
+(Intercept)         Sqft  
+    52509.1        239.6  </code></pre>
+</div>
+</div>
+<p>Fitted Model: <span class="math display">\[
+\underbrace{\widehat{Price_i}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft_i}_x + \underbrace{52509}_b
+\]</span></p>
+</section>
+<section id="interpretation-of-regression-coefficients" class="slide level2">
+<h2>Interpretation of Regression Coefficients</h2>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  term        estimate std.error statistic  p.value
+  &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+1 (Intercept)   52509.   64183.      0.818 4.15e- 1
+2 Sqft            240.      30.6     7.84  5.67e-12</code></pre>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{align}
+\widehat{Price}&amp;=240 \cdot Sqft +  52509\\
+(+240)&amp;=240\cdot (+1) +  (+0)\\
+(+480)&amp;=240\cdot (+2) +  (+0)\\
+(+720)&amp;=240\cdot (+3) +  (+0)
+\end{align}
+\]</span> For each extra <span class="math inline">\(Sqft\)</span> the predicted price increases by $240.</p>
+<p>Do not interpret <span class="math inline">\(b\)</span> as it makes no sence in most cases!!!</p>
+</section>
+<section id="run-your-own-simple-regression-to-estimate-house-price" class="slide level2">
+<h2>Run Your Own Simple Regression to Estimate House Price</h2>
+<div class="cell">
+<div>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic2V0LnNlZWQoNzc3MSlcbkRhdGExMDBIb3VzZXM9aW1wb3J0KFwiRGF0YS9EYXRhSG91c2VzLmNzdlwiKXw+IFxuICAgICAgICAgICBjbGVhbl9uYW1lcyhcInVwcGVyX2NhbWVsXCIpIHw+IFxuICAgICAgICAgICBzZWxlY3QoUHJpY2UsQmVkcm9vbXMsQmF0aHJvb21zLFNxZnQ9U3FmdExpdmluZyxcbiAgICAgICAgICAgICAgICAgIFNxZnRMb3QsIEZsb29ycywgVmlldywgQ29uZGl0aW9uKSB8PiAgICAgXG4gICAgICAgICAgICAgICAgICBzYW1wbGVfbigxMDApXG5oZWFkKERhdGExMDBIb3VzZXMpXG5cbk1vZGVsTE1FeGVyYz1sbShQcmljZX5TcWZ0LCBkYXRhPURhdGExMDBIb3VzZXMpXG5wcmludChNb2RlbExNRXhlcmMpXG5cbmdncGxvdChhZXMoeD1TcWZ0LCB5PVByaWNlKSwgZGF0YT1EYXRhMTAwSG91c2VzKStcbiAgICAgICBnZW9tX3BvaW50KGNvbG9yPVwicmVkXCIpK1xuICAgICAgIGdlb21fc21vb3RoKG1ldGhvZD1cImxtXCIsIHNlPUZBTFNFKStcbiAgICAgICBnZW9tX3ZsaW5lKHhpbnRlcmNlcHQgPSBtZWFuKERhdGExMDBIb3VzZXMkU3FmdCkpK1xuICAgICAgIGdlb21faGxpbmUoeWludGVyY2VwdCA9IG1lYW4oRGF0YTEwMEhvdXNlcyRQcmljZSkpIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="how-are-coefficients-calcualted-in-r" class="slide level2 smaller">
+<h2>How Are Coefficients Calcualted in R</h2>
+<div class="columns">
+<div class="column" style="width:60%;">
+<p><strong>The Data Table</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>DataMockup<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds"</span>)</span>
+<span id="cb14-2"><a href=""></a><span class="fu">kbl</span>(DataMockup <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">i=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">|&gt;</span> <span class="fu">select</span>(i,<span class="fu">everything</span>()), </span>
+<span id="cb14-3"><a href=""></a>    <span class="at">caption=</span><span class="st">"Mockup Training Dataset"</span>)<span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href=""></a>  <span class="fu">add_header_above</span>(<span class="fu">c</span>(<span class="st">" "</span>, <span class="st">"y"</span>, <span class="st">"x"</span>), <span class="at">escape=</span>F) <span class="sc">|&gt;</span> </span>
+<span id="cb14-5"><a href=""></a>  <span class="fu">kable_styling</span>(<span class="at">bootstrap_options=</span><span class="fu">c</span>(<span class="st">"striped"</span>,<span class="st">"hover"</span>), <span class="at">full_width =</span> F, <span class="at">position=</span><span class="st">"center"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Mockup Training Dataset</caption>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+y
+</div></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+x
+</div></th>
+</tr>
+<tr class="even">
+<th style="text-align: right;" data-quarto-table-cell-role="th">i</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StudyTime</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">7</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">4</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div><div class="column" style="width:40%;">
+<p><strong>The Regression:</strong></p>
+<p><span class="math display">\[
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span></p>
+<p><span class="math display">\[
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+\]</span></p>
+<p><strong>The Goal</strong></p>
+<p>Find values for <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> that minimize the prediction errors <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
+</div></div>
+</section>
+<section id="how-are-coefficients-calcualted-in-r-1" class="slide level2 smaller">
+<h2>How Are Coefficients Calcualted in R</h2>
+<div class="columns">
+<div class="column" style="width:40%;">
+<p><strong>The Regression:</strong></p>
+<p><span class="math display">\[
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\]</span> <span class="math display">\[
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{2}
+\]</span></p>
+<p><strong>The Goal</strong></p>
+<p>Find values for <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> that minimize the individual (squared) prediction errors: <span class="math display">\[(\widehat{y}_{i}-y_i)^2\]</span> <span class="math display">\[(\widehat{Grade}_{i}-Grade_i)^2\]</span></p>
+</div><div class="column" style="width:60%;">
+<p><strong>The Data Diagram</strong></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a>Model123<span class="ot">=</span><span class="fu">lm</span>(Grade<span class="sc">~</span>StudyTime, <span class="at">data=</span>DataMockup)</span>
+<span id="cb15-2"><a href=""></a>PredGrade<span class="ot">=</span><span class="fu">predict</span>(Model123, DataMockup)</span>
+<span id="cb15-3"><a href=""></a><span class="fu">ggplot</span>(DataMockup, <span class="fu">aes</span>(<span class="at">x=</span>StudyTime,<span class="at">y=</span>Grade)) <span class="sc">+</span></span>
+<span id="cb15-4"><a href=""></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y=</span>PredGrade), <span class="at">color=</span><span class="st">"red"</span>, <span class="at">size=</span><span class="fl">2.7</span>)<span class="sc">+</span></span>
+<span id="cb15-5"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">size=</span><span class="dv">5</span>, <span class="at">color=</span><span class="st">"blue"</span>)<span class="sc">+</span></span>
+<span id="cb15-6"><a href=""></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">y=</span>PredGrade), <span class="at">color=</span><span class="st">"black"</span>, <span class="at">size=</span><span class="fl">2.7</span>)<span class="sc">+</span></span>
+<span id="cb15-7"><a href=""></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> StudyTime, <span class="at">y =</span> PredGrade,</span>
+<span id="cb15-8"><a href=""></a>                   <span class="at">xend =</span> StudyTime, <span class="at">yend =</span> Grade),<span class="at">size=</span><span class="fl">1.2</span>)<span class="sc">+</span></span>
+<span id="cb15-9"><a href=""></a>  <span class="fu">scale_x_continuous</span>(<span class="st">"Study Time"</span>, <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb15-10"><a href=""></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">65</span>,<span class="dv">110</span>), <span class="at">breaks=</span><span class="fu">seq</span>(<span class="dv">60</span>,<span class="dv">100</span>,<span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="LinRegrSimple_files/figure-revealjs/unnamed-chunk-15-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>Beta1<span class="ot">=</span><span class="dv">4</span></span>
+<span id="cb16-2"><a href=""></a>Beta2<span class="ot">=</span><span class="dv">64</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</div></div>
+</section>
+<section id="how-to-measure-prediction-quality-with-the-mean-squared-error-mse" class="slide level2 smaller">
+<h2>How to Measure Prediction Quality with the Mean Squared Error (MSE)</h2>
+<span class="math display">\[\begin{eqnarray*}
+MSE &amp; = &amp; \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+&amp; \Longleftrightarrow&amp; \\
+MSE &amp; =  &amp; \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}\]</span>
+<p><strong>Note, when the data are given (i.e.,</strong> <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span> are given), the <span class="math inline">\(MSE\)</span> depends only on the choice of <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> »</p>
+</section>
+<section id="how-to-measure-prediction-quality-with-the-mse" class="slide level2 smaller scrollable">
+<h2>How to Measure Prediction Quality with the MSE</h2>
+<span class="math display">\[\begin{eqnarray}
+MSE &amp; = &amp; \frac{(\beta_1x_{1}+\beta_2-y_1)^2
+       +(\beta_1x_{2}+\beta_2-y_2)^2 +  \cdots+
+       (\beta_1x_{5}+\beta_2-y_{5})^2}{5} \nonumber \\
+       &amp; \Longleftrightarrow&amp; \nonumber \\
+MSE &amp; = &amp; \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_2}^{\mbox{Prediction $1$}}-65}_{\mbox{Error $1$}})^2
+       +(\underbrace{\overbrace{\beta_1\cdot 3+\beta_2}^{\mbox{Prediction $2$}}-82}_{\mbox{Error $2$}})^2\right.\nonumber \\
+   &amp;   &amp;\nonumber \\
+       &amp;&amp; +
+    (\underbrace{\overbrace{\beta_1\cdot 7+\beta_2}^{\mbox{Prediction $3$}}-93}_{\mbox{Error $3$}})^2
++(\underbrace{\overbrace{\beta_1\cdot 8+\beta_2}^{\mbox{Prediction $4$}}-93}_{\mbox{Error $4$}})^2\nonumber \\
+   &amp;   &amp;\nonumber \\
+       &amp;&amp; +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_2}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
+\end{eqnarray}\]</span>
+</section>
+<section id="method-2-calculate-optimal-parameters-only-for-ols" class="slide level2 smaller">
+<h2>Method 2: Calculate Optimal Parameters (only for OLS!)</h2>
+<span class="math display">\[\begin{eqnarray*}
+\beta_{1,opt}&amp;=&amp; \frac
+{N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i}
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
+&amp;&amp; \nonumber \\
+\beta_{2,opt.}&amp;=&amp; \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
+\end{eqnarray*}\]</span>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Mockup Training Dataset</caption>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th" style="text-align: right; empty-cells: hide; border-bottom: hidden;"></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+y
+</div></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+x
+</div></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+y x
+</div></th>
+<th data-quarto-table-cell-role="th" style="text-align: center; border-bottom: hidden; padding-bottom: 0; padding-left: 3px; padding-right: 3px;"><div style="border-bottom: 1px solid #ddd; padding-bottom: 5px; ">
+x x
+</div></th>
+</tr>
+<tr class="even">
+<th style="text-align: right;" data-quarto-table-cell-role="th">i</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StudyTime</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GradeXStudyTime</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StudyTimeSquared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">130</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">82</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">246</td>
+<td style="text-align: right;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">651</td>
+<td style="text-align: right;">49</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">93</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">744</td>
+<td style="text-align: right;">64</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">83</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">332</td>
+<td style="text-align: right;">16</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Column Sums</caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;" data-quarto-table-cell-role="th">Grade</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StudyTime</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GradeXStudyTime</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">StudyTimeSquared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">416</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">2103</td>
+<td style="text-align: right;">142</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="an-interactive-graph-that-explains-it-all" class="slide level2">
+<h2>An Interactive Graph That Explains it All</h2>
+<p><a href="https://econ.lange-analytics.com/calcat/linregrmeans" target="_blank">https://econ.lange-analytics.com/calcat/linregrmeans</a></p>
+</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p><a href="https://ai.lange-analytics.com/htmlbook/RAndRStudio.html">Textbook </a></p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="LinRegrSimple_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="LinRegrSimple_files/libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': false,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: false,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../../..";
+    window._ojs.paths.runtimeToRoot = "../../../..";
+    window._ojs.paths.docToRoot = "..";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
+    </script>
+    
+
+    <script>
+
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+
+      // slide changes (different for each slide format).
+
+      (function () {
+
+        // dispatch for htmlwidgets
+
+        function fireSlideEnter() {
+
+          const event = window.document.createEvent("Event");
+
+          event.initEvent("slideenter", true, true);
+
+          window.document.dispatchEvent(event);
+
+        }
+
+    
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+
+          fireSlideEnter();
+
+    
+
+          // dispatch for shiny
+
+          if (window.jQuery) {
+
+            if (previousSlide) {
+
+              window.jQuery(previousSlide).trigger("hidden");
+
+            }
+
+            if (currentSlide) {
+
+              window.jQuery(currentSlide).trigger("shown");
+
+            }
+
+          }
+
+        }
+
+    
+
+        // hookup for slidy
+
+        if (window.w3c_slidy) {
+
+          window.w3c_slidy.add_observer(function (slide_num) {
+
+            // slide_num starts at position 1
+
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+
+          });
+
+        }
+
+    
+
+      })();
+
+    </script>
+
+    
+
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+            const codeEl = trigger.previousElementSibling.cloneNode(true);
+            for (const childEl of codeEl.children) {
+              if (isCodeAnnotation(childEl)) {
+                childEl.remove();
+              }
+            }
+            return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
