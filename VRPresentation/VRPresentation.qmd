@@ -15,52 +15,95 @@ format:
 footer: "More Info: [https://vr.lange-analytics.com/hawkes.html](https://vr.lange-analytics.com/hawkes.html){target=_blank}"
 ---
 
-## Goal of the Presentation
+## Welcome
 
-- Support instructors who want to use VR in their class
-  - the use of VR is like a field trip. It provides immersiv experiences that would not be possible otherwise
-  - like a field trip it requires preparation
-  - goto [https://vr.lange-analytics.com/hawkes.html](https://vr.lange-analytics.com/hawkes.html){target="_blank} to connect and learn more about VR
+> Using VR in education is like a field trip. <br><br> Field trips and educational VR experiences provide immerse and interactive experiences that would not be possible otherwise.<br><br> Like a field trip educational VR experiences requires preparation
 
+## Goal of the Presentation {.smaller}
 
+**Support instructors who plan using VR in their courses:**
 
+-   Buying VR headsets
+-   Student preparations
+-   VR lab vs. online teaching
+-   Stay updated: [https://vr.lange-analytics.com/hawkes.html](https://vr.lange-analytics.com/hawkes.html){target="_blank"}
 
-## Overview
+**Demo two VR apps for statistics education:**
 
--   Status Quo of VR
-    -   VR cannot be used (yet) to teach a complete course
-    -   VR is more like a field trip. It provides immersive experiences that would not be possible otherwise, such as 3D interactive diagrams
--   How to start with Virtual Reality in your department
-    -   Buying VR headsets
-    -   VR lab vs. online teaching
-    -   Student preparations
--   Demo of VR apps in statistics
-    -   Multi player Simple Regression with breakout rooms
-    -   Standalone app Displaying datasets and adjusting a regression plane with the Diagram Exhibition app
+-   **Cloud-based:** Multi-player regression app (world) that supports a virtual classroom and also breakout rooms for groups of four.
+-   **Standalone:** Exhibition style app featuring an interactive diagram in an exhibition hall. Various dataset collections can be loaded into the diagram.
 
-## VR Headset
+## Cloud Based vs. Standalone (Three Learning Modes)
 
--   Most common Meta-Quest 3 (128GB/512GB) \$299 and \$499
+![](LearningModes.png){fig-align="center"}
 
--   8 -- 15 VR headsets plus 1 instructor headsets are needed
+## Demo: Simple Regression World
 
-    -   for practical (not technical) reasons it is difficult to manage more than 15 students at a time in a classroom setting without IT or teaching assistant support
-    -   in one classroom meeting VR experiences can be delivered in two batches to half of a course at a time which allows class sizes between 16 and 30 students to be covered in one event
-    -   if VR experience is delivered online rather than in a classroom the number of particiapnts is only limited by the number fo avaibale VR headsets
+Video or Video Image goes here
 
--   VR investment:
+[Browser-based Simple Regression World](https://horizon.meta.com/world/647544861765620/?locale=en_US){target="_blank"}
 
-    -   for 8+1 VR headset: \$2,700 -- \$4,500 (128GB/512GB)
-    -   for 30+1 VR headset: \$9,300 -- \$15,500 (128GB/512GB)
+## Buying a VR Headset
 
-## VR Presentation & VR Larning Modes
+-   **Apple Vision Pro:** \$3499 -- \$3899 (256GB -- 1TB)
 
-![](images/clipboard-3263366234.png)
+-   **Galaxy XR (released 10/21/25):** \$1799 (512GB)
 
-## Additional Learning Modes
+- <strong><span class="fragment highlight-red">Meta-Quest 3/3S:</span></strong> \$299 and \$499 (128GB/512GB)
 
-Both standalone app and horizon world
+## VR for Education: Investment
 
--   Self-Learner (asynchronous use of headsets by students)
--   Instructor only (instructor shares their View synchronous (in-class or on Zoom))
--   Instructor/Students Mode
+**Meta-Quest 3/3S \$299/\$499 (128GB/512GB)**
+
+8 -- 16 VR headsets plus 1 instructor headsets are needed:
+
+-   for practical reasons, it is difficult to manage more than 16 students at a time in a classroom (take a TA if possible)
+-   a VR experience  can be delivered in two batches (allows class sizes between 16 and 32 students)
+
+**Total Cost** 8+1 headsets (with GB128/GB256): **\$2,691 -- \$4,491**
+
+**Total Cost** 16+1 headsets (with GB128/GB256): **\$5,083 -- \$8,483**
+
+## Student Preparation Check-List 
+
+::: {.incremental}
+1. Ask about **pre-existing** conditions like epilepsy
+2. Inform students about **possible vertigo**  and to stop early.
+3. The **browser version provides** a good work-around in case of 1. and 2.
+3. Deliver the experience in **sitting not standing mode**. 
+4. Run headsets in **tunnel-mode**.
+5. Introduce how to use  controllers to move around and to select items. 
+6. Explain how to enter the world or to start the app.
+::: 
+
+## Classroom vs. VR-Lab vs. Online
+
+**Cloud based *Horizon World* requires high WiFi bandwidth**
+
+**Work-Arounds:**
+  - VR-Lab provides high bandwidth
+  - Work with groups of about 8 students 
+  - All or some students use their cell phone as a WiFi hotspot
+  - Send some students (together with a TA) to another WiFi access point location
+  
+**Alternative: Standalone Apps have no or low requirements:**
+  
+## Cloud Based vs. Standalone (Three Learning Modes)
+
+![](LearningModes.png){fig-align="center"}
+
+## Demo Standalone App: Diagram Exhibition
+
+:::: {.columns}
+
+::: {.column width="50%"}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/lXhbzX1ryN0?si=Bxhc6VVUNhKQqong" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+**Full Length Video**
+:::
+
+::: {.column width="50%"}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/TkwgJcGWLdE?si=u-LlFNwHBkF3QEqz" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+**Trailer**
+:::
+
+::::
