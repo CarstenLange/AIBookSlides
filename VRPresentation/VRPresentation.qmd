@@ -92,6 +92,33 @@ Video or Video Image goes here
 
 ![](LearningModes.png){fig-align="center"}
 
+## Pre-Loaded Collection of Datasets
+
+**Various collection of datasets** are available. Each has two codes: even for instructors and odd codes for students.
+
+. . .
+
+The **instructor can change the datasets** in a collection. Consequently, **students' datasets change simultanously** in their VR headset.
+
+## Dataset Collections Currently Avaiable 
+
+Even codes are for instructors, odd codes are for students
+
+::: {.incremental}
+- **Multivariate Regression (uncor. predictors):** `590001 & 590002`<br>
+
+- **The Problem with Mulicollinearity:** `coming soon`<br>
+
+- **Random Forest Prediction:** `590003 & 590004`<br>
+
+- **Degrees of Freedom in Regression:** `590005 & 590006`<br>
+
+- **Your dataset collection goes here:** `e.g., 592301 & 592302`
+:::
+
+
+
+
 ## Demo Standalone App: Diagram Exhibition
 
 :::: {.columns}
