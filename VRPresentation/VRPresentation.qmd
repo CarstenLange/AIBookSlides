@@ -12,7 +12,7 @@ format:
     scrollable: true
     echo: true
     incremental: false
-footer: "More Info: [https://VR.Lange-Analytics.com/Hawkes.html](https://VR.Lange-Analytics.com/Hawkes.html){target=_blank}"
+footer: "More Info: [https://vr.lange-analytics.com/hawkes.html](https://vr.lange-analytics.com/hawkes.html){target=_blank}"
 ---
 
 ## Goal of the Presentation
@@ -20,7 +20,7 @@ footer: "More Info: [https://VR.Lange-Analytics.com/Hawkes.html](https://VR.Lang
 - Support instructors who want to use VR in their class
   - the use of VR is like a field trip. It provides immersiv experiences that would not be possible otherwise
   - like a field trip it requires preparation
-  - goto [https://VR.Lange-Analytics.com/Hawkes.html](https://VR.Lange-Analytics.com/Hawkes.html){target="_blank} to connect and learn more about VR
+  - goto [https://vr.lange-analytics.com/hawkes.html](https://vr.lange-analytics.com/hawkes.html){target="_blank} to connect and learn more about VR
 
 
 
