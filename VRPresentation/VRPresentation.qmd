@@ -1,6 +1,6 @@
 ---
 title: "Fall 2025 Innovative Educators Summit"
-subtitle: "Navigating Virtual Reality in Higher Ed: Diagram Exhibition & Simple Regression for Active Learning with VR Headsets"
+subtitle: "Navigating Virtual Reality in Higher Education"
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
@@ -25,7 +25,7 @@ footer: "More Info: [https://vr.lange-analytics.com/hawkes.html](https://vr.lang
 
 -   Buying VR headsets
 -   Student preparations
--   VR lab vs. online teaching
+-   Classroom vs. VR-lab vs. online teaching
 -   Stay updated: [https://vr.lange-analytics.com/hawkes.html](https://vr.lange-analytics.com/hawkes.html){target="_blank"}
 
 **Demo two VR apps for statistics education:**
@@ -37,76 +37,121 @@ footer: "More Info: [https://vr.lange-analytics.com/hawkes.html](https://vr.lang
 
 ![](LearningModes.png){fig-align="center"}
 
-## Demo: Simple Regression World
+## Instructor View from VR Headset: Simple Regression World
+
+**Real Estate Dataset to Predict House Prices:**<br><br>
+
+. . .
+
+**Lecture Hall Setting:**
+
+$$\widehat{Price}=\beta_1 Quality + \beta_0$$
+
+. . .
+
+**Breakout Rooms (max. 4 students):**
+
+$$\widehat{Price}=\beta_1 Sqft + \beta_0$$
+
+## Instructor View from VR Headset: Simple Regression World
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KC1lppt3REc?si=Xl2tpfTychTP48Ei" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 (Sound will be added after the conference)
 
+## Instructor View from Browser Version 
+### Assessibility Option: Simple Regression World . . .
+
+- Students who are not able to use a VR headset can use the browser version
+
+- instructors/students who currently do not have access to a VR headset can also use this alternative
+
+- fully functional but no immersive 3D experience 
+
 [Browser-based Simple Regression World](https://horizon.meta.com/world/647544861765620/?locale=en_US){target="_blank"}
+
+# How to Start Using VR for Education?
 
 ## Buying a VR Headset
 
 -   **Apple Vision Pro:** \$3499 -- \$3899 (256GB -- 1TB)
 
+::: {.incremental}
 -   **Galaxy XR (released 10/21/25):** \$1799 (512GB)
 
 - <strong><span class="fragment highlight-red">Meta-Quest 3/3S:</span></strong> \$299 and \$499 (128GB/512GB)
 
+:::
+
 ## VR for Education: Investment
 
-**Meta-Quest 3/3S \$299/\$499 (128GB/512GB)**
+<span class="highlight-red">**Meta-Quest 3/3S \$299/\$499 (128GB/512GB)**</span>
 
 8 -- 16 VR headsets plus 1 instructor headsets are needed:
 
+::: {.incremental}
 -   for practical reasons, it is difficult to manage more than 16 students at a time in a classroom (take a TA if possible)
 -   a VR experience  can be delivered in two batches (allows class sizes between 16 and 32 students)
+:::
+
+. . .
 
 **Total Cost** 8+1 headsets (with GB128/GB256): **\$2,691 -- \$4,491**
+
+. . .
 
 **Total Cost** 16+1 headsets (with GB128/GB256): **\$5,083 -- \$8,483**
 
 ## Student Preparation Check-List 
 
 ::: {.incremental}
-1. Ask about **pre-existing** conditions like epilepsy
-2. Inform students about **possible vertigo**  and to stop early.
-3. The **browser version provides** a good work-around in case of 1. and 2.
-3. Deliver the experience in **sitting not standing mode**. 
-4. Run headsets in **tunnel-mode**.
-5. Introduce how to use  controllers to move around and to select items. 
-6. Explain how to enter the world or to start the app.
+1. Ask about **pre-existing conditions** like epilepsy
+2. Inform students about **possible vertigo**  and to stop early
+3. The **browser version provides** a good work-around for students who cannot use a VR headset
+3. Deliver the experience in **sitting not standing mode** 
+4. Run headsets in **tunnel-mode**
+5. Introduce how to use  controllers to move around and to select items
+6. Explain how to enter the world or to start the app
 ::: 
 
 ## Classroom vs. VR-Lab vs. Online
 
 **Cloud based *Horizon World* requires high WiFi bandwidth**
 
+. . .
+
 **Work-Arounds:**
+
+
   - VR-Lab provides high bandwidth
-  - Work with groups of about 8 students 
+
+::: {.incremental}
+  - Work with groups of about 8 students
   - All or some students use their cell phone as a WiFi hotspot
   - Send some students (together with a TA) to another WiFi access point location
+:::
+
+. . .
   
-**Alternative: Standalone Apps have no or low requirements:**
+**Alternative: Standalone Apps have no or low WiFi requirements**
   
 ## Cloud Based vs. Standalone (Three Learning Modes)
 
 ![](LearningModes.png){fig-align="center"}
 
-## Pre-Loaded Collection of Datasets
+## Diagram Exhibition App: Pre-Loaded Collection of Datasets
 
 **Various collection of datasets** are available. Each has two codes: even for instructors and odd codes for students.
 
 . . .
 
-The **instructor can change the datasets** in a collection. Consequently, **students' datasets change simultanously** in their VR headset.
+The **instructor can change the datasets** in a collection.<br> Simultaneously, **students' datasets change** in their VR headset.
 
 ## Dataset Collections Currently Avaiable 
 
 Even codes are for instructors, odd codes are for students
 
 ::: {.incremental}
-- **Multivariate Regression (uncor. predictors):** `590001 & 590002`<br>
+- **Multivar. Regression (uncorrel. predictors):** `590001 & 590002`<br>
 
 - **The Problem with Mulicollinearity:** `coming soon`<br>
 
@@ -117,7 +162,18 @@ Even codes are for instructors, odd codes are for students
 - **Your dataset collection goes here:** `e.g., 592301 & 592302`
 :::
 
+## Dataset Collections Currently Avaiable 
 
+Even codes are for instructors, odd codes are for students
+
+
+- **Multivar. Regression (uncorrel. predictors):** `590001 & 590002`<br>
+
+. . .
+
+**Real Estate Dataset Collection:**
+
+$$\widehat{Price}=\beta_1 Sqft +\beta_2 Cond+ \beta_0$$
 
 
 ## Demo Standalone App: Diagram Exhibition
@@ -135,3 +191,5 @@ Even codes are for instructors, odd codes are for students
 :::
 
 ::::
+
+# Your Questions Please
