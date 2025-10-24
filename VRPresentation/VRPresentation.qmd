@@ -17,7 +17,7 @@ footer: "More Info: [https://vr.lange-analytics.com/hawkes.html](https://vr.lang
 
 ## Welcome
 
-> Using VR in education is like a field trip. <br><br> Field trips and educational VR experiences provide immerse and interactive experiences that would not be possible otherwise.<br><br> Like a field trip educational VR experiences requires preparation
+> Using VR in education is like a field trip. <br><br> Field trips and educational VR experiences provide immerse and interactive experiences that would not be possible otherwise.<br><br> Like a field trip an educational VR experience requires preparation
 
 ## Goal of the Presentation {.smaller}
 
@@ -59,13 +59,15 @@ $$\widehat{Price}=\beta_1 Sqft + \beta_0$$
 (Sound will be added after the conference)
 
 ## Instructor View from Browser Version 
-### Assessibility Option: Simple Regression World . . .
+### Assessibility Option: Simple Regression World
 
-- Students who are not able to use a VR headset can use the browser version
+**Browser App is Alternative for:**
 
-- instructors/students who currently do not have access to a VR headset can also use this alternative
+- Students who are not able to use a VR headset
 
-- fully functional but no immersive 3D experience 
+- Instructors & students, who currently do not have access to a VR headset
+
+The Browser App is **fully functional**, but it does not provide an immersive experience 
 
 [Browser-based Simple Regression World](https://horizon.meta.com/world/647544861765620/?locale=en_US){target="_blank"}
 
@@ -128,6 +130,7 @@ $$\widehat{Price}=\beta_1 Sqft + \beta_0$$
   - Work with groups of about 8 students
   - All or some students use their cell phone as a WiFi hotspot
   - Send some students (together with a TA) to another WiFi access point location
+  - Teach the VR experience online
 :::
 
 . . .
