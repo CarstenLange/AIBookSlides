@@ -33,7 +33,7 @@ footer: "More Info: [https://vr.lange-analytics.com/hawkes.html](https://vr.lang
 -   **Cloud-based:** Multi-player regression app (world) that supports a virtual classroom and also breakout rooms for groups of four.
 -   **Standalone:** Exhibition style app featuring an interactive diagram in an exhibition hall. Various dataset collections can be loaded into the diagram.
 
-## Cloud Based vs. Standalone (Three Learning Modes)
+## Cloud Based vs. Standalone (Three Learning Modes) ::
 
 ![](LearningModes.png){fig-align="center"}
 
@@ -56,10 +56,10 @@ $$\widehat{Price}=\beta_1 Sqft + \beta_0$$
 ## Instructor View from VR Headset: Simple Regression World
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/KC1lppt3REc?si=Xl2tpfTychTP48Ei" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-(Sound will be added after the conference)
+(Sound will be added after the conference) :: ::
 
 ## Instructor View from Browser Version 
-### Assessibility Option: Simple Regression World
+### Assessibility Option: Simple Regression World :: ::
 
 **Browser App is Alternative for:**
 
@@ -73,7 +73,7 @@ The Browser App is **fully functional**, but it does not provide an immersive ex
 
 # How to Start Using VR for Education?
 
-## Buying a VR Headset
+## Buying a VR Headset * ::
 
 -   **Apple Vision Pro:** \$3499 -- \$3899 (256GB -- 1TB)
 
@@ -137,7 +137,7 @@ The Browser App is **fully functional**, but it does not provide an immersive ex
   
 **Alternative: Standalone Apps have no or low WiFi requirements**
   
-## Cloud Based vs. Standalone (Three Learning Modes)
+## Cloud Based vs. Standalone (Three Learning Modes) * * * :
 
 ![](LearningModes.png){fig-align="center"}
 
@@ -179,7 +179,7 @@ Even codes are for instructors, odd codes are for students
 $$\widehat{Price}=\beta_1 Sqft +\beta_2 Cond+ \beta_0$$
 
 
-## Demo Standalone App: Diagram Exhibition
+## Demo Standalone App: Diagram Exhibition ** **
 
 :::: {.columns}
 
