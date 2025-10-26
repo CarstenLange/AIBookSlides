@@ -1,0 +1,498 @@
+---
+title: "Digital Humanities Consortium "
+subtitle: "Understand Generative AI"
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "California State Polytechnic University, Pomona"
+
+format: 
+  revealjs:
+    code-fold: true
+    scrollable: true
+    echo: true
+    incremental: false
+    footer: ""
+---
+
+## Two Parts of the Presentation
+
+-   How does Generative AI (*genAI*) uses Large Language Model (*LLMs*) to create content?
+
+-   How can we use *genAI* in an effective way?
+
+## Why is it important to know how LLMs work???
+
+-   For effective use, we need to know the basics of a technology
+
+-   To identify possible dangers, we need to know the basics of a technology
+
+
+
+## Stylized Example: A TV time traveled to the year 1885 {.smaller}
+
+::: {.column width="40%"}
+**Perception**
+
+-   Excitement
+
+-   Little artificial people inside the box are staging a play
+:::
+
+::: {.column width="58%"}
+![Generated with ChatGPT](images/WesternFlat2D.png){fig-alt="A TV displaying a western"}
+:::
+
+
+
+## Stylized Example: A TV time traveled to the year 1885 {.smaller}
+
+::: {.column width="40%"}
+**Dangers without Technology Background**
+
+-   What if something gets out of the TV box
+
+-   ~~People watch to much TV and do not socialize enough~~
+:::
+
+::: {.column width="50%"}
+![Generated with ChatGPT](images/WesternFlyingBullets.png){fig-alt="A TV displaying a western with bullets flying out of it"}
+:::
+
+## Stylized Example: A TV time traveled to the year 1885 {.smaller}
+
+::: {.column width="42%"}
+**Dangers with Technology Background**
+
+TVs are just an arrangement of millions of colored pixels and our eye/brain processes them to a picture
+
+-   ~~What if something gets out of the TV box~~
+
+-   **People watch to much TV and do not socialize enough**
+:::
+
+::: {.column width="55%"}
+![Generated with ChatGPT](images/WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
+:::
+
+## Learning Outcomes {.scrollable .smaller}
+
+-   Understanding the Role of *Large Language Models* (*genAI*) in the *AI* Landscape
+
+-   Why *Deep Learning* models have so many parameters
+
+-   *Tokenization* of the English language
+
+-   *One-Hot Encoding* of the English language
+
+-   How an *LLM* guesses the next word?
+
+-   How words can be embedded as vectors to code similar meanings (*Input Embedding*)<br> `Queen`, `King`, `Male`, `Female` but `Sand`
+
+-   How the words position in a prompt can be coded (*Positional Encoding*)<br> `Dog bites child` but `Child bites dog`
+
+-   How attention of words in a prompt can be encoded (*Attention Mechanism*)<br> "The cat sits on the `mat` because `it` is soft"
+
+-   fine tuning *LLMs* to avoid discrimination, derogatory language, and racism
+
+-   fine tuning to specialize *LLM*
+
+-   Applications of *genAI*
+
+    -   Gift Finder
+    -   Human writer
+    -   Course Assistant in Canvas for courses you teach
+    -   Googles Cheating Assistant for students
+
+## Large Language Models and genAI in Context {.smaller}
+
+![Source: Medium: https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1934318519.png) 
+
+## History
+
+**2003:** Bengio, Y., Neural Probabilistic Language Models (very basic)
+
+**2014:** Sutskever, I.: Recurrent Neural Networks - LSTM (mainly used for translation; slow and not easy to parallelize)
+
+**2014:** Bahdanu, D.: Still Recurrent Neural Networks but with Attention - LSTM (still slow and not easy to parallelize, but more powerful)
+
+**2017:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)
+
+[Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E]{style="font-size:70%"}
+
+## Computer Cannot Process Words Only Numbers
+
+::: {.column width="30%"}
+**3.2\*dog-0.1\*cat=???**
+:::
+
+::: {.column width="10%"}
+.
+:::
+
+::: {.column width="42%"}
+![AI Generated Cartoon](images/ComputerCantDoNumbers.png) 
+:::
+
+
+## 1963 ASCII-Code Converted Letters to Numbers {.smaller}
+
+
+::: {.column width="50%"}
+
+#### ASCII
+
+*ASCII* code was introduced in 1963 to code letters and special characters as (binary) numbers.
+
+Today we use *Unicode* which includes several fonts and emojiis but is similar to *ASCII*
+
+
+:::
+
+::: {.column width="42%"}
+![Source: Understanding the ASCII Table](images/ASCII.png){fig-alt="Source: Understanding the ASCII Table"}
+:::
+
+::: footer
+[Understanding the ASCII Table](https://linuxhint.com/understanding-ascii-table/)
+:::
+
+Note, Unicode is similar to ASCII
+
+## Problem with ASCII and Unicode
+
+-   Letters have no meaning
+-   Teaching a computer to develop meaning from a combination of letters (a.k.a. "words") is very difficult
+
+**Solution:** <br>We need to code **words** into **lists of numbers (tokens)**
+
+## Decisions to be Made
+
+-   which words are frequent enough to deserve an own token
+
+-   which sub-word are frequent enough to deserve an own token
+
+Machine learning models have been trained on that problem with Internet content:
+
+**Two sentences to be tokenized (see link in footer)**: 
+
+-   "Untrained horses eat apples, but apples do not eat untrained horses"
+
+-   "DHC is unimaginable good" (token IDs sort tokens according to their frequency in the English language)
+
+::: footer
+[OpenAI Tokenizer for GPT-4o & GPT-4o mini](https://platform.openai.com/tokenizer){target="_blank"}
+:::
+
+## We have Tokens, but how do we convert them to numbers?
+
+**<br><br>Using their ID is not a good idea!**<br><br>
+
+**Simplification:**
+
+-   each word in the English language (200,000) becomes a token <BR>
+(no sub-tokens)
+-   words are sorted alphabetically not by their ID
+
+## We have Tokens, but how do we convert them to numbers?
+
+::: {.column width="80%"}
+**One Hot Encoding**
+
+A vector (a list) with the length of the tokens for the language is created (e.g., for English, about 200,000 words/tokens)
+
+The value for all words/tokens is zero with the exception of the word/token of interest (One-Hot)
+:::
+
+::: {.column width="20%"}
+**Neural Network**
+
+![](images/clipboard-1984520822.png)
+:::
+
+## Ridiculous Simple Example - untrained (Guess the Next Word) {auto-animate="true"}
+
+![](images/clipboard-2369666718.png)
+
+## Ridiculous Simple Example - untrained (Guess the Next Word) {auto-animate="true"}
+
+![](images/clipboard-2369666718.png){width="166" height="106"}
+
+
+
+## Ridiculous Simple Example - trained (Guess the Next Word) {auto-animate="true"}
+
+![](images/clipboard-2592421233.png)
+
+## What we want from an LLM {.smaller}
+
+![](images/clipboard-340487702.png)
+
+Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}
+
+
+## Problems with the Simple Example {.smaller}
+
+::: columns
+::: {.column width="80%"}
+### Problems and Solutions
+
+
+1.  *One-Hot Encoding* is wasteful (e.g., the word "neural": A list with 200,000 numbers all 0 except the position for "neural" being 1)
+1.  One-Hot Vectors have **no semantics**. E.g., `neural` and `network` are not similary encoded.<br> **Solution to 1) and 2):** `Word Embedding`. 
+2.  The prompt has only one word. A prompt with more words needs information about the order of words.<br> **Solution:** `Positional Encoding`
+3.  When the prompt has more words, we also need **Attention.** <br>E.g.: <br> `The animal didn't cross the steet because it is too tired`<br> or <br> `The animal didn't cross the steet because it is too wide`<br> **Solution:** `Attention` (stores for each word which words from the prompt are important and which are not)
+:::
+
+::: {.column width="20%"}
+
+### Simple Model:
+
+![](images/clipboard-2592421233.png)
+:::
+:::
+
+
+
+
+## Source
+
+The following is based on:
+
+-   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br>
+
+The course is not free, but a free trial exist. The 4 hour course is **strongly recommended** to dive deeper.
+
+
+
+## Step 1: Word Embedding to Provide Sentiment
+
+`King + Female - Male = ???`
+
+. . .
+
+`King + Female - Male = Queen`
+
+. . .
+
+<small>Similar words should have similar encoding vectors:<br><br> `great` should be similar to `amazing`. The input vector for `tomato` should be similar to the one for `apple`, and the input vectors for `queen` and `king` should also be similar.</small>
+
+
+## Word Embedding into 512 Categories: Hire a Linguist to do the Word Embedding
+
+The linguist performs *Word Embedding* into 512 categories of their choice.
+
+This method is prohibitively slow but bear with me.
+
+## Hire a Linguist - Possible Word Embeddings {.smaller}
+
+Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `amazing`, `great`
+
+![](images/clipboard-1636635893.png)
+
+## Word Embedding into 512 Categories:  Use a Neural Network - Possible Word Embeddings {.smaller}
+
+Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `amazing`, `great`
+
+![](images/clipboard-3233943967.png)
+
+## Word Embedding with Bag of Words {.smaller}
+
+### (Window Size)
+
+![](images/clipboard-1212096732.png)
+
+## Word Embedding Real World Example {.smaller}
+
+#### Covid Twitter Feed
+
+<https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz>
+
+## Storing the Position of Words in the Prompt
+
+
+**Transformers** process all tokens simultaneously, thus **losing the order of the words in the prompt**, if not stored otherwise (**Positional Encoding**).
+
+
+
+## Generate Position-Aware Embedding 
+
+Tokens of a prompt without positional encoding:<br> \[bit, child, dog\]<br>
+
+Is it: "child bit dog"
+
+or
+
+is it: "dog bit child"
+
+. . .
+
+After adding positional encoding, it is clear: \[bit (2), child (3), dog (1)\]
+
+. . .
+
+Word positions are also stored in a vector (list of numbers) with the same length of the word embedding. They are then added to the embedding vector (list of numbers)
+
+::: footer
+[Details: Paleti, Nikhil Chowdary. Positional Encoding Explained: A Deep Dive into Transformer PE] (https://medium.com/thedeephub/positional-encoding-explained-a-deep-dive-into-transformer-pe-65cfe8cfe10b){target="_blank"}
+:::
+
+## Generate Position-Aware Embedding 
+### Add Posion 2 to the Embeding of `bit` {.smaller}
+
+Add a *Position-Vector* (512 x 1) to each word embedding (512 x 1).
+
+The *Position-Vector* reflects the word position of the word `bit` in the prompt<br>
+<small>(prompt size = 32,000 in GPT-4; Gemini 1.5 Pro, Google's most advanced model, has 1 million tokens)</small>
+
+![](images/clipboard-1514739384.png)
+
+
+## Step 3: Adding Attention
+
+**Example 1:**<br>The **animal** didn’t cross the street because **it** was too **tired**.<br>
+
+**Example 2:**<br>The animal didn’t cross the **street** because **it** was too **wide**.<br>
+
+. . .
+
+**Attention** identifies for each word in the prompt how relevant other words are.<br><br>
+
+. . .
+
+**Simplified:**
+
+**Example 1:** the word **it** points to **animal**.
+
+**Example 2:** the word **it** points to **steet**.
+
+
+
+
+
+##  Adding Attention to the Word `it`{.smaller}
+
+The **animal** didn’t cross the street because **it** was too **tired**.
+
+The final *Position* and *Attention-Aware* `Vector A` for the word of interest (`it`) is created as a weighted sum from all `V-Vectors` in the prompt.
+
+**The procedure described above is applied to all words in the prompt.**
+
+![](images/clipboard-3133032979.png)
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=73](https://online.fliphtml5.com/grdgl/qhfw/#p=73){target="Blank_"}</small>
+
+## Step 4: Multi Head Processing {.smaller}
+
+**Multi Head Processing:** When creating `Q`, `K` and `V` vectors, they are created with a smaller dimensionality. Here 8 vectors with dimension 64 each.
+
+This allows *Self-Attention* to use different focus for each section.
+
+![](images/clipboard-3812760553.png)
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=75](https://online.fliphtml5.com/grdgl/qhfw/#p=75){target="_Blank"}</small>
+
+## Step 4: Multi Head Processing (Visualization from Google)
+
+Use layer 1 (attention head 2 (orange))
+[https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC](https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC){target="\"Blank_"}
+
+
+
+## LLM (Fine) Tuning {.smaller}
+
+After a model is trained with *language* (i.e., the complete Internet), it needs to be *fine-tuned* to perform specific tasks:
+
+
+**Self-supervised:** Train on the desired data from the beginning (extremely expensive)
+
+
+**Reinforcement Learning from Human Feedback (RLHF):**
+
+1)  Work with labeled data from humans
+2)  Create reward model
+3)  Adjust original model
+
+::: {.callout-note title="This is the only topic we cover"}
+**Supervised Learning**
+:::
+
+## Supervised Learning {.smaller}
+
+::: {.callout-note title="This is the only topic we cover" style="background-color:#ffffff; border-left:5px solid #000000;"}
+
+**Transfer Learning:**
+
+-   Freeze all parameters except the last one or two layers (could also be different layers)
+-   retrain last one or two layers with new data
+::: 
+
+**Parameter Efficient Fine Tuning (PEFT) Methods**
+
+1)  **Adapters:** Freeze parameters. Then add adapters to the model, and train the parameters of the *adapters* with the new data
+
+2)  **Low-Rank Adaptation:** Generate for each parameter matrix in the model, two matrices that when multiplied give the values of the matrix (*decomposing* $A$). E.g., $A$ has the dimension $512\times 512$ and $B$ has $512\times2$ and $C$ has $2\times512$. So that $B\cdot C=A$. Freeze $A$ and train $B$ and $C$ with new data (these are 2048 elements rather than 262144 elements). Multiply $B$ and $C$ and add it to $A$. This gives the *fine-tuned* weights.
+
+3)  **Prompt Tuning:** E.g. *RAGs*
+
+
+
+## RAGs - Prompt Engineering in Combination with Search Engine
+
+![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1202208612.png)
+
+## Prompt Engineering (Example)
+
+Use to *ChatGPT* Windows with these propmpts:
+
+**1. Window**
+
+1.  "Tell me about Monserat"
+
+**2. Window**
+
+1.  "Tell me about Times Roman"
+2.  "Tell me about Monserat"
+
+## Prompt Engineering (Example: Gift Recommender)
+
+[https://ai.centillionware.com/gift/](https://ai.centillionware.com/gift/){target="blank_"}
+
+## Prompt Engineering (Example: Gift Recommender)
+
+```         
+$prompt = "
+```
+
+```         
+    Find a birthday gift that cost between $budget_min dollars and $budget_max for a $sex person who is $age years old. 
+```
+
+```         
+    The person's hobbies are $hobbies.
+```
+
+```         
+    Sport is $sport_scale. $sport
+```
+
+```         
+    Movies are $movie_genre_scale. $movie_genre
+```
+
+```         
+    Books are $author_scale. $author
+```
+
+```         
+    Food is $food_scale. $food
+```
+
+```         
+  ";
+```
+
+## Post Processing: Bias, Discrimination, Derogatory Language
+
+Example: Pi chat bot
