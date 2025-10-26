@@ -420,7 +420,7 @@ After a model is trained with *language* (i.e., the complete Internet), it needs
 
 ## Supervised Learning {.smaller}
 
-::: {.callout-note title="This is the only topic we cover" style="background-color:#ffffff; border-left:5px solid #000000;"}
+::: {.callout-note title="This is the only topic we cover" style="background-color:#ffffff; border-left:5px solid #004080;"}
 
 **Transfer Learning:**
 
