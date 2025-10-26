@@ -5,7 +5,8 @@ subtitle: "Understand Generative AI"
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
-  affiliation: "California State Polytechnic University, Pomona"
+  affiliation: "California State Polytechnic University, Pomona<br><br>
+  **Follow along:** https://ai.lange-analytics.com/dhc.html"
 
 format: 
   revealjs:
@@ -17,20 +18,22 @@ format:
 ---
 
 ## Two Parts of the Presentation
+<br><br>
 
--   How does Generative AI (*genAI*) uses Large Language Model (*LLMs*) to create content?
+-   How does Generative AI (*genAI*) work?
+<br>
+-   Use cases and demos for *genAI*!
 
--   How can we use *genAI* in an effective way?
+## Why is it important to know how genAI/LLMs work???
+<br><br>
 
-## Why is it important to know how LLMs work???
-
--   For effective use, we need to know the basics of a technology
-
--   To identify possible dangers, we need to know the basics of a technology
-
+-   For effective use<br>
+<br>
+-   To identify possible dangers
 
 
-## Stylized Example: A TV time traveled to the year 1885 {.smaller}
+
+## Stylized Example: Time travel with a TV  to the year 1885 {.smaller}
 
 ::: {.column width="40%"}
 **Perception**
@@ -46,7 +49,7 @@ format:
 
 
 
-## Stylized Example: A TV time traveled to the year 1885 {.smaller}
+## Stylized Example: Time travel with a TV  to the year 1885 {.smaller}
 
 ::: {.column width="40%"}
 **Dangers without Technology Background**
@@ -60,7 +63,7 @@ format:
 ![Generated with ChatGPT](images/WesternFlyingBullets.png){fig-alt="A TV displaying a western with bullets flying out of it"}
 :::
 
-## Stylized Example: A TV time traveled to the year 1885 {.smaller}
+## Stylized Example: Time travel with a TV  to the year 1885 {.smaller}
 
 ::: {.column width="42%"}
 **Dangers with Technology Background**
@@ -76,36 +79,27 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 ![Generated with ChatGPT](images/WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
 :::
 
-## Learning Outcomes {.scrollable .smaller}
+## Outcomes {.scrollable .smaller}
 
--   Understanding the Role of *Large Language Models* (*genAI*) in the *AI* Landscape
 
--   Why *Deep Learning* models have so many parameters
+::: {.incremental}
+- How **genAI**  fits in the **AI** Landscape
 
--   *Tokenization* of the English language
+-   Word encoding **Tokenization and Embedding** of the English language
 
--   *One-Hot Encoding* of the English language
+- What is a **Neural Network**
 
--   How an *LLM* guesses the next word?
-
--   How words can be embedded as vectors to code similar meanings (*Input Embedding*)<br> `Queen`, `King`, `Male`, `Female` but `Sand`
-
--   How the words position in a prompt can be coded (*Positional Encoding*)<br> `Dog bites child` but `Child bites dog`
+-   How the words position in a prompt can be coded (**Positional Encoding**)<br> `Dog bites child` but `Child bites dog`
 
 -   How attention of words in a prompt can be encoded (*Attention Mechanism*)<br> "The cat sits on the `mat` because `it` is soft"
 
--   fine tuning *LLMs* to avoid discrimination, derogatory language, and racism
+-   fine tuning *LLMs* to specialize  and to avoid discrimination, derogatory language, and racism
 
--   fine tuning to specialize *LLM*
+-   Demos of *genAI*
 
--   Applications of *genAI*
+:::
 
-    -   Gift Finder
-    -   Human writer
-    -   Course Assistant in Canvas for courses you teach
-    -   Googles Cheating Assistant for students
-
-## Large Language Models and genAI in Context {.smaller}
+## *AI* vs. *Machine Learning* vs. *genAI/LLMs* {.smaller}
 
 ![Source: Medium: https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1934318519.png) 
 
@@ -117,7 +111,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 **2014:** Bahdanu, D.: Still Recurrent Neural Networks but with Attention - LSTM (still slow and not easy to parallelize, but more powerful)
 
-**2017:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with small modifications still used in 2025)
+**2017:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with  modifications still used in 2025)
 
 [Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E]{style="font-size:70%"}
 
@@ -221,22 +215,20 @@ The value for all words/tokens is zero with the exception of the word/token of i
 
 
 
-## Ridiculous Simple Example - trained (Guess the Next Word) {auto-animate="true"}
+## Ridiculous Simple Example - trained (Guess the Next Word)  {auto-animate="true"}
 
 ![](images/clipboard-2592421233.png)
 
-## What we want from an LLM {.smaller}
-
-![](images/clipboard-340487702.png)
-
-Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}
 
 
-## Problems with the Simple Example {.smaller}
+
+
+## Problems with the Simple Example   {.smaller}
+
 
 ::: columns
 ::: {.column width="80%"}
-### Problems and Solutions
+### Problems and Solutions ●● ●●XX
 
 
 1.  *One-Hot Encoding* is wasteful (e.g., the word "neural": A list with 200,000 numbers all 0 except the position for "neural" being 1)
@@ -246,12 +238,21 @@ Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5
 :::
 
 ::: {.column width="20%"}
-
 ### Simple Model:
 
 ![](images/clipboard-2592421233.png)
 :::
 :::
+
+
+## What we want from an LLM  {.smaller}
+
+![](images/clipboard-340487702.png)
+
+Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}
+
+
+
 
 
 
@@ -266,13 +267,13 @@ The course is not free, but a free trial exist. The 4 hour course is **strongly 
 
 
 
-## Step 1: Word Embedding to Provide Sentiment
+## Word Embedding to Provide Meaning/Sementic
 
-`King + Female - Male = ???`
+`King - Male + Female = ???`
 
 . . .
 
-`King + Female - Male = Queen`
+`King - Male + Female = Queen`
 
 . . .
 
@@ -299,7 +300,7 @@ Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `am
 
 ## Word Embedding with Bag of Words {.smaller}
 
-### (Window Size)
+
 
 ![](images/clipboard-1212096732.png)
 
@@ -307,7 +308,9 @@ Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `am
 
 #### Covid Twitter Feed
 
-<https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz>
+[https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz]([https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz]){target="_blank"}
+
+●● ●● ●●  XXX
 
 ## Storing the Position of Words in the Prompt
 
@@ -334,9 +337,13 @@ After adding positional encoding, it is clear: \[bit (2), child (3), dog (1)\]
 
 Word positions are also stored in a vector (list of numbers) with the same length of the word embedding. They are then added to the embedding vector (list of numbers)
 
+
 ::: footer
-[Details: Paleti, Nikhil Chowdary. Positional Encoding Explained: A Deep Dive into Transformer PE] (https://medium.com/thedeephub/positional-encoding-explained-a-deep-dive-into-transformer-pe-65cfe8cfe10b){target="_blank"}
+[Details: Positional Encoding Explained](https://medium.com/thedeephub/positional-encoding-explained-a-deep-dive-into-transformer-pe-65cfe8cfe10b){target="_blank"}
 :::
+
+
+
 
 ## Generate Position-Aware Embedding 
 ### Add Posion 2 to the Embeding of `bit` {.smaller}
@@ -349,7 +356,7 @@ The *Position-Vector* reflects the word position of the word `bit` in the prompt
 ![](images/clipboard-1514739384.png)
 
 
-## Step 3: Adding Attention
+## Adding Attention XXX
 
 **Example 1:**<br>The **animal** didn’t cross the street because **it** was too **tired**.<br>
 
@@ -398,11 +405,22 @@ This allows *Self-Attention* to use different focus for each section.
 Use layer 1 (attention head 2 (orange))
 [https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC](https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC){target="\"Blank_"}
 
+## What we wanted from an LLM: We are here  {.smaller}
+
+![](images/clipboard-340487702.png)
+
+Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}
 
 
-## LLM (Fine) Tuning {.smaller}
+## LLM (Fine) Tuning  ●● ●●  ●●   ●●XX XX {.smaller}
 
 After a model is trained with *language* (i.e., the complete Internet), it needs to be *fine-tuned* to perform specific tasks:
+
+::: {.callout-note title="This is the only topic we cover" style="background-color:white; color:black; border-left:4px solid black;" }
+<strong style="color: black;">Supervised Learning</strong>
+:::
+
+. . .
 
 
 **Self-supervised:** Train on the desired data from the beginning (extremely expensive)
@@ -414,19 +432,19 @@ After a model is trained with *language* (i.e., the complete Internet), it needs
 2)  Create reward model
 3)  Adjust original model
 
-::: {.callout-note title="This is the only topic we cover"}
-**Supervised Learning**
-:::
+
 
 ## Supervised Learning {.smaller}
 
-::: {.callout-note title="This is the only topic we cover" style="background-color:#ffffff; border-left:5px solid #004080;"}
+::: {.callout-note title="This is the only topic we cover" style="background-color:white; color:black; border-left:4px solid black;" }
 
-**Transfer Learning:**
+<strong style="color: black;">Transfer Learning</strong>
 
 -   Freeze all parameters except the last one or two layers (could also be different layers)
 -   retrain last one or two layers with new data
 ::: 
+
+. . .
 
 **Parameter Efficient Fine Tuning (PEFT) Methods**
 
@@ -437,62 +455,19 @@ After a model is trained with *language* (i.e., the complete Internet), it needs
 3)  **Prompt Tuning:** E.g. *RAGs*
 
 
+## Demo 1: Prompt Engeneering (Human Writer)
 
-## RAGs - Prompt Engineering in Combination with Search Engine
+Left upper corner: Edit GPT
+Goto Configure
 
-![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1202208612.png)
+## Demo 2: Machine Learning Book Analyzer
 
-## Prompt Engineering (Example)
+[https://ai.lange-analytics.com](https://ai.lange-analytics.com)
 
-Use to *ChatGPT* Windows with these propmpts:
+## Demo 3: Machine Learning Book
 
-**1. Window**
+CANVAS Course: Advising and content help
 
-1.  "Tell me about Monserat"
+## Demo 4: Googles Homework Cheater
 
-**2. Window**
-
-1.  "Tell me about Times Roman"
-2.  "Tell me about Monserat"
-
-## Prompt Engineering (Example: Gift Recommender)
-
-[https://ai.centillionware.com/gift/](https://ai.centillionware.com/gift/){target="blank_"}
-
-## Prompt Engineering (Example: Gift Recommender)
-
-```         
-$prompt = "
-```
-
-```         
-    Find a birthday gift that cost between $budget_min dollars and $budget_max for a $sex person who is $age years old. 
-```
-
-```         
-    The person's hobbies are $hobbies.
-```
-
-```         
-    Sport is $sport_scale. $sport
-```
-
-```         
-    Movies are $movie_genre_scale. $movie_genre
-```
-
-```         
-    Books are $author_scale. $author
-```
-
-```         
-    Food is $food_scale. $food
-```
-
-```         
-  ";
-```
-
-## Post Processing: Bias, Discrimination, Derogatory Language
-
-Example: Pi chat bot
+quiz is at c:/calpoly/ec322/HomeworkQLive
