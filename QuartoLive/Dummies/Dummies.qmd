@@ -235,7 +235,7 @@ You collect data from last month.
 ```{r}
 #| echo: true
 library(rio)
-DataObserv=import("../DataObservAndABTest.xlsx", sheet = "DataObserv")
+DataObserv=import("data/DataObservAndABTest.xlsx", sheet = "DataObserv")
 print(DataObserv)
 ```
 
@@ -385,7 +385,7 @@ ggdag_status(DAGSimpleRegression, node_size = 22)
 #| code-fold: true
 library(rio)
 library(tidyverse)
-DataWageSynNoCor=import("DataWageSynthetic.csv") |> 
+DataWageSynNoCor=import("data/DataWageSynthetic.csv") |> 
                  select(Wage, SexFem, Educ)
 
 ModelSexFemNoCor=lm(Wage~SexFem, data=DataWageSynNoCor)
