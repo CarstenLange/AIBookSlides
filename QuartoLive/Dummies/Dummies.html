@@ -221,14 +221,15 @@ Carsten Lange
 <section id="what-will-you-learn" class="slide level2 scrollable smaller">
 <h2>What Will You Learn</h2>
 <ul>
-<li><p>Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.</p></li>
+<li><p>Understanding how categorical data with two categories such as the sex of a person (female/male) can be transformed into numerical dummy variable</p></li>
+<li><p>Understanding how categorical data with three or more categories such as the gender of a person (female/male/non-binary) can be transformed into numerical dummy variable</p></li>
 <li><p>Being able to distinguish between dummy encoding and one-hot encoding</p></li>
-<li><p>AB-Tests vs Univariate Regression with Dummies</p></li>
+<li><p>t-Tests vs.&nbsp;Univariate Regression with Dummies</p></li>
 </ul>
 </section>
-<section id="dummy-and-one-hot-encoding" class="slide level2 smaller">
-<h2>Dummy and One-Hot Encoding</h2>
-<p><strong>One-Hot Encoding</strong></p>
+<section id="dummy-and-one-hot-encoding-for-real-estate-data" class="slide level2">
+<h2>Dummy and One-Hot Encoding for Real Estate Data</h2>
+<p><strong>One-Hot Encoding Example:</strong> Houses <strong>are</strong> or <strong>are not</strong> at the Waterfront</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 2
@@ -243,9 +244,9 @@ Carsten Lange
 <p><em>One-hot</em> encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (<em>perfect multicollinearity)</em>:</p>
 <p><span class="math display">\[Waterfront_{yes}=1-Waterfront_{no}\]</span> »</p>
 </section>
-<section id="dummy-and-one-hot-encoding-1" class="slide level2 scrollable">
+<section id="dummy-and-one-hot-encoding" class="slide level2 smaller">
 <h2>Dummy and One-Hot Encoding</h2>
-<p><strong>Dummy Coding</strong></p>
+<p><strong>Dummy Enoding</strong></p>
 <p>We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., <code>Waterfront_yes</code>):</p>
 <p><strong>Dummy Encoding Example</strong></p>
 <div class="cell">
@@ -261,23 +262,61 @@ Carsten Lange
 </div>
 <p>»</p>
 </section>
+<section id="dummy-encoding-gender-based-vs.-sex-based" class="slide level2 smaller">
+<h2>Dummy Encoding: Gender Based vs.&nbsp;Sex Based</h2>
+<p><strong>Gender Based (<code>GenderFem</code>, <code>GenderMale</code>, <code>GenderNonBin</code>)</strong></p>
+<ul>
+<li class="fragment">we have 3 categories and need to leave one out</li>
+<li class="fragment">the left out one is the reference (mathemtically is does not matter which)</li>
+<li class="fragment">leaving out <code>GenderMale</code> is likely a good choice:
+<ul>
+<li class="fragment">coding gender female: <code>GenderFem=1</code>,<code>GenderNonBin=0</code></li>
+<li class="fragment">coding gender non-binary: <code>GenderFem=0</code>,<code>GenderNonBin=1</code></li>
+<li class="fragment">coding gender male: <code>GenderFem=0</code>,<code>GenderNonBin=0</code></li>
+<li class="fragment">interpretation:
+<ul>
+<li class="fragment">a negative regression coeff. for <code>GenderFem</code> shows how much less <em>females</em> make compared to the reference <em>male</em></li>
+<li class="fragment">a negative regression coeff. for <code>GenderNonBin</code> shows how much less <em>non-binary</em> people make compared to the reference <em>male</em></li>
+</ul></li>
+</ul></li>
+</ul>
+</section>
+<section id="dummy-encoding-gender-based-vs.-sex-based-1" class="slide level2">
+<h2>Dummy Encoding: Gender Based vs.&nbsp;Sex Based</h2>
+<p><strong>Sex Based (<code>SexFem</code>, <code>SexMale</code>)</strong></p>
+<ul>
+<li class="fragment">we have 2 categories and need to leave one out</li>
+<li class="fragment">the left out one is the reference (mathematically is does not matter which)</li>
+<li class="fragment">leaving out <code>SexMale</code>:
+<ul>
+<li class="fragment">coding female: <code>SexFem=1</code>, coding male: <code>SexFem=0</code></li>
+<li class="fragment">interpretation: <br> a negative regression coeff. for <code>SexFem</code> shows how much less <em>females</em> make compared to the reference <em>male</em></li>
+</ul></li>
+<li class="fragment">leaving out <code>SexFemale</code>:
+<ul>
+<li class="fragment">coding female: <code>SexMale=0</code>, coding male: <code>SexMale=1</code></li>
+<li class="fragment">interpretation: <br> a positive regression coeff. for <code>SexMale</code> shows how much more <em>males</em> make compared to the reference <em>females</em></li>
+</ul></li>
+</ul>
+</section>
 <section id="sex-based-wage-discrimination-univariate" class="slide level2">
 <h2>Sex Based Wage Discrimination (univariate)</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(wooldridge)</span>
 <span id="cb3-2"><a href=""></a><span class="fu">library</span>(janitor)</span>
-<span id="cb3-3"><a href=""></a>DataWage<span class="ot">=</span>wage1 <span class="sc">%&gt;%</span></span>
-<span id="cb3-4"><a href=""></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb3-5"><a href=""></a><span class="fu">select</span>(Wage, <span class="at">SexFem=</span>Female)</span>
-<span id="cb3-6"><a href=""></a><span class="fu">head</span>(DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href=""></a>DataWage<span class="ot">=</span>wage1 <span class="sc">|&gt;</span>  </span>
+<span id="cb3-4"><a href=""></a><span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>)  <span class="sc">|&gt;</span> </span>
+<span id="cb3-5"><a href=""></a><span class="fu">select</span>(Wage, <span class="at">SexFem=</span>Female) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href=""></a><span class="fu">mutate</span>(<span class="at">SexMale=</span><span class="fu">ifelse</span>(SexFem<span class="sc">==</span><span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span>
+<span id="cb3-7"><a href=""></a><span class="fu">head</span>(DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  Wage SexFem
-1 3.10      1
-2 3.24      1
-3 3.00      0
-4 6.00      0
-5 5.30      0
-6 8.75      0</code></pre>
+<pre><code>  Wage SexFem SexMale
+1 3.10      1       0
+2 3.24      1       0
+3 3.00      0       1
+4 6.00      0       1
+5 5.30      0       1
+6 8.75      0       1</code></pre>
 </div>
 </div>
 </section>
@@ -299,7 +338,7 @@ Carsten Lange
 <img data-src="Dummies_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
 <section id="sex-discrimination" class="slide level2">
 <h2>Sex Discrimination</h2>
-<h3 id="regression">Regression</h3>
+<h3 id="regression-male-left-out">Regression (male left-out)</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">lm</span>(Wage <span class="sc">~</span> SexFem, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -312,7 +351,7 @@ Coefficients:
       7.099       -2.512  </code></pre>
 </div>
 </div>
-<h3 id="comparing-means-as-in-ab-tests.">Comparing Means as in A/B Tests.</h3>
+<h3 id="comparing-means-as-in-2-sample-t-tests">Comparing Means as in 2-Sample-t-Tests</h3>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>Avg. female wage: 4.587659</code></pre>
@@ -328,383 +367,33 @@ Coefficients:
 <pre><code>Difference between female and male Wage avg.: -2.51183</code></pre>
 </div>
 </div>
-</section>
-<section id="ab-test-vs.-observational-data-analysis" class="title-slide slide level1 smaller center">
-<h1>A/B-Test vs.&nbsp;Observational Data Analysis</h1>
-<p><strong>A/B-Test:</strong> Data derived from an experiment</p>
-<ul>
-<li>Assignment to Control and Treatment group must be random and unbiased.</li>
-<li>Use t-test to see if group means are statitically significant</li>
-<li>Gold Standard: Use when you can</li>
-</ul>
-<p><strong>Observational Data:</strong></p>
-<ul>
-<li>Second best</li>
-<li>Data are from the past</li>
-<li>Biases can be corrected</li>
-</ul>
-</section>
-
-<section>
-<section id="ab-test-vs.-observational-data" class="title-slide slide level1 center">
-<h1>AB-Test vs.&nbsp;Observational Data</h1>
-
-</section>
-<section id="fun-examples-1" class="slide level2 scrollable">
-<h2>Fun Examples 1:</h2>
-<p><strong>Class Size:</strong></p>
-<ol type="1">
-<li><p>The Dean uses the university’s course system and claims the average class size is 35 students.</p></li>
-<li><p>The Student Association ask 500 students on the squad how big was the last class they attended. The result is 54</p></li>
-</ol>
-<p>What happened?</p>
-<p>From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/</p>
-</section>
-<section id="fun-examples-2" class="slide level2">
-<h2>Fun Examples 2:</h2>
-<p><strong>Fertility Rate:</strong></p>
-<p>We want to find the average offsprings a mother had (fertility rate) about 30 years ago:</p>
-<p>We survey 1,000 people age 30 and ask how many offsprings their mother had.</p>
-<p>What is wrong with this methedology?</p>
-<p>From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/</p>
-</section>
-<section id="marketing-example" class="slide level2 smaller">
-<h2>Marketing Example</h2>
-<p>You run a company similar than ChatGPT, but it is not free. The customers (private people) can upload their own data right on the sign-in page and then use AI that considers their data.</p>
-<p>The sign-in page is more like a portal and offers various services. You always thought your sign-in page is well designed.</p>
-<p>A consulting firm made a new sign in page for you that is supposed to be better designed.</p>
-<p>You give your customers two sign-in page options:</p>
-<p>“classic”</p>
-<p>“new design”</p>
-<p>You want to test if conversion (measured in hours of services used) is higher on the newly designed sign-up page.</p>
-<p>You collect data from last month.</p>
-</section>
-<section id="data-from-last-month" class="slide level2 scrollable">
-<h2>Data from Last Month</h2>
+<h3 id="regression-female-left-out">Regression (female left-out)</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">library</span>(rio)</span>
-<span id="cb10-2"><a href=""></a>DataObserv<span class="ot">=</span><span class="fu">import</span>(<span class="st">"data/DataObservAndABTest.xlsx"</span>, <span class="at">sheet =</span> <span class="st">"DataObserv"</span>)</span>
-<span id="cb10-3"><a href=""></a><span class="fu">print</span>(DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>   EducYears Age NewSignUpPage ConvHours
-1         12  23          TRUE         5
-2         12  27          TRUE         0
-3         12  57         FALSE         0
-4         23  19          TRUE        25
-5         15  33         FALSE        35
-6         15  28         FALSE        32
-7         23  28          TRUE        31
-8         18  53          TRUE        20
-9         18  57         FALSE         5
-10        21  28         FALSE        19
-11        21  29          TRUE        45
-12        21  67         FALSE         0</code></pre>
-</div>
-</div>
-</section>
-<section id="run-a-regression-with-lm" class="slide level2 scrollable">
-<h2>Run a Regression with LM</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>NewSignUpPage, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">lm</span>(Wage <span class="sc">~</span> SexMale, <span class="at">data=</span>DataWage)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = ConvHours ~ NewSignUpPage, data = DataObserv)
+lm(formula = Wage ~ SexMale, data = DataWage)
 
 Coefficients:
-      (Intercept)  NewSignUpPageTRUE  
-           15.167              5.833  </code></pre>
+(Intercept)      SexMale  
+      4.588        2.512  </code></pre>
 </div>
 </div>
-<p>Looks like the new page performed well. 5.8 more hours per month.</p>
-</section>
-<section id="selection-bias-more-young-and-educated-customers-tried-the-new-design" class="slide level2 scollable">
-<h2>Selection Bias: More Young and Educated Customers Tried the New Design</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb14-2"><a href=""></a>DataObserv <span class="sc">|&gt;</span> </span>
-<span id="cb14-3"><a href=""></a>  <span class="fu">group_by</span>(NewSignUpPage) <span class="sc">|&gt;</span> </span>
-<span id="cb14-4"><a href=""></a>  <span class="fu">summarise</span>(<span class="fu">mean</span>(Age), <span class="fu">mean</span>(EducYears))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 3
-  NewSignUpPage `mean(Age)` `mean(EducYears)`
-  &lt;lgl&gt;               &lt;dbl&gt;             &lt;dbl&gt;
-1 FALSE                45                17  
-2 TRUE                 29.8              18.2</code></pre>
-</div>
-</div>
-</section>
-<section id="regression-age-younger-people-use-the-side-more-often" class="slide level2">
-<h2>Regression Age: Younger People use the side more often</h2>
-<p><strong>Age:</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>Age, <span class="at">data=</span>DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = ConvHours ~ Age, data = DataObserv)
-
-Coefficients:
-(Intercept)          Age  
-    36.5328      -0.4931  </code></pre>
-</div>
-</div>
-</section>
-<section id="regression-educated-people-with-higher-education-use-the-side-more-often" class="slide level2">
-<h2>Regression Educated: People with Higher Education use the side more often</h2>
-<p><strong>Education:</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">lm</span>(ConvHours<span class="sc">~</span>EducYears, <span class="at">data =</span> DataObserv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = ConvHours ~ EducYears, data = DataObserv)
-
-Coefficients:
-(Intercept)    EducYears  
-     -10.92         1.65  </code></pre>
-</div>
-</div>
-<p>If education years increases by one year, monthly services used <strong>increase by 0.49 hours</strong>.</p>
-</section>
-<section id="what-to-do-when-ab-test-is-not-possible" class="slide level2">
-<h2>What to do when AB Test is not possible?</h2>
-<ul>
-<li><p>Participants not randomly assigned but self selected</p></li>
-<li><p>Trial and Control Group are biased</p></li>
-<li><p>A univariate regression with a dummy variable does not solve the problem, since it gives the same results</p></li>
-</ul>
-</section>
-<section id="what-to-do-when-ab-test-is-not-possible-1" class="slide level2 smaller">
-<h2>What to do when AB Test is not possible?</h2>
-<p>In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the <em>experiment</em> or <em>placebo</em> (<em>trial</em> and <em>control</em>) group.</p>
-<p>This might lead to a biased sample!</p>
-<p><strong>Example: Sex based wage discrimination</strong></p>
+<h3 id="comparing-means-as-in-2-sample-t-tests-1">Comparing Means as in 2-Sample-t-Tests</h3>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>  Wage SexFem Educ
-1 3.10      1   11
-2 3.24      1   12
-3 3.00      0   11
-4 6.00      0    8
-5 5.30      0   12
-6 8.75      0   16</code></pre>
+<pre><code>Avg. male wage: 7.099489</code></pre>
 </div>
 </div>
-</section>
-<section id="example-sex-based-wage-discrimination" class="slide level2">
-<h2>Example: Sex Based Wage Discrimination</h2>
-<p>Wage is not only determined by <span class="math inline">\(SexFem\)</span>, but also by other variables such as <span class="math inline">\(Educ\)</span>:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ Educ, data = DataWage)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.3396 -2.1501 -0.9674  1.1921 16.6085 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -0.90485    0.68497  -1.321    0.187    
-Educ         0.54136    0.05325  10.167   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.378 on 524 degrees of freedom
-Multiple R-squared:  0.1648,    Adjusted R-squared:  0.1632 
-F-statistic: 103.4 on 1 and 524 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>Avg. female wage: 4.587659</code></pre>
 </div>
 </div>
-</section>
-<section id="example-sex-based-wage-discrimination-1" class="slide level2 smaller">
-<h2>Example: Sex Based Wage Discrimination</h2>
-<p>Correlation <span class="math inline">\(Educ\)</span> and <span class="math inline">\(SexFem\)</span>: <span class="math inline">\(Educ\)</span> is determined by <span class="math inline">\(SexFem\)</span>:</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Educ ~ SexFem, data = DataWage)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--12.3175  -0.7883  -0.3175   1.6825   5.6825 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  12.7883     0.1668  76.652   &lt;2e-16 ***
-SexFem       -0.4709     0.2410  -1.953   0.0513 .  
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 2.762 on 524 degrees of freedom
-Multiple R-squared:  0.00723,   Adjusted R-squared:  0.005335 
-F-statistic: 3.816 on 1 and 524 DF,  p-value: 0.05129</code></pre>
-</div>
-</div>
-</section>
-<section id="dag-for-this-situation" class="slide level2">
-<h2>DAG for this Situation</h2>
-
-<img data-src="Dummies_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"></section>
-<section id="second-best-since-ab-test-is-not-possible" class="slide level2 smaller scrollable">
-<h2>Second best (since AB Test is not possible)</h2>
-<ul>
-<li><p>Control for the impact of <span class="math inline">\(Educ\)</span> on <span class="math inline">\(Wage\)</span></p></li>
-<li><p>run a multi-variate regression (possibly with instruments variables; covered in future session)</p></li>
-</ul>
-<p>Draw Acrylic Graph!</p>
-<p>Give it a trial:</p>
-<p>We look at two scenarios:</p>
-<ol type="1">
-<li><p>Educ not correlated with SexFem (the unrealistic scenario)</p></li>
-<li><p>Educ not correlated with SexFem (the realistic scenario)</p></li>
-</ol>
-</section>
-<section id="testing-with-synthetic-variables-dag" class="slide level2">
-<h2>Testing with Synthetic Variables: DAG</h2>
-<h3 id="assumption-no-correlation-between-educ-and-sexfem">Assumption: No Correlation Between Educ and SexFem</h3>
-
-<img data-src="Dummies_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
-<section id="testing-with-synthetic-variables-regression-1a" class="slide level2">
-<h2>Testing with Synthetic Variables: Regression 1a</h2>
-<h3 id="assumption-with-correlation-between-educ-and-sexfem">Assumption: With Correlation Between Educ and SexFem</h3>
-<p><strong>One Variables:</strong></p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem, data = DataWageSynNoCor)
-
-Residuals:
-     Min       1Q   Median       3Q      Max 
--12.8265  -2.2821  -0.0651   2.3380  10.3890 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  16.0954     0.1064   151.3   &lt;2e-16 ***
-SexFem       -2.2357     0.1490   -15.0   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.332 on 1998 degrees of freedom
-Multiple R-squared:  0.1012,    Adjusted R-squared:  0.1008 
-F-statistic:   225 on 1 and 1998 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-</section>
-<section id="testing-with-synthetic-variables-regression-1b" class="slide level2">
-<h2>Testing with Synthetic Variables: Regression 1b</h2>
-<h3 id="assumption-no-correlation-between-educ-and-sexfem-1">Assumption: No Correlation Between Educ and SexFem</h3>
-<p><strong>Two Variables:</strong></p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem + Educ, data = DataWageSynNoCor)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--8.0204 -1.6476  0.0255  1.7148  7.7651 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -1.29347    0.43641  -2.964  0.00307 ** 
-SexFem      -2.30307    0.11046 -20.850  &lt; 2e-16 ***
-Educ         1.15602    0.02854  40.512  &lt; 2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 2.469 on 1997 degrees of freedom
-Multiple R-squared:  0.5067,    Adjusted R-squared:  0.5062 
-F-statistic:  1025 on 2 and 1997 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-</section>
-<section id="testing-with-synthetic-variables-dag-1" class="slide level2">
-<h2>Testing with Synthetic Variables: DAG</h2>
-<h3 id="assumption-with-correlation-between-educ-and-sexfem-1">Assumption: With Correlation Between Educ and SexFem</h3>
-
-<img data-src="Dummies_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
-<section id="testing-with-synthetic-variables-regression-2a" class="slide level2">
-<h2>Testing with Synthetic Variables: Regression 2a</h2>
-<h3 id="creating-data-with-correlation-between-educ-and-sexfem">Creating Data with Correlation Between Educ and SexFem</h3>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Educ ~ SexFem, data = DataWageSynWithCor)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--5.6857 -1.0370 -0.0212  1.1594  4.7813 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) 15.70652    0.05364   292.8   &lt;2e-16 ***
-SexFem      -1.27442    0.07497   -17.0   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 1.499 on 1598 degrees of freedom
-Multiple R-squared:  0.1531,    Adjusted R-squared:  0.1526 
-F-statistic:   289 on 1 and 1598 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-</section>
-<section id="testing-with-synthetic-variables-regression-2a-1" class="slide level2">
-<h2>Testing with Synthetic Variables: Regression 2a</h2>
-<h3 id="assumption-no-correlation-between-educ-and-sexfem-2">Assumption: No Correlation Between Educ and SexFem</h3>
-<p><strong>One Variables:</strong></p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem, data = DataWageSynWithCor)
-
-Residuals:
-   Min     1Q Median     3Q    Max 
--9.916 -2.116 -0.079  2.206  9.467 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)  16.8674     0.1083  155.77   &lt;2e-16 ***
-SexFem       -3.7703     0.1513  -24.91   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 3.026 on 1598 degrees of freedom
-Multiple R-squared:  0.2797,    Adjusted R-squared:  0.2793 
-F-statistic: 620.6 on 1 and 1598 DF,  p-value: &lt; 2.2e-16</code></pre>
-</div>
-</div>
-</section>
-<section id="testing-with-synthetic-variables-regression-2b" class="slide level2">
-<h2>Testing with Synthetic Variables: Regression 2b</h2>
-<h3 id="assumption-no-correlation-between-educ-and-sexfem-3">Assumption: No Correlation Between Educ and SexFem</h3>
-<p><strong>Two Variables:</strong></p>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = Wage ~ SexFem + Educ, data = DataWageSynWithCor)
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--7.7917 -1.6801 -0.0044  1.7762  7.7854 
-
-Coefficients:
-            Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept) -1.45807    0.65349  -2.231   0.0258 *  
-SexFem      -2.28340    0.13425 -17.008   &lt;2e-16 ***
-Educ         1.16674    0.04122  28.302   &lt;2e-16 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 2.47 on 1597 degrees of freedom
-Multiple R-squared:  0.5203,    Adjusted R-squared:  0.5197 
-F-statistic: 866.2 on 2 and 1597 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre><code>Difference between female and male Wage avg.: 2.51183</code></pre>
 </div>
 </div>
 
@@ -722,7 +411,7 @@ eyJjb250ZW50cyI6W119
 <script type="vfs-file">
 WyJEYXRhL0RhdGFXYWdlU3ludGhldGljLmNzdiIsIkRhdGEvRGF0YU9ic2VydkFuZEFCVGVzdC54bHN4Il0=
 </script>
-</section></section>
+</section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
