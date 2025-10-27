@@ -1,0 +1,451 @@
+---
+title: "Qualitative Independent Variables (Dummy Variables)"
+subtitle: "Regression, Dummies, One-Hot Encoding, AB-Tests"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon,../../CustomCL.scss]
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/LinRegr.html'>Textbook </a> "
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - plotly
+    - janitor
+    
+resources: 
+  - Data
+engine: knitr    
+---
+
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+```{r}
+#| echo: false
+library(tidymodels)
+library(rio)
+library(kableExtra)
+library(janitor)
+```
+
+
+-   Understanding how categorical data such as the sex of a person (female/male) can be transformed into numerical dummy variable.
+
+-   Being able to distinguish between dummy encoding and one-hot encoding
+
+- AB-Tests vs Univariate Regression with Dummies
+
+
+
+
+## Dummy and One-Hot Encoding {.smaller}
+
+**One-Hot Encoding**
+
+```{r}
+#| code-fold: true
+OneHotTable=tibble(Waterfront_yes=c(0,0,1,0),Waterfront_no=c(1,1,0,1))
+print(OneHotTable)
+```
+
+*One-hot* encoding is easier to interpret but causes problems in OLS (dummy trap) because one variable is redundant. We can calculate one variable from the other (*perfect multicollinearity)*:
+
+$$Waterfront_{yes}=1-Waterfront_{no}$$ 
+»
+
+## Dummy and One-Hot Encoding {.scrollable}
+
+**Dummy Coding**
+
+We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
+
+**Dummy Encoding Example**
+
+```{r}
+#| code-fold: true
+DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
+print(DummyTable)
+```
+
+»
+
+## Sex Based Wage Discrimination (univariate)
+
+```{r}
+#| echo: true
+library(wooldridge)
+library(janitor)
+DataWage=wage1 %>%
+clean_names("upper_camel") %>%
+select(Wage, SexFem=Female)
+head(DataWage)
+```
+
+## Plotting the Data
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_point()
+```
+
+
+## Plotting the Data with Transparency (alpha) and Jittered
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)
+```
+
+
+
+## Plotting the Data with Regression Line
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+ggplot(DataWage, aes(x=SexFem, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)+
+  geom_smooth(method = "lm", se=FALSE)
+```
+
+
+## Plotting the Data with Regression Line using SexMale Rather Than SexFem
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+DataTemp=DataWage |> mutate(SexMale=1-SexFem)
+ggplot(DataTemp, aes(x=SexMale, y=Wage))+
+  geom_jitter(width=0.05, alpha=0.27)+
+  geom_smooth(method = "lm", se=FALSE)
+```
+
+
+## Sex Discrimination
+
+### Regression 
+```{r}
+#| echo: true
+lm(Wage ~ SexFem, data=DataWage)
+```
+
+
+### Comparing Means as in A/B Tests.
+
+```{r}
+#| code-fold: true
+DataWageFem=filter(DataWage, SexFem==1)
+MeanWageFem=mean(DataWageFem$Wage)
+cat("Avg. female wage:",MeanWageFem)
+```
+
+```{r}
+#| code-fold: true
+DataWageMale=filter(DataWage, SexFem==0)
+MeanWageMale=mean(DataWageMale$Wage)
+cat("Avg. male wage:",MeanWageMale)
+```
+
+```{r}
+#| code-fold: true
+cat("Difference between female and male Wage avg.:",MeanWageFem-MeanWageMale)
+```
+# A/B-Test vs. Observational Data Analysis {.smaller}
+
+**A/B-Test:** Data derived from an experiment
+
+- Assignment to Control and Treatment group must be random and unbiased.
+- Use t-test to see if group means are statitically significant
+- Gold Standard: Use when you can
+
+**Observational Data:**
+
+- Second best
+- Data are from the past
+- Biases can be corrected
+
+# AB-Test vs. Observational Data 
+
+## Fun Examples 1:
+
+**Class Size:**
+
+1. The Dean uses the university's course system and claims the average class size is 35 students.
+
+2. The Student Association ask 500 students on the squad how big was the last class they attended. The result is 54
+
+What happened?
+
+From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/
+
+## Fun Examples 2:
+
+**Fertility Rate:**
+
+We want to find the average offsprings a mother had (fertility rate) about 30 years ago:
+
+We survey 1,000 people age 30 and ask how many offsprings their mother had.
+
+What is wrong with this methedology?
+
+From Allen Downey, PROBABLY OVERTHINKING IT, https://www.allendowney.com/blog/
+
+
+## Marketing Example {.smaller}
+
+You run a company similar than ChatGPT, but it is not free. The customers (private people) can upload their own data right on the sign-in page and then use AI that considers their   data. 
+
+The sign-in page is more like a portal and offers various services. You always thought your sign-in page is well designed.
+
+A consulting firm made a new sign in page for you that is supposed to be better designed.
+
+You give your customers two sign-in page options:
+
+"classic"
+
+"new design"
+
+You want to test if conversion (measured in hours of services used) is higher on the newly designed sign-up page.
+
+You collect data from last month.
+
+## Data from Last Month {.scrollable}
+
+```{r}
+#| echo: true
+library(rio)
+DataObserv=import("../DataObservAndABTest.xlsx", sheet = "DataObserv")
+print(DataObserv)
+```
+
+## Run a Regression with LM {.scrollable}
+
+```{r}
+#| echo: true
+lm(ConvHours~NewSignUpPage, data=DataObserv)
+```
+Looks like the new page performed well. 5.8 more hours per month.
+
+## Selection Bias: More Young and Educated Customers Tried the New Design {.scollable}
+
+```{r}
+#| echo: true
+library(tidyverse)
+DataObserv |> 
+  group_by(NewSignUpPage) |> 
+  summarise(mean(Age), mean(EducYears))
+```
+
+
+## Regression Age: Younger People use the side more often
+
+**Age:**
+
+```{r}
+#| echo: true
+lm(ConvHours~Age, data=DataObserv)
+```
+
+
+## Regression Educated: People with Higher Education use the side more often
+
+**Education:**
+
+```{r}
+#| echo: true
+lm(ConvHours~EducYears, data = DataObserv)
+```
+If education years increases by one year, monthly services used **increase by 0.49 hours**.
+
+## What to do when AB Test is not possible?
+
+
+
+- Participants not randomly assigned but self selected 
+
+- Trial and Control Group are biased
+
+- A univariate regression with a dummy variable does not solve the problem, since it gives the same results  
+
+
+
+
+
+
+
+## What to do when AB Test is not possible? {.smaller}
+
+In many cases an AB Test or an Experiment is not possible because you cannot assign subjects randomly to the *experiment* or *placebo* (*trial* and *control*) group.
+
+This might lead to a biased sample!
+
+**Example: Sex based wage discrimination** 
+
+```{r}
+library(tidymodels)
+library(janitor)
+library(wooldridge)
+
+DataWage=wage1 |> 
+         clean_names("upper_camel") |> 
+         select(Wage,SexFem=Female, Educ)
+  
+head(DataWage)
+```
+
+## Example: Sex Based Wage Discrimination
+
+Wage is not only determined by $SexFem$, but also  by other variables such as $Educ$:
+
+```{r}
+#| output-location: fragment 
+ModelLMWageEduc=lm(Wage~Educ, data=DataWage)        
+summary(ModelLMWageEduc)
+```
+
+## Example: Sex Based Wage Discrimination {.smaller}
+
+Correlation $Educ$ and $SexFem$: $Educ$ is determined by $SexFem$:
+
+```{r}
+#| output-location: fragment 
+ModelLMEducSex=lm(Educ~SexFem, data=DataWage)        
+summary(ModelLMEducSex)
+```
+
+## DAG for this Situation
+
+```{r}
+#| code-fold: true
+library(ggdag)
+set.seed(123)
+DAGSimpleRegression=dagify(Wage~SexFem+Educ,
+                           Educ~SexFem,
+                           outcome="Wage",   
+                           exposure="SexFem")
+ggdag_status(DAGSimpleRegression, node_size = 22)
+```
+
+
+
+## Second best (since AB Test is not possible) {.smaller}
+
+-  Control for the impact of $Educ$ on $Wage$
+
+- run a multi-variate regression (possibly with instruments variables; covered in future session)
+
+Draw Acrylic Graph!
+
+Give it a trial:
+
+We look at two scenarios:
+
+1) Educ not correlated with SexFem (the unrealistic scenario)
+
+2) Educ not correlated with SexFem (the realistic scenario)
+
+## Testing with Synthetic Variables: DAG
+### Assumption: No Correlation Between Educ and SexFem
+```{r}
+#| code-fold: true
+library(ggdag)
+set.seed(123)
+DAGSimpleRegression=dagify(Wage~SexFem+Educ,
+                           outcome="Wage",   
+                           exposure="SexFem")
+ggdag_status(DAGSimpleRegression, node_size = 22)
+```
+
+## Testing with Synthetic Variables: Regression 1a
+### Assumption: With Correlation Between Educ and SexFem
+
+**One Variables:**
+```{r}
+#| code-fold: true
+library(rio)
+library(tidyverse)
+DataWageSynNoCor=import("DataWageSynthetic.csv") |> 
+                 select(Wage, SexFem, Educ)
+
+ModelSexFemNoCor=lm(Wage~SexFem, data=DataWageSynNoCor)
+summary(ModelSexFemNoCor)
+```
+
+## Testing with Synthetic Variables: Regression 1b
+### Assumption: No Correlation Between Educ and SexFem
+
+**Two Variables:**
+
+```{r}
+#| code-fold: true
+ModelSexFemEducNoCor=lm(Wage~SexFem+Educ, data=DataWageSynNoCor)
+summary(ModelSexFemEducNoCor)
+```
+
+
+
+## Testing with Synthetic Variables: DAG
+### Assumption: With Correlation Between Educ and SexFem
+
+```{r}
+#| code-fold: true
+library(ggdag)
+set.seed(123)
+DAGSimpleRegression=dagify(Wage~SexFem+Educ,
+                           Educ~SexFem,
+                           outcome="Wage",   
+                           exposure="SexFem")
+ggdag_status(DAGSimpleRegression, node_size = 22)
+```
+## Testing with Synthetic Variables: Regression 2a
+### Creating Data with Correlation Between Educ and SexFem
+
+```{r}
+DataWageSynWithCor= arrange(DataWageSynNoCor, SexFem, Educ) |> 
+   tail(-200) |> 
+   head(-200)
+ModelSexEduc=lm(Educ~SexFem, data=DataWageSynWithCor)
+summary(ModelSexEduc)
+```
+
+## Testing with Synthetic Variables: Regression 2a
+### Assumption: No Correlation Between Educ and SexFem
+
+**One Variables:**
+```{r}
+#| code-fold: true
+ModelSexFemWithCor=lm(Wage~SexFem, data=DataWageSynWithCor)
+summary(ModelSexFemWithCor)
+```
+
+## Testing with Synthetic Variables: Regression 2b
+### Assumption: No Correlation Between Educ and SexFem
+
+**Two Variables:**
+
+```{r}
+#| code-fold: true
+ModelSexFemWithCor=lm(Wage~SexFem+Educ, data=DataWageSynWithCor)
+summary(ModelSexFemWithCor)
+```
