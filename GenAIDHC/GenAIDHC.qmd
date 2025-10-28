@@ -103,7 +103,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 ![Source: Medium: https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1934318519.png) 
 
-## History
+## History of Genarative AI
 
 **2003:** Bengio, Y., Neural Probabilistic Language Models (very basic)
 
@@ -234,7 +234,7 @@ The value for all words/tokens is zero with the exception of the word/token of i
 1.  *One-Hot Encoding* is wasteful (e.g., the word "neural": A list with 200,000 numbers all 0 except the position for "neural" being 1)
 1.  One-Hot Vectors have **no semantics**. E.g., `neural` and `network` are not similary encoded.<br> **Solution to 1) and 2):** `Word Embedding`. 
 2.  The prompt has only one word. A prompt with more words needs information about the order of words.<br> **Solution:** `Positional Encoding`
-3.  When the prompt has more words, we also need **Attention.** <br>E.g.: <br> `The animal didn't cross the steet because it is too tired`<br> or <br> `The animal didn't cross the steet because it is too wide`<br> **Solution:** `Attention` (stores for each word which words from the prompt are important and which are not)
+3.  When the prompt has more words, we also need **Attention.** <br>E.g.: <br> `The animal didn't cross the street because it is too tired`<br> or <br> `The animal didn't cross the street because it is too wide`<br> **Solution:** `Attention` (stores for each word which words from the prompt are important and which are not)
 :::
 
 ::: {.column width="20%"}
@@ -255,15 +255,6 @@ Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5
 
 
 
-
-
-## Source
-
-The following is based on:
-
--   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br>
-
-The course is not free, but a free trial exist. The 4 hour course is **strongly recommended** to dive deeper.
 
 
 
@@ -308,7 +299,7 @@ Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `am
 
 #### Covid Twitter Feed
 
-[https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz]([https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz]){target="_blank"}
+[https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz](https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz){target="_blank"}
 
 ●● ●● ●●  XXX
 
@@ -372,7 +363,7 @@ The *Position-Vector* reflects the word position of the word `bit` in the prompt
 
 **Example 1:** the word **it** points to **animal**.
 
-**Example 2:** the word **it** points to **steet**.
+**Example 2:** the word **it** points to **street**.
 
 
 
@@ -390,7 +381,7 @@ The final *Position* and *Attention-Aware* `Vector A` for the word of interest (
 
 <small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=73](https://online.fliphtml5.com/grdgl/qhfw/#p=73){target="Blank_"}</small>
 
-## Step 4: Multi Head Processing {.smaller}
+## Multi Head Processing {.smaller}
 
 **Multi Head Processing:** When creating `Q`, `K` and `V` vectors, they are created with a smaller dimensionality. Here 8 vectors with dimension 64 each.
 
@@ -400,10 +391,12 @@ This allows *Self-Attention* to use different focus for each section.
 
 <small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=75](https://online.fliphtml5.com/grdgl/qhfw/#p=75){target="_Blank"}</small>
 
-## Step 4: Multi Head Processing (Visualization from Google)
+## Multi Head Processing (Visualization from Google)
 
-Use layer 1 (attention head 2 (orange))
+Use layer 1 (attention head 2 (orange) 
 [https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC](https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC){target="\"Blank_"}
+
+●● ●●  ●●   ●●XX XX
 
 ## What we wanted from an LLM: We are here  {.smaller}
 
@@ -412,7 +405,7 @@ Use layer 1 (attention head 2 (orange))
 Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}
 
 
-## LLM (Fine) Tuning  ●● ●●  ●●   ●●XX XX {.smaller}
+## LLM (Fine) Tuning   {.smaller}
 
 After a model is trained with *language* (i.e., the complete Internet), it needs to be *fine-tuned* to perform specific tasks:
 
@@ -453,6 +446,17 @@ After a model is trained with *language* (i.e., the complete Internet), it needs
 2)  **Low-Rank Adaptation:** Generate for each parameter matrix in the model, two matrices that when multiplied give the values of the matrix (*decomposing* $A$). E.g., $A$ has the dimension $512\times 512$ and $B$ has $512\times2$ and $C$ has $2\times512$. So that $B\cdot C=A$. Freeze $A$ and train $B$ and $C$ with new data (these are 2048 elements rather than 262144 elements). Multiply $B$ and $C$ and add it to $A$. This gives the *fine-tuned* weights.
 
 3)  **Prompt Tuning:** E.g. *RAGs*
+
+## Source
+
+The following is based on:
+
+-   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br>
+
+The course is not free, but a free trial exist. The 4 hour course is **strongly recommended** to dive deeper.
+
+
+
 
 
 ## Demo 1: Prompt Engeneering (Human Writer)
