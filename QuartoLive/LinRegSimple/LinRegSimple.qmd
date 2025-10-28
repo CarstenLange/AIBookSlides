@@ -286,17 +286,12 @@ head(Data100Houses)
 ModelLMExerc=lm(Price~Sqft, data=Data100Houses)
 print(ModelLMExerc)
 
-PlotRegr=ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
-       geom_point(color="red")+
-       geom_smooth(method="lm", se=FALSE)+
-       geom_vline(xintercept = mean(Data100Houses$Sqft))+
-       geom_hline(yintercept = mean(Data100Houses$Price))
-ggplotly(PlotRegr)
+ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+  geom_point(color="red")+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_vline(xintercept = mean(Data100Houses$Sqft))+
+  geom_hline(yintercept = mean(Data100Houses$Price))
 ```
-
-
-
-
 
 
 ## How Are Coefficients Calculated in R {.smaller}
@@ -408,7 +403,7 @@ MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_0}^{\mb
 \end{eqnarray}
 ```
 
-## Method 2: Calculate Optimal Parameters (only for OLS!){.smaller}
+## Calculate Optimal Parameters for OLS{.smaller}
 
 ```{=tex}
 \begin{eqnarray*} 
@@ -416,7 +411,9 @@ MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_0}^{\mb
 {N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
 {N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
 && \nonumber \\
-\beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
+\beta_{0,opt.}&=& \frac{\sum_{i=1}^N y_i}{N}  - 
+         \beta_{1,opt}  \frac{\sum_{i=1}^N x_i}{N} 
+         = 64.18
 \end{eqnarray*}
 ```
 
@@ -442,17 +439,39 @@ kbl(data.frame(as.list(colSums(DataTable))),
 
 ```
 
-## An Interactive Graph That Explains it All
+## Real Estate Model Revisited
 
-[https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
+Change the seed and `set.seed()` and see the coefficient for $SQFT$ change:
 
-## Significance of Coefficients
+```{webr}
+set.seed(7771)
+Data100HousesSqft=import("Data/DataHouses.csv")|> 
+           clean_names("upper_camel") |> 
+           select(Price,Sqft=SqftLiving) |>     
+                  sample_n(100)
+head(Data100HousesSqft)
 
-Null Hypothesis:
+ModelLMSqft=lm(Price~Sqft, data=Data100HousesSqft)
+print(ModelLMSqft)
 
-$$
+```
 
 
+## Significance of Coefficients {.smaller}
+
+**Null Hypothesis:**
+
+$$\beta_1=0$$
+$$\widehat{Price}=0 \cdot Sqft + \beta_0$$
+
+**Alternative (Research) Hypothesis:**
+
+$$\beta_1\neq 0$$
+```{webr}
+summary(ModelLMSqft)
+```
+
+$P$ value shows the probability for $\beta_1=0$, meaning the coefficient from the sample was just accidentally observed and $Sqft$ has no influence on $Price$.
 
 ## Summary - Steps for a Linear Regression {.smaller}
 
