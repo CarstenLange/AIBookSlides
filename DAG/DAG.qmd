@@ -1,0 +1,87 @@
+---
+title: "Digital Acyclical Graphs (DAGs)"
+subtitle: "Graph Correlations Between Your Variables"
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  revealjs:
+    theme: [moon,../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://dagitty.net'>https://dagitty.net</a> "
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+
+## What Will You Learn
+
+-   Why is is important to graph the (assumed) correlation between all variables that will be part of the analysis
+-   How to create a DAG
+
+-   The very basics of backdoor paths
+
+
+
+## How to Generate a Basic Graph
+
+Assume: 
+
+- `Stress` causes `Cancer`
+- `Stress` causes `Smoking`
+- `Smoking` causes `Cancer`
+
+We want to analyze how `Smoking` influences `Cancer`, which makes `Cancer` our **Outcome**. The *predictor* `Smoking` becomes our **Exposure**:
+
+## How to Generate a Basic Graph
+
+```{r}
+#| code-fold: true
+library(tidyverse)
+library(dagitty)
+library(ggdag)
+set.seed(123)
+dagify(Cancer~Smoking+Stress,
+       Smoking~Stress,
+       outcome = "Cancer",
+       exposure = "Smoking"
+      ) |> 
+ggdag_status(node_size = 22) + theme_void()
+```
+An online tool to create a DAG is available at: [https://dagitty.net/](https://dagitty.net/)
+
+
+##  Use Your Domain Knowledge (beliefs) to Complete The Dag Below
+
+*Directed Acylical Graphs (DAG's)* can help to structure our beliefs.
+
+**Incomplete DAG**
+```{r}
+#| code-fold: true
+library(tidyverse)
+library(ggdag)
+set.seed(123)
+dagify(Wage~SexFem+Ten+Educ+Talent,
+       outcome = "Wage",
+       exposure = "SexFem"
+      ) |> 
+ggdag_status(node_size = 22) + theme_void()
+```
+
+Complete the DAG here: [https://dagitty.net/mfBystKCe](https://dagitty.net/mfBystKCe)
