@@ -1,0 +1,280 @@
+---
+title: "Linear Regression"
+subtitle: "Multivariate"
+
+format: 
+  live-revealjs:
+    echo: true
+    code-fold: true
+    theme: [moon,../../CustomCL.scss]
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/LinRegr.html'>Textbook </a> "
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - wooldridge
+    - janitor
+    
+resources: 
+  - Data
+engine: knitr    
+---
+
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
+
+
+-   Motivation for multivariate regression
+
+    -   Prediction of outcome (include all predictors you have data for)
+    -   Impact Analysis
+    -   Impact of one predictor but controlled for other predictors
+    
+- Digital Acylical Graph (DAG) as a reflection of domain knowledge
+
+- Data Engineering
+
+- Exploratory data analysis
+
+-   How to extend univariate regression to multivariate regression in *R*
+
+-   Interpretation of standard error, t-value, and P-value to infer on prediction quality
+
+## Three Motivations to perform Multivariate Regression
+
+**Prediction only:**   
+    Only trying to get the best prediction of an outcome --- no interpretation of predictor impact (include all predictors that are relevant regardless of interaction effects)
+
+**Impact Analysis:** 
+    Analyzing and quantifying the impact of many predictors. Leads to high requirements for statistical methods.
+
+**Impact of one predictor:** 
+    Often performed in marketing, medicine, and pharma research when A/B testing is not possible.
+
+## Estimating Housing Price with Simple Regressions{.smaller}
+**Complete the code to run a regression with `Price` as outcome and `Sqft` as predictor. Write down the fitted formula on a piece of paper:**
+
+```{r}
+#| echo: false
+library(rio)
+library(tidyverse)
+set.seed(123)
+DataHouses=import("Data/DataHousesSyn.csv") |> sample_n(400, replace = FALSE)
+head(DataHouses, n=3)
+```
+
+```{webr}
+DataHouses=import("Data/DataHousesSyn.csv")
+ModelSqft=lm(@@@ ~ @@@, data= @@@)
+summary(ModelSqft)
+```
+
+## Estimating Housing Price with Simple Regressions{.smaller}
+**Complete the code to run a regression with `Price` as outcome and `Cond` as predictor. Write down the fitted formula on a piece of paper:**
+
+```{r}
+#| echo: false
+head(DataHouses, n=3)
+```
+
+```{webr}
+DataHouses=import("Data/DataHousesSyn.csv")
+ModelCond=lm(@@@ ~ @@@, data= @@@)
+summary(ModelCond)
+```
+
+
+## Estimating Housing Price with Two Simple Regressions{.smaller}
+**!!! Works only if Sqft and Cond are uncorrelated!!!**
+
+```{r}
+#| code-fold: true
+ModelOLSSqft=lm(Price~Sqft, data = DataHouses)
+summary(ModelOLSSqft)
+```
+
+$$Price=`r round(ModelOLSSqft$coefficients[2])` Sqft + 
+`r round(ModelOLSSqft$coefficients[2])`$$
+
+## Estimating Housing Price with Two Simple Regressions{.smaller}
+**!!! Works only if Sqft and Cond are uncorrelated!!!**
+
+```{r}
+#| code-fold: true
+ModelOLSCond=lm(Price~Cond, data = DataHouses)
+summary(ModelOLSCond)
+```
+
+$$Price=`r format(ModelOLSCond$coefficients[2],scientific = FALSE, digits=1)` Cond + 
+`r round(ModelOLSSqft$coefficients[1])`$$
+
+
+## Multivariate Regression {.smaller}
+
+```{r}
+#| echo: true
+#| code-fold: true
+ModelOLSMult=lm(Price~Sqft+Cond, data = DataHouses)
+summary(ModelOLSMult)
+```
+
+## Real World Example: Sex Discrimination {.samller}
+### Data
+
+Use `? wage1` to learn more about the data:
+
+```{webr}
+library(wooldridge)
+? wage1
+```
+
+Note, in wage analysis the wage is often used in logarithmic form and tenure and experience are squared. For simplicity, we use the orginal values instead.
+
+## Real World Example: Sex Discrimination {.smaller}
+### Data
+```{r}
+#| echo: true
+#| code-fold: true
+library(janitor)
+library(wooldridge)
+library(ggdag)
+DataWage=wage1 |> 
+         clean_names("upper_camel") |>  
+         select(Wage, SexFem=Female, Tenure, Exper, 
+                Educ, NonWhite=Nonwhite, MSA=Smsa, 
+                Married, NumDep=Numdep)
+head(DataWage)
+```
+
+
+
+## Example: Sex Discrimination (Impact of one Predictor) {.smaller}
+### Univariate with SexFem only
+
+**Can we trust a univariate regression with only $SexFem$ ???**
+
+For example, education, tenure, experience etc. also influence $Wage$?
+
+```{r}
+ModelSexOnly=lm(Wage~SexFem, DataWage)
+summary(ModelSexOnly)
+```
+
+## Possible but Incomplete DAG
+```{r}
+#| code-fold: true
+set.seed(123)
+dagify(Wage~SexFem+Tenure+Educ+Exper+Talent+SglPar+NonWhite+MSA,
+       SglPar~SexFem,
+       outcome = "Wage",
+       exposure = "SexFem"
+      ) |> 
+ggdag_status(node_size = 22) + theme_void()
+```
+
+## Data-Engineering
+
+We do not have the variables `Talent` and `SglPar`. 
+
+`Talent` is no problem because it is not correlated with `SexFem`.<br> 
+For `SglPar` we can use data-engineer:
+
+```{r}
+DataWageAnalysis=DataWage |> 
+          mutate(SglPar=ifelse((Married==0 & NumDep>0),1,0)) |> 
+          mutate(Married=NULL, NumDep=NULL)
+head(DataWageAnalysis)
+```
+
+
+## Which Independent Variables Should we Choose? {.smaller}
+
+**Choosing as many as possible is a bad idea!!!**
+
+## Which Independent Variables Should we Choose?
+
+
+**If choosing all variables is a bad idea, we need a procedure to choose independent variables (predictors)!**
+
+**Plan and think before you run a regression**
+
+
+
+##  Exploratory Data Analysis with SmartEDA and Correlation Matrix
+
+You need to install the `SmartEDA` package first.
+
+```{r}
+#| echo: true
+#| eval: false
+library(SmartEDA)
+#ExpReport(DataWageAnalysis, op_file = "EDAReport")
+```
+
+[EDAReport.html](EDAReport.html){target="_blank"}
+
+**Correlation Matrix**
+
+```{r}
+library(corrplot)
+CorMatrix=cor(DataWageAnalysis)
+corrplot(CorMatrix, method = 'shade', type = 'full', 
+         addCoef.col ='black', number.cex = 0.7, order = 'original', diag=FALSE)
+
+```
+
+## Based ON EDA Adjust the DAG
+
+Based on the DAG decide which variables are candidates and include only these candidates in your analysis:
+
+[https://dagitty.net/mtmVTV4QK](https://dagitty.net/mtmVTV4QK){target="_blank"}
+
+## Multivariate Regression
+
+```{webr}
+#|eecho: false
+DataWageAnalysis=wage1 |> 
+                 clean_names("upper_camel") |>  
+                 select(Wage, SexFem=Female, Tenure, Exper, 
+                        Educ, NonWhite=Nonwhite, MSA=Smsa, 
+                        Married, NumDep=Numdep) |> 
+                 mutate(SglPar=
+                        ifelse((Married==0 & NumDep>0),1,0)) |> 
+                 mutate(Married=NULL, NumDep=NULL)
+```
+
+
+**Experiment with the Wage Analysis:**
+
+```{webr}
+ModelSexDisc=lm(Wage~SexFem+Educ+Tenure+SglPar+MSA+Exper, data = DataWageAnalysis)
+summary(ModelSexDisc)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
