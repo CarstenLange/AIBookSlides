@@ -1,0 +1,180 @@
+---
+title: "Joining Data" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+
+format: 
+  live-revealjs:
+    message: false
+    warning: false
+    echo: true
+    code-fold: true
+    theme: [moon,../../CustomCL.scss]
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    
+
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - janitor
+    
+resources: 
+  - Data
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+## What Will You Learn {.scrollable .smaller}
+
+
+
+- How to enrich data with a GIS system (*ArcGIS Online*)
+
+## Data: Houses
+
+```{webr}
+#| echo: false
+library(tidyverse)
+library(rio)
+library(janitor)
+DataHouses=import("Data/DataHouses.csv") |> 
+           clean_names("upper_camel") |>
+           select(Price, Sqft=SqftLiving, Waterfront, 
+                  Cond=Condition, 
+                  ZIPCode=Zipcode)
+DataHouses[1,"ZIPCode"]=12345
+DataHouses[2,"ZIPCode"]=12345
+```
+
+```{r}
+library(tidyverse)
+library(rio)
+library(janitor)
+DataHouses=import("Data/DataHouses.csv") |> 
+           clean_names("upper_camel") |>
+           select(Price, Sqft=SqftLiving, Waterfront, 
+                  Cond=Condition, 
+                  ZIPCode=Zipcode)
+DataHouses[1,"ZIPCode"]=99999
+DataHouses[2,"ZIPCode"]=99999
+head(DataHouses)
+```
+
+## Regression without ZIP Income
+
+```{webr}
+ModelOLSOrg=lm(Price~Sqft+Cond+Waterfront, data=DataHouses)
+summary(ModelOLSOrg)
+```
+
+## How to Find Census Data
+
+**Census Data Tool:**
+
+[https://data.census.gov/](https://data.census.gov/){target="_blank}
+
+**Video:**
+
+[https://www.lange-analytics.com/tmp/VideoFlow.html](https://www.lange-analytics.com/tmp/VideoFlow.html){target="_blank}
+
+## How to Enrich Data with ArcGIS Online
+
+[https://www.arcgis.com/index.html](https://www.arcgis.com/index.html){target="_blank}
+            
+## Data ZIP Code Tabulation Areas
+
+```{webr}
+#| echo: false
+DataZipWithIncome=import("Data/KingCountyTabZipCodesTables.csv") |> 
+           clean_names("upper_camel") |>
+           select(ZIPTabArea=ZipCodeTabulationAreaCode, 
+                  HasData, IncomeZIP=X2025MedianHouseholdIncome)
+```
+
+```{r}
+DataZipWithIncome=import("Data/KingCountyTabZipCodesTables.csv") |> 
+           clean_names("upper_camel") |>
+           select(ZIPTabArea=ZipCodeTabulationAreaCode, 
+                  HasData, IncomeZIP=X2025MedianHouseholdIncome)
+print(DataZipWithIncome)
+```
+
+## Left Join
+
+Keep all records from `left` table and only the matching ones from the `right` table.
+
+```{webr}
+DataHousesWithIncomeLeft=left_join(DataHouses, DataZipWithIncome, 
+                               join_by(ZIPCode==ZIPTabArea))
+cat("Number of Observations:", nrow(DataHousesWithIncomeLeft))
+DataHousesWithIncomeLeft[!complete.cases(DataHousesWithIncomeLeft),]
+```
+
+## Right Join 
+### (we could have also reversed the tables in the left join above)
+
+Keep all records from `right` table and only the matching ones from the `left` table.
+
+```{webr}
+DataHousesWithIncomeRight=right_join(DataHouses, DataZipWithIncome, 
+                               join_by(ZIPCode==ZIPTabArea))
+cat("Number of Observations:", nrow(DataHousesWithIncomeRight))
+DataHousesWithIncomeRight[!complete.cases(DataHousesWithIncomeRight),]
+```
+
+
+## Full Join
+
+Keep all records from `right` table and all from the `left` table.
+
+
+```{webr}
+DataHousesWithIncomeFull=full_join(DataHouses, DataZipWithIncome, 
+                               join_by(ZIPCode==ZIPTabArea)) 
+cat("Number of Observations:", nrow(DataHousesWithIncomeFull))
+DataHousesWithIncomeFull[!complete.cases(DataHousesWithIncomeFull),]
+```
+
+## Inner Join
+### (most common)
+
+Keep only records that have a match!
+
+```{webr}
+DataHousesWithIncomeInner=inner_join(DataHouses, DataZipWithIncome, 
+                               join_by(ZIPCode==ZIPTabArea))
+cat("Number of Observations:", nrow(DataHousesWithIncomeInner))
+DataHousesWithIncomeInner[!complete.cases(DataHousesWithIncomeInner),]
+```
+
+## Regression with ZIP Income
+
+```{webr}
+ModelOLSInc=lm(Price~Sqft+Cond+Waterfront+IncomeZIP, data=DataHousesWithIncomeInner)
+summary(ModelOLSInc)
+```
+
+
+## Relational Multi-User SQL Databases
+
+**Why? Some reasons:**
+
+- effective storage and fast retrieval of data
+- roll back
+- simultaneous access for many users
+
+
+Join Tutorial:
+[https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs](https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs){target="_blank"}
