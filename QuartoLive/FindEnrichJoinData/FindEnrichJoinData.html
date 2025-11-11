@@ -223,8 +223,8 @@ Carsten Lange
 <li>How to enrich data with a GIS system (<em>ArcGIS Online</em>)</li>
 </ul>
 </section>
-<section id="data-houses" class="slide level2">
-<h2>Data: Houses</h2>
+<section id="houses-data-omitted-variable-income" class="slide level2">
+<h2>Houses Data: Omitted Variable Income</h2>
 <div class="cell">
 <div>
 <div id="webr-1" class="exercise-cell">
@@ -495,7 +495,110 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiTW9kZWxPTFNJbmM9bG0oUHJp
 <li>roll back</li>
 <li>simultaneous access for many users</li>
 </ul>
-<p>Join Tutorial: <a href="https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs" target="_blank">https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs</a></p>
+</section>
+<section id="creating-a-sql-database" class="slide level2">
+<h2>Creating a SQL Database</h2>
+<h3 id="usually-done-by-dbadmin">Usually done by DBAdmin</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb5-1"><a href=""></a><span class="kw">drop</span> <span class="kw">table</span> toys <span class="kw">cascade</span> <span class="kw">constraints</span>;</span>
+<span id="cb5-2"><a href=""></a><span class="kw">drop</span> <span class="kw">table</span> bricks <span class="kw">cascade</span> <span class="kw">constraints</span>;</span>
+<span id="cb5-3"><a href=""></a></span>
+<span id="cb5-4"><a href=""></a><span class="kw">create</span> <span class="kw">table</span> toys (</span>
+<span id="cb5-5"><a href=""></a>  toy_id     <span class="dt">integer</span>,</span>
+<span id="cb5-6"><a href=""></a>  toy_name   <span class="dt">varchar2</span>(<span class="dv">20</span>),</span>
+<span id="cb5-7"><a href=""></a>  toy_colour <span class="dt">varchar2</span>(<span class="dv">10</span>)</span>
+<span id="cb5-8"><a href=""></a>);</span>
+<span id="cb5-9"><a href=""></a></span>
+<span id="cb5-10"><a href=""></a><span class="kw">create</span> <span class="kw">table</span> bricks (</span>
+<span id="cb5-11"><a href=""></a>  brick_id     <span class="dt">integer</span>,</span>
+<span id="cb5-12"><a href=""></a>  brick_colour <span class="dt">varchar2</span>(<span class="dv">10</span>),</span>
+<span id="cb5-13"><a href=""></a>  brick_shape  <span class="dt">varchar2</span>(<span class="dv">10</span>)</span>
+<span id="cb5-14"><a href=""></a>);</span>
+<span id="cb5-15"><a href=""></a></span>
+<span id="cb5-16"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> toys <span class="kw">values</span> ( <span class="dv">1</span>, <span class="st">'Miss Snuggles'</span>, <span class="st">'pink'</span> ) ;</span>
+<span id="cb5-17"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> toys <span class="kw">values</span> ( <span class="dv">2</span>, <span class="st">'Cuteasaurus'</span>, <span class="st">'blue'</span> ) ;</span>
+<span id="cb5-18"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> toys <span class="kw">values</span> ( <span class="dv">3</span>, <span class="st">'Baby Turtle'</span>, <span class="st">'green'</span> ) ;</span>
+<span id="cb5-19"><a href=""></a></span>
+<span id="cb5-20"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> bricks <span class="kw">values</span> ( <span class="dv">1</span>, <span class="st">'blue'</span>, <span class="st">'cube'</span> );</span>
+<span id="cb5-21"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> bricks <span class="kw">values</span> ( <span class="dv">2</span>, <span class="st">'green'</span>, <span class="st">'cube'</span> );</span>
+<span id="cb5-22"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> bricks <span class="kw">values</span> ( <span class="dv">3</span>, <span class="st">'blue'</span>, <span class="st">'pyramid'</span> );</span>
+<span id="cb5-23"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> bricks <span class="kw">values</span> ( <span class="dv">4</span>, <span class="st">'blue'</span>, <span class="st">'cube'</span> );</span>
+<span id="cb5-24"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> bricks <span class="kw">values</span> ( <span class="dv">5</span>, <span class="st">'green'</span>, <span class="st">'cube'</span> );</span>
+<span id="cb5-25"><a href=""></a><span class="kw">insert</span> <span class="kw">into</span> bricks <span class="kw">values</span> ( <span class="dv">6</span>, <span class="st">'blue'</span>, <span class="st">'pyramid'</span> );</span>
+<span id="cb5-26"><a href=""></a></span>
+<span id="cb5-27"><a href=""></a><span class="kw">commit</span>;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Tutorial: <a href="https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs" target="_blank">https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs</a></p>
+</section>
+<section id="important-sql-commands-select-rows-with-condition-like-filter-in-r" class="slide level2">
+<h2>Important SQL Commands: select rows with condition (like filter in R)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb6-1"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> <span class="kw">table</span> <span class="kw">WHERE</span> condition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Example Query:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb7-1"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> bricks <span class="kw">WHERE</span> brick_colour <span class="op">=</span> <span class="st">'blue'</span>; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Example Query saved as a <code>View</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb8-1"><a href=""></a><span class="kw">DROP</span> <span class="kw">View</span> MyQuery;</span>
+<span id="cb8-2"><a href=""></a><span class="kw">CREATE</span> <span class="kw">View</span> MyQuery <span class="kw">AS</span> <span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> bricks <span class="kw">WHERE</span> brick_colour <span class="op">=</span> <span class="st">'blue'</span>; </span>
+<span id="cb8-3"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> MyQuery;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="important-sql-commands-delete-rows-with-condition-like-filter-in-r" class="slide level2">
+<h2>Important SQL Commands: delete rows with condition (like filter in R)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb9-1"><a href=""></a><span class="kw">DELETE</span> <span class="kw">FROM</span> <span class="kw">table</span> <span class="kw">WHERE</span> condition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Example Query:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb10-1"><a href=""></a><span class="kw">DELETE</span> <span class="kw">FROM</span> bricks <span class="kw">WHERE</span> brick_shape <span class="op">=</span> <span class="st">'pyramid'</span>; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Running <code>MyQuery</code> again (the delete from <code>bricks</code> is considered):</p>
+<p>Example Query:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb11-1"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> MyQuery; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>MyQuery</code> is up-to-date because a <code>View</code> does not store dat. It stores <em>SQL</em> command and runs them agian when called.</p>
+</section>
+<section id="important-sql-commands-update-row-entries-with-condition-like-filter-in-r" class="slide level2">
+<h2>Important SQL Commands: UPDATE row entries with condition (like filter in R)</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb12-1"><a href=""></a><span class="kw">UPDATE</span> table_name</span>
+<span id="cb12-2"><a href=""></a><span class="kw">SET</span> column1 <span class="op">=</span> value1,</span>
+<span id="cb12-3"><a href=""></a>    column2 <span class="op">=</span> value2,</span>
+<span id="cb12-4"><a href=""></a>    <span class="op">..</span>.</span>
+<span id="cb12-5"><a href=""></a><span class="kw">WHERE</span> condition;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Example Query (make blue bricks red):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb13-1"><a href=""></a><span class="kw">UPDATE</span> bricks</span>
+<span id="cb13-2"><a href=""></a><span class="kw">SET</span> brick_colour <span class="op">=</span> <span class="st">'red'</span></span>
+<span id="cb13-3"><a href=""></a><span class="kw">WHERE</span> brick_colour <span class="op">=</span> <span class="st">'blue'</span>;</span>
+<span id="cb13-4"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span> <span class="kw">FROM</span> BRICKS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="inner-and-left-join" class="slide level2">
+<h2>Inner and Left Join</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb14-1"><a href=""></a><span class="kw">SELECT</span> <span class="kw">columns</span></span>
+<span id="cb14-2"><a href=""></a><span class="kw">FROM</span> table1</span>
+<span id="cb14-3"><a href=""></a><span class="kw">INNER</span> <span class="kw">JOIN</span> table2</span>
+<span id="cb14-4"><a href=""></a><span class="kw">ON</span> table1.column_name <span class="op">=</span> table2.column_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Example Left Join Query :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb15-1"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb15-2"><a href=""></a><span class="kw">FROM</span> toys <span class="kw">LEFT</span> <span class="kw">JOIN</span> bricks</span>
+<span id="cb15-3"><a href=""></a><span class="kw">ON</span> toys.TOY_COLOUR<span class="op">=</span> bricks.BRICK_COLOUR;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Example Left Join Query :</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource sql number-lines code-with-copy"><code class="sourceCode sql"><span id="cb16-1"><a href=""></a><span class="kw">SELECT</span> <span class="op">*</span></span>
+<span id="cb16-2"><a href=""></a><span class="kw">FROM</span> toys <span class="kw">INNER</span> <span class="kw">JOIN</span> bricks</span>
+<span id="cb16-3"><a href=""></a><span class="kw">ON</span> toys.TOY_COLOUR<span class="op">=</span> bricks.BRICK_COLOUR;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 <script type="webr-data">
 eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsInRpZHl2ZXJzZSIsInJpbyIsImphbml0b3IiXSwicmVwb3MiOltdfSwicmVuZGVyX2RmIjoiZGVmYXVsdCJ9
