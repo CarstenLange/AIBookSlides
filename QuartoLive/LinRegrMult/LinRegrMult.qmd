@@ -218,6 +218,7 @@ You need to install the `SmartEDA` package first.
 
 ```{r}
 #| echo: true
+#| eval: false
 library(SmartEDA)
 ExpReport(DataWageAnalysis, op_file = "EDAReport")
 ```
@@ -231,7 +232,6 @@ library(corrplot)
 CorMatrix=cor(DataWageAnalysis)
 corrplot(CorMatrix, method = 'shade', type = 'full', 
          addCoef.col ='black', number.cex = 0.7, order = 'original', diag=FALSE)
-
 ```
 
 ## Based ON EDA Adjust the DAG
