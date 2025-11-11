@@ -106,7 +106,7 @@ summary(ModelOLSSqft)
 ```
 
 $$Price=`r round(ModelOLSSqft$coefficients[2])` Sqft + 
-`r round(ModelOLSSqft$coefficients[2])`$$
+`r round(ModelOLSSqft$coefficients[1])`$$
 
 ## Estimating Housing Price with Two Simple Regressions{.smaller}
 **!!! Works only if Sqft and Cond are uncorrelated!!!**
@@ -118,7 +118,7 @@ summary(ModelOLSCond)
 ```
 
 $$Price=`r format(ModelOLSCond$coefficients[2],scientific = FALSE, digits=1)` Cond + 
-`r round(ModelOLSSqft$coefficients[1])`$$
+`r round(ModelOLSCond$coefficients[1])`$$
 
 
 ## Multivariate Regression {.smaller}
