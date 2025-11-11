@@ -218,7 +218,6 @@ You need to install the `SmartEDA` package first.
 
 ```{r}
 #| echo: true
-#| eval: false
 library(SmartEDA)
 ExpReport(DataWageAnalysis, op_file = "EDAReport")
 ```
