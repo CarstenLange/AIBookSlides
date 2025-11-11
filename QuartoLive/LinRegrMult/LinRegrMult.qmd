@@ -220,7 +220,7 @@ You need to install the `SmartEDA` package first.
 #| echo: true
 #| eval: false
 library(SmartEDA)
-#ExpReport(DataWageAnalysis, op_file = "EDAReport")
+ExpReport(DataWageAnalysis, op_file = "EDAReport")
 ```
 
 [EDAReport.html](EDAReport.html){target="_blank"}
