@@ -1,0 +1,106 @@
+---
+title: "Venn Diagram Analysis" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+
+format: 
+  live-revealjs:
+    message: false
+    warning: false
+    echo: true
+    code-fold: true
+    theme: [moon,../../CustomCL.scss]
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    
+
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - janitor
+    
+resources: 
+  - Data
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+## What Will You Learn {.scrollable .smaller}
+
+
+
+- How Preparing Ven-Diagram Churn Analysis
+
+```{r}
+library(rio); library(janitor); library(tidymodels)
+DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |>
+          clean_names("upper_camel") |>
+          select(Churn,Gender, SeniorCitizen, Tenure, MonthlyCharges) |>
+  mutate(Churn=ifelse(Churn=="Yes",TRUE,FALSE)) |> 
+                 mutate(SexMale=ifelse(Gender=="Male",TRUE,FALSE))|>
+                 mutate(SeniorYes=ifelse(SeniorCitizen==1,TRUE,FALSE))|>
+                 mutate(ChargesHigh=ifelse(MonthlyCharges>70.35,TRUE,FALSE))|>
+                 mutate(TenureLow=ifelse(Tenure<29,TRUE,FALSE)) |> 
+  na.omit()
+head(DataChurnOrg)
+
+quantile(DataChurnOrg$MonthlyCharges, 0.5) #70.35
+quantile(DataChurnOrg$Tenure,0.5) #29
+DataChurnYes=DataChurnOrg   |> 
+  filter(Churn==TRUE)
+
+DataChurnNo=DataChurnOrg |> 
+  filter(Churn==FALSE)
+                 
+
+```
+
+## Logit
+
+```{r}
+ModelLogit=glm(Churn~Gender+SeniorCitizen+Tenure+MonthlyCharges, data = DataChurnOrg, family = binomial)
+summary(ModelLogit)
+```
+
+## Churn=Yes
+
+
+```{r}
+library(ggvenn)
+PlotYes=ggplot(aes(A=TenureLow, B=ChargesHigh, C=SeniorYes), data=DataChurnYes) +
+  geom_venn()+
+  coord_fixed()+
+  theme_void() +
+  ggtitle("Churn = TRUE")
+plot(PlotYes)
+```
+
+## Churn=No
+
+```{r}
+PlotNo=ggplot(aes(A=TenureLow, B=ChargesHigh, C=SeniorYes), data=DataChurnNo) +
+  geom_venn()+
+  coord_fixed()+
+  theme_void()+
+  ggtitle("Churn = FALSE")
+plot(PlotNo)
+```
+
+## Both
+
+```{r}
+library(patchwork)
+PlotYes+PlotNo
+```
+
