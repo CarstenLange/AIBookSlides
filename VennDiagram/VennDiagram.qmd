@@ -1,5 +1,6 @@
 ---
 title: "Venn Diagram Analysis" 
+
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
@@ -7,33 +8,18 @@ author:
 
 
 format: 
-  live-revealjs:
-    message: false
+  revealjs:
     warning: false
-    echo: true
     code-fold: true
-    theme: [moon,../../CustomCL.scss]
     controls: true
     chalkboard:
       theme: whiteboard
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    
 
-webr:
-  packages:
-    - tidyverse
-    - rio
-    - janitor
-    
-resources: 
-  - Data
-
-engine: knitr    
 ---
 
-{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
 
 ## What Will You Learn {.scrollable .smaller}
