@@ -67,8 +67,8 @@ DataHouses=import("Data/DataHouses.csv") |>
            select(Price, Sqft=SqftLiving, Waterfront, 
                   Cond=Condition, 
                   ZIPCode=Zipcode)
-DataHouses[1,"ZIPCode"]=99999
-DataHouses[2,"ZIPCode"]=99999
+DataHouses[1,"ZIPCode"]=12345
+DataHouses[2,"ZIPCode"]=12345
 head(DataHouses)
 ```
 
@@ -118,6 +118,7 @@ Keep all records from `left` table and only the matching ones from the `right` t
 ```{webr}
 DataHousesWithIncomeLeft=left_join(DataHouses, DataZipWithIncome, 
                                join_by(ZIPCode==ZIPTabArea))
+print(DataHousesWithIncomeLeft)
 cat("Number of Observations:", nrow(DataHousesWithIncomeLeft))
 DataHousesWithIncomeLeft[!complete.cases(DataHousesWithIncomeLeft),]
 ```
@@ -130,6 +131,7 @@ Keep all records from `right` table and only the matching ones from the `left` t
 ```{webr}
 DataHousesWithIncomeRight=right_join(DataHouses, DataZipWithIncome, 
                                join_by(ZIPCode==ZIPTabArea))
+print(DataHousesWithIncomeRight)
 cat("Number of Observations:", nrow(DataHousesWithIncomeRight))
 DataHousesWithIncomeRight[!complete.cases(DataHousesWithIncomeRight),]
 ```
@@ -143,6 +145,8 @@ Keep all records from `right` table and all from the `left` table.
 ```{webr}
 DataHousesWithIncomeFull=full_join(DataHouses, DataZipWithIncome, 
                                join_by(ZIPCode==ZIPTabArea)) 
+
+print(DataHousesWithIncomeFull)
 cat("Number of Observations:", nrow(DataHousesWithIncomeFull))
 DataHousesWithIncomeFull[!complete.cases(DataHousesWithIncomeFull),]
 ```
@@ -155,6 +159,8 @@ Keep only records that have a match!
 ```{webr}
 DataHousesWithIncomeInner=inner_join(DataHouses, DataZipWithIncome, 
                                join_by(ZIPCode==ZIPTabArea))
+
+print(DataHousesWithInner)
 cat("Number of Observations:", nrow(DataHousesWithIncomeInner))
 DataHousesWithIncomeInner[!complete.cases(DataHousesWithIncomeInner),]
 ```
