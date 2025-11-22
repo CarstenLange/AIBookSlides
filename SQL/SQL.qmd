@@ -1,0 +1,208 @@
+---
+title: "Joining Data" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+
+format: 
+  live-revealjs:
+    message: false
+    warning: false
+    echo: true
+    code-fold: true
+    theme: [moon,../../CustomCL.scss]
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    
+
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - janitor
+    
+resources: 
+  - Data
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+## What Will You Learn {.scrollable .smaller}
+
+
+
+- How to work with SQL
+
+
+## Relational Multi-User SQL Databases
+
+**Why? Some reasons:**
+
+- effective storage and fast retrieval of data
+- roll back
+- simultaneous access for many users
+
+
+
+
+## Creating a SQL Database
+### Usually done by DBAdmin
+
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+drop table toys cascade constraints;
+drop table bricks cascade constraints;
+
+create table toys (
+  toy_id     integer,
+  toy_name   varchar2(20),
+  toy_colour varchar2(10)
+);
+
+create table bricks (
+  brick_id     integer,
+  brick_colour varchar2(10),
+  brick_shape  varchar2(10)
+);
+
+insert into toys values ( 1, 'Miss Snuggles', 'pink' ) ;
+insert into toys values ( 2, 'Cuteasaurus', 'blue' ) ;
+insert into toys values ( 3, 'Baby Turtle', 'green' ) ;
+
+insert into bricks values ( 1, 'blue', 'cube' );
+insert into bricks values ( 2, 'green', 'cube' );
+insert into bricks values ( 3, 'blue', 'pyramid' );
+insert into bricks values ( 4, 'blue', 'cube' );
+insert into bricks values ( 5, 'green', 'cube' );
+insert into bricks values ( 6, 'blue', 'pyramid' );
+
+commit;
+```
+
+Tutorial:
+[https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs](https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs){target="_blank"}
+
+## Important SQL Commands: select rows with condition (like filter in R)
+
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+SELECT * FROM table WHERE condition
+```
+
+Example Query:
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+SELECT * FROM bricks WHERE brick_colour = 'blue'; 
+```
+
+Example Query saved as a `View`:
+
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+DROP View MyQuery;
+CREATE View MyQuery AS SELECT * FROM bricks WHERE brick_colour = 'blue'; 
+SELECT * FROM MyQuery;
+```
+
+## Important SQL Commands: delete rows with condition (like filter in R)
+
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+DELETE FROM table WHERE condition
+```
+
+Example Query:
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+DELETE FROM bricks WHERE brick_shape = 'pyramid'; 
+```
+
+Running `MyQuery` again (the delete from `bricks` is considered):
+
+Example Query:
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+SELECT * FROM MyQuery; 
+```
+
+`MyQuery` is up-to-date because a `View` does not store dat. It stores *SQL* command and runs them agian when called.
+
+## Important SQL Commands: UPDATE row entries with condition (like filter in R)
+
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+UPDATE table_name
+SET column1 = value1,
+    column2 = value2,
+    ...
+WHERE condition;
+```
+
+Example Query (make blue bricks red):
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+UPDATE bricks
+SET brick_colour = 'red'
+WHERE brick_colour = 'blue';
+SELECT * FROM BRICKS
+```
+
+
+## Inner and Left Join
+
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+SELECT columns
+FROM table1
+INNER JOIN table2
+ON table1.column_name = table2.column_name;
+```
+
+Example Left Join Query :
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+SELECT *
+FROM toys LEFT JOIN bricks
+ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;
+```
+
+Example Left Join Query :
+```{sql}
+#| code-fold: false
+#| echo: true
+#| eval: false
+SELECT *
+FROM toys INNER JOIN bricks
+ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;
+```
