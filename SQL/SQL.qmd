@@ -1,40 +1,12 @@
 ---
-title: "Joining Data" 
-author:
-  name: "Carsten Lange"
-  email: "clange@cpp.edu"
-  affiliation: "Cal Poly, Pomona"
-
-
+title: "Structured Query Language (SQL)"
+subtitle: "SQL the Language for Relational Databases"
 format: 
-  live-revealjs:
-    message: false
-    warning: false
-    echo: true
+  revealjs:
     code-fold: true
-    theme: [moon,../../CustomCL.scss]
-    controls: true
-    chalkboard:
-      theme: whiteboard
-      boardmarker-width: 2.7
-    incremental: false
     scrollable: true
-    
-
-webr:
-  packages:
-    - tidyverse
-    - rio
-    - janitor
-    
-resources: 
-  - Data
-
-engine: knitr    
+    echo: true
 ---
-
-{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
-
 
 ## What Will You Learn {.scrollable .smaller}
 
