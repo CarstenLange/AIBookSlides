@@ -220,118 +220,82 @@
 <section id="creating-a-sql-database" class="slide level2">
 <h2>Creating a SQL Database</h2>
 <h3 id="usually-done-by-dbadmin">Usually done by DBAdmin</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb1-2"><a href=""></a>#| echo: true</span>
-<span id="cb1-3"><a href=""></a>#| eval: false</span>
-<span id="cb1-4"><a href=""></a>drop table toys cascade constraints;</span>
-<span id="cb1-5"><a href=""></a>drop table bricks cascade constraints;</span>
-<span id="cb1-6"><a href=""></a></span>
-<span id="cb1-7"><a href=""></a>create table toys (</span>
-<span id="cb1-8"><a href=""></a>  toy_id     integer,</span>
-<span id="cb1-9"><a href=""></a>  toy_name   varchar2(20),</span>
-<span id="cb1-10"><a href=""></a>  toy_colour varchar2(10)</span>
-<span id="cb1-11"><a href=""></a>);</span>
-<span id="cb1-12"><a href=""></a></span>
-<span id="cb1-13"><a href=""></a>create table bricks (</span>
-<span id="cb1-14"><a href=""></a>  brick_id     integer,</span>
-<span id="cb1-15"><a href=""></a>  brick_colour varchar2(10),</span>
-<span id="cb1-16"><a href=""></a>  brick_shape  varchar2(10)</span>
-<span id="cb1-17"><a href=""></a>);</span>
-<span id="cb1-18"><a href=""></a></span>
-<span id="cb1-19"><a href=""></a>insert into toys values ( 1, 'Miss Snuggles', 'pink' ) ;</span>
-<span id="cb1-20"><a href=""></a>insert into toys values ( 2, 'Cuteasaurus', 'blue' ) ;</span>
-<span id="cb1-21"><a href=""></a>insert into toys values ( 3, 'Baby Turtle', 'green' ) ;</span>
-<span id="cb1-22"><a href=""></a></span>
-<span id="cb1-23"><a href=""></a>insert into bricks values ( 1, 'blue', 'cube' );</span>
-<span id="cb1-24"><a href=""></a>insert into bricks values ( 2, 'green', 'cube' );</span>
-<span id="cb1-25"><a href=""></a>insert into bricks values ( 3, 'blue', 'pyramid' );</span>
-<span id="cb1-26"><a href=""></a>insert into bricks values ( 4, 'blue', 'cube' );</span>
-<span id="cb1-27"><a href=""></a>insert into bricks values ( 5, 'green', 'cube' );</span>
-<span id="cb1-28"><a href=""></a>insert into bricks values ( 6, 'blue', 'pyramid' );</span>
-<span id="cb1-29"><a href=""></a></span>
-<span id="cb1-30"><a href=""></a>commit;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href=""></a>drop table toys cascade constraints;</span>
+<span id="cb1-2"><a href=""></a>drop table bricks cascade constraints;</span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a>create table toys (</span>
+<span id="cb1-5"><a href=""></a>  toy_id     integer,</span>
+<span id="cb1-6"><a href=""></a>  toy_name   varchar2(20),</span>
+<span id="cb1-7"><a href=""></a>  toy_colour varchar2(10)</span>
+<span id="cb1-8"><a href=""></a>);</span>
+<span id="cb1-9"><a href=""></a></span>
+<span id="cb1-10"><a href=""></a>create table bricks (</span>
+<span id="cb1-11"><a href=""></a>  brick_id     integer,</span>
+<span id="cb1-12"><a href=""></a>  brick_colour varchar2(10),</span>
+<span id="cb1-13"><a href=""></a>  brick_shape  varchar2(10)</span>
+<span id="cb1-14"><a href=""></a>);</span>
+<span id="cb1-15"><a href=""></a></span>
+<span id="cb1-16"><a href=""></a>insert into toys values ( 1, 'Miss Snuggles', 'pink' ) ;</span>
+<span id="cb1-17"><a href=""></a>insert into toys values ( 2, 'Cuteasaurus', 'blue' ) ;</span>
+<span id="cb1-18"><a href=""></a>insert into toys values ( 3, 'Baby Turtle', 'green' ) ;</span>
+<span id="cb1-19"><a href=""></a></span>
+<span id="cb1-20"><a href=""></a>insert into bricks values ( 1, 'blue', 'cube' );</span>
+<span id="cb1-21"><a href=""></a>insert into bricks values ( 2, 'green', 'cube' );</span>
+<span id="cb1-22"><a href=""></a>insert into bricks values ( 3, 'blue', 'pyramid' );</span>
+<span id="cb1-23"><a href=""></a>insert into bricks values ( 4, 'blue', 'cube' );</span>
+<span id="cb1-24"><a href=""></a>insert into bricks values ( 5, 'green', 'cube' );</span>
+<span id="cb1-25"><a href=""></a>insert into bricks values ( 6, 'blue', 'pyramid' );</span>
+<span id="cb1-26"><a href=""></a></span>
+<span id="cb1-27"><a href=""></a>commit;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Tutorial: <a href="https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs" target="_blank">https://freesql.com/library/tutorials/joining-tables-databases-for-developers-TST1Qs</a></p>
 </section>
 <section id="important-sql-commands-select-rows-with-condition-like-filter-in-r" class="slide level2">
 <h2>Important SQL Commands: select rows with condition (like filter in R)</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb2-2"><a href=""></a>#| echo: true</span>
-<span id="cb2-3"><a href=""></a>#| eval: false</span>
-<span id="cb2-4"><a href=""></a>SELECT * FROM table WHERE condition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb2-1"><a href=""></a>SELECT * FROM table WHERE condition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Example Query:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb3-2"><a href=""></a>#| echo: true</span>
-<span id="cb3-3"><a href=""></a>#| eval: false</span>
-<span id="cb3-4"><a href=""></a>SELECT * FROM bricks WHERE brick_colour = 'blue'; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb3-1"><a href=""></a>SELECT * FROM bricks WHERE brick_colour = 'blue'; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Example Query saved as a <code>View</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb4-2"><a href=""></a>#| echo: true</span>
-<span id="cb4-3"><a href=""></a>#| eval: false</span>
-<span id="cb4-4"><a href=""></a>DROP View MyQuery;</span>
-<span id="cb4-5"><a href=""></a>CREATE View MyQuery AS SELECT * FROM bricks WHERE brick_colour = 'blue'; </span>
-<span id="cb4-6"><a href=""></a>SELECT * FROM MyQuery;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb4-1"><a href=""></a>DROP View MyQuery;</span>
+<span id="cb4-2"><a href=""></a>CREATE View MyQuery AS SELECT * FROM bricks WHERE brick_colour = 'blue'; </span>
+<span id="cb4-3"><a href=""></a>SELECT * FROM MyQuery;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="important-sql-commands-delete-rows-with-condition-like-filter-in-r" class="slide level2">
 <h2>Important SQL Commands: delete rows with condition (like filter in R)</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb5-2"><a href=""></a>#| echo: true</span>
-<span id="cb5-3"><a href=""></a>#| eval: false</span>
-<span id="cb5-4"><a href=""></a>DELETE FROM table WHERE condition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb5-1"><a href=""></a>DELETE FROM table WHERE condition</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Example Query:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb6-2"><a href=""></a>#| echo: true</span>
-<span id="cb6-3"><a href=""></a>#| eval: false</span>
-<span id="cb6-4"><a href=""></a>DELETE FROM bricks WHERE brick_shape = 'pyramid'; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb6-1"><a href=""></a>DELETE FROM bricks WHERE brick_shape = 'pyramid'; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Running <code>MyQuery</code> again (the delete from <code>bricks</code> is considered):</p>
 <p>Example Query:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb7-2"><a href=""></a>#| echo: true</span>
-<span id="cb7-3"><a href=""></a>#| eval: false</span>
-<span id="cb7-4"><a href=""></a>SELECT * FROM MyQuery; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb7-1"><a href=""></a>SELECT * FROM MyQuery; </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p><code>MyQuery</code> is up-to-date because a <code>View</code> does not store dat. It stores <em>SQL</em> command and runs them agian when called.</p>
 </section>
 <section id="important-sql-commands-update-row-entries-with-condition-like-filter-in-r" class="slide level2">
 <h2>Important SQL Commands: UPDATE row entries with condition (like filter in R)</h2>
-<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb8-2"><a href=""></a>#| echo: true</span>
-<span id="cb8-3"><a href=""></a>#| eval: false</span>
-<span id="cb8-4"><a href=""></a>UPDATE table_name</span>
-<span id="cb8-5"><a href=""></a>SET column1 = value1,</span>
-<span id="cb8-6"><a href=""></a>    column2 = value2,</span>
-<span id="cb8-7"><a href=""></a>    ...</span>
-<span id="cb8-8"><a href=""></a>WHERE condition;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb8-1"><a href=""></a>UPDATE table_name</span>
+<span id="cb8-2"><a href=""></a>SET column1 = value1,</span>
+<span id="cb8-3"><a href=""></a>    column2 = value2,</span>
+<span id="cb8-4"><a href=""></a>    ...</span>
+<span id="cb8-5"><a href=""></a>WHERE condition;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Example Query (make blue bricks red):</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb9-2"><a href=""></a>#| echo: true</span>
-<span id="cb9-3"><a href=""></a>#| eval: false</span>
-<span id="cb9-4"><a href=""></a>UPDATE bricks</span>
-<span id="cb9-5"><a href=""></a>SET brick_colour = 'red'</span>
-<span id="cb9-6"><a href=""></a>WHERE brick_colour = 'blue';</span>
-<span id="cb9-7"><a href=""></a>SELECT * FROM BRICKS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb9-1"><a href=""></a>UPDATE bricks</span>
+<span id="cb9-2"><a href=""></a>SET brick_colour = 'red'</span>
+<span id="cb9-3"><a href=""></a>WHERE brick_colour = 'blue';</span>
+<span id="cb9-4"><a href=""></a>SELECT * FROM BRICKS</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section>
 <section id="inner-and-left-join" class="slide level2">
 <h2>Inner and Left Join</h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb10-2"><a href=""></a>#| echo: true</span>
-<span id="cb10-3"><a href=""></a>#| eval: false</span>
-<span id="cb10-4"><a href=""></a>SELECT columns</span>
-<span id="cb10-5"><a href=""></a>FROM table1</span>
-<span id="cb10-6"><a href=""></a>INNER JOIN table2</span>
-<span id="cb10-7"><a href=""></a>ON table1.column_name = table2.column_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb10-1"><a href=""></a>SELECT columns</span>
+<span id="cb10-2"><a href=""></a>FROM table1</span>
+<span id="cb10-3"><a href=""></a>INNER JOIN table2</span>
+<span id="cb10-4"><a href=""></a>ON table1.column_name = table2.column_name;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Example Left Join Query :</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb11-2"><a href=""></a>#| echo: true</span>
-<span id="cb11-3"><a href=""></a>#| eval: false</span>
-<span id="cb11-4"><a href=""></a>SELECT *</span>
-<span id="cb11-5"><a href=""></a>FROM toys LEFT JOIN bricks</span>
-<span id="cb11-6"><a href=""></a>ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb11-1"><a href=""></a>SELECT *</span>
+<span id="cb11-2"><a href=""></a>FROM toys LEFT JOIN bricks</span>
+<span id="cb11-3"><a href=""></a>ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Example Left Join Query :</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href=""></a>#| code-fold: false</span>
-<span id="cb12-2"><a href=""></a>#| echo: true</span>
-<span id="cb12-3"><a href=""></a>#| eval: false</span>
-<span id="cb12-4"><a href=""></a>SELECT *</span>
-<span id="cb12-5"><a href=""></a>FROM toys INNER JOIN bricks</span>
-<span id="cb12-6"><a href=""></a>ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode numberSource {sql} number-lines code-with-copy"><code class="sourceCode"><span id="cb12-1"><a href=""></a>SELECT *</span>
+<span id="cb12-2"><a href=""></a>FROM toys INNER JOIN bricks</span>
+<span id="cb12-3"><a href=""></a>ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </section>
     </div>

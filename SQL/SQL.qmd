@@ -30,9 +30,6 @@ format:
 ### Usually done by DBAdmin
 
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 drop table toys cascade constraints;
 drop table bricks cascade constraints;
 
@@ -68,26 +65,17 @@ Tutorial:
 ## Important SQL Commands: select rows with condition (like filter in R)
 
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 SELECT * FROM table WHERE condition
 ```
 
 Example Query:
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 SELECT * FROM bricks WHERE brick_colour = 'blue'; 
 ```
 
 Example Query saved as a `View`:
 
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 DROP View MyQuery;
 CREATE View MyQuery AS SELECT * FROM bricks WHERE brick_colour = 'blue'; 
 SELECT * FROM MyQuery;
@@ -96,17 +84,11 @@ SELECT * FROM MyQuery;
 ## Important SQL Commands: delete rows with condition (like filter in R)
 
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 DELETE FROM table WHERE condition
 ```
 
 Example Query:
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 DELETE FROM bricks WHERE brick_shape = 'pyramid'; 
 ```
 
@@ -114,9 +96,6 @@ Running `MyQuery` again (the delete from `bricks` is considered):
 
 Example Query:
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 SELECT * FROM MyQuery; 
 ```
 
@@ -125,9 +104,6 @@ SELECT * FROM MyQuery;
 ## Important SQL Commands: UPDATE row entries with condition (like filter in R)
 
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 UPDATE table_name
 SET column1 = value1,
     column2 = value2,
@@ -137,9 +113,6 @@ WHERE condition;
 
 Example Query (make blue bricks red):
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 UPDATE bricks
 SET brick_colour = 'red'
 WHERE brick_colour = 'blue';
@@ -150,9 +123,6 @@ SELECT * FROM BRICKS
 ## Inner and Left Join
 
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 SELECT columns
 FROM table1
 INNER JOIN table2
@@ -161,9 +131,6 @@ ON table1.column_name = table2.column_name;
 
 Example Left Join Query :
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 SELECT *
 FROM toys LEFT JOIN bricks
 ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;
@@ -171,9 +138,6 @@ ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;
 
 Example Left Join Query :
 ```{sql}
-#| code-fold: false
-#| echo: true
-#| eval: false
 SELECT *
 FROM toys INNER JOIN bricks
 ON toys.TOY_COLOUR= bricks.BRICK_COLOUR;
