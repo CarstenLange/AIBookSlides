@@ -59,7 +59,7 @@ library(TeachHist)
 
 
 
-## Histogram Cholesterol with Density as Column Height and Rel. Freq./Probability as Column Area plus Normal Curve {.smaller}
+## Histogram Cholesterol with Density as Column Height and Rel. Freq./Probability as Column Area plus Normal Curve  {.smaller}
 
 ```{r}
 #| echo: false
