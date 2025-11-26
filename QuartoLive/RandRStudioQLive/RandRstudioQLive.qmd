@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R and RStudio" 
+title: "Introduction to R and RStudio " 
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
