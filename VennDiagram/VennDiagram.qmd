@@ -26,7 +26,7 @@ format:
 
 
 
-- How Preparing Ven-Diagram Churn Analysis
+- Preparing Venn-Diagram Churn Analysis
 
 ```{r}
 library(rio); library(janitor); library(tidymodels)
