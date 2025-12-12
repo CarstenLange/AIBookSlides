@@ -22,8 +22,6 @@ format:
     footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
 webr:
   packages:
-    - tidyverse
-    - rio
     - ggdag
     
 resources: 
@@ -35,19 +33,13 @@ engine: knitr
 
 ## Learning Outcomes {.smaller}
 
-```{webr}
-#| echo: false
-DataTitanic=import("Data/Titanic.csv") |> 
-  select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
-```
-
--   How to install R and RStudio
--   What is the windows layout of RStudio
--   How to setup RStudio
--   How to create a project (folder) in RStudio
--   How to use major functionality of RStudio
+-   How to install R and *Positron*
+-   What is the windows layout of *Positron*
+-   How to setup *Positron*
+-   How to use a (project) folder in *Positron*
+-   How to use major functionality of *Positron*
 -   How to extend R's functionality with R-packages
--   Which packages you should install for this book
+-   Which packages you should install for this course
 -   Data types and data objects in R
 -   The Structure of R commands
 -   About the `tidyverse` package for data frames
@@ -57,53 +49,74 @@ DataTitanic=import("Data/Titanic.csv") |>
     -   `arrange()` sort observations in a data frame.
     -   piping (connecting commands) with `|>`.
 
-## Install and Setup R and RStudio {.smaller}
+## Install and Setup R and Positron {.smaller}
 
 A typical setup to work with R consists of two components:
 
-::: nonincremental
+
 -   the **R Console** which executes R code and
 
--   an integrated development environment (IDE) such as **RStudio**.
-:::
+-   an integrated development environment (IDE) such as **RStudio** or **Positron**.
+
 
 You can download R here: [Download R](https://cran.r-project.org/bin/){target="_blank"}
 
-You can download RStudio here: [Download RStudio](https://www.rstudio.com/products/rstudio/download/#download){target="_blank"}
-
-Detailed installation guides are provided in the Book and the Online Resources sections of this chapter in book.
-
-## Posit --- Integrated Development Environment (IDE) 🤓 {.smaller}
-
-![RStudio Window](Graphics/PositWindowsCL.png)
-
-First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
+You can download *Positron* here: [Download *Positron*](https://positron.posit.co/download.html){target="_blank"}
 
 
-## RStudio --- Integrated Development Environment (IDE) 🤓 {.smaller}
+
+> **Note**<br>
+> - Install R before *Positron*<br>
+> - If an older R version exists deinstall it before installing the newer version
+
+
+## RStudio --- Integrated Development Environment (IDE)  {.smaller}
 
 ![RStudio Window](Graphics/RStudioWindowsCL.png)
 
-First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
+First steps to setup R anf *RStudio* can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
+(However, **it is recommended** to work wit *Positron* rather than *RStudio* in this course)
 
-::: footer
-See: [RandRStudioScriptPart1.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
-:::
 
-## Recommended RStudio Settings {.smaller}
 
-1.**Do not Restore .RData into workspace at startup:**\
-`Tools -> GlobalOptions`.
+## Positron --- Integrated Development Environment (IDE)  {.smaller}
 
-2.  **Work with R Projects:** This assigns a directory on your hard drive to your R analysis: `File -> New Project`
+![Positron Window](Graphics/PositWindowsCL.png)
 
-First steps to setup R can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M){target="_blank"}
+**First steps** to setup R and *Posit* can be found in this video: coming soon
+
+## Try Positron with an R file {.smaller}
+
+1. Always open a folder first
+1. Print "Hello world" using the `print(command)
+
+3. Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
+  - calculate the hyphosenuse $c$
+  - print the result using the `cat(command)`
+  $$c^2=a^2+b^2 \longleftrightarrow c=\sqrt{a^2+b^2}$$
+
+## Try Positron with a Quarto (qmd) file  {.smaller}
+
+- Always open a folder first
+- We want to have text and code in the same file. 
+- Text is written in *MarkDown* 
+- Code is sorundended by:
+    
+**Instructions:**
+
+1) Print "hello world" using the `print()` command
+
+2) Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
+    - calcualte the hyphosenuse $c$
+    - print the result using the `cat()` command
+  $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+
 
 ## R Packages {.smaller}
 
 R Packages extend R's functionality. They have to be **installed** only once:
 
-`Tools -> Install Packages ...`
+For example, to install the `tidyverse` package, type in the consol window: `install.packages("tidyverse)`
 
 After installation they need to be **loaded** in every new R script with `library()`.
 
@@ -125,7 +138,8 @@ Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE)
 `select()` would not work if the `tidyverse` package were not loaded.
 
 ```{webr}
-library(rio);library(tidyverse)
+library(rio)
+library(tidyverse)
 DataHousing =
   import("Data/HousingData.csv") |> 
   select(Price=price, Sqft=sqft_living, Bedrooms=bedrooms,Waterfront=waterfront)
@@ -133,6 +147,8 @@ print(DataHousing[1:3,])
 ```
 
 ## Data Types & Data Objects {.smaller}
+
+
 
 ::: incremental
 -   **Data Types:** Which type of values can R store?
@@ -391,6 +407,12 @@ kable(DataWeather)
 ```
 
 ## Data Frame from Titanic Data {.smaller}
+
+```{webr}
+#| echo: false
+DataTitanic=import("Data/Titanic.csv") |> 
+  select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
+```
 
 Most of the times, we do not build a *data frame* from its vectors (columns). Instead we load the *data frame* from a file (for example, a `csv` file.
 
