@@ -53,65 +53,103 @@ engine: knitr
 
 A typical setup to work with R consists of two components:
 
-
 -   the **R Console** which executes R code and
 
--   an integrated development environment (IDE) such as **RStudio** or **Positron**.
-
+-   an integrated development environment (**IDE**) such as **RStudio** or **Positron**.
 
 You can download R here: [Download R](https://cran.r-project.org/bin/){target="_blank"}
 
 You can download *Positron* here: [Download *Positron*](https://positron.posit.co/download.html){target="_blank"}
 
+> **Note**<br> - Install R before *Positron*<br> - If an older R version exists deinstall it before installing the newer version
 
-
-> **Note**<br>
-> - Install R before *Positron*<br>
-> - If an older R version exists deinstall it before installing the newer version
-
-
-## RStudio --- Integrated Development Environment (IDE)  {.smaller}
+## RStudio --- Integrated Development Environment (IDE/not recommended; outdated) {.smaller}
 
 ![RStudio Window](Graphics/RStudioWindowsCL.png)
 
-First steps to setup R anf *RStudio* can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)
-(However, **it is recommended** to work wit *Positron* rather than *RStudio* in this course)
+First steps to setup *R* and *RStudio* can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M) (However, **it is recommended** to work wit *Positron* rather than *RStudio* in this course)
 
-
-
-## Positron --- Integrated Development Environment (IDE)  {.smaller}
+## Positron --- Integrated Development Environment (IDE) {.smaller}
 
 ![Positron Window](Graphics/PositWindowsCL.png)
 
 **First steps** to setup R and *Posit* can be found in this video: coming soon
 
-## Try Positron with an R file {.smaller}
+## Positron --- Integrated Development Environment (IDE) {.smaller}
 
-1. Always open a folder first
-1. Print "Hello world" using the `print(command)
+![Positron Window](Graphics/PositWindowsCL.png)
 
-3. Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
-  - calculate the hyphosenuse $c$
-  - print the result using the `cat(command)`
-  $$c^2=a^2+b^2 \longleftrightarrow c=\sqrt{a^2+b^2}$$
+**First steps** to setup R and *Posit* can be found in this video: coming soon
 
-## Try Positron with a Quarto (qmd) file  {.smaller}
+## Set Window Layout and Choose R Compiler {.smaller}
 
-- Always open a folder first
-- We want to have text and code in the same file. 
-- Text is written in *MarkDown* 
-- Code is sorundended by:
-    
+Always open a folder first
+
+![](Graphics/Screenshot%202025-12-11%20003616.png)
+
+## Set Window Layout and Choose R Compiler {.smaller}
+
+dat **Always open or create a folder first**
+
+The folder is the one where all your *R* `.r`, Quarto (`.qmd`), and data (e.g., `.csv`) files are stored)
+
+![](Graphics/Screenshot%202025-12-11%20003616.png)
+
+## RStudio Keybindings
+
+![](Graphics/RStudioKeybindings.png)
+
+## Positron: First Steps with an R file
+
+1.  Print "Hello world" using the `print()` command.
+
+2.  Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
+
+-   calculate the hyphosenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+
+-   print the result using the `cat(command)`
+
+-   Assign $2$ varaiable ("R" object) `a` and run the `cat()` command again.
+
+## Try Positron with a Quarto (qmd) file {.smaller}
+
+-   Always open a folder first
+-   We want to have text and code in the same file.
+-   Text is written in *MarkDown*
+-   Code is sorundended by:
+
 **Instructions:**
 
-1) Print "hello world" using the `print()` command
+1.  Print "Hello world" using the `print()` command.
 
-2) Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
-    - calcualte the hyphosenuse $c$
-    - print the result using the `cat()` command
-  $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+2.  Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
+
+-   calculate the hyphosenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+
+-   print the result using the `cat(command)`
+
+-   Assign $2$ variable ("R" object) `a` and run the `cat()` command again.
+
+## WASC: R Runs in a Browser Includig Libraries and Data
+
+- Print "Hello world" using the `print()` command.
+
+- Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
 
 
+-   Calculate the hyphosenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+
+-   Print the result using the `cat(command)`
+
+-   Assign $2$ variable ("R" object) `a` and run the `cat()` command again.
+
+```{webr}
+print(...)
+a=3
+b=4
+c= ...
+cat(...)
+```
 ## R Packages {.smaller}
 
 R Packages extend R's functionality. They have to be **installed** only once:
@@ -147,8 +185,6 @@ print(DataHousing[1:3,])
 ```
 
 ## Data Types & Data Objects {.smaller}
-
-
 
 ::: incremental
 -   **Data Types:** Which type of values can R store?
