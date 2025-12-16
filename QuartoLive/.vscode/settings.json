@@ -1,0 +1,8 @@
+{
+    "positron.assistant.enable": true,
+    "positron.assistant.alwaysEnableApplyInEditorAction": true,
+    "positron.assistant.gitIntegration.enable": false,
+    "positron.assistant.followups.enable": true,
+    "positron.assistant.showTokenUsage.enable": true,
+    "positron.assistant.toolDetails.enable": true
+}
