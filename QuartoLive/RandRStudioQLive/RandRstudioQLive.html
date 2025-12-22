@@ -6,10 +6,10 @@
 <script src="RandRstudioQLive_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="RandRstudioQLive_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="RandRstudioQLive_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="RandRstudioQLive_files/libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="RandRstudioQLive_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="RandRstudioQLive_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="RandRstudioQLive_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.32">
+  <meta name="generator" content="quarto-1.7.31">
 
   <meta name="author" content="Carsten Lange">
   <title>Introduction to R and Positron</title>
@@ -222,11 +222,8 @@ Carsten Lange
 <ul>
 <li>How to install R and <em>Positron</em></li>
 <li>What is the windows layout of <em>Positron</em></li>
-<li>How to setup <em>Positron</em></li>
 <li>How to use a (project) folder in <em>Positron</em></li>
-<li>How to use major functionality of <em>Positron</em></li>
-<li>How to extend R’s functionality with R-packages</li>
-<li>Which packages you should install for this course</li>
+<li>How to extend R’s functionality with R-packages, whichvpackages to install</li>
 <li>Data types and data objects in R</li>
 <li>The Structure of R commands</li>
 <li>About the <code>tidyverse</code> package for data frames
@@ -252,38 +249,46 @@ Carsten Lange
 <p><strong>Note</strong><br> - Install R before <em>Positron</em><br> - If an older R version exists deinstall it before installing the newer version</p>
 </blockquote>
 </section>
-<section id="rstudio-integrated-development-environment-idenot-recommended-outdated" class="slide level2 smaller">
-<h2>RStudio — Integrated Development Environment (IDE/not recommended; outdated)</h2>
+<section id="rstudio-integrated-development-environment-ide" class="slide level2">
+<h2>RStudio — Integrated Development Environment (IDE)</h2>
+<h3 class="smaller" id="not-recommended-outdated">not recommended (outdated)</h3>
 
-<img data-src="Graphics/RStudioWindowsCL.png" class="r-stretch quarto-figure-center"><p class="caption">RStudio Window</p><p>First steps to setup <em>R</em> and <em>RStudio</em> can be found in this video: <a href="https://youtu.be/LmRtTkD5E6M">Click here</a> (However, <strong>it is recommended</strong> to work wit <em>Positron</em> rather than <em>RStudio</em> in this course)</p>
+<img data-src="Graphics/RStudioWindowsCL.png" class="r-stretch quarto-figure-center"><p class="caption">RStudio Window</p><p>First steps to setup <em>R</em> and <em>RStudio</em> can be found in this video: <a href="https://youtu.be/LmRtTkD5E6M">Click here</a><br> (However, <strong>it is recommended</strong> to work wit <em>Positron</em> rather than <em>RStudio</em> )</p>
 </section>
 <section id="positron-integrated-development-environment-ide" class="slide level2 smaller">
 <h2>Positron — Integrated Development Environment (IDE)</h2>
 
 <img data-src="Graphics/PositWindowsCL.png" class="r-stretch quarto-figure-center"><p class="caption">Positron Window</p><p><strong>First steps</strong> to setup R and <em>Posit</em> can be found in this video: coming soon</p>
 </section>
-<section id="positron-integrated-development-environment-ide-1" class="slide level2 smaller">
-<h2>Positron — Integrated Development Environment (IDE)</h2>
-
-<img data-src="Graphics/PositWindowsCL.png" class="r-stretch quarto-figure-center"><p class="caption">Positron Window</p><p><strong>First steps</strong> to setup R and <em>Posit</em> can be found in this video: coming soon</p>
-</section>
 <section id="set-window-layout-and-choose-r-compiler" class="slide level2 smaller">
 <h2>Set Window Layout and Choose R Compiler</h2>
-<p>Always open a folder first</p>
 
-<img data-src="Graphics/Screenshot%202025-12-11%20003616.png" class="r-stretch"></section>
-<section id="set-window-layout-and-choose-r-compiler-1" class="slide level2 smaller">
-<h2>Set Window Layout and Choose R Compiler</h2>
-<p>dat <strong>Always open or create a folder first</strong></p>
-<p>The folder is the one where all your <em>R</em> <code>.r</code>, Quarto (<code>.qmd</code>), and data (e.g., <code>.csv</code>) files are stored)</p>
-
-<img data-src="Graphics/Screenshot%202025-12-11%20003616.png" class="r-stretch"></section>
-<section id="rstudio-keybindings" class="slide level2">
-<h2>RStudio Keybindings</h2>
+<img data-src="Graphics/PositChooseRAndLayout.png" class="r-stretch"></section>
+<section id="rstudio-keybindings-needs-to-done-only-once" class="slide level2">
+<h2>RStudio Keybindings (needs to done only once)</h2>
 
 <img data-src="Graphics/RStudioKeybindings.png" class="r-stretch"></section>
-<section id="positron-first-steps-with-an-r-file" class="slide level2 scrollable">
-<h2>Positron: First Steps with an R file</h2>
+<section id="always-open-or-create-folder" class="slide level2 smaller">
+<h2>Always Open or Create Folder</h2>
+<p><strong>Always open or create a folder first</strong></p>
+<p>The folder is the one where all your <em>R</em> <code>.r</code>, Quarto (<code>.qmd</code>), and data (e.g., <code>.csv</code>) files are stored)</p>
+
+<img data-src="Graphics/OpenFolder.png" class="r-stretch"></section>
+<section id="create-a-new-r-or-quarto-file" class="slide level2 scrollable">
+<h2>Create a New <code>R</code> or <code>Quarto</code> file</h2>
+<ol type="1">
+<li><code>CTRL SHIFT P</code> or <code>⌘ SHIFT P</code> to open <em>Command Pallette</em></li>
+<li>Type either “New Quarto Document” or “New R Document” into search bar</li>
+<li>Click and Create file</li>
+<li>Save file right away</li>
+</ol>
+</section>
+<section id="open-a-file-from-your-folder" class="slide level2 smaller">
+<h2>Open a File from Your Folder</h2>
+
+<img data-src="Graphics/PositOpenFile.png" class="r-stretch"></section>
+<section id="positron-first-steps-with-an-r-file-.r" class="slide level2 scrollable">
+<h2>Positron: First Steps with an R File <code>(.r)</code></h2>
 <ol type="1">
 <li><p>Print “Hello world” using the <code>print()</code> command.</p></li>
 <li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> of an right-angled triangle.</p></li>
@@ -294,14 +299,17 @@ Carsten Lange
 <li><p>Assign <span class="math inline">\(2\)</span> varaiable (“R” object) <code>a</code> and run the <code>cat()</code> command again.</p></li>
 </ul>
 </section>
-<section id="try-positron-with-a-quarto-qmd-file" class="slide level2 smaller scrollable">
-<h2>Try Positron with a Quarto (qmd) file</h2>
+<section id="try-positron-with-a-quarto-file-.qmd" class="slide level2 scrollable">
+<h2>Try Positron with a Quarto File <code>(.qmd)</code></h2>
 <ul>
 <li>Always open a folder first</li>
 <li>We want to have text and code in the same file.</li>
 <li>Text is written in <em>MarkDown</em></li>
 <li>Code is sorundended by:</li>
 </ul>
+<p>```{r}</p>
+<p>MyCode goes here</p>
+<p>```</p>
 <p><strong>Instructions:</strong></p>
 <ol type="1">
 <li><p>Print “Hello world” using the <code>print()</code> command.</p></li>
@@ -315,13 +323,20 @@ Carsten Lange
 </section>
 <section id="wasc-r-runs-in-a-browser-includig-libraries-and-data" class="slide level2">
 <h2>WASC: R Runs in a Browser Includig Libraries and Data</h2>
+<ul>
+<li><p>Print “Hello world” using the <code>print()</code> command.</p></li>
+<li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> of an right-angled triangle.</p></li>
+<li><p>Calculate the hyphosenuse <span class="math inline">\(c\)</span> <span class="math display">\[c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}\]</span></p></li>
+<li><p>Print the result using the <code>cat(command)</code></p></li>
+<li><p>Assign <span class="math inline">\(2\)</span> variable (“R” object) <code>a</code> and run the <code>cat()</code> command again.</p></li>
+</ul>
 <div class="cell">
 <div>
 <div id="webr-1" class="exercise-cell">
 
 </div>
 <script type="webr-1-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYT0zXG5iPTRcbmM9In0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoLi4uKVxuYT0zXG5iPTRcbmM9IC4uLlxuY2F0KC4uLikifQ==
 </script>
 </div>
 </div>

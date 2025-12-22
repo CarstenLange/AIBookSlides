@@ -35,11 +35,8 @@ engine: knitr
 
 -   How to install R and *Positron*
 -   What is the windows layout of *Positron*
--   How to setup *Positron*
 -   How to use a (project) folder in *Positron*
--   How to use major functionality of *Positron*
--   How to extend R's functionality with R-packages
--   Which packages you should install for this course
+-   How to extend R's functionality with R-packages, whichvpackages to install
 -   Data types and data objects in R
 -   The Structure of R commands
 -   About the `tidyverse` package for data frames
@@ -63,17 +60,15 @@ You can download *Positron* here: [Download *Positron*](https://positron.posit.c
 
 > **Note**<br> - Install R before *Positron*<br> - If an older R version exists deinstall it before installing the newer version
 
-## RStudio --- Integrated Development Environment (IDE/not recommended; outdated) {.smaller}
+## RStudio --- Integrated Development Environment (IDE)
+### not recommended (outdated) {.smaller}
 
 ![RStudio Window](Graphics/RStudioWindowsCL.png)
 
-First steps to setup *R* and *RStudio* can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M) (However, **it is recommended** to work wit *Positron* rather than *RStudio* in this course)
+First steps to setup *R* and *RStudio* can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)</br>
+(However, **it is recommended** to work wit *Positron* rather than *RStudio* )
 
-## Positron --- Integrated Development Environment (IDE) {.smaller}
 
-![Positron Window](Graphics/PositWindowsCL.png)
-
-**First steps** to setup R and *Posit* can be found in this video: coming soon
 
 ## Positron --- Integrated Development Environment (IDE) {.smaller}
 
@@ -83,23 +78,34 @@ First steps to setup *R* and *RStudio* can be found in this video: [Click here](
 
 ## Set Window Layout and Choose R Compiler {.smaller}
 
-Always open a folder first
+![](Graphics/PositChooseRAndLayout.png)
 
-![](Graphics/Screenshot%202025-12-11%20003616.png)
-
-## Set Window Layout and Choose R Compiler {.smaller}
-
-dat **Always open or create a folder first**
-
-The folder is the one where all your *R* `.r`, Quarto (`.qmd`), and data (e.g., `.csv`) files are stored)
-
-![](Graphics/Screenshot%202025-12-11%20003616.png)
-
-## RStudio Keybindings
+## RStudio Keybindings (needs to done only once)
 
 ![](Graphics/RStudioKeybindings.png)
 
-## Positron: First Steps with an R file
+## Always Open or Create Folder {.smaller}
+
+ **Always open or create a folder first**
+
+The folder is the one where all your *R* `.r`, Quarto (`.qmd`), and data (e.g., `.csv`) files are stored)
+
+![](Graphics/OpenFolder.png)
+
+## Create a New `R` or `Quarto` file
+
+1. `CTRL SHIFT P` or `⌘ SHIFT P` to open *Command Pallette*
+2. Type either "New Quarto Document" or  "New R Document" into search bar
+3. Click and Create file
+4. Save file right away
+
+
+## Open a File from Your Folder {.smaller}
+
+ 
+![](Graphics/PositOpenFile.png)
+
+## Positron: First Steps with an R File `(.r)`
 
 1.  Print "Hello world" using the `print()` command.
 
@@ -111,12 +117,21 @@ The folder is the one where all your *R* `.r`, Quarto (`.qmd`), and data (e.g., 
 
 -   Assign $2$ varaiable ("R" object) `a` and run the `cat()` command again.
 
-## Try Positron with a Quarto (qmd) file {.smaller}
+## Try Positron with a Quarto File  `(.qmd)`
 
 -   Always open a folder first
 -   We want to have text and code in the same file.
 -   Text is written in *MarkDown*
 -   Code is sorundended by:
+
+
+
+\```{r}
+
+MyCode goes here
+
+\```
+
 
 **Instructions:**
 
