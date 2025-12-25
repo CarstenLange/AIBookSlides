@@ -20,9 +20,7 @@ format:
     incremental: false
     scrollable: true
     footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
-webr:
-  packages:
-    - ggdag
+
     
 resources: 
   - Data
@@ -33,11 +31,21 @@ engine: knitr
 
 ## Learning Outcomes {.smaller}
 
+**Part 1: Setup**
+
 -   How to install R and *Positron*
 -   What is the windows layout of *Positron*
 -   How to use a (project) folder in *Positron*
--   How to extend R's functionality with R-packages, whichvpackages to install
--   Data types and data objects in R
+-   How to extend R's functionality with R-packages and which packages to install
+
+## Learning Outcomes {.smaller}
+
+**Part 2: How are Stores Data:**
+
+-  Data types
+-  Data objects in R
+
+**Part 3: The `tidyverse` Package**
 -   The Structure of R commands
 -   About the `tidyverse` package for data frames
     -   `select()` and rename columns (variables)
@@ -46,7 +54,7 @@ engine: knitr
     -   `arrange()` sort observations in a data frame.
     -   piping (connecting commands) with `|>`.
 
-## Install and Setup R and Positron {.smaller}
+## Part 1: Install and Setup R and Positron {.smaller}
 
 A typical setup to work with R consists of two components:
 
@@ -60,12 +68,12 @@ You can download *Positron* here: [Download *Positron*](https://positron.posit.c
 
 > **Note**<br> - Install R before *Positron*<br> - If an older R version exists deinstall it before installing the newer version
 
-## RStudio --- Integrated Development Environment (IDE)
-### not recommended (outdated) {.smaller}
+## RStudio --- Integrated Development Environment (IDE)  {.smaller}
+### not recommended (outdated)
 
 ![RStudio Window](Graphics/RStudioWindowsCL.png)
 
-First steps to setup *R* and *RStudio* can be found in this video: [Click here](https://youtu.be/LmRtTkD5E6M)</br>
+Video for *First Steps* to setup *R* and *RStudio*: [Click here](https://youtu.be/LmRtTkD5E6M)</br>
 (However, **it is recommended** to work wit *Positron* rather than *RStudio* )
 
 
@@ -84,7 +92,7 @@ First steps to setup *R* and *RStudio* can be found in this video: [Click here](
 
 ![](Graphics/RStudioKeybindings.png)
 
-## Always Open or Create Folder {.smaller}
+## Always Work with Folders {.smaller}
 
  **Always open or create a folder first**
 
@@ -94,7 +102,7 @@ The folder is the one where all your *R* `.r`, Quarto (`.qmd`), and data (e.g., 
 
 ## Create a New `R` or `Quarto` file
 
-1. `CTRL SHIFT P` or `⌘ SHIFT P` to open *Command Pallette*
+1. `CTRL SHIFT P` (Windows) or `⌘ SHIFT P` (Mac) to open *Command Pallette*
 2. Type either "New Quarto Document" or  "New R Document" into search bar
 3. Click and Create file
 4. Save file right away
