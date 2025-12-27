@@ -229,12 +229,26 @@ Carsten Lange
 </section>
 <section id="learning-outcomes-1" class="slide level2 smaller">
 <h2>Learning Outcomes</h2>
-<p><strong>Part 2: How are Stores Data:</strong></p>
+<p><strong>Part 2: How R Stores the Data:</strong></p>
 <ul>
 <li>Data types</li>
 <li>Data objects in R</li>
 </ul>
-<p><strong>Part 3: The <code>tidyverse</code> Package</strong> - The Structure of R commands - About the <code>tidyverse</code> package for data frames - <code>select()</code> and rename columns (variables) - <code>filter()</code> rows (observations) - <code>mutate()</code> (define columns (variables); overwrite old or create new) - <code>arrange()</code> sort observations in a data frame. - piping (connecting commands) with <code>|&gt;</code>.</p>
+</section>
+<section id="learning-outcomes-2" class="slide level2 smaller">
+<h2>Learning Outcomes</h2>
+<p><strong>Part 3: The <code>tidyverse</code> Package:</strong></p>
+<ul>
+<li>The Structure of R commands</li>
+<li>About the <code>tidyverse</code> package for data frames
+<ul>
+<li><code>select()</code> and rename columns (variables)</li>
+<li><code>filter()</code> rows (observations)</li>
+<li><code>mutate()</code> (define columns (variables); overwrite old or create new)</li>
+<li><code>arrange()</code> sort observations in a data frame.</li>
+<li>piping (connecting commands) with <code>|&gt;</code>.</li>
+</ul></li>
+</ul>
 </section>
 <section id="part-1-install-and-setup-r-and-positron" class="slide level2 smaller">
 <h2>Part 1: Install and Setup R and Positron</h2>
@@ -253,82 +267,94 @@ Carsten Lange
 <h2>RStudio — Integrated Development Environment (IDE)</h2>
 <h3 id="not-recommended-outdated">not recommended (outdated)</h3>
 
-<img data-src="Graphics/RStudioWindowsCL.png" class="r-stretch quarto-figure-center"><p class="caption">RStudio Window</p><p>Video for <em>First Steps</em> to setup <em>R</em> and <em>RStudio</em>: <a href="https://youtu.be/LmRtTkD5E6M">Click here</a><br> (However, <strong>it is recommended</strong> to work wit <em>Positron</em> rather than <em>RStudio</em> )</p>
+<img data-src="Graphics/RStudioWindowsCL.png" target="_blank" class="r-stretch quarto-figure-center"><p class="caption">RStudio Window</p><p>Video for <em>First Steps</em> to setup <em>R</em> and <em>RStudio</em>: <a href="https://youtu.be/LmRtTkD5E6M" target="_blank">Click here</a><br> (However, <strong>it is recommended</strong> to work wit <em>Positron</em> rather than <em>RStudio</em> )</p>
 </section>
 <section id="positron-integrated-development-environment-ide" class="slide level2 smaller">
 <h2>Positron — Integrated Development Environment (IDE)</h2>
 
 <img data-src="Graphics/PositWindowsCL.png" class="r-stretch quarto-figure-center"><p class="caption">Positron Window</p><p><strong>First steps</strong> to setup R and <em>Posit</em> can be found in this video: coming soon</p>
 </section>
-<section id="set-window-layout-and-choose-r-compiler" class="slide level2 smaller">
-<h2>Set Window Layout and Choose R Compiler</h2>
+<section id="set-window-layout-and-choose-r-interpreter" class="slide level2 smaller">
+<h2>Set Window Layout and Choose R Interpreter</h2>
 
 <img data-src="Graphics/PositChooseRAndLayout.png" class="r-stretch"></section>
-<section id="rstudio-keybindings-needs-to-done-only-once" class="slide level2">
+<section id="rstudio-keybindings-needs-to-done-only-once" class="slide level2 smaller">
 <h2>RStudio Keybindings (needs to done only once)</h2>
-
-<img data-src="Graphics/RStudioKeybindings.png" class="r-stretch"></section>
+<p><strong>Click Gear Icon -&gt; Choose: Settings -&gt; Search for: Keybindings -&gt;<br>
+Toggle-On RStudio Keybindings</strong><img data-src="Graphics/RStudioKeybindings.png"></p>
+</section>
 <section id="always-work-with-folders" class="slide level2 smaller">
 <h2>Always Work with Folders</h2>
 <p><strong>Always open or create a folder first</strong></p>
-<p>The folder is the one where all your <em>R</em> <code>.r</code>, Quarto (<code>.qmd</code>), and data (e.g., <code>.csv</code>) files are stored)</p>
+<p>The folder is the one where all your <em>R</em> ()<code>.r</code>), Quarto (<code>.qmd</code>), and data (e.g., <code>.csv</code>) files are stored</p>
 
 <img data-src="Graphics/OpenFolder.png" class="r-stretch"></section>
-<section id="create-a-new-r-or-quarto-file" class="slide level2 scrollable">
-<h2>Create a New <code>R</code> or <code>Quarto</code> file</h2>
+<section id="use-command-palette-to-create-a-new-r-or-quarto-file" class="slide level2 smaller scrollable">
+<h2>Use Command Palette to Create a New <code>R</code> or <code>Quarto</code> file</h2>
+<p><code>CTRL SHIFT P</code> (Windows) or <code>⌘ SHIFT P</code> (Mac) to open <strong>Command Pallette</strong>:</p>
 <ol type="1">
-<li><code>CTRL SHIFT P</code> (Windows) or <code>⌘ SHIFT P</code> (Mac) to open <em>Command Pallette</em></li>
 <li>Type either “New Quarto Document” or “New R Document” into search bar</li>
 <li>Click and Create file</li>
 <li>Save file right away</li>
 </ol>
 </section>
-<section id="open-a-file-from-your-folder" class="slide level2 smaller">
-<h2>Open a File from Your Folder</h2>
+<section id="open-a-file-from-an-existing-positron-folder" class="slide level2 smaller">
+<h2>Open a File from an Existing Positron Folder</h2>
 
 <img data-src="Graphics/PositOpenFile.png" class="r-stretch"></section>
-<section id="positron-first-steps-with-an-r-file-.r" class="slide level2 scrollable">
+<section id="positron-first-steps-with-an-r-file-.r" class="slide level2 smaller scrollable">
 <h2>Positron: First Steps with an R File <code>(.r)</code></h2>
+<ul>
+<li>Remember, always open a folder first!</li>
+</ul>
+<p><strong>We want code only.</strong></p>
 <ol type="1">
 <li><p>Print “Hello world” using the <code>print()</code> command.</p></li>
-<li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> of an right-angled triangle.</p></li>
+<li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <code>a</code> and <code>b</code> of an right-angled triangle.</p></li>
 </ol>
 <ul>
-<li><p>calculate the hyphosenuse <span class="math inline">\(c\)</span> <span class="math display">\[c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}\]</span></p></li>
+<li><p>calculate the hypotenuse <span class="math inline">\(c\)</span>. <span class="math display">\[c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}\]</span></p></li>
 <li><p>print the result using the <code>cat(command)</code></p></li>
-<li><p>Assign <span class="math inline">\(2\)</span> varaiable (“R” object) <code>a</code> and run the <code>cat()</code> command again.</p></li>
+<li><p>Assign the number <span class="math inline">\(2\)</span> to the variable (“R” objects) <code>a</code> and run the <code>cat()</code> command again.</p></li>
 </ul>
 </section>
-<section id="try-positron-with-a-quarto-file-.qmd" class="slide level2 scrollable">
+<section id="try-positron-with-a-quarto-file-.qmd" class="slide level2">
 <h2>Try Positron with a Quarto File <code>(.qmd)</code></h2>
 <ul>
-<li>Always open a folder first</li>
-<li>We want to have text and code in the same file.</li>
-<li>Text is written in <em>MarkDown</em></li>
-<li>Code is sorundended by:</li>
+<li>Remember, always open a folder first!</li>
 </ul>
+<p><strong>We want to have text and code in the same file.</strong></p>
+<ul>
+<li>Text is written in <em>MarkDown</em></li>
+<li>Code is surrounded by:</li>
+</ul>
+<blockquote>
 <p>```{r}</p>
 <p>MyCode goes here</p>
 <p>```</p>
+</blockquote>
+</section>
+<section id="try-positron-with-a-quarto-file-.qmd-1" class="slide level2 smaller scrollable">
+<h2>Try Positron with a Quarto File <code>(.qmd)</code></h2>
 <p><strong>Instructions:</strong></p>
 <ol type="1">
 <li><p>Print “Hello world” using the <code>print()</code> command.</p></li>
-<li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> of an right-angled triangle.</p></li>
+<li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <code>a</code> and <code>b</code> of an right-angled triangle.</p></li>
 </ol>
 <ul>
-<li><p>calculate the hyphosenuse <span class="math inline">\(c\)</span> <span class="math display">\[c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}\]</span></p></li>
+<li><p>calculate the hypotenuse <span class="math inline">\(c\)</span>. <span class="math display">\[c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}\]</span></p></li>
 <li><p>print the result using the <code>cat(command)</code></p></li>
-<li><p>Assign <span class="math inline">\(2\)</span> variable (“R” object) <code>a</code> and run the <code>cat()</code> command again.</p></li>
 </ul>
+<p>Note, now we want everything nicely commented!</p>
 </section>
-<section id="wasc-r-runs-in-a-browser-includig-libraries-and-data" class="slide level2">
-<h2>WASC: R Runs in a Browser Includig Libraries and Data</h2>
+<section id="wasm-r-runs-in-a-browser-including-libraries-and-data" class="slide level2 smaller">
+<h2>WASM: R Runs in a Browser Including Libraries and Data</h2>
 <ul>
 <li><p>Print “Hello world” using the <code>print()</code> command.</p></li>
-<li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <span class="math inline">\(a\)</span> and <span class="math inline">\(b\)</span> of an right-angled triangle.</p></li>
-<li><p>Calculate the hyphosenuse <span class="math inline">\(c\)</span> <span class="math display">\[c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}\]</span></p></li>
+<li><p>Assign values <span class="math inline">\(3\)</span> and <span class="math inline">\(4\)</span> to the legs <code>a</code> and <code>b</code> of an right-angled triangle.</p></li>
+<li><p>Calculate the hypotenuse <span class="math inline">\(c\)</span> <span class="math display">\[c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}\]</span></p></li>
 <li><p>Print the result using the <code>cat(command)</code></p></li>
-<li><p>Assign <span class="math inline">\(2\)</span> variable (“R” object) <code>a</code> and run the <code>cat()</code> command again.</p></li>
+<li><p>Assign the number <span class="math inline">\(2\)</span> to the variable (“R” object) <code>a</code> and run the <code>cat()</code> command again.</p></li>
 </ul>
 <div class="cell">
 <div>
@@ -344,8 +370,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoLi4uKVxuYT0zXG5i
 <section id="r-packages" class="slide level2 smaller">
 <h2>R Packages</h2>
 <p>R Packages extend R’s functionality. They have to be <strong>installed</strong> only once:</p>
-<p>For example, to install the <code>tidyverse</code> package, type in the consol window: <code>install.packages("tidyverse)</code></p>
-<p>After installation they need to be <strong>loaded</strong> in every new R script with <code>library()</code>.</p>
+<p>For example, to install the <code>tidyverse</code> package, type in the consol window: <br> <code>install.packages("tidyverse)</code> <br>Needs to be only done once!</p>
+<p>After installation packages they need to be <strong>loaded</strong> in every new R script or Quarto file with: <code>library()</code>.</p>
 <p>Packages frequently used in this course (<strong>please install soon</strong>):</p>
 <ul>
 <li><code>tidyverse</code>: supports easy data processing .</li>
@@ -353,11 +379,14 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoLi4uKVxuYT0zXG5i
 <li><code>janitor</code>: provides functionality to clean data and rename variable names to avoid spaces and special characters.</li>
 </ul>
 </section>
-<section id="example-the-rio-and-the-tidyverse-package" class="slide level2 smaller">
-<h2>Example: the <code>rio</code> and the <code>tidyverse</code> Package</h2>
-<p>Assuming the <code>rio</code> packages is already installed.</p>
+<section id="videos-for-the-rio-and-the-tidyverse-package" class="slide level2 smaller">
+<h2>Videos for the <code>rio</code> and the <code>tidyverse</code> Package</h2>
 <p>Example: How to install the tidyverse package: <a href="https://youtu.be/tAGoThXF2Os">Click here</a></p>
 <p>Video about the rio package: <a href="https://youtu.be/8N_5sR4s8XE">Click here</a></p>
+</section>
+<section id="using-the-rio-and-the-tidyverse-package" class="slide level2 smaller">
+<h2>Using the <code>rio</code> and the <code>tidyverse</code> Package</h2>
+<p>Example: <code>rio</code> and <code>tidyverse</code> package (assuming they are installed already)</p>
 <p><code>import()</code> would not work if the <code>rio</code> package were not loaded.<br>
 <code>select()</code> would not work if the <code>tidyverse</code> package were not loaded.</p>
 <div class="cell">
@@ -366,34 +395,51 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoLi4uKVxuYT0zXG5i
 
 </div>
 <script type="webr-2-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeShyaW8pXG5saWJyYXJ5KHRpZHl2ZXJzZSlcbkRhdGFIb3VzaW5nID1cbiAgaW1wb3J0KFwiRGF0YS9Ib3VzaW5nRGF0YS5jc3ZcIikgfD4gXG4gIHNlbGVjdChQcmljZT1wcmljZSwgU3FmdD1zcWZ0X2xpdmluZywgQmVkcm9vbXM9YmVkcm9vbXMsV2F0ZXJmcm9udD13YXRlcmZyb250KVxucHJpbnQoRGF0YUhvdXNpbmdbMTozLF0pIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KHJpbylcbkRhdGFIb3VzaW5nID1cbiAgaW1wb3J0KFwiRGF0YS9Ib3VzaW5nRGF0YS5jc3ZcIikgfD4gXG4gIHNlbGVjdChQcmljZT1wcmljZSwgU3FmdD1zcWZ0X2xpdmluZywgQmVkcm9vbXM9YmVkcm9vbXMsV2F0ZXJmcm9udD13YXRlcmZyb250KVxucHJpbnQoRGF0YUhvdXNpbmcpIn0=
 </script>
 </div>
 </div>
 </section>
-<section id="data-types-data-objects" class="slide level2 smaller">
-<h2>Data Types &amp; Data Objects</h2>
+<section id="part-3-data-types-data-objects" class="slide level2 smaller">
+<h2>Part 3: Data Types &amp; Data Objects</h2>
 <ul>
 <li class="fragment"><strong>Data Types:</strong> Which type of values can R store?
 <ul>
-<li class="fragment">numerical <code>num</code></li>
-<li class="fragment">character <code>chr</code></li>
-<li class="fragment"><code>factor</code></li>
-<li class="fragment"><code>logic</code></li>
+<li class="fragment">numerical <code>num</code> (such as: 1, 2.3, 100000)</li>
+<li class="fragment">character <code>chr</code> (such as: “Hello”, “Hi”, “World”)</li>
+<li class="fragment">categorical <code>factor</code> (such as: “Female”, “Male” Or: “small”, “medium”, “large”)</li>
+<li class="fragment">boolean <code>logic</code> (True, False)</li>
 </ul></li>
 <li class="fragment"><strong>Data Objects:</strong> What are the <strong>containers</strong> R uses to store data?
 <ul>
-<li class="fragment"><code>single entry</code> single variable</li>
-<li class="fragment">list of entries <code>vectors</code></li>
-<li class="fragment">table <code>dataframe</code> and <code>tibble</code></li>
-<li class="fragment"><em>advanced objects</em>. E.g., for plot, models, prediction results</li>
+<li class="fragment">single value as: <code>single entry</code></li>
+<li class="fragment">list of entries as: <code>vector</code></li>
+<li class="fragment">table as: <code>dataframe</code> or <code>tibble</code></li>
+<li class="fragment"><em>advanced objects</em> can hold: plots, models, prediction results</li>
+</ul></li>
+</ul>
+</section>
+<section id="part-3-data-types-data-objects-alcoholic-beverages-analogy" class="slide level2 smaller">
+<h2>Part 3: Data Types &amp; Data Objects: Alcoholic Beverages Analogy</h2>
+<ul>
+<li class="fragment"><strong>Data Types:</strong> Which type of fluids can we store?
+<ul>
+<li class="fragment">beer</li>
+<li class="fragment">wine</li>
+<li class="fragment">whiskey</li>
+</ul></li>
+<li class="fragment"><strong>Data Objects:</strong> What are the <strong>containers</strong> R uses to store data?
+<ul>
+<li class="fragment">bottles</li>
+<li class="fragment">cartons (incl.&nbsp;six packs)</li>
+<li class="fragment">cargo containers</li>
 </ul></li>
 </ul>
 </section>
 <section id="data-types" class="slide level2 smaller">
 <h2>Data Types 🤓</h2>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Main</a></li><li><a href="#tabset-1-2">Numerical</a></li><li><a href="#tabset-1-3">Character</a></li><li><a href="#tabset-1-4">Factor</a></li><li><a href="#tabset-1-5">Logic</a></li><li><a href="#tabset-1-6">Truth Table</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Main</a></li><li><a href="#tabset-1-2">Character</a></li><li><a href="#tabset-1-3">Numerical</a></li><li><a href="#tabset-1-4">Factor</a></li><li><a href="#tabset-1-5">Logic</a></li><li><a href="#tabset-1-6">Truth Table</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
 <p><strong>Numerical Data Type (<code>num</code>):</strong> Numerical values (e.g., 1, 523, 3.45) are used for calculation. In contrast, ZIP-Codes are not numerical data type.</p>
@@ -402,28 +448,15 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeShyaW8pXG5saWJy
 <p><strong>Logic Data Type(<code>logic</code>):</strong> A data type that stores the logic states <code>TRUE</code> and <code>FALSE</code> is called a <code>logic</code> object (sometimes called Boolean)</p>
 </div>
 <div id="tabset-1-2">
-<p><strong>Numerical Data Type (<code>num</code>):</strong> Numerical values are used for calculations (therefore ZIP-Codes are not numerical). The numerical data type is <code>num</code> and in some cases <code>int</code> (full number). In most of the cases you do not have to differentiate between <code>int</code> and <code>num</code>.</p>
+<p><strong>Character Data Type (<code>chr</code>) a.k.a Labels:</strong></p>
+<p>Note that what is called a <code>character</code> in R is often called a <em>string</em> in other programming languages.</p>
+<p><code>character</code> data types must be surrounded by quotes:</p>
 <div class="cell">
 <div>
 <div id="webr-3" class="exercise-cell">
 
 </div>
 <script type="webr-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiQT0xLjIzXG5zdHIoQSkgIyBzdHIoKSByZXR1cm5zIHN0cnVjdHVyZSBvZiBhIHZhcmlhYmxlXG5CPTJcbnN0cigyKSAjIHN0cigpIHJldHVybnMgc3RydWN0dXJlIG9mIGEgdmFyaWFibGVcbkM9YXMuaW50ZWdlcigzKVxuc3RyKEMpXG5wcmludChBKkMpXG5wcmludChDXkIpXG5EPUMvQSAjIFJldHVybnMgbnVtIHR5cGVcbnN0cihEKSJ9
-</script>
-</div>
-</div>
-</div>
-<div id="tabset-1-3">
-<p><strong>Character Data Type (<code>chr</code>) a.k.a Labels:</strong></p>
-<p>Note that what is called a <code>character</code> in R is often called a <em>string</em> in other programming languages.</p>
-<p><code>character</code> data types must be surrounded by quotes:</p>
-<div class="cell">
-<div>
-<div id="webr-4" class="exercise-cell">
-
-</div>
-<script type="webr-4-contents">
 eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiTXlUZXh0PVwiSGVsbG8gd29ybGQhXCJcbnByaW50KE15VGV4dCkifQ==
 </script>
 </div>
@@ -431,11 +464,24 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiTXlUZXh0PVwiSGVsbG8gd29y
 <p>Character variables can be concatenated with the <code>cat()</code> command:</p>
 <div class="cell">
 <div>
+<div id="webr-4" class="exercise-cell">
+
+</div>
+<script type="webr-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRmlyc3ROYW1lPVwiQ2Fyc3RlblwiXG5MYXN0TmFtZT1cIkxhbmdlXCJcbmNhdChGaXJzdE5hbWUsIExhc3ROYW1lKSAjIFIgYWRkcyBhIHNwYWNlIGF1dG9tYXRpY2FsbHkifQ==
+</script>
+</div>
+</div>
+</div>
+<div id="tabset-1-3">
+<p><strong>Numerical Data Type (<code>num</code>):</strong> Numerical values are used for calculations (therefore ZIP-Codes are not numerical). The numerical data type is <code>num</code> and in some cases <code>int</code> (full number). In most of the cases you do not have to differentiate between <code>int</code> and <code>num</code>.</p>
+<div class="cell">
+<div>
 <div id="webr-5" class="exercise-cell">
 
 </div>
 <script type="webr-5-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRmlyc3ROYW1lPVwiQ2Fyc3RlblwiXG5MYXN0TmFtZT1cIkxhbmdlXCJcbmNhdChGaXJzdE5hbWUsIExhc3ROYW1lKSAjIFIgYWRkcyBhIHNwYWNlIGF1dG9tYXRpY2FsbHkifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiQT0xLjIzXG5zdHIoQSkgIyBzdHIoKSByZXR1cm5zIHN0cnVjdHVyZSBvZiBhIHZhcmlhYmxlXG5CPTJcbnN0cigyKSAjIHN0cigpIHJldHVybnMgc3RydWN0dXJlIG9mIGEgdmFyaWFibGVcblxucHJpbnQoQSpCKVxucHJpbnQoQ15CKVxuY2F0KFwiRGl2aXNpb246XCIsQy9BKSAifQ==
 </script>
 </div>
 </div>
@@ -583,7 +629,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVmFyMT1AQEBcblZhcjI9QEBA
 </div>
 </div>
 </section>
-<section id="data-types-data-objects-1" class="slide level2">
+<section id="data-types-data-objects" class="slide level2">
 <h2>Data Types &amp; Data Objects</h2>
 <p><br><br> <strong>Data Types:</strong> Which type of values can R store? <br><br> <strong>Data Objects:</strong> What are the containers R uses to store data?</p>
 </section>
@@ -804,7 +850,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic3VtKHg9VmVjVGVzdClcbm1l
 \underbrace{DataNew}_{\text{R object storing the result}}=
 \underbrace{Command}_{\text{Name of the command}}
 \underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
-\overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
+\overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by comma}}
 \end{equation}\]</span></p>
 <p>Often the <code>data</code> argument is the first argument in a command. Usually named <code>data=</code> or <code>x=</code>.»</p>
 </section>
@@ -856,7 +902,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUmVzdWx0PW1lYW4oVmVjVGVz
 </div>
 <div class="fragment">
 <p>All three examples are equivalent</p>
-<p>Try <code>? mean</code> in the Rstudio console to see the default values.»</p>
+<p>Try <code>? mean</code> in the RStudio console to see the default values.»</p>
 <div class="footer">
 <p>See: <a href="https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R" target="_blank">RandRStudioScriptPart2.R script100</a></p>
 </div>
@@ -870,7 +916,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUmVzdWx0PW1lYW4oVmVjVGVz
 <li><code>select()</code> selects columns (variables) from a data frame</li>
 <li><code>filter()</code> filters rows (observations) for specific criteria</li>
 <li><code>mutate()</code> calculates new or overwrites existing columns (variables) based on other columns (just like Excel)</li>
-<li><code>arrange()</code> sorts a data frame according to one or more colums in ascending order (use argumend <code>desc()</code> for descentig order)</li>
+<li><code>arrange()</code> sorts a data frame according to one or more colums in ascending order (use argument <code>desc()</code> for descentig order)</li>
 </ul>
 </section>
 <section id="titanic-dataset" class="slide level2">
@@ -955,7 +1001,7 @@ The command uses <code>DataTitanicSelVarFem</code> from the previous slide:</p>
 
 </div>
 <script type="webr-40-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGF0aW5jU2VsVmFyRmVtRG9sRmFyZT1tdXRhdGUoRGF0YVRpdGFuaWNTZWxWYXJGZW0sXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBGYXJlSW4yMDIxRG9sbGFycz0xNjQuMSpGYXJlSW5Qb3VuZHMsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgRmFyZUluUG91bmRzPU5VTEwpXG5oZWFkKERhdGFUaXRhdGluY1NlbFZhckZlbURvbEZhcmUpIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGFuaWNTZWxWYXJGZW1Eb2xGYXJlPW11dGF0ZShEYXRhVGl0YW5pY1NlbFZhckZlbSxcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEZhcmVJbjIwMjFEb2xsYXJzPTE2NC4xKkZhcmVJblBvdW5kcywgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBGYXJlSW5Qb3VuZHM9TlVMTClcbmhlYWQoRGF0YVRpdGFuaWNTZWxWYXJGZW1Eb2xGYXJlKSJ9
 </script>
 </div>
 </div>
@@ -966,12 +1012,12 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGF0aW5jU2VsVmFy
 </section>
 <section id="summary" class="slide level2 smaller scrollable">
 <h2>Summary</h2>
-<p>We now have a data frame with only women and columns <span class="math inline">\(Survived\)</span>, <span class="math inline">\(PasClass\)</span>, <span class="math inline">\(Sex\)</span>, <span class="math inline">\(Age\)</span>, and <span class="math inline">\(FareIn2021Dollas\)</span>.</p>
+<p>We now have a data frame with only women and columns <span class="math inline">\(Survived\)</span>, <span class="math inline">\(PasClass\)</span>, <span class="math inline">\(Sex\)</span>, <span class="math inline">\(Age\)</span>, and <span class="math inline">\(FareIn2021Dollars\)</span>.</p>
 <p>How did we get there:</p>
 <ol type="1">
 <li>We selected variables <span class="math inline">\(Survived\)</span>, <span class="math inline">\(PasClass\)</span>, <span class="math inline">\(Sex\)</span>, <span class="math inline">\(Age\)</span>, <span class="math inline">\(FareInPounds\)</span> and saved in <code>DataTitanicSelVar</code></li>
 <li>We filtered for females and saved in <code>DataTitanicSelVarFem</code></li>
-<li>We mutated to calculate a new variable <span class="math inline">\(FareIn2021Dollas\)</span> and saved finally in <code>DataTitatincSelVarFemDolFare</code></li>
+<li>We mutated to calculate a new variable <span class="math inline">\(FareIn2021Dollars\)</span> and saved finally in <code>DataTitanicSelVarFemDolFare</code></li>
 </ol>
 <div class="fragment">
 <p>Could this be done easier?</p>
@@ -1020,20 +1066,21 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeSh0aWR5dmVyc2Up
 <li><p>Download the Titanic dataset</p></li>
 <li><p>select the variables <code>Sex</code>, <code>FareInPounds</code>, <code>Survived</code> (renamed to: <code>Surv</code>)</p></li>
 <li><p>Calculate a new column <code>FareInDollars</code> by multiplying <code>FareInPounds</code> by <span class="math inline">\(164.5\)</span></p></li>
-<li><p>Filter for <code>Sex</code> beeing <em>female</em></p></li>
+<li><p>Filter for <code>Sex</code> being <em>female</em></p></li>
 <li><p>Calculate the mean of <code>FareInDollars</code></p></li>
 </ul>
 </section>
 <section id="python-vs.-r-the-results-using-pandas" class="slide level2 smaller">
 <h2>Python vs.&nbsp;R — The Results (using pandas)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse); <span class="fu">library</span>(rio)</span>
-<span id="cb1-2"><a href=""></a>DataTitanicR<span class="ot">=</span><span class="fu">import</span>(<span class="st">"Data/Titanic.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-3"><a href=""></a>            <span class="fu">select</span>(Sex, FareInPounds, <span class="at">Surv =</span> Survived) <span class="sc">|&gt;</span> </span>
-<span id="cb1-4"><a href=""></a>            <span class="fu">mutate</span>(<span class="at">FareInDollars =</span> FareInPounds<span class="sc">*</span><span class="fl">164.5</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-5"><a href=""></a>            <span class="fu">filter</span>(Sex<span class="sc">==</span><span class="st">"female"</span>)</span>
-<span id="cb1-6"><a href=""></a>MeanFareWomen<span class="ot">=</span><span class="fu">mean</span>(DataTitanicR<span class="sc">$</span>FareInDollars)</span>
-<span id="cb1-7"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb1-3"><a href=""></a>DataTitanicR <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"Data/Titanic.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-4"><a href=""></a>  <span class="fu">select</span>(Sex, FareInPounds, <span class="at">Surv =</span> Survived) <span class="sc">|&gt;</span></span>
+<span id="cb1-5"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">FareInDollars =</span> FareInPounds <span class="sc">*</span> <span class="fl">164.5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-6"><a href=""></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"female"</span>)</span>
+<span id="cb1-7"><a href=""></a>MeanFareWomen <span class="ot">=</span> <span class="fu">mean</span>(DataTitanicR<span class="sc">$</span>FareInDollars)</span>
+<span id="cb1-8"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7316.93</code></pre>
 </div>
@@ -1052,13 +1099,14 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHBhbmRhcyBhcyBw
 <section id="python-vs.-r-the-results-using-polars" class="slide level2 smaller">
 <h2>Python vs.&nbsp;R — The Results (using polars)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(tidyverse); <span class="fu">library</span>(rio)</span>
-<span id="cb3-2"><a href=""></a>DataTitanicR<span class="ot">=</span><span class="fu">import</span>(<span class="st">"Data/Titanic.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-3"><a href=""></a>            <span class="fu">select</span>(Sex, FareInPounds, <span class="at">Surv =</span> Survived) <span class="sc">|&gt;</span> </span>
-<span id="cb3-4"><a href=""></a>            <span class="fu">mutate</span>(<span class="at">FareInDollars =</span> FareInPounds<span class="sc">*</span><span class="fl">164.5</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb3-5"><a href=""></a>            <span class="fu">filter</span>(Sex<span class="sc">==</span><span class="st">"female"</span>)</span>
-<span id="cb3-6"><a href=""></a>MeanFareWomen<span class="ot">=</span><span class="fu">mean</span>(DataTitanicR<span class="sc">$</span>FareInDollars)</span>
-<span id="cb3-7"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb3-3"><a href=""></a>DataTitanicR <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"Data/Titanic.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-4"><a href=""></a>  <span class="fu">select</span>(Sex, FareInPounds, <span class="at">Surv =</span> Survived) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">FareInDollars =</span> FareInPounds <span class="sc">*</span> <span class="fl">164.5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb3-6"><a href=""></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"female"</span>)</span>
+<span id="cb3-7"><a href=""></a>MeanFareWomen <span class="ot">=</span> <span class="fu">mean</span>(DataTitanicR<span class="sc">$</span>FareInDollars)</span>
+<span id="cb3-8"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7316.93</code></pre>
 </div>
@@ -1074,8 +1122,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHBvbGFycyBhcyBw
 </div>
 </div>
 </section>
-<section id="was-chivary-dead-in-1912" class="slide level2">
-<h2>Was Chivary Dead in 1912?</h2>
+<section id="was-chivalry-dead-in-1912" class="slide level2">
+<h2>Was Chivalry Dead in 1912?</h2>
 <p>To answer the question, we develop a male and a female data frame and compare the survival rates.</p>
 <p>In each data frame we would need only the variables <code>Sex</code> and <code>Survived</code> but we add also <code>PasClass</code> for additional analysis.</p>
 </section>
@@ -1144,7 +1192,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUHJvcEZlbVN1cnYgPSBAQEBc
 <section id="be-critical-with-your-own-research" class="slide level2 smaller">
 <h2>Be critical with your own research</h2>
 <h3 id="pasclass-is-a-confounder"><code>PasClass</code> is a Confounder</h3>
-<p>The third class was deep in the hull of the Titanic with low survival chances and more men were traveling in that class. This makes <code>PasClass</code> a confounder. Therefore we have to analyse male and female survival by class: We have to filter for <code>Sex</code> and <code>PasClass</code>.</p>
+<p>The third class was deep in the hull of the Titanic with low survival chances and more men were traveling in that class. This makes <code>PasClass</code> a confounder. Therefore we have to analyze male and female survival by class: We have to filter for <code>Sex</code> and <code>PasClass</code>.</p>
 
 <img data-src="RandRstudioQLive_files/figure-revealjs/unnamed-chunk-53-1.png" width="960" class="r-stretch"></section>
 <section id="survival-research-for-passenger-class-1" class="slide level2">
@@ -1159,7 +1207,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUHJvcEZlbVN1cnYgPSBAQEBc
 
 </div>
 <script type="webr-50-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMT1EYXRhVGl0YW5pYyB8PiBcbiAgICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgICBmaWx0ZXIoQEBAKSB8PiBcbiAgICAgICAgICAgICAgICAgZmlsdGVyKEBAQClcbkRhdGFNYWxlQ2xhc3MxPURhdGFUaXRhbmljIHw+IFxuICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgZmlsdGVyKEBAQCkgfD4gXG4gICAgICAgICAgICAgICBmaWx0ZXIoQEBAKVxuY2F0KFwiIEZlbWFsZSBTdXJ2aXZhbCBQb3BvcnRpb24gaW4gQ2xhc3MgMTpcIiwgbWVhbihEYXRhRmVtYWxlQ2xhc3MxJFN1cnZpdmVkKSwgXCJcXG5cIixcbiAgICBcIk1hbGUgU3Vydml2YWwgUG9wb3J0aW9uIGluIENsYXNzIDE6XCIsIG1lYW4oRGF0YU1hbGVDbGFzczEkU3Vydml2ZWQpKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMT1EYXRhVGl0YW5pYyB8PiBcbiAgICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgICBmaWx0ZXIoQEBAKSB8PiBcbiAgICAgICAgICAgICAgICAgZmlsdGVyKEBAQClcbkRhdGFNYWxlQ2xhc3MxPURhdGFUaXRhbmljIHw+IFxuICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgZmlsdGVyKEBAQCkgfD4gXG4gICAgICAgICAgICAgICBmaWx0ZXIoQEBAKVxuY2F0KFwiIEZlbWFsZSBTdXJ2aXZhbCBQcm9wb3J0aW9uIGluIENsYXNzIDE6XCIsIG1lYW4oRGF0YUZlbWFsZUNsYXNzMSRTdXJ2aXZlZCksIFwiXFxuXCIsXG4gICAgXCJNYWxlIFN1cnZpdmFsIFByb3BvcnRpb24gaW4gQ2xhc3MgMTpcIiwgbWVhbihEYXRhTWFsZUNsYXNzMSRTdXJ2aXZlZCkpIn0=
 </script>
 </div>
 </div>
@@ -1176,7 +1224,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMT1E
 
 </div>
 <script type="webr-51-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMj1EYXRhVGl0YW5pYyB8PiBcbiAgICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgICBmaWx0ZXIoQEBAKSB8PiBcbiAgICAgICAgICAgICAgICAgZmlsdGVyKEBAQClcbkRhdGFNYWxlQ2xhc3MyPURhdGFUaXRhbmljIHw+IFxuICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgZmlsdGVyKEBAQCkgfD4gXG4gICAgICAgICAgICAgICBmaWx0ZXIoQEBAKVxuY2F0KFwiIEZlbWFsZSBTdXJ2aXZhbCBQb3BvcnRpb24gaW4gQ2xhc3MgMjpcIiwgbWVhbihEYXRhRmVtYWxlQ2xhc3MyJFN1cnZpdmVkKSwgXCJcXG5cIixcbiAgICBcIk1hbGUgU3Vydml2YWwgUG9wb3J0aW9uIGluIENsYXNzIDI6XCIsIG1lYW4oRGF0YU1hbGVDbGFzczIkU3Vydml2ZWQpKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMj1EYXRhVGl0YW5pYyB8PiBcbiAgICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgICBmaWx0ZXIoQEBAKSB8PiBcbiAgICAgICAgICAgICAgICAgZmlsdGVyKEBAQClcbkRhdGFNYWxlQ2xhc3MyPURhdGFUaXRhbmljIHw+IFxuICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgZmlsdGVyKEBAQCkgfD4gXG4gICAgICAgICAgICAgICBmaWx0ZXIoQEBAKVxuY2F0KFwiIEZlbWFsZSBTdXJ2aXZhbCBQcm9wb3J0aW9uIGluIENsYXNzIDI6XCIsIG1lYW4oRGF0YUZlbWFsZUNsYXNzMiRTdXJ2aXZlZCksIFwiXFxuXCIsXG4gICAgXCJNYWxlIFN1cnZpdmFsIFByb3BvcnRpb24gaW4gQ2xhc3MgMjpcIiwgbWVhbihEYXRhTWFsZUNsYXNzMiRTdXJ2aXZlZCkpIn0=
 </script>
 </div>
 </div>
@@ -1193,13 +1241,13 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMj1E
 
 </div>
 <script type="webr-52-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMz1EYXRhVGl0YW5pYyB8PiBcbiAgICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgICBmaWx0ZXIoQEBAKSB8PiBcbiAgICAgICAgICAgICAgICAgZmlsdGVyKEBAQClcbkRhdGFNYWxlQ2xhc3MzPURhdGFUaXRhbmljIHw+IFxuICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgZmlsdGVyKEBAQCkgfD4gXG4gICAgICAgICAgICAgICBmaWx0ZXIoQEBAKVxuY2F0KFwiIEZlbWFsZSBTdXJ2aXZhbCBQb3BvcnRpb24gaW4gQ2xhc3MgMzpcIiwgbWVhbihEYXRhRmVtYWxlQ2xhc3MzJFN1cnZpdmVkKSwgXCJcXG5cIixcbiAgICBcIk1hbGUgU3Vydml2YWwgUG9wb3J0aW9uIGluIENsYXNzIDM6XCIsIG1lYW4oRGF0YU1hbGVDbGFzczMkU3Vydml2ZWQpKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUZlbWFsZUNsYXNzMz1EYXRhVGl0YW5pYyB8PiBcbiAgICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgICBmaWx0ZXIoQEBAKSB8PiBcbiAgICAgICAgICAgICAgICAgZmlsdGVyKEBAQClcbkRhdGFNYWxlQ2xhc3MzPURhdGFUaXRhbmljIHw+IFxuICAgICAgICAgICAgICAgc2VsZWN0KEBAQCwgQEBALCBQYXNDbGFzcz1QY2xhc3MpIHw+IFxuICAgICAgICAgICAgICAgZmlsdGVyKEBAQCkgfD4gXG4gICAgICAgICAgICAgICBmaWx0ZXIoQEBAKVxuY2F0KFwiIEZlbWFsZSBTdXJ2aXZhbCBQcm9wb3J0aW9uIGluIENsYXNzIDM6XCIsIG1lYW4oRGF0YUZlbWFsZUNsYXNzMyRTdXJ2aXZlZCksIFwiXFxuXCIsXG4gICAgXCJNYWxlIFN1cnZpdmFsIFByb3BvcnRpb24gaW4gQ2xhc3MgMzpcIiwgbWVhbihEYXRhTWFsZUNsYXNzMyRTdXJ2aXZlZCkpIn0=
 </script>
 </div>
 </div>
 
 <script type="webr-data">
-eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyJdLCJyZXBvcyI6W119LCJyZW5kZXJfZGYiOiJkZWZhdWx0In0=
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsInRpZHl2ZXJzZSIsInJpbyJdLCJyZXBvcyI6W119LCJyZW5kZXJfZGYiOiJkZWZhdWx0In0=
 </script>
 <script type="pyodide-data">
 eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yOC4xL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIl19fQ==

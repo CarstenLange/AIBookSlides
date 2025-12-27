@@ -44,7 +44,7 @@ For example, it is not feasible to assign participants of a marketing event into
 
 ## The Idea Behind A/B Tests
 
-### Ideal: Parallel Universes
+### Ideal is: Parallel Universes
 
 ![](images/clipboard-2793122789.png) 
 

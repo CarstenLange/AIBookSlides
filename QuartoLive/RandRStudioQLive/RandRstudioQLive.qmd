@@ -9,6 +9,8 @@ execute:
   message: false
   warning: false
 
+
+
 format: 
   live-revealjs:
     theme: [moon,../../CustomCL.scss]
@@ -21,7 +23,11 @@ format:
     scrollable: true
     footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
 
-    
+webr:
+  packages:
+    - tidyverse
+    - rio
+
 resources: 
   - Data
 engine: knitr    
@@ -40,12 +46,15 @@ engine: knitr
 
 ## Learning Outcomes {.smaller}
 
-**Part 2: How are Stores Data:**
+**Part 2: How R Stores the Data:**
 
--  Data types
--  Data objects in R
+-   Data types
+-   Data objects in R
 
-**Part 3: The `tidyverse` Package**
+## Learning Outcomes {.smaller}
+
+**Part 3: The `tidyverse` Package:**
+
 -   The Structure of R commands
 -   About the `tidyverse` package for data frames
     -   `select()` and rename columns (variables)
@@ -68,15 +77,13 @@ You can download *Positron* here: [Download *Positron*](https://positron.posit.c
 
 > **Note**<br> - Install R before *Positron*<br> - If an older R version exists deinstall it before installing the newer version
 
-## RStudio --- Integrated Development Environment (IDE)  {.smaller}
+## RStudio --- Integrated Development Environment (IDE) {.smaller}
+
 ### not recommended (outdated)
 
-![RStudio Window](Graphics/RStudioWindowsCL.png)
+![RStudio Window](Graphics/RStudioWindowsCL.png){target="_blank"}
 
-Video for *First Steps* to setup *R* and *RStudio*: [Click here](https://youtu.be/LmRtTkD5E6M)</br>
-(However, **it is recommended** to work wit *Positron* rather than *RStudio* )
-
-
+Video for *First Steps* to setup *R* and *RStudio*: [Click here](https://youtu.be/LmRtTkD5E6M){target="_blank"}</br> (However, **it is recommended** to work wit *Positron* rather than *RStudio* )
 
 ## Positron --- Integrated Development Environment (IDE) {.smaller}
 
@@ -84,87 +91,92 @@ Video for *First Steps* to setup *R* and *RStudio*: [Click here](https://youtu.b
 
 **First steps** to setup R and *Posit* can be found in this video: coming soon
 
-## Set Window Layout and Choose R Compiler {.smaller}
+## Set Window Layout and Choose R Interpreter {.smaller}
 
 ![](Graphics/PositChooseRAndLayout.png)
 
-## RStudio Keybindings (needs to done only once)
+## RStudio Keybindings (needs to done only once) {.smaller}
 
-![](Graphics/RStudioKeybindings.png)
+**Click Gear Icon -\> Choose: Settings -\> Search for: Keybindings -\>\
+Toggle-On RStudio Keybindings**![](Graphics/RStudioKeybindings.png)
 
 ## Always Work with Folders {.smaller}
 
- **Always open or create a folder first**
+**Always open or create a folder first**
 
-The folder is the one where all your *R* `.r`, Quarto (`.qmd`), and data (e.g., `.csv`) files are stored)
+The folder is the one where all your *R* ()`.r`), Quarto (`.qmd`), and data (e.g., `.csv`) files are stored
 
 ![](Graphics/OpenFolder.png)
 
-## Create a New `R` or `Quarto` file
+## Use Command Palette to Create a New `R` or `Quarto` file  {.smaller}
 
-1. `CTRL SHIFT P` (Windows) or `⌘ SHIFT P` (Mac) to open *Command Pallette*
-2. Type either "New Quarto Document" or  "New R Document" into search bar
-3. Click and Create file
-4. Save file right away
+`CTRL SHIFT P` (Windows) or `⌘ SHIFT P` (Mac) to open **Command Pallette**:
 
+1.  Type either "New Quarto Document" or "New R Document" into search bar
+2.  Click and Create file
+3.  Save file right away
 
-## Open a File from Your Folder {.smaller}
+## Open a File from an Existing Positron Folder {.smaller}
 
- 
 ![](Graphics/PositOpenFile.png)
 
-## Positron: First Steps with an R File `(.r)`
+
+## Positron: First Steps with an R File `(.r)` {.smaller}
+
+-   Remember, always open a folder first!
+
+**We want code only.**
 
 1.  Print "Hello world" using the `print()` command.
 
-2.  Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
+2.  Assign values $3$ and $4$ to the legs `a` and `b` of an right-angled triangle.
 
--   calculate the hyphosenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+-   calculate the hypotenuse $c$. $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
 -   print the result using the `cat(command)`
 
--   Assign $2$ varaiable ("R" object) `a` and run the `cat()` command again.
+-   Assign the number $2$ to the variable ("R" objects) `a` and run the `cat()` command again.
 
-## Try Positron with a Quarto File  `(.qmd)`
 
--   Always open a folder first
--   We want to have text and code in the same file.
+## Try Positron with a Quarto File `(.qmd)` 
+
+-   Remember, always open a folder first!
+
+**We want to have text and code in the same file.**
+
 -   Text is written in *MarkDown*
--   Code is sorundended by:
+-   Code is surrounded by:
 
+>\`\`\`{r}
+>
+>MyCode goes here
+>
+>\`\`\`
 
-
-\```{r}
-
-MyCode goes here
-
-\```
-
-
+## Try Positron with a Quarto File `(.qmd)` {.smaller}
 **Instructions:**
 
 1.  Print "Hello world" using the `print()` command.
 
-2.  Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
+2.  Assign values $3$ and $4$ to the legs `a` and `b` of an right-angled triangle.
 
--   calculate the hyphosenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+-   calculate the hypotenuse $c$. $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
 -   print the result using the `cat(command)`
 
--   Assign $2$ variable ("R" object) `a` and run the `cat()` command again.
+Note, now we want everything nicely commented!
 
-## WASC: R Runs in a Browser Includig Libraries and Data
+## WASM: R Runs in a Browser Including Libraries and Data {.smaller}
 
-- Print "Hello world" using the `print()` command.
+-   Print "Hello world" using the `print()` command.
 
-- Assign values $3$ and $4$ to the legs $a$ and $b$ of an right-angled triangle.
+-   Assign values $3$ and $4$ to the legs `a` and `b` of an right-angled triangle.
 
-
--   Calculate the hyphosenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+-   Calculate the hypotenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
 -   Print the result using the `cat(command)`
 
--   Assign $2$ variable ("R" object) `a` and run the `cat()` command again.
+-   Assign the number $2$ to the variable ("R" object) `a` and run the `cat()` command again.
 
 ```{webr}
 print(...)
@@ -173,13 +185,17 @@ b=4
 c= ...
 cat(...)
 ```
+
 ## R Packages {.smaller}
 
 R Packages extend R's functionality. They have to be **installed** only once:
 
-For example, to install the `tidyverse` package, type in the consol window: `install.packages("tidyverse)`
+For example, to install the `tidyverse` package, type in the consol window: <br>
+`install.packages("tidyverse)`
+<br>Needs to be only done once!
 
-After installation they need to be **loaded** in every new R script with `library()`.
+After installation packages they need to be **loaded** in every new R script or Quarto file with: 
+`library()`.
 
 Packages frequently used in this course (**please install soon**):
 
@@ -187,39 +203,57 @@ Packages frequently used in this course (**please install soon**):
 -   `rio`: allows loading various data resources with one `import()` command from the user's hard drive or the Internet.
 -   `janitor`: provides functionality to clean data and rename variable names to avoid spaces and special characters.
 
-## Example: the `rio` and the `tidyverse` Package {.smaller}
-
-Assuming the `rio` packages is already installed.
+## Videos for the `rio` and the `tidyverse` Package {.smaller}
 
 Example: How to install the tidyverse package: [Click here](https://youtu.be/tAGoThXF2Os)
 
 Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE)
 
+
+
+## Using the `rio` and the `tidyverse` Package {.smaller}
+Example: `rio` and `tidyverse` package (assuming they are installed already)
+
 `import()` would not work if the `rio` package were not loaded.\
 `select()` would not work if the `tidyverse` package were not loaded.
 
 ```{webr}
-library(rio)
 library(tidyverse)
+library(rio)
 DataHousing =
   import("Data/HousingData.csv") |> 
   select(Price=price, Sqft=sqft_living, Bedrooms=bedrooms,Waterfront=waterfront)
-print(DataHousing[1:3,])
+print(DataHousing)
 ```
 
-## Data Types & Data Objects {.smaller}
+## Part 3: Data Types & Data Objects {.smaller}
 
 ::: incremental
 -   **Data Types:** Which type of values can R store?
-    -   numerical `num`
-    -   character `chr`
-    -   `factor`
-    -   `logic`
+    -   numerical `num` (such as: 1, 2.3, 100000)
+    -   character `chr` (such as: "Hello", "Hi", "World")
+    -   categorical `factor` (such as: "Female", "Male" Or: "small", "medium", "large")
+    -   boolean `logic` (True, False)
+    
 -   **Data Objects:** What are the **containers** R uses to store data?
-    -   `single entry` single variable
-    -   list of entries `vectors`
-    -   table `dataframe` and `tibble`
-    -   *advanced objects*. E.g., for plot, models, prediction results
+    -   single value as: `single entry` 
+    -   list of entries as: `vector`
+    -   table as: `dataframe` or `tibble`
+    -   *advanced objects* can hold:  plots, models, prediction results
+:::
+
+## Part 3: Data Types & Data Objects: Alcoholic Beverages Analogy {.smaller}
+
+::: incremental
+-   **Data Types:** Which type of fluids can we store?
+    - beer
+    - wine
+    - whiskey
+       
+-   **Data Objects:** What are the **containers** R uses to store data?
+    -   bottles
+    -   cartons (incl. six packs)
+    -   cargo containers 
 :::
 
 ## Data Types 🤓 {.smaller}
@@ -234,23 +268,6 @@ print(DataHousing[1:3,])
 **Factor Data Type (`factor`):** A `factor` is an R data type that stores *categorical* data in an effective way. `factor` data types are also required by many classification models in R.
 
 **Logic Data Type(`logic`):** A data type that stores the logic states `TRUE` and `FALSE` is called a `logic` object (sometimes called Boolean)
-
-### Numerical {.smaller}
-
-**Numerical Data Type (`num`):** Numerical values are used for calculations (therefore ZIP-Codes are not numerical). The numerical data type is `num` and in some cases `int` (full number). In most of the cases you do not have to differentiate between `int` and `num`.
-
-```{webr}
-A=1.23
-str(A) # str() returns structure of a variable
-B=2
-str(2) # str() returns structure of a variable
-C=as.integer(3)
-str(C)
-print(A*C)
-print(C^B)
-D=C/A # Returns num type
-str(D)
-```
 
 ### Character {.smaller}
 
@@ -270,16 +287,33 @@ Character variables can be concatenated with the `cat()` command:
 ```{webr}
 FirstName="Carsten"
 LastName="Lange"
-cat(FirstName, LastName) # R adds a space automatically
+cat("The name is:",FirstName, LastName) # R adds a space automatically
 ```
+
+### Numerical {.smaller}
+
+**Numerical Data Type (`num`):** Numerical values are used for calculations (therefore ZIP-Codes are not numerical). The numerical data type is `num` and in some cases `int` (full number). In most of the cases you do not have to differentiate between `int` and `num`.
+
+```{webr}
+A=1.23
+str(A) # str() returns structure of a variable
+B=2
+str(2) # str() returns structure of a variable
+
+print(A*B)
+print(B^B)
+cat("Division:",B/A) 
+```
+
+
 
 ### Factor {.smaller}
 
 A `factor` is an R data type that stores **categorical** content. It is used to signal certain R commands that the variable is **categorical rather than character**.\
-**Note,** some *R* commands recognize *categorical* variables automatically and a conversion to *factor* is not needed.
+**Note,** some *R* commands recognize *categorical* variables automatically and a conversion from *character* to *factor* is not needed.
 
 ```{webr}
-People=data.frame(Name= c("John","Jane","Mia","Brid"),              
+People=data.frame(Name= c("John","Jane","Mia","Britt"),              
                   Sex=c("male","female","female","female"))
 print(People)
 ```
@@ -559,7 +593,7 @@ Most R commands have the following structure: \begin{equation}
 \underbrace{DataNew}_{\text{R object storing the result}}=
 \underbrace{Command}_{\text{Name of the command}}
 \underbrace{(\overbrace{Data}^{\text{1. Argument: Data to process}},
-\overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by komma}}
+\overbrace{Arg2, Arg3, \dots, ArgN}^{\text{More Arguments}})}_{\text{Arguments inside () and separated by comma}}
 \end{equation}
 
 Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.»
@@ -594,7 +628,7 @@ cat("The mean of the values in vector VecTest is:", Result)
 
 All three examples are equivalent
 
-Try `? mean` in the Rstudio console to see the default values.»
+Try `? mean` in the RStudio console to see the default values.»
 
 ::: footer
 See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
@@ -607,7 +641,7 @@ See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScri
 -   `select()` selects columns (variables) from a data frame
 -   `filter()` filters rows (observations) for specific criteria
 -   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel)
--   `arrange()` sorts a data frame according to one or more colums in ascending order (use argumend `desc()` for descentig order)
+-   `arrange()` sorts a data frame according to one or more colums in ascending order (use argument `desc()` for descentig order)
 
 ## Titanic Dataset
 
@@ -667,10 +701,10 @@ E.g., *mutate* calculates the `FareIn2021Dollars` by multiplying `FareInPounds` 
 The command uses `DataTitanicSelVarFem` from the previous slide:
 
 ```{webr}
-DataTitatincSelVarFemDolFare=mutate(DataTitanicSelVarFem,
+DataTitanicSelVarFemDolFare=mutate(DataTitanicSelVarFem,
                                     FareIn2021Dollars=164.1*FareInPounds, 
                                     FareInPounds=NULL)
-head(DataTitatincSelVarFemDolFare)
+head(DataTitanicSelVarFemDolFare)
 ```
 
 ::: footer
@@ -679,13 +713,13 @@ See: [RandRStudioScriptPart2.R script200](https://econ.lange-analytics.com/RScri
 
 ## Summary {.smaller}
 
-We now have a data frame with only women and columns $Survived$, $PasClass$, $Sex$, $Age$, and $FareIn2021Dollas$.
+We now have a data frame with only women and columns $Survived$, $PasClass$, $Sex$, $Age$, and $FareIn2021Dollars$.
 
 How did we get there:
 
 1.  We selected variables $Survived$, $PasClass$, $Sex$, $Age$, $FareInPounds$ and saved in `DataTitanicSelVar`
 2.  We filtered for females and saved in `DataTitanicSelVarFem`
-3.  We mutated to calculate a new variable $FareIn2021Dollas$ and saved finally in `DataTitatincSelVarFemDolFare`
+3.  We mutated to calculate a new variable $FareIn2021Dollars$ and saved finally in `DataTitanicSelVarFemDolFare`
 
 . . .
 
@@ -738,7 +772,7 @@ Let us compare code for the same tasks between *R* and *Python*:
 
 -   Calculate a new column `FareInDollars` by multiplying `FareInPounds` by $164.5$
 
--   Filter for `Sex` beeing *female*
+-   Filter for `Sex` being *female*
 
 -   Calculate the mean of `FareInDollars`
 
@@ -746,12 +780,13 @@ Let us compare code for the same tasks between *R* and *Python*:
 
 ```{r}
 #| echo: true
-library(tidyverse); library(rio)
-DataTitanicR=import("Data/Titanic.csv") |> 
-            select(Sex, FareInPounds, Surv = Survived) |> 
-            mutate(FareInDollars = FareInPounds*164.5) |> 
-            filter(Sex=="female")
-MeanFareWomen=mean(DataTitanicR$FareInDollars)
+library(tidyverse)
+library(rio)
+DataTitanicR = import("Data/Titanic.csv") |>
+  select(Sex, FareInPounds, Surv = Survived) |>
+  mutate(FareInDollars = FareInPounds * 164.5) |>
+  filter(Sex == "female")
+MeanFareWomen = mean(DataTitanicR$FareInDollars)
 print(MeanFareWomen)
 ```
 
@@ -770,12 +805,13 @@ print(MeanFareWomen)
 
 ```{r}
 #| echo: true
-library(tidyverse); library(rio)
-DataTitanicR=import("Data/Titanic.csv") |> 
-            select(Sex, FareInPounds, Surv = Survived) |> 
-            mutate(FareInDollars = FareInPounds*164.5) |> 
-            filter(Sex=="female")
-MeanFareWomen=mean(DataTitanicR$FareInDollars)
+library(tidyverse)
+library(rio)
+DataTitanicR = import("Data/Titanic.csv") |>
+  select(Sex, FareInPounds, Surv = Survived) |>
+  mutate(FareInDollars = FareInPounds * 164.5) |>
+  filter(Sex == "female")
+MeanFareWomen = mean(DataTitanicR$FareInDollars)
 print(MeanFareWomen)
 ```
 
@@ -789,7 +825,7 @@ MeanFareWomen=DataTitanicPy["FareInDollars"].mean()
 print(MeanFareWomen)     
 ```
 
-## Was Chivary Dead in 1912?
+## Was Chivalry Dead in 1912?
 
 To answer the question, we develop a male and a female data frame and compare the survival rates.
 
@@ -846,7 +882,7 @@ cat(@@@, @@@)
 
 ### `PasClass` is a Confounder
 
-The third class was deep in the hull of the Titanic with low survival chances and more men were traveling in that class. This makes `PasClass` a confounder. Therefore we have to analyse male and female survival by class: We have to filter for `Sex` and `PasClass`.
+The third class was deep in the hull of the Titanic with low survival chances and more men were traveling in that class. This makes `PasClass` a confounder. Therefore we have to analyze male and female survival by class: We have to filter for `Sex` and `PasClass`.
 
 ```{r}
 library(ggdag)
@@ -857,8 +893,9 @@ dagify(
   Sex ~ PClass,
   exposure = "Sex",
   outcome = "Survived"
-)|> 
-ggdag_status(node_size = 22) + theme_void()
+) |>
+  ggdag_status(node_size = 22) +
+  theme_void()
 ```
 
 ## Survival Research for Passenger Class 1
@@ -875,8 +912,8 @@ DataMaleClass1=DataTitanic |>
                select(@@@, @@@, PasClass=Pclass) |> 
                filter(@@@) |> 
                filter(@@@)
-cat(" Female Survival Poportion in Class 1:", mean(DataFemaleClass1$Survived), "\n",
-    "Male Survival Poportion in Class 1:", mean(DataMaleClass1$Survived))
+cat(" Female Survival Proportion in Class 1:", mean(DataFemaleClass1$Survived), "\n",
+    "Male Survival Proportion in Class 1:", mean(DataMaleClass1$Survived))
 ```
 
 ## Survival Research for Passenger Class 2
@@ -893,8 +930,8 @@ DataMaleClass2=DataTitanic |>
                select(@@@, @@@, PasClass=Pclass) |> 
                filter(@@@) |> 
                filter(@@@)
-cat(" Female Survival Poportion in Class 2:", mean(DataFemaleClass2$Survived), "\n",
-    "Male Survival Poportion in Class 2:", mean(DataMaleClass2$Survived))
+cat(" Female Survival Proportion in Class 2:", mean(DataFemaleClass2$Survived), "\n",
+    "Male Survival Proportion in Class 2:", mean(DataMaleClass2$Survived))
 ```
 
 ## Survival Research for Passenger Class 3
@@ -911,6 +948,6 @@ DataMaleClass3=DataTitanic |>
                select(@@@, @@@, PasClass=Pclass) |> 
                filter(@@@) |> 
                filter(@@@)
-cat(" Female Survival Poportion in Class 3:", mean(DataFemaleClass3$Survived), "\n",
-    "Male Survival Poportion in Class 3:", mean(DataMaleClass3$Survived))
+cat(" Female Survival Proportion in Class 3:", mean(DataFemaleClass3$Survived), "\n",
+    "Male Survival Proportion in Class 3:", mean(DataMaleClass3$Survived))
 ```
