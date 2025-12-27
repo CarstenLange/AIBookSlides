@@ -439,7 +439,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeSh0aWR5dmVyc2Up
 <section id="data-types" class="slide level2 smaller">
 <h2>Data Types 🤓</h2>
 <div class="panel-tabset">
-<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Main</a></li><li><a href="#tabset-1-2">Character</a></li><li><a href="#tabset-1-3">Numerical</a></li><li><a href="#tabset-1-4">Factor</a></li><li><a href="#tabset-1-5">Logic</a></li><li><a href="#tabset-1-6">Truth Table</a></li></ul>
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Main</a></li><li><a href="#tabset-1-2">Character</a></li><li><a href="#tabset-1-3">Numerical</a></li><li><a href="#tabset-1-4">Categorical</a></li><li><a href="#tabset-1-5">Logic</a></li><li><a href="#tabset-1-6">Truth Table</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
 <p><strong>Numerical Data Type (<code>num</code>):</strong> Numerical values (e.g., 1, 523, 3.45) are used for calculation. In contrast, ZIP-Codes are not numerical data type.</p>
@@ -468,7 +468,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiTXlUZXh0PVwiSGVsbG8gd29y
 
 </div>
 <script type="webr-4-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRmlyc3ROYW1lPVwiQ2Fyc3RlblwiXG5MYXN0TmFtZT1cIkxhbmdlXCJcbmNhdChGaXJzdE5hbWUsIExhc3ROYW1lKSAjIFIgYWRkcyBhIHNwYWNlIGF1dG9tYXRpY2FsbHkifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRmlyc3ROYW1lPVwiQ2Fyc3RlblwiXG5MYXN0TmFtZT1cIkxhbmdlXCJcbmNhdChcIlRoZSBuYW1lIGlzOlwiLEZpcnN0TmFtZSwgTGFzdE5hbWUpICMgUiBhZGRzIGEgc3BhY2UgYXV0b21hdGljYWxseSJ9
 </script>
 </div>
 </div>
@@ -481,21 +481,21 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRmlyc3ROYW1lPVwiQ2Fyc3Rl
 
 </div>
 <script type="webr-5-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiQT0xLjIzXG5zdHIoQSkgIyBzdHIoKSByZXR1cm5zIHN0cnVjdHVyZSBvZiBhIHZhcmlhYmxlXG5CPTJcbnN0cigyKSAjIHN0cigpIHJldHVybnMgc3RydWN0dXJlIG9mIGEgdmFyaWFibGVcblxucHJpbnQoQSpCKVxucHJpbnQoQ15CKVxuY2F0KFwiRGl2aXNpb246XCIsQy9BKSAifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiQT0xLjIzXG5zdHIoQSkgIyBzdHIoKSByZXR1cm5zIHN0cnVjdHVyZSBvZiBhIHZhcmlhYmxlXG5CPTJcbnN0cigyKSAjIHN0cigpIHJldHVybnMgc3RydWN0dXJlIG9mIGEgdmFyaWFibGVcblxucHJpbnQoQSpCKVxucHJpbnQoQl5CKVxuY2F0KFwiRGl2aXNpb246XCIsQi9BKSAifQ==
 </script>
 </div>
 </div>
 </div>
 <div id="tabset-1-4">
-<p>A <code>factor</code> is an R data type that stores <strong>categorical</strong> content. It is used to signal certain R commands that the variable is <strong>categorical rather than character</strong>.<br>
-<strong>Note,</strong> some <em>R</em> commands recognize <em>categorical</em> variables automatically and a conversion to <em>factor</em> is not needed.</p>
+<p><strong>Categorical</strong> values are stored as in R as <code>factor</code> data type. A <code>factor</code> object signals certain R commands that the variable is <strong>categorical rather than character</strong>.<br>
+<strong>Note,</strong> some <em>R</em> commands recognize <em>categorical</em> variables automatically and a conversion from <em>character</em> to <em>factor</em> is not needed.</p>
 <div class="cell">
 <div>
 <div id="webr-6" class="exercise-cell">
 
 </div>
 <script type="webr-6-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUGVvcGxlPWRhdGEuZnJhbWUoTmFtZT0gYyhcIkpvaG5cIixcIkphbmVcIixcIk1pYVwiLFwiQnJpZFwiKSwgICAgICAgICAgICAgIFxuICAgICAgICAgICAgICAgICAgU2V4PWMoXCJtYWxlXCIsXCJmZW1hbGVcIixcImZlbWFsZVwiLFwiZmVtYWxlXCIpKVxucHJpbnQoUGVvcGxlKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUGVvcGxlPWRhdGEuZnJhbWUoTmFtZT0gYyhcIkpvaG5cIixcIkphbmVcIixcIk1pYVwiLFwiQnJpdHRcIiksICAgICAgICAgICAgICBcbiAgICAgICAgICAgICAgICAgIFNleD1jKFwibWFsZVwiLFwiZmVtYWxlXCIsXCJmZW1hbGVcIixcImZlbWFsZVwiKSlcbnByaW50KFBlb3BsZSkifQ==
 </script>
 </div>
 </div>
@@ -629,9 +629,19 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVmFyMT1AQEBcblZhcjI9QEBA
 </div>
 </div>
 </section>
-<section id="data-types-data-objects" class="slide level2">
-<h2>Data Types &amp; Data Objects</h2>
-<p><br><br> <strong>Data Types:</strong> Which type of values can R store? <br><br> <strong>Data Objects:</strong> What are the containers R uses to store data?</p>
+<section id="again-data-types-data-objects" class="slide level2 incremental">
+<h2>Again: Data Types &amp; Data Objects</h2>
+<ul>
+<li><strong>Data Types:</strong> Which type of values can R store? <span style="color:red; font-size:4rem;">✓</span>
+<ul>
+<li>Numerical</li>
+<li>Character</li>
+<li>Categorical / Factor</li>
+</ul></li>
+</ul>
+<ul>
+<li class="fragment"><strong>Data Objects:</strong> What are the containers R uses to store data? <span style="color:red; font-size:4rem;">?</span></li>
+</ul>
 </section>
 <section id="data-objects" class="slide level2">
 <h2>Data Objects</h2>
@@ -652,7 +662,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVmFyMT1AQEBcblZhcjI9QEBA
 
 </div>
 <script type="webr-17-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiQT0xLjVcbkI9XCJiZWVycyBpcyB0b28gbXVjaCB0byBkcml2ZT9cIlxuQz1UUlVFXG5jYXQoQSwgQiwgXCJBbnN3ZXI6XCIsIEMpIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiQT0xLjVcbkI9XCJiZWVycyBhcmUgdG9vIG11Y2ggdG8gZHJpdmU/XCJcbkM9VFJVRVxuY2F0KEEsIEIsIFwiQW5zd2VyOlwiLCBDKSJ9
 </script>
 </div>
 </div>
@@ -735,7 +745,7 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJEYXRh
 </script>
 </div>
 </div>
-<p>Most of the times, we do not build a <em>data frame</em> from its vectors (columns). Instead we load the <em>data frame</em> from a file (for example, a <code>csv</code> file.</p>
+<p>Most of the times, we do not build a <em>data frame</em> from its vectors (columns). Instead we load the <em>data frame</em> from a file (for example, a <code>csv</code> file).</p>
 <p>Below we load the <em>Titanic</em> dataset. Note, not all columns of the <em>Titanic</em> data frame are used, and only the first twelve observations are shown.</p>
 <div class="cell">
 <div>
@@ -743,7 +753,7 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJEYXRh
 
 </div>
 <script type="webr-24-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeShyaW8pXG5EYXRhVGl0YW5pY1NlbFZhcj1pbXBvcnQoXCJEYXRhL1RpdGFuaWMuY3N2XCIpIHw+IFxuICBzZWxlY3QoLU5hbWUsIC1TaWJsaW5nc1Nwb3VzZXNBYm9hcmQsIC1QYXJlbnRzQ2hpbGRyZW5BYm9hcmQpXG5rYWJsZShEYXRhVGl0YW5pY1sxOjEyLF0pIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeShyaW8pXG5EYXRhVGl0YW5pY1NlbFZhcj1pbXBvcnQoXCJEYXRhL1RpdGFuaWMuY3N2XCIpIHw+IFxuICBzZWxlY3QoLVNpYmxpbmdzU3BvdXNlc0Fib2FyZCwgLVBhcmVudHNDaGlsZHJlbkFib2FyZClcbmthYmxlKERhdGFUaXRhbmljU2VsVmFyWzE6MTIsXSkifQ==
 </script>
 </div>
 </div>
@@ -776,24 +786,25 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVmVjRmFyZUluUG91bmRzPURh
 </section>
 <section id="extracting-the-vectors-and-performing-calculations-logical-vectors" class="slide level2 smaller">
 <h2>Extracting the Vectors and Performing Calculations (logical Vectors)</h2>
+<p>If we like, we can change a vector inside a data frame:</p>
 <div class="cell">
 <div>
 <div id="webr-27" class="exercise-cell">
 
 </div>
 <script type="webr-27-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiU3VydlJhdGU9bWVhbihEYXRhVGl0YW5pYyRTdXJ2aXZlZClcbmNhdChcIlRoZSBhdmVyYWdlIHN1cnZpdmFsIHJhdGUgb2YgVGl0YW5pYyBwYXNzZW5nZXJzIHdhczpcIiwgU3VydlJhdGUpIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGFuaWMkU3Vydml2ZWQ9YXMubG9naWNhbChEYXRhVGl0YW5pYyRTdXJ2aXZlZClcbnN0cihEYXRhVGl0YW5pYykifQ==
 </script>
 </div>
 </div>
-<p>We can also change a vector inside a data frame:</p>
+<p>We can use the logical vector <em>Survived</em> (remember, <code>TRUE=1</code>, <code>FALSE=0</code>) to calculate the survival rate:</p>
 <div class="cell">
 <div>
 <div id="webr-28" class="exercise-cell">
 
 </div>
 <script type="webr-28-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGFuaWMkU3Vydml2ZWQ9YXMubG9naWNhbChEYXRhVGl0YW5pYyRTdXJ2aXZlZClcbnN0cihEYXRhVGl0YW5pYykifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiU3VydlJhdGU9bWVhbihEYXRhVGl0YW5pYyRTdXJ2aXZlZClcbmNhdChcIlRoZSBhdmVyYWdlIHN1cnZpdmFsIHJhdGUgb2YgVGl0YW5pYyBwYXNzZW5nZXJzIHdhczpcIiwgU3VydlJhdGUpIn0=
 </script>
 </div>
 </div>
@@ -801,7 +812,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGFuaWMkU3Vydml2
 <section id="summary-data-types-and-objects" class="slide level2" data-background-color="#648787">
 <h2>Summary Data Types and Objects</h2>
 
-<img data-src="Images/DataObjectDataTypes.png" class="r-stretch"></section>
+<img data-src="..\Images/DataObjectDataTypes.png" alt="Data Type and Object Structure. Hierachical diagram." class="r-stretch quarto-figure-center"><p class="caption">Data Type and Object Structure</p></section>
 <section>
 <section id="the-tidyverse-and-piping" class="title-slide slide level1 center">
 <h1>The <code>tidyverse</code> and Piping</h1>
