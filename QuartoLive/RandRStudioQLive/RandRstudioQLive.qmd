@@ -79,7 +79,7 @@ You can download *Positron* here: [Download *Positron*](https://positron.posit.c
 
 ## RStudio --- Integrated Development Environment (IDE) {.smaller}
 
-### not recommended (outdated)
+### (does not have newest features of a modern IDE)
 
 ![RStudio Window](Graphics/RStudioWindowsCL.png){target="_blank"}
 
@@ -130,7 +130,7 @@ The folder is the one where all your *R* ()`.r`), Quarto (`.qmd`), and data (e.g
 
 2.  Assign values $3$ and $4$ to the legs `a` and `b` of an right-angled triangle.
 
--   calculate the hypotenuse $c$. $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+-   calculate the hypotenuse $c$: $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
 -   print the result using the `cat(command)`
 
@@ -159,7 +159,7 @@ The folder is the one where all your *R* ()`.r`), Quarto (`.qmd`), and data (e.g
 
 2.  Assign values $3$ and $4$ to the legs `a` and `b` of an right-angled triangle.
 
--   calculate the hypotenuse $c$. $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
+-   calculate the hypotenuse $c$: $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
 -   print the result using the `cat(command)`
 
@@ -221,14 +221,16 @@ DataHousing =
 print(DataHousing)
 ```
 
-## Part 3: Data Types & Data Objects {.smaller}
+## Part 2: Data Types & Data Objects {.smaller}
 
-::: incremental
 -   **Data Types:** Which type of values can R store?
-    -   numerical `num` (such as: 1, 2.3, 100000)
+    -   numerical `num` (such as: 0.1, 2.3, 3.14157)
+    -   numerical `int` (such as: 1, 2, 7)
     -   character `chr` (such as: "Hello", "Hi", "World")
     -   categorical `factor` (such as: "Female", "Male" Or: "small", "medium", "large")
     -   boolean `logic` (True, False)
+
+::: incremental
 -   **Data Objects:** What are the **containers** R uses to store data?
     -   single value as: `single entry`
     -   list of entries as: `vector`
@@ -236,7 +238,7 @@ print(DataHousing)
     -   *advanced objects* can hold: plots, models, prediction results
 :::
 
-## Part 3: Data Types & Data Objects: Alcoholic Beverages Analogy {.smaller}
+## Analogy: Data Types & Data Objects Example for Three Alcoholic Beverages {.smaller}
 
 ::: incremental
 -   **Data Types:** Which type of fluids can we store?
@@ -249,16 +251,16 @@ print(DataHousing)
     -   cargo containers
 :::
 
-## Data Types 🤓 {.smaller}
+## Data Types {.smaller}
 
 ::: panel-tabset
 ### Main {.smaller}
 
-**Numerical Data Type (`num`):** Numerical values (e.g., 1, 523, 3.45) are used for calculation. In contrast, ZIP-Codes are not numerical data type.
+**Numerical Data Type (`num` and `int`):** Numerical values (e.g., 1, 523, 7 or 3.45, 0.1, 8.0) are used for calculations. In contrast, ZIP-Codes are not numerical data type.
 
 **Character Data Type (`chr`):** Storing sequence of characters, numbers, and/or symbols to form a word or even a sentence is called a `character` data type (e.g. first or last names, street addresses, or Zip-codes)
 
-**Factor Data Type (`factor`):** A `factor` is an R data type that stores *categorical* data in an effective way. `factor` data types are also required by many classification models in R.
+**Categorical Data Type (`factor`):** A `factor` is an R data type that stores *categorical* data in an effective way. `factor` data types are also required by many classification models in R.
 
 **Logic Data Type(`logic`):** A data type that stores the logic states `TRUE` and `FALSE` is called a `logic` object (sometimes called Boolean)
 
@@ -300,7 +302,7 @@ cat("Division:",B/A)
 
 ### Categorical {.smaller}
 
-**Categorical** values are stored as in R as `factor` data type. A `factor` object signals certain R commands that the variable is **categorical rather than character**.\
+**Categorical** values are stored in R as a `factor` data type. A `factor` object signals certain R commands that the variable is **categorical rather than character**.\
 **Note,** some *R* commands recognize *categorical* variables automatically and a conversion from *character* to *factor* is not needed.
 
 ```{webr}
@@ -372,9 +374,7 @@ kable(DataTruthTable, caption="Truth Table for AND and OR")|>
 ```
 :::
 
-::: footer
-See: [RandRStudioScriptPart1.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
-:::
+
 
 ## Print
 
@@ -412,7 +412,7 @@ cat(@@@, @@@, "is", @@@, "years old and lives in ZIP code", @@@)
 
 ## Again: Data Types & Data Objects {.incremental}
 
--   **Data Types:** Which type of values can R store? [✓]{style="color:red; font-size:4rem;"}
+-   **Data Types:** Which type of values can R store? [✓]{style="color:green; font-size:4rem;"}
     -   Numerical
     -   Character
     -   Categorical / Factor
@@ -469,8 +469,8 @@ print("Four vectors successfully defined!")
 Vector objects can be used as arguments for an R command to calculate statistics such as the `mean()` or the number of entries in the *vector* (`length()`):
 
 ```{webr}
-MeanForecTemp=mean(VecTemp)
-cat("The average forecasted temperature is", MeanForecTemp)
+MeanTemp=mean(VecTemp)
+cat("The average forecasted temperature is", MeanTemp)
 ```
 
 <hr>
@@ -485,6 +485,8 @@ cat("The forecast is for", ForecDays, "days.")
 ## Data Frames (tibbles) {.smaller}
 
 A data frame is similar to an Excel table. **A data frame stores the values of R Vectors as variables entries in its columns** .
+
+**Note**, that the `c()` command **c**ombines values to a vector.
 
 Below we show how the **values from the four vectors** `VecDay`, `VecTemp`, `VecWindSpeed`, and `VevIsSunny` are stored in the *data frame* `DataWeather`.
 
@@ -501,25 +503,22 @@ kable(DataWeather)
 
 ```{webr}
 #| echo: false
-DataTitanic=import("Data/Titanic.csv") |> 
-  select(-Name, -SiblingsSpousesAboard, -ParentsChildrenAboard)
+DataTitanic=import("Data/Titanic.csv") 
 ```
 
 Most of the times, we do not build a *data frame* from its vectors (columns). Instead we load the *data frame* from a file (for example, a `csv` file).
 
-Below we load the *Titanic* dataset. Note, not all columns of the *Titanic* data frame are used, and only the first twelve observations are shown.
+Below we load the *Titanic* dataset. Note, only the first six observations are shown.
 
 ```{webr}
 library(rio)
-DataTitanicSelVar=import("Data/Titanic.csv") |> 
-  select(-SiblingsSpousesAboard, -ParentsChildrenAboard)
-kable(DataTitanicSelVar[1:12,])
+DataTitanic=import("Data/Titanic.csv") 
+head(DataTitanic)
 ```
 
-We can see the *structure* of the data frame by using the `str()` command. This includes the type of iths variables/vectors:
+We can see the *structure* of the data frame by using the `str()` command. This includes the type of all variables/vectors:
 
 ```{webr}
-DataTitanic=import("Data/Titanic.csv")
 str(DataTitanic)
 ```
 
@@ -553,7 +552,7 @@ cat("The average survival rate of Titanic passengers was:", SurvRate)
 
 ## Summary Data Types and Objects {background-color="#648787"}
 
-![Data Type and Object Structure](/Images/DataObjectDataTypes.png){fig-alt="Data Type and Object Structure. Hierachical diagram." fig-align="center"}
+![Data Type and Object Structure](/Images/DataObjectDataTypes.png){fig-alt="Data Type and Object Structure. Hierarchical diagram." fig-align="center"}
 
 # Part 3: The `tidyverse` and Piping
 
@@ -569,12 +568,7 @@ Inside the `()` we can define one or more **arguments** for the command.
 
 ```{webr}
 VecTest=c(1,2,3)
-print(VecTest)
-```
 
-. . .
-
-```{webr}
 sum(x=VecTest)
 mean(VecTest)
 ```
@@ -598,7 +592,7 @@ Most R commands have the following structure: \begin{equation}
 
 Often the `data` argument is the first argument in a command. Usually named `data=` or `x=`.»
 
-## Use a Command with and without Argument Names 🤓 {.smaller}
+## Use a Command with and without Argument Names {.smaller}
 
 ```{webr}
 #| edit: false
@@ -624,24 +618,27 @@ Result=mean(VecTest)
 cat("The mean of the values in vector VecTest is:", Result)
 ```
 
-. . .
+**All three examples are equivalent**
 
-All three examples are equivalent
+## Getting Help about a Command (e.g., `mean`)
 
-Try `? mean` in the RStudio console to see the default values.»
+Use `?mean` or `help(mean)` in the RStudio console to see the default values.
 
-::: footer
-See: [RandRStudioScriptPart2.R script100](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
-:::
+You can also *mark/highlight* and then press *F1*
+
+Try it for the `mean()` command.
 
 ## Important Commands from `tidyverse`/`dplyr` Package
 
 -   `dplyr` package is part of the `tidyverse` (meta) package
+
+::: incremental
 -   `library(tidyverse)` (loads the `tidyverse` and its packages)
 -   `select()` selects columns (variables) from a data frame
 -   `filter()` filters rows (observations) for specific criteria
 -   `mutate()` calculates new or overwrites existing columns (variables) based on other columns (just like Excel)
--   `arrange()` sorts a data frame according to one or more colums in ascending order (use argument `desc()` for descentig order)
+-   `arrange()` sorts a data frame according to one or more columns in ascending order (use argument `desc()` for descending order)
+:::
 
 ## Titanic Dataset
 
@@ -651,6 +648,10 @@ DataTitanic=import("Data/Titanic.csv")
 head(DataTitanic)
 ```
 
+## Example: Using the `tidyverse` for Data Analysis
+
+**Goal:** Create a data frame with a few selected variables, that contains only female observations, and the fare in current U.S.-\$.
+
 ## The `select()` Command {.smaller}
 
 -   `select(DataMine, Var1, Var2)` selects columns (variables) `Var1` and `Var2` from a data frame `DataMine`. The first argument is the `data=` argument followed by the names of the selected variables.
@@ -659,7 +660,7 @@ head(DataTitanic)
 
 . . .
 
-Here is an example using the `DataTitanic` data frame from the previous slide:
+Here is an example using the `DataTitanic` data frame with a few selected variables:
 
 ```{webr}
 #| echo: false
@@ -668,7 +669,7 @@ DataTitanicSelVar=select(DataTitanic, Survived, PasClass=Pclass , Sex, Age, Fare
 
 ```{webr}
 library(tidyverse)
-DataTitanicSelVar=select(DataTitanic, Survived,PasClass=Pclass,Sex,Age,FareInPounds)
+DataTitanicSelVar=select(DataTitanic,Survived,PasClass=Pclass,Sex,Age,FareInPounds)
 head(DataTitanicSelVar)
 ```
 
@@ -691,76 +692,63 @@ DataTitanicSelVarFem=filter(DataTitanicSelVar, Sex=="female")
 # needed in case somebody start on next slide
 ```
 
-## The `mutate()` Command 🤓 {.smaller}
+## The `mutate()` Command {.smaller}
 
 `mutate()` creates or overwrites columns (variables) based on other columns (just like Excel). The first argument is the `data=` argument followed by the instructions on how to create the new variable.
 
 . . .
 
-E.g., *mutate* calculates the `FareIn2021Dollars` by multiplying `FareInPounds` by \$164.1.\
-The command uses `DataTitanicSelVarFem` from the previous slide:
+E.g., *mutate* calculates the `FareIn2023Dollars` by multiplying `FareInPounds` by $108.5$. The command uses `DataTitanicSelVarFem` from the previous slide:\*
 
 ```{webr}
 DataTitanicSelVarFemDolFare=mutate(DataTitanicSelVarFem,
-                                    FareIn2021Dollars=164.1*FareInPounds, 
+                                    FareIn2023Dollars=108.5*FareInPounds, 
                                     FareInPounds=NULL)
 head(DataTitanicSelVarFemDolFare)
 ```
 
 ::: footer
-See: [RandRStudioScriptPart2.R script200](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
+\*) The purchasing power of a British pound from the year 1912 was about 90.4 British pounds at the beginning of 2023 (see Bank of England (2022)). <br>
+Multiplying this with the exchange rate for the British pound at the beginning of 2023 (\$1.2/Brit. pound) (see Federal Reserve Bank of St. Louis (2023)) <br> gives us the multiplier of 108.5.
 :::
 
 ## Summary {.smaller}
 
-We now have a data frame with only women and columns $Survived$, $PasClass$, $Sex$, $Age$, and $FareIn2021Dollars$.
+We now have a data frame with only women and columns $Survived$, $PasClass$, $Sex$, $Age$, and $FareIn2023Dollars$.
 
 How did we get there:
 
 1.  We selected variables $Survived$, $PasClass$, $Sex$, $Age$, $FareInPounds$ and saved in `DataTitanicSelVar`
 2.  We filtered for females and saved in `DataTitanicSelVarFem`
-3.  We mutated to calculate a new variable $FareIn2021Dollars$ and saved finally in `DataTitanicSelVarFemDolFare`
+3.  We mutated to calculate a new variable $FareIn2023Dollars$ and saved finally in `DataTitanicSelVarFemDolFare`
 
 . . .
 
 Could this be done easier?
 
-Note, overwriting data frames such as `DataTitanic` is usually a bad idea!
-
-## Alternative: Nesting {.smaller}
-
-#### (I am not serious)
-
-```{webr}
-library(tidyverse)
-DataTitanicFinal = mutate(
-                   filter(select(DataTitanic, Survived, PasClass=Pclass , 
-                                 Sex, PasClass, FareInPounds), Sex=="female"), 
-                   FareIn2021Dollars=164.1*FareInPounds,                   
-                   FareInPounds=NULL)
-head(DataTitanicFinal)
-```
+Note, overwriting data frames such as `DataTitanic` is usually a bad idea! Nesting the command is possible but very difficult to read.
 
 ## Piping Schema {background-color="#648787"}
 
-![Piping Schema](../Images/Piping.png){background-color="aquamarine" fig-alt="Piping Schema" fig-align="center"}
+![Piping Schema](Graphics/Piping.png){background-color="aquamarine" fig-alt="Piping Schema" fig-align="center"}
 
-## Alternative: Piping
+## Alternative: Piping {.smaller}
 
-#### (will be used throughout the course/book) 🤓
+#### (will be used throughout the course/book)
+
+**Shortcut** for `|>`: `CTRL SHIFT M` (Windows) or `⌘ SHIFT M` (Mac). 
+
+The pipe operator `|>` is for most practical purposes equivalent to `%>%`.
 
 ```{webr}
 library(tidyverse)
 DataTitanicFinal=DataTitanic |> 
                  select(Survived, PasClass=Pclass , Sex, Age, FareInPounds) |> 
                  filter(Sex=="female") |> 
-                 mutate(FareIn2021Dollars=164.1*FareInPounds, FareInPounds=NULL)
+                 mutate(FareIn2023Dollars=108.5*FareInPounds, FareInPounds=NULL)
 head(DataTitanicFinal)
 ```
 
-::: footer
-See: [RandRStudioScriptPart2.R script300](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart2.R){target="_blank"}
-:::
 
 ## Python vs. R --- The task
 
@@ -770,7 +758,7 @@ Let us compare code for the same tasks between *R* and *Python*:
 
 -   select the variables `Sex`, `FareInPounds`, `Survived` (renamed to: `Surv`)
 
--   Calculate a new column `FareInDollars` by multiplying `FareInPounds` by $164.5$
+-   Calculate a new column `FareInDollars` by multiplying `FareInPounds` by $108.5$
 
 -   Filter for `Sex` being *female*
 
@@ -784,7 +772,7 @@ library(tidyverse)
 library(rio)
 DataTitanicR = import("Data/Titanic.csv") |>
   select(Sex, FareInPounds, Surv = Survived) |>
-  mutate(FareInDollars = FareInPounds * 164.5) |>
+  mutate(FareInDollars = FareInPounds * 108.5) |>
   filter(Sex == "female")
 MeanFareWomen = mean(DataTitanicR$FareInDollars)
 print(MeanFareWomen)
@@ -795,7 +783,7 @@ import pandas as pd
 DataTitanicPy=pd.read_csv("Data/Titanic.csv") 
 DataTitanicPy=DataTitanicPy[["Sex", "FareInPounds", "Survived"]] \
             .rename(columns={"Survived": "Surv"}) \
-            .assign(FareInDollars = DataTitanicPy["FareInPounds"] * 164.5) \
+            .assign(FareInDollars = DataTitanicPy["FareInPounds"] * 108.5) \
             .query("Sex=='female'")
 MeanFareWomen=DataTitanicPy["FareInDollars"].mean()
 print(MeanFareWomen)            
@@ -809,7 +797,7 @@ library(tidyverse)
 library(rio)
 DataTitanicR = import("Data/Titanic.csv") |>
   select(Sex, FareInPounds, Surv = Survived) |>
-  mutate(FareInDollars = FareInPounds * 164.5) |>
+  mutate(FareInDollars = FareInPounds * 108.5) |>
   filter(Sex == "female")
 MeanFareWomen = mean(DataTitanicR$FareInDollars)
 print(MeanFareWomen)
@@ -819,7 +807,7 @@ print(MeanFareWomen)
 import polars as pl
 DataTitanicPy=pl.read_csv("Data/Titanic.csv", infer_schema_length=None) \
             .select(pl.col("Survived").alias("Surv"), pl.col("Sex"), pl.col("FareInPounds"),
-                   (pl.col("FareInPounds")*164.5).alias("FareInDollars")) \
+                   (pl.col("FareInPounds")*108.5).alias("FareInDollars")) \
             .filter(pl.col("Sex") == "female")
 MeanFareWomen=DataTitanicPy["FareInDollars"].mean()
 print(MeanFareWomen)     
