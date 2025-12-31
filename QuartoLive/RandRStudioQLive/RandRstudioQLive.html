@@ -6,10 +6,10 @@
 <script src="RandRstudioQLive_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="RandRstudioQLive_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="RandRstudioQLive_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="RandRstudioQLive_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="RandRstudioQLive_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="RandRstudioQLive_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="RandRstudioQLive_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Carsten Lange">
   <title>Introduction to R and Positron</title>
@@ -97,7 +97,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="RandRstudioQLive_files/libs/revealjs/dist/theme/quarto-4b8217244be6dee95f534ad2017c9ddb.css">
+  <link rel="stylesheet" href="RandRstudioQLive_files/libs/revealjs/dist/theme/quarto-92f953f199ed25aab29d366ec0d00847.css">
   <link href="RandRstudioQLive_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="RandRstudioQLive_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="RandRstudioQLive_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -1036,7 +1036,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGFuaWNTZWxWYXJG
 <section id="alternative-piping" class="slide level2 smaller">
 <h2>Alternative: Piping</h2>
 <h4 id="will-be-used-throughout-the-coursebook">(will be used throughout the course/book)</h4>
-<p><strong>Shortcut</strong> for <code>|&gt;</code>: <code>CTRL SHIFT M</code> (Windows) or <code>⌘ SHIFT M</code>.</p>
+<p><strong>Shortcut</strong> for <code>|&gt;</code>: <code>CTRL SHIFT M</code> (Windows) or <code>⌘ SHIFT M</code> (Mac).</p>
 <p>The pipe operator <code>|&gt;</code> is for most practical purposes equivalent to <code>%&gt;%</code>.</p>
 <div class="cell">
 <div>
@@ -1063,14 +1063,14 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeSh0aWR5dmVyc2Up
 <section id="python-vs.-r-the-results-using-pandas" class="slide level2 smaller">
 <h2>Python vs.&nbsp;R — The Results (using pandas)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href=""></a><span class="fu">library</span>(rio)</span>
 <span id="cb1-3"><a href=""></a>DataTitanicR <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"Data/Titanic.csv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb1-4"><a href=""></a>  <span class="fu">select</span>(Sex, FareInPounds, <span class="at">Surv =</span> Survived) <span class="sc">|&gt;</span></span>
 <span id="cb1-5"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">FareInDollars =</span> FareInPounds <span class="sc">*</span> <span class="fl">108.5</span>) <span class="sc">|&gt;</span></span>
 <span id="cb1-6"><a href=""></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"female"</span>)</span>
 <span id="cb1-7"><a href=""></a>MeanFareWomen <span class="ot">=</span> <span class="fu">mean</span>(DataTitanicR<span class="sc">$</span>FareInDollars)</span>
-<span id="cb1-8"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4826.06</code></pre>
 </div>
@@ -1089,14 +1089,14 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHBhbmRhcyBhcyBw
 <section id="python-vs.-r-the-results-using-polars" class="slide level2 smaller">
 <h2>Python vs.&nbsp;R — The Results (using polars)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb3-2"><a href=""></a><span class="fu">library</span>(rio)</span>
 <span id="cb3-3"><a href=""></a>DataTitanicR <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"Data/Titanic.csv"</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-4"><a href=""></a>  <span class="fu">select</span>(Sex, FareInPounds, <span class="at">Surv =</span> Survived) <span class="sc">|&gt;</span></span>
 <span id="cb3-5"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">FareInDollars =</span> FareInPounds <span class="sc">*</span> <span class="fl">108.5</span>) <span class="sc">|&gt;</span></span>
 <span id="cb3-6"><a href=""></a>  <span class="fu">filter</span>(Sex <span class="sc">==</span> <span class="st">"female"</span>)</span>
 <span id="cb3-7"><a href=""></a>MeanFareWomen <span class="ot">=</span> <span class="fu">mean</span>(DataTitanicR<span class="sc">$</span>FareInDollars)</span>
-<span id="cb3-8"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-8"><a href=""></a><span class="fu">print</span>(MeanFareWomen)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4826.06</code></pre>
 </div>
@@ -1448,7 +1448,7 @@ WyJEYXRhL1RpdGFuaWMuY3N2IiwiRGF0YS9Ib3VzaW5nRGF0YS5jc3YiXQ==
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -1609,13 +1609,14 @@ WyJEYXRhL1RpdGFuaWMuY3N2IiwiRGF0YS9Ib3VzaW5nRGF0YS5jc3YiXQ==
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

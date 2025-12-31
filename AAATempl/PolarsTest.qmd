@@ -1,0 +1,23 @@
+---
+title: "Untitled"
+format: live-html
+---
+
+
+```{pyodide}
+import micropip
+await micropip.install("polars")
+import polars as pl
+
+# Create a sample DataFrame
+df = pl.DataFrame({
+    "fruit": ["Apple", "Banana", "Apple", "Banana", "Apple"],
+    "count": [2, 3, 1, 4, 3],
+    "city": ["SF", "SF", "NY", "NY", "SF"]
+})
+
+# Group by 'city' and 'fruit' and sum the counts
+result = df.group_by("city", "fruit").agg(pl.col("count").sum())
+
+print(result)
+```
