@@ -12,6 +12,3 @@ format:
     preview-links: false
     footer: <a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a>
     code-fold: false
-    chalkboard:
-      theme: whiteboard
-      boardmarker-width: 2.7

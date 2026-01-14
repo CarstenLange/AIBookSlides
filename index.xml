@@ -71,7 +71,7 @@
 	<version>
         <name>Regularization with Ridge and Lasso</name>
         <description>
-            This presentation introduces shows how Ridge and Lasso penalties can be used for regularization.
+            This presentation  shows how Ridge and Lasso penalties can be used for regularization.
         </description>
         <asset name="View online (recommended)" type="web">RidgeLasso/RidgeLasso.html</asset>
         <asset name="Download PDF">RidgeLasso/RidgeLasso.pdf</asset>

@@ -6,10 +6,10 @@
 <script src="HypothesisTesting_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="HypothesisTesting_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="HypothesisTesting_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="HypothesisTesting_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="HypothesisTesting_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="HypothesisTesting_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="HypothesisTesting_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Carsten Lange">
   <title>Hypothesis Testing</title>
@@ -31,7 +31,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="HypothesisTesting_files/libs/revealjs/dist/theme/quarto-4b8217244be6dee95f534ad2017c9ddb.css">
+  <link rel="stylesheet" href="HypothesisTesting_files/libs/revealjs/dist/theme/quarto-92f953f199ed25aab29d366ec0d00847.css">
   <link href="HypothesisTesting_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="HypothesisTesting_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="HypothesisTesting_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -454,7 +454,7 @@ WyJEYXRhL0RhdGFFbGVjdGlvbjIwMjAuY3N2Il0=
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -615,13 +615,14 @@ WyJEYXRhL0RhdGFFbGVjdGlvbjIwMjAuY3N2Il0=
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
