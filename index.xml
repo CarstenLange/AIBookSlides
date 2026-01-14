@@ -122,7 +122,7 @@
             This presentation important techniques to interpret machine learning models.
         </description>
         <asset name="View online (recommended)" type="web">Interpret/Interpret.html</asset>
-        <asset name="Coming soon: Download PDF">Interpret/Interpret.pdf</asset>
-        <asset name="Coming soon: Download Presentation's Source Code">Interpret.zip</asset>
+        <asset name="Download PDF">Interpret/Interpret.pdf</asset>
+        <asset name="Download Presentation's Source Code">Interpret.zip</asset>
     </version> 
 </versions>

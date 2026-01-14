@@ -12,3 +12,6 @@ format:
     preview-links: false
     footer: <a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a>
     code-fold: false
+    chalkboard: true
+    plugins:
+      - annotate

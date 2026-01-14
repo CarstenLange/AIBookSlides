@@ -10,7 +10,7 @@ format:
 ## From Blackbox to Interpretation
 
 ```{r}
-DraftMode=TRUE
+DraftMode=FALSE
 library(plotly)
 ```
 
