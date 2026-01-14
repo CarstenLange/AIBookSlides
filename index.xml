@@ -28,7 +28,7 @@
             This presentation introduces the basics of R and using the IDE Positron (with interactive code).
         </description>
         <asset name="View online (recommended)" type="web">QuartoLive/RandPositron/RandPositron.html</asset>
-    </version> 
+        <asset name="Download Presentation's Source Code">RandRStudioPart2.zip</asset>    </version> 
     <version>
         <name>Introduction to R and RStudio - Part 2</name>
         <description>
