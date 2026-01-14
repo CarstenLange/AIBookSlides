@@ -103,18 +103,18 @@
         <description>
             This presentation introduces a tree-based model: Decision Tree
         </description>
-        <asset name="View online (recommended)" type="web">TreeBased/TreeBasedDecTrees.html</asset>
-        <asset name="Download PDF">TreeBased/TreeBasedDecTrees.pdf</asset>
-        <asset name="Download Presentation's Source Code">TreeBased.zip</asset>
+        <asset name="View online (recommended)" type="web">TreeBasedDecTrees/TreeBasedDecTrees.html</asset>
+        <asset name="Download PDF">TreeBasedDecTrees/TreeBasedDecTrees.pdf</asset>
+        <asset name="Download Presentation's Source Code">TreeBasedDecTrees.zip</asset>
     </version> 
 	<version>
         <name>Tree Based - Random Forest</name>
         <description>
             This presentation introduces a tree-based model: Random Fores
         </description>
-        <asset name="View online (recommended)" type="web">TreeBased/TreeBasedRandFor.html</asset>
-        <asset name="Download PDF">TreeBased/TreeBasedRandFor.pdf</asset>
-        <asset name="Download Presentation's Source Code">TreeBased.zip</asset>
+        <asset name="View online (recommended)" type="web">TreeBasedRandFor/TreeBasedRandFor.html</asset>
+        <asset name="Download PDF">TreeBasedRandFor/TreeBasedRandFor.pdf</asset>
+        <asset name="Download Presentation's Source Code">TreeBasedRandFor.zip</asset>
     </version>
 <version>
         <name>Interpretation of Machine Learning Models</name>
