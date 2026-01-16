@@ -30,6 +30,7 @@ webr:
 
 resources: 
   - Data
+
 engine: knitr    
 ---
 
@@ -75,7 +76,7 @@ You can download R here: [Download R](https://cran.r-project.org/bin/){target="_
 
 You can download *Positron* here: [Download *Positron*](https://positron.posit.co/download.html){target="_blank"}
 
-> **Note**<br> - Install R before *Positron*<br> - If an older R version exists deinstall it before installing the newer version
+> **Note**<br> - Install R before *Positron*<br> - If an older R version exists uninstall it before installing the newer version
 
 ## RStudio --- Integrated Development Environment (IDE) {.smaller}
 
@@ -124,7 +125,7 @@ The folder is the one where all your *R* ()`.r`), Quarto (`.qmd`), and data (e.g
 
 -   Remember, always open a folder first!
 
-**We want code only.**
+### An R file such as `MyFile.r` contains only R-code
 
 1.  Print "Hello world" using the `print()` command.
 
@@ -136,11 +137,11 @@ The folder is the one where all your *R* ()`.r`), Quarto (`.qmd`), and data (e.g
 
 -   Assign the number $2$ to the variable ("R" objects) `a` and run the `cat()` command again.
 
-## Try Positron with a Quarto File `(.qmd)`
+## Try Positron with a Quarto File `(.qmd)` {.smaller}
 
 -   Remember, always open a folder first!
 
-**We want to have text and code in the same file.**
+### A Quarto file such as `MyFile.qmd` contains text as well as R-code
 
 -   Text is written in *MarkDown*
 -   Code is surrounded by:
@@ -245,7 +246,7 @@ print(DataHousing)
     -   beer
     -   wine
     -   whiskey
--   **Data Objects:** What are the **containers** R uses to store data?
+-   **Data Objects:** What are the **containers** to store our liquids?
     -   bottles
     -   cartons (incl. six packs)
     -   cargo containers
@@ -550,9 +551,43 @@ SurvRate=mean(DataTitanic$Survived)
 cat("The average survival rate of Titanic passengers was:", SurvRate)
 ```
 
+## Summary Data Types
+
+```{mermaid}
+graph TD
+VarGeneral["Data in General"]
+VarChar["Labels/Char:<br/>- Last names<br/>- ZIP-codes<br/>- ID-numbers"]
+VarCategory["Categorical/Factors<br/>limited number of variations:<br/>- Sex (M/F)<br/>- Grades (A, B, C, D, F)<br/>- Gender (M, F, NonBin)"]
+VarNumeric["Numerical Data<br/>- Counts (# of accident)<br/>- Measures<br/>  (e.g., Weight=160.8)"]
+VarNumericCon["Continuous/Num<br/>- Measures<br>  (e.g., Weight=160.8)"]
+VarInt["Discrete/Int<br/>- Counts<br>  (e.g., # accidents)"]
+
+
+VarGeneral --> VarChar
+VarGeneral --> VarCategory
+VarGeneral --> VarNumeric
+VarNumeric --> VarInt
+VarNumeric --> VarNumericCon
+
+
+%% Define one reusable style
+classDef ClassTopNodeCL text-align:center,color:#000000,fill:#ffffff,stroke:#000000,stroke-width:3.8px;
+
+classDef ClassLowNodesCL text-align:left,color:#0000dd,fill:#dedea9,stroke:#ffffff,stroke-width:3.8px;
+
+classDef ClassLowestNodesCL text-align:left,color:#0000dd,fill:#b3672b,stroke:#ffffff,stroke-width:3.8px;
+
+%% Apply it to multiple nodes
+class VarChar,VarNumeric,VarNumericCon,VarInt,VarCategory ClassLowNodesCL;
+class VarGeneral ClassTopNodeCL;
+class VarNumericCon,VarInt ClassLowestNodesCL
+```
+
+
 ## Summary Data Types and Objects {background-color="#648787"}
 
 ![Data Type and Object Structure](/Images/DataObjectDataTypes.png){fig-alt="Data Type and Object Structure. Hierarchical diagram." fig-align="center"}
+
 
 # Part 3: The `tidyverse` and Piping
 
@@ -749,6 +784,32 @@ DataTitanicFinal=DataTitanic |>
 head(DataTitanicFinal)
 ```
 
+## Why R?
+
+::: incremental
+
+- Excel analytics is not reproducible
+- SPSS focuses on surveys
+- STATA and SAS are commercial products
+  - not free
+  - progress has to go through the corporate hierarchy and therefore is slower
+  - limited support community
+
+:::
+
+## R and/or Python
+
+::: incremental
+- Analysis is always reproducible with little effort
+- free
+- extensive support
+- R or Python
+  - R is easier to understand for users with limited coding experience
+  - Python is faster in incorporating cutting-edge algorithms
+  - transfer from R to Python or vice versa is easy
+  - Quarto supports both R and Python even simultaneously in the same project
+
+:::
 
 ## Python vs. R --- The task
 
@@ -810,8 +871,9 @@ DataTitanicPy=pl.read_csv("Data/Titanic.csv", infer_schema_length=None) \
                    (pl.col("FareInPounds")*108.5).alias("FareInDollars")) \
             .filter(pl.col("Sex") == "female")
 MeanFareWomen=DataTitanicPy["FareInDollars"].mean()
-print(MeanFareWomen)     
+print(MeanFareWomen)   
 ```
+**Note,** `polars` is currently not supported in WASM
 
 ## Was Chivalry Dead in 1912?
 
@@ -819,7 +881,7 @@ To answer the question, we develop a male and a female data frame and compare th
 
 In each data frame we would need only the variables `Sex` and `Survived` but we add also `PasClass` for additional analysis.
 
-## The Male Data Frame
+## Exercise: The Male Data Frame
 
 We select `Sex`, `Survived`, and `PasClass=Pclass` and filter for `male`:
 
