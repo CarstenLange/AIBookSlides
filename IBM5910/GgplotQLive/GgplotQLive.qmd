@@ -321,6 +321,34 @@ ggplot(DataWebPurchMeans, aes(x = Treatment, y = MeanRevenue, fill = Treatment))
 ggplot(DataWebPurch, aes(x = Revenue)) +
   geom_histogram(binwidth = 300, fill="red", color="black")
 ```
+
+## Time Series for Apple Stock
+
+```{webr}
+DataStockTimeSeries=
+  data.frame(EndOfYear=seq(2019,2023,1), 
+             Price=c(71.25,129.90,174.91,128.72,191.8))
+library(ggthemes)
+ggplot(DataStockTimeSeries, mapping=aes(x=EndOfYear, y=Price))+
+  geom_line(color="red", linewidth=2 )+
+  labs(title="Apple Stock Price",
+       subtitle="(end of year)",
+       x="Year")+
+  theme_economist()
+```
+
+
+## More about Ggplot2
+
+Thomas Lin Pedersen
+
+ggplot workshop part 1 (2,5 hours)
+
+(https://www.youtube.com/watch?v=h29g21z0a68) 
+
+
+
+
 ## Histogram-Count with `TeachHistCount`
 
 ```{webr}
