@@ -1,0 +1,50 @@
+---
+title: "Monthly TeachHist Downloads"
+format: live-html
+
+webr:
+  packages:    
+    - jsonlite
+    - tidyverse
+    - lubridate
+    - ggplot2
+    - scales
+
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+```{webr}
+#| max-lines: 0
+fetch_cran_stats_all_time=function(pkg){
+    today=Sys.Date()
+    base_url=paste0("https://cranlogs.r-pkg.org/downloads/daily/2020-01-01:",today,"/", pkg)
+    proxy_url=paste0("https://api.allorigins.win/raw?url=",URLencode(base_url))
+    data=fromJSON(proxy_url)
+    return(as.data.frame(data$downloads[[1]]))}
+    
+daily_stats=fetch_cran_stats_all_time("TeachHist")
+
+
+# 2. Group by month
+stats_monthly <- daily_stats %>%
+mutate(day = as.Date(day)) %>%
+group_by(month = floor_date(day, "month")) %>%
+summarize(downloads = sum(downloads, na.rm = TRUE))
+
+ggplot(stats_monthly, aes(x = month, y = downloads)) + 
+  geom_col(fill = "steelblue") +
+  scale_x_date(
+    date_breaks = "3 months", 
+    # label_date_short() automatically handles the formatting
+    # We can customize it to ensure the year is 2 digits
+    labels = label_date_short(format = c("%y", "%b", "%d", "%H:%M")) 
+  ) +
+  theme_minimal() +
+  labs(
+    title = "Monthly TeachHist Downloads",
+    x = "Date",
+    y = "Monthly Downloads"
+  )
+```
