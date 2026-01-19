@@ -121,7 +121,8 @@ Examples:
 
 - geom_point() → draws points (scatter plots)
 - geom_line() → draws lines (time series, trends)
-- geom_bar() → draws bars (histograms, bar charts)
+- geom_bar() → draws bars (histograms, bar charts) based on counts
+- geom_col() → draws bars  based on (continues) variables)
 - geom_smooth → draws a smooth line representation of point data
 - geom_histogram() → draws histogram bins
 - geom_boxplot() → draws box-and-whisker plots
@@ -182,15 +183,7 @@ geom_point() +
 geom_smooth(method = "lm", se = FALSE, color = "black")
 ```
 
-## Back to Step 2: Adding Another GEOM? Best Solution (1 trend lines)
 
-```{webr}
-#| warning: false
-#| message: false
-ggplot(DataWebPurch, mapping=aes(x=Purchases, y=Revenue)) +
-geom_point(mapping=aes(color = Treatment)) +
-geom_smooth(method = "lm", se = FALSE) # possibly add color="black
-```
 
 ## Back to Step 2: Adding Two GEOMs? Cool Solution (1 +3 trend lines; Simpson’s Paradox)
 
@@ -381,3 +374,14 @@ cat("Stand. Dev.:", StdRev)
 cat("Prob. Rev.<4938: ", pnorm(4938, MeanRev, StdRev))
 ```
 
+## Histograms: Easier Way (ggplot is under the hood)
+
+
+```{webr}
+#| warning: false
+#| message: false
+library(TeachHist)
+library(plotly)
+PlotHistogram=TeachHistCounts(PlotData=DataWebPurch[4])
+ggplotly(PlotHistogram)
+```
