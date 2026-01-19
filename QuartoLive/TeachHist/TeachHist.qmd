@@ -9,6 +9,7 @@ webr:
     - lubridate
     - ggplot2
     - scales
+    - plotly
 
 engine: knitr
 ---
@@ -33,7 +34,7 @@ mutate(day = as.Date(day)) %>%
 group_by(month = floor_date(day, "month")) %>%
 summarize(downloads = sum(downloads, na.rm = TRUE))
 
-ggplot(stats_monthly, aes(x = month, y = downloads)) + 
+PlotTeachHist=ggplot(stats_monthly, aes(x = month, y = downloads)) + 
   geom_col(fill = "steelblue") +
   scale_x_date(
     date_breaks = "3 months", 
@@ -47,4 +48,5 @@ ggplot(stats_monthly, aes(x = month, y = downloads)) +
     x = "Date",
     y = "Monthly Downloads"
   )
+ggplotly(PlotTeachHist)
 ```
