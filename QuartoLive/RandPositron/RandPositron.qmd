@@ -47,10 +47,11 @@ engine: knitr
 
 ## Learning Outcomes {.smaller}
 
-**Part 2: How R Stores the Data:**
+**Part 2: How R Stores the Data (plus how it presents very big/small numbers)**
 
 -   Data types
 -   Data objects in R
+-   How does R presents very big/small numbers
 
 ## Learning Outcomes {.smaller}
 
@@ -587,6 +588,72 @@ class VarNumericCon,VarInt ClassLowestNodesCL
 ## Summary Data Types and Objects {background-color="#648787"}
 
 ![Data Type and Object Structure](/Images/DataObjectDataTypes.png){fig-alt="Data Type and Object Structure. Hierarchical diagram." fig-align="center"}
+
+## How are Very Big Numbers Presented {.smaller}
+
+
+The GDP for 2021 in the US was $ 22,996,086,000,000 (rounded to millions)
+
+\begin{eqnarray*}
+GDP&=&2.2996086 \cdot 10000000000000\\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10\cdot 10 \\
+&\Longleftrightarrow&\\
+GDP&=&2.2996086 \cdot 10^{13}
+\end{eqnarray*}
+
+**Let us see what R does:**
+
+```{webr}
+GDPUS=22996086000000
+print(GDPUS)
+```
+
+
+
+
+## How are Very Small Numbers Presented  {.smaller}
+
+::: {.panel-tabset}
+
+### Main 
+
+The probability of getting struck by lightning in the US is about $0.000000000365$ on any randomly chosen day.
+
+\begin{eqnarray*}
+ProbLight&=&\frac{3.65}{10000000000} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10\cdot 10\cdot 10\cdot 10\cdot 10\cdot                              10\cdot 10\cdot 10\cdot 10\cdot 10} \\
+&\Longleftrightarrow&\\
+ProbLight&=&\frac{3.65}{10^{10}}\\
+&\Longleftrightarrow&\\
+ProbLight&=&3.65 \cdot 10^{-10}
+\end{eqnarray*}
+
+**Let us see what R does:**  
+
+
+
+```{webr}
+ProbStruck=0.000000000365
+cat("Probability to get stuck by a lightning on an avg. day:", ProbStruck)
+```
+
+
+### Why?
+
+In the U.S., a person has a 1:10,000-lifetime risk of being struck by lightning. Assuming a life span of 75 years and 365.25 days per year, the probability per day is:
+
+$$\frac{1}{10,000 \cdot 365.25\cdot 75)}=0.000000000365$$
+
+
+
+:::
+
+::: footer
+See: [RandRStudioScriptPart1.R script400](https://econ.lange-analytics.com/RScripts/RAndRStudioScriptPart1.R){target="_blank"}
+:::
+
 
 
 # Part 3: The `tidyverse` and Piping
