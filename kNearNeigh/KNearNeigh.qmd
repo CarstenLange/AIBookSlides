@@ -518,9 +518,9 @@ ConMatTemp$table[4]="TN: 434"
 print(ConMatTemp)
 ```
 
--   The **positive class** (wine is "red") is in the **first column**. 436 of the positives are classified correctly (TR: true positives), and 44 positives are incorrectly classified (FN: false negatives).
+-   The **positive class** (wine is *predicted* `red`) is in the **first row** and shows all wines that are *predicted* `positive`  (`red`). 436  are  *predicted* correctly (**TP: True Positives**), and 46 are *predicted* incorrectly as `red` but are `white`  (**FP: False Positives**).
 
--   The **negative class** (wine is "white") is in the **second column**. 44 negatives are incorrectly classified (FP: false positives), and 434 negatives are classified correctly (TN: true negatives).
+-   The **negative class** (wine is *predicted* `white`) is in the **second row** and shows all wines that are *predicted* `negative`  (`white`). 44 are *predicted* incorrectly as `white` but are `red` (**FP: False Negatives**), and 434  are  *predicted* correctly as `white`(**TP: True Negatives**).
 
 . . .
 
@@ -534,7 +534,6 @@ print(ConMatTemp)
 accuracy(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
 ```
 
-»
 
 ## **Warning: Be careful with the Accuracy Rate**
 
