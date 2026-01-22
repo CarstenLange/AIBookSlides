@@ -134,7 +134,7 @@ The folder is the one where all your *R* ()`.r`), Quarto (`.qmd`), and data (e.g
 
 -   calculate the hypotenuse $c$: $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
--   print the result using the `cat(command)`
+-   print the result using the `cat()` command
 
 -   Assign the number $2$ to the variable ("R" objects) `a` and run the `cat()` command again.
 
@@ -163,7 +163,7 @@ The folder is the one where all your *R* ()`.r`), Quarto (`.qmd`), and data (e.g
 
 -   calculate the hypotenuse $c$: $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
--   print the result using the `cat(command)`
+-   print the result using the `cat()` command
 
 Note, now we want everything nicely commented!
 
@@ -175,7 +175,7 @@ Note, now we want everything nicely commented!
 
 -   Calculate the hypotenuse $c$ $$c^2=a^2+b^2 \Longleftrightarrow c=\sqrt{a^2+b^2}$$
 
--   Print the result using the `cat(command)`
+-   Print the result using the `cat()` command
 
 -   Assign the number $2$ to the variable ("R" object) `a` and run the `cat()` command again.
 
@@ -724,7 +724,7 @@ cat("The mean of the values in vector VecTest is:", Result)
 
 ## Getting Help about a Command (e.g., `mean`)
 
-Use `?mean` or `help(mean)` in the RStudio console to see the default values.
+Use `?mean` or `help(mean)` in the *Positron* console to see the default values.
 
 You can also *mark/highlight* and then press *F1*
 
