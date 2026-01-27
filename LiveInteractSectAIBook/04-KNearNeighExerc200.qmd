@@ -13,7 +13,7 @@ engine: knitr
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
 
-
+<span style="color: red; font-weight: bold;">Your browser is loading R and all needed packages. That can take a while (about 1:00 - 2:00 minutes). Please be patient. You can see the progress in the right lower corner of your browser.</span>
 
 In what follows, you will develop your own *k-Nearest Neighbors* model to predict the color of wines based on chemical properties. In contrast to the previous section, you will extend the analysis to use all chemical properties available in the wine dataset.
 
