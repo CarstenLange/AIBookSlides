@@ -1,0 +1,55 @@
+
+---
+title: "Live webR Data in Quarto"
+format: live-html
+
+
+webr:
+  packages: ['dplyr', 'ggplot2'] # Auto-install packages in the browser
+
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+## Live Data Analysis
+The following code block fetches a live dataset from a URL and processes it using R inside your browser.
+```{webr setup, include=FALSE}
+library(learnr)
+
+library(tidyverse)
+
+library(janitor)
+library(kableExtra)
+
+knitr::opts_chunk$set(exercise=TRUE, exercise.eval=FALSE, exercise.lines=6, attr.source = ".numberLines")
+```
+
+```{webr}
+
+# 1. Fetch live data from a URL
+data_url <- "https:///econ.lange-analytics.com/RData/Datasets/WineData.csv"
+live_data <- read.csv(data_url)
+```
+
+```{webr}
+# 2. Process data with dplyr
+library(dplyr)
+monthly_summary <- live_data %>%
+  group_by(month) %>%
+  summarise(avg_passengers = mean(passengers))
+
+# 3. Visualize
+library(ggplot2)
+ggplot(monthly_summary, aes(x = month, y = avg_passengers)) +
+  geom_col(fill = "steelblue") +
+  theme_minimal() +
+  labs(title = "Average Passengers by Month (Live Data)")
+```
+
+
+```{webr}
+library(parsnip); library(yardstick); library(recipes); library(rsample)
+print("Done")
+```

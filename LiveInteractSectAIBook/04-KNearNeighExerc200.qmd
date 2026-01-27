@@ -1,0 +1,131 @@
+---
+title: "Live webR Data in Quarto"
+format: live-html
+
+
+webr:
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 
+             'yardstick','parsnip','workflows'] # Auto-install packages in the browser
+
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+
+
+In what follows, you will develop your own *k-Nearest Neighbors* model to predict the color of wines based on chemical properties. In contrast to the previous section, you will extend the analysis to use all chemical properties available in the wine dataset.
+
+Below you can see all variables available in the wine dataset. The first variable $WineColor$ is the outcome variable, followed by the predictor variables that indicate the chemical properties of a wine. The last variable $Quality$ reflects how consumers rated the quality of the wines. This variable is not a chemical property and is likely irrelevant for predicting a wine's color. Therefore, $Quality$ should not be used as a predictor.
+
+```{webr}
+#| label: ex_all
+#| include: false
+DataWineOrg<- read.csv("https:///econ.lange-analytics.com/RData/Datasets/WineData.csv")
+set.seed(876)
+
+DataWine = DataWineOrg |> 
+           clean_names("upper_camel") |> 
+           select(-Quality) |> 
+           rename(Sulfur=TotalSulfurDioxide) |> 
+           mutate(WineColor=as.factor(WineColor))
+
+Split7030=initial_split(DataWine, prop=0.7, strata=WineColor)
+
+DataTrain=training(Split7030)
+
+DataTest=testing(Split7030) 
+
+RecipeWine=recipe(WineColor~., data=DataTrain) |>
+           step_naomit() |> 
+           step_normalize(all_predictors()) 
+
+ModelDesignKNN=nearest_neighbor(neighbors=4, weight_func="rectangular") |>
+               set_engine("kknn") |> 
+               set_mode("classification")
+
+WFModelWine=workflow() |> 
+            add_recipe(RecipeWine) |>
+            add_model(ModelDesignKNN) |> 
+            fit(DataTrain)
+
+DataTestWithPred=augment(WFModelWine, DataTest)
+```
+
+```{webr}
+#| exercise: ex_0
+#| exercise.setup: ex_all
+#| autorun: true
+#| runbutton: false
+head(DataWineOrg)
+```
+The code block below uses the already loaded wine dataset ('DataWineOrg'), changes variable names to *UpperCamel* notation, unselects the variable $Quality$ from the data, renames $TotalSulfurDioxide$ to $Sulfur$, and defines $WineColor$ as `factor` data type.
+
+After the random number generator has been initialized, the data are split into training and testing data (see Section \@ref(KNearNeigh-Data) for details).
+
+Now it is your turn: Please complete the two commands that extract training and testing data from the split to assign them to the data frames `DataTrain` and `DataTest`.
+
+```{webr}
+#| exercise: ex_1
+#| exercise.setup: ex_all
+DataWine = DataWineOrg |> 
+           clean_names("upper_camel") |> 
+           select(-Quality) |> 
+           rename(Sulfur=TotalSulfurDioxide) |> 
+           mutate(WineColor=as.factor(WineColor))
+
+set.seed(876)
+Split7030=initial_split(DataWine, prop=0.7, strata=WineColor)
+
+DataTrain=______(______)
+DataTest=______(______)
+print("The proportion of red wines in the training data is:")
+mean(DataTrain$WineColor == "red")
+print("The proportion of red wines in the testing data is:")
+mean(DataTest$WineColor == "red")
+```
+
+
+
+```{webr}
+#| exercise: ex_1
+#| check: true
+if(identical(.result, mean(DataTest$WineColor == "red"))){
+  list(correct=TRUE, message="Nice work")
+}else{
+  list(correct=FALSE, message="Not correct. Try again")
+}
+```
+
+::: { .hint exercise="ex_1"}
+::: { .callout-tip title="Solution" collapse="false"}
+Here is a hint:
+
+The command to extract the *training data* from the initial split is called `training()`. 
+The one for the *testing data* is called `testing()`.
+
+The initial split is stored in the R object `Split7030`. 
+The latter includes the data frame `DataWine` together 
+with an indicator for each observation, if it 
+belongs to the *training data* or the `testing data`.
+
+`Split7030` is the only argument needed in the commands `training()` and `testing()`.
+:::
+:::
+
+::: { .solution exercise="ex_1"}
+::: { .callout-tip title="Solution" collapse="false"}
+Here is the solution:
+
+```r
+Split7030=initial_split(DataWine, prop=0.7, strata=WineColor)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)  
+
+1. The commands `training()` and `testing()` generate the *training date*  and *testing data*.
+2. The argument `Split7030` determines which observations from `DataWine` are sorted into the *training data* or the *testing data*.
+```
+:::
+:::
+

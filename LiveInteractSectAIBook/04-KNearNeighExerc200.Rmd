@@ -1,0 +1,258 @@
+---
+title: "Interactive Section"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+description: Exercises
+
+---
+
+<style>
+  div.yellowbox {
+    background-color: #f1dfa6;
+    border: 1px solid black;
+    padding: 21px;
+  }
+
+  strong {
+    color: #d10056
+  }
+
+  .center {
+    text-align: center;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(rio)
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(kableExtra)
+
+knitr::opts_chunk$set(exercise=TRUE, exercise.eval=FALSE, exercise.lines=6, attr.source = ".numberLines")
+```
+
+:::: {.yellowbox data-latex=""}
+
+::: {.center data-latex=""}
+**How to Work with this Interactive Section**
+:::
+
+Here you find the complete interactive section from the book, including book content, and R-code-blocks. Read the content in a browser as you would read it in the textbook. 
+
+With the R-code blocks, you can work in various ways:
+
+* Use the `Run Code` button to execute the R-code and see the result.
+
+* Change the R-code, click the `Run Code` button, and then see the new results.
+
+* To get the original R-code back, click the `Start Over` button at the left-top corner of each R-code block. 
+
+* To reset the R-code for all code blocks, click the `Start Over` in the left menu.
+
+**Make sure you installed all needed packages!** See Section "R Packages Required"  in this Chapter for a list of packages that need to be installed. Section 3.2 explain how to install a packege in *RStudio*.
+
+
+
+**For Troubleshooting:** [Click here](https://blog.lange-analytics.com/2024/01/interactsessions.html)
+::::
+
+
+ 
+ 
+ <clex id="Exc200">
+
+```{r KNearNeigh-Exerc200-DataWineLoadAllVar, message=FALSE, warning=FALSE, exercise=FALSE, include=FALSE}
+library(tidymodels); library(rio); library(janitor)
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") |> 
+         clean_names("upper_camel") |> 
+         select(-Quality) |> 
+         rename(Sulfur=TotalSulfurDioxide) |> 
+         mutate(WineColor=as.factor(WineColor))
+
+set.seed(876)
+Split7030=initial_split(DataWine, prop=0.7, strata=WineColor)
+
+DataTrain=training(Split7030)
+
+DataTest=testing(Split7030) 
+
+RecipeWine=recipe(WineColor~., data=DataTrain) |>
+           step_naomit() |> 
+           step_normalize(all_predictors()) 
+
+ModelDesignKNN=nearest_neighbor(neighbors=4, weight_func="rectangular") |>
+               set_engine("kknn") |> 
+               set_mode("classification")
+
+WFModelWine=workflow() |> 
+            add_recipe(RecipeWine) |>
+            add_model(ModelDesignKNN) |> 
+            fit(DataTrain)
+
+DataTestWithPred=augment(WFModelWine, DataTest)
+
+```
+
+In what follows, you will develop your own *k-Nearest Neighbors* model to predict the color of wines based on chemical properties. In contrast to the previous section, you will extend the analysis to use all chemical properties available in the wine dataset.
+
+Below you can see all variables available in the wine dataset. The first variable $WineColor$ is the outcome variable, followed by the predictor variables that indicate the chemical properties of a wine. The last variable $Quality$ reflects how consumers rated the quality of the wines. This variable is not a chemical property and is likely irrelevant for predicting a wine's color. Therefore, $Quality$ should not be used as a predictor.
+
+```{r KNearNeigh-Exerc200-VarList, echo=FALSE, exercise=FALSE}
+DataWineTemp=import("https://ai.lange-analytics.com/data/WineData.rds") |> 
+         clean_names("upper_camel")  
+colnames(DataWineTemp)
+rm(DataWineTemp)
+```
+
+The code block below loads the wine dataset, changes variable names to *UpperCamel* notation, unselects the variable $Quality$ from the data, renames $TotalSulfurDioxide$ to $Sulfur$, and defines $WineColor$ as `factor` data type.
+
+After the random number generator has been initialized, the data are split into training and testing data (see Section \@ref(KNearNeigh-Data) for details).
+
+Now it is your turn: Please complete the two commands that extract training and testing data from the split to assign them to the data frames `DataTrain` and `DataTest`.
+
+```{r KNearNeigh-Exerc200-DataWineUserAllVar, echo=TRUE, message=FALSE, eval=FALSE, exercise=TRUE, warning=FALSE, exercise.lines=18}
+library(tidymodels); library(rio); library(janitor)
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") |> 
+         clean_names("upper_camel") |> 
+         select(-Quality) |> 
+         rename(Sulfur=TotalSulfurDioxide) |> 
+         mutate(WineColor=as.factor(WineColor))
+
+set.seed(876)
+Split7030=initial_split(DataWine, prop=0.7, strata=WineColor)
+
+DataTrain=...(...)
+DataTest=...(...) 
+
+head(DataTrain)
+```
+
+```{r KNearNeigh-Exerc200-DataWineUserAllVar-hint, exercise=FALSE, eval=FALSE, include=FALSE, exercise.lines=14}
+`The command to extract the training data from the initial split is called training(). 
+The one for the testing data is called testing().
+
+The initial split is stored in the R object Split7030. 
+The latter includes the data frame DataWine together 
+with an indicator for each observation, if it 
+belongs to the training or the testing dataset.
+
+Split7030 is the only argument needed in the commands training() and testing().
+
+The next HINT provides the solution. So, keep trying before you peek.`
+```
+
+```{r KNearNeigh-Exerc200-DataWineUserAllVar-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=17}
+library(tidymodels); library(rio); library(janitor)
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") |> 
+         clean_names("upper_camel") |> 
+         select(-Quality) |> 
+         rename(Sulfur=TotalSulfurDioxide) |> 
+         mutate(WineColor=as.factor(WineColor))
+
+set.seed(876)
+Split7030=initial_split(DataWine, prop=0.7, strata=WineColor)
+
+DataTrain=training(Split7030)
+DataTest=testing(Split7030) 
+
+head(DataTrain)
+
+```
+
+Next, by executing the code block below, you will create the *recipe*. The command is the same as before, and the results will be saved into the *R* object `RecipeWine`:
+
+```{r KNearNeigh-Exerc200-RecWFModel, exercise=TRUE, exercise.setup="KNearNeigh-Exerc200-DataWineLoadAllVar", exercise.lines=6}
+RecipeWine=recipe(WineColor~., data=DataTrain) |> 
+           step_naomit() |> 
+           step_normalize(all_predictors())
+
+print(RecipeWine)
+```
+
+The commands to create the model-design are also the same as before. When you execute the code block below, the model-design will be created and saved into the *R* object `ModelDesignKNN`:
+
+```{r KNearNeigh-Exerc200-MdDesignWFModel, exercise=TRUE, exercise.setup="KNearNeigh-Exerc200-DataWineLoadAllVar", exercise.lines=7}
+ModelDesignKNN=nearest_neighbor(neighbors=4, 
+                                weight_func="rectangular") |>
+               set_engine("kknn") |> 
+               set_mode("classification")
+
+print(ModelDesignKNN)
+```
+
+You are now tasked with adding the *recipe* and the *model-design* to a workflow and then fitting the workflow to the training data. Note that the *recipe* `RecipeWine`, the *model-design* `ModelDesignKNN`, and the data frame `DataTrain` have already been loaded in the background. Please complete the code block below and execute it.
+
+```{r KNearNeigh-Exerc200-WorkFlow, echo=TRUE, eval=FALSE, exercise=TRUE, exercise.setup="KNearNeigh-Exerc200-DataWineLoadAllVar"}
+WFModelWine=workflow() |> 
+            add_recipe(...) |>
+            add_model(...) |> 
+            fit(...)
+
+print(WFModelWine)
+```
+
+```{r KNearNeigh-Exerc200-WorkFlow-hint, exercise=FALSE, eval=FALSE, include=FALSE, exercise.lines=14}
+`The recipe from the last section --- RecipeWine ---
+can be reused and has been loaded in the background. It
+just needs to be added to the workflow.
+
+The model-design from the last section --- ModelDesignKNN ---
+can be reused and has been loaded in the background. It
+just needs to be added to the workflow.
+
+To fit the workflow and make it a workflow model, we
+use the fit() command. The data are used to fit
+are always the training data (in this case  DataTrain)
+
+The next HINT provides the solution. So, keep trying before you peek.`
+```
+
+```{r KNearNeigh-Exerc200-WorkFlow-solution, eval=FALSE, exercise=FALSE, include=FALSE}
+WFModelWine=workflow() |> 
+            add_recipe(RecipeWine) |>
+            add_model(ModelDesignKNN) |> 
+            fit(DataTrain)
+
+print(WFModelWine)
+```
+
+Because the workflow model is fitted to the training data, we can use it for predictions. Instead of using the `predict()` command, we again use the more comprehensive `augment()` command, which predicts $WineColor$ based on the predictor variables from the testing dataset and then adds the predictions as a new variable named $.pred\_class$ to `DataTest`. The complete result is saved in the *R* object `DataTestWithPred`.
+
+Since the *R* object `DataTestWithPred` contains the predictions (`estimate`) for the wine color and also the `truth`, stored in variable $WineColor$, we can use it as the data argument for metrics commands. An example is the `conf_mat()` command that generates a confusion matrix. The related code is already prepared. You just have to execute it.
+
+```{r KNearNeigh-Exerc200-PredictAndEval, exercise=TRUE, exercise.setup="KNearNeigh-Exerc200-DataWineLoadAllVar"}
+DataTestWithPred=augment(WFModelWine, DataTest)   
+conf_mat(DataTestWithPred, truth=WineColor, estimate=.pred_class)
+```
+
+\index{Metrics Set} A first glance at the diagonal elements of the confusion matrix already indicates an improvement over the model with two predictor variables.
+
+The `tidymodels` package can help you to calculate metrics such as *accuracy*, *sensitivity*, and *specificity*. Instead of calculating these metrics separately you can streamline the process by creating a *metric set* first.\index{metric\_set()}
+
+In the code block below, the command `metric_set()` creates a new command that we name `MetricsWine` (you can choose a different name if you like).
+
+The newly created command `MetricWine()` can be used similarly to the `conf_mat()` command, but instead of creating a confusion matrix, it creates all the metrics previously specified with `metric_set()` simultaneously. This saves you some typing effort.
+
+Give it a try with the code block below (note, the data frame `DataTest` and the fitted *workflow model* `WFModelWine` have already been loaded in the background):
+
+```{r KNearNeigh-Exerc200-PredictAndEval2, exercise=TRUE, exercise.setup="KNearNeigh-Exerc200-DataWineLoadAllVar"}
+DataTestWithPred=augment(WFModelWine, DataTest)   
+
+MetricsWine=metric_set(accuracy, sensitivity, specificity)
+MetricsWine(DataTestWithPred, truth=WineColor, estimate=.pred_class)
+
+```
+
+As the confusion matrix and the three metrics above confirm, we reached an almost perfect prediction quality.
+
+Try changing the arguments in the `metric_set()` command to different metrics and see what happens.
+
+Predicting the wine color from the wine dataset is a notoriously easy task. Therefore, the next section will approach a more realistic problem. We will try to identify the ten digits (0 -- 9) from handwriting. This is also known as OCR (Object Character Recognition).
+
+</clex>

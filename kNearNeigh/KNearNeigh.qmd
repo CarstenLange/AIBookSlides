@@ -1,58 +1,147 @@
 ---
 title: "k Nearest Neighbors"
-subtitle: "Projects: 1) Identifying Wine Color and 2) Optical Character Recognition"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
 format: 
-  revealjs:
-    code-fold: false
+  live-revealjs:
+    theme: [moon,../CustomCL.scss]
+    smaller: true
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/KNearNeigh.html' target='_blank'>Textbook </a> "
+   
+  
+webr:
+  packages:
+    - ggplot2
+  
+ 
+
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
 ---
 
 ## Before we Begin Let Us Do A Thought Experiment
 
-I want to find somebody to spend a Saturday afternoon with and I am looking for somebody most similar to me (nearest neighbor) in terms of:
+**I need three volunteers. Everybody else, please follow along on one computer in groups of three.**
 
-::: nonincremental
--   Sex (coded as 0 for female, and 1 for male)
--   Age (coded in years)
--   Outdoor sports interest (coded from 0 (no interest) to 10 (enthusiast))»
-:::
+Imagine the three of you are moving into a shared apartment.
 
-**(all categories matter the same to me)**
+There are two bedrooms: two people will share a big room, and one person will have a small room alone.
 
-## Let us do the Calculation for a Similarity Score
+**To minimize conflicts, we want the two most similar people to share the two rooms.**
 
-#### (average absolute differences)
+Please rate yourselves on a **scale from 1 to 10** for the two criteria below:
 
-Sake of argument: I am male (**1**), **50** years, outdoor sports score **7**: <br> <br>
+1. How tidy you are (**1=messy, 10= tidy**)
 
-::: columns
-::: {.column width="50%"}
--   first candidate a student <br> .
--   second candidate a  women (**0**) **51** years old, athletic outdoor (score=**9**)
--   third candidate a  man (**1**), **53** years, athletic outdoor (score=**9**)<br>
-:::
+2. How social you are at home (**1=quiet, 10=very social**)
 
-::: {.column width="50%"}
-:::
-:::
+**We will treat your answers as data points and use Euclidean distance to decide who should share.**
 
-## Let us do the Calculation for a Similarity Score
+##  Thought Experiment: Data Entry
 
-#### (average absolute differences --- normalized to 0 -- 10)
+For `Student1`, `Student2`, and `Student3`, let us enter the names of the three volunteer student. Then we replace the`___` with their scores (in the correct order of `Student1`, `Student2`, and `Student3`).
 
-Sake of argument: I am male (**1**), **50** years, outdoor sports score **7**: <br> <br>
+Afterwards, click <span style="background-color: #75AADB; padding: 3px; color: white;">Run Code</span>
+```{webr}
+#| warning: false
+#| message: false
+library(kableExtra)
+DataRoomMates <- data.frame(
+  name = c("Student 1", "Student 2", "Student 3"),
+  Tidy = c(1, 8, 3),   # 1 = messy, 10 = very tidy
+  Social = c(7, 2,5 )     # 1 = quiet, 10 = very social
+)
+kable(DataRoomMates)
+```
 
-::: columns
-::: {.column width="50%"}
--   first candidate a student <br> .
--   second candidate a women (**0**), **51** years old, athletic outdoor (score=**9**) 
--   third candidate is an athletic outdoor (score=**9**) man (**1**) <br>**53** years»
-:::
+## Thought Experiment: Plotting the Data
 
-::: {.column width="50%"}
-:::
-:::
+```{webr}
+library(ggplot2)
+ggplot(DataRoomMates, aes(x = Tidy, y = Social, label = name)) +
+  geom_point(size = 4) +
+  geom_text(vjust = -1) +
+  scale_x_continuous(limits = c(0.5, 10.5), breaks=seq(1:10)) +
+  scale_y_continuous(limits = c(0.5, 10.5), breaks=seq(1:10)) +
+  coord_fixed(ratio = 1) +   # <-- makes the plot square
+  labs(
+    title = "Roommate Matching Using Euclidean Distance",
+    x = "Tidy (1 = messy, 10 = tidy)",
+    y = "Social at Home (1 = quiet, 10 = social)"
+  ) 
+```
 
-## Overwiew {.smaller .scrollable}
+$$EucDist^2=DiffTidy^2+DiffSocial^2$$
+
+$$EucDist=sqrt(DiffTidy^2+DiffSocial^2)$$
+
+## Compute Euclidean distances
+
+
+```{webr}
+MatrixDistance <- dist(DataRoomMates[, c("Tidy", "Social")], method = "euclidean")
+print(as.matrix(MatrixDistance))
+```
+
+**Testing the distance between the first and the second student:**
+$$EucDist^2=DiffTidy^2+DiffSocial^2$$
+
+$$EucDist=sqrt(DiffTidy^2+DiffSocial^2)$$
+
+```{webr}
+DiffTidy=DataRoomMates[[1,2]]-DataRoomMates[[2,2]]
+cat("Diff. Tidy between the first and the second student:",DiffTidy)
+DiffSocial=DataRoomMates[[1,3]]-DataRoomMates[[2,3]]
+cat("Diff. Social between the first and the second student:",DiffSocial)
+EucDist=sqrt((DiffTidy^2+DiffSocial^2))
+cat("Euclidean Distance=",EucDist)
+```
+
+## Scale for All Variables
+
+#### It is very important that all variables have the same scale
+
+Like here, both variables are in a range from 1 to 10.
+
+#### What happens if we scale `Social` from 10 to 100 instead from 1 to 10
+
+```{webr}
+DataRoomMates$Social=DataRoomMates$Social*10
+kable(DataRoomMates)
+```
+
+## The Influence of Social Compared to Tidy becomes very Small
+
+```{webr}
+library(ggplot2)
+ggplot(DataRoomMates, aes(x = Tidy, y = Social, label = name)) +
+  geom_point(size = 4) +
+  geom_text(vjust = -1) +
+  scale_x_continuous(limits = c(1, 10), breaks=seq(1,10,9)) +
+  scale_y_continuous(limits = c(10, 100), breaks=seq(10,100,10)) +
+  coord_fixed(ratio = 1) +   # <-- makes the plot square
+  labs(
+    title = "Roommate Matching Using Euclidean Distance",
+    x = "Tidy (1 = messy, 10 = tidy)",
+    y = "Social at Home (1 = quiet, 10 = social)"
+  ) 
+```
+
+The Euclidean Distance is almost the same as `DistSocial`, which makes `DistTidy` almost irrelevant.
+
+## Overview {.smaller .scrollable}
 
 In this session you will learn:
 
@@ -137,12 +226,12 @@ DataTest=testing(Split7030)
 ```{r WinePlot, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color"}
 ggplot(DataTrain%>% 
          add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
-  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' accidity 
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' acidity 
                                                     and total sulfur dioxide")+
   geom_point(size=1, alpha=0.35)+
   geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
   scale_x_continuous(breaks=seq(0,300,50))+
-  scale_colour_manual(values = c("red", "green","blue"))+
+  scale_color_manual(values = c("red", "green","blue"))+
   theme(legend.position = c(0.9, 0.8))
 ```
 
@@ -222,7 +311,7 @@ print(ConMatTemp)
 ```{r WinePlotSVM, message=FALSE, warning=FALSE, echo=FALSE, fig.cap="Curved Decision Boundary for Acidity and Total Sulfur Dioxide Related to Wine Color"}
 ggplot(DataTrain%>% 
          add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
-  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)", color="Wine Color", alt="A point plot of the wines' accidity 
+  labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)", color="Wine Color", alt="A point plot of the wines' acidity 
                                                     and total sulfur dioxide")+
   geom_point(size=1, alpha=0.35)+
   geom_point(aes(x=68.5, y=6.8), size=3, color="green")+
@@ -405,7 +494,7 @@ print(DataTest)
 ```
 
 ## Time to Run k-Nearest Neighbors {.scrollable}
-### [Click here to find a reference list for various `Step_` commands](https://recipes.tidymodels.org/reference/index.html)
+### [Click here to find a reference list for various `Step_` commands](https://recipes.tidymodels.org/reference/index.html){target="_blank"}
 
 Recipe: Prepare Data for Analysis:
 

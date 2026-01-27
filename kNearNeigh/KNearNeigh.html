@@ -6,9 +6,12 @@
 <script src="KNearNeigh_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="KNearNeigh_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="KNearNeigh_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="KNearNeigh_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+<link href="KNearNeigh_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="KNearNeigh_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="KNearNeigh_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.8.26">
 
+  <meta name="author" content="Carsten Lange">
   <title>k Nearest Neighbors</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -112,6 +115,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -188,6 +192,8 @@
       margin-right: 0; 
     }
   </style>
+  <script type="module" src="KNearNeigh_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="KNearNeigh_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 </head>
 <body class="quarto-dark">
   <div class="reveal">
@@ -195,69 +201,137 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">k Nearest Neighbors</h1>
-  <p class="subtitle">Projects: 1) Identifying Wine Color and 2) Optical Character Recognition</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Carsten Lange 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Cal Poly, Pomona
+          </p>
+    </div>
 </div>
 
 </section>
-<section id="before-we-begin-let-us-do-a-thought-experiment" class="slide level2">
+<section id="before-we-begin-let-us-do-a-thought-experiment" class="slide level2 scrollable">
 <h2>Before we Begin Let Us Do A Thought Experiment</h2>
-<p>I want to find somebody to spend a Saturday afternoon with and I am looking for somebody most similar to me (nearest neighbor) in terms of:</p>
-<ul>
-<li>Sex (coded as 0 for female, and 1 for male)</li>
-<li>Age (coded in years)</li>
-<li>Outdoor sports interest (coded from 0 (no interest) to 10 (enthusiast))»</li>
-</ul>
-<p><strong>(all categories matter the same to me)</strong></p>
+<p><strong>I need three volunteers. Everybody else, please follow along on one computer in groups of three.</strong></p>
+<p>Imagine the three of you are moving into a shared apartment.</p>
+<p>There are two bedrooms: two people will share a big room, and one person will have a small room alone.</p>
+<p><strong>To minimize conflicts, we want the two most similar people to share the two rooms.</strong></p>
+<p>Please rate yourselves on a <strong>scale from 1 to 10</strong> for the two criteria below:</p>
+<ol type="1">
+<li><p>How tidy you are (<strong>1=messy, 10= tidy</strong>)</p></li>
+<li><p>How social you are at home (<strong>1=quiet, 10=very social</strong>)</p></li>
+</ol>
+<p><strong>We will treat your answers as data points and use Euclidean distance to decide who should share.</strong></p>
 </section>
-<section id="let-us-do-the-calculation-for-a-similarity-score" class="slide level2">
-<h2>Let us do the Calculation for a Similarity Score</h2>
-<h4 id="average-absolute-differences">(average absolute differences)</h4>
-<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>7</strong>: <br> <br></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li class="fragment">first candidate a student <br> .</li>
-<li class="fragment">second candidate a women (<strong>0</strong>) <strong>51</strong> years old, athletic outdoor (score=<strong>9</strong>)</li>
-<li class="fragment">third candidate a man (<strong>1</strong>), <strong>53</strong> years, athletic outdoor (score=<strong>9</strong>)<br></li>
-</ul>
-</div><div class="column" style="width:50%;">
+<section id="thought-experiment-data-entry" class="slide level2">
+<h2>Thought Experiment: Data Entry</h2>
+<p>For <code>Student1</code>, <code>Student2</code>, and <code>Student3</code>, let us enter the names of the three volunteer student. Then we replace the<code>___</code> with their scores (in the correct order of <code>Student1</code>, <code>Student2</code>, and <code>Student3</code>).</p>
+<p>Afterwards, click <span style="background-color: #75AADB; padding: 3px; color: white;">Run Code</span></p>
+<div class="cell">
+<div>
+<div id="webr-1" class="exercise-cell">
 
-</div></div>
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1lc3NhZ2UiOmZhbHNlLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJsaWJyYXJ5KGthYmxlRXh0cmEpXG5EYXRhUm9vbU1hdGVzIDwtIGRhdGEuZnJhbWUoXG4gIG5hbWUgPSBjKFwiU3R1ZGVudCAxXCIsIFwiU3R1ZGVudCAyXCIsIFwiU3R1ZGVudCAzXCIpLFxuICBUaWR5ID0gYygxLCA4LCAzKSwgICAjIDEgPSBtZXNzeSwgMTAgPSB2ZXJ5IHRpZHlcbiAgU29jaWFsID0gYyg3LCAyLDUgKSAgICAgIyAxID0gcXVpZXQsIDEwID0gdmVyeSBzb2NpYWxcbilcbmthYmxlKERhdGFSb29tTWF0ZXMpIn0=
+</script>
+</div>
+</div>
 </section>
-<section id="let-us-do-the-calculation-for-a-similarity-score-1" class="slide level2">
-<h2>Let us do the Calculation for a Similarity Score</h2>
-<h4 id="average-absolute-differences-normalized-to-0-10">(average absolute differences — normalized to 0 – 10)</h4>
-<p>Sake of argument: I am male (<strong>1</strong>), <strong>50</strong> years, outdoor sports score <strong>7</strong>: <br> <br></p>
-<div class="columns">
-<div class="column" style="width:50%;">
-<ul>
-<li class="fragment">first candidate a student <br> .</li>
-<li class="fragment">second candidate a women (<strong>0</strong>), <strong>51</strong> years old, athletic outdoor (score=<strong>9</strong>)</li>
-<li class="fragment">third candidate is an athletic outdoor (score=<strong>9</strong>) man (<strong>1</strong>) <br><strong>53</strong> years»</li>
-</ul>
-</div><div class="column" style="width:50%;">
+<section id="thought-experiment-plotting-the-data" class="slide level2">
+<h2>Thought Experiment: Plotting the Data</h2>
+<div class="cell">
+<div>
+<div id="webr-2" class="exercise-cell">
 
-</div></div>
+</div>
+<script type="webr-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeShnZ3Bsb3QyKVxuZ2dwbG90KERhdGFSb29tTWF0ZXMsIGFlcyh4ID0gVGlkeSwgeSA9IFNvY2lhbCwgbGFiZWwgPSBuYW1lKSkgK1xuICBnZW9tX3BvaW50KHNpemUgPSA0KSArXG4gIGdlb21fdGV4dCh2anVzdCA9IC0xKSArXG4gIHNjYWxlX3hfY29udGludW91cyhsaW1pdHMgPSBjKDAuNSwgMTAuNSksIGJyZWFrcz1zZXEoMToxMCkpICtcbiAgc2NhbGVfeV9jb250aW51b3VzKGxpbWl0cyA9IGMoMC41LCAxMC41KSwgYnJlYWtzPXNlcSgxOjEwKSkgK1xuICBjb29yZF9maXhlZChyYXRpbyA9IDEpICsgICAjIDwtLSBtYWtlcyB0aGUgcGxvdCBzcXVhcmVcbiAgbGFicyhcbiAgICB0aXRsZSA9IFwiUm9vbW1hdGUgTWF0Y2hpbmcgVXNpbmcgRXVjbGlkZWFuIERpc3RhbmNlXCIsXG4gICAgeCA9IFwiVGlkeSAoMSA9IG1lc3N5LCAxMCA9IHRpZHkpXCIsXG4gICAgeSA9IFwiU29jaWFsIGF0IEhvbWUgKDEgPSBxdWlldCwgMTAgPSBzb2NpYWwpXCJcbiAgKSAifQ==
+</script>
+</div>
+</div>
+<p><span class="math display">\[EucDist^2=DiffTidy^2+DiffSocial^2\]</span></p>
+<p><span class="math display">\[EucDist=sqrt(DiffTidy^2+DiffSocial^2)\]</span></p>
 </section>
-<section id="overwiew" class="slide level2 smaller scrollable">
-<h2>Overwiew</h2>
+<section id="compute-euclidean-distances" class="slide level2">
+<h2>Compute Euclidean distances</h2>
+<div class="cell">
+<div>
+<div id="webr-3" class="exercise-cell">
+
+</div>
+<script type="webr-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiTWF0cml4RGlzdGFuY2UgPC0gZGlzdChEYXRhUm9vbU1hdGVzWywgYyhcIlRpZHlcIiwgXCJTb2NpYWxcIildLCBtZXRob2QgPSBcImV1Y2xpZGVhblwiKVxucHJpbnQoYXMubWF0cml4KE1hdHJpeERpc3RhbmNlKSkifQ==
+</script>
+</div>
+</div>
+<p><strong>Testing the distance between the first and the second student:</strong> <span class="math display">\[EucDist^2=DiffTidy^2+DiffSocial^2\]</span></p>
+<p><span class="math display">\[EucDist=sqrt(DiffTidy^2+DiffSocial^2)\]</span></p>
+<div class="cell">
+<div>
+<div id="webr-4" class="exercise-cell">
+
+</div>
+<script type="webr-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGlmZlRpZHk9RGF0YVJvb21NYXRlc1tbMSwyXV0tRGF0YVJvb21NYXRlc1tbMiwyXV1cbmNhdChcIkRpZmYuIFRpZHkgYmV0d2VlbiB0aGUgZmlyc3QgYW5kIHRoZSBzZWNvbmQgc3R1ZGVudDpcIixEaWZmVGlkeSlcbkRpZmZTb2NpYWw9RGF0YVJvb21NYXRlc1tbMSwzXV0tRGF0YVJvb21NYXRlc1tbMiwzXV1cbmNhdChcIkRpZmYuIFNvY2lhbCBiZXR3ZWVuIHRoZSBmaXJzdCBhbmQgdGhlIHNlY29uZCBzdHVkZW50OlwiLERpZmZTb2NpYWwpXG5FdWNEaXN0PXNxcnQoKERpZmZUaWR5XjIrRGlmZlNvY2lhbF4yKSlcbmNhdChcIkV1Y2xpZGVhbiBEaXN0YW5jZT1cIixFdWNEaXN0KSJ9
+</script>
+</div>
+</div>
+</section>
+<section id="scale-for-all-variables" class="slide level2">
+<h2>Scale for All Variables</h2>
+<h4 id="it-is-very-important-that-all-variables-have-the-same-scale">It is very important that all variables have the same scale</h4>
+<p>Like here, both variables are in a range from 1 to 10.</p>
+<h4 id="what-happens-if-we-scale-social-from-10-to-100-instead-from-1-to-10">What happens if we scale <code>Social</code> from 10 to 100 instead from 1 to 10</h4>
+<div class="cell">
+<div>
+<div id="webr-5" class="exercise-cell">
+
+</div>
+<script type="webr-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVJvb21NYXRlcyRTb2NpYWw9RGF0YVJvb21NYXRlcyRTb2NpYWwqMTBcbmthYmxlKERhdGFSb29tTWF0ZXMpIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="the-influence-of-social-compared-to-tidy-becomes-very-small" class="slide level2">
+<h2>The Influence of Social Compared to Tidy becomes very Small</h2>
+<div class="cell">
+<div>
+<div id="webr-6" class="exercise-cell">
+
+</div>
+<script type="webr-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeShnZ3Bsb3QyKVxuZ2dwbG90KERhdGFSb29tTWF0ZXMsIGFlcyh4ID0gVGlkeSwgeSA9IFNvY2lhbCwgbGFiZWwgPSBuYW1lKSkgK1xuICBnZW9tX3BvaW50KHNpemUgPSA0KSArXG4gIGdlb21fdGV4dCh2anVzdCA9IC0xKSArXG4gIHNjYWxlX3hfY29udGludW91cyhsaW1pdHMgPSBjKDEsIDEwKSwgYnJlYWtzPXNlcSgxLDEwLDkpKSArXG4gIHNjYWxlX3lfY29udGludW91cyhsaW1pdHMgPSBjKDEwLCAxMDApLCBicmVha3M9c2VxKDEwLDEwMCwxMCkpICtcbiAgY29vcmRfZml4ZWQocmF0aW8gPSAxKSArICAgIyA8LS0gbWFrZXMgdGhlIHBsb3Qgc3F1YXJlXG4gIGxhYnMoXG4gICAgdGl0bGUgPSBcIlJvb21tYXRlIE1hdGNoaW5nIFVzaW5nIEV1Y2xpZGVhbiBEaXN0YW5jZVwiLFxuICAgIHggPSBcIlRpZHkgKDEgPSBtZXNzeSwgMTAgPSB0aWR5KVwiLFxuICAgIHkgPSBcIlNvY2lhbCBhdCBIb21lICgxID0gcXVpZXQsIDEwID0gc29jaWFsKVwiXG4gICkgIn0=
+</script>
+</div>
+</div>
+<p>The Euclidean Distance is almost the same as <code>DistSocial</code>, which makes <code>DistTidy</code> almost irrelevant.</p>
+</section>
+<section id="overview" class="slide level2 smaller scrollable">
+<h2>Overview</h2>
 <p>In this session you will learn:</p>
 <ol type="1">
-<li class="fragment"><p>What is the underlying <strong>idea of k-Nearest Neighbors</strong></p></li>
-<li class="fragment"><p>How similarity can be measured with <strong>Euclidean distance</strong></p></li>
-<li class="fragment"><p>Why <strong>scaling predictor variables</strong> is important for some machine learning models</p></li>
-<li class="fragment"><p>Why the <strong>tidymodels package</strong> makes it easy to work with machine learning models</p></li>
-<li class="fragment"><p>How you can define a <strong>recipe</strong> to pre-process data with the <code>tidymodels</code> package</p></li>
-<li class="fragment"><p>How you can define a <strong>model-design</strong> with the <code>tidymodels</code> package</p></li>
-<li class="fragment"><p>How you can create a machine learning <strong>workflow</strong> with the <code>tidymodels</code> package</p></li>
-<li class="fragment"><p>How <strong>metrics</strong> derived from a <strong>confusion matrix</strong> can be used to asses prediction quality</p></li>
-<li class="fragment"><p>Why you have to be careful when interpreting <em>accuracy</em>, when you work with <strong>unbalanced observations</strong></p></li>
-<li class="fragment"><p>How a machine learning model can <strong>process images</strong> and how OCR (Optical Character Recognition) works»</p></li>
+<li><p>What is the underlying <strong>idea of k-Nearest Neighbors</strong></p></li>
+<li><p>How similarity can be measured with <strong>Euclidean distance</strong></p></li>
+<li><p>Why <strong>scaling predictor variables</strong> is important for some machine learning models</p></li>
+<li><p>Why the <strong>tidymodels package</strong> makes it easy to work with machine learning models</p></li>
+<li><p>How you can define a <strong>recipe</strong> to pre-process data with the <code>tidymodels</code> package</p></li>
+<li><p>How you can define a <strong>model-design</strong> with the <code>tidymodels</code> package</p></li>
+<li><p>How you can create a machine learning <strong>workflow</strong> with the <code>tidymodels</code> package</p></li>
+<li><p>How <strong>metrics</strong> derived from a <strong>confusion matrix</strong> can be used to asses prediction quality</p></li>
+<li><p>Why you have to be careful when interpreting <em>accuracy</em>, when you work with <strong>unbalanced observations</strong></p></li>
+<li><p>How a machine learning model can <strong>process images</strong> and how OCR (Optical Character Recognition) works»</p></li>
 </ol>
 </section>
-<section id="about-the-wine-dataset" class="slide level2">
+<section id="about-the-wine-dataset" class="slide level2 scrollable">
 <h2>About the Wine Dataset</h2>
 <p><br><br><br>We will work with a publicly available wine dataset<sup>1</sup> containing 3,198 observations about different wines and their chemical properties.</p>
 <p>Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine’s chemical properties.»</p>
@@ -13183,11 +13257,11 @@ Prediction   Red Wine   White Wine
 <section id="a-few-common-scaling-options" class="slide level2 smaller">
 <h2>A Few Common Scaling Options</h2>
 <ul>
-<li class="fragment"><p><strong>Same units</strong></p>
+<li><p><strong>Same units</strong></p>
 <p>Divide or multiply to get the same units. This is often not possible (e.g., <code>Height</code> and <code>Weight</code>). Or it is not feasible (e.g.&nbsp;<code>Alcohol</code> and <code>StrawberryJuice</code> content in spiked strawberry drink))</p></li>
-<li class="fragment"><p><strong>Rescaling</strong></p>
+<li><p><strong>Rescaling</strong></p>
 <p>Generates a variable <span class="math inline">\(y\)</span> that is scaled to a range between 0 and 1 based on the original variable’s value <span class="math inline">\(x\)</span>, its minimum <span class="math inline">\(x_{min}\)</span> and its maximum <span class="math inline">\(x_{max}\)</span>: <span class="math display">\[ y= \frac{x-x_{min}}{x_{max} - x_{min}}\]</span></p></li>
-<li class="fragment"><p><strong>Z-Score Normalization</strong></p>
+<li><p><strong>Z-Score Normalization</strong></p>
 <p>Z-score normalization uses the mean (<span class="math inline">\(\overline x\)</span>) and the standard deviation (<span class="math inline">\(s\)</span>) of a variable to scale the variable <span class="math inline">\(x\)</span> to the variable <span class="math inline">\(z\)</span>:</p>
 <p><span class="math display">\[z=\frac{x-\overline x}{s}\]</span>»</p></li>
 </ul>
@@ -19630,7 +19704,7 @@ Prediction   Red Wine   White Wine
 </section>
 <section id="time-to-run-k-nearest-neighbors-2" class="slide level2 scrollable">
 <h2>Time to Run k-Nearest Neighbors</h2>
-<h3 id="click-here-to-find-a-reference-list-for-various-step_-commands"><a href="https://recipes.tidymodels.org/reference/index.html">Click here to find a reference list for various <code>Step_</code> commands</a></h3>
+<h3 id="click-here-to-find-a-reference-list-for-various-step_-commands"><a href="https://recipes.tidymodels.org/reference/index.html" target="_blank">Click here to find a reference list for various <code>Step_</code> commands</a></h3>
 <p>Recipe: Prepare Data for Analysis:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>RecipeWine<span class="ot">=</span><span class="fu">recipe</span>(WineColor<span class="sc">~</span>Acidity<span class="sc">+</span>Sulfur, <span class="at">data =</span> DataTrain) <span class="sc">%&gt;%</span></span>
@@ -19706,14 +19780,14 @@ Best k: 4</code></pre>
 </div>
 </div>
 </section>
-<section id="time-to-run-k-nearest-neighbors-5" class="slide level2">
+<section id="time-to-run-k-nearest-neighbors-5" class="slide level2 scrollable">
 <h2>Time to Run k-Nearest Neighbors</h2>
 <p>How to use the <strong>fitted</strong> <code>workflow</code> to predict the wine color for the wines in the testing dataset:</p>
 <ol type="1">
-<li class="fragment">Start with observation <span class="math inline">\(i=1\)</span> from <code>DataTest</code> (the first observation).</li>
-<li class="fragment">Take observation <span class="math inline">\(i\)</span> from <code>DataTest</code> and use <code>Acidity</code> and <code>Sulfur</code> to calculate the Euclidean distance to <strong>each</strong> of the observations of <code>DataTrain</code>.</li>
-<li class="fragment">Isolate the 4 observations with the smallest Euclidean distance and use the majority of their wine color as a prediction for observation <span class="math inline">\(i\)</span> from <code>DataTest</code> (in case of a par, decide randomly).</li>
-<li class="fragment">Increase <span class="math inline">\(i\)</span> by one (i.e., take the next observation from <code>DataTest</code>) and go to step 2 (until all <code>DataTest</code> observations are processed).</li>
+<li>Start with observation <span class="math inline">\(i=1\)</span> from <code>DataTest</code> (the first observation).</li>
+<li>Take observation <span class="math inline">\(i\)</span> from <code>DataTest</code> and use <code>Acidity</code> and <code>Sulfur</code> to calculate the Euclidean distance to <strong>each</strong> of the observations of <code>DataTrain</code>.</li>
+<li>Isolate the 4 observations with the smallest Euclidean distance and use the majority of their wine color as a prediction for observation <span class="math inline">\(i\)</span> from <code>DataTest</code> (in case of a par, decide randomly).</li>
+<li>Increase <span class="math inline">\(i\)</span> by one (i.e., take the next observation from <code>DataTest</code>) and go to step 2 (until all <code>DataTest</code> observations are processed).</li>
 </ol>
 </section>
 <section id="time-to-run-k-nearest-neighbors-6" class="slide level2">
@@ -19789,8 +19863,8 @@ Prediction   Red Wine White Wine
 </div>
 </div>
 <ul>
-<li class="fragment"><p>The <strong>positive class</strong> (wine is <em>predicted</em> <code>red</code>) is in the <strong>first row</strong> and shows all wines that are <em>predicted</em> <code>positive</code> (<code>red</code>). 436 are <em>predicted</em> correctly (<strong>TP: True Positives</strong>), and 46 are <em>predicted</em> incorrectly as <code>red</code> but are <code>white</code> (<strong>FP: False Positives</strong>).</p></li>
-<li class="fragment"><p>The <strong>negative class</strong> (wine is <em>predicted</em> <code>white</code>) is in the <strong>second row</strong> and shows all wines that are <em>predicted</em> <code>negative</code> (<code>white</code>). 44 are <em>predicted</em> incorrectly as <code>white</code> but are <code>red</code> (<strong>FP: False Negatives</strong>), and 434 are <em>predicted</em> correctly as <code>white</code>(<strong>TP: True Negatives</strong>).</p></li>
+<li><p>The <strong>positive class</strong> (wine is <em>predicted</em> <code>red</code>) is in the <strong>first row</strong> and shows all wines that are <em>predicted</em> <code>positive</code> (<code>red</code>). 436 are <em>predicted</em> correctly (<strong>TP: True Positives</strong>), and 46 are <em>predicted</em> incorrectly as <code>red</code> but are <code>white</code> (<strong>FP: False Positives</strong>).</p></li>
+<li><p>The <strong>negative class</strong> (wine is <em>predicted</em> <code>white</code>) is in the <strong>second row</strong> and shows all wines that are <em>predicted</em> <code>negative</code> (<code>white</code>). 44 are <em>predicted</em> incorrectly as <code>white</code> but are <code>red</code> (<strong>FP: False Negatives</strong>), and 434 are <em>predicted</em> correctly as <code>white</code>(<strong>TP: True Negatives</strong>).</p></li>
 </ul>
 <div class="fragment">
 <p><strong>Accuracy:</strong> Number of wines on diagonal/number of all wines:</p>
@@ -19846,8 +19920,8 @@ Prediction Win Lose
 </div>
 <p>However, when we look at the correct positive and the correct negative rate separately, we see that Dr.&nbsp;Nebulous’ accuracy rate (although correct) makes little sense.</p>
 <ul>
-<li class="fragment"><p>The correct negative rate (<strong>specificity</strong>) is 100%</p></li>
-<li class="fragment"><p>The correct positive rate (<strong>sensitivity</strong>) is zero (out of the 27 winners, all were falsely predicted as “You will lose”).</p></li>
+<li><p>The correct negative rate (<strong>specificity</strong>) is 100%</p></li>
+<li><p>The correct positive rate (<strong>sensitivity</strong>) is zero (out of the 27 winners, all were falsely predicted as “You will lose”).</p></li>
 </ul>
 <p>. . .</p>
 <p><strong>This example shows: When interpreting the confusion matrix, you must look at accuracy, sensitivity, and specificity simultaneously</strong></p>
@@ -19913,7 +19987,7 @@ Prediction Win Lose
 <section id="visualization-of-the-first-six-images-from-the-mnist-data-set" class="slide level2">
 <h2>Visualization of the First Six Images from the MNIST Data Set</h2>
 
-<img data-src="KNearNeigh_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+<img data-src="KNearNeigh_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" class="r-stretch"></section>
 <section id="how-a-image-is-stored-in-the-mnist-dataset" class="slide level2">
 <h2>How a Image is Stored in the Mnist Dataset</h2>
 
@@ -19931,9 +20005,9 @@ Prediction Win Lose
 </div>
 </div><div class="column" style="width:50%;">
 <ul>
-<li class="fragment">Pixel values for a single image are not stored in a table. Ohterwise we would end-up with a table containing tables.</li>
-<li class="fragment">Pixel values are stored as one row for each image.</li>
-<li class="fragment">Concatenating the 28 rows of an image into one row with 28*28=784 cells (pixels)</li>
+<li>Pixel values for a single image are not stored in a table. Ohterwise we would end-up with a table containing tables.</li>
+<li>Pixel values are stored as one row for each image.</li>
+<li>Concatenating the 28 rows of an image into one row with 28*28=784 cells (pixels)</li>
 </ul>
 </div></div>
 </section>
@@ -20234,12 +20308,29 @@ Prediction Win Lose
 <p>See: <a href="https://ai.lange-analytics.com/exc/?file=04-KNearNeighExerc300.Rmd">RandRStudioScriptPart1.R script300</a></p>
 </div>
 
+<script type="webr-data">
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsImdncGxvdDIiXSwicmVwb3MiOltdfSwicmVuZGVyX2RmIjoiZGVmYXVsdCJ9
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC02IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV82O1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItNiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzYgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV82ID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl82LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtNSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfNTtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfNSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfNSwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzQ7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfNCA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTQtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici00LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzQgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8zO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzMgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8zID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl8zLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMjtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMi1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTItY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfMiA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMiwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfMSA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzEgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ3ZWJST2pzID0ge1xuICBjb25zdCB7IFdlYlIsIENoYW5uZWxUeXBlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lLldlYlI7XG4gIGNvbnN0IHtcbiAgICBXZWJSRXZhbHVhdG9yLFxuICAgIFdlYlJFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBSLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGhcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIHdlYlIgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgLy8gVXNlIFBvc3RNZXNzYWdlIGNoYW5uZWwgZm9yIGFzeW5jIGNvbW11bmljYXRpb25cbiAgLy8gV2UgZG8gbm90IGV4cGVjdCB0byB0YWtlIG5lc3RlZCBwcm9tcHQgaW5wdXQgaW4gUXVhcnRvIExpdmUgY2VsbHNcbiAgZGF0YS5vcHRpb25zLmNoYW5uZWxUeXBlID0gQ2hhbm5lbFR5cGUuUG9zdE1lc3NhZ2U7XG5cbiAgLy8gSW5pdGlhbGlzZSB3ZWJSIGFuZCBzZXR1cCBmb3IgUiBjb2RlIGV2YWx1YXRpb25cbiAgbGV0IHdlYlJQcm9taXNlID0gKGFzeW5jICh3ZWJSKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyB3ZWJSYDtcbiAgICBhd2FpdCB3ZWJSLmluaXQoKTtcblxuICAgIC8vIEluc3RhbGwgcHJvdmlkZWQgbGlzdCBvZiBwYWNrYWdlc1xuICAgIC8vIEVuc3VyZSB3ZWJSIGRlZmF1bHQgcmVwbyBpcyBpbmNsdWRlZFxuICAgIGRhdGEucGFja2FnZXMucmVwb3MucHVzaChcImh0dHBzOi8vcmVwby5yLXdhc20ub3JnXCIpXG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gd2ViUi5ldmFsUlZvaWQoYFxuICAgICAgICB3ZWJyOjppbnN0YWxsKHBrZywgcmVwb3MgPSByZXBvcylcbiAgICAgICAgbGlicmFyeShwa2csIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSlcbiAgICAgIGAsIHsgZW52OiB7XG4gICAgICAgIHBrZzogcGtnLFxuICAgICAgICByZXBvczogZGF0YS5wYWNrYWdlcy5yZXBvcyxcbiAgICAgIH19KTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICBjb25zdCBhbmFseXNpcyA9IGF3YWl0IHdlYlIuRlMuYW5hbHl6ZVBhdGgocGF0aCk7XG4gICAgICAgIGlmICghYW5hbHlzaXMuZXhpc3RzKSB7XG4gICAgICAgICAgdHJ5IHtcbiAgICAgICAgICAgIGF3YWl0IHdlYlIuRlMubWtkaXIocGF0aCk7XG4gICAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yOiBcIiR7ZS5tZXNzYWdlfVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgcmV0dXJuIGF3YWl0IHdlYlIuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5zdGFsbGluZyB3ZWJSIHNoaW1zYDtcbiAgICBhd2FpdCB3ZWJSLmV2YWxSVm9pZChgd2Vicjo6c2hpbV9pbnN0YWxsKClgKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgV2ViUiBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBSKHdlYlIsIGRhdGEpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHdlYlI7XG4gIH0pKG5ldyBXZWJSKGRhdGEub3B0aW9ucykpO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCB3ZWJSID0gYXdhaXQgd2ViUlByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFdlYlJFdmFsdWF0b3Iod2ViUiwgY29udGV4dClcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBwcm9jZXNzLFxuICAgIHdlYlJQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section></section>
 
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+<p><a href="https://ai.lange-analytics.com/htmlbook/KNearNeigh.html" target="_blank">Textbook </a></p>
 </div>
 </div></div>
 
@@ -20273,8 +20364,8 @@ Prediction Win Lose
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
-'smaller': false,
+'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: true,
@@ -20294,7 +20385,7 @@ Prediction Win Lose
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: 'c/t',
+        slideNumber: false,
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -20452,6 +20543,17 @@ Prediction Win Lose
           RevealZoom
         ]
       });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../../..";
+    window._ojs.paths.runtimeToRoot = "../../../..";
+    window._ojs.paths.docToRoot = "..";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
     </script>
     
 
