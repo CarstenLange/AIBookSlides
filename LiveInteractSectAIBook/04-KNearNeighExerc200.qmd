@@ -118,7 +118,7 @@ gradethis::grade_this_code()
 
 ## Exercise 2 
 
-This exercise requires some preparation. By executing the code block below, you will create the **recipe** and the results will be saved into the *R* object `RecipeWine`. The command `tidy` outputs the result as a data frame that is easy to read:
+This exercise requires some preparation. By **executing** the code block below **without editing**, you will create the **recipe** and the results will be saved into the *R* object `RecipeWine`. The command `tidy` outputs the recipe as a data frame that is easy to read:
 
 ```{webr}
 #| exercise: ex_2prep1
@@ -129,7 +129,7 @@ RecipeWine=recipe(WineColor~., data=DataTrain) |>
 tidy(RecipeWine)
 ```
 
-You also need to prepare the **model-design**. When you execute the commands below *model-design* are also the same as before. When you execute the code block below, the *model-design* will be created and saved into the *R* object `ModelDesignKNN`. The command  `tidy` outputs the result as a data frame that is easy to read:
+You also need to define the **model-design**. When you execute the commands below **without editing** the *model-design*  will be created and saved into the *R* object `ModelDesignKNN`:
 
 ```{webr}
 #| exercise: ex_2prep2
@@ -139,10 +139,10 @@ ModelDesignKNN=nearest_neighbor(neighbors=4,
                set_engine("kknn") |> 
                set_mode("classification")
 
-tidy(ModelDesignKNN)
+ModelDesignKNN
 ```
 
-You are now tasked with adding the *recipe* and the *model-design* to a **workflow** and then fitting the workflow to the training data. Note that the *recipe* `RecipeWine`, the *model-design* `ModelDesignKNN`, and the data frame `DataTrain` have already been loaded in the background. Please complete the code block below and execute it.
+**Now you will work with code:** You are  tasked with adding the *recipe* and the *model-design* to a **workflow** and then fitting the workflow to the training data. Note that the *recipe* `RecipeWine`, the *model-design* `ModelDesignKNN`, and the data frame `DataTrain` have already been loaded in the background. Please complete the code block below and execute it.
 
 ```{webr}
 #| exercise: ex_2
@@ -152,19 +152,18 @@ WFModelWine=workflow() |>
             add_model(______) |> 
             fit(______)
 
-tidy(WFModelWine)
+WFModelWine
 ```
 
 ::: { .hint exercise="ex_2"}
 **Here is a hint:**
 
-The *recipe* (`RecipeWine`) and the *model-design* ('ModelDesignKNN') from the previous exercises  can be reused and have been loaded in the background. The only need to be added
- to the *workflow*.
+The *recipe* (`RecipeWine`) and the *model-design* (`ModelDesignKNN`) from the previous exercises   have been loaded in the background. They  need to be **added
+ to the *workflow* **.
 
 
-To fit the workflow and make it a *fitted workflow model*, we
-use the fit() command. The data are used to fit
-are always the training data (in this case  'DataTrain')
+To **fit the workflow** and make it a *fitted workflow model*, we
+use the `fit()` command. We always use the *training data* to *fit* a model (in this case  `DataTrain`)
 :::
 
 ::: {.solution exercise="ex_2"}
@@ -178,7 +177,7 @@ WFModelWine=workflow() |>
             add_model(ModelDesignKNN) |> 
             fit(DataTrain)
 
-tidy(WFModelWine)
+WFModelWine
 ```
 :::
 

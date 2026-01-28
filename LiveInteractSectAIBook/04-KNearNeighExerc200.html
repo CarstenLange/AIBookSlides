@@ -223,7 +223,7 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </section>
 <section id="exercise-2" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-2">Exercise 2</h2>
-<p>This exercise requires some preparation. By executing the code block below, you will create the <strong>recipe</strong> and the results will be saved into the <em>R</em> object <code>RecipeWine</code>. The command <code>tidy</code> outputs the result as a data frame that is easy to read:</p>
+<p>This exercise requires some preparation. By <strong>executing</strong> the code block below <strong>without editing</strong>, you will create the <strong>recipe</strong> and the results will be saved into the <em>R</em> object <code>RecipeWine</code>. The command <code>tidy</code> outputs the recipe as a data frame that is easy to read:</p>
 <div class="cell" data-exercise="ex_2prep1" data-exercise.setup="ex_all">
 <div>
 <div id="webr-9" class="exercise-cell">
@@ -234,32 +234,32 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMnByZXAxIiwiZXhl
 </script>
 </div>
 </div>
-<p>You also need to prepare the <strong>model-design</strong>. When you execute the commands below <em>model-design</em> are also the same as before. When you execute the code block below, the <em>model-design</em> will be created and saved into the <em>R</em> object <code>ModelDesignKNN</code>. The command <code>tidy</code> outputs the result as a data frame that is easy to read:</p>
+<p>You also need to define the <strong>model-design</strong>. When you execute the commands below <strong>without editing</strong> the <em>model-design</em> will be created and saved into the <em>R</em> object <code>ModelDesignKNN</code>:</p>
 <div class="cell" data-exercise="ex_2prep2" data-exercise.setup="ex_all">
 <div>
 <div id="webr-10" class="exercise-cell">
 
 </div>
 <script type="webr-10-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMnByZXAyIiwiZXhlcmNpc2Uuc2V0dXAiOiJleF9hbGwifSwiY29kZSI6Ik1vZGVsRGVzaWduS05OPW5lYXJlc3RfbmVpZ2hib3IobmVpZ2hib3JzPTQsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB3ZWlnaHRfZnVuYz1cInJlY3Rhbmd1bGFyXCIpIHw+XG4gICAgICAgICAgICAgICBzZXRfZW5naW5lKFwia2tublwiKSB8PiBcbiAgICAgICAgICAgICAgIHNldF9tb2RlKFwiY2xhc3NpZmljYXRpb25cIilcblxudGlkeShNb2RlbERlc2lnbktOTikifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMnByZXAyIiwiZXhlcmNpc2Uuc2V0dXAiOiJleF9hbGwifSwiY29kZSI6Ik1vZGVsRGVzaWduS05OPW5lYXJlc3RfbmVpZ2hib3IobmVpZ2hib3JzPTQsIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICB3ZWlnaHRfZnVuYz1cInJlY3Rhbmd1bGFyXCIpIHw+XG4gICAgICAgICAgICAgICBzZXRfZW5naW5lKFwia2tublwiKSB8PiBcbiAgICAgICAgICAgICAgIHNldF9tb2RlKFwiY2xhc3NpZmljYXRpb25cIilcblxuTW9kZWxEZXNpZ25LTk4ifQ==
 </script>
 </div>
 </div>
-<p>You are now tasked with adding the <em>recipe</em> and the <em>model-design</em> to a <strong>workflow</strong> and then fitting the workflow to the training data. Note that the <em>recipe</em> <code>RecipeWine</code>, the <em>model-design</em> <code>ModelDesignKNN</code>, and the data frame <code>DataTrain</code> have already been loaded in the background. Please complete the code block below and execute it.</p>
+<p><strong>Now you will work with code:</strong> You are tasked with adding the <em>recipe</em> and the <em>model-design</em> to a <strong>workflow</strong> and then fitting the workflow to the training data. Note that the <em>recipe</em> <code>RecipeWine</code>, the <em>model-design</em> <code>ModelDesignKNN</code>, and the data frame <code>DataTrain</code> have already been loaded in the background. Please complete the code block below and execute it.</p>
 <div class="cell" data-exercise="ex_2" data-exercise.setup="ex_all">
 <div>
 <div id="webr-11" class="exercise-cell">
 
 </div>
 <script type="webr-11-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMiIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJXRk1vZGVsV2luZT13b3JrZmxvdygpIHw+IFxuICAgICAgICAgICAgYWRkX3JlY2lwZShfX19fX18pIHw+XG4gICAgICAgICAgICBhZGRfbW9kZWwoX19fX19fKSB8PiBcbiAgICAgICAgICAgIGZpdChfX19fX18pXG5cbnRpZHkoV0ZNb2RlbFdpbmUpIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMiIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJXRk1vZGVsV2luZT13b3JrZmxvdygpIHw+IFxuICAgICAgICAgICAgYWRkX3JlY2lwZShfX19fX18pIHw+XG4gICAgICAgICAgICBhZGRfbW9kZWwoX19fX19fKSB8PiBcbiAgICAgICAgICAgIGZpdChfX19fX18pXG5cbldGTW9kZWxXaW5lIn0=
 </script>
 </div>
 </div>
 <div class="hint webr-ojs-exercise exercise-hint d-none" data-exercise="ex_2">
 <p><strong>Here is a hint:</strong></p>
-<p>The <em>recipe</em> (<code>RecipeWine</code>) and the <em>model-design</em> (‘ModelDesignKNN’) from the previous exercises can be reused and have been loaded in the background. The only need to be added to the <em>workflow</em>.</p>
-<p>To fit the workflow and make it a <em>fitted workflow model</em>, we use the fit() command. The data are used to fit are always the training data (in this case ‘DataTrain’)</p>
+<p>The <em>recipe</em> (<code>RecipeWine</code>) and the <em>model-design</em> (<code>ModelDesignKNN</code>) from the previous exercises have been loaded in the background. They need to be <strong>added to the <em>workflow</em> </strong>.</p>
+<p>To <strong>fit the workflow</strong> and make it a <em>fitted workflow model</em>, we use the <code>fit()</code> command. We always use the <em>training data</em> to <em>fit</em> a model (in this case <em>DataTrain</em>)</p>
 </div>
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="ex_2">
 <p><strong>Here is the solution:</strong></p>
@@ -270,13 +270,13 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMiIsImV4ZXJjaXNl
             add_model(ModelDesignKNN) |&gt; 
             fit(DataTrain)
 
-tidy(WFModelWine)</code>
+WFModelWine</code>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-14-1"><a href="#interpolate-14-1" aria-hidden="true" tabindex="-1"></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
 <span id="interpolate-14-2"><a href="#interpolate-14-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_recipe</span>(RecipeWine) <span class="sc">|&gt;</span></span>
 <span id="interpolate-14-3"><a href="#interpolate-14-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_model</span>(ModelDesignKNN) <span class="sc">|&gt;</span> </span>
 <span id="interpolate-14-4"><a href="#interpolate-14-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">fit</span>(DataTrain)</span>
 <span id="interpolate-14-5"><a href="#interpolate-14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-14-6"><a href="#interpolate-14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(WFModelWine)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="interpolate-14-6"><a href="#interpolate-14-6" aria-hidden="true" tabindex="-1"></a>WFModelWine</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
