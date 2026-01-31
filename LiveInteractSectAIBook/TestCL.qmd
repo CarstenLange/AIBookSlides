@@ -5,7 +5,7 @@ format: live-html
 
 
 webr:
-  packages: ['dplyr'] # Auto-install packages in the browser
+  packages: ['dplyr', 'rio'] # Auto-install packages in the browser
 
 engine: knitr
 ---
@@ -14,13 +14,23 @@ engine: knitr
 {{< include .././_extensions/r-wasm/live/_knitr.qmd >}}
 {{< include .././_extensions/r-wasm/live/_gradethis.qmd >}}
 
+```{webr}
+#| label: ex_all
+#| echo: false
+DataWine<- read.csv("https:///econ.lange-analytics.com/RData/Datasets/WineData.csv")
+set.seed(876)
+head(DataWine)
+```
+
+## Exercise 1
+
+Find the mean alcohol content:
 
 ```{webr}
 #| exercise: ex_1
-B=1 #<1>
-C=2
-A=______(1,2,3,7) #<21>
-MeanA=______(A)
+#| exercise.setup: ex_all
+Result=______(DataWine$alcohol) 
+cat("The avg. alcohol in the wines is:", ______) 
 ```
 
 ::: {.hint exercise="ex_1"}
@@ -35,14 +45,12 @@ Here is the Solution from CL
 ```{webr}
 #| exercise: ex_1
 #| solution: true
-B=1 #<1>
-C=2 
-A=c(1,2,3,7) #<2>
-MeanA=mean(A) 
+Result=mean(DataWine$alcohol) #<1>
+cat("The avg. alcohol in the wines is:", Result) #<2>
 ```
 
-1. B is here
-2. A is here
+1. Calculating the Mean
+2. Outputting Result
 
 :::
 

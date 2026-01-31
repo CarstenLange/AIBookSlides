@@ -22,10 +22,10 @@ Below you can see all variables available in the wine dataset. The first variabl
 ```{webr}
 #| label: ex_all
 #| include: false
-DataWineOrg<- read.csv("https:///econ.lange-analytics.com/RData/Datasets/WineData.csv")
+
 set.seed(876)
 
-DataWine = DataWineOrg |> 
+DataWine = read.csv("https:///econ.lange-analytics.com/RData/Datasets/WineData.csv") |> 
            clean_names("upper_camel") |> 
            select(-Quality) |> 
            rename(Sulfur=TotalSulfurDioxide) |> 
@@ -63,7 +63,7 @@ head(DataWine)
 
 ## Exercise 1 
 
-The code block below uses the already loaded wine dataset ('DataWine'). The variable $WineColor$ was coded as a `factor` data type as required by the *k-Nearest Neighbors* algorithm.
+The code block below uses the already loaded wine dataset (`DataWine`). The variable $WineColor$ was coded as a `factor` data type as required by the *k-Nearest Neighbors* algorithm.
 
 After the random number generator has been initialized, the data are split into training and testing data (see Section \@ref(KNearNeigh-Data) for details).
 
@@ -155,12 +155,10 @@ WFModelWine=workflow() |>
 WFModelWine
 ```
 
-::: { .hint exercise="ex_2"}
+::: {.hint exercise="ex_2"}
 **Here is a hint:**
 
-The *recipe* (`RecipeWine`) and the *model-design* (`ModelDesignKNN`) from the previous exercises   have been loaded in the background. They  need to be **added
- to the *workflow* **.
-
+The *recipe* (`RecipeWine`) and the *model-design* (`ModelDesignKNN`) from the previous exercises   have been loaded in the background. They  need to be **added** to the *workflow*.
 
 To **fit the workflow** and make it a *fitted workflow model*, we
 use the `fit()` command. We always use the *training data* to *fit* a model (in this case  `DataTrain`)
@@ -183,6 +181,98 @@ WFModelWine
 
 ```{webr}
 #| exercise: ex_2
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Exercise 3
+
+Because the workflow model is fitted to the training data, we can use it for predictions. Instead of using the `predict()` command, we  use the more comprehensive `augment()` command, which predicts $WineColor$ based on the predictor variables from the testing dataset and then adds the predictions as a new variable named $.pred\_class$ to `DataTest`. The complete result is saved in the *R* object `DataTestWithPred`.
+
+Since the *R* object `DataTestWithPred` contains the predictions (`estimate`) for the wine color and also the `truth`, stored in variable $WineColor$, we can use it as the data argument for metrics commands. An example is the `conf_mat()` command that generates a confusion matrix. The related code is already prepared. You just have to execute it.
+
+```{webr}
+#| exercise: ex_3
+#| exercise.setup: ex_all
+DataTestWithPred=augment(______, DataTest)   ______
+conf_mat(DataTestWithPred, truth=WineColor, estimate=______)
+```
+
+::: { .hint exercise="ex_3"}
+**Here is a hint:**
+
+The `augment()` command generates the predictions based on the *testing dataset* and *augments* the *testing dataset* with a new column `.pred_class` which hold the predictions.
+
+To create  the confusion matrix you have to provide the column with the predictions `.pred_class` which will e compared to the true wine color (`Winecolor1`)
+:::
+
+::: {.solution exercise="ex_3"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_3
+#| solution: true
+DataTestWithPred=augment(WFModelWine, DataTest)   
+conf_mat(DataTestWithPred, truth=WineColor, estimate=.pred_class)
+```
+:::
+
+```{webr}
+#| exercise: ex_3
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Exercise 4
+
+
+A first glance at the diagonal elements of the confusion matrix above already indicates an improvement over the model with two predictor variables.
+
+The `tidymodels` package can help you to calculate metrics such as *accuracy*, *sensitivity*, and *specificity*. Instead of calculating these metrics separately you can streamline the process by creating a *metric set* first.\index{metric\_set()}
+
+In the code block below, the command `metric_set()` creates a new command that we name `MetricsWine` (you can choose a different name if you like).
+
+The newly created command `MetricWine()` can be used similarly to the `conf_mat()` command, but instead of creating a confusion matrix, it creates all the metrics previously specified with `metric_set()` simultaneously. This saves you some typing effort.
+
+Give it a try with the code block below (note, the data frame `DataTest` and the fitted *workflow model* `WFModelWine` have already been loaded in the background):
+
+```{webr}
+#| exercise: ex_4
+#| exercise.setup: ex_all
+MetricsWine=metric_set(accuracy, sensitivity, specificity)
+MetricsWine(DataTestWithPred, truth=______, estimate=______)
+```
+
+::: { .hint exercise="ex_4"}
+**Here is a hint:**
+The command 'MetricsWine()' that was generated in the first line of code requires like the confusion matrix command three arguments:
+
+1. The data frame that contains the predictions as well ea the true values.
+2. The column in that dataset that contains the true values.
+2. The column in that dataset that contains the true predictions.
+:::
+
+::: {.solution exercise="ex_4"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_4
+#| solution: true
+MetricsWine=metric_set(accuracy, sensitivity, specificity) #<1>
+MetricsWine(DataTestWithPred, truth=WineColor, estimate=.pred_class) #<2>
+```
+
+1. Creates a new command that simultaneously calculates *accuracy*, *sensitivity*, and *specificity*.
+2. Provides the data frame that contains the predictions as well as the true values.
+:::
+
+
+As the confusion matrix and the three metrics above confirm, we reached an almost perfect prediction quality.
+
+Try changing the arguments in the `metric_set()` command to different metrics and see what happens.
+
+```{webr}
+#| exercise: ex_4
 #| check: true
 gradethis::grade_this_code()
 ```

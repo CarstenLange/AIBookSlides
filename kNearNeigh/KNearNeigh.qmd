@@ -21,6 +21,7 @@ format:
 webr:
   packages:
     - ggplot2
+    - dplyr
   
  
 
@@ -51,9 +52,9 @@ Please rate yourselves on a **scale from 1 to 10** for the two criteria below:
 
 ##  Thought Experiment: Data Entry
 
-For `Student1`, `Student2`, and `Student3`, let us enter the names of the three volunteer student. Then we replace the`___` with their scores (in the correct order of `Student1`, `Student2`, and `Student3`).
+For `Student1`, `Student2`, and `Student3`, let us enter the names of the three volunteer student. Then we replace the sample scores (e.g., `Tidy = c(1, 8, 3)`) with the scores from the volunteer students (in the correct order of `Student1`, `Student2`, and `Student3`).
 
-Afterwards, click <span style="background-color: #75AADB; padding: 3px; color: white;">Run Code</span>
+Afterwards, click <span style="background-color: #75AADB; padding: 3px; color: white;">Run Code</span> (note, you need to run this code in order to work with the following examples).
 ```{webr}
 #| warning: false
 #| message: false
@@ -102,31 +103,35 @@ $$EucDist=sqrt(DiffTidy^2+DiffSocial^2)$$
 
 ```{webr}
 DiffTidy=DataRoomMates[[1,2]]-DataRoomMates[[2,2]]
-cat("Diff. Tidy between the first and the second student:",DiffTidy)
+cat("The difference in Tidy between the first and the second student is:",DiffTidy)
 DiffSocial=DataRoomMates[[1,3]]-DataRoomMates[[2,3]]
-cat("Diff. Social between the first and the second student:",DiffSocial)
+cat("The difference in Social between the first and the second student is:",DiffSocial)
 EucDist=sqrt((DiffTidy^2+DiffSocial^2))
 cat("Euclidean Distance=",EucDist)
 ```
 
-## Scale for All Variables
+## Use the Same Scale for All Predictor Variables
 
-#### It is very important that all variables have the same scale
+#### It is very important that all predictor variables have the same scale
 
 Like here, both variables are in a range from 1 to 10.
 
 #### What happens if we scale `Social` from 10 to 100 instead from 1 to 10
 
 ```{webr}
-DataRoomMates$Social=DataRoomMates$Social*10
-kable(DataRoomMates)
+DataRoomMatesScaled=DataRoomMates |> 
+                    mutate(Social=Social*10)
+
+kable(DataRoomMatesScaled)
 ```
 
 ## The Influence of Social Compared to Tidy becomes very Small
 
 ```{webr}
+#| fig-width: 1.7
+#| fig-height: 17
 library(ggplot2)
-ggplot(DataRoomMates, aes(x = Tidy, y = Social, label = name)) +
+ggplot(DataRoomMatesScaled, aes(x = Tidy, y = Social, label = name)) +
   geom_point(size = 4) +
   geom_text(vjust = -1) +
   scale_x_continuous(limits = c(1, 10), breaks=seq(1,10,9)) +
@@ -204,7 +209,8 @@ print(DataWine)
 
 »
 
-## Before Starting with k Nearest Neighbors
+## Conceptual Detour: Before Starting with k Nearest Neighbors
+### Introducing a Few other Machine Learning Models with Diagrams
 
 <br><br><br><br>
 
@@ -341,7 +347,7 @@ print(ConMatTemp)
 # So, how does k Nearest Neighbors Work?
 
 ## k Nearest Neighbors k=1 {transition="fade-in zoom-out" transition-speed="slow"}
-
+### (find the closest datapoint to the one we want to predict)
 ```{r WinePlotAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color»"}
 ggplot(DataTrain%>% 
          add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
@@ -354,7 +360,7 @@ ggplot(DataTrain%>%
 ```
 
 ## k Nearest Neighbors k=1 {transition="zoom-in slide-out" transition-speed="slow"}
-
+### (find the closest datapoint to the one we want to predict)
 ```{r WinePlotK1, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Predicting  Wine Color with k-Nearest Neighbors (k=1)"}
 library(latex2exp)
 ggplot(DataTrain %>% 
@@ -388,7 +394,7 @@ Assume our observations have **three predictor variables** $x$, $y$, and $z$. We
 Assume our observations have $N$ predictor variables $v_j$ with $j=1 ... N$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}$$ »
 
 ## k Nearest Neighbors k=4 (for a different unknown wine){transition="fade-in zoom-out" transition-speed="slow"}
-
+### (find the closest 4 datapoint to the one we want to predict)
 ```{r WinePlotAgainAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color"}
 ggplot(DataTrain%>% 
          add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
@@ -402,7 +408,7 @@ ggplot(DataTrain%>%
 ```
 
 ## k Nearest Neighbors k=4 (for a different unknown wine){transition="zoom-in slide-out" transition-speed="slow"}
-
+### (find the closest 4 datapoint to the one we want to predict)
 #### 4 nearest neighbors vote on "red" vs. "white"
 
 ```{r WinePlotK4, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Predicting Wine Color with k-Nearest Neighbors (k=4)"}
