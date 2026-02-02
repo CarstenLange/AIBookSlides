@@ -1,0 +1,265 @@
+---
+title: "Interactive Section"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+description: Exercises
+
+---
+
+<style>
+  div.yellowbox {
+    background-color: #f1dfa6;
+    border: 1px solid black;
+    padding: 21px;
+  }
+
+  strong {
+    color: #d10056
+  }
+
+  .center {
+    text-align: center;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(rio)
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(kableExtra)
+
+knitr::opts_chunk$set(exercise=TRUE, exercise.eval=FALSE, exercise.lines=6, attr.source = ".numberLines")
+```
+
+:::: {.yellowbox data-latex=""}
+
+::: {.center data-latex=""}
+**How to Work with this Interactive Section**
+:::
+
+Here you find the complete interactive section from the book, including book content, and R-code-blocks. Read the content in a browser as you would read it in the textbook. 
+
+With the R-code blocks, you can work in various ways:
+
+* Use the `Run Code` button to execute the R-code and see the result.
+
+* Change the R-code, click the `Run Code` button, and then see the new results.
+
+* To get the original R-code back, click the `Start Over` button at the left-top corner of each R-code block. 
+
+* To reset the R-code for all code blocks, click the `Start Over` in the left menu.
+
+**Make sure you installed all needed packages!** See Section "R Packages Required"  in this Chapter for a list of packages that need to be installed. Section 3.2 explain how to install a packege in *RStudio*.
+
+
+
+**For Troubleshooting:** [Click here](https://blog.lange-analytics.com/2024/01/interactsessions.html)
+::::
+
+
+ 
+ 
+ <clex id="Exc300">
+
+Now that you know how the images of the *MNIST* dataset are stored, you can start the machine learning project by importing the data. The first line in the code block below imports a data frame with the first 500 images from the original *MNIST* dataset. Each image is stored in a row with the label indicating which of the ten digits it represents.
+
+Please complete the code block below in the interactive version of this section in *RStudio*. Here are a few hints:
+
+-   The $Label$ for each image is stored as an `integer` data type, but *k-Nearest Neighbors* only accepts `factor` data type for the outcome variable. Therefore, you must transform the outcome variable $Label$ to `factor` data type.
+
+-   When splitting the dataset into training and testing data, you can use `strata=` to indicate that the numbers stored in $Label$ are approximately equally represented in the training and the testing dataset. After you have completed the commands in the code block, the `head(DataTrain)` command will show you the first six observations of the training dataset.
+
+```{r 04-KNearNeigh-Exerc300-LoadMnist, include=FALSE, exercise=FALSE}
+
+DataMnist=import("https://ai.lange-analytics.com/data/MN500.rds") |>
+mutate(Label=as.factor(Label))
+set.seed(123)
+Split7030=initial_split(DataMnist, 0.70, strata=Label)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+RecipeMnist=recipe(Label~., DataTrain)
+
+ModelDesignKNN=nearest_neighbor(neighbors=5, weight_func="rectangular") |>
+                 set_engine("kknn") |>
+                 set_mode("classification") 
+
+WFModelMnist=workflow() |>
+             add_recipe(RecipeMnist) |> 
+             add_model(ModelDesignKNN) |> 
+             fit(DataTrain)
+
+DataTestWithPred=augment(WFModelMnist, DataTest)
+```
+
+```{r 04-KNearNeigh-Exerc300-DataLoadUser, eval=FALSE, exercise=TRUE, exercise.lines=8}
+DataMnist=import("https://ai.lange-analytics.com/data/MN500.rds") |>
+mutate(Label=as.factor(...))
+set.seed(123)
+Split7030=initial_split(DataMnist, 0.70, strata=...)
+DataTrain=training(...)
+DataTest=...(...)
+
+head(DataTrain)
+```
+
+```{r 04-KNearNeigh-Exerc300-DataLoadUser-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=11}
+`The outcome variable (the number we want to predict) is stored in the variable
+Label. It needs to be transformed into a factor, and it is also used
+to stratify (ensure that numbers are equally represented in) the
+training and testing data.
+
+The variable Split7030 stores all information to create DataTrain and
+DataTest. To extract DataTrain and DataTest from Split7030, you use
+the commands training() and testing(), respectively - with the argument
+Split7030.
+
+The next HINT provides the solution. So, keep trying before you peek.`
+```
+
+```{r 04-KNearNeigh-Exerc300-DataLoadUser-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=8}
+DataMnist=import("https://ai.lange-analytics.com/data/MN500.rds") |>
+mutate(Label=as.factor(Label))
+set.seed(123)
+Split7030=initial_split(DataMnist, 0.70, strata=Label)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+
+head(DataTrain)
+```
+
+When developing a machine learning model with `tidymodels`, you can always follow the same process:
+
+1.  Define a *recipe* to pre-process the data and define which variables are *outcome* and which are *predictor* variables (for details about *recipes* see Section \@ref(KNearNeigh-Tidymodels)).
+
+2.  Define the *model-design* that determines which machine learning model to use and which *R* package contains the model (for details about *model-design* see Section \@ref(KNearNeigh-Tidymodels)).
+
+3.  Add the *recipe* and the *model-design* to a workflow and use the training data to fit the machine learning model. The resulting workflow model can then be used for predictions (for details about *workflows* see Section \@ref(KNearNeigh-WorkFlowK1)).
+
+The code block below completes steps 1) and 2). The first line creates the *recipe*, and it is stored in an *R* object named `RecipeMnist`. We can use `Label~.` to determine that $Label$ is the outcome variable, and all other variables are predictor variables because the data frame `DataTrain` contains exclusively outcome and predictor variables. Normalization with `step_normalize()` is unnecessary because the predictor variables are already in the same range (from $0$ for *black* to 255 for *white*). Also, all observations are complete. Therefore, `step_naomit()` is not needed either.
+
+The second step is your task. Please complete the command that defines the *model-design* and store the result in the *R* object `ModelDesignKNN`. Use the model `nearest_neighbor()` from the *R* package `kknn` and remember that the model is a *classification* rather than a *regression* model.
+
+After completing and executing the code block, *R* will print a summary of the *recipe* and the *model-design*.
+
+```{r 04-KNearNeigh-Exerc300-BuildRecAndDesignModel, eval=FALSE, exercise=TRUE, exercise.setup="04-KNearNeigh-Exerc300-LoadMnist", exercise.lines=8}
+RecipeMnist=recipe(Label~., data=DataTrain)
+
+ModelDesignKNN=...(neighbors=5, weight_func="rectangular") |>
+                 set_engine("...") |>
+                 set_mode("...") 
+
+print(RecipeMnist)
+print(ModelDesignKNN)
+```
+
+```{r 04-KNearNeigh-Exerc300-BuildRecAndDesignModel-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=6}
+The model we want to use is called nearest_neighbor it uses the R-package
+kknn. 
+
+We use the model for classification. 
+
+The next HINT provides the solution. So, keep trying before you peek.`
+```
+
+```{r 04-KNearNeigh-Exerc300-BuildRecAndDesignModel-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=7}
+RecipeMnist=recipe(Label~., DataTrain)
+
+ModelDesignKNN=nearest_neighbor(neighbors=5, weight_func="rectangular") |>
+                 set_engine("kknn") |>
+                 set_mode("classification") 
+
+print(RecipeMnist)
+print(ModelDesignKNN)
+```
+
+Now, you can move to the third step to create a fitted *workflow model*. In the code block below, you add the *recipe* (`RecipeMnist`) and the *model-design* (`ModelDesignKNN`) to a workflow, and then you fit the workflow with the training data stored in `DataTrain`. The fitted *workflow model* is then saved in the object `WFModelMnist`. When you print the fitted *workflow model*, *R* will provide information about the *recipe* and the fitted model. This might take a moment. So be a little patient.
+
+```{r KNearNeigh-Exerc300-RunWorkFlow, eval=FALSE, exercise=TRUE, exercise.setup="04-KNearNeigh-Exerc300-LoadMnist", exercise.timelimit=900}
+WFModelMnist=workflow() |>
+             add_recipe(...) |> 
+             add_model(...) |> 
+             fit(...)
+
+print(WFModelMnist)
+```
+
+```{r KNearNeigh-Exerc300-RunWorkFlow-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=7}
+`You are adding the recipe (RecipeMnist) and the model (ModelDesignKNN)
+to the workflow.
+
+Then you use the training data (DataTrain) to fit the workflow, which
+makes it a fitted workflow model that can be used for predictions.
+
+The next HINT provides the solution. So, keep trying before you peek.`
+```
+
+```{r KNearNeigh-Exerc300-RunWorkFlow-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=6}
+WFModelMnist=workflow() |>
+             add_recipe(RecipeMnist) |> 
+             add_model(ModelDesignKNN) |> 
+             fit(DataTrain)
+
+print(WFModelMnist)
+```
+
+Since `WFModelMnist` is a fitted *workflow model*, you can use it to predict for the images in the testing dataset (`DataTest`) which digit they present. Again, you will use the command `augment()` instead of `predict()`. Consequently, the testing dataset will be augmented with a new column `.pred_class` that contains predicted digits for each image. The result will then be saved into the data frame `DataTestWithPred`.
+
+```{r KNearNeigh-Exerc300-PredWithWF, eval=FALSE, exercise=TRUE, exercise.setup="04-KNearNeigh-Exerc300-LoadMnist"}
+
+DataTestWithPred=augment(..., ...)
+
+head(DataTestWithPred |> select(Label, .pred_class, everything()))
+```
+
+```{r KNearNeigh-Exerc300-PredWithWF-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=8}
+` The augment() command requires two arguments: 
+  
+1) The name of the fitted workflow model (WFModelMnist).
+2) The data frame to be used for predicting (DataTest).
+
+
+The next HINT provides the solution. So, keep trying before you peek.`
+
+```
+
+```{r KNearNeigh-Exerc300-PredWithWF-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=8}
+
+DataTestWithPred=augment(WFModelMnist, DataTest)
+
+head(DataTestWithPred |> select(Label, .pred_class, everything()))
+
+```
+
+The head command prints the first six observations of the data frame `DataTestWithPred`. You will see that `DataTestWithPred` now contains for each observation both the predictions ($.pred\_class$) and the true value (in this case, $Label$).
+
+Remember, this is crucial for assessing a models prediction quality because many `tidymodels` commands that assess predictive quality require a variable for a `truth` argument (in this case, `truth=Label`) and a variable for the `estimate` argument (in this case `estimate=.pred_class`). The `conf_mat()` command, which generates the confusion matrix, is an example (note that the data frame `DataTestWithPred` has already been loaded in the background):
+
+```{r KNearNeigh-ConfMetrics, echo=TRUE, exercise=TRUE, exercise.setup="04-KNearNeigh-Exerc300-LoadMnist"}
+conf_mat(DataTestWithPred, truth=Label, estimate=.pred_class)
+
+```
+
+Again counts for correct predictions are aligned in the cells on the main diagonal. For example, row three contains counts for cases where $3$ was predicted. Column three contains counts for observations where the label was actually $3$. Consequently, the count in row three and column three shows the count of correct predictions ($11$).
+
+To calculate other metrics for the testing data, we again use the `metric_set()` command and require to calculate `accuracy`, `sensitivity`, and `specificity`. The resulting *R* command is saved in the *R* object `MetricsSetMnist`.
+
+Then, in the second line of code, we execute the `MetricsSetMnist()` command with the same arguments that we used to create the confusion metrics.
+
+```{r KNearNeigh-OtherMetrics, echo=TRUE, exercise=TRUE, exercise.setup="04-KNearNeigh-Exerc300-LoadMnist"}
+MetricsSetMnist=metric_set(accuracy, sensitivity, specificity)
+MetricsSetMnist(DataTestWithPred, truth=Label, estimate=.pred_class)
+```
+
+The calculated metrics confirm the overall good prediction quality. The accuracy of the model is 77.6%. This is a good result compared to a simple guess that would generate an accuracy of about 10%. Sensitivity (true positive rate) and specificity (true negative rate) also indicate good predictive quality. Note that these metrics were calculated as averages over all ten digits (indicated by the term *macro* in the printout).[^04-knearneigh-9]
+
+[^04-knearneigh-9]: See [@Mohajon2020] for an intuitive explanation and [@Vaughan2022] for details about how multi-class metrics are calculated in `tidymodels`
+
+You can improve the result by using more observations from the *MNIST* dataset. In the digital resource section (see Section \@ref(KNearNeigh-Multimedia)) you can download an *R* script that contains the code used in this section. That *R* script allows you to use *MNIST* samples with more observations (1,000 and 10,000) to improve the predictive results.
+
+</clex>

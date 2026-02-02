@@ -1,0 +1,491 @@
+---
+title: "Project: Read Handwritten Digits with k-Nearest Neighbors"
+format: live-html
+webr:
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 
+             'yardstick','parsnip','workflows', 'kknn',
+             'plotly', 'kableExtra'] # Auto-install packages in the browser
+
+engine: knitr
+---
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
+
+<span style="color: red; font-weight: bold;">Your browser is loading R and all needed packages. That can take a while (about 1:00 - 2:00 minutes). Please be patient. You can see the progress in the right lower corner of your browser.</span>
+
+```{webr}
+#| label: ex_all
+#| autorun: true
+#| echo: false
+FctPlotImages=function(DataCL, StartObs, ObsNum){
+  VecImg=as.numeric(DataCL[StartObs,-1])
+DataFacetPlot=data.frame(ObsNum=rep(StartObs, times = 28*28),Row=rep(1:28, each = 28),                     Col=rep(1:28, times = 28), PxVal=VecImg)
+for (i in (StartObs+1):(StartObs+ObsNum-1)) {
+    VecImg=as.numeric(DataCL[i,-1])
+    DataTemp=data.frame(ObsNum=rep(i, times = 28*28),Row=rep(1:28, each = 28),    
+                        Col=rep(1:28, times = 28), 
+                        PxVal=VecImg)
+    DataFacetPlot=rbind(DataFacetPlot,DataTemp)}
+
+Plot=ggplot(DataFacetPlot, aes(x=Col, y=Row, fill=PxVal))+
+        geom_tile()+
+        scale_y_reverse(breaks=c(1,7,14,21,28),
+                        limits = c(0.5, 28.5),
+                        expand = c(0, 0))+
+        scale_x_continuous(position = "top",
+                        breaks=c(1,7,14,21,28),
+                        limits = c(0.5, 28.5),
+                        expand = c(0, 0))+
+        scale_fill_gradient(low = "black", high = "white")+
+        coord_fixed()+
+        facet_wrap(~ ObsNum, nrow = ObsNum + ObsNum %% 2, ncol = 2)
+    return(Plot)}
+
+DataMnist=readRDS(url("https://ai.lange-analytics.com/data/MN500.rds")) |>
+          mutate(Label=as.factor(Label))
+
+set.seed(879)
+Split7030=initial_split(DataMnist, 0.70, strata=Label)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+RecipeMnist=recipe(Label~., DataTrain)
+
+ModelDesignKNN=nearest_neighbor(neighbors=5, weight_func="rectangular") |>
+                 set_engine("kknn") |>
+                 set_mode("classification") 
+
+WFModelMnist=workflow() |>
+             add_recipe(RecipeMnist) |> 
+             add_model(ModelDesignKNN) |> 
+             fit(DataTrain)
+
+DataTestWithPred=augment(WFModelMnist, DataTest)
+```
+
+**Libraries** already loaded in the background:
+
+- *tidyverse*
+- *tidymodels*
+- *kknn*
+
+**Data already loaded in the background:**
+
+- `DataWine`
+- Source: "https://ai.lange-analytics.com/data/MN500.rds"
+- To load `rds` data to your own IDE use:
+  `rio::import("https://ai.lange-analytics.com/data/MN500.rds", trust=TRUE)`
+
+## Introduction
+
+In this section, you will develop a machine learning model based on *k-Nearest Neighbors* for a real-world application. The goal is to recognize handwritten digits from images. You will use the *MNIST* dataset, a standard dataset for image recognition. The *MNIST* dataset is publicly available and contains 60,000 images for training and 10,000 images for testing purposes. The dataset was developed in 2010 by *Yann LeCun* based on two datasets from handwritten digits obtained from census workers and high school students.
+
+The plot below shows a printout of the first eight images from the *MNIST* dataset, giving you an idea of how the census workers and high school students wrote the numbers.
+
+
+```{webr}
+#| autorun: true
+#| echo: false
+FctPlotImages(DataMnist, 1, 8)
+```
+
+To speed up the training time we do not use the complete *MNIST* dataset for this project. Instead, we  use only a subset (the first 500 images/rows of the original *MNIST* dataset). In the [Digital Resources section of the textbook Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-Multimedia){target="_blank"} you will find links for sample images of 500, 1,000, and 10,000, as well as the link to the original dataset. This allows you to modify the code below to use more observations.
+
+The machine learning model in this section recognizes only handwritten digits. Other more advanced but similar applications recognize numbers and characters from scanned documents. *OCR* in the Adobe PDF app is one of these examples.
+
+### How Images Are Stored
+
+\index{Domain Knowledge} Before working with a *k-Nearest Neighbors* model, we first need to understand the problem we are trying to solve. This is when **domain knowledge** plays an important role. *Domain knowledge* is the knowledge about a specific field or discipline outside of machine learning. In the case of image recognition, *domain knowledge* involves understanding how images can be stored in a dataset.
+
+```{webr}
+#| autorun: true
+#| echo: false
+# Original plotly not from R
+library(plotly)
+
+mat <- matrix(
+  as.numeric(DataMnist[1, -1]),
+  nrow = 28,
+  byrow = TRUE
+)
+
+plot_ly(
+  x = 1:28,
+  y = 1:28,
+  z = mat,
+  type = "heatmap",
+  colorscale = list(c(0, "black"), c(1, "white")),
+  colorbar = list(title = "PxlVal"),
+  hovertemplate = paste0(
+    "Col: %{x}<br>",
+    "Row: %{y}<br>",
+    "PxlVal: %{z}",
+    "<extra></extra>"
+  )
+) %>%
+  layout(
+    xaxis = list(
+      title = "Col",
+      scaleanchor = "y",
+      constrain = "domain",
+      tickmode = "linear",
+      tick0 = 1,
+      dtick = 1
+    ),
+    yaxis = list(
+      title = "Row",
+      autorange = "reversed",
+      constrain = "domain",
+      tickmode = "linear",
+      tick0 = 1,
+      dtick = 1
+    ),
+    margin = list(l = 20, r = 20, t = 20, b = 20)
+  )
+```
+
+A gray-scale image can be stored in a raster format. A raster is a grid with two dimensions. The *MNIST* images are stored in a grid of 28 rows and 28 columns. Each entry in this grid (called a **pixel**) indicates the brightness of the cell on a scale from 0 to 255. A value of 0 indicates *black*, a value of 255 indicates *white*. Values between 0 and 255 indicate some degree of gray. 
+
+The plot above shows an example of how a handwritten "7" can be stored in an image file. When you hover with your mouse over the raster image above, you can see the row and column number of each pixel as well as its value ranging from 0 to 255.
+
+## How Images are stored in the MNIST File
+
+There is a problem when working with images in a machine learning model. Machine learning models usually require that each observation is within a row of a data frame and that the columns represent predictor variables. As explained above, images are stored in a 2D grid.
+
+The solution is to combine all the rows of an image into one long row of pixels. In our case, we start with the first row, append the second row of the image raster, append the third row, and so on, until we finally append the 28th row. Because the images initially have 28 rows and 28 columns, each image would then be converted to one long row consisting of 784 ($28 \cdot 28$) columns. 
+
+This was done with the *MNIST* dataset. Each image is stored in one row. Each of the 784 pixels of an image is stored in one of 784 columns. These columns will become the 784 predictor variables. The outcome variable (called $Label$) is stored in the first column of the data frame. It contains each image's true digit (a 7 for the first image).
+
+```{webr}
+#| autorun: true
+#| echo: false
+TableMNIST=data.frame(
+  Label = c(7,2,1,0,4,1,4,9),
+  PIX1 = c(0,0,0,0,0,0,0,0),
+  PIX2 = c(0,0,0,0,0,0,0,0),
+  PIX3 = c(0,0,0,0,0,0,0,0),
+  '...'=c("...","...","...","...","...","...","...","..."),
+  PIX783 = c(0,0,0,0,0,0,0,0),
+  PIX784 = c(0,0,0,0,0,0,0,0)
+)
+kbl(TableMNIST, caption="How Images are Stored in the MNIST Dataset") |> 
+  kable_styling(bootstrap_options=c("striped", "hover"), position="center", full_width=F)
+```
+
+Take a look at the table above, which shows an excerpt from the *MNIST* data frame for the first eight images. Note that the table does not show all 784 predictor variables (pixels). Instead, it only shows the pixel values for the first three pixels and the last two pixels for the eight images. These pixels represent the left-upper and the right-lower corner for each of the eight images. They are all 0 (black) because the digits were written with a white pen, and the corresponding pixels are more in the center of the image.
+
+## Exercise 1
+
+Now that you know how the images of the *MNIST* dataset are stored, you can start the machine learning project by importing the data. The  *MNIST* data frame `DataMnist` has been already loaded in the background. Remember, each image is stored in a row with the `Label` indicating which of the ten digits it represents.
+
+Please complete the code block below i Here are a few hints:
+
+-   The $Label$ for each image is stored as an `integer` data type, but *k-Nearest Neighbors* only accepts `factor` data type for the outcome variable. Therefore, you must transform the outcome variable $Label$ to `factor` data type.
+
+-   When splitting the dataset into training and testing data, you can use `strata=` to indicate that the numbers stored in $Label$ are approximately equally represented in the training and the testing dataset. After you have completed the commands in the code block, the `head(DataTrain)` command will show you the first six observations of the training dataset.
+
+```{webr}
+#| exercise: ex_1
+#| exercise.setup: ex_all
+DataMnist=DataMnist |>
+mutate(Label=as.factor())
+set.seed(789)
+Split7030=initial_split(DataMnist, 0.70, strata=Label)
+DataTrain=training(______)
+DataTest=______(______)
+
+print("DataTrain and DataTest defined.")
+```
+
+
+
+::: {.hint exercise="ex_1"}
+**Here is a hint:**
+
+The outcome variable (the number we want to predict) is stored in the variable
+Label. It needs to be transformed into a factor, and it is also used
+to stratify (ensure that numbers are equally represented in) the
+training and testing data.
+
+The *R* object `Split7030` stores all information to create `DataTrain` and
+`DataTest`. To extract `DataTrain` and `DataTest` from `Split7030`, you use
+the commands `training()` and `testing()`, respectively - with the argument
+`Split7030`.
+:::
+
+
+::: {.solution exercise="ex_1"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_1
+#| solution: true
+DataMnist= DataMnist |> #<1>                 
+           mutate(Label=as.factor(Label)) 
+set.seed(789) #<2> 
+Split7030=initial_split(DataMnist, 0.70, strata=Label) 
+DataTrain=training(Split7030)  #<3> 
+DataTest=testing(Split7030)  #<4> 
+
+print("DataTrain and DataTest defined.")
+```
+
+1. `tidymodels` requires that a categorical  outcome variable is coded as a factor.
+2. `set.seed()` initializes the random number generator in a specific way (e.g., 789). This makes random events reproducible.
+3. Uses the `Split7030` *R* object to generate th *training dataset* `DataTrain`
+4. Uses the `Split7030` *R* object to generate th *testing dataset* `DataTest`
+:::
+
+```{webr}
+#| exercise: ex_1
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Exercise 2
+When developing a machine learning model with `tidymodels`, you can always follow the same process:
+
+1.  Define a *recipe* to pre-process the data and define which variables are *outcome* and which are *predictor* variables (for details about *recipes* see [the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#using-tidymodels-for-k-nearest-neighbors){target=_blank}).
+
+2.  Define the *model-design* that determines which machine learning model to use and which *R* package contains the model ([the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#creating-a-model-design){target=_blank}))).
+
+3.  Add the *recipe* and the *model-design* to a workflow and use the training data to fit the machine learning model. The resulting workflow model can then be used for predictions ([the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-WorkFlowK1){target=_blank})).
+
+The code block below completes steps 1) and 2). The first line creates the *recipe*, and it is stored in an *R* object named `RecipeMnist`. We can use `Label~.` to determine that $Label$ is the outcome variable, and all other variables are predictor variables because the data frame `DataTrain` contains exclusively outcome and predictor variables. Normalization with `step_normalize()` is unnecessary because the predictor variables are already in the same range (from $0$ for *black* to 255 for *white*). Also, all observations are complete. Therefore, `step_naomit()` is not needed either.
+
+The second step is your task. Please complete the command that defines the *model-design* and store the result in the *R* object `ModelDesignKNN`. Use the model `nearest_neighbor()` from the *R* package `kknn` and remember that the model is a *classification* rather than a *regression* model.
+
+After completing and executing the code block, *R* will print a summary of the *recipe* and the *model-design*.
+
+```{webr}
+#| exercise: ex_2
+#| exercise.setup: ex_all
+RecipeMnist=recipe(Label~., data=DataTrain)
+
+ModelDesignKNN=______(neighbors=5, weight_func="rectangular") |>
+                 set_engine("______") |>
+                 set_mode("______") 
+
+print(ModelDesignKNN)
+```
+
+::: {.hint exercise="ex_2"}
+The model we want to use is called `nearest_neighbor` and it uses the R-package
+`kknn`. 
+
+We use the model for `classification`. 
+:::
+
+::: {.solution exercise="ex_2"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_2
+#| solution: true
+RecipeMnist=recipe(Label~., DataTrain)
+
+ModelDesignKNN=nearest_neighbor(neighbors=5, weight_func="rectangular") |>
+                 set_engine("kknn") |>
+                 set_mode("classification") 
+
+print(ModelDesignKNN)
+```
+:::
+
+```{webr}
+#| exercise: ex_2
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Exercise 3
+
+Now, you can move to the third step to create a fitted *workflow model*. In the code block below, you add the *recipe* (`RecipeMnist`) and the *model-design* (`ModelDesignKNN`) to a workflow, and then you fit the workflow with the training data stored in `DataTrain`. The fitted *workflow model* is then saved in the object `WFModelMnist`. When you print the fitted *workflow model*, *R* will provide information about the *recipe* and the fitted model. This might take a moment. So be a little patient.
+
+```{webr}
+#| exercise: ex_3
+#| exercise.setup: ex_all
+WFMnist=workflow() |> 
+        add_recipe(______) |>
+        add_model(______) |> 
+        fit(______)
+
+WFModelMnist
+```
+
+::: {.hint exercise="ex_3"}
+**Here is a hint:**
+
+The *recipe* (`RecipeMnist`) and the *model-design* (`ModelDesignKNN`) from the previous exercises   have been loaded in the background. They  need to be **added** to the *workflow*.
+
+To **fit the workflow** and make it a *fitted workflow model*, we
+use the `fit()` command. We always use the *training data* to *fit* a model (in this case  `DataTrain`)
+:::
+
+::: {.solution exercise="ex_3"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_3
+#| solution: true
+WFModelMnist=workflow() |> #<1>
+            add_recipe(RecipeMnist) |>
+            add_model(ModelDesignKNN) |> 
+            fit(DataTrain)  
+
+WFModelMnist #<2>
+```
+
+1. This pipe adds the *recipe* and the *model-design* to the *workflow model* and fits it to the *training data*.
+2. Here the fitted workflow is printed out.
+:::
+
+```{webr}
+#| exercise: ex_3
+#| check: true
+gradethis::grade_this_code()
+```
+## Exercise 4
+
+Since `WFModelMnist` is a fitted *workflow model*, you can use it to predict for the images in the testing dataset (`DataTest`) which digit they present. Again, you will use the command `augment()` instead of `predict()`. Consequently, the testing dataset will be *augmented* with a new column `.pred_class` that contains predicted digits for each image. The result will then be saved into the data frame `DataTestWithPred`.
+
+`head(DataTestWithPred |> select(Label, .pred_class, everything())[,1:12])` sorts the column `Label`, `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for Pxlto Pxl are ommitted).
+
+```{webr}
+#| exercise: ex_4
+#| exercise.setup: ex_all
+DataTestWithPred=augment(______, ______)
+head(DataTestWithPred |> select(Label,.pred_class, 
+                                Pix1, Pix2, Pix3, Pix4, Pix5, Pix6,
+                                Pix7, Pix8, Pix9, Pix10))
+```
+
+::: {.hint exercise="ex_4"}
+**Here is a hint:**
+
+The `augment()` command uses the fitted workflow `WFModelMnist` to generate the predictions based on the *testing dataset*. Afterward, the *testing dataset* is *augmented* with a new column `.pred_class` which holds the predictions.
+:::
+
+::: {.solution exercise="ex_4"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_4
+#| solution: true
+DataTestWithPred=augment(WFModelMnist, DataTest) #<1>
+head(DataTestWithPred |> select(Label,.pred_class, 
+                                Pix1, Pix2, Pix3, Pix4, Pix5, Pix6,
+                                Pix7, Pix8, Pix9, Pix10)) #<2>
+```
+
+1.  *Augments* the testing dataset `DataTest` with the predictions. The newly created column with the predictions is called `.pred_class`
+2. Sorts the column `Label` and `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for `Pix9` -- `Pix784` are ommitted).
+:::
+
+```{webr}
+#| exercise: ex_4
+#| check: true
+gradethis::grade_this_code()
+```
+
+
+Looking at the output above and comparing the `Label` column (the true digit of the image) with the column `.pred_class` (the predicted/estimated digit) indicates a very good predictive quality so far.
+
+To see how good the predictive quality is for all observations in the dataset `DataTest`, we have to create a *confusion matrix*.
+
+## Exercise 5
+
+Please complete the command to generate a *confusion matrix* below:
+
+```{webr}
+#| exercise: ex_5
+#| exercise.setup: ex_all
+conf_mat(DataTestWithPred, truth=______, estimate=______)
+```
+
+::: { .hint exercise="ex_5"}
+**Here is a hint:**
+
+To create  the confusion matrix you have to provide the column with the estimate (the predictions) called `pred_class` which will be compared to the digit of the image.
+:::
+
+::: {.solution exercise="ex_5"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_5
+#| solution: true
+conf_mat(DataTestWithPred, truth=Label, estimate=.pred_class)  #<1>
+```
+
+1. Compares the *truth* in the column `Label` to the predictions (`estimate`) in the column `.pred_class` and generates the *confusion matrix*.
+:::
+
+```{webr}
+#| exercise: ex_5
+#| check: true
+gradethis::grade_this_code()
+```
+
+
+The confusion matrix is a little bit more complex here because we have 10 classes. However, the counts for correct predictions are still in the cells on the main diagonal. For example, row three contains counts for cases where $3$ was predicted. Column three contains counts for observations where the `Label` was actually $3$. Consequently, the count in row three and column three shows the count of correct predictions for the digit $3$ (count = $11$).
+
+## Exercise 6
+
+To calculate other metrics for the testing data, we  the `metric_set()` command and require to calculate `accuracy`, `sensitivity`, and `specificity`. The resulting *R* command is saved in the *R* object `MetricsSetMnist`.
+
+Please complete the code in the second line of code. When you execute the `MetricsSetMnist()` command with the correct arguments for `truth` and `estimate`, you get the *accuracy*, *sensitivity*, and *specificity*.
+
+```{webr}
+#| exercise: ex_6
+#| exercise.setup: ex_all
+MetricsSetMnist=metric_set(accuracy, sensitivity, specificity)
+MetricsSetMnist(DataTestWithPred, truth=______, estimate=______)
+```
+
+::: { .hint exercise="ex_6"}
+**Here is a hint:**
+The command `MetricsSetMnist()`  was generated in the first line of code. When using it in the second code line, it requires --- like the confusion matrix command --- three arguments:
+
+1. The data frame that contains the predictions and the true values.
+2. The column name from that dataset containing the true values (`truth`).
+2. TThe column name from  that dataset containing the predictions (`estimate`).
+:::
+
+::: {.solution exercise="ex_6"}
+**Here is the solution:**
+
+```{webr}
+#| exercise: ex_6
+#| solution: true
+MetricsWine=metric_set(accuracy, sensitivity, specificity) #<1>
+MetricsWine(DataTestWithPred, truth=Label, estimate=.pred_class) #<2>
+```
+
+1. Creates a new command that simultaneously calculates *accuracy*, *sensitivity*, and *specificity*.
+2. Uses the custom command to measure *accuracy*, *sensitivity*, and *specificity*.
+:::
+
+```{webr}
+#| exercise: ex_6
+#| check: true
+gradethis::grade_this_code()
+```
+
+The calculated metrics confirm the overall good prediction quality. The accuracy of the model is 78%. This is a good result compared to a simple guess that would generate an accuracy of about 10%. Sensitivity (true positive rate) and specificity (true negative rate) also indicate good predictive quality. Note that these metrics were calculated as averages over all ten digits (indicated by the term *macro* in the printout).
+
+## Visualizing the Incorrect Predicted Images
+
+By executing the codeblock below you can see 8 images at a time that were incorrectly predicted. 
+
+```{webr}
+StartObservation=1 # enter numbers 
+if(StartObservation>27){StartObservation=27}
+DataTestPredFalse = DataTestWithPred |> 
+                    filter(Label != .pred_class)|>
+                    select(Label,.pred_class, starts_with("Pix"))
+DataTrueFalse=DataTestPredFalse |> select(Label, .pred_class)
+DataTrueFalse[StartObservation:(StartObservation+7),]
+DataTestPredFalse = DataTestPredFalse |>
+                    select(-.pred_class)
+FctPlotImages(DataTestPredFalse, StartObservation, 8)
+```

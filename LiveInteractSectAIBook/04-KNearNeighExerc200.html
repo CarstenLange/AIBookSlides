@@ -143,8 +143,19 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6Indl
 </div>
 </div>
 <p><span style="color: red; font-weight: bold;">Your browser is loading R and all needed packages. That can take a while (about 1:00 - 2:00 minutes). Please be patient. You can see the progress in the right lower corner of your browser.</span></p>
+<p><strong>Libraries</strong> already loaded in the background:</p>
+<ul>
+<li><em>tidyverse</em></li>
+<li><em>tidymodels</em></li>
+<li><em>kknn</em></li>
+</ul>
+<p><strong>Data already loaded in the background:</strong></p>
+<ul>
+<li><code>DataWine</code></li>
+<li>Source: “https:///econ.lange-analytics.com/RData/Datasets/WineData.csv”</li>
+</ul>
 <p>In what follows, you will develop your own <em>k-Nearest Neighbors</em> model to predict the color of wines based on chemical properties. In contrast to the previous section, you will extend the analysis to use all chemical properties available in the wine dataset.</p>
-<p>Below you can see all variables available in the wine dataset. The first variable <span class="math inline">\(WineColor\)</span> is the outcome variable, followed by the predictor variables that indicate the chemical properties of a wine. The variable <span class="math inline">\(Quality\)</span> which reflect how consumers rated the quality of the wines and which is in the original dataset, is omitted. This variable is not a chemical property and is likely irrelevant for predicting a wine’s color.</p>
+<p>Below you can see all variables available in the wine dataset. The first variable <span class="math inline">\(WineColor\)</span> is the outcome variable, followed by the predictor variables that indicate the chemical properties of a wine. The variable <span class="math inline">\(Quality\)</span> which reflect how consumers rated the quality of the wines and which is in the original dataset, is omitted. This variable is not a chemical property and is likely irrelevant for predicting a wine’s color:</p>
 <div class="cell">
 <div>
 <div id="webr-2" class="exercise-cell">
@@ -168,8 +179,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoi
 <section id="exercise-1" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
 <p>The code block below uses the already loaded wine dataset (<code>DataWine</code>). The variable <span class="math inline">\(WineColor\)</span> was coded as a <code>factor</code> data type as required by the <em>k-Nearest Neighbors</em> algorithm.</p>
-<p>After the random number generator has been initialized, the data are split into training and testing data (see Section @ref(KNearNeigh-Data) for details).</p>
-<p><strong>Now it is your turn:</strong> Please complete the two commands that extract training and testing data from the split to assign them to the data frames <code>DataTrain</code> and <code>DataTest</code>.</p>
+<p><strong>Now it is your turn:</strong> After the random number generator has been initialized. Please complete the two commands that extract training and testing data from the split to assign them to the data frames <code>DataTrain</code> and <code>DataTest</code>.</p>
 <div class="cell" data-exercise="ex_1" data-exercise.setup="ex_all">
 <div>
 <div id="webr-4" class="exercise-cell">
@@ -265,18 +275,30 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMiIsImV4ZXJjaXNl
 <p><strong>Here is the solution:</strong></p>
 <div class="cell" data-exercise="ex_2" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="ex_2">
-<code id="interpolate-13" class="solution-code d-none">WFModelWine=workflow() |&gt; 
+<code id="interpolate-13" class="solution-code d-none">WFModelWine=workflow() |&gt; #&lt;1&gt;
             add_recipe(RecipeWine) |&gt;
             add_model(ModelDesignKNN) |&gt; 
-            fit(DataTrain)
+            fit(DataTrain)  
 
-WFModelWine</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-14-1"><a href="#interpolate-14-1" aria-hidden="true" tabindex="-1"></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+WFModelWine #&lt;2&gt;</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-14"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="interpolate-14" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-14-1" class="code-annotation-target"><a href="#interpolate-14-1" aria-hidden="true" tabindex="-1"></a>WFModelWine<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span></span>
 <span id="interpolate-14-2"><a href="#interpolate-14-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_recipe</span>(RecipeWine) <span class="sc">|&gt;</span></span>
 <span id="interpolate-14-3"><a href="#interpolate-14-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">add_model</span>(ModelDesignKNN) <span class="sc">|&gt;</span> </span>
-<span id="interpolate-14-4"><a href="#interpolate-14-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">fit</span>(DataTrain)</span>
+<span id="interpolate-14-4"><a href="#interpolate-14-4" aria-hidden="true" tabindex="-1"></a>            <span class="fu">fit</span>(DataTrain)  </span>
 <span id="interpolate-14-5"><a href="#interpolate-14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="interpolate-14-6"><a href="#interpolate-14-6" aria-hidden="true" tabindex="-1"></a>WFModelWine</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<a class="code-annotation-anchor" data-target-cell="interpolate-14" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="interpolate-14-6" class="code-annotation-target"><a href="#interpolate-14-6" aria-hidden="true" tabindex="-1"></a>WFModelWine</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="interpolate-14" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="interpolate-14" data-code-lines="1" data-code-annotation="1">This pipe adds the <em>recipe</em> and the <em>model-design</em> to the <em>workflow model</em> and fits it to the <em>training data</em>.</span>
+</dd>
+<dt data-target-cell="interpolate-14" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="interpolate-14" data-code-lines="6" data-code-annotation="2">Here the fitted workflow is printed out.</span>
+</dd>
+</dl>
 </div>
 </div>
 </div>
@@ -288,31 +310,45 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </section>
 <section id="exercise-3" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-3">Exercise 3</h2>
-<p>Because the workflow model is fitted to the training data, we can use it for predictions. Instead of using the <code>predict()</code> command, we use the more comprehensive <code>augment()</code> command, which predicts <span class="math inline">\(WineColor\)</span> based on the predictor variables from the testing dataset and then adds the predictions as a new variable named <span class="math inline">\(.pred\_class\)</span> to <code>DataTest</code>. The complete result is saved in the <em>R</em> object <code>DataTestWithPred</code>.</p>
-<p>Since the <em>R</em> object <code>DataTestWithPred</code> contains the predictions (<code>estimate</code>) for the wine color and also the <code>truth</code>, stored in variable <span class="math inline">\(WineColor\)</span>, we can use it as the data argument for metrics commands. An example is the <code>conf_mat()</code> command that generates a confusion matrix. The related code is already prepared. You just have to execute it.</p>
+<p>Because the workflow model is now fitted to the training data, we can use the <em>fitted workflow model</em> (<code>WFModelWine</code>) for predictions.</p>
+<p>Instead of using the <code>predict()</code> command, we use the more comprehensive <code>augment()</code> command, which predicts <span class="math inline">\(WineColor\)</span> based on the predictor variables from the <em>testing dataset</em> and then adds the predictions as a new variable named <span class="math inline">\(.pred\_class\)</span> to the <em>testing dataset</em> (<code>DataTest</code>). The complete result is saved in the <em>R</em> object <code>DataTestWithPred</code>.</p>
+<p>After the <em>R</em> object <code>DataTestWithPred</code> is created, it contains the predictions (<code>estimate</code>) for the wine color and also the true wine color (<code>truth</code>). The latter is stored in variable <span class="math inline">\(WineColor\)</span>, we can use it as the data argument for metrics commands. An example is the <code>conf_mat()</code> command that generates a confusion matrix.</p>
+<p>Please complete the code below accordingly to generate the prediction data frame ‘DataTestWithPred’ and the <em>confusion matrix</em>:</p>
 <div class="cell" data-exercise="ex_3" data-exercise.setup="ex_all">
 <div>
 <div id="webr-16" class="exercise-cell">
 
 </div>
 <script type="webr-16-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMyIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJEYXRhVGVzdFdpdGhQcmVkPWF1Z21lbnQoX19fX19fLCBEYXRhVGVzdCkgICBfX19fX19cbmNvbmZfbWF0KERhdGFUZXN0V2l0aFByZWQsIHRydXRoPVdpbmVDb2xvciwgZXN0aW1hdGU9X19fX19fKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMyIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJEYXRhVGVzdFdpdGhQcmVkPWF1Z21lbnQoX19fX19fLCBEYXRhVGVzdClcbmNvbmZfbWF0KERhdGFUZXN0V2l0aFByZWQsIHRydXRoPVdpbmVDb2xvciwgZXN0aW1hdGU9X19fX19fKSJ9
 </script>
 </div>
 </div>
 <div class="hint webr-ojs-exercise exercise-hint d-none" data-exercise="ex_3">
 <p><strong>Here is a hint:</strong></p>
-<p>The <code>augment()</code> command generates the predictions based on the <em>testing dataset</em> and <em>augments</em> the <em>testing dataset</em> with a new column <code>.pred_class</code> which hold the predictions.</p>
-<p>To create the confusion matrix you have to provide the column with the predictions <code>.pred_class</code> which will e compared to the true wine color (<code>Winecolor1</code>)</p>
+<p>The <code>augment()</code> command uses the fitted workflow <code>WFModelWine</code> generates the predictions based on the <em>testing dataset</em> and <em>augments</em> the <em>testing dataset</em> with a new column <code>.pred_class</code> which hold the predictions.</p>
+<p>To create the confusion matrix you have to provide the column with the estimate (the predictions) called <code>pred_class</code> which will be compared to the true wine color (<code>WineColor</code>)</p>
 </div>
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="ex_3">
 <p><strong>Here is the solution:</strong></p>
 <div class="cell" data-exercise="ex_3" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="ex_3">
-<code id="interpolate-18" class="solution-code d-none">DataTestWithPred=augment(WFModelWine, DataTest)   
-conf_mat(DataTestWithPred, truth=WineColor, estimate=.pred_class)</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-19-1"><a href="#interpolate-19-1" aria-hidden="true" tabindex="-1"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest)   </span>
-<span id="interpolate-19-2"><a href="#interpolate-19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>WineColor, <span class="at">estimate=</span>.pred_class)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-18" class="solution-code d-none">DataTestWithPred=augment(WFModelWine, DataTest)   #&lt;1&gt;
+conf_mat(DataTestWithPred, truth=WineColor, estimate=.pred_class) #&lt;2&gt;</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-19"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="interpolate-19" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-19-1" class="code-annotation-target"><a href="#interpolate-19-1" aria-hidden="true" tabindex="-1"></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelWine, DataTest)</span>
+<a class="code-annotation-anchor" data-target-cell="interpolate-19" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="interpolate-19-2" class="code-annotation-target"><a href="#interpolate-19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth=</span>WineColor, <span class="at">estimate=</span>.pred_class)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell-annotation">
+<dl class="code-annotation-container-grid">
+<dt data-target-cell="interpolate-19" data-target-annotation="1">1</dt>
+<dd>
+<span data-code-cell="interpolate-19" data-code-lines="1" data-code-annotation="1">Augments the training dataset with the predictions. The related column is called <code>.pred_class</code></span>
+</dd>
+<dt data-target-cell="interpolate-19" data-target-annotation="2">2</dt>
+<dd>
+<span data-code-cell="interpolate-19" data-code-lines="2" data-code-annotation="2">Compares the <em>truth</em> in the column <code>WineColor</code> to the predictions in the column <code>.pred_class</code> and generates the <em>confusion matrix</em>.</span>
+</dd>
+</dl>
 </div>
 </div>
 </div>
@@ -324,11 +360,11 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </section>
 <section id="exercise-4" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-4">Exercise 4</h2>
-<p>A first glance at the diagonal elements of the confusion matrix above already indicates an improvement over the model with two predictor variables.</p>
+<p>A first glance at the diagonal elements of the confusion matrix above already indicates a very good result.</p>
 <p>The <code>tidymodels</code> package can help you to calculate metrics such as <em>accuracy</em>, <em>sensitivity</em>, and <em>specificity</em>. Instead of calculating these metrics separately you can streamline the process by creating a <em>metric set</em> first.</p>
 <p>In the code block below, the command <code>metric_set()</code> creates a new command that we name <code>MetricsWine</code> (you can choose a different name if you like).</p>
 <p>The newly created command <code>MetricWine()</code> can be used similarly to the <code>conf_mat()</code> command, but instead of creating a confusion matrix, it creates all the metrics previously specified with <code>metric_set()</code> simultaneously. This saves you some typing effort.</p>
-<p>Give it a try with the code block below (note, the data frame <code>DataTest</code> and the fitted <em>workflow model</em> <code>WFModelWine</code> have already been loaded in the background):</p>
+<p>Give it a try with the code block below:</p>
 <div class="cell" data-exercise="ex_4" data-exercise.setup="ex_all">
 <div>
 <div id="webr-21" class="exercise-cell">
@@ -340,11 +376,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfNCIsImV4ZXJjaXNl
 </div>
 </div>
 <div class="hint webr-ojs-exercise exercise-hint d-none" data-exercise="ex_4">
-<p><strong>Here is a hint:</strong> The command ‘MetricsWine()’ that was generated in the first line of code requires like the confusion matrix command three arguments:</p>
+<p><strong>Here is a hint:</strong> The command <code>MetricsWine()</code> was generated in the first line of code. It requires — like confusion matrix command — three arguments:</p>
 <ol type="1">
-<li>The data frame that contains the predictions as well ea the true values.</li>
-<li>The column in that dataset that contains the true values.</li>
-<li>The column in that dataset that contains the true predictions.</li>
+<li>The data frame that contains the predictions and the true values.</li>
+<li>The column name from that dataset containing the true values (<code>truth</code>).</li>
+<li>TThe column name from that dataset containing the predictions (<code>estimate</code>).</li>
 </ol>
 </div>
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="ex_4">
@@ -370,13 +406,13 @@ MetricsWine(DataTestWithPred, truth=WineColor, estimate=.pred_class) #&lt;2&gt;<
 </div>
 </div>
 </div>
-<p>As the confusion matrix and the three metrics above confirm, we reached an almost perfect prediction quality.</p>
-<p>Try changing the arguments in the <code>metric_set()</code> command to different metrics and see what happens.</p>
 <div class="cell" data-exercise="ex_4" data-check="true">
 <script type="exercise-check-ex_4-contents">
 eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4XzQifSwiY29kZSI6ImdyYWRldGhpczo6Z3JhZGVfdGhpc19jb2RlKCkifQ==
 </script>
 </div>
+<p>As the confusion matrix and the three metrics above confirm, we reached an almost perfect prediction quality.</p>
+<p>Try changing the arguments in the <code>metric_set()</code> command to different metrics and see what happens.</p>
 <script type="webr-data">
 eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsImRwbHlyIiwicnNhbXBsZSIsImphbml0b3IiLCJyZWNpcGVzIiwieWFyZHN0aWNrIiwicGFyc25pcCIsIndvcmtmbG93cyIsImtrbm4iXSwicmVwb3MiOltdfSwicmVuZGVyX2RmIjoiZGVmYXVsdCJ9
 </script>
