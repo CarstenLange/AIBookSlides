@@ -1,0 +1,183 @@
+---
+title: "Measure of the Center & Quantiles" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon, ../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+webr:
+  packages:
+    - dplyr
+    - rio
+  resources:
+    - data
+    
+
+   
+
+engine: knitr    
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Population vs. Sample {.smaller}
+
+### Population 
+
+What we are interested in but cannot observe (e.g., mean GPA of all Econ students or the *proportion of female students*)
+
+
+### Sample
+
+Subset of the population (often small). We use its **Statistics** such as mean or proportion to estimate population parameters (e.g. (e.g., use mean GPA of EC 3322 students to estimate mean GPA of all Econ students or the *proportion of female students*))  
+
+## Population 
+
+What we are interested in but cannot observe (e.g., mean GPA of all Econ students)
+
+- **Parameters** are **unknown** properties of the *population (e.g., the *mean GPA* of all Cal Poly Econ students or the *proportion of female students*) 
+
+- **Parameters** are **fixed** properties (e.g., there is only **one** *mean GPA* of all Cal Poly Econ students or only **one** *proportion of female students*) 
+
+## Sample(s) 
+
+Subset(s) (most times only one) of the population (often small). 
+
+- **Sample Statistics:** Can be measure and are therefore **known**  (e.g., *mean GPA* of EC 3322 course Cal Poly students or *proportion of female students* in EC 3322). **Sample Statistics are know.**
+
+- If we (would) take another sample (e.g. EC 4990), we (would) get **different Sample Statistics** (e.g., different *mean GPA* or *female proportion*). Therefore, potentially **Sample Statistics are variable** (e.g., the *mean GPA* and the *female proportion* just by chance would be different for EC 3322 and EC 4990. Even when the samples are unbiased.
+
+- Most of the times we take only one sample (e.g., EC 3322) but we are aware that the **statistics would be different for another sample** (e.g., EC 4990 even if the samples were unbiased).
+
+
+## Analysis Example
+
+1. Take sample (EC3322) 
+2. Measure mean GPA 
+3. Use mean GPA from sample (EC 3322) to predict population mean GPA (mean for all Cal Poly Econ students' GPA) 
+4. Asses quality of prediction (e.g., the larger the sample, the better the prediction quality) 
+
+## Example: Sample EC 3322 to Learn about All Cal Poly Econ Students 
+
+[Click to enter a **Faked First Name** and   your **current GPA**](https://forms.gle/vqjM38nQMVdEXeqs9){target="_blank"}
+
+## Sample Data Frame 
+
+Instructor will have data in clipboard. Code copies clipboard to `DataGPA`
+
+```{webr}
+FromGoogle="Copy Data from Google Here"
+DataGPA <- read.delim(text=FromGoogle, sep="\t", header=TRUE) 
+colnames(DataGPA)=c("Name", "GPA")
+DataGPA= DataGPA |> 
+           arrange(GPA) |> 
+           mutate(Position=1:nrow(DataGPA)) |> 
+           select(Position, everything())
+cat("Sample Mean GPA",mean(DataGPA$GPA))
+```
+
+## Mean is not Always Good to Measure Center
+
+[Net Worth from Fidelity](https://www.fidelity.com/learning-center/smart-money/average-net-worth-by-age){target="_blank"}
+
+
+##
+<section data-background-image="graphics/OCHouses1.png" data-background-size="contain">
+  </section>
+
+##
+<section data-background-image="graphics/OCHouses2.png" data-background-size="contain">
+  </section>
+
+##
+<section data-background-image="graphics/OCHouses3.png" data-background-size="contain">
+  </section>
+
+## Mean and Median GPA for EC3322 Sample {.smaller}
+
+```{webr}
+cat("The mean GPA for all EC 3322 students is:", mean(DataGPA$GPA))
+cat("The median GPA for all EC 3322 students is:", median(DataGPA$GPA))
+```
+
+Now you can see where you stand among EC 3322 students, **above or below the center**.
+
+## Quartiles  {.smaller}
+
+What if you want it to be more precise:
+
+- Lowest quarter
+- Quarter just below middle
+- Quarter just above middle
+- Highest quarter
+
+Mark the cutoffs for the quarters approximately (on the whiteboard)
+```{webr}
+print(DataGPA)
+```
+
+There is often **not a precise way** to mark the cutoffs. 
+
+Therefore, we need to **agree on a standard** to find the cutoffs (note, there are different standards available)
+
+We use the one from the textbook:
+
+[Quartile Calculations](http://ec-clange-web.cpp.edu/quartiles/default.aspx
+){target="_blank"}
+
+Try it on `DataGPA`
+
+
+## Percentiles
+
+What if we want it even more precise like lowest x% of wealth.
+
+
+## 
+<section data-background-image="graphics/Percentile1.png" data-background-size="contain">
+  </section>
+
+## 
+<section data-background-image="graphics/Percentile2.png" data-background-size="contain">
+  </section>
+
+## Here is Another Dataset with Cholestrol Levels for Women {.smaller}
+
+Source: https://s3.amazonaws.com/assets.datacamp.com/blog_assets/chol.txt
+
+
+
+```{webr}
+DataChol=import("data/DataChol.xlsx") |> 
+         arrange(Cholesterol) |> 
+         mutate(Location=1:200) |> 
+         select(Location, everything())
+print(DataChol)
+cat("Mean Cholesterol", mean(DataChol$Cholesterol))
+cat("Median Cholesterol:)", median(DataChol$Cholesterol))
+print("Quartiles Cholesterol:")
+quantile(DataChol$Cholesterol, probs = c(0.25,0.5,0.75), type=5)
+```
+
+## Dataset with Cholestrol Levels for Women --- Percentiles{.smaller}
+
+Source: https://s3.amazonaws.com/assets.datacamp.com/blog_assets/chol.txt
+
+
+```{webr}
+quantile(DataChol$Cholesterol, probs=seq(0.05,1,0.05), type=5)
+```
