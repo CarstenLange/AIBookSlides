@@ -20,48 +20,49 @@ format:
 webr:
   packages:
     - tidyverse
+    - ggplot2
     - rio
     - palmerpenguins
     - TeachHist
 
 engine: knitr 
+
+execute:
+  daemon: false
+  warning: false
+  message: false
 ---
 
 {{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ## Generating Data
 
+Below are  observation from an AB-Test. A companies web users were randomly routed to 
+
+1) the traditional webpage (`Control`) 
+2) An audio enhanced webpage (`Audio`) 
+3) A video  enhanced webpage (`Video`).
+
+For several days $Conversions$, $Purchases$ and $Revenue$ were measured for ech of the three *Treatments* (`Control`, `Audio`), and `Video`.
+
+The data (artificially created from the [Palmer Penguin Dataset](https://allisonhorst.github.io/palmerpenguins/articles/intro.html){target="_blank"}) are shown below:
+
 ```{webr}
+#| autorun: true
 #| echo: false
 
-library(palmerpenguins)
-
 DataWebPurch=penguins |> 
        select(Conversions=flipper_length_mm, Treatment=species,
               Purchases=bill_depth_mm, 
               Revenue=bill_length_mm) |> 
               drop_na() |> 
               mutate(Purchases=round(Purchases),
-                     Revenue=Revenue*100)
-              
-levels(DataWebPurch$Treatment)=c("Control", "Audio", "Video")
-```
-
-```{webr}
-library(tidyverse)
-library(palmerpenguins)
-
-DataWebPurch=penguins |> 
-       select(Conversions=flipper_length_mm, Treatment=species,
-              Purchases=bill_depth_mm, 
-              Revenue=bill_length_mm) |> 
-              drop_na() |> 
-              mutate(Purchases=round(Purchases),
-                     Revenue=Revenue*100)
+                     Revenue=Revenue*100) |> 
+              select(Treatment, everything())
               
 levels(DataWebPurch$Treatment)=c("Control", "Audio", "Video")
 set.seed(111)
-kable(slice_sample(DataWebPurch, n=6))
+kable(slice_sample(DataWebPurch, n=600))
 ```
 
 ## Grammar of Graphics
@@ -139,7 +140,7 @@ ggplot(DataWebPurch, mapping = aes(x=Purchases, y=Revenue))+
 
 ```{webr}
 ggplot(DataWebPurch, mapping = aes(x=Purchases, y=Revenue))+
-  geom_point(color="red", size=3, shape = "*")
+  geom_point(color="red", size=5, shape = "*")
 ```
 
 
@@ -206,7 +207,7 @@ DataMeans=DataWebPurch %>%
     summarise(RevMean = mean(Revenue),
               PurchMean=mean(Purchases))
 
-ggplot(DataWebPurch, mapping=aes(x=Purchases,                                     y=Revenue)) +
+ggplot(DataWebPurch, mapping=aes(x=Purchases, y=Revenue)) +
 geom_point(mapping=aes(color = Treatment)) +
 geom_smooth(method = "lm", se = FALSE, color="black") +
 geom_smooth(aes(color = Treatment), method = "lm", se = FALSE)+
@@ -218,7 +219,7 @@ geom_smooth(aes(color = Treatment), method = "lm", se = FALSE)+
   geom_hline(yintercept = DataMeans$RevMean[3],              color="blue")
 ```
 
-## Step 3: Scaling `x`-axis and `y`-axis 
+## Step 3: Scaling `x`-axis and `y`-axis (see next slide)
 
 ```{webr}
 #| warning: false
@@ -257,7 +258,7 @@ scale_y_continuous(limits = c(3000,6000), breaks = seq(3000,6000,500),
                    minor_breaks = seq(3000,6000,250) )+
 labs(
   title = "Differnt Web Designs",
-  subtitle = "Daily Data, 2024",
+  subtitle = "Daily Data, 2026",
   caption = "Palmer Penguins",
   x = "Purchases per Day",
   y = "Revenue in US$"
@@ -312,7 +313,9 @@ ggplot(DataWebPurchMeans, aes(x = Treatment, y = MeanRevenue, fill = Treatment))
 #| warning: false
 #| message: false
 ggplot(DataWebPurch, aes(x = Revenue)) +
-  geom_histogram(binwidth = 300, fill="red", color="black")
+  geom_histogram(binwidth = 300, fill="red", color="black")+
+  scale_x_continuous(limits = c(3000,6300), breaks = seq(3000,6000,300), 
+                     minor_breaks = seq(3000,6300,100) )
 ```
 
 ## Time Series for Apple Stock
@@ -335,53 +338,71 @@ ggplot(DataStockTimeSeries, mapping=aes(x=EndOfYear, y=Price))+
 
 Thomas Lin Pedersen
 
-ggplot workshop part 1 (2,5 hours)
-
-(https://www.youtube.com/watch?v=h29g21z0a68) 
+[ggplot workshop part 1 (2,5 hours)](https://www.youtube.com/watch?v=h29g21z0a68){target="_blank"}
 
 
 
 
-## Histogram-Count with `TeachHistCount`
-
-```{webr}
-TeachHistCounts(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
-```
-
-## Histogram - Relative Frequecies with `TeachHistRelFreq`
+## Histogram-Count with `TeachHistCount`  {.smaller}
+### (ggplot is under the hood)
 
 ```{webr}
-TeachHistRelFreq(PlotData=DataWebPurch["Revenue"],  VLine1=4938, PrintZAxis = FALSE)
+#| autorun: true
+#| echo: false
+cat("Mean Revenue:", mean(DataWebPurch$Revenue), "StdDev:", sd(DataWebPurch$Revenue),"Total Count:", nrow(DataWebPurch))
 ```
-
-## Histogram - Densities with `TeachHistDens`
-
-```{webr}
-TeachHistDens(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
-```
-
-## Histogram - Densities with TeachHistDens
-
-```{webr}
-TeachHistDens(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
-```
-
-```{webr}
-MeanRev=mean(DataWebPurch$Revenue)
-StdRev=sd(DataWebPurch$Revenue)
-cat("Mean:", MeanRev)
-cat("Stand. Dev.:", StdRev)
-cat("Prob. Rev.<4938: ", pnorm(4938, MeanRev, StdRev))
-```
-
-## Histograms: Easier Way (ggplot is under the hood)
-
 
 ```{webr}
 #| warning: false
 #| message: false
-library(TeachHist)
-library(plotly)
-PlotHistogram=TeachHistCounts(PlotData=DataWebPurch[4])
-ggplotly(PlotHistogram)
+TeachHistCounts(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
 ```
+
+## Histogram - Relative Frequencies with `TeachHistRelFreq` {.smaller}
+```{webr}
+#| autorun: true
+#| echo: false
+cat("Mean Revenue:", mean(DataWebPurch$Revenue), "StdDev:", sd(DataWebPurch$Revenue),"Total Count:", nrow(DataWebPurch))
+```
+
+$RelFreq=\frac{Count}{TotalCount}$. Example (left of mean): $\frac{98}{342}=0.28655$
+
+```{webr}
+#| warning: false
+#| message: false
+TeachHistRelFreq(PlotData=DataWebPurch["Revenue"],  VLine1=4938, PrintZAxis = FALSE)
+```
+
+## Histogram - Densities with `TeachHistDens`  {.smaller}
+```{webr}
+#| autorun: true
+#| echo: false
+cat("Mean Revenue:", mean(DataWebPurch$Revenue), "StdDev:", sd(DataWebPurch$Revenue),"Total Count:", nrow(DataWebPurch))
+```
+$Density=\frac{RelFreq}{StdDev}$. Example (left of mean): $\frac{0.28655}{545.9584}=0.0005248568$
+
+**Density is not easy to predict**, but **RelFreq** is now depicted as the **area of each bar** (proof next slide)
+
+```{webr}
+#| warning: false
+#| message: false
+TeachHistDens(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
+```
+
+## Histogram - Densities with TeachHistDens
+$Density=\frac{RelFreq}{StdDev}$. Example (left of mean): $\frac{0.28655}{545.9584}=0.0005248568$
+$$AreaOfBar=StdDev\cdot \frac{RelFreq}{StdDev}=RelFreq$$
+
+
+**Example (left of mean):** $=0.0005248568\cdot 545.9584 = 0.2865$
+
+```{webr}
+#| warning: false
+#| message: false
+library(plotly)
+ggplotly(
+TeachHistDens(PlotData=DataWebPurch["Revenue"], VLine1=4938, PrintZAxis = FALSE)
+  )
+```
+
+
