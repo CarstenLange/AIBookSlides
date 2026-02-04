@@ -34,41 +34,76 @@ engine: knitr
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
+
+
 ## Population vs. Sample {.smaller}
 
 ### Population 
 
-What we are interested in but cannot observe (e.g., mean GPA of all Econ students or the *proportion of female students*)
+```{webr}
+#| include: false
+DataChol=import("data/DataChol.xlsx") |> 
+         arrange(Cholesterol) |> 
+         mutate(Location=1:200) |> 
+         select(Location, everything())
+DataGPA=data.frame(
+  Name = c(
+    "Alex", "Brooke", "Chris", "Diana", "Ethan",
+    "Fiona", "Grace", "Henry", "Isabella", "Jack",
+    "Kara", "Liam", "Maya", "Noah", "Olivia",
+    "Paul", "Quinn", "Riley", "Sophia"
+  ),
+  GPA = c(
+    3.5, 3.8, 2.9, 3.2, 3.6,
+    3.9, 3.1, 2.7, 3.7, 3.0,
+    3.4, 3.8, 2.0, 2.8, 3.9,
+    3.2, 2.3, 3.1, 3.7
+  )
+)
+DataGPA = DataGPA |> 
+          arrange(GPA) |> 
+          mutate(Position=1:nrow(DataGPA)) |> 
+          select(Position, everything())
+```
+
+The group and its properties we are interested in but cannot observe. Examples: 
+ 
+- *mean GPA* of **all** Econ students or 
+- *proportion* of female Econ students in **all** Econ students)
 
 
-### Sample
+### Sample {.smaller}
 
-Subset of the population (often small). We use its **Statistics** such as mean or proportion to estimate population parameters (e.g. (e.g., use mean GPA of EC 3322 students to estimate mean GPA of all Econ students or the *proportion of female students*))  
+Subset of the population (often small). We use its **Statistics** such as *mean* or *proportion* to estimate population parameters. Examples:
 
-## Population 
+- using *mean GPA* of **EC 3322 course**  to estimate *mean GPA* of **all** Econ students 
+-  using *female proportion* of **EC 3322 course**  to estimate *female proportion* of **all** Econ students 
+  
 
-What we are interested in but cannot observe (e.g., mean GPA of all Econ students)
+## Population {.smaller}
 
-- **Parameters** are **unknown** properties of the *population (e.g., the *mean GPA* of all Cal Poly Econ students or the *proportion of female students*) 
+What we are interested in but cannot observe (e.g., all Econ students)
 
-- **Parameters** are **fixed** properties (e.g., there is only **one** *mean GPA* of all Cal Poly Econ students or only **one** *proportion of female students*) 
+- **Parameters** are properties of the *population* and are **unknown**  (e.g., the *mean GPA* of all Cal Poly Econ students is unknown to us) 
 
-## Sample(s) 
+- **Parameters** are **fixed** properties (e.g., there is only **one** *mean GPA* of all Cal Poly Econ students*) 
 
-Subset(s) (most times only one) of the population (often small). 
+## Sample(s) {.smaller}
 
-- **Sample Statistics:** Can be measure and are therefore **known**  (e.g., *mean GPA* of EC 3322 course Cal Poly students or *proportion of female students* in EC 3322). **Sample Statistics are know.**
+Subset(s) (most times only one sample) of the population. 
 
-- If we (would) take another sample (e.g. EC 4990), we (would) get **different Sample Statistics** (e.g., different *mean GPA* or *female proportion*). Therefore, potentially **Sample Statistics are variable** (e.g., the *mean GPA* and the *female proportion* just by chance would be different for EC 3322 and EC 4990. Even when the samples are unbiased.
+- **Sample Statistics:** are properties of the *sample* and can be measured.  *Sample Statistics* are therefore **known**  (e.g., *mean GPA* of EC 3322 course Cal Poly students is known). **Sample Statistics are know.**
 
-- Most of the times we take only one sample (e.g., EC 3322) but we are aware that the **statistics would be different for another sample** (e.g., EC 4990 even if the samples were unbiased).
+- If we (would) take another sample (e.g. EC 4990), we (would) get **different Sample Statistics** (e.g., different *mean GPA*). Therefore, **Sample Statistics are variable** (depending on which sample we take) Example: the *mean GPA*  just by chance would be different for EC 3322 and EC 4990. Even when the samples are unbiased.
+
+- Most of the times we take only one sample (e.g., EC 3322) but we are aware that the **statistics would be different for another sample** (e.g., EC 4990).
 
 
-## Analysis Example
+## Analysis Example {.smaller}
 
 1. Take sample (EC3322) 
-2. Measure mean GPA 
-3. Use mean GPA from sample (EC 3322) to predict population mean GPA (mean for all Cal Poly Econ students' GPA) 
+2. Measure *mean GPA* 
+3. Use *mean GPA* from sample (EC 3322) to predict population* mean GPA* (mean for **all** Cal Poly Econ students' GPA) 
 4. Asses quality of prediction (e.g., the larger the sample, the better the prediction quality) 
 
 ## Example: Sample EC 3322 to Learn about All Cal Poly Econ Students 
@@ -81,12 +116,16 @@ Instructor will have data in clipboard. Code copies clipboard to `DataGPA`
 
 ```{webr}
 FromGoogle="Copy Data from Google Here"
+if (nchar(FromGoogle)>262){
 DataGPA <- read.delim(text=FromGoogle, sep="\t", header=TRUE) 
 colnames(DataGPA)=c("Name", "GPA")
+}
+
 DataGPA= DataGPA |> 
            arrange(GPA) |> 
            mutate(Position=1:nrow(DataGPA)) |> 
            select(Position, everything())
+print(DataGPA)
 cat("Sample Mean GPA",mean(DataGPA$GPA))
 ```
 
@@ -132,17 +171,41 @@ print(DataGPA)
 
 There is often **not a precise way** to mark the cutoffs. 
 
-Therefore, we need to **agree on a standard** to find the cutoffs (note, there are different standards available)
+## Interactive Exercise to find quartiles
 
-We use the one from the textbook:
+Because there is **no a precise way** to mark the cutoffs, we need to **agree on a standard** to find the cutoffs (note, there are different standards available)
+
+**We use the one from the textbook. Try the interactive exercise below:**
 
 [Quartile Calculations](http://ec-clange-web.cpp.edu/quartiles/default.aspx
 ){target="_blank"}
 
-Try it on `DataGPA`
+## Quartiles  from the GPA Data {.smaller}
 
+Try to find the quartiles on the `DataGPA` datasets. Write down your results and than execute the code below:
 
-## Percentiles
+::: {.columns}
+
+::: {.column width="20%"}
+```{webr}
+#| echo: false
+#| autorun: true
+DataGPA
+```
+:::
+
+::: {.column width="80%"}
+```{webr}
+Percentiles=quantile(DataGPA$GPA, probs=c(0.25,0.5,0.75), type=5)
+# next two lines only for nicer output
+data.frame(quantile = names(Percentiles), 
+           value = unname(Percentiles)) 
+```
+:::
+
+:::
+
+## Percentiles {.smaller}
 
 What if we want it even more precise like lowest x% of wealth.
 
@@ -155,29 +218,81 @@ What if we want it even more precise like lowest x% of wealth.
 <section data-background-image="graphics/Percentile2.png" data-background-size="contain">
   </section>
 
-## Here is Another Dataset with Cholestrol Levels for Women {.smaller}
+## Dataset with Cholesterol Levels for Women as R Object {.smaller}
+### Quartiles
 
+`DataChol` was loaded already in the background  
 Source: https://s3.amazonaws.com/assets.datacamp.com/blog_assets/chol.txt
 
+::: {.columns}
 
+::: {.column width="37%"}
+
+**Data:**
 
 ```{webr}
-DataChol=import("data/DataChol.xlsx") |> 
-         arrange(Cholesterol) |> 
-         mutate(Location=1:200) |> 
-         select(Location, everything())
 print(DataChol)
-cat("Mean Cholesterol", mean(DataChol$Cholesterol))
-cat("Median Cholesterol:)", median(DataChol$Cholesterol))
-print("Quartiles Cholesterol:")
-quantile(DataChol$Cholesterol, probs = c(0.25,0.5,0.75), type=5)
 ```
 
-## Dataset with Cholestrol Levels for Women --- Percentiles{.smaller}
+:::
 
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="53%"}
+
+**Quartiles Cholesterol:**
+
+``` {webr}
+quantile(DataChol$Cholesterol,
+         probs = c(0.25, 0.5, 0.75),
+         type = 5)
+```
+ Try to verify results manually.
+
+:::
+
+:::
+
+
+## Dataset with Cholesterol Levels for Women as R Object {.smaller}
+### Quartiles
+
+`DataChol` was loaded already in the background  
 Source: https://s3.amazonaws.com/assets.datacamp.com/blog_assets/chol.txt
 
+::: {.columns}
+
+::: {.column width="37%"}
+
+**Data:**
 
 ```{webr}
-quantile(DataChol$Cholesterol, probs=seq(0.05,1,0.05), type=5)
+print(DataChol)
 ```
+
+:::
+
+
+::: {.column width="10%"}
+
+:::
+
+::: {.column width="53%"}
+
+**Percentiles Cholesterol:**
+
+``` {webr}
+Percentiles=quantile(DataChol$Cholesterol, 
+         probs=seq(0.01,1,0.01), 
+         type=5)
+data.frame(quantile = names(Percentiles), 
+           value = unname(Percentiles))
+```
+ Try to verify results manually.
+
+:::
+
+:::
