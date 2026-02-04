@@ -11,7 +11,7 @@ execute:
 
 format: 
   live-revealjs:
-    theme: [moon, ../CustomCL.scss]
+    theme: [moon, ../../CustomCL.scss]
     warning: false
     controls: true
     chalkboard:
@@ -32,7 +32,7 @@ webr:
 engine: knitr    
 ---
 
-{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
 
 
 
