@@ -15,6 +15,7 @@ format:
 
 ```{r}
 #| echo: false
+library(tidyverse)
 library(tidymodels)
 library(rio)
 library(kableExtra)
@@ -48,7 +49,7 @@ library(janitor)
 
 ```{r}
 #| code-fold: true
-DataExamp=tibble(t=c(0:3), X=c(200, 203, 207, 200)) |> 
+DataExamp=data.frame(t=c(0:3), X=c(200, 203, 207, 200)) |> 
           mutate(TradPercChange=(X-lag(X))/lag(X)) |> 
           mutate(LnX=num(log(X),digits=5)) |> # log calculates the natural logarithm ln() in R 
           mutate(ChangeLnX=LnX - lag(LnX))
@@ -57,7 +58,7 @@ print(DataExamp)
 
 
     
-## When to Use Absulute and When to Use Realtive Measures
+## When to Use Absolute and When to Use Relative Measures
 
 If **Absolute Change** and or **Relative Change** is the better measure depends on the situation.
 
@@ -73,7 +74,7 @@ If **Absolute Change** and or **Relative Change** is the better measure depends 
 
 Another, but younger couple, that is also 10% apart would be 25 years and 22.5 years old, receptively.
 
-## When to Use Absulute and When to Use Realtive Measures
+## When to Use Absolute and When to Use Relative Measures
 
 If **Absolute Change** and or **Relative Change** is the better measure depends on the situation.
 
@@ -170,7 +171,7 @@ $$
 \text{`r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`} 
 \\ \text{(=`r 100*summary(Model2)$coefficients[2,1]`%})}}=
 `r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`
-\underbrace{Weight}_{\substack{\text{Absolut  Change:}\\
+\underbrace{Weight}_{\substack{\text{Absolute  Change:}\\
 \text{+1} \\ \text{(weight in pounds)}}} +`r summary(Model2)$coefficients[1,1]`
 $$
 
@@ -184,7 +185,7 @@ summary(Model3)
 ```
 
 $$
-\underbrace{MPG}_{\substack{\text{Absolut Change:}\\
+\underbrace{MPG}_{\substack{\text{Absolute Change:}\\
 \text{`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`} 
 \\ \text{(in MPG)}}}=
 `r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`
@@ -239,14 +240,14 @@ $$
 \text{`r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`} 
 \\ \text{(=`r 100*summary(Model2)$coefficients[2,1]`%})}}=
 `r format(summary(Model2)$coefficients[2,1], scientific = FALSE)`
-\underbrace{Weight}_{\substack{\text{Absolut  Change:}\\
+\underbrace{Weight}_{\substack{\text{Absolute  Change:}\\
 \text{+1} \\ \text{(weight in pounds)}}} +`r summary(Model2)$coefficients[1,1]`
 $$
 
 **Model 3: only predictor Weight logarithmic ($r^2= `r summary(Model3)$r.squared`$)**
 
 $$
-\underbrace{MPG}_{\substack{\text{Absolut Change:}\\
+\underbrace{MPG}_{\substack{\text{Absolute Change:}\\
 \text{`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`} 
 \\ \text{(in MPG)}}}=
 `r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`
