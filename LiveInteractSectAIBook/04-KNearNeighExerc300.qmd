@@ -1,5 +1,9 @@
 ---
 title: "Project: Read Handwritten Digits with k-Nearest Neighbors"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
 format: live-html
 webr:
   packages: ['dplyr', 'rsample', 'janitor',  'recipes', 
@@ -11,7 +15,24 @@ engine: knitr
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 {{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
 
-<span style="color: red; font-weight: bold;">Your browser is loading R and all needed packages. That can take a while (about 1:00 - 2:00 minutes). Please be patient. You can see the progress in the right lower corner of your browser.</span>
+
+::: {.content-visible when-runtime="loading"}
+::: {.callout-note}
+## Please be Patient: Loading R Environment
+The interactive R environment and the required packages must be loaded in your browser. This typically takes 1–2 minutes. You can monitor the progress in the bottom-right corner. 
+
+When everything is loaded, you get a **"Ready to roll"** message below.
+Thank you for your patience!
+:::
+:::
+
+```{webr}
+#| auto-run: true
+#| echo: false
+cat("\033[1;32mReady to roll\033[0m\n")
+```
+
+
 
 ```{webr}
 #| label: ex_all
@@ -348,7 +369,7 @@ gradethis::grade_this_code()
 
 Since `WFModelMnist` is a fitted *workflow model*, you can use it to predict for the images in the testing dataset (`DataTest`) which digit they present. Again, you will use the command `augment()` instead of `predict()`. Consequently, the testing dataset will be *augmented* with a new column `.pred_class` that contains predicted digits for each image. The result will then be saved into the data frame `DataTestWithPred`.
 
-`head(DataTestWithPred |> select(Label, .pred_class, everything())[,1:12])` sorts the column `Label`, `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for Pxlto Pxl are ommitted).
+`head(DataTestWithPred |> select(Label, .pred_class, everything())[,1:12])` sorts the column `Label`, `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for Pxl to Pxl are omitted).
 
 ```{webr}
 #| exercise: ex_4

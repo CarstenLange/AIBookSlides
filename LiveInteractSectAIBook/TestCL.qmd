@@ -1,11 +1,18 @@
 
 ---
-title: "Live webR Data in Quarto"
-format: live-html
+title: "Interactive Exercises for R and tidyverse: Was Chivalry Dead on the Titanic?"
+subtitle: "Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
 
+author:
+  - name: "Carsten Lange"
+    email: "clange@cpp.edu"
+    affiliation: "Professor of Economics, Cal Poly, Pomona"
+format: 
+  live-html:
+    number-sections: true
 
 webr:
-  packages: ['dplyr', 'rio'] # Auto-install packages in the browser
+  packages: ['dplyr', 'rio']
 
 engine: knitr
 ---
