@@ -434,7 +434,7 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 <section id="exercise-4" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-4">Exercise 4</h2>
 <p>Since <code>WFModelMnist</code> is a fitted <em>workflow model</em>, you can use it to predict for the images in the testing dataset (<code>DataTest</code>) which digit they present. Again, you will use the command <code>augment()</code> instead of <code>predict()</code>. Consequently, the testing dataset will be <em>augmented</em> with a new column <code>.pred_class</code> that contains predicted digits for each image. The result will then be saved into the data frame <code>DataTestWithPred</code>.</p>
-<p><code>head(DataTestWithPred |&gt; select(Label, .pred_class, everything())[,1:12])</code> sorts the column <code>Label</code>, <code>.pred_class</code> to the front of the new data frame <code>DataTestWithPred</code> and then outputs the first six augmented observations (columns for Pxl to Pxl are omitted).</p>
+<p><code>head(DataTestWithPred |&gt; select(Label, .pred_class, everything())[,1:12])</code> sorts the column <code>Label</code>, <code>.pred_class</code> to the front of the new data frame <code>DataTestWithPred</code> and then outputs the first six augmented observations (columns for <code>Pxl11</code> — <code>Pxl784</code> are omitted).</p>
 <div class="cell" data-exercise="ex_4" data-exercise.setup="ex_all">
 <div>
 <div id="webr-22" class="exercise-cell">

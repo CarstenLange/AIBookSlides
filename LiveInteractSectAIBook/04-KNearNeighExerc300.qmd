@@ -369,7 +369,7 @@ gradethis::grade_this_code()
 
 Since `WFModelMnist` is a fitted *workflow model*, you can use it to predict for the images in the testing dataset (`DataTest`) which digit they present. Again, you will use the command `augment()` instead of `predict()`. Consequently, the testing dataset will be *augmented* with a new column `.pred_class` that contains predicted digits for each image. The result will then be saved into the data frame `DataTestWithPred`.
 
-`head(DataTestWithPred |> select(Label, .pred_class, everything())[,1:12])` sorts the column `Label`, `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for Pxl to Pxl are omitted).
+`head(DataTestWithPred |> select(Label, .pred_class, everything())[,1:12])` sorts the column `Label`, `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for `Pxl11` --- `Pxl784` are omitted).
 
 ```{webr}
 #| exercise: ex_4
@@ -399,7 +399,7 @@ head(DataTestWithPred |> select(Label,.pred_class,
 ```
 
 1.  *Augments* the testing dataset `DataTest` with the predictions. The newly created column with the predictions is called `.pred_class`
-2. Sorts the column `Label` and `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for `Pix9` -- `Pix784` are ommitted).
+2. Sorts the column `Label` and `.pred_class` to the front of the new data frame `DataTestWithPred` and then outputs the first six augmented observations (columns for `Pix9` -- `Pix784` are omitted).
 :::
 
 ```{webr}
