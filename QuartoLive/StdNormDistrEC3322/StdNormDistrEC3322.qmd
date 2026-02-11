@@ -234,8 +234,8 @@ gradethis::grade_this_code()
   #custom-font-chunk .monaco-editor .line-numbers,
   #custom-font-chunk .cm-editor .cm-content,
   #custom-font-chunk .cm-editor .cm-gutterElement {
-    font-size: 10px !important;
-    line-height: 1.1 !important;
+    font-size: 14px !important;
+    line-height: 1.12 !important;
     font-family: monospace !important;
   }
 
@@ -273,11 +273,13 @@ For women 45 -- 54 years, the mean is 230.5 mg/100 ml cholesterol, and the stand
 
 **Empirical Rule**, also known as the $68-95-99.7$ rule.
 
+::: {#custom-font-chunk}
 ```{webr}
 library(TeachHist)
 TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000)
 ```
 
+:::
 
 :::
 
@@ -343,7 +345,7 @@ cat("Std. Dev.:", sd(DataDieThrows$Points))
 ## Histogram with Relative Frequencies (Women's Cholesterol) {.smaller} 
 
 ::: columns
-::: {.column width="35%"}
+::: {.column width="50%"}
 **Try:** What is the probability of having a value of less than $200$ when the mean is $230.5$ and the standard deviation is $50$.
 
 `pnorm(x, mean=?, sd=?)` calculates the probability of getting a value smaller than x.
@@ -353,8 +355,8 @@ cat("Std. Dev.:", sd(DataDieThrows$Points))
 :::
 
 
-::: {.column width="65%"}
-
+::: {.column width="50%"}
+::: {#custom-font-chunk}
 ```{webr}
 #| exercise: ex_2
 #| warning: false
@@ -364,7 +366,7 @@ cat("Probability for x<200:",
      pnorm(______,______,______))
 pnorm4(______,______,______)
 ```
-
+:::
 ::: {.hint exercise="ex_2"}
 The `pnorm()` and the `pnorm4()` commands have four arguments, the analyzed value, the mean, and the standard deviation (in that order).
 
@@ -413,12 +415,15 @@ pnorm4(200, 230.5, 50)
 :::
 
 ::: {.column width="50%"}
+:::: {#custom-font-chunk}
 ```{webr}
 #| exercise: ex_3
 DistInchesFromMean= ______ - ______
 cat("Distance from Mean in Inches:", DistInchesFromMean)
 cat("Distance from Mean in Std. Dev:", ______/______)
 ```
+
+:::
 
 ::: {.hint exercise="ex_3"}
 Here is a Hint:
