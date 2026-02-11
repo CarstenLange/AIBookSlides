@@ -19,7 +19,6 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
 webr:
   packages:
     - tidyverse
@@ -28,12 +27,13 @@ webr:
   
   resources: 
     - Data
-engine: knitr    
+engine: knitr
 ---
-{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
-{{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
 ## What Will You Learn {.scrollable .smaller}
 
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
 ```{r}
 #| echo: false
 library(TeachHist)
@@ -51,7 +51,7 @@ library(TeachHist)
 
 
 
-## Some Questions to Introduce Center and Spread
+## Some Questions to Introduce Center and Spread {.smaller}
 
 ::: incremental
 -   Who runs faster, men or women?
@@ -192,7 +192,7 @@ cat("Std. Dev.:", ______(sum(DataResults$DeviationSq)/3))
 ```
 
 ::: {.hint exercise="ex_1"}
-<span style="font-size: 0.37em;">**Here is a Hint:**  
+<span style="font-size: 0.37em;">Here is a Hint:  
 1. Subtract the mean from the column DataSample$Height.  
 2. Square each element in the Deviation column. Use Deviation^2  
 3. The variance is the sum of the column DeviationSq divided by the sample size minus one.  
@@ -200,7 +200,7 @@ cat("Std. Dev.:", ______(sum(DataResults$DeviationSq)/3))
 :::
 
 ::: {.solution exercise="ex_1"}
-<span style="font-size: 0.37em;">**Here is the Solution:**</span>
+<span style="font-size: 0.37em;">Here is the Solution:</span>
 
 ```{webr}
 #| exercise: ex_1
@@ -261,35 +261,37 @@ gradethis::grade_this_code()
 -   Most values are in the center.
 -   Some are larger or smaller than the center.
 -   Few are a lot larger or smaller than the center.
--   Very few are extremely large or smaller
+-   Very few are extremely large or extremely small
 -   The distribution is symmetric around the mean, leading to a bell curve.
 
 For women 45 -- 54 years, the mean is 230.5 mg/100 ml cholesterol, and the standard deviation is 50.0 (source: <https://www.cdc.gov/nchs/data/series/sr_11/sr11_022.pdf>)
 
-## Synthetic Data for 10,000 Women (45 - 54 years)
+## Synthetic Data for 10,000 Women (45 - 54 years) {.smaller}
 
-```{r}
-library(TeachHist)
-TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000)
-```
+:::: columns
+::: {.column width="55%"}
 
 **Empirical Rule**, also known as the $68-95-99.7$ rule.
 
-. . .
-
-**0.95 Confidence Interval:** <br> $Mean \pm 1.96 \cdot StdDev$ <br> In this example $230.5 - 50 \cdot 1.96= 132.5$ and $230.5 + 50\cdot 1.96= 328.5$ <br> 95% of all 45 - 54 year women have a Cholesterol level higher than 182.5 and lower than 378.5.
-
-## Synthetic Data for 10,000 Women (45 - 54 years)
-
-### Histogram with Relative Frequencies as Column Area
-
-```{r}
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = FALSE)
+```{webr}
+library(TeachHist)
+TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000)
 ```
 
-Try column just right of mean: $0.0068\cdot 50=0.34$
 
-Try changing the `BinWidth` for `TeachHistDensity()` and `TeachHistRelFreq()`
+:::
+
+::: {.column width="45%"}
+**0.95 Interval:**
+
+- $Mean \pm 2 \cdot StdDev$ 
+- In this example $230.5 - 50 \cdot 2= 130.5$ 
+- In this example $230.5 + 50\cdot 2= 330.5$ 
+- 95% of all 45 - 54 year women have a Cholesterol level higher than 130.5 and lower than 330.5.
+
+:::
+::::
+
 
 ## Synthetic Data for 10,000 Women (45 - 54 years)
 
@@ -297,7 +299,7 @@ Try changing the `BinWidth` for `TeachHistDensity()` and `TeachHistRelFreq()`
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 ## Normal Curve {.smaller}
@@ -323,25 +325,43 @@ scale_x_continuous(breaks=seq(0,450,25))+
 geom_vline(xintercept = 230.5, color="red")
 ```
 
-## Frequentist Statistics
+## Frequentist Statistics {.smaller}
 
 *Frequentist Statistics* uses **Relative Frequency** to estimate **Probability**
 
-## Histogram with Relative Frequencies as Column Area and Normal Curve {.smaller}
+**Example:** Mean and Standard Deviation for Throws with a Single Die
+
+```{webr}
+set.seed(112)
+DataDieThrows=data.frame(Trial=1:10000) |> 
+              mutate(Points=sample(1:6, size = 10000, replace=TRUE))
+head(DataDieThrows)
+cat("Mean:", mean(DataDieThrows$Points))
+cat("Std. Dev.:", sd(DataDieThrows$Points))
+```
+
+## Histogram with Relative Frequencies (Women's Cholesterol) {.smaller} 
+
+::: columns
+::: {.column width="35%"}
+**Try:** What is the probability of having a value of less than $200$ when the mean is $230.5$ and the standard deviation is $50$.
 
 `pnorm(x, mean=?, sd=?)` calculates the probability of getting a value smaller than x.
 
 `pnorm4(x, mean=?, sd=?)` does the same but works with the same numbers than your Z-table in the Hawkes textbook and plots a histogram (no warranty!)
 
-**Try:** What is the probability of having a value of less than 200 when the mean is 230.5 and the standard deviation is 50.
+:::
 
+
+::: {.column width="65%"}
 
 ```{webr}
 #| exercise: ex_2
 #| warning: false
 #| message: false
 source("https://econ.lange-analytics.com/RScripts/ZTable4Digits.R")
-cat("Probability for x<200:", pnorm(______,______,______))
+cat("Probability for x<200:",
+     pnorm(______,______,______))
 pnorm4(______,______,______)
 ```
 
@@ -351,13 +371,14 @@ The `pnorm()` and the `pnorm4()` commands have four arguments, the analyzed valu
 :::
 
 ::: {.solution exercise="ex_2"}
-**Here is the Solution:**
+Here is the Solution:
 
 ```{webr}
 #| exercise: ex_2
 #| solution: true
 source("https://econ.lange-analytics.com/RScripts/ZTable4Digits.R")
-cat("Probability for x<200:", pnorm(200,230.5,50))
+cat("Probability for x<200:",
+     pnorm(200,230.5,50))
 pnorm4(200,230.5,50)
 ```
 
@@ -369,19 +390,29 @@ pnorm4(200,230.5,50)
 gradethis::grade_this_code()
 ```
 
+:::
+::::
+
 ## Histogram with Relative Frequencies as Column Area and Normal Curve {.smaller}
 
 To use the table from the Hawkes textbook, you need to know, how many standard deviation $200$ is from the mean because this is the Z-Value (mean=$230.5$, StdDev=$50$).
 
+
+:::: columns
+::: {.column width="50%"}
 ```{webr}
 #| autorun: true
 #| echo: false
+#| warning: false
+#| message: false
 source("https://econ.lange-analytics.com/RScripts/ZTable4Digits.R")
 cat("Probability (rounded) for x < 200:")
 
 pnorm4(200, 230.5, 50)
 ```
+:::
 
+::: {.column width="50%"}
 ```{webr}
 #| exercise: ex_3
 DistInchesFromMean= ______ - ______
@@ -390,7 +421,7 @@ cat("Distance from Mean in Std. Dev:", ______/______)
 ```
 
 ::: {.hint exercise="ex_3"}
-**Here is a Hint:**
+Here is a Hint:
 
 To calculate how far 200 is from the mean, subtract the mean from 200.
 
@@ -404,7 +435,7 @@ $$z=\frac{x-Mean}{StdDev}$$
 
 
 ::: {.solution exercise="ex_3"}
-**Here is the Solution:**
+Here is the Solution:
 
 ```{webr}
 #| exercise: ex_3
@@ -422,11 +453,14 @@ cat("Distance from Mean in Std. Dev:", DistInchesFromMean/50)
 gradethis::grade_this_code()
 ```
 
+:::
+::::
+
 ## Histogram with Relative Frequencies as Column Area and Normal Curve {.smaller}
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 `pnorm(x, mean=?, sd=?)` calculates the probability of getting a value smaller than x. <br> **Try:** What is the probability of having a value of greater than 360 when the mean is 230.5 and the standard deviation is 50
@@ -440,14 +474,14 @@ pnorm(@@@,@@@,@@@)
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 ## Histogram with Relative Frequencies as Column Area and Normal Curve {.smaller}
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 `qnorm(x, mean=?, sd=?)` calculates the value that is not exceeded by x percent of the women<br> **Try:** What is the value that is not exceeded by 95% of women?
@@ -461,7 +495,7 @@ qnorm(@@@,@@@,@@@)
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=123, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 `qnorm(x, mean=?, sd=?)` calculates the value that is not exceeded by x percent of the women<br> **Try:** Between which values fall 95% of the women (95% confidence interval)
@@ -653,6 +687,6 @@ Is the mean from the sample just by accident different from 80 or is there more 
 Let us work with 95% *Confidence*.
 
 ```{r}
-TeachHistHypTest(NullHyp=85, StandardError=2, SampleMean=90, SeedValue=123)
+TeachHistHypTest(NullHyp=85, StandardError=2, SampleMean=90, SeedValue=777)
 ```
 
