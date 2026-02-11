@@ -627,7 +627,7 @@ DataPredWithTestData=augment(WFModelWine, DataTest)
 head(DataPredWithTestData)
 ```
 
-## Having a Data Frame with `truth` and `estimate`, We can Calculate Performance Metrics*
+## Having a Data Frame with `truth` and `estimate`, We can Calculate Performance Metrics
 
 Confusion Matrix:
 
@@ -668,6 +668,68 @@ print(ConMatTemp)
 accuracy(DataPredWithTestData, truth = WineColor, estimate = .pred_class)
 ```
 
+## tidymodels Modeling Pipeline {.smaller}
+
+
+1. Split the Data into *Training* and *Testing Data*
+
+```{r}
+#| eval: false
+#| echo: true
+set.seed(876)
+Split7030=initial_split(DataToAnalyzeName, prop=0.7, strata=OutcomeVarName)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030) 
+```
+
+2. Create Recipe
+
+```{r}
+#| eval: false
+#| echo: true
+RecipeName=recipe(OutcomeVarName~Pred1VarName+Pred2VarName, data=DataTrain) |>
+           step_naomit() |> 
+           step_Name()
+```
+
+3 Create Model-Design
+
+```{r}
+#| eval: false
+#| echo: true
+ModelDesignName=MachLearnModelName() |>
+                set_engine("PackageName") |> 
+                set_mode("classification or regression")
+```
+
+4. Create Workflow and Fit to Training Data
+
+```{r}
+#| eval: false
+#| echo: true
+WFModelName=workflow() |> 
+            add_recipe(RecipeName) |>
+            add_model(ModelDesignName) |> 
+            fit(DataTrain)
+```
+
+5. Predict with Workflow and Augment Testing Data with Predictions
+
+```{r}
+#| eval: false
+#| echo: true
+DataTestWithPred=augment(WFModelName, DataTest)
+```
+
+
+6. Assess Predictive Quality with Metrics
+
+```{r}
+#| eval: false
+#| echo: true
+MetricsCommand(DataTestWithPred, truth=OutcomeVarName,
+                        estimate=.pred_class or estimate=.pred)
+```
 
 ## **Warning: Be careful with the Accuracy Rate**
 
