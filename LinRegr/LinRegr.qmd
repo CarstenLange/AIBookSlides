@@ -1,32 +1,78 @@
 ---
 title: "Key Machine Learning Concepts"
 subtitle: "Explained with Linear Regression"
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
 format: 
-  revealjs:
-    code-fold: true
+  live-revealjs:
+    theme: [moon,../CustomCL.scss]
+    smaller: true
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    echo: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/linregr.html' target='_blank'>Textbook </a> "
+   
+webr:
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 
+             'yardstick','parsnip','workflows'] # Auto-install packages in the browser
+
+engine: knitr
 ---
 
-## Loading Required Librarries
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Loading Data and Libraries
+
+```{webr}
+#| autorun: true
+#| echo: false
+DataHousing =
+  read.csv("https://ai.lange-analytics.com/data/HousingData.csv")|>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving, Grade, Waterfront)
+
+set.seed(777)
+Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+
+RecipeHouses=recipe(Price ~ ., data=DataTrain) |> 
+             step_dummy(Waterfront)
+
+ModelDesignHouses=linear_reg() |> 
+  set_engine("lm") |> 
+  set_mode("regression")
+
+WFModelHouses = workflow() |>  
+                add_recipe(RecipeHouses) |> 
+                add_model(ModelDesignHouses) |> 
+                fit(DataTrain)
+DataTestWithPredictions = augment(WFModelHouses, new_data=DataTest)
+```
 
 ```{r}
-#| code-fold: false
 library(tidymodels)
 library(rio)
 library(kableExtra)
 library(janitor)
+library(plotly)
 DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 ```
 
-## What Will You Learn {.scrollable}
+## What Will You Learn {.scrollable .smaller}
 
 -   Reviewing the basic idea behind linear regression
 
--   Learning how how to measure predictive quality with Mean Square Error ($MSE$).
+-   Learning how how to measure predictive quality with Mean Squared Error ($MSE$).
 
--   Understanding the role of parameters in a machine learning model in general and in linear regression in particular
+-   Understanding the role of parameters in linear regression and in machine learning models
 
 -   Calculating optimal regression parameters using OLS
 
@@ -51,41 +97,43 @@ DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
 ::: incremental
 -   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
 
--   Several predictor variables. For now we use only $Sqft$
+-   Several predictor variables:  
+For now we use only $Sqft$
 
--   We will only use 100 randomly chosen observations from the total of 21,613 observations.
-
--   We only use Sqft as predictor variable for now.
+-   For simplicity, we  use only 100 randomly chosen observations from the total of 21,613 observations.
 :::
 
-## Loading the Data and Assigning Training and Testing Data (manually)
+## Loading the Data and Assigning Training and Testing Data
 
-
+**Note:** To ensure compatibility with a JavaScript simulation used in the following slides, as an exception, *training* and *testing data* are generated with `n_sample()` rather than with `tidymodels` commands.
 
 ```{r}
-
-
-
 DataHouses=
   import("https://ai.lange-analytics.com/data/HousingData.csv") |>
   clean_names("upper_camel") |>
   select(Price, Sqft=SqftLiving) 
 
-# Manually generating DataTrain and DataTest
 set.seed(7771)
 DataTrain= sample_n(DataHouses, 100)
 DataTest= sample_n(DataHouses, 50)
+cat("DataTrain:")
 head(DataTrain)
-
+cat("DataTest:")
+head(DataTest)
 ```
+
+
+
+
 
 ## How much is a House Worth in King County?
 
-. . .
 
 **A house with average properties should be predicted with an average price!**
 
 ```{r}
+#| echo: true
+#| code-fold: true
 MeanSqft=mean(DataTrain$Sqft)
 cat("The mean square footage of a house in King county is:", MeanSqft)
 
@@ -97,16 +145,24 @@ cat("The mean price of a house in King county is:", MeanPrice)
 
 ```{r}
 #| echo: false
+ggplotly(
 ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
   geom_point(color="red")+
   geom_hline(yintercept=mean(DataTrain$Price))+
   geom_vline(xintercept=mean(DataTrain$Sqft))+
   scale_y_continuous(limits=c(0,900000),  breaks = seq(0,900000,100000), labels = scales::comma)+
   scale_x_continuous(limits=c(0,5000),  breaks = seq(0,5000,500), labels = scales::comma)
+)
 ```
 
 ## An Interactive Graph That Explains it All
 
+**Unfitted Linear Regression Model:**
+$$
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_2}_b
+$$
+
+**JavaScript Simulation for Fitting Parameters:**  
 [https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
 
 ## From Unfitted to Fitted Model
@@ -114,21 +170,23 @@ ggplot(aes(x=Sqft, y=Price), data=DataTrain)+
 ### How does the Unfitted Model Looks Like?
 
 $$
-\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
+\underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_2}_b
 $$
 
-### Fitting theModel with Tidymodels
-
+### Fitting the Model with Tidymodels {.smaller}
+ Note, the data have already been split into `DataTrain` and `DataTest` in the background.
 ```{r}
+#| echo: true
+#| code-fold: true
 RecipeHouses= recipe(Price~Sqft, data=DataTrain)
 
-ModelDesignOLS= linear_reg() %>% 
-                set_engine("lm") %>% 
+ModelDesignOLS= linear_reg() |> 
+                set_engine("lm") |> 
                 set_mode("regression")
 
-WFModelHouses = workflow() %>%  
-  add_recipe(RecipeHouses) %>% 
-  add_model(ModelDesignOLS) %>% 
+WFModelHouses = workflow() |>  
+  add_recipe(RecipeHouses) |> 
+  add_model(ModelDesignOLS) |> 
   fit(DataTrain)
 
 tidy(WFModelHouses)
@@ -136,15 +194,18 @@ tidy(WFModelHouses)
 
 ## Unfitted Model vs Fitted Workflow Model {.smaller}
 
-Unfitted Model: $$
+Unfitted Model: 
+$$
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{\beta_1}_m \underbrace{Sqft}_x + \underbrace{\beta_0}_b
 $$
+
 
 ```{r}
 tidy(WFModelHouses)
 ```
 
-Fitted Model: $$
+Fitted Model: 
+$$
 \underbrace{\widehat{Price}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft}_x + \underbrace{52509}_b
 $$
 
@@ -162,7 +223,9 @@ $$
  (+480)&=240\cdot (+2) +  (+0)\\
  (+720)&=240\cdot (+3) +  (+0)
 \end{align}
-$$ **For each extra** $Sqft$ the predicted price increases by \$240
+$$ 
+
+**For each extra** $Sqft$ the predicted price increases by \$240
 
 **The variable** $Sqft$ is significant. I.e., the probability that the related coefficient $\beta_1$ equals zero is extremely small.
 
@@ -175,13 +238,13 @@ Look at the simulation again and choose 240 for beta 1:
 ## Evaluating Predictive Quality with the Testing Dataset
 
 ```{r}
-#| code-fold: false
+#| echo: true
+#| code-fold: true
 DataTestWithPred=augment(WFModelHouses, new_data=DataTest)
 metrics(DataTestWithPred, truth=Price, estimate=.pred)
 ```
 
-## Univariate Linear Regression - Data Table and Goal
-
+## Univariate Linear Regression --- Mockup Data Example
 ::: columns
 ::: {.column width="40%"}
 **The Regression:**
@@ -190,9 +253,16 @@ $$
 \widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
 $$
 
+$$
+\widehat{Grade}_{i} = \beta_{1}\cdot StudyTime_{i}+\beta_{2}
+$$
+
 **The Goal**
 
-Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\widehat{y}_{i}-y_i)^2$
+Find values for $\beta_1$ and $\beta_2$ that minimize the prediction errors $(\widehat{y}_{i}-y_i)^2$ or $(\widehat{Grade}_{i}-Grade_i)^2$
+
+
+
 :::
 
 ::: {.column width="60%"}
@@ -205,22 +275,31 @@ kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()),
   add_header_above(c(" ", "y", "x"), escape=F) |> 
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
+
 :::
 :::
 
-## Univariate Linear Regression - Data Diagram and Goal
+## Univariate Linear Regression --- Mockup Data Example
 
 ::: columns
 ::: {.column width="40%"}
 **The Regression:**
 
 $$
-\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{2}
+\widehat{Grade}_{i} = \beta_{1}\cdot StudyTime_{i}+\beta_{2}
 $$
+
 
 **The Goal**
 
-Find values for $\beta_0$ and $\beta_1$ that minimize the prediction errors $(\widehat{y}_{i}-y_i)^2$
+Find values for $\beta_0$ and $\beta_1$ that minimize the prediction errors $(\widehat{y}_{i}-Grade_i)^2$
+<br>
+**The Optimal Prediction:**
+
+$$
+\widehat{Grade}_{i} = 4 \cdot StudyTime_{i}+64
+$$
+
 :::
 
 ::: {.column width="60%"}
@@ -235,13 +314,16 @@ ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
   geom_point(aes(y=PredGrade), color="black", size=2.7)+
   geom_segment(aes(x = StudyTime, y = PredGrade,
                    xend = StudyTime, yend = Grade),size=1.2)+
-  scale_x_continuous("Study Time", breaks=seq(1,8))+
-  scale_y_continuous(limits=c(65,110), breaks=seq(60,100,5))
+scale_x_continuous(limits=c(1,8),breaks=seq(1,8))+
+scale_y_continuous(limits=c(65,110),breaks=seq(60,100,5))+
+labs(y="PredGrade (red) and True Grade (blue)")
 ```
+
 :::
 :::
 
-# How to Measure Prediction Quality
+
+## How to Measure Prediction Quality
 
 ```{=tex}
 \begin{eqnarray*}
@@ -250,7 +332,9 @@ MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
 MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_2}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
 \end{eqnarray*}
 ```
-**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ »
+
+**Note, when the data are given (i.e., $x_i$ and $y_i$ are given):**  
+<span style="color: red; font-weight: bold;">The $MSE$ depends only on the choice of $\beta_1$ and $\beta_2$ </span>
 
 ## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
 
@@ -293,15 +377,16 @@ Function Call:
 
 ```{r}
 #| echo: true
-VecBetaTest=c(4,61)
-ResultMSE=FctMSE(VecBetaTest, DataMockup)
+VecGuessBeta=c(4,64)
+ResultMSE=FctMSE(VecGuessBeta, DataMockup)
 print(ResultMSE)
 ```
 
-Function Definition:»
+Function Definition:
 
 ```{r}
 #| echo: true
+#| code-fold: true
 FctMSE=function(VecBeta, data){
                         Beta1=VecBeta[1]
                         Beta2=VecBeta[2]
@@ -320,7 +405,7 @@ FctMSE=function(VecBeta, data){
 
 **Method 1:**
 
-:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas (**Note,** this method works only for linear regression)
+:   **Calculate optimal values** for the parameters (the $\beta s$) based on Ordinary Least Squares (OLS) using two formulas. **Note,** this method works only for linear regression.
 
 **Method 2:**
 
@@ -334,31 +419,32 @@ FctMSE=function(VecBeta, data){
 {N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
 {N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
 && \nonumber \\
-\beta_{2,opt.}&=& \frac{ \sum_{i=1}^N y_i  - \beta_1 \sum_{i=1}^N x_i} {N} = 64.18
+\beta_{2,opt.}&=& \frac{\sum_{i=1}^N y_i}{N}  - \beta_1 \frac{\sum_{i=1}^N x_i} {N} = 64.18
 \end{eqnarray*}
 ```
+
 ```{r}
 DataTable=DataMockup |>
   mutate(GradeXStudyTime=Grade*StudyTime) |>
   mutate(StudyTimeSquared=StudyTime^2) 
 
 
-kbl(DataTable |> mutate(i=1:5) |> select(i,everything()), 
-    caption="Mockup Training Dataset ")|>
+kbl(DataTable |> mutate(i=1:5) |> select(i,everything()))|>
   add_header_above(c(" ", "y", "x", "y x","x x"), escape=F) |> 
   kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
 ```{r}
 #| echo: false
-kbl(data.frame(as.list(colSums(DataTable))), 
-    caption="Column Sums")|>
+kbl(data.frame(as.list(colSums(DataTable))), caption="Column Sums")|>
     kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
 ```
 
-## Method 2: Use a Systematic Trial and Error Process 🤓
+## Method 2: Use a Systematic Trial and Error Process
 
--   **Grid Search (aka Brute Force):**
+-   **Manual Trial and Error (aka Brute Force):**
+
+-   **Trial and Error with Grid Search (aka Brute Force):**
 
     1.  For a given range of $\beta_1$ and $\beta_2$ values, build a table with pairs of all combinations of these $\beta s$.
     2.  Then use our custom `FctMSE()` command to calculate a $MSE$ for each $\beta$ pair.
@@ -366,24 +452,111 @@ kbl(data.frame(as.list(colSums(DataTable))),
 
 -   **Optimizer:** Use the R build-in optimizer. Push the start values for $\beta_1$ and $\beta_2$ together with the data to the optimizer as arguments. The rest is done by the optimizer.
 
--   See the R script in the footnote to see both algorithms in action.»
+-   See the R script in the footnote to see both algorithms in action.
 
 ::: footer
 See: [LinRegrScript.R script100](https://econ.lange-analytics.com/RScripts/LinRegrScript.R)
 :::
 
+## Manual Trial and Error (aka Brute Force)
+
+
+``` {webr}
+#| autorun: true
+#| echo: false
+#| include: false
+DataMockup=readRDS(url("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds"))
+FctMSE=function(VecBeta, data){
+                        Beta1=VecBeta[1]
+                        Beta2=VecBeta[2]
+                        data=data |>
+                        rename(Y=1, X=2) |> 
+                        mutate(YPred=Beta1*X+Beta2) |>
+                        mutate(Error=YPred-Y) |>
+                        mutate(ErrorSqt=Error^2)
+                        
+                        MSE=mean(data$ErrorSqt)
+                        
+                        return(MSE)}
+```
+
+$$\widehat{Grade_i}=\beta1 \cdot StudyTime_i + \beta2$$
+
+
+```{webr}
+GuessBeta1=0
+GuessBeta2=83 
+MSE=FctMSE(c(GuessBeta1,GuessBeta2), data=DataMockup)
+cat("The MSE for beta1=",GuessBeta1, "and beta2=",GuessBeta2, "is:", MSE)
+```
+
+## More Systematic Manual Trial and Error (still Brute Force)
+
+**Average `StudyTime` leads to a prediction of average grade:**
+
+$$\overline{StudyTime}=mean(StudyTime)=4.8$$
+$$\overline{Grade}=mean(Grade)=83.2$$
+
+Therefore:
+$$\overline{Grade}=\beta_1 \cdot \overline{StudyTime} + \beta_2$$
+$$\beta_2=\overline{Grade} - \beta_1 \cdot \overline{StudyTime}$$
+
+```{webr}
+GuessBeta1=0
+GuessBeta2=83.2 - GuessBeta1 * 4.8 
+MSE=FctMSE(c(GuessBeta1,GuessBeta2), data=DataMockup)
+
+
+cat("The MSE for beta1=",GuessBeta1, "and beta2=",GuessBeta2, "is:", MSE)
+```
+
+## Trial and Error with Grid Search (aka Brute Force)
+
+**Guesses for each $\beta$:**
+
+```{webr}
+#| autorun: true
+#| echo: false
+VecBeta1Values=seq(3, 5, length.out=21)
+VecBeta2Values=seq(50, 70, length.out=21)
+
+data.frame(Beta1Values=VecBeta1Values,Beta2Values=VecBeta2Values)
+```
+
+**Grid with all $\beta_1$/$\beta_2$ combinations with $MSE$:**
+```{webr}
+#| autorun: true
+#| echo: false
+GridBetaPairs=expand.grid(Beta1=VecBeta1Values, Beta2=VecBeta2Values)
+
+VecMSE=apply(GridBetaPairs, FUN=FctMSE, data=DataMockup, MARGIN=1)# margin=1 means use rows to apply
+
+GridBetaPairs=GridBetaPairs |> 
+  mutate(MSE=VecMSE)
+
+GridBetaPairs
+```
+
+**Grid with all $\beta_1$/$\beta_2$ combinations with $MSE$ (sorted):**
+```{webr}
+#| autorun: true
+#| echo: false
+arrange(GridBetaPairs,MSE)
+```
+
+## Trial and Error with Optimizer (heuristic algorithm, not Brure Force)
+
+```{webr}
+StartForBeta1Beta2=c(0,83) # 83 is the mean grade
+
+BestBetas=optim(StartForBeta1Beta2, FctMSE, data=DataMockup)
+
+print(BestBetas$par)
+```
+
 # Multivariate OLS with a Real World Dataset
 
 ## Multivariate OLS with a Real World Dataset
-
-**Data**
-
-```{r}
-#| echo: true
-library(rio)
-DataHousing =
-  import("https://ai.lange-analytics.com/data/HousingDataSmall.csv")
-```
 
 -   King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
 -   Several predictor variables. 
@@ -399,44 +572,32 @@ DataHousing =
 
 `Waterfront`: Is house located at the waterfront (`yes` or `no`)
 
-```{r}
-#| echo: true
-library(tidyverse);library(rio);library(janitor);library(tidymodels)
-DataHousing =
-  import("https://ai.lange-analytics.com/data/HousingData.csv")|>
-  clean_names("upper_camel") |>
-  select(Price, Sqft=SqftLiving, Grade, Waterfront)
-```
 
-**Unfitted Model:** » $$
-Price=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront_{yes} +\beta_4
+
+**Unfitted Model:**  
+$$
+Price_i=\beta_1 Sqft+\beta_2 Grade_i+\beta_3 WaterfrontYes_i +\beta_4
 $$
 
 ## Multivariate Real World Dataset --- Splitting {.scrollable}
 
-```{r}
-#| echo: true
+
+```{webr}
+DataHousing =
+  read.csv("https://ai.lange-analytics.com/data/HousingData.csv")|>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving, Grade, Waterfront)
+
 set.seed(777)
 Split7030=initial_split(0.7,data=DataHousing, strata = Price, breaks = 5)
 DataTrain=training(Split7030)
 DataTest=testing(Split7030)
-```
-
-
-
-**DataTrain**
-
-```{r}
-#| echo: false
+cat("DataTrain:")
 head(DataTrain)
-```
-
-**DataTest**
-
-```{r}
-#| echo: false
+cat("DataTest:")
 head(DataTest)
 ```
+
 
 ## Dummy and One-Hot Encoding {.scrollable}
 
@@ -464,61 +625,54 @@ DummyTable=tibble(Waterfront_yes=c(0,0,1,0))
 print(DummyTable)
 ```
 
-**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.»
+**Note,** dummy encoding can be done with `step_dummy()` in a *tidymodels recipe*.
 
 ## Multivariate Analysis --- Building the Recipe
 
-```{r}
-#| echo: true
-#| code-fold: false
+```{webr}
 RecipeHouses=recipe(Price ~ ., data=DataTrain) |> 
                     step_dummy(Waterfront)
+tidy(RecipeHouses) # prints a tidy form of the recipe
 ```
 
 Here is how the recipe later on (in the workflow) transforms the data:
 
-```{r}
-juice(RecipeHouses |> prep()) |> head()
+```{webr}
+#| autorun: true
+#| echo: false
+options(tibble.print_max = Inf)
+options(tibble.width = Inf)
+DataRecipe=juice(RecipeHouses |> prep()) |> head()
 ```
 
 ## Multivariate Analysis --- Building the Model Design
 
 **Unfitted Model:**
 
-```{r}
-#| echo: true
-#| code-fold: false
+```{webr}
 ModelDesignHouses=linear_reg() |> 
   set_engine("lm") |> 
   set_mode("regression")
 print(ModelDesignHouses)
 ```
 
-»
+
 
 ## Multivariate Analysis --- Creating Workflow & Fitting to the Training Data
 
-```{r}
-#| echo: true
+```{webr}
 WFModelHouses = workflow() |>  
       add_recipe(RecipeHouses) |> 
       add_model(ModelDesignHouses) |> 
       fit(DataTrain)
-tidy(WFModelHouses)
-glance(WFModelHouses)
+print(WFModelHouses)
 ```
 
 ## Multivariate Analysis --- Predicting Testing Data and Metrics
 
-```{r}
-#| echo: true
+```{webr}
 DataTestWithPredictions = augment(WFModelHouses, new_data=DataTest)
 metrics(DataTestWithPredictions, truth=Price, estimate=.pred)
 ```
 
 
-## Exercise
-
-**Run the Analysis**»
-
-<https://ai.lange-analytics.com/exc/?file=05-LinRegrExerc100.Rmd>

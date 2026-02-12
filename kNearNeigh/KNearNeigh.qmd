@@ -32,7 +32,6 @@ engine: knitr
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
----
 
 ## Before we Begin Let Us Do A Thought Experiment
 
