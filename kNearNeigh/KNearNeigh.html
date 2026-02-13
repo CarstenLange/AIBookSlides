@@ -6,10 +6,10 @@
 <script src="KNearNeigh_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="KNearNeigh_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="KNearNeigh_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="KNearNeigh_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="KNearNeigh_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="KNearNeigh_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="KNearNeigh_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Carsten Lange">
   <title>k Nearest Neighbors</title>
@@ -13460,7 +13460,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVByZWRXaXRoVGVzdERh
 </div>
 </section>
 <section id="having-a-data-frame-with-truth-and-estimate-we-can-calculate-performance-metrics" class="slide level2">
-<h2>Having a Data Frame with <code>truth</code> and <code>estimate</code>, We can Calculate Performance Metrics*</h2>
+<h2>Having a Data Frame with <code>truth</code> and <code>estimate</code>, We can Calculate Performance Metrics</h2>
 <p>Confusion Matrix:</p>
 <div class="cell">
 <div>
@@ -13502,6 +13502,54 @@ Prediction   Red Wine White Wine
 eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYWNjdXJhY3koRGF0YVByZWRXaXRoVGVzdERhdGEsIHRydXRoID0gV2luZUNvbG9yLCBlc3RpbWF0ZSA9IC5wcmVkX2NsYXNzKSJ9
 </script>
 </div>
+</div>
+</section>
+<section id="tidymodels-modeling-pipeline" class="slide level2 smaller scrollable">
+<h2>tidymodels Modeling Pipeline</h2>
+<ol type="1">
+<li>Split the Data into <em>Training</em> and <em>Testing Data</em></li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">876</span>)</span>
+<span id="cb9-2"><a href=""></a>Split7030<span class="ot">=</span><span class="fu">initial_split</span>(DataToAnalyzeName, <span class="at">prop=</span><span class="fl">0.7</span>, <span class="at">strata=</span>OutcomeVarName)</span>
+<span id="cb9-3"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7030)</span>
+<span id="cb9-4"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7030) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="2" type="1">
+<li>Create Recipe</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>RecipeName<span class="ot">=</span><span class="fu">recipe</span>(OutcomeVarName<span class="sc">~</span>Pred1VarName<span class="sc">+</span>Pred2VarName, <span class="at">data=</span>DataTrain) <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href=""></a>           <span class="fu">step_naomit</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href=""></a>           <span class="fu">step_Name</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>3 Create Model-Design</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>ModelDesignName<span class="ot">=</span><span class="fu">MachLearnModelName</span>() <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href=""></a>               <span class="fu">set_engine</span>(<span class="st">"PackageName"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href=""></a>               <span class="fu">set_mode</span>(<span class="st">"classification or regression"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="4" type="1">
+<li>Create Workflow and Fit to Training Data</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>WFModelName<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href=""></a>            <span class="fu">add_recipe</span>(RecipeName) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href=""></a>            <span class="fu">add_model</span>(ModelDesignName) <span class="sc">|&gt;</span> </span>
+<span id="cb12-4"><a href=""></a>            <span class="fu">fit</span>(DataTrain)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="5" type="1">
+<li>Predict with Workflow and Augment Testing Data with Predictions</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WFModelName, DataTest)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<ol start="6" type="1">
+<li>Assess Predictive Quality with Metrics</li>
+</ol>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">MetricsCommand</span>(DataTestWithPred, <span class="at">truth=</span>OutcomeVarName,</span>
+<span id="cb14-2"><a href=""></a>                        <span class="at">estimate=</span>.pred_class or <span class="at">estimate=</span>.pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="warning-be-careful-with-the-accuracy-rate" class="slide level2">
