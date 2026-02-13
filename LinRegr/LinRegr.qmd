@@ -241,8 +241,8 @@ DataTrain:
 ```{r}
 #| echo: true
 #| code-fold: true
-DataTrainWithPred=augment(WFModelHouses, new_data=DataTrain)
-metrics(DataTrainWithPred, truth=Price, estimate=.pred)
+DataTrainWithPred = augment(WFModelHouses, new_data = DataTrain)
+metrics(DataTrainWithPred, truth = Price, estimate = .pred)
 ```
 
 
@@ -525,19 +525,22 @@ cat("The MSE for beta1=",GuessBeta1, "and beta2=",GuessBeta2, "is:", MSE)
 
 **Guesses for each $\beta$:**
 
-```{webr}
-#| autorun: true
-#| echo: false
+```{r}
+#| echo: true
+#| code-fold: true
 VecBeta1Values=seq(3, 5, length.out=21)
 VecBeta2Values=seq(50, 70, length.out=21)
 
 data.frame(Beta1Values=VecBeta1Values,Beta2Values=VecBeta2Values)
 ```
 
+:::: columns
+::: {.column width="50%"}
 **Grid with all $\beta_1$/$\beta_2$ combinations with $MSE$:**
-```{webr}
-#| autorun: true
-#| echo: false
+
+```{r}
+#| echo: true
+#| code-fold: true
 GridBetaPairs=expand.grid(Beta1=VecBeta1Values, Beta2=VecBeta2Values)
 
 VecMSE=apply(GridBetaPairs, FUN=FctMSE, data=DataMockup, MARGIN=1)# margin=1 means use rows to apply
@@ -548,21 +551,28 @@ GridBetaPairs=GridBetaPairs |>
 GridBetaPairs
 ```
 
+:::
+
+::: {.column width="50%"}
 **Grid with all $\beta_1$/$\beta_2$ combinations with $MSE$ (sorted):**
-```{webr}
-#| autorun: true
-#| echo: false
+```{r}
+#| echo: true
+#| code-fold: true
 arrange(GridBetaPairs,MSE)
 ```
 
-## Trial and Error with Optimizer (heuristic algorithm, not Brure Force)
+:::
+
+::::
+
+## Trial and Error with Optimizer (heuristic algorithm, not Brute Force)
 
 ```{webr}
 StartForBeta1Beta2=c(0,83) # 83 is the mean grade
 
 BestBetas=optim(StartForBeta1Beta2, FctMSE, data=DataMockup)
 
-print(BestBetas$par)
+cat("Optimized values for Beta1 and Beta2:", BestBetas$par)
 ```
 
 # Multivariate OLS with a Real World Dataset
@@ -625,7 +635,7 @@ $$Waterfront_{yes}=1-Waterfront_{no}$$
 
 ## Dummy and One-Hot Encoding {.scrollable}
 
-**Dummy Coding**
+**Dummy Encoding**
 
 We use one variable less than we have categories. Waterfront has two categories. Therefore, we use one variable (e.g., `Waterfront_yes`):
 
@@ -653,7 +663,8 @@ Here is how the recipe later on (in the workflow) transforms the data:
 #| echo: false
 options(tibble.print_max = Inf)
 options(tibble.width = Inf)
-DataRecipe=juice(RecipeHouses |> prep()) |> head()
+DataRecipe=juice(RecipeHouses |> prep())
+head(DataRecipe)
 ```
 
 ## Multivariate Analysis --- Building the Model Design
