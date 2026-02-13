@@ -235,8 +235,19 @@ Look at the simulation again and choose 240 for beta 1:
 
 [https://econ.lange-analytics.com/calcat/linregrmeans](https://econ.lange-analytics.com/calcat/linregrmeans){target="_blank"}
 
-## Evaluating Predictive Quality with the Testing Dataset
+## Evaluating Predictive Quality with the Training and Testing Dataset
 
+DataTrain:
+```{r}
+#| echo: true
+#| code-fold: true
+DataTrainWithPred=augment(WFModelHouses, new_data=DataTrain)
+metrics(DataTrainWithPred, truth=Price, estimate=.pred)
+```
+
+
+
+DataTest:
 ```{r}
 #| echo: true
 #| code-fold: true
