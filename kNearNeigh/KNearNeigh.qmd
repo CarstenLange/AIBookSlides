@@ -701,7 +701,7 @@ print(ConMatNebulous)
 
 Roulette has 37 numbers to bet on. Chance to win is: $\frac{1}{37}=0.027$.
 
-Out of the 1000 volunteers, 27 are expected to win $\frac{1}{37}/cdot 1000=27$, and the others (1000-27=973) are expected to lose.
+Out of the 1000 volunteers, 27 are expected to win $\frac{1}{37} /cdot 1000=27$, and the others (1000-27=973) are expected to lose.
 
 $$Accuracy=\frac{0+973}{1000}=0.973$$
 
