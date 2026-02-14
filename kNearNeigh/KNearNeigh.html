@@ -201,7 +201,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">k Nearest Neighbors</h1>
-  <p class="subtitle"><span style="color: red;">This slides are interactive and must load a full version of R and some packages. Please wait until complete (see the lower right corner of the screen.)</span></p>
+  <p class="subtitle"><span style="color: red;">These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the lower right corner of the screen for progress)</span></p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -226,7 +226,7 @@ Carsten Lange
 
 </div>
 <script type="webr-1-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJcbkRhdGFSb29tTWF0ZXMgPC0gZGF0YS5mcmFtZShcbiAgbmFtZSA9IGMoXCJTdHVkZW50IDFcIiwgXCJTdHVkZW50IDJcIiwgXCJTdHVkZW50IDNcIiksXG4gIFRpZHkgPSBjKDEsIDgsIDMpLCAgICMgMSA9IG1lc3N5LCAxMCA9IHZlcnkgdGlkeVxuICBTb2NpYWwgPSBjKDcsIDIsNSApICAgICAjIDEgPSBxdWlldCwgMTAgPSB2ZXJ5IHNvY2lhbFxuXG5EYXRhV2luZT1yZWFkUkRTKHVybChcImh0dHBzOi8vYWkubGFuZ2UtYW5hbHl0aWNzLmNvbS9kYXRhL1dpbmVEYXRhLnJkc1wiKSkgfD4gXG4gICAgICAgICBjbGVhbl9uYW1lcyhcInVwcGVyX2NhbWVsXCIpIHw+IFxuICAgICAgICAgc2VsZWN0KFdpbmVDb2xvcixTdWxmdXI9VG90YWxTdWxmdXJEaW94aWRlLEFjaWRpdHkpIHw+IFxuICAgICAgICAgbXV0YXRlKFdpbmVDb2xvcj1hcy5mYWN0b3IoV2luZUNvbG9yKSlcblxuc2V0LnNlZWQoODc2KVxuU3BsaXQ3MDMwPWluaXRpYWxfc3BsaXQoRGF0YVdpbmUscHJvcD0wLjcsc3RyYXRhID0gV2luZUNvbG9yKVxuRGF0YVRyYWluPXRyYWluaW5nKFNwbGl0NzAzMClcbkRhdGFUZXN0PXRlc3RpbmcoU3BsaXQ3MDMwKVxuXG5SZWNpcGVXaW5lPXJlY2lwZShXaW5lQ29sb3J+LiwgZGF0YSA9IERhdGFUcmFpbikgfD5cbiAgICAgICAgICAgIHN0ZXBfbmFvbWl0KCkgfD4gXG4gICAgICAgICAgICBzdGVwX25vcm1hbGl6ZShhbGxfcHJlZGljdG9ycygpKSBcblxuTW9kZWxEZXNpZ25LTk49bmVhcmVzdF9uZWlnaGJvcihuZWlnaGJvcnMgPSA0LCB3ZWlnaHRfZnVuYyA9IFwicmVjdGFuZ3VsYXJcIikgfD5cbiAgICAgICAgICAgICAgIHNldF9lbmdpbmUoXCJra25uXCIpIHw+IFxuICAgICAgICAgICAgICAgc2V0X21vZGUoXCJjbGFzc2lmaWNhdGlvblwiKVxuXG5XRk1vZGVsV2luZT13b3JrZmxvdygpIHw+IFxuICAgICAgICAgICAgYWRkX3JlY2lwZShSZWNpcGVXaW5lKSB8PlxuICAgICAgICAgICAgYWRkX21vZGVsKE1vZGVsRGVzaWduS05OKSB8PiBcbiAgICAgICAgICAgIGZpdChEYXRhVHJhaW4pXG5cbkRhdGFQcmVkV2l0aFRlc3REYXRhPWF1Z21lbnQoV0ZNb2RlbFdpbmUsIERhdGFUZXN0KSJ9
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJEYXRhUm9vbU1hdGVzIDwtIGRhdGEuZnJhbWUoXG4gIG5hbWUgPSBjKFwiU3R1ZGVudCAxXCIsIFwiU3R1ZGVudCAyXCIsIFwiU3R1ZGVudCAzXCIpLFxuICBUaWR5ID0gYygxLCA4LCAzKSwgICAjIDEgPSBtZXNzeSwgMTAgPSB2ZXJ5IHRpZHlcbiAgU29jaWFsID0gYyg3LCAyLDUgKSAgICAgIyAxID0gcXVpZXQsIDEwID0gdmVyeSBzb2NpYWxcbilcblxuRGF0YVdpbmU9cmVhZFJEUyh1cmwoXCJodHRwczovL2FpLmxhbmdlLWFuYWx5dGljcy5jb20vZGF0YS9XaW5lRGF0YS5yZHNcIikpIHw+IFxuICAgICAgICAgY2xlYW5fbmFtZXMoXCJ1cHBlcl9jYW1lbFwiKSB8PiBcbiAgICAgICAgIHNlbGVjdChXaW5lQ29sb3IsU3VsZnVyPVRvdGFsU3VsZnVyRGlveGlkZSxBY2lkaXR5KSB8PiBcbiAgICAgICAgIG11dGF0ZShXaW5lQ29sb3I9YXMuZmFjdG9yKFdpbmVDb2xvcikpXG5cbnNldC5zZWVkKDg3NilcblNwbGl0NzAzMD1pbml0aWFsX3NwbGl0KERhdGFXaW5lLHByb3A9MC43LHN0cmF0YSA9IFdpbmVDb2xvcilcbkRhdGFUcmFpbj10cmFpbmluZyhTcGxpdDcwMzApXG5EYXRhVGVzdD10ZXN0aW5nKFNwbGl0NzAzMClcblxuUmVjaXBlV2luZT1yZWNpcGUoV2luZUNvbG9yfi4sIGRhdGEgPSBEYXRhVHJhaW4pIHw+XG4gICAgICAgICAgICBzdGVwX25hb21pdCgpIHw+IFxuICAgICAgICAgICAgc3RlcF9ub3JtYWxpemUoYWxsX3ByZWRpY3RvcnMoKSkgXG5cbk1vZGVsRGVzaWduS05OPW5lYXJlc3RfbmVpZ2hib3IobmVpZ2hib3JzID0gNCwgd2VpZ2h0X2Z1bmMgPSBcInJlY3Rhbmd1bGFyXCIpIHw+XG4gICAgICAgICAgICAgICBzZXRfZW5naW5lKFwia2tublwiKSB8PiBcbiAgICAgICAgICAgICAgIHNldF9tb2RlKFwiY2xhc3NpZmljYXRpb25cIilcblxuV0ZNb2RlbFdpbmU9d29ya2Zsb3coKSB8PiBcbiAgICAgICAgICAgIGFkZF9yZWNpcGUoUmVjaXBlV2luZSkgfD5cbiAgICAgICAgICAgIGFkZF9tb2RlbChNb2RlbERlc2lnbktOTikgfD4gXG4gICAgICAgICAgICBmaXQoRGF0YVRyYWluKVxuXG5EYXRhUHJlZFdpdGhUZXN0RGF0YT1hdWdtZW50KFdGTW9kZWxXaW5lLCBEYXRhVGVzdCkifQ==
 </script>
 </div>
 </div>
@@ -339,13 +339,13 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1oZWlnaHQiOjE3LCJmaWctd2lkdGgi
 <li><p>How you can create a machine learning <strong>workflow</strong> with the <code>tidymodels</code> package</p></li>
 <li><p>How <strong>metrics</strong> derived from a <strong>confusion matrix</strong> can be used to asses prediction quality</p></li>
 <li><p>Why you have to be careful when interpreting <em>accuracy</em>, when you work with <strong>unbalanced observations</strong></p></li>
-<li><p>How a machine learning model can <strong>process images</strong> and how OCR (Optical Character Recognition) works»</p></li>
+<li><p>How a machine learning model can <strong>process images</strong> and how OCR (Optical Character Recognition) works</p></li>
 </ol>
 </section>
 <section id="about-the-wine-dataset" class="slide level2 scrollable">
 <h2>About the Wine Dataset</h2>
 <p><br><br><br>We will work with a publicly available wine dataset<sup>1</sup> containing 3,198 observations about different wines and their chemical properties.</p>
-<p>Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine’s chemical properties.»</p>
+<p>Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine’s chemical properties.</p>
 <aside><ol class="aside-footnotes"><li id="fn1"><p>Cortez, Paulo, António Cerdeira, Fernando Almeida, Telmo Matos, and José Reis. 2009. “Modeling Wine Preferences by Data Mining from Physicochemical Properties.” Decision Support Systems 47 (4): 547–53. https://doi.org/10.1016/j.dss.2009.05.016.</p></li></ol></aside></section>
 <section id="raw-observations-from-wine-dataset" class="slide level2 scrollable">
 <h2>Raw Observations from Wine Dataset</h2>
@@ -9955,7 +9955,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1oZWlnaHQiOjE3LCJmaWctd2lkdGgi
 3198       6</code></pre>
 </div>
 </div>
-<p>»</p>
 </section>
 <section id="observations-from-wine-dataset-for-selected-variables" class="slide level2 scrollable">
 <h2>Observations from Wine Dataset for Selected Variables</h2>
@@ -13172,13 +13171,12 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImZpZy1oZWlnaHQiOjE3LCJmaWctd2lkdGgi
 3198     white  140.0    6.50</code></pre>
 </div>
 </div>
-<p>»</p>
 </section>
 <section id="conceptual-detour-before-starting-with-k-nearest-neighbors" class="slide level2">
 <h2>Conceptual Detour: Before Starting with k Nearest Neighbors</h2>
 <h3 id="introducing-a-few-other-machine-learning-models-with-diagrams">Introducing a Few other Machine Learning Models with Diagrams</h3>
 <p><br><br><br><br></p>
-<h4 id="let-us-find-some-eyeballing-techniques-that-are-related-to-various-machine-learning-models">Let us find some eyeballing techniques that are related to various machine learning models»</h4>
+<h4 id="let-us-find-some-eyeballing-techniques-that-are-related-to-various-machine-learning-models">Let us find some eyeballing techniques that are related to various machine learning models</h4>
 </section>
 <section id="eye-balling-techniques-to-identify-red-and-white-wines" class="slide level2 scrollable">
 <h2>Eye Balling Techniques to Identify Red and White Wines</h2>
@@ -13236,7 +13234,7 @@ Prediction   Red Wine   White Wine
 <h2>k Nearest Neighbors k=1</h2>
 <h3 id="find-the-closest-datapoint-to-the-one-we-want-to-predict">(find the closest datapoint to the one we want to predict)</h3>
 
-<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color»</p></section>
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color</p></section>
 <section id="k-nearest-neighbors-k1-1" class="slide level2" data-transition="zoom-in slide-out" data-transition-speed="slow">
 <h2>k Nearest Neighbors k=1</h2>
 <h3 id="find-the-closest-datapoint-to-the-one-we-want-to-predict-1">(find the closest datapoint to the one we want to predict)</h3>
@@ -13244,15 +13242,15 @@ Prediction   Red Wine   White Wine
 <img data-src="KNearNeigh_files/figure-revealjs/WinePlotK1-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Predicting Wine Color with k-Nearest Neighbors (k=1)</p></section>
 <section id="how-to-calculate-euclidean-distance-for-two-variables" class="slide level2">
 <h2>How to calculate Euclidean Distance for Two Variables</h2>
-<p>Assume our observations have <strong>two predictor variables</strong> <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}\]</span> »</p>
+<p>Assume our observations have <strong>two predictor variables</strong> <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}\]</span></p>
 </section>
 <section id="how-to-calculate-euclidean-distance-for-three-variables" class="slide level2">
 <h2>How to calculate Euclidean Distance for Three Variables</h2>
-<p>Assume our observations have <strong>three predictor variables</strong> <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}\]</span> »</p>
+<p>Assume our observations have <strong>three predictor variables</strong> <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}\]</span></p>
 </section>
 <section id="how-to-calculate-euclidean-distance-for-n-variables" class="slide level2">
 <h2>How to calculate Euclidean Distance for N Variables</h2>
-<p>Assume our observations have <span class="math inline">\(N\)</span> predictor variables <span class="math inline">\(v_j\)</span> with <span class="math inline">\(j=1 ... N\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}\]</span> »</p>
+<p>Assume our observations have <span class="math inline">\(N\)</span> predictor variables <span class="math inline">\(v_j\)</span> with <span class="math inline">\(j=1 ... N\)</span>. We compare the unknown point <span class="math inline">\(p\)</span> to one of the points from the training data (e,g., point <span class="math inline">\(i\)</span>): <span class="math display">\[Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}\]</span></p>
 </section>
 <section id="k-nearest-neighbors-k4-for-a-different-unknown-wine" class="slide level2" data-transition="fade-in zoom-out" data-transition-speed="slow">
 <h2>k Nearest Neighbors k=4 (for a different unknown wine)</h2>
@@ -13269,7 +13267,7 @@ Prediction   Red Wine   White Wine
 <h2>k Nearest Neighbors k=4 (for a different unknown wine)</h2>
 <h4 id="watch-the-scale-gliter-vs.-mgliter.-that-does-not-look-right">Watch the scale: g/liter vs.&nbsp;mg/liter. That does not look right!</h4>
 
-<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgainAgainAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color »</p></section>
+<img data-src="KNearNeigh_files/figure-revealjs/WinePlotAgainAgainAgain-1.png" width="960" class="r-stretch quarto-figure-center"><p class="caption">Acidity and Total Sulfur Dioxide Related to Wine Color</p></section>
 <section id="a-few-common-scaling-options" class="slide level2 smaller">
 <h2>A Few Common Scaling Options</h2>
 <ul>
@@ -13279,7 +13277,7 @@ Prediction   Red Wine   White Wine
 <p>Generates a variable <span class="math inline">\(y\)</span> that is scaled to a range between 0 and 1 based on the original variable’s value <span class="math inline">\(x\)</span>, its minimum <span class="math inline">\(x_{min}\)</span> and its maximum <span class="math inline">\(x_{max}\)</span>: <span class="math display">\[ y= \frac{x-x_{min}}{x_{max} - x_{min}}\]</span></p></li>
 <li><p><strong>Z-Score Normalization</strong></p>
 <p>Z-score normalization uses the mean (<span class="math inline">\(\overline x\)</span>) and the standard deviation (<span class="math inline">\(s\)</span>) of a variable to scale the variable <span class="math inline">\(x\)</span> to the variable <span class="math inline">\(z\)</span>:</p>
-<p><span class="math display">\[z=\frac{x-\overline x}{s}\]</span>»</p></li>
+<p><span class="math display">\[z=\frac{x-\overline x}{s}\]</span></p></li>
 </ul>
 </section>
 <section id="time-to-run-k-nearest-neighbors" class="slide level2">
@@ -13574,7 +13572,7 @@ Prediction Win Lose
 </div>
 </div>
 <p>Roulette has 37 numbers to bet on. Chance to win is: <span class="math inline">\(\frac{1}{37}=0.027\)</span>.</p>
-<p>Out of the 1000 volunteers, 27 are expected to win <span class="math inline">\(\frac{1}{37} /cdot 1000=27\)</span>, and the others (1000-27=973) are expected to lose.</p>
+<p>Out of the 1000 volunteers, 27 are expected to win <span class="math inline">\(\frac{1}{37} /cdot  1000=27\)</span>, and the others (1000-27=973) are expected to lose.</p>
 <p><span class="math display">\[Accuracy=\frac{0+973}{1000}=0.973\]</span></p>
 </section>
 <section id="warning-be-careful-with-the-accuracy-rate-2" class="slide level2">

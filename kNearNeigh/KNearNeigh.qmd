@@ -1,6 +1,6 @@
 ---
 title: "k Nearest Neighbors"
-subtitle: "These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the  lower right corner of the screen for progress"
+subtitle: "[These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the  lower right corner of the screen for progress)]{style='color: red;'}"
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
@@ -205,7 +205,7 @@ In this session you will learn:
 
 9.  Why you have to be careful when interpreting *accuracy*, when you work with **unbalanced observations**
 
-10. How a machine learning model can **process images** and how OCR (Optical Character Recognition) works»
+10. How a machine learning model can **process images** and how OCR (Optical Character Recognition) works
 
 ## About the Wine Dataset
 
@@ -213,7 +213,7 @@ In this session you will learn:
 
 [^1]: Cortez, Paulo, António Cerdeira, Fernando Almeida, Telmo Matos, and José Reis. 2009. "Modeling Wine Preferences by Data Mining from Physicochemical Properties." Decision Support Systems 47 (4): 547--53. https://doi.org/10.1016/j.dss.2009.05.016.
 
-Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine's chemical properties.»
+Our goal is to develop a k-Nearest Neighbors model that can predict if a wine is red or white based on the wine's chemical properties.
 
 ## Raw Observations from Wine Dataset {.scrollable}
 
@@ -225,7 +225,7 @@ DataWine=import("https://ai.lange-analytics.com/data/WineData.rds")
 print(DataWine)
 ```
 
-»
+
 
 ## Observations from Wine Dataset for Selected Variables {.scrollable}
 
@@ -244,14 +244,14 @@ DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") |>
 print(DataWine)
 ```
 
-»
+
 
 ## Conceptual Detour: Before Starting with k Nearest Neighbors
 ### Introducing a Few other Machine Learning Models with Diagrams
 
 <br><br><br><br>
 
-#### Let us find some eyeballing techniques that are related to various machine learning models»
+#### Let us find some eyeballing techniques that are related to various machine learning models
 
 ## Eye Balling Techniques to Identify Red and White Wines {.scrollable}
 
@@ -385,7 +385,7 @@ print(ConMatTemp)
 
 ## k Nearest Neighbors k=1 {transition="fade-in zoom-out" transition-speed="slow"}
 ### (find the closest datapoint to the one we want to predict)
-```{r WinePlotAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color»"}
+```{r WinePlotAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color"}
 ggplot(DataTrain|> 
          add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
   labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' acidity and total sulfur dioxide")+
@@ -420,15 +420,15 @@ ggplot(DataTrain |>
 
 ## How to calculate Euclidean Distance for Two Variables
 
-Assume our observations have **two predictor variables** $x$ and $y$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}$$ »
+Assume our observations have **two predictor variables** $x$ and $y$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2}$$ 
 
 ## How to calculate Euclidean Distance for Three Variables
 
-Assume our observations have **three predictor variables** $x$, $y$, and $z$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}$$ »
+Assume our observations have **three predictor variables** $x$, $y$, and $z$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{(x_p-x_i)^2+(y_p-y_i)^2+(z_p-z_i)^2}$$ 
 
 ## How to calculate Euclidean Distance for N Variables
 
-Assume our observations have $N$ predictor variables $v_j$ with $j=1 ... N$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}$$ »
+Assume our observations have $N$ predictor variables $v_j$ with $j=1 ... N$. We compare the unknown point $p$ to one of the points from the training data (e,g., point $i$): $$Dist_i=\sqrt{\sum_{j=1}^N(v_{p,j}-v_{i,j})^2}$$ 
 
 ## k Nearest Neighbors k=4 (for a different unknown wine){transition="fade-in zoom-out" transition-speed="slow"}
 ### (find the closest 4 datapoint to the one we want to predict)
@@ -474,7 +474,7 @@ ggplot(DataTrain |>
 
 #### Watch the scale: g/liter vs. mg/liter. That does not look right!
 
-```{r WinePlotAgainAgainAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color »"}
+```{r WinePlotAgainAgainAgain, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Acidity and Total Sulfur Dioxide Related to Wine Color "}
 ggplot(DataTrain|> 
          add_row(WineColor="unknown", Acidity=6.8,Sulfur=68.5),aes(y=Acidity,x=Sulfur,color=WineColor))+
   labs(x="Total Sulfur Dioxide (mg/liter)", y="Acidity (tartaric acid in g/liter)",color="Wine Color", alt="A point plot of the wines' acidity 
@@ -500,7 +500,7 @@ ggplot(DataTrain|>
 
     Z-score normalization uses the mean ($\overline x$) and the standard deviation ($s$) of a variable to scale the variable $x$ to the variable $z$:
 
-    $$z=\frac{x-\overline x}{s}$$»
+    $$z=\frac{x-\overline x}{s}$$
 
 ## Time to Run k-Nearest Neighbors
 
@@ -769,7 +769,7 @@ print(ConMatNebulous)
 
 Roulette has 37 numbers to bet on. Chance to win is: $\frac{1}{37}=0.027$.
 
-Out of the 1000 volunteers, 27 are expected to win $\frac{1}{37} /cdot 1000=27$, and the others (1000-27=973) are expected to lose.
+Out of the 1000 volunteers, 27 are expected to win $\frac{1}{37} /cdot  1000=27$, and the others (1000-27=973) are expected to lose.
 
 $$Accuracy=\frac{0+973}{1000}=0.973$$
 
