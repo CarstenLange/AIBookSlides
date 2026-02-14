@@ -25,11 +25,20 @@
     <version>
         <name>NEW: Introduction to R and Positron</name>
         <description>
-            This presentation introduces the basics of R and using the IDE Positron (with interactive code).
+            This presentation introduces the basics of R using the IDE Positron (with interactive code).
         </description>
         <asset name="View online (recommended)" type="web">QuartoLive/RandPositron/RandPositron.html</asset>
 		<asset name="Download PDF" type="web">QuartoLive/RandPositron/RandPositron.pdf</asset>
         <asset name="Download Presentation's Source Code">RandPositron.zip</asset>    </version> 
+    <version>
+        <name>Introduction to R and RStudio - Part 1</name>
+        <description>
+            This presentation introduces the basics of R using the RStudio IDE.
+        </description>
+        <asset name="View online (recommended)" type="web">RAndRstudioPart1/RandRStudioPart1.html</asset>
+        <asset name="Download PDF">RAndRstudioPart2/RandRStudioPart1.pdf</asset>
+        <asset name="Download Presentation's Source Code">RandRStudioPart1.zip</asset>
+    </version>  
     <version>
         <name>Introduction to R and RStudio - Part 2</name>
         <description>
