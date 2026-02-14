@@ -205,9 +205,9 @@ Packages frequently used in this course (**please install soon**):
 
 ## Videos for the `rio` and the `tidyverse` Package {.smaller}
 
-Example: How to install the tidyverse package: [Click here](https://youtu.be/tAGoThXF2Os)
+Example: How to install the tidyverse package: [Click here](https://youtu.be/tAGoThXF2Os){target="_blank"}
 
-Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE)
+Video about the rio package: [Click here](https://youtu.be/8N_5sR4s8XE){target="_blank"}
 
 ## Using the `rio` and the `tidyverse` Package {.smaller}
 
@@ -620,7 +620,7 @@ print(GDPUS)
 
 ### Main 
 
-The probability of getting struck by lightning in the US is about $0.000000000365$ on any randomly chosen day.
+Daily chance of being struck by lightning at any U.S. location is: $0.000000000365$.
 
 \begin{eqnarray*}
 ProbLight&=&\frac{3.65}{10000000000} \\
@@ -631,10 +631,6 @@ ProbLight&=&\frac{3.65}{10^{10}}\\
 &\Longleftrightarrow&\\
 ProbLight&=&3.65 \cdot 10^{-10}
 \end{eqnarray*}
-
-**Let us see what R does:**  
-
-
 
 ```{webr}
 ProbStruck=0.000000000365

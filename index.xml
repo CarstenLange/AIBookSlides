@@ -36,7 +36,7 @@
             This presentation introduces the basics of R using the RStudio IDE.
         </description>
         <asset name="View online (recommended)" type="web">RAndRstudioPart1/RandRStudioPart1.html</asset>
-        <asset name="Download PDF">RAndRstudioPart2/RandRStudioPart1.pdf</asset>
+        <asset name="Download PDF">RAndRstudioPart1/RandRStudioPart1.pdf</asset>
         <asset name="Download Presentation's Source Code">RandRStudioPart1.zip</asset>
     </version>  
     <version>
