@@ -1,5 +1,6 @@
 ---
 title: "k Nearest Neighbors"
+subtitle: "These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the  lower right corner of the screen for progress"
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
@@ -7,7 +8,7 @@ author:
 
 format: 
   live-revealjs:
-    theme: [moon,../CustomCL.scss]
+    theme: [moon,CustomCL.scss]
     smaller: true
     controls: true
     chalkboard:
@@ -30,7 +31,7 @@ webr:
 engine: knitr
 ---
 
-{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
 
 
 ## Before we Begin Let Us Do A Thought Experiment
@@ -38,6 +39,12 @@ engine: knitr
 ```{webr}
 #| autorun: true
 #| echo: false
+DataRoomMates <- data.frame(
+  name = c("Student 1", "Student 2", "Student 3"),
+  Tidy = c(1, 8, 3),   # 1 = messy, 10 = very tidy
+  Social = c(7, 2,5 )     # 1 = quiet, 10 = very social
+)
+
 DataWine=readRDS(url("https://ai.lange-analytics.com/data/WineData.rds")) |> 
          clean_names("upper_camel") |> 
          select(WineColor,Sulfur=TotalSulfurDioxide,Acidity) |> 

@@ -1,6 +1,6 @@
 ---
-title: "Key Machine Learning Concepts"
-subtitle: "Explained with Linear Regression"
+title: "Key Machine Learning Concepts --- Explained with Linear Regression"
+subtitle: "[These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the  lower right corner of the screen for progress)]{style='color: red;'}"
 
 author:
   name: "Carsten Lange"
@@ -17,7 +17,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/linregr.html' target='_blank'>Textbook </a> "
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook//LinRegr.html' target='_blank'>Textbook </a> "
    
 webr:
   packages: ['dplyr', 'rsample', 'janitor',  'recipes', 

@@ -6,10 +6,10 @@
 <script src="KNearNeigh_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="KNearNeigh_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="KNearNeigh_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="KNearNeigh_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="KNearNeigh_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="KNearNeigh_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="KNearNeigh_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+  <meta name="generator" content="quarto-1.8.26">
 
   <meta name="author" content="Carsten Lange">
   <title>k Nearest Neighbors</title>
@@ -201,6 +201,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">k Nearest Neighbors</h1>
+  <p class="subtitle"><span style="color: red;">This slides are interactive and must load a full version of R and some packages. Please wait until complete (see the lower right corner of the screen.)</span></p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -225,7 +226,7 @@ Carsten Lange
 
 </div>
 <script type="webr-1-contents">
-eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJEYXRhV2luZT1yZWFkUkRTKHVybChcImh0dHBzOi8vYWkubGFuZ2UtYW5hbHl0aWNzLmNvbS9kYXRhL1dpbmVEYXRhLnJkc1wiKSkgfD4gXG4gICAgICAgICBjbGVhbl9uYW1lcyhcInVwcGVyX2NhbWVsXCIpIHw+IFxuICAgICAgICAgc2VsZWN0KFdpbmVDb2xvcixTdWxmdXI9VG90YWxTdWxmdXJEaW94aWRlLEFjaWRpdHkpIHw+IFxuICAgICAgICAgbXV0YXRlKFdpbmVDb2xvcj1hcy5mYWN0b3IoV2luZUNvbG9yKSlcblxuc2V0LnNlZWQoODc2KVxuU3BsaXQ3MDMwPWluaXRpYWxfc3BsaXQoRGF0YVdpbmUscHJvcD0wLjcsc3RyYXRhID0gV2luZUNvbG9yKVxuRGF0YVRyYWluPXRyYWluaW5nKFNwbGl0NzAzMClcbkRhdGFUZXN0PXRlc3RpbmcoU3BsaXQ3MDMwKVxuXG5SZWNpcGVXaW5lPXJlY2lwZShXaW5lQ29sb3J+LiwgZGF0YSA9IERhdGFUcmFpbikgfD5cbiAgICAgICAgICAgIHN0ZXBfbmFvbWl0KCkgfD4gXG4gICAgICAgICAgICBzdGVwX25vcm1hbGl6ZShhbGxfcHJlZGljdG9ycygpKSBcblxuTW9kZWxEZXNpZ25LTk49bmVhcmVzdF9uZWlnaGJvcihuZWlnaGJvcnMgPSA0LCB3ZWlnaHRfZnVuYyA9IFwicmVjdGFuZ3VsYXJcIikgfD5cbiAgICAgICAgICAgICAgIHNldF9lbmdpbmUoXCJra25uXCIpIHw+IFxuICAgICAgICAgICAgICAgc2V0X21vZGUoXCJjbGFzc2lmaWNhdGlvblwiKVxuXG5XRk1vZGVsV2luZT13b3JrZmxvdygpIHw+IFxuICAgICAgICAgICAgYWRkX3JlY2lwZShSZWNpcGVXaW5lKSB8PlxuICAgICAgICAgICAgYWRkX21vZGVsKE1vZGVsRGVzaWduS05OKSB8PiBcbiAgICAgICAgICAgIGZpdChEYXRhVHJhaW4pXG5cbkRhdGFQcmVkV2l0aFRlc3REYXRhPWF1Z21lbnQoV0ZNb2RlbFdpbmUsIERhdGFUZXN0KSJ9
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJcbkRhdGFSb29tTWF0ZXMgPC0gZGF0YS5mcmFtZShcbiAgbmFtZSA9IGMoXCJTdHVkZW50IDFcIiwgXCJTdHVkZW50IDJcIiwgXCJTdHVkZW50IDNcIiksXG4gIFRpZHkgPSBjKDEsIDgsIDMpLCAgICMgMSA9IG1lc3N5LCAxMCA9IHZlcnkgdGlkeVxuICBTb2NpYWwgPSBjKDcsIDIsNSApICAgICAjIDEgPSBxdWlldCwgMTAgPSB2ZXJ5IHNvY2lhbFxuXG5EYXRhV2luZT1yZWFkUkRTKHVybChcImh0dHBzOi8vYWkubGFuZ2UtYW5hbHl0aWNzLmNvbS9kYXRhL1dpbmVEYXRhLnJkc1wiKSkgfD4gXG4gICAgICAgICBjbGVhbl9uYW1lcyhcInVwcGVyX2NhbWVsXCIpIHw+IFxuICAgICAgICAgc2VsZWN0KFdpbmVDb2xvcixTdWxmdXI9VG90YWxTdWxmdXJEaW94aWRlLEFjaWRpdHkpIHw+IFxuICAgICAgICAgbXV0YXRlKFdpbmVDb2xvcj1hcy5mYWN0b3IoV2luZUNvbG9yKSlcblxuc2V0LnNlZWQoODc2KVxuU3BsaXQ3MDMwPWluaXRpYWxfc3BsaXQoRGF0YVdpbmUscHJvcD0wLjcsc3RyYXRhID0gV2luZUNvbG9yKVxuRGF0YVRyYWluPXRyYWluaW5nKFNwbGl0NzAzMClcbkRhdGFUZXN0PXRlc3RpbmcoU3BsaXQ3MDMwKVxuXG5SZWNpcGVXaW5lPXJlY2lwZShXaW5lQ29sb3J+LiwgZGF0YSA9IERhdGFUcmFpbikgfD5cbiAgICAgICAgICAgIHN0ZXBfbmFvbWl0KCkgfD4gXG4gICAgICAgICAgICBzdGVwX25vcm1hbGl6ZShhbGxfcHJlZGljdG9ycygpKSBcblxuTW9kZWxEZXNpZ25LTk49bmVhcmVzdF9uZWlnaGJvcihuZWlnaGJvcnMgPSA0LCB3ZWlnaHRfZnVuYyA9IFwicmVjdGFuZ3VsYXJcIikgfD5cbiAgICAgICAgICAgICAgIHNldF9lbmdpbmUoXCJra25uXCIpIHw+IFxuICAgICAgICAgICAgICAgc2V0X21vZGUoXCJjbGFzc2lmaWNhdGlvblwiKVxuXG5XRk1vZGVsV2luZT13b3JrZmxvdygpIHw+IFxuICAgICAgICAgICAgYWRkX3JlY2lwZShSZWNpcGVXaW5lKSB8PlxuICAgICAgICAgICAgYWRkX21vZGVsKE1vZGVsRGVzaWduS05OKSB8PiBcbiAgICAgICAgICAgIGZpdChEYXRhVHJhaW4pXG5cbkRhdGFQcmVkV2l0aFRlc3REYXRhPWF1Z21lbnQoV0ZNb2RlbFdpbmUsIERhdGFUZXN0KSJ9
 </script>
 </div>
 </div>
@@ -13526,8 +13527,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiYWNjdXJhY3koRGF0YVByZWRX
 <p>3 Create Model-Design</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a>ModelDesignName<span class="ot">=</span><span class="fu">MachLearnModelName</span>() <span class="sc">|&gt;</span></span>
-<span id="cb11-2"><a href=""></a>               <span class="fu">set_engine</span>(<span class="st">"PackageName"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb11-3"><a href=""></a>               <span class="fu">set_mode</span>(<span class="st">"classification or regression"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb11-2"><a href=""></a>                <span class="fu">set_engine</span>(<span class="st">"PackageName"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-3"><a href=""></a>                <span class="fu">set_mode</span>(<span class="st">"classification or regression"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <ol start="4" type="1">
 <li>Create Workflow and Fit to Training Data</li>
