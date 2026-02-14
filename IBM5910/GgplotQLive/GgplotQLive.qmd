@@ -7,7 +7,7 @@ author:
 
 format: 
   live-revealjs:
-    theme: [moon,../../CustomCL.scss]
+    theme: [moon, CustomCL.scss]
     smaller: true
     controls: true
     chalkboard:
