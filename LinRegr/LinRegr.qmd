@@ -9,7 +9,7 @@ author:
 
 format: 
   live-revealjs:
-    theme: [moon,../CustomCL.scss]
+    theme: [moon, CustomCL.scss]
     smaller: true
     controls: true
     chalkboard:
@@ -26,7 +26,7 @@ webr:
 engine: knitr
 ---
 
-{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
 
 ## Loading Data and Libraries
 
@@ -424,15 +424,10 @@ FctMSE=function(VecBeta, data){
 
 ## Method 1: Calculate Optimal Parameters (only for OLS!) {.smaller} 
 
-```{=tex}
-\begin{eqnarray*} 
-\beta_{1,opt}&=& \frac
-{N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
-{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
-&& \nonumber \\
-\beta_{2,opt.}&=& \frac{\sum_{i=1}^N y_i}{N}  - \beta_1 \frac{\sum_{i=1}^N x_i} {N} = 64.18
-\end{eqnarray*}
-```
+$$\beta_{1,opt}= \frac
+{N \sum_{i=1}^N y_i x_i - \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96 \quad\mbox{ and }\quad
+\beta_{2,opt.}= \frac{\sum_{i=1}^N y_i}{N}  - \beta_1 \frac{\sum_{i=1}^N x_i} {N} = 64.18$$
 
 ```{r}
 DataTable=DataMockup |>
