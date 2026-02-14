@@ -23,7 +23,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html'>Textbook </a> "
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RAndRStudio.html' target='_blank'>Textbook</a>"
 
 webr:
   packages:
