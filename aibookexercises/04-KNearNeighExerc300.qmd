@@ -208,7 +208,7 @@ Please complete the code block below i Here are a few hints:
 #| exercise: ex_1
 #| exercise.setup: ex_all
 DataMnist=DataMnist |>
-mutate(Label=as.factor())
+mutate(Label=as.factor(______))
 set.seed(789)
 Split7030=initial_split(DataMnist, 0.70, strata=Label)
 DataTrain=training(______)
@@ -267,9 +267,9 @@ When developing a machine learning model with `tidymodels`, you can always follo
 
 1.  Define a *recipe* to pre-process the data and define which variables are *outcome* and which are *predictor* variables (for details about *recipes* see [the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#using-tidymodels-for-k-nearest-neighbors){target=_blank}).
 
-2.  Define the *model-design* that determines which machine learning model to use and which *R* package contains the model ([the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#creating-a-model-design){target=_blank}))).
+2.  Define the *model-design* that determines which machine learning model to use and which *R* package contains the model ([the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#creating-a-model-design){target=_blank}).
 
-3.  Add the *recipe* and the *model-design* to a workflow and use the training data to fit the machine learning model. The resulting workflow model can then be used for predictions ([the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-WorkFlowK1){target=_blank})).
+3.  Add the *recipe* and the *model-design* to a workflow and use the training data to fit the machine learning model. The resulting workflow model can then be used for predictions ([the related section in Practical Machine Learning with R](https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-WorkFlowK1){target=_blank}).
 
 The code block below completes steps 1) and 2). The first line creates the *recipe*, and it is stored in an *R* object named `RecipeMnist`. We can use `Label~.` to determine that $Label$ is the outcome variable, and all other variables are predictor variables because the data frame `DataTrain` contains exclusively outcome and predictor variables. Normalization with `step_normalize()` is unnecessary because the predictor variables are already in the same range (from $0$ for *black* to 255 for *white*). Also, all observations are complete. Therefore, `step_naomit()` is not needed either.
 
@@ -325,7 +325,7 @@ Now, you can move to the third step to create a fitted *workflow model*. In the 
 ```{webr}
 #| exercise: ex_3
 #| exercise.setup: ex_all
-WFMnist=workflow() |> 
+WFModelMnist=workflow() |> 
         add_recipe(______) |>
         add_model(______) |> 
         fit(______)
@@ -459,8 +459,8 @@ Please complete the code in the second line of code. When you execute the `Metri
 ```{webr}
 #| exercise: ex_6
 #| exercise.setup: ex_all
-MetricsSetMnist=metric_set(accuracy, sensitivity, specificity)
-MetricsSetMnist(DataTestWithPred, truth=______, estimate=______)
+MetricsFctMnist=metric_set(accuracy, sensitivity, specificity)
+MetricsFctMnist(DataTestWithPred, truth=______, estimate=______)
 ```
 
 ::: { .hint exercise="ex_6"}
@@ -478,8 +478,8 @@ The command `MetricsSetMnist()`  was generated in the first line of code. When u
 ```{webr}
 #| exercise: ex_6
 #| solution: true
-MetricsWine=metric_set(accuracy, sensitivity, specificity) #<1>
-MetricsWine(DataTestWithPred, truth=Label, estimate=.pred_class) #<2>
+MetricsFctMnist=metric_set(accuracy, sensitivity, specificity) #<1>
+MetricsFctMnist(DataTestWithPred, truth=Label, estimate=.pred_class) #<2>
 ```
 
 1. Creates a new command that simultaneously calculates *accuracy*, *sensitivity*, and *specificity*.

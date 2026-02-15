@@ -266,7 +266,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1
 
 </div>
 <script type="webr-7-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMSIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJEYXRhTW5pc3Q9RGF0YU1uaXN0IHw+XG5tdXRhdGUoTGFiZWw9YXMuZmFjdG9yKCkpXG5zZXQuc2VlZCg3ODkpXG5TcGxpdDcwMzA9aW5pdGlhbF9zcGxpdChEYXRhTW5pc3QsIDAuNzAsIHN0cmF0YT1MYWJlbClcbkRhdGFUcmFpbj10cmFpbmluZyhfX19fX18pXG5EYXRhVGVzdD1fX19fX18oX19fX19fKVxuXG5wcmludChcIkRhdGFUcmFpbiBhbmQgRGF0YVRlc3QgZGVmaW5lZC5cIikifQ==
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMSIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJEYXRhTW5pc3Q9RGF0YU1uaXN0IHw+XG5tdXRhdGUoTGFiZWw9YXMuZmFjdG9yKF9fX19fXykpXG5zZXQuc2VlZCg3ODkpXG5TcGxpdDcwMzA9aW5pdGlhbF9zcGxpdChEYXRhTW5pc3QsIDAuNzAsIHN0cmF0YT1MYWJlbClcbkRhdGFUcmFpbj10cmFpbmluZyhfX19fX18pXG5EYXRhVGVzdD1fX19fX18oX19fX19fKVxuXG5wcmludChcIkRhdGFUcmFpbiBhbmQgRGF0YVRlc3QgZGVmaW5lZC5cIikifQ==
 </script>
 </div>
 </div>
@@ -329,8 +329,8 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 <p>When developing a machine learning model with <code>tidymodels</code>, you can always follow the same process:</p>
 <ol type="1">
 <li><p>Define a <em>recipe</em> to pre-process the data and define which variables are <em>outcome</em> and which are <em>predictor</em> variables (for details about <em>recipes</em> see <a href="https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#using-tidymodels-for-k-nearest-neighbors" target="_blank">the related section in Practical Machine Learning with R</a>).</p></li>
-<li><p>Define the <em>model-design</em> that determines which machine learning model to use and which <em>R</em> package contains the model (<a href="https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#creating-a-model-design" target="_blank">the related section in Practical Machine Learning with R</a>))).</p></li>
-<li><p>Add the <em>recipe</em> and the <em>model-design</em> to a workflow and use the training data to fit the machine learning model. The resulting workflow model can then be used for predictions (<a href="https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-WorkFlowK1" target="_blank">the related section in Practical Machine Learning with R</a>)).</p></li>
+<li><p>Define the <em>model-design</em> that determines which machine learning model to use and which <em>R</em> package contains the model (<a href="https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#creating-a-model-design" target="_blank">the related section in Practical Machine Learning with R</a>).</p></li>
+<li><p>Add the <em>recipe</em> and the <em>model-design</em> to a workflow and use the training data to fit the machine learning model. The resulting workflow model can then be used for predictions (<a href="https://ai.lange-analytics.com/htmlbook/KNearNeigh.html#KNearNeigh-WorkFlowK1" target="_blank">the related section in Practical Machine Learning with R</a>).</p></li>
 </ol>
 <p>The code block below completes steps 1) and 2). The first line creates the <em>recipe</em>, and it is stored in an <em>R</em> object named <code>RecipeMnist</code>. We can use <code>Label~.</code> to determine that <span class="math inline">\(Label\)</span> is the outcome variable, and all other variables are predictor variables because the data frame <code>DataTrain</code> contains exclusively outcome and predictor variables. Normalization with <code>step_normalize()</code> is unnecessary because the predictor variables are already in the same range (from <span class="math inline">\(0\)</span> for <em>black</em> to 255 for <em>white</em>). Also, all observations are complete. Therefore, <code>step_naomit()</code> is not needed either.</p>
 <p>The second step is your task. Please complete the command that defines the <em>model-design</em> and store the result in the <em>R</em> object <code>ModelDesignKNN</code>. Use the model <code>nearest_neighbor()</code> from the <em>R</em> package <code>kknn</code> and remember that the model is a <em>classification</em> rather than a <em>regression</em> model.</p>
@@ -385,7 +385,7 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 
 </div>
 <script type="webr-17-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMyIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJXRk1uaXN0PXdvcmtmbG93KCkgfD4gXG4gICAgICAgIGFkZF9yZWNpcGUoX19fX19fKSB8PlxuICAgICAgICBhZGRfbW9kZWwoX19fX19fKSB8PiBcbiAgICAgICAgZml0KF9fX19fXylcblxuV0ZNb2RlbE1uaXN0In0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMyIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJXRk1vZGVsTW5pc3Q9d29ya2Zsb3coKSB8PiBcbiAgICAgICAgYWRkX3JlY2lwZShfX19fX18pIHw+XG4gICAgICAgIGFkZF9tb2RlbChfX19fX18pIHw+IFxuICAgICAgICBmaXQoX19fX19fKVxuXG5XRk1vZGVsTW5pc3QifQ==
 </script>
 </div>
 </div>
@@ -470,7 +470,7 @@ head(DataTestWithPred |&gt; select(Label,.pred_class,
 </dd>
 <dt data-target-cell="interpolate-25" data-target-annotation="2">2</dt>
 <dd>
-<span data-code-cell="interpolate-25" data-code-lines="4" data-code-annotation="2">Sorts the column <code>Label</code> and <code>.pred_class</code> to the front of the new data frame <code>DataTestWithPred</code> and then outputs the first six augmented observations (columns for <code>Pix9</code> – <code>Pix784</code> are ommitted).</span>
+<span data-code-cell="interpolate-25" data-code-lines="4" data-code-annotation="2">Sorts the column <code>Label</code> and <code>.pred_class</code> to the front of the new data frame <code>DataTestWithPred</code> and then outputs the first six augmented observations (columns for <code>Pix9</code> – <code>Pix784</code> are omitted).</span>
 </dd>
 </dl>
 </div>
@@ -535,7 +535,7 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 
 </div>
 <script type="webr-32-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfNiIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJNZXRyaWNzU2V0TW5pc3Q9bWV0cmljX3NldChhY2N1cmFjeSwgc2Vuc2l0aXZpdHksIHNwZWNpZmljaXR5KVxuTWV0cmljc1NldE1uaXN0KERhdGFUZXN0V2l0aFByZWQsIHRydXRoPV9fX19fXywgZXN0aW1hdGU9X19fX19fKSJ9
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfNiIsImV4ZXJjaXNlLnNldHVwIjoiZXhfYWxsIn0sImNvZGUiOiJNZXRyaWNzRmN0TW5pc3Q9bWV0cmljX3NldChhY2N1cmFjeSwgc2Vuc2l0aXZpdHksIHNwZWNpZmljaXR5KVxuTWV0cmljc0ZjdE1uaXN0KERhdGFUZXN0V2l0aFByZWQsIHRydXRoPV9fX19fXywgZXN0aW1hdGU9X19fX19fKSJ9
 </script>
 </div>
 </div>
@@ -551,10 +551,10 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfNiIsImV4ZXJjaXNl
 <p><strong>Here is the solution:</strong></p>
 <div class="cell" data-exercise="ex_6" data-solution="true">
 <div class="webr-ojs-exercise exercise-solution d-none" data-exercise="ex_6">
-<code id="interpolate-34" class="solution-code d-none">MetricsWine=metric_set(accuracy, sensitivity, specificity) #&lt;1&gt;
-MetricsWine(DataTestWithPred, truth=Label, estimate=.pred_class) #&lt;2&gt;</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-35"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="interpolate-35" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-35-1" class="code-annotation-target"><a href="#interpolate-35-1" aria-hidden="true" tabindex="-1"></a>MetricsWine<span class="ot">=</span><span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span>
-<a class="code-annotation-anchor" data-target-cell="interpolate-35" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="interpolate-35-2" class="code-annotation-target"><a href="#interpolate-35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">MetricsWine</span>(DataTestWithPred, <span class="at">truth=</span>Label, <span class="at">estimate=</span>.pred_class)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<code id="interpolate-34" class="solution-code d-none">MetricsFctMnist=metric_set(accuracy, sensitivity, specificity) #&lt;1&gt;
+MetricsFctMnist(DataTestWithPred, truth=Label, estimate=.pred_class) #&lt;2&gt;</code>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-35"><pre class="sourceCode r code-annotation-code code-with-copy code-annotated"><code class="sourceCode r"><a class="code-annotation-anchor" data-target-cell="interpolate-35" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-35-1" class="code-annotation-target"><a href="#interpolate-35-1" aria-hidden="true" tabindex="-1"></a>MetricsFctMnist<span class="ot">=</span><span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span>
+<a class="code-annotation-anchor" data-target-cell="interpolate-35" data-target-annotation="2" onclick="event.preventDefault();" href="">2</a><span id="interpolate-35-2" class="code-annotation-target"><a href="#interpolate-35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">MetricsFctMnist</span>(DataTestWithPred, <span class="at">truth=</span>Label, <span class="at">estimate=</span>.pred_class)</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
