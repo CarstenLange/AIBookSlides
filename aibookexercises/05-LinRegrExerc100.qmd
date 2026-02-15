@@ -8,9 +8,7 @@ author:
     affiliation: "Professor of Economics, Cal Poly, Pomona"
 
 
-format: 
-  live-html:
-    number-sections: true
+format: live-html
 
 webr:
   packages: ['dplyr', 'rsample', 'janitor', 'recipes', 'yardstick', 'parsnip', 'workflows', 'broom'] #Auto-install packages
@@ -286,14 +284,9 @@ This one is pretty straight forward, replace the corresponding values with their
 #| solution: true
 180*1500+95214*9+868338*0-570056
 ```
-
 :::
 
-```{webr}
-#| exercise: ex_3
-#| check: true
-gradethis::grade_this_code()
-```
+
 Equation (-@eq-LinRegr-MultiVarPredictWithBetas)  helps to interpret the $\beta s$. The $\beta$ parameters indicate the predicted price change when the related predictor variable increases by one unit.
 
 

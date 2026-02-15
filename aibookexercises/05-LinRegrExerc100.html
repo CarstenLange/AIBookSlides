@@ -181,8 +181,8 @@ eyJhdHRyIjp7ImF1dG8tcnVuIjp0cnVlLCJlY2hvIjpmYWxzZSwiZWRpdCI6ZmFsc2UsImV2YWwiOnRy
 </script>
 </div>
 </div>
-<section id="exercise-1" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="exercise-1"><span class="header-section-number">1</span> Exercise 1</h2>
+<section id="exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
 <div class="cell">
 <div>
 <div id="webr-3" class="exercise-cell">
@@ -287,8 +287,8 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </script>
 </div>
 </section>
-<section id="exercise-2" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="exercise-2"><span class="header-section-number">2</span> Exercise 2</h2>
+<section id="exercise-2" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2">Exercise 2</h2>
 <p>Next, you will use a pipe to add the recipe and the <em>model design</em> to a <code>workflow</code> and fit the <code>workflow</code> model to the training data.</p>
 <p>Please substitute the <code>______</code> in the code block below and execute the code. If everything is correct, <em>R</em> will print information about the fitted <code>workflow</code> model. The command <code>tidy()</code> ensures a well formatted printout with the essential results including the optimal values for the <span class="math inline">\(\beta s\)</span>:</p>
 <div class="cell" data-exercise="ex_2" data-exercise.setup="ex_all">
@@ -337,8 +337,8 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 <p>If we know the values for the predictor variables, we can estimate the housing price. For example:</p>
 <p>If we want to predict the price of a house with <span class="math inline">\(1,500\)</span> square feet (<span class="math inline">\(Sqft=1500\)</span>), a building condition grade of <span class="math inline">\(9\)</span> <span class="math inline">\((Grade=9)\)</span>, and the house is not located at the waterfront (<span class="math inline">\(Waterfront\_yes=0\)</span>), we can plugin in these values into the prediction Equation (<a href="#eq-LinRegr-MultiVarPredictWithBetas" class="quarto-xref">1</a>). As a result we get <span class="math inline">\(556,870\)</span> as the predicted house price <span class="math inline">\((\widehat{Price}=556,870)\)</span>.</p>
 </section>
-<section id="exercise-3" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="exercise-3"><span class="header-section-number">3</span> Exercise 3</h2>
+<section id="exercise-3" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3">Exercise 3</h2>
 <p>Try it out in the code block below. Substitute <span class="math inline">\(Sqft\)</span>, <span class="math inline">\(Grade\)</span>, and <span class="math inline">\(Waterfront\_yes\)</span> with the corresponding values and execute the code to get the predicted price <span class="math inline">\((\widehat{Price})\)</span>.</p>
 <div class="cell" data-exercise="ex_3" data-exercise.setup="ex_all">
 <div>
@@ -362,11 +362,6 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMyIsImV4ZXJjaXNl
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="interpolate-17-1"><a href="#interpolate-17-1" aria-hidden="true" tabindex="-1"></a><span class="dv">180</span><span class="sc">*</span><span class="dv">1500</span><span class="sc">+</span><span class="dv">95214</span><span class="sc">*</span><span class="dv">9</span><span class="sc">+</span><span class="dv">868338</span><span class="sc">*</span><span class="dv">0-570056</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
-</div>
-<div class="cell" data-exercise="ex_3" data-check="true">
-<script type="exercise-check-ex_3-contents">
-eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4XzMifSwiY29kZSI6ImdyYWRldGhpczo6Z3JhZGVfdGhpc19jb2RlKCkifQ==
-</script>
 </div>
 <p>Equation (<a href="#eq-LinRegr-MultiVarPredictWithBetas" class="quarto-xref">1</a>) helps to interpret the <span class="math inline">\(\beta s\)</span>. The <span class="math inline">\(\beta\)</span> parameters indicate the predicted price change when the related predictor variable increases by one unit.</p>
 <p>Suppose the living square footage increases by one unit (one extra square foot), then the estimated price of a house changes by about 180 units ($180) because the change of one unit is multiplied by 180 <span class="math inline">\((\beta_1=180)\)</span>. You can verify this when you return to the code block above and substitute <span class="math inline">\(Sqft\)</span> with <span class="math inline">\(1501\)</span> instead of <span class="math inline">\(1500\)</span> (leave <span class="math inline">\(Grade=9\)</span> and <span class="math inline">\(Waterfront\_yes=0\)</span> unchanged). You will see that the estimated price will be $557,050 instead of $556,870, a change of $180.</p>
