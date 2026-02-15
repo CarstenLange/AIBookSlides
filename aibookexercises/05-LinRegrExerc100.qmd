@@ -1,11 +1,12 @@
 ---
 title: "Interactive Project: Predict House Prices with Multivariate Regression"
-subtitle: "Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
+subtitle: Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
 
 author:
   - name: "Carsten Lange"
     email: "clange@cpp.edu"
     affiliation: "Professor of Economics, Cal Poly, Pomona"
+
 
 format: 
   live-html:
@@ -67,17 +68,17 @@ DataTest = testing(Split7030)
 
 RecipeHouses = recipe(Price~., data = DataTrain) |>
   step_dummy(Waterfront) #makes Waterfront into dummy variable
-ModelDesignHouses = linear_reg() |>
+ModelDesignLM = linear_reg() |>
   set_engine("lm") |>
   set_mode("regression")
 
 WFModelHouses = workflow() |>
   add_recipe(RecipeHouses) |>
-  add_model(ModelDesignHouses) |>
+  add_model(ModelDesignLM) |>
   fit(DataTrain)
 ```
 
-Now that you learned some details about **OLS**, **Grid Search**, and **Optimizers** based on a mockup dataset, it is time to work with a real-world scenario. In this section, you will work on a project to estimate housing prices with linear regression using the so-called **King County House Sale** dataset [@Kaggle2015]. This dataset contains house sale prices from May 2014 to May 2015 for King County in Washington State, including Seattle, WA.
+Now it is time to work with a linear Ordinary Least Square regression on a real-world scenario. In this section, you will work on a project to estimate housing prices with linear regression using the so-called **King County House Sale** dataset [Kaggle2015]. This dataset contains house sale prices from May 2014 to May 2015 for King County in Washington State, including Seattle, WA.
 
 As predictor variables, you will use:
 
@@ -97,36 +98,45 @@ In the code block below, we import the complete King County dataset with all 21,
 
 It is unnecessary for a linear regression model to normalize the predictors as we did for the *k-Nearest Neighbors* model. The reason is that OLS adjusts the coefficients ($\beta$ parameters) to changing dimensions. You find more information on why it is not necessary to normalize predictors for linear regression in the *Digital Resource* section for this chapter.
 
-As in Chapter Section \@ref(KNearNeigh), we will split the data into training and testing data by randomly assigning observations to either the training or the testing data. As a reminder, only the training data are used to train the model (finding optimal parameters). The testing dataset is a holdout dataset exclusively used to assess the predictive quality after training has been completed.
+We will split the data into training and testing data by randomly assigning observations to either the training or the testing data. As a reminder, only the training data are used to train the model (finding optimal parameters). The testing dataset is a holdout dataset exclusively used to assess the predictive quality after training has been completed.
+
+Here is the code:
 
 ```{r}
-HousingData<-
+HousingData <-
   read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
   clean_names("upper_camel") |>
-  select(Price, Sqft=SqftLiving, Grade, Waterfront)
+  select(Price, Sqft = SqftLiving, Grade, Waterfront)
 set.seed(777)
-Split7030=initial_split(HousingData, prop=0.7,  strata=Price, breaks=5)
-DataTrain=training(Split7030)
-DataTest=testing(Split7030)
+Split7030 = initial_split(HousingData, prop = 0.7, strata = Price, breaks = 5)
+DataTrain = training(Split7030)
+DataTest = testing(Split7030)
 head(DataTrain)
-
-RecipeHouses=recipe(Price~., data=DataTrain) |> 
-             step_dummy(Waterfront)
-ModelDesignHouses=linear_reg() |> 
-  set_engine("lm") |> 
-  set_mode("regression")
-  
-WFModelHouses=workflow() |>  
-      add_recipe(RecipeHouses) |> 
-      add_model(ModelDesignHouses) |> 
-      fit(DataTrain)
-
-DataTestWithPred=augment(WFModelHouses, DataTest)
-MetricsFctHouses=metric_set(rmse,rsq,mae)
-MetricsDataFrame=MetricsFctHouses(DataTestWithPred,truth=Price,estimate = .pred)
 ```
 
-In the `initial_split()` command, the first argument (`0.7`) determines the proportion of observations randomly assigned to the training dataset (consequently, `30%` are assigned to the testing dataset). The second argument (`data=DataHousing`) determines the data frame to be used as a source for the split. Like in Chapter \@ref(KNearNeigh), we choose one variable (`strata=Price`) that should be proportionally presented in the training and testing dataset. Since $Price$ is a continuous variable rather than a categorical variable, we split the range of the housing prices into quintiles using `breaks=5`. This ensures observations from each quintile are proportionally represented in training and testing data. In the printout above, you can see the first six records of the training dataset.
+```{r}
+#| echo: false
+RecipeHouses = recipe(Price ~ ., data = DataTrain) |>
+  step_dummy(Waterfront)
+ModelDesignLM = linear_reg() |>
+  set_engine("lm") |>
+  set_mode("regression")
+
+WFModelHouses = workflow() |>
+  add_recipe(RecipeHouses) |>
+  add_model(ModelDesignLM) |>
+  fit(DataTrain)
+
+DataTestWithPred = augment(WFModelHouses, DataTest)
+MetricsFctHouses = metric_set(rmse, rsq, mae)
+MetricsDataFrame = MetricsFctHouses(
+  DataTestWithPred,
+  truth = Price,
+  estimate = .pred
+)
+```
+
+In the `initial_split()` command, the first argument (`0.7`) determines the proportion of observations randomly assigned to the training dataset (consequently, `30%` are assigned to the testing dataset). The second argument (`data=DataHousing`) determines the data frame to be used as a source for the split. We choose the outcome variable (`strata=Price`) that should be proportionally presented in the training and testing dataset. 
 
 The linear regression model is represented by the following Equation:
 
@@ -138,42 +148,47 @@ The linear regression model is represented by the following Equation:
 
 Before using *OLS* to find the optimal numerical values for the $\beta s$, we have to solve one more problem: The $Waterfront$ variable in the data frame `DataTrain` is not numerical. Instead, it contains the values "yes" and "no". To tackle this problem, we can turn $Waterfront$ into a *dummy variable* using `step_dummy()` in the *recipe*. The command `step_dummy()` assigns a value of $1$ when the value of the $Waterfront$ variable is "yes" and a value of $0$ when it is "no". There is no definite rule about which value $1$ or $0$ is assigned to "yes" or "no", but it is common practise to assign $1$ to "yes" and $0$ to "no".
 
-The *recipe* in the code block below determines the variables used for the analysis and converts $Waterfront$ into a dummy variable. First, $Price$ is defined as the outcome variable, and all other variables ($Sqft$, $Grade$, and $Waterfront$) are defined as predictor variables using the `.`-notation. Then `step_dummy(Waterfront)` converts the categorical variable $Waterfront$ into the dummy variable $Waterfront\_yes$.
+The *recipe* in the code block below determines the variables used for the analysis and converts $Waterfront$ into a dummy variable:
+
+1. $Price$ is defined as the outcome variable, and all other variables ($Sqft$, $Grade$, and $Waterfront$) are defined as predictor variables using the `.`-notation. 
+2.  `step_dummy(Waterfront)` converts the categorical variable $Waterfront$ into the dummy variable $Waterfront\_yes$.
 
 ```{r}
 RecipeHouses=recipe(Price~., data=DataTrain) |> 
-             step_dummy(waterfront)
+             step_dummy(Waterfront)
 ```
 
-Note that `step_dummy` changes the variable name (the column name in the data frame) to indicate which category is set to "1". Since waterfront "yes" is assigned to $1$, the command `step_dummy()` renames $Waterfront$ to $Waterfront\_yes$. Consequently, if $Waterfront\_yes=1$, a house is located at the waterfront.
+Note that `step_dummy` changes the variable name (the column name in the data frame) from $Waterfront$ to $Waterfront\_yes$ to indicate which category is set to "1". Consequently, $Waterfront\_yes=1$ indicates that a house is located at the waterfront.
 
-The multivariate *model design* for the housing analysis does not differ from the univariate *model design* in Section \@ref(LinRegr-UniVarMockup-OLS). From the package `lm`, we use the model `linear_reg()` with mode `"Regression"`.
+A linear regression in `tidymodels` uses the model command  `linear_reg()` in the *model design*. It is part of the package `lm`.
 
 Please substitute the `______` in the code block below and execute the code. If everything is correct, *R* prints information about the model design:
 
 ```{webr}
 #| exercise: ex_1
 #| exercise.setup: ex_all
-ModelDesignHouses=linear_reg() |> 
+ModelDesignLM=linear_reg() |> 
   set_engine("______") |> 
   set_mode("______")
-print(ModelDesignHouses)
+print(ModelDesignLM)
 ```
 
 ::: {.hint exercise="ex_1"}
-I think the answer is probably 2
+**Here is a Hint:**
+
+Will be added by 2/19/26
 :::
 
 ::: {.solution exercise="ex_1"}
-Here is the Solution: it is not 2
+**Here is the Solution:**
 
 ```{webr}
 #| exercise: ex_1
 #| solution: true
-ModelDesignHouses=linear_reg() |> 
+ModelDesignLM=linear_reg() |> 
   set_engine("lm") |> 
   set_mode("regression")
-print(ModelDesignHouses)
+print(ModelDesignLM)
 ```
 
 :::
@@ -188,7 +203,7 @@ gradethis::grade_this_code()
 
 Next, you will use a pipe to add the recipe and the *model design* to a `workflow` and fit the `workflow` model to the training data.
 
-Please substitute the `______` in the code block below and execute the code. If everything is correct, *R* will print information about the fitted `workflow` model. The printout includes the optimal values for the $\beta s$:
+Please substitute the `______` in the code block below and execute the code. If everything is correct, *R* will print information about the fitted `workflow` model. The command `tidy()` ensures a well formatted printout with the essential  results including the optimal values for the $\beta s$:
 
 ```{webr}
 #| exercise: ex_2
@@ -197,24 +212,24 @@ WFModelHouses=workflow() |>
                 add_recipe(______) |> 
                 add_model(______) |> 
                 fit(______)
-print(WFModelHouses)
+tidy(WFModelHouses)
 ```
 
 ::: {.hint exercise="ex_2"}
-I think the answer is probably 2
+Will be added by 2/19/26
 :::
 
 ::: {.solution exercise="ex_2"}
-Here is the Solution: it is not 2
+**Here is the Solution:** 
 
 ```{webr}
 #| exercise: ex_2
 #| solution: true
 WFModelHouses=workflow() |>  
                 add_recipe(RecipeHouses) |> 
-                add_model(ModelDesignHouses) |> 
+                add_model(ModelDesignLM) |> 
                 fit(DataTrain)
-print(WFModelHouses)
+tidy(WFModelHouses)
 ```
 
 :::
@@ -225,27 +240,27 @@ print(WFModelHouses)
 gradethis::grade_this_code()
 ```
 
-Another way to extract the optimal $\beta$ values from the workflow-object `WFModelHouses` is to use the `tidy()` command:
 
-```{r}
-ResultsTidy=tidy(WFModelHouses)
-print(ResultsTidy)
+
+
+Using the results of the `tidy(WFModelHouses)` command above, we can write down the *fitted* version of the model (meaning with numerical values for the $\beta$ parameters):
+
+```{r} 
+#| echo: false
+ResultsTidy=tidy(WFModelHouses) # needed for equation below.
 ```
-
-The `tidy()` command returns the optimal $\beta$ values and other information in a data frame. The resulting data frame is printed above. The *estimate* column contains values for the parameters for $Sqft$ $(\beta_1)$, $Grade$ $(\beta_2)$, $Waterfront\_yes$ $(\beta_3)$ and the intercept $(\beta_4)$.
-
-If we plugin the optimal $\beta s$ in Equation \@ref(eq:LinRegr-MultiVarPredict), we get the prediction equation:
-
-\begin{eqnarray}
-\widehat{Price}&=&`r format(round(ResultsTidy$estimate[2]), nsmall=0, scientific=FALSE)` \cdot Sqft+ 
-`r format(round(ResultsTidy$estimate[3]), scientific=FALSE)`  \cdot Grade +
-\nonumber \\ 
-&& `r format(round(ResultsTidy$estimate[4]), scientific=FALSE)` \cdot Waterfront\_yes +
+$$
+\widehat{Price} = `r format(round(ResultsTidy$estimate[2]), nsmall=0, scientific=FALSE)` \cdot Sqft + 
+`r format(round(ResultsTidy$estimate[3]), scientific=FALSE)` \cdot Grade + \\ 
+`r format(round(ResultsTidy$estimate[4]), scientific=FALSE)` \cdot Waterfront\_yes +
 (`r format(round(ResultsTidy$estimate[1]), scientific=FALSE)`)
-(\#eq:LinRegr-MultiVarPredictWithBetas)
-\end{eqnarray}
+$$ {#eq-LinRegr-MultiVarPredictWithBetas}
 
-If we know the values for the predictor variables, we can estimate the housing price. For example, if we want to predict the price of a house with $1,500$ square feet ($Sqft=1500$), a building condition grade of $9$ $(Grade=9)$, and the house is not located at the waterfront ($Waterfront\_yes=0$), we can plugin in these values into the prediction Equation \@ref(eq:LinRegr-MultiVarPredictWithBetas). As a result we get $556,870$ as the predicted house price $(\widehat{Price}=556,870)$.
+The prediction Equation (-@eq-LinRegr-MultiVarPredictWithBetas) can now be used to predict prices for specific houses. 
+
+If we know the values for the predictor variables, we can estimate the housing price. For example: 
+
+  If we want to predict the price of a house with $1,500$ square feet ($Sqft=1500$), a building condition grade of $9$ $(Grade=9)$, and the house is not located at the waterfront ($Waterfront\_yes=0$), we can plugin in these values into the prediction Equation (-@eq-LinRegr-MultiVarPredictWithBetas). As a result we get $556,870$ as the predicted house price $(\widehat{Price}=556,870)$.
 
 ## Exercise 3
 
@@ -258,11 +273,13 @@ Try it out in the code block below. Substitute $Sqft$, $Grade$, and $Waterfront\
 ```
 
 ::: {.hint exercise="ex_3"}
+**Here is a Hint:**
+
 This one is pretty straight forward, replace the corresponding values with their appropriate counterparts
 :::
 
 ::: {.solution exercise="ex_3"}
-As such:
+**Here is the Solution:**
 
 ```{webr}
 #| exercise: ex_3
@@ -277,8 +294,8 @@ As such:
 #| check: true
 gradethis::grade_this_code()
 ```
+Equation (-@eq-LinRegr-MultiVarPredictWithBetas)  helps to interpret the $\beta s$. The $\beta$ parameters indicate the predicted price change when the related predictor variable increases by one unit.
 
-Equation \@ref(eq:LinRegr-MultiVarPredictWithBetas) also helps to interpret the $\beta s$. The $\beta$ parameters indicate the predicted price change when the related predictor variable increases by one unit.
 
 Suppose the living square footage increases by one unit (one extra square foot), then the estimated price of a house changes by about 180 units (\$180) because the change of one unit is multiplied by 180 $(\beta_1=180)$. You can verify this when you return to the code block above and substitute $Sqft$ with $1501$ instead of $1500$ (leave $Grade=9$ and $Waterfront\_yes=0$ unchanged). You will see that the estimated price will be \$557,050 instead of \$556,870, a change of \$180.
 
@@ -290,7 +307,7 @@ To better interpret this increase, we have to consider the limited range of a du
 
 Lastly, we need to check if the parameters are significant. The $P$ values in the rightmost column from the `tidy()` command output above show the probabilities of the true parameters being zero (i.e., being irrelevant). Since the $P$ values are all very close to zero, this probability is extremely low, meaning the parameters are significant.
 
-The parameters' interpretability and significance are strong points of linear regression. Unfortunately, most other machine learning models do not allow us to interpret their parameters directly. This is the reason why in the past these models were called called *black-box models*.
+The parameters' interpretability and significance are strong points of linear regression. Unfortunately, most other machine learning models do not allow us to interpret their parameters directly. This is the reason why in the past these models were called *black-box models*.
 
 However, dramatic progress has been made in recent years that allows us to explain the predictions of machine learning models. We will introduce some important algorithms to better interpret the predictions of machine learning models in Chapter \@ref(Interpret).
 
@@ -312,6 +329,7 @@ metrics(DataTestWithPred,truth=Price,estimate=.pred)
 ```
 
 ```{r}
+#| echo: false
 MAEForText=metrics(DataTestWithPred,truth=Price,estimate=.pred)
 ```
 
