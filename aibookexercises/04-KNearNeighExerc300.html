@@ -255,7 +255,7 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1
 <section id="exercise-1" class="level2">
 <h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
 <p>Now that you know how the images of the <em>MNIST</em> dataset are stored, you can start the machine learning project by importing the data. The <em>MNIST</em> data frame <code>DataMnist</code> has been already loaded in the background. Remember, each image is stored in a row with the <code>Label</code> indicating which of the ten digits it represents.</p>
-<p>Please complete the code block below i Here are a few hints:</p>
+<p>Please complete the code block below. Here are a few hints:</p>
 <ul>
 <li><p>The <span class="math inline">\(Label\)</span> for each image is stored as an <code>integer</code> data type, but <em>k-Nearest Neighbors</em> only accepts <code>factor</code> data type for the outcome variable. Therefore, you must transform the outcome variable <span class="math inline">\(Label\)</span> to <code>factor</code> data type.</p></li>
 <li><p>When splitting the dataset into training and testing data, you can use <code>strata=</code> to indicate that the numbers stored in <span class="math inline">\(Label\)</span> are approximately equally represented in the training and the testing dataset. After you have completed the commands in the code block, the <code>head(DataTrain)</code> command will show you the first six observations of the training dataset.</p></li>

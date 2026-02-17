@@ -47,6 +47,10 @@ library(workflows)
 library(broom)
 ```
 
+**Libraries** already loaded in the background:
+
+- `tidyverse`
+- `tidymodels`
 
 ## Exercise 1
 

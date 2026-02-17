@@ -1,0 +1,558 @@
+---
+title: "Interactive Project: Tune k-Nearest Neighbors to Detect Wine Color"
+subtitle: Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+format: live-html
+engine: knitr
+webr:
+  repos:
+    - 'https://tidymodels.r-universe.dev'
+    - 'https://repo.r-wasm.org'
+  packages:
+    - rsample
+    - tune
+    - dplyr
+    - janitor
+    - recipes
+    - yardstick
+    - parsnip
+    - workflows
+    - kknn
+---
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
+
+
+::: {.content-visible when-runtime="loading"}
+::: {.callout-note}
+
+## Please be Patient: Loading R Environment
+The interactive R environment and the required packages must be loaded in your browser. This typically takes 1–2 minutes. You can monitor the progress in the bottom-right corner. 
+
+**After packages are loaded, it still takes some time** because the website must run a pre-tuning procedure. Please be patient!!!
+
+When everything is loaded, you get a **"Ready to roll"** message below.
+Thank you for your patience!
+:::
+:::
+
+
+
+```{webr}
+#| auto-run: true
+#| echo: false
+#| label: exc_all
+DataWine=readRDS(url("https://ai.lange-analytics.com/data/WineData.rds")) |> 
+         clean_names("upper_camel") |> 
+         rename(Sulfur=TotalSulfurDioxide) |> 
+         mutate(WineColor=as.factor(WineColor))
+set.seed(876)
+Split7030=initial_split(DataWine,prop=0.7, strata=WineColor)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+
+ModelDesignKNN=nearest_neighbor(neighbors=tune()) |>
+               set_engine("kknn") |> 
+               set_mode("classification")
+
+RecipeWine=recipe(WineColor~., data=DataTrain) |>
+       step_rm(Quality) |>           
+       step_normalize(all_predictors())
+
+ParGrid=tibble(neighbors=c(1:15))
+
+set.seed(123)
+
+FoldsForTuning=vfold_cv(DataTrain, v=5, repeats=1, strata=WineColor)
+
+TuneWFModelKNN=workflow() |> 
+            add_recipe(RecipeWine) |>
+            add_model(ModelDesignKNN) 
+
+TuneResults=TuneWFModelKNN |> tune_grid(FoldsForTuning, 
+          grid=ParGrid,
+          metrics=metric_set(accuracy, specificity, sensitivity))
+
+
+BestHyperPar=select_best(TuneResults, metric="accuracy")
+
+WFModelBest=TuneWFModelKNN |> 
+finalize_workflow(BestHyperPar) |> 
+fit(DataTrain)
+
+DataTestWithPredBestModel=augment(WFModelBest,DataTest)
+cat("\033[1;32mReady to roll\033[0m\n")
+```
+
+```{r}
+#| echo: false
+#| warning: false
+#| message: false
+# needed for code almost at end
+library(tidymodels); library(janitor)
+DataWine=readRDS(url("https://ai.lange-analytics.com/data/WineData.rds")) |> 
+         clean_names("upper_camel") |> 
+         rename(Sulfur=TotalSulfurDioxide) |> 
+         mutate(WineColor=as.factor(WineColor))
+set.seed(876)
+Split7030=initial_split(DataWine,prop=0.7, strata=WineColor)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+
+ModelDesignKNN=nearest_neighbor(neighbors=tune()) |>
+               set_engine("kknn") |> 
+               set_mode("classification")
+
+RecipeWine=recipe(WineColor~., data=DataTrain) |>
+       step_rm(Quality) |>           
+       step_normalize(all_predictors())
+
+ParGrid=tibble(neighbors=c(1:15))
+
+set.seed(123)
+
+FoldsForTuning=vfold_cv(DataTrain, v=5, repeats=1, strata=WineColor)
+
+TuneWFModelKNN=workflow() |> 
+            add_recipe(RecipeWine) |>
+            add_model(ModelDesignKNN) 
+
+TuneResults=TuneWFModelKNN |> tune_grid(FoldsForTuning, 
+          grid=ParGrid,
+          metrics=metric_set(accuracy, specificity, sensitivity))
+
+
+BestHyperPar=select_best(TuneResults, metric="accuracy")
+
+WFModelBest=TuneWFModelKNN |> 
+finalize_workflow(BestHyperPar) |> 
+fit(DataTrain)
+
+DataTestWithPredBestModel=augment(WFModelBest,DataTest)
+ConFusMat=conf_mat(DataTestWithPredBestModel, truth = WineColor, estimate=.pred_class)
+
+```
+
+**Libraries** already loaded in the background:
+
+- *tidyverse*
+- *tidymodels*
+- *kknn*
+
+
+
+**Step 1 - Generating Training and Testing Data:**
+
+As before, you use the wine dataset and split the data into training
+(`DataTrain`) and testing data (`DataTest`). Since you use the same
+value in the `set.seed()` command, the (random) split will be
+identical to the one we used before with the $k=4$ *Nearest
+Neighbor* model. The code below has been executed already.
+
+```{r}
+#| echo: true
+#| message: false
+#| warning: false
+library(tidymodels); library(rio); library(janitor); library(kableExtra)
+DataWine=import("https://ai.lange-analytics.com/data/WineData.rds") |> 
+         clean_names("upper_camel") |> 
+         rename(Sulfur=TotalSulfurDioxide) |> 
+         mutate(WineColor=as.factor(WineColor)) 
+
+set.seed(876)
+Split7030=initial_split(DataWine, prop=0.7, strata=WineColor)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+
+kable(head(DataWine))
+```
+
+**Step 2 - Create a Recipe:**
+
+Here, you will create a *recipe* and store it in the *R* object
+`RecipeWine`. Use `step_rm()` to remove the predictor variable $Quality$
+because it is not related to $WineColor$, and the command
+`step_normalize()` to normalize all remaining predictors. Please,
+substitute `<THESE>` placeholders accordingly and execute the code.
+
+Note that the data frame `DataTrain` has already been loaded in the
+background:
+
+```{webr}
+#| exercise: exc_step2
+#| exercise.setup: exc_all
+RecipeWine=recipe(WineColor~., data=DataTrain) |>
+           ______(______) |>           
+           step_normalize(all_predictors())
+print(RecipeWine)
+```
+
+::: {.hint exercise="exc_step2"}
+**Here is a hint:**
+
+The step to remove a variable such as `Quality` is called `step_rm()`.
+:::
+
+::: {.solution exercise="exc_step2"}
+**Here is the Solution:**
+
+
+```{webr}
+#| exercise: exc_step2
+#| solution: true
+RecipeWine=recipe(WineColor~., data=DataTrain) |>
+           step_rm(Quality) |>           
+           step_normalize(all_predictors())
+print(RecipeWine)
+```
+:::
+
+```{webr}
+#| exercise: exc_step2
+#| check: true
+gradethis::grade_this_code()
+```
+
+**Step 3 - Create a Model Design:**
+
+Next, you will create the *model design* and store it into the *R*
+object `ModelDesignKNN`. Since you plan to tune the argument
+`neighbors=` (stands for the $k$ in *Nearest Neighbors*), you have
+to add it as an argument into the `nearest_neighbor()` command by
+substituting `______` with the argument and its
+value. Remember that you cannot set `neighbors` to a specific
+numerical value because you want to *tune* the *hyper-parameter*
+`neighbors` later on. Therefore you have to assign the placeholder
+`tune()` to the argument `neighbors`.
+
+```{webr}
+#| exercise: exc_step3
+#| exercise.setup: exc_all
+ModelDesignKNN=nearest_neighbor(neighbors=______) |>
+                set_engine("kknn") |>
+                set_mode("classification")
+print(ModelDesignKNN)
+```
+
+::: {.hint exercise="exc_step3"}
+**Here is a hint:**
+
+Instead of assigning a number to the hyper-parameter neighbors 
+use the command `tune()` as a place holder.
+:::
+
+::: {.solution exercise="exc_step3"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_step3
+#| solution: true
+ModelDesignKNN=nearest_neighbor(neighbors=tune()) |>
+               set_engine("kknn") |> 
+               set_mode("classification")
+print(ModelDesignKNN)
+```
+::: 
+
+```{webr}
+#| exercise: exc_step3
+#| check: true
+gradethis::grade_this_code()
+```
+
+**Step 4 - Add the RecipeWine and the Model Design to a Workflow:**
+
+The code block below adds the *R* object `Recipe` and the model
+design object `ModelDesignKNN` to a *workflow* model named
+`TuneWFModelKNN`. The *R* code has been executed already.
+
+```{webr}
+#| autorun: true
+#| exercise.setup: exc_all
+TuneWFModelKNN=workflow() |> 
+                add_recipe(RecipeWine) |>
+                add_model(ModelDesignKNN) 
+print(TuneWFModelKNN)
+```
+
+You can see in the printout above that the *workflow* is not *finalized* because the number of `neighbors` has not been set in    the *model design*. The *hyper-parameter* `neighbors` is set to
+`tune()` instead. Later, in Step 7, `tune()` will be replaced in a trial
+and error process with different values for `neighbors`.
+
+**Step 5 - Create a Hyper-Parameter Grid:**
+
+When tuning is executed in Step 7, values reaching from 1 --15 for the *hyper-parameter* `neighbors` shall be tried out. You need to provide these values in a data frame column that is named the same as the *hyper-parameter*. Below, replace the `______` to define a column `neighbors` in the data frame`ParGrid`. The column should contain values from 1 -- 15:
+
+```{webr}
+#| exercise: exc_step5
+#| exercise.setup: exc_all
+ParGrid=data.frame(neighbors=c(______))
+print(ParGrid)
+```
+
+::: {.hint exercise="exc_step5"}
+**Here is a hint:**
+
+Use the `c()` command to create a vector containing the numbers $1 - 15$
+either separated by a comma, or you can use a colon (*:*) to indicate *from/to*.
+:::
+
+::: {.solution exercise="exc_step5"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_step5
+#| solution: true
+ParGrid=data.frame(neighbors=c(1,2,3,4,5,6,7,8,9,10,11,12,13,14,15))
+ParGrid
+```
+
+:::
+
+```{webr}
+#| exercise: exc_step5
+#| check: true
+grade_this({
+  # .result refers to the output of the student's code
+  if (sum(.result)==sum(1:15)) {
+    pass()
+  } else {
+    fail()
+  }
+})
+```
+
+**Step 6 - Creating Resamples for Cross-Validation:**
+
+The values you have created above for $k$ (*hyper-parameter*
+`neighbors`) will be evaluated later using five folds (*resamples*).
+
+Each fold contains the complete training data, but different 
+sections are used for training and assessment in each fold.
+Please create five folds below by substituting `______`
+accordingly.
+
+The folds will be saved in the *R* object `FoldsForTuning`:
+
+```{webr}
+#| exercise: exc_step6
+#| exercise.setup: exc_all
+set.seed(123)
+FoldsForTuning=vfold_cv(DataTrain, v=______, strata=WineColor)
+print(FoldsForTuning)
+```
+
+::: {.hint exercise="exc_step6"}
+**Here is a hint:**
+
+The argument `v=` determines the number of folds to be used for tuning.
+:::
+
+::: {.solution exercise="exc_step6"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_step6
+#| solution: true
+set.seed(123)
+FoldsForTuning=vfold_cv(DataTrain, v=5, strata=WineColor)
+print(FoldsForTuning)
+```
+:::
+
+```{webr}
+#| exercise: exc_step6
+#| check: true
+gradethis::grade_this_code()
+```
+
+**Step 7 - Tune the Workflow and Train All Models:**
+
+Now it is time to run the tuning procedure using the `tune_grid()`
+command. Be patient because it will take some time to fully execute.
+Since we have to try out 15 parameters and use five folds for each
+model, the `tune_grid()` command has to fit 75 models
+$(15\cdot 5=75)$.
+
+Please substitute `______` with a list of metrics to be
+calculated. Use the metrics *accuracy*, *specificity*, and
+*sensitivity*.
+
+After the tuning is finished, all results are stored in the *R*
+object `TuneResults`, and they can be evaluated by different
+*metrics* commands.
+
+For example the command `autoplot()` provides a diagrammatic
+overview of the results for all three *metrics*.
+
+```{webr}
+#| exercise: exc_step7
+#| exercise.setup: exc_all
+TuneResults=tune_grid(TuneWFModelKNN, resamples=FoldsForTuning,
+                      grid=ParGrid, metrics=metric_set(______))
+autoplot(TuneResults)
+```
+
+::: {.hint exercise="exc_step7"}
+**Here is a hint:**
+
+The command metric_set takes a comma-separated list 
+of metrics to be evaluated.
+
+Consider that you want to evaluate the metrics `accuracy`, `specificity`, 
+`sensitivity`.
+:::
+
+::: {.solution exercise="exc_step7"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_step7
+#| solution: true
+TuneResults=TuneWFModelKNN |> tune_grid(FoldsForTuning, grid=ParGrid ,  
+                       metrics=metric_set(accuracy, specificity, sensitivity))
+autoplot(TuneResults)
+```
+:::
+
+```{webr}
+#| exercise: exc_step7
+#| check: true
+gradethis::grade_this_code()
+```
+
+The three graphs that you created in the exercise above show for
+each *metric* the related *accuracy*, *specificity*, and
+*sensitivity* for all tried out *hyper-parameters* (`neighbors`).
+The results for the five folds are averaged.
+
+You can see that `neighbors` values between 1 and 4 produce the best
+results for *accuracy* (predicting red and white wines (positive and
+negative class) correctly) and *sensitivity* (predicting red wines
+(positive class) correctly). If you look at *specificity*
+(predicting white wines (negative class) correctly), you can see
+that $k=5$ produces the best result. However, $k=5$ also leads to a
+sharp decrease in *sensitivity* and a decrease in *accuracy* as
+well.
+
+It seems reasonable to use the best result for *accuracy*, which
+means choosing a $k$ between 1 and 4.
+
+**Step 8 - Extract the Best Hyper-Parameter(s):**
+
+All assessment results for the specified metrics are stored in the
+*tuning* object `TuneResults`. Choose the metric *accuracy* by
+substituting `______` accordingly. Afterward, when you execute the
+code the `select_best()` command extracts the best *hyper-parameter*
+(value for `neighbors`) for the metric you specified:
+
+```{webr}
+#| exercise: exc_step8
+#| exercise.setup: exc_all
+BestHyperPar=select_best(TuneResults, metric="______") 
+print(BestHyperPar)
+```
+
+::: {.hint exercise="exc_step8"}
+**Here is a hint:**
+
+Substitute `______` with `accuracy` and make sure to not delete the quotes.
+:::
+
+::: {.solution exercise="exc_step8"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_step8
+#| solution: true
+BestHyperPar=select_best(TuneResults, metric="accuracy") 
+print(BestHyperPar)
+```
+:::
+
+```{webr}
+#| exercise: exc_step8
+#| check: true
+gradethis::grade_this_code()
+```
+As you will see in the printout after executing the *R* code, the
+best value for the *hyper-parameter* `neighbors` based on *accuracy*
+is $neighbors=$ `r  BestHyperPar[[1,1]]`. It is
+saved in the data frame `BestHyperPar`.
+
+You can try other metrics in the code block above and see if the
+result changes. 
+
+**Step 9 - Finalize and Train the Best Workflow Model:**
+
+The code block below is executed already. The `finalize_workflow()`
+command used the value from `BestHyperPar` to substitute the
+`tune()` placeholder in the *R* object `TuneWFModelKNN` (created in
+Steps 2 -- 4). The *hyper-parameter* is now set to $neighbors=$ `r  BestHyperPar[[1,1]]`.
+
+    
+```{webr}
+#| autorun: true
+#| exercise.setup: exc_all
+WFModelBest=TuneWFModelKNN |> 
+            finalize_workflow(BestHyperPar) |>  
+            fit(DataTrain)
+
+print(WFModelBest)
+```
+
+At the end of the printout above, you can see that $(k)$ was set to
+`neighbors=1` rather than
+`tune()`. You can also see that `WFModelBest` is fitted to the
+training data because the "Minimum missclassification" is reported
+(based on the training data).
+
+**Step 10: Assess Prediction Quality Based on the Testing Data:**
+
+Since `WFModelBest` is a fitted model, you can use it for
+predictions. In this last step, you use the `augment()` command to
+predict `WineColor`. The `augment()` command will then add the
+prediction results as column `.pred` to the testing data.
+
+The `conf_mat()` command compares the predictions in column `.pred`
+to the true values to create a *confusion matrix*. But before, you
+have to substitute `______` with the variable name
+(column name) for the outcome variable.
+
+```{webr}
+#| exercise: exc_step10
+#| exercise.setup: exc_all
+DataTestWithPredBestModel=augment(WFModelBest, DataTest)    
+conf_mat(DataTestWithPredBestModel, truth=______, 
+             estimate=.pred_class)
+```
+
+::: {.hint exercise="exc_step10"}
+**Here is a hint:**
+
+The (column) name for the outcome variable is `WineColor` and the predictions are stored in the column `.pred_class`.
+:::
+
+::: {.solution exercise="exc_step10"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_step10
+#| solution: true
+DataTestWithPredBestModel=augment(WFModelBest,DataTest)
+conf_mat(DataTestWithPredBestModel, truth=WineColor, estimate=.pred_class)
+```
+:::
+
+You can see in the *confusion matrix* that based on the testing
+data from the 480 red wines only `r ConFusMat$table["white", "red"]` were misclassified as being *white*. Likewise, from
+the 480 white wines, only `r ConFusMat$table["red", "white"]` were misclassified. Given that the
+classification was only based on the chemical properties of the
+wines, the results are excellent.
+
+Most likely, a true wine expert might have reached a similar
+impressive result, but it would have taken them a long time to
+classify 960 wines.

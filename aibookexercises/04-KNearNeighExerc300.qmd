@@ -198,7 +198,7 @@ Take a look at the table above, which shows an excerpt from the *MNIST* data fra
 
 Now that you know how the images of the *MNIST* dataset are stored, you can start the machine learning project by importing the data. The  *MNIST* data frame `DataMnist` has been already loaded in the background. Remember, each image is stored in a row with the `Label` indicating which of the ten digits it represents.
 
-Please complete the code block below i Here are a few hints:
+Please complete the code block below. Here are a few hints:
 
 -   The $Label$ for each image is stored as an `integer` data type, but *k-Nearest Neighbors* only accepts `factor` data type for the outcome variable. Therefore, you must transform the outcome variable $Label$ to `factor` data type.
 
