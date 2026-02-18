@@ -43,7 +43,7 @@ Thank you for your patience!
 
 ```{r}
 #| autorun: true
-#| echo: false
+#| echo: true
 DataHousing = read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
               clean_names("upper_camel") |>
               select(Price, Sqft = SqftLiving)
@@ -53,31 +53,30 @@ set.seed(777)
 Split8020=initial_split(prop=0.8, strata=Price, 
                        breaks=5, data=DataHousing)
 
-DataTrain = training(Split001)
-DataTest = testing(Split001)
+DataTrain = training(Split8020)
+DataTest = testing(Split8020)
 
-RecipeOLS=recipe(Price~Sqft, data=DataTrain) |>
-step_poly(Sqft, degree = 10, options = list(raw = TRUE)) 
+RecipePoly=recipe(Price~Sqft, data=DataTrain) |>
+  step_poly(Sqft, degree = tune(), options = list(raw = TRUE)) 
 
-ModelDesignOLS= linear_reg() |> 
+ModelDesignPoly= linear_reg() |> 
   set_engine("lm") |> 
   set_mode("regression")
 
-WFModelOLS= workflow() |>  
-            add_recipe(RecipeOLS) |> 
-            add_model(ModelDesignOLS) |> 
-            fit(DataTrain)
+TuneWFModelPoly= workflow() |>  
+            add_recipe(RecipePoly) |> 
+            add_model(ModelDesignPoly) 
 
-RecipePoly5=recipe(Price~Sqft+Sqft2+Sqft3+Sqft4+Sqft5, data=DataTrain)
+ParGrid=data.frame(degree=c(1:5))
 
-ModelDesignPoly5= linear_reg() |> 
-                  set_engine("lm") |> 
-                  set_mode("regression")
+FoldsForTuning=vfold_cv(DataTrain, v=5, strata=Price)
 
-WFModelPoly5= workflow() |>  
-            add_recipe(RecipePoly5) |> 
-            add_model(ModelDesignPoly5) |> 
-            fit(DataTrain)
+TuneResultsPoly=TuneWFModelPoly |> tune_grid(FoldsForTuning, grid=ParGrid ,  
+                       metrics=metric_set(rmse, mse, rsq))
+
+BestHyperPar=select_best(TuneResultsPoly, metric="mse")
+
+
 
 DataTestWithPredBestModel=augment(WFModelBest,DataTest)
 
@@ -95,7 +94,7 @@ cat("\033[1;32mReady to roll\033[0m\n")
 
 **Step 1 - Generating Training and Testing Data:**
 
-As before, you use the wine dataset and split the data into training
+As before, you use the housing dataset and split the data into training
 (`DataTrain`) and testing data (`DataTest`). Since you use the same
 value in the `set.seed()` command, the (random) split will be
 identical to the one we used before with the $k=4$ *Nearest
