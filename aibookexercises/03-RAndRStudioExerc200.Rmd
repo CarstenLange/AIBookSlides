@@ -1,0 +1,607 @@
+---
+title: "Interactive Section"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+description: Exercises
+
+---
+
+<style>
+  div.yellowbox {
+    background-color: #f1dfa6;
+    border: 1px solid black;
+    padding: 21px;
+  }
+
+  strong {
+    color: #d10056
+  }
+
+  .center {
+    text-align: center;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(rio)
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(kableExtra)
+
+knitr::opts_chunk$set(exercise=TRUE, exercise.eval=FALSE, exercise.lines=6, attr.source = ".numberLines")
+```
+
+:::: {.yellowbox data-latex=""}
+
+::: {.center data-latex=""}
+**How to Work with this Interactive Section**
+:::
+
+Here you find the complete interactive section from the book, including book content, and R-code-blocks. Read the content in a browser as you would read it in the textbook. 
+
+With the R-code blocks, you can work in various ways:
+
+* Use the `Run Code` button to execute the R-code and see the result.
+
+* Change the R-code, click the `Run Code` button, and then see the new results.
+
+* To get the original R-code back, click the `Start Over` button at the left-top corner of each R-code block. 
+
+* To reset the R-code for all code blocks, click the `Start Over` in the left menu.
+
+**Make sure you installed all needed packages!** See Section "R Packages Required"  in this Chapter for a list of packages that need to be installed. Section 3.2 explain how to install a packege in *RStudio*.
+
+
+
+**For Troubleshooting:** [Click here](https://blog.lange-analytics.com/2024/01/interactsessions.html)
+::::
+
+
+ 
+ 
+ <clex id="Exc200">
+
+```{r RAndRStudio-Exerc200-LoadDataTitanic, exercise=FALSE, echo=FALSE, include=FALSE}
+library(rio)
+DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv")
+
+```
+
+The following sections will allow you to review and extend what you have learned so far. If you need help with any excises, return to the corresponding section above.
+
+### Character Data Type {.unlisted .unnumbered}
+
+In the first set of exercises, you will work with `character` data types.
+
+**Exercise 1:**
+
+The simplest way to use `character` data types is to print them, like in the following exercise:
+
+```{r RAndRStudio-Exerc200-001, exercise=TRUE, eval=FALSE, exercise.lines=3}
+print("This is printed text")
+```
+
+**Your turn:**
+
+:   Why don't you change the text and print again.
+
+------------------------------------------------------------------------
+
+**Exercise 2:**
+
+You can also assign characters to an *R* object, which then becomes an *R* `character-object`, and you can print it afterward:
+
+```{r RAndRStudio-Exerc200-002, exercise=TRUE, eval=FALSE, exercise.lines=3}
+Sentence="This is text stored in an R object."
+print(Sentence)
+```
+
+**Your turn:**
+
+:   Change the sentence and print it again. What happens if you forget the quotes?
+
+------------------------------------------------------------------------
+
+**Exercise 3:**
+
+Instead of using `print()` to output *R* objects to the console, you can use the `cat()` command (`cat` stands for con**cat**enate). This command allows combining text and *R* objects as long as they are separated by comma:
+
+```{r RAndRStudio-Exerc200-004, exercise=TRUE, eval=FALSE, exercise.lines=3}
+FirstName="Carsten"
+cat("My name is", FirstName, "and I am learning R.")
+```
+
+**Your turn:**
+
+:   Assign your own first name to the *R* object `FirstName` and rerun the code.
+
+### Numerical Data Type {.unlisted .unnumbered}
+
+In the following exercises, you will assign numerical values to *R* objects and work with numerical objects and values.
+
+We can assign a value to an *R* object using the "="-sign. Remembering to interpret the "="-sign as *"assigned to"* rather than an *"equal to"* sign like in algebra is important.
+
+As mentioned before, an alternative to using the "="-symbol is the "\<-"-symbol. The latter emphasizes an assignment rather than an equality. However, throughout this book, we will use the "="-symbol for simplicity, keeping in mind that it stands for *assigned to*.
+
+------------------------------------------------------------------------
+
+**Exercise 4:**
+
+Below you find an example of how to assign a value of $23$ to a variable called $A$, and then add $100$ to this value:
+
+```{r RAndRStudio-Exerc200-010, exercise=TRUE, eval=FALSE, exercise.lines=3}
+A=23
+A=A+100
+cat("R object A contains the numeric value:", A)
+```
+
+```{r RAndRStudio-Exerc200-010-hint, exercise=FALSE,  eval=FALSE, include=FALSE}
+First, you assign 33 to A in Line 1 of the code.
+Next, in Line 2, you multiply the value of the variable A by 2 
+and assign it to itself (to A).
+
+The next HINT provides the solution. So, keep trying before you peek.
+```
+
+```{r RAndRStudio-Exerc200-010-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=3}
+A=33
+A=2*A
+cat("R object A contains the numeric value:", A)
+```
+
+Look carefully at Line 2 of the exercise. Given that `A=23` from the Line 1, Line 2 does not mean that `A` *equals* `A+100`. Otherwise, considering Line 1: `23=23+100` --- which is clearly not the case.
+
+The correct way to interpret Line 2 is as an assignment. We assign a new value to `A`, which is 100 greater than the old value of 23.
+
+**Your turn:**
+
+:   -   Execute the code as is and explain it.
+
+:   -   Assign a value 33 to `A` in Line 1 of the code and then use Line 2 to double the value.
+
+------------------------------------------------------------------------
+
+**Exercise 5:**
+
+We can perform algebraic calculations with numbers or numerical *R* objects. Below is an example:
+
+```{r  RAndRStudio-Exerc200-030, exercise=TRUE, eval=FALSE, exercise.lines=8}
+A=2
+B=4
+A=500*A/10
+C=A*B
+cat("R object C contains the product of A and B. Therefore, C is:", C)
+D=sqrt(A)
+cat("The square root of ",  A, " is:", D)
+```
+
+```{r  RAndRStudio-Exerc200-030-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=6}
+
+In Line 6 of the code, D is calculated as the square root of A. 
+Therefore, A must be the square of 20 before Line 6 is executed.
+
+This means that the value assigned to A in Line 3 must be 400.
+
+The next HINT provides the solution. So, keep trying before you peek.
+```
+
+```{r  RAndRStudio-Exerc200-030-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=8}
+A=8
+B=4
+A=500*A/10
+C=A*B
+cat("R object C contains the product of A and B. Therefore, C is:", C)
+D=sqrt(A)
+cat("The square root of ",  A, " is:", D)
+
+```
+
+**Your turn:**
+
+:   -   Run the code and then carefully check the calculations above.
+
+:   -   Explain why the value of C is $400$ and not $8$.
+
+:   -   Finally, change the value that is assigned to `A` in Line 1. The goal is to create an output from the `cat()` command in Line 7 that reads: `The square root of  400  is: 20`
+
+------------------------------------------------------------------------
+
+**Exercise 6:**
+
+In the code block below, you are tasked to calculate the area of a rectangle based on its length and width.
+
+```{r RAndRStudio-Exerc200-030b,  eval=FALSE, exercise=TRUE}
+Length=...
+Width=...
+AreaRect=...
+cat("The area of the rectangle is:", AreaRect)
+```
+
+```{r  RAndRStudio-Exerc200-030b-hint, exercise=FALSE,  eval=FALSE, include=FALSE}
+First, you assign values (e.g., 4 and 3) to the Length and Width variables.
+
+Next, considering the area of a rectangle is the product of its length and width, 
+you multiply the two variables and assign the result to AreaRect. 
+
+The next HINT provides the solution. So, keep trying before you peek.
+```
+
+```{r  RAndRStudio-Exerc200-030b-solution, exercise=FALSE,  eval=FALSE, include=FALSE}
+Length=4
+Width=3
+AreaRect=Length*Width
+cat("The area of the rectangle is:", AreaRect)
+
+```
+
+**Your turn:**
+
+:   Use the two *R* objects `Length` and `Width`, assign values to these objects (e.g., 4 and 3), and then calculate the area of the related rectangle. The code is partially provided already. You just need to replace the `...` with your code additions.
+
+### Logical Data Type {.unlisted .unnumbered}
+
+The following exercises cover `logic` *R* objects. We will assign `TRUE` and `FALSE` to different objects and combine them with & (AND) and \| (OR) to see the result. We will also perform calculations with `logic` *R* objects. Remember that `TRUE` stands (internally) for $1$ and `FALSE` for $0$.
+
+**Exercise 7:**
+
+Below `TRUE` is assigned to two `logical` *R* objects. These two *R* objects are combined with an AND (`&`), saved into another `logical` *R* object, and then printed to the console with the `cat()` command:
+
+```{r RAndRStudio-Exerc200-100, echo=TRUE, exercise=TRUE, eval=FALSE}
+IsLifeGood=TRUE
+IsMoodGood=TRUE
+IsHappy=IsLifeGood & IsMoodGood
+cat("Happiness:", IsHappy)
+```
+
+```{r RAndRStudio-Exerc200-100-hint, exercise=FALSE,  eval=FALSE, include=FALSE}
+If the mood is not good, the logical variable IsMoodGood
+needs to be changed from TRUE to FALSE.
+```
+
+Run the code above, and you will see that the result for `IsHappy` is `TRUE`. This is because we require for happiness (`IsHappy`) that life is good **and** that the person is in a good mood. **Both** were the case; therefore, the result was `TRUE` for `IsHappy`.
+
+**Your turn:**
+
+:   Assume that life is still good, but the person's mood changes from good to not-good. Change `TRUE` and `FALSE` accordingly. What happens to the person's happiness (`IsHappy`) when you execute the new code? Explain.
+
+------------------------------------------------------------------------
+
+**Exercise 8:**
+
+Here is an example for OR (`|`):
+
+```{r RAndRStudio-Exerc200-300,  echo=TRUE, exercise=TRUE, eval=FALSE}
+IsWeatherDry=TRUE
+IsIndoor=FALSE
+IsStayingDry=IsWeatherDry | IsIndoor
+cat("Person stays dry:", IsStayingDry)
+```
+
+If the weather provides sunshine or a person is indoors, the person will not get wet from rain and will stay dry. Only one of the two logical objects needs to be `TRUE` to generate a `TRUE` for `IsStayingDry`.
+
+**Your turn:**
+
+:   -   Run the code above and explain the result.
+
+:   -   Find a similar example, rename the *R* objects, change the text in `cat()` command accordingly, and rerun the code.
+
+------------------------------------------------------------------------
+
+**Exercise 9:**
+
+Below is a more complex example of a person that can be exposed to dry weather (or not) and is indoors (or not) with an intact roof (or not).
+
+```{r RAndRStudio-Exerc200-500, echo=TRUE, exercise=TRUE, eval=FALSE}
+IsWeatherDry=FALSE
+IsIndoor=TRUE
+IsRoofIntact=FALSE
+IsStayingDry=IsWeatherDry | (IsIndoor & IsRoofIntact)
+cat("Person stays dry:", IsStayingDry)
+```
+
+```{r RAndRStudio-Exerc200-500-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=5}
+IsWeatherDry=FALSE
+IsIndoor=TRUE
+IsRoofIntact=TRUE
+IsStayingDry=IsWeatherDry | (IsIndoor & IsRoofIntact)
+cat("Person stays dry:", IsStayingDry)
+```
+
+```{r RAndRStudio-Exerc200-500-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=14}
+
+*** Explanation of the code ***
+
+The logical expression ISWeatherIDry OR the expression in the () 
+have to be TRUE to ensure that IsStayingDry evaluates to 
+TRUE (otherwise, it evaluates to FALSE).
+
+This makes sense because for staying dry (IsStayingDry=TRUE), it is 
+sufficient that it is not raining (ISWeaterDry=TRUE). No matter if 
+we stay indoors or not or if the roof is intact or not.
+
+This also implies that if it is raining (IsWeatherDry=FALSE) the second
+condition must be TRUE. Note that the second condition is only TRUE if both
+IsIndoor=TRUE AND IsRoofIntact=TRUE are fulfilled. In that case, we stay 
+dry (IsStayingDry=TRUE). Otherwise, we get wet (IsStayingDry=FALSE).
+
+*** How to consider an intact roof ***
+Change the value for IsRoofIntact
+
+The next HINT provides the solution. So, keep trying before you peek.
+
+```
+
+**Your turn:**
+
+:   -   Run the code and explain the result related to the code.
+
+:   -   Predict what would happen to the result if the roof was intact.
+
+:   -   Change the code for an intact roof, execute, and explain the result.
+
+### Vector-Objects {.unlisted .unnumbered}
+
+You already learned that a sequence of numerical, character, or logical objects is called a *vector-object*.
+
+For the following exercises, we created four related vector-objects: `VecFirstNames` to store the first names of three persons, `VecAges` for their age, `VecIsFemale` to indicate if their sex is female (or not), and `VecNumKids` for the number of children they have. To assign values to the vector-objects, we use the `c()` (**c**ombine) command:
+
+```{r RAndRStudio-Exerc200-610, exercise=FALSE, eval=TRUE}
+VecFirstNames=c("Carsten", "Jose", "Jane")
+VecAges=c(45,54,23)
+VecIsFemale=c(FALSE,FALSE,TRUE)
+VecNumKids=c(1,2,1)
+```
+
+The four vector-objects are related because we used the same order for their values. The first value belongs to *Carsten*, the second value belongs to *Jose*, and the third to *Jane*. Therefore, we can deduce Jose is 54 years old, his sex is *male* (`FALSE` for `IsFemale`), and he has two kids.
+
+It is a little cumbersome that we always have to track the order of elements to interpret the vector values correctly. Fortunately, this gets much easier when we use data frames in the following exercise section.
+
+For now, we just assume the order in each of the three vectors is the same and see what we can do with the `vector`-objects.
+
+```{r RAndRStudio-Exerc615-LoadExcData, eval=TRUE, message=FALSE, warning=FALSE, exercise=FALSE, include=FALSE}
+VecFirstNames=c("Carsten", "Jose", "Jane")
+VecAges=c(45,54,23)
+VecIsFemale=c(FALSE,FALSE,TRUE)
+VecNumKids=c(1,2,1)
+```
+
+------------------------------------------------------------------------
+
+**Exercise 10:**
+
+In this exercise, you will calculate some crucial statistics from our vectors.
+
+**Your turn:**
+
+:   Substitute the `...` in the code below and run the code:
+
+:   -   Calculate the number of persons in the dataset and store the result in `NumOfPersons`.
+
+:   -   Calculate the number of women in the dataset and store the result in `NumOfWomen`.
+
+:   -   Calculate the number of men in the dataset and store the result in `NumOfMen`.
+
+:   -   Calculate the proportion of women in the dataset and store the result in `PropWomen` in digital format.
+
+:   -   Calculate the proportion of men in the dataset and store the result in `PropMen` in digital format.
+
+Note that the vector-objects `VecFirstNames`, `VecAges`, `VecIsFemale`, and `VecNumKids` have already been loaded in the background.
+
+```{r RAndRStudio-Exerc200-620, exercise=TRUE, echo=TRUE, message=FALSE, warning=FALSE, exercise.lines=14, eval=FALSE, exercise.setup="RAndRStudio-Exerc615-LoadExcData"}
+AvgAge=mean(VecAges)
+NumOfPersons=length(...)
+NumOfWomen=...(...)
+NumOfMen=NumOfPersons-...
+PropWomen=...(...)
+PropMen= 1 - ...
+
+cat("We have", NumOfPersons, "persons in the dataset", 
+    "with an average age of", AvgAge, ".")
+cat("We have", NumOfWomen, "female(s) and", NumOfMen, "male(s).")
+cat(round(PropWomen,2)*100, "% are female and", 
+    round(PropMen, 2)*100, "% are male.")
+```
+
+```{r RAndRStudio-Exerc200-620-hint, exercise=FALSE,  eval=FALSE, include=FALSE}
+The number of elements (the length) of a vector determines the number
+of persons in the dataset. 
+
+The vector IsFemale internaly codes TRUE as 1 and FALSE as 0. 
+Thus the sum of the vector provides the number of women. 
+For the same reason, the mean of the vector provides the proportion of women.
+
+If we know the proportion of women and subtract it from 1 (digital 
+format for 100%), we get the proportion of men in digital format.
+
+The next HINT provides the solution. So, keep trying before you peek.
+```
+
+```{r RAndRStudio-Exerc200-620-solution, exercise=FALSE,  eval=FALSE, include=FALSE}
+AvgAge=mean(VecAges)
+NumOfPersons=length(VecFirstNames)
+NumOfWomen=sum(VecIsFemale)
+NumOfMen=NumOfPersons-NumOfWomen
+PropWomen=mean(VecIsFemale)
+PropMen= 1 - PropWomen
+
+cat("We have", NumOfPersons, "persons in the dataset", 
+    "with an average age of", AvgAge, ".")
+cat("We have", NumOfWomen, "female(s) and", NumOfMen, "male(s).")
+cat(round(PropWomen,2)*100, "% are female and", 
+    round(PropMen, 2)*100, "% are male")
+```
+
+------------------------------------------------------------------------
+
+**Exercise 11:**
+
+In this exercise, you will perform numerical calculations on a vector. For the sake of this exercise, assume the current year is 2024. Of course, you can change this in the interactive exercise if you wish.
+
+```{r RAndRStudio-Exerc200-630, exercise=TRUE, exercise.lines=9}
+CurrentYear=2024
+VecFirstNames=c("Carsten", "Jose", "Jane")
+VecAges=c(45,54,23)
+VecBirthYears=CurrentYear-VecAges
+cat("Birth years for", VecFirstNames, "are:", VecBirthYears)
+```
+
+Run the code to estimate the birth years for *Carsten*, *Jose*, and *Jane.* The estimated birth years are calculated as the difference between the current year (the numeric value stored in the *R* object `CurrentYear`) and all three values stored in the vector-object `VecAges`. Consequently, the result (`VecBirthYears`) contains three values and is also a vector-object.
+
+**Your turn:**
+
+:   -   Adjust the `CurrentYear` object to include the current year, if needed.
+
+:   -   Adjust the vector-object `VecFirstNames` to include the names of three of your friends.
+
+:   -   Adjust the vector-object `VecAges` to include the ages of your three friends.
+
+:   -   Execute the modified code to estimate the birth years of your three friends.
+
+### Data Frame Objects {.unlisted .unnumbered}
+
+In the previous exercise section, you analyzed the content of different vectors under the assumption that their elements were in the same order. It required remembering the order of elements in a vector when performing analysis, which is cumbersome and can be avoided with data frames.
+
+You can think of a data frame as a table with variables in the columns, variable names in the first row, and related observations in all other rows --- just like an Excel table.
+
+The variables in the columns of a data frame are very similar to vector-objects --- except that they are part of the data frame. In fact, we will show in the following exercises that the columns of a data frame can be populated with vector-objects and that columns of a data frame can be extracted as vector-objects.
+
+After a data frame object is defined, you can use commands from the `tidyverse` package to process the data. Throughout this book, we will almost exclusively work with data frames and use the `tidyverse` for data engineering.
+
+**Exercise 12:**
+
+Regardless of whether the file is on your computer or the Internet, tabular data in a file can be imported into a data frame with the `import()` command from the `rio` package.
+
+When you run the code of the exercise below, the *Titanic* dataset will be imported to the data frame `DataFromInternet`, and with `select(Survived, Name, Sex)`, you will create a data frame that only includes the variables *Survived*, *Name*, and *Sex* from the imported *Titanic* dataset:
+
+```{r RAndRStudio-Exerc200-720, exercise=TRUE, eval=FALSE}
+library(rio)
+library(tidyverse)
+DataFromInternet=
+  import("https://ai.lange-analytics.com/data/Titanic.csv") |>
+select(Survived, Name, Sex)  
+head(DataFromInternet)
+```
+
+**Your turn:**
+
+:   Another tabular dataset containing wine observations can be imported from the *Internet*. The dataset contains 3,198 observations about different wines and was initially developed by @Cortez2009. It includes variables about wine color, several chemical properties, and an indicator for quality. The dataset is available as a tabular file at `https://ai.lange-analytics.com/data/WineData.rds`.
+
+:   -   Adjust the `import()` command to assign the wine dataset to the data frame `DataFromInternet`.
+
+:   -   Change the `select()` command to select only the variables $wineColor$ (renamed to $WineColor$), $acidity$ (renamed to $Acidity$), and $alcohol$ (renamed to $Alcohol$).
+
+:   -   Execute the modified code.
+
+```{r RAndRStudio-Exerc200-720-hint, exercise=FALSE,  eval=FALSE, include=FALSE}
+Make sure the new URL in the import() command is in quotes.
+
+Use the select() command and list the variables you like to select. 
+I,e., wineColor, acidity, and alcohol. Rename accordingly (e.g., Acidity=acidity)
+Note original variables are in lower rather than UpperCamel notification.
+
+The next HINT provides the solution. So, keep trying before you peek.
+
+```
+
+```{r RAndRStudio-Exerc200-720-solution, exercise=FALSE,  eval=FALSE, include=FALSE}
+library(rio)
+library(tidyverse)
+DataFromInternet=import("https://ai.lange-analytics.com/data/WineData.rds") |>
+                 select(WineColor=wineColor, Acidity=acidity, Alcohol=alcohol)
+head(DataFromInternet)
+
+```
+
+**Exercise 13:**
+
+When you run the code below, you will create a data frame `DataThreeFriends` by manually using the `data.frame()` command. Since variables (columns) of a data frame are very similar to vector-objects, you can use the `c()` command to create vector-objects that populate the variables for the data frame.
+
+```{r RAndRStudio-Exerc200-700, exercise=TRUE, echo=TRUE, message=FALSE, warning=FALSE, exercise.lines=9}
+library(tidyverse)
+CurrentYear=2024
+DataThreeFriends=data.frame(FirstName=c("Carsten", "Jose", "Jane"),
+                        LastName=c("Lange","Hernandez","Doe"),
+                        Age=c(45,54,23),
+                        IsFemale= c(FALSE,FALSE,TRUE))
+print(DataThreeFriends)
+```
+
+```{r RAndRStudio-Exerc200-700-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=9}
+The birth year can be calculated when you subtract a person's Age 
+from the R object CurrentYear. You can use the mutate command for this task.
+
+The next HINT provides the solution. So, keep trying before you peek.
+```
+
+```{r RAndRStudio-Exerc200-700-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=9}
+library(tidyverse)
+CurrentYear=2024
+DataThreeFriends=data.frame(FirstName=c("Carsten", "Jose", "Jane"),
+                        LastName=c("Lange","Hernandez","Doe"),
+                        Age=c(45,54,23),
+                        IsFemale=c(FALSE,FALSE,TRUE)) |> 
+                 mutate(BirthYear=CurrentYear-Age) 
+
+print(DataThreeFriends)
+```
+
+**Your turn:**
+
+:   In the exercise above:
+
+:   -   Change the value for `CurrentYear`, if needed.
+
+:   -   Enter the data of three of your friends (two male and one female).
+
+:   -   Use a pipe to add a `mutate()` and command to the `data.frame()` command. Then use the `mutate()` command to add a variable $BirthYear$ that shows the birth years for the three persons in the data frame.
+
+:   -   Run the code to see the results.
+
+------------------------------------------------------------------------
+
+**Exercise 14:**
+
+Commands like `sum()` or `mean()` that we used before to analyze vectors take only `vector`-objects as input. You cannot use variables from data frames directly. Therefore, to analyze variables in a data frame with commands such as `mean()` or `sum()`, you must first extract the data frame variables as vectors before these commands can process them.
+
+Fortunately, this procedure is simple. To extract a variable from a data frame as a vector, you just need to provide the data frame's name and the variable's name, separated by a "\$"-sign.
+
+The exercise below provides an example of extracting the variables $Survived$ and $Age$ from the data frame `DataTitanic` as a vector-object for further processing.
+
+In the code block below, we used `DataTitanic$Survived` to extract the variable $Survived$ as a vector and then used this vector-object to calculate the vector's `sum()`. This sum coincides with the number of survivors in the dataset because a survivor is coded as $1$ and a non-survivor is coded with $0$ (note, the data frame `DataTitanic` has been loaded already in the background):[^03-randrstudio-22]
+
+[^03-randrstudio-22]: This procedure would also work if survivors were coded as `TRUE` and non-survivors as `FALSE` in a logic object because `TRUE` is internally coded as $1$ and `FALSE` as $0$.
+
+```{r RAndRStudio-Exerc200-730, exercise=TRUE, echo=TRUE, message=FALSE, warning=FALSE, exercise.lines=9, eval=FALSE, exercise.setup="RAndRStudio-Exerc200-LoadDataTitanic"}
+NumOfSurv=sum(DataTitanic$Survived)
+AvgAgeOfPas=...(...)
+cat(NumOfSurv, "passengers survived.")
+cat("The average age of the passengers was", AvgAgeOfPas, ".")
+```
+
+```{r RAndRStudio-Exerc200-730-hint, exercise=FALSE,  eval=FALSE, include=FALSE}
+To extract the variable Age as a vector-object, you can use DataTitanic$Age.
+
+To calculate the average, you can use the mean() command.
+
+```
+
+```{r RAndRStudio-Exerc200-730-solution, exercise=FALSE,  eval=FALSE, include=FALSE}
+NumOfSurv=sum(DataTitanic$Survived)
+AvgAgeOfPas=mean(DataTitanic$Age)
+cat(NumOfSurv, "passengers survived.")
+cat("The average age of the passengers was", AvgAgeOfPas, ".")
+```
+
+**Your turn:**
+
+:   -   Substitute the `...` in the code block to extract the variable $Age$ as a vector-object and then calculate the average age of the passengers.
+
+:   -   Run the code to see the results.
+
+</clex>

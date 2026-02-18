@@ -6,10 +6,13 @@
 <script src="TrainTest_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="TrainTest_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="TrainTest_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="TrainTest_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="TrainTest_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="TrainTest_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="TrainTest_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.26">
 
-  <title>Polynomial Regression</title>
+  <meta name="author" content="Carsten Lange">
+  <title>Polynomial Regression — Overfitting/Tuning Explained</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -94,7 +97,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="TrainTest_files/libs/revealjs/dist/theme/quarto-4b8217244be6dee95f534ad2017c9ddb.css">
+  <link rel="stylesheet" href="TrainTest_files/libs/revealjs/dist/theme/quarto-92f953f199ed25aab29d366ec0d00847.css">
   <link href="TrainTest_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="TrainTest_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="TrainTest_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -112,6 +115,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -188,16 +192,29 @@
       margin-right: 0; 
     }
   </style>
+  <script type="module" src="TrainTest_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="TrainTest_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
 </head>
 <body class="quarto-dark">
   <div class="reveal">
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Polynomial Regression</h1>
-  <p class="subtitle">Overfitting/Tuning Explained</p>
+  <h1 class="title">Polynomial Regression — Overfitting/Tuning Explained</h1>
+  <p class="subtitle"><span style="color: red;">These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the lower right corner of the screen for progress)</span></p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Carsten Lange 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Cal Poly, Pomona
+          </p>
+    </div>
 </div>
 
 </section>
@@ -211,136 +228,253 @@
 <li><p>Hyper-parameter tuning to avoid <em>overfitting</em>.</p>
 <ul>
 <li>Validation</li>
-<li>Cross Validation»</li>
+<li>Cross Validation</li>
 </ul></li>
 </ul>
 </section>
 <section id="overfitting" class="slide level2">
 <h2>Overfitting</h2>
-<p>If a model performs well when approximating the training data but does not perform well when it faces new data to predict outcomes.</p>
-<p>Overfitting is one of the most pressing and still not fully solved problems in machine learning.»</p>
+<p><br><br><br></p>
+<blockquote>
+<p><strong>Overfitting</strong> occurs when a model performs well approximating the <em>training data</em> but does not perform well when it faces new data to predict outcomes (e.g., <em>testing data</em>).</p>
+</blockquote>
+<p><em>Overfitting</em> is one of the most pressing and still not fully solved problems in machine learning.</p>
 </section>
 <section id="circumstances-that-can-lead-to-overfitting" class="slide level2">
 <h2>Circumstances that Can Lead to Overfitting</h2>
+<p><br><br></p>
 <ul>
-<li class="fragment"><p>If the training dataset does not have a sufficient number of observations.</p></li>
-<li class="fragment"><p>If the model considers many variables and thus contains many parameters to calibrate.</p></li>
-<li class="fragment"><p>If the underlying machine learning model is highly non-linear.»</p></li>
+<li class="fragment"><p>If the training dataset does <strong>not have a sufficient number of observations</strong>.</p></li>
+<li class="fragment"><p>If the model considers <strong>many variables</strong> and thus contains <strong>many parameters</strong> to calibrate.</p></li>
+<li class="fragment"><p>If the underlying machine learning model is <strong>highly non-linear</strong> leading to a highly flexible prediction function.</p></li>
 </ul>
 </section>
-<section id="the-data" class="slide level2 scrollable">
-<h2>The Data</h2>
-<p>In what follows we use the Kings County Real Estate dataset.</p>
+<section id="libraries-and-data" class="slide level2 smaller">
+<h2>Libraries and Data</h2>
+<p><strong>Libraries Loaded:</strong></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidymodels); <span class="fu">library</span>(rio); <span class="fu">library</span>(janitor)</span>
-<span id="cb1-2"><a href=""></a></span>
-<span id="cb1-3"><a href=""></a>DataHousing <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb1-4"><a href=""></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>)  <span class="sc">|&gt;</span> </span>
-<span id="cb1-5"><a href=""></a>              <span class="fu">select</span>(Price, <span class="at">Sqft=</span>SqftLiving)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">library</span>(rio)</span>
+<span id="cb1-3"><a href=""></a><span class="fu">library</span>(janitor)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>We want to demonstrate <em>overfitting</em>. Therefore, we ceate conditions that <strong>likely trigger overfitting</strong>. Consequently, we work only with a very small training dataset (20 observations are 0.1% of total observations). All other observations become testing data:</p>
+<p><strong>King County Real Estate Dataset:</strong></p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb2-2"><a href=""></a><span class="co"># initial_split(prop = 0.001, ...) randomly chooses 20 training observations</span></span>
-<span id="cb2-3"><a href=""></a>Split001<span class="ot">=</span>DataHousing <span class="sc">|&gt;</span> </span>
-<span id="cb2-4"><a href=""></a>        <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.001</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
-<span id="cb2-5"><a href=""></a>        DataTrain<span class="ot">=</span><span class="fu">training</span>(Split001)</span>
-<span id="cb2-6"><a href=""></a>        DataTest<span class="ot">=</span><span class="fu">testing</span>(Split001)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>DataHousing <span class="ot">=</span> <span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/HousingData.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href=""></a>              <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-3"><a href=""></a>              <span class="fu">select</span>(Price, <span class="at">Sqft =</span> SqftLiving)</span>
+<span id="cb2-4"><a href=""></a><span class="fu">head</span>(DataHousing)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    Price Sqft
+1  221900 1180
+2  538000 2570
+3  180000  770
+4  604000 1960
+5  510000 1680
+6 1230000 5420</code></pre>
+</div>
+</div>
+<div class="cell" data-autorun="true">
+<div>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZX0sImNvZGUiOiJEYXRhSG91c2luZyA9IHJlYWQuY3N2KFwiaHR0cHM6Ly9haS5sYW5nZS1hbmFseXRpY3MuY29tL2RhdGEvSG91c2luZ0RhdGEuY3N2XCIpIHw+XG4gICAgICAgICAgICAgIGNsZWFuX25hbWVzKFwidXBwZXJfY2FtZWxcIikgfD5cbiAgICAgICAgICAgICAgc2VsZWN0KFByaWNlLCBTcWZ0ID0gU3FmdExpdmluZykgfD4gXG4gICAgICAgICAgICAgIG11dGF0ZShTcWZ0Mj1TcWZ0XjIsU3FmdDM9U3FmdF4zLFNxZnQ0PVNxZnReNCxTcWZ0NT1TcWZ0XjUpXG5cbnNldC5zZWVkKDc3NylcblxuU3BsaXQwMDE9aW5pdGlhbF9zcGxpdChwcm9wPTAuMDAxLCBzdHJhdGE9UHJpY2UsIFxuICAgICAgICAgICAgICAgICAgICAgICBicmVha3M9NSwgZGF0YT1EYXRhSG91c2luZylcblxuRGF0YVRyYWluID0gdHJhaW5pbmcoU3BsaXQwMDEpXG5EYXRhVGVzdCA9IHRlc3RpbmcoU3BsaXQwMDEpXG5cblJlY2lwZU9MUz1yZWNpcGUoUHJpY2V+U3FmdCwgZGF0YT1EYXRhVHJhaW4pXG5cbk1vZGVsRGVzaWduT0xTPSBsaW5lYXJfcmVnKCkgfD4gXG4gIHNldF9lbmdpbmUoXCJsbVwiKSB8PiBcbiAgc2V0X21vZGUoXCJyZWdyZXNzaW9uXCIpXG5cbldGTW9kZWxPTFM9IHdvcmtmbG93KCkgfD4gIFxuICAgICAgICAgICAgYWRkX3JlY2lwZShSZWNpcGVPTFMpIHw+IFxuICAgICAgICAgICAgYWRkX21vZGVsKE1vZGVsRGVzaWduT0xTKSB8PiBcbiAgICAgICAgICAgIGZpdChEYXRhVHJhaW4pXG5cblJlY2lwZVBvbHk1PXJlY2lwZShQcmljZX5TcWZ0K1NxZnQyK1NxZnQzK1NxZnQ0K1NxZnQ1LCBkYXRhPURhdGFUcmFpbilcblxuTW9kZWxEZXNpZ25Qb2x5NT0gbGluZWFyX3JlZygpIHw+IFxuICAgICAgICAgICAgICAgICAgc2V0X2VuZ2luZShcImxtXCIpIHw+IFxuICAgICAgICAgICAgICAgICAgc2V0X21vZGUoXCJyZWdyZXNzaW9uXCIpXG5cbldGTW9kZWxQb2x5NT0gd29ya2Zsb3coKSB8PiAgXG4gICAgICAgICAgICBhZGRfcmVjaXBlKFJlY2lwZVBvbHk1KSB8PiBcbiAgICAgICAgICAgIGFkZF9tb2RlbChNb2RlbERlc2lnblBvbHk1KSB8PiBcbiAgICAgICAgICAgIGZpdChEYXRhVHJhaW4pIn0=
+</script>
+</div>
 </div>
 </section>
 <section id="data-visualization" class="slide level2">
 <h2>Data Visualization</h2>
-<p>There seems to be a non-liner trend:</p>
+<p>There seems to be a non-linear trend:</p>
 
-<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"></section>
-<section id="training-data-structure" class="slide level2">
-<h2>Training Data Structure</h2>
+<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="creating-overfitting-environment" class="slide level2">
+<h2>Creating Overfitting Environment</h2>
+<p>We want to <strong>demonstrate overfitting</strong>. Therefore, we create conditions that likely <strong>trigger overfitting:</strong> <br><br></p>
+<ul>
+<li class="fragment"><p>Very small training dataset with <strong>20 observations</strong> (equivalent to <strong>0.1% of total observations</strong>). The remaining 21,593 observations become <em>testing data</em>. <br><br></p></li>
+<li class="fragment"><p><strong>Highly non-linear</strong> machine learning model: <strong>Degree-5 Polynomial Regression Model</strong></p></li>
+</ul>
+</section>
+<section id="creating-training-and-testing-data" class="slide level2">
+<h2>Creating Training and Testing Data</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">print</span>(DataTrain)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>     Price Sqft
-1   153503 1240
-2   199500 1750
-3   234950 1720
-4   246000 2120
-5   355000 1240
-6   385000 2090
-7   365000  910
-8   349000 1690
-9   474950 2030
-10  450000 1540
-11  465000 2020
-12  445000 1630
-13  568000 2110
-14  660000 2470
-15  530000 1260
-16  600000 2090
-17 1150000 3830
-18  885000 4470
-19  978000 2390
-20  705000 2040</code></pre>
+<div>
+<div id="webr-2" class="exercise-cell">
+
+</div>
+<script type="webr-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoic2V0LnNlZWQoNzc3KVxuXG5TcGxpdDAwMT1pbml0aWFsX3NwbGl0KHByb3A9MC4wMDEsIHN0cmF0YT1QcmljZSwgXG4gICAgICAgICAgICAgICAgICAgICAgIGJyZWFrcz01LCBkYXRhPURhdGFIb3VzaW5nKVxuXG5EYXRhVHJhaW4gPSB0cmFpbmluZyhTcGxpdDAwMSlcbkRhdGFUZXN0ID0gdGVzdGluZyhTcGxpdDAwMSlcblNwbGl0MDAxIn0=
+</script>
 </div>
 </div>
 </section>
-<section id="polynomial-regression" class="slide level2">
-<h2>Polynomial Regression</h2>
-<p>Regular univariate prediction equation: <span class="math display">\[
+<section id="polynomial-regressions" class="slide level2">
+<h2>Polynomial Regressions</h2>
+<p><strong>Polynomial Univariate Prediction Equation (Degree 1):</strong> <span class="math display">\[
 \widehat{Price}=\beta_1 Sqft+\beta_2
 \]</span></p>
 <div class="fragment">
-<p>Polynomial univariate prediction equation (degree 5):</p>
-<p><span class="math display">\[\begin{eqnarray*}
-\widehat{Price}&amp;=&amp;\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 \\
-  &amp;&amp; +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
-\end{eqnarray*}\]</span></p>
+<p><strong>Polynomial Univariate Prediction Equation (Degree 5):</strong></p>
+<p><span class="math display">\[
+\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3
+   +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+\]</span></p>
 </div>
 </section>
-<section id="polynomial-regression-1" class="slide level2">
+<section id="simple-regression" class="slide level2">
+<h2>Simple Regression</h2>
+<p>Polynomial Univariate Prediction Equation (Degree 1): <span class="math display">\[
+\widehat{Price}=\beta_1 Sqft+\beta_2
+\]</span></p>
+<div class="cell">
+<div>
+<div id="webr-3" class="exercise-cell">
+
+</div>
+<script type="webr-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUmVjaXBlT0xTPXJlY2lwZShQcmljZX5TcWZ0LCBkYXRhPURhdGFUcmFpbilcblxuTW9kZWxEZXNpZ25PTFM9IGxpbmVhcl9yZWcoKSB8PiBcbiAgc2V0X2VuZ2luZShcImxtXCIpIHw+IFxuICBzZXRfbW9kZShcInJlZ3Jlc3Npb25cIilcblxuV0ZNb2RlbE9MUz0gd29ya2Zsb3coKSB8PiAgXG4gICAgICAgICAgICBhZGRfcmVjaXBlKFJlY2lwZU9MUykgfD4gXG4gICAgICAgICAgICBhZGRfbW9kZWwoTW9kZWxEZXNpZ25PTFMpIHw+IFxuICAgICAgICAgICAgZml0KERhdGFUcmFpbilcbnByaW50KFdGTW9kZWxPTFMpIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="fitted-univariate-ols-model" class="slide level2">
+<h2>Fitted Univariate OLS Model</h2>
+<div class="cell" data-autorun="true">
+<div>
+<div id="webr-4" class="exercise-cell">
+
+</div>
+<script type="webr-4-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoV0ZNb2RlbE9MUykifQ==
+</script>
+</div>
+</div>
+<p><span class="math display">\[
+\widehat{Price}=234 \cdot Sqft+34732
+\]</span></p>
+</section>
+<section id="polynomial-regression" class="slide level2 smaller">
 <h2>Polynomial Regression</h2>
 <p>Polynomial univariate prediction equation (degree 5):</p>
-<p><span class="math display">\[\begin{eqnarray*}
-\widehat{Price}&amp;=&amp;\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3\\
-  &amp;&amp; +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
-\end{eqnarray*}\]</span></p>
-<div class="fragment">
+<p><span class="math display">\[
+\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3
+   +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+\]</span></p>
 <p>We create <span class="math inline">\(Sqft^2\)</span>, <span class="math inline">\(Sqft^3\)</span>, <span class="math inline">\(Sqft^4\)</span>, and <span class="math inline">\(Sqft^5\)</span> as new variables in the data and treat them as they were separate variables in a multivariate regression.</p>
-</div>
-<div class="fragment">
-<p>This makes the regression <strong>linear in variables</strong> but <strong>non-linear in data</strong>.</p>
-</div>
-<div class="fragment">
-<p>Consequently, we can use OLS to find the optimal <span class="math inline">\(\beta s\)</span>.»</p>
-</div>
-</section>
-<section id="how-the-data-would-look-like" class="slide level2">
-<h2>HOW THE DATA WOULD LOOK LIKE</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">head</span>(DataHousing <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">Sqft2=</span>Sqft<span class="sc">^</span><span class="dv">2</span>,<span class="at">Sqft3=</span>Sqft<span class="sc">^</span><span class="dv">3</span>,<span class="at">Sqft4=</span>Sqft<span class="sc">^</span><span class="dv">4</span>,<span class="at">Sqft5=</span>Sqft<span class="sc">^</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>    Price Sqft    Sqft2        Sqft3        Sqft4        Sqft5
-1  221900 1180  1392400   1643032000 1.938778e+12 2.287758e+15
-2  538000 2570  6604900  16974593000 4.362470e+13 1.121155e+17
-3  180000  770   592900    456533000 3.515304e+11 2.706784e+14
-4  604000 1960  3841600   7529536000 1.475789e+13 2.892547e+16
-5  510000 1680  2822400   4741632000 7.965942e+12 1.338278e+16
-6 1230000 5420 29376400 159220088000 8.629729e+14 4.677313e+18</code></pre>
+<div>
+<div id="webr-5" class="exercise-cell">
+
+</div>
+<script type="webr-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUhvdXNpbmc9IERhdGFIb3VzaW5nIHw+IFxuICAgICAgICAgICAgIG11dGF0ZShTcWZ0Mj1TcWZ0XjIsU3FmdDM9U3FmdF4zLFNxZnQ0PVNxZnReNCxTcWZ0NT1TcWZ0XjUpXG5oZWFkKERhdGFIb3VzaW5nKSJ9
+</script>
+</div>
+</div>
+<p>This makes the regression <strong>linear in variables</strong> but <strong>non-linear in data</strong>.</p>
+<p>Consequently, we can use OLS to find the optimal <span class="math inline">\(\beta s\)</span>.</p>
+</section>
+<section id="polynomial-regression-model" class="slide level2">
+<h2>Polynomial Regression Model</h2>
+<p>Degree-5 Polynomial Regression equation: <span class="math display">\[
+\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3+
+                \beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+\]</span></p>
+<div class="cell">
+<div>
+<div id="webr-6" class="exercise-cell">
+
+</div>
+<script type="webr-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUmVjaXBlUG9seTU9cmVjaXBlKFByaWNlflNxZnQrU3FmdDIrU3FmdDMrU3FmdDQrU3FmdDUsIGRhdGE9RGF0YVRyYWluKVxuXG5Nb2RlbERlc2lnblBvbHk1PSBsaW5lYXJfcmVnKCkgfD4gXG4gICAgICAgICAgICAgICAgICBzZXRfZW5naW5lKFwibG1cIikgfD4gXG4gICAgICAgICAgICAgICAgICBzZXRfbW9kZShcInJlZ3Jlc3Npb25cIilcblxuV0ZNb2RlbFBvbHk1PXdvcmtmbG93KCkgfD4gIFxuICAgICAgICAgICAgIGFkZF9yZWNpcGUoUmVjaXBlUG9seTUpIHw+IFxuICAgICAgICAgICAgIGFkZF9tb2RlbChNb2RlbERlc2lnblBvbHk1KSB8PiBcbiAgICAgICAgICAgICBmaXQoRGF0YVRyYWluKVxucHJpbnQoV0ZNb2RlbFBvbHk1KSJ9
+</script>
 </div>
 </div>
 </section>
-<section id="comparing-regular-ols-and-polynominal-regression-degree5" class="slide level2">
-<h2>Comparing Regular OLS and Polynominal Regression (degree=5) 🤓</h2>
+<section id="fitted-polynomial-model-degree-5" class="slide level2 smaller">
+<h2>Fitted Polynomial Model (Degree 5)</h2>
+<div class="cell" data-autorun="true">
+<div>
+<div id="webr-7" class="exercise-cell">
+
+</div>
+<script type="webr-7-contents">
+eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoicHJpbnQoV0ZNb2RlbFBvbHk1KSJ9
+</script>
+</div>
+</div>
+<p><span class="math display">\[
+\begin{align}
+\widehat{Price}=&amp;
+  10573
+  \cdot Sqft +
+    (-11)
+  \cdot Sqft^2 +
+    0.0053
+  \cdot Sqft^3 + \\
+   &amp; (-0.0000011)
+  \cdot Sqft^4 +
+    0.000000000086
+  \cdot Sqft^5 +
+  (-3336064)
+\end{align}
+\]</span></p>
+</section>
+<section id="comparing-predictive-quality-based-on-training-data" class="slide level2">
+<h2>Comparing Predictive Quality Based on Training Data</h2>
+<p><strong>Regular OLS:</strong></p>
+<div class="cell">
+<div>
+<div id="webr-8" class="exercise-cell">
+
+</div>
+<script type="webr-8-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRyYWluV2l0aFByZWRPTFM9YXVnbWVudChXRk1vZGVsT0xTLCBEYXRhVHJhaW4pXG5tZXRyaWNzKERhdGFUcmFpbldpdGhQcmVkT0xTLCB0cnV0aD1QcmljZSwgZXN0aW1hdGU9LnByZWQpIn0=
+</script>
+</div>
+</div>
+<p><strong>Polynomial Regression (Degree=5)</strong></p>
+<div class="cell">
+<div>
+<div id="webr-9" class="exercise-cell">
+
+</div>
+<script type="webr-9-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRyYWluV2l0aFByZWRQb2x5NT1hdWdtZW50KFdGTW9kZWxQb2x5NSwgRGF0YVRyYWluKVxubWV0cmljcyhEYXRhVHJhaW5XaXRoUHJlZFBvbHk1LCB0cnV0aD1QcmljZSwgZXN0aW1hdGU9LnByZWQpIn0=
+</script>
+</div>
+</div>
+<p>Code to compare is linked in the footer of this slide.</p>
+<div class="footer">
+<p>See: <a href="https://econ.lange-analytics.com/RScripts/TrainTestScript.R">TrainTestScript.R Script100</a></p>
+</div>
+</section>
+<section id="comparing-predictive-quality-based-on-testing-data" class="slide level2">
+<h2>Comparing Predictive Quality Based on Testing Data</h2>
+<p><strong>Regular OLS:</strong></p>
+<div class="cell">
+<div>
+<div id="webr-10" class="exercise-cell">
+
+</div>
+<script type="webr-10-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRlc3RXaXRoUHJlZE9MUz1hdWdtZW50KFdGTW9kZWxPTFMsIERhdGFUZXN0KVxubWV0cmljcyhEYXRhVGVzdFdpdGhQcmVkT0xTLCB0cnV0aD1QcmljZSwgZXN0aW1hdGU9LnByZWQpIn0=
+</script>
+</div>
+</div>
+<p><strong>Polynomial Regression (Degree=5)</strong></p>
+<div class="cell">
+<div>
+<div id="webr-11" class="exercise-cell">
+
+</div>
+<script type="webr-11-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRlc3RXaXRoUHJlZFBvbHk1PWF1Z21lbnQoV0ZNb2RlbFBvbHk1LCBEYXRhVGVzdClcbm1ldHJpY3MoRGF0YVRlc3RXaXRoUHJlZFBvbHk1LCB0cnV0aD1QcmljZSwgZXN0aW1hdGU9LnByZWQpIn0=
+</script>
+</div>
+</div>
 <p>Code to compare is linked in the footer of this slide.</p>
 <div class="footer">
 <p>See: <a href="https://econ.lange-analytics.com/RScripts/TrainTestScript.R">TrainTestScript.R Script100</a></p>
@@ -349,40 +483,41 @@
 <section id="polynomial-regression-degree5-vs.-regular-ols" class="slide level2">
 <h2>Polynomial Regression (degree=5) vs.&nbsp;Regular OLS</h2>
 <h3 id="aproximation-of-the-training-data">Aproximation of the Training Data</h3>
-</section>
-<section id="polynomial-regression-degree5-vs.-regular-ols-1" class="slide level2">
-<h2>Polynomial Regression (degree=5) vs.&nbsp;Regular OLS</h2>
-<h3 id="aproximation-of-the-training-data-1">Aproximation of the Training Data</h3>
 
-<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
-<section id="polynomial-regression-degree5-vs.-regular-ols-2" class="slide level2 smaller">
+<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-17-1.png" width="960" class="r-stretch"></section>
+<section id="polynomial-regression-degree5-vs.-regular-ols-1" class="slide level2 smaller">
 <h2>Polynomial Regression (degree=5) vs.&nbsp;Regular OLS</h2>
 <h3 id="training-and-testing-data-performance">Training and Testing Data Performance</h3>
 
-<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}\]</span></p>
+<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-18-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}\]</span></p>
 </section>
 <section id="polynomial-regression-degree10-vs.-regular-ols" class="slide level2 smaller">
 <h2>Polynomial Regression (degree=10) vs.&nbsp;Regular OLS</h2>
 <h3 id="training-and-testing-data-performance-1">Training and Testing Data Performance</h3>
 
-<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{10} Sqft^{10}+\beta_{11}\]</span></p>
+<img data-src="TrainTest_files/figure-revealjs/unnamed-chunk-19-1.png" width="960" class="r-stretch"><p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{10} Sqft^{10}+\beta_{11}\]</span></p>
 </section>
-<section id="summary-polynomial-regression" class="slide level2">
-<h2>SUMMARY: POLYNOMIAL REGRESSION</h2>
+<section id="summary-polynomial-regression-and-overfitting" class="slide level2">
+<h2>SUMMARY: POLYNOMIAL REGRESSION and Overfitting</h2>
 <ul>
-<li class="fragment"><p>If we do not have enough data polynomial regression with a high degree might lead to overfitting</p></li>
-<li class="fragment"><p>What is the right degree?</p></li>
-<li class="fragment"><p>We could try different degrees (e.g., 2, 3, 4, … 10) and see which model performs best.</p></li>
-<li class="fragment"><p>Which data are we using to measure performance? Training data (overfitting) and testing data (cannot be used for model optimization) are out.</p></li>
+<li class="fragment"><p>If we do not have enough data <em>Polynomial Regression</em> with a high degree might lead to <em>overfitting</em><br><br></p></li>
+<li class="fragment"><p>What is the right degree?<br><br></p></li>
+<li class="fragment"><p>We could try different degrees (e.g., 2, 3, 4, … 10) and see which model performs best.<br><br></p></li>
+<li class="fragment"><p>Which data are we using to measure performance?</p>
+<ul>
+<li class="fragment">Training data? -&gt; overfitting problem</li>
+<li class="fragment">Testing data? -&gt; cannot be used for model optimization</li>
+<li class="fragment">Training and Testing Data are out!<br><br></li>
+</ul></li>
 <li class="fragment"><p>We could split off data from the training dataset (<strong>validation data</strong>). These <em>validation data</em> are not used to calculate the βs. Instead, they are used to find the best setting for the degree of polynomial regression (aka hyper-parameter of polynomial regression).</p></li>
 </ul>
 </section>
 <section id="hyper-parameters" class="slide level2">
 <h2>Hyper-Parameters</h2>
 <ul>
-<li class="fragment"><p>Hyper-Parameters are parameters other than the <span class="math inline">\(\beta\)</span> parameters, because they can not be optimized by the optimizer.</p></li>
-<li class="fragment"><p>Hyper-Parameters are like settings for a machine learning model such as the number of polynomials (e.g., <span class="math inline">\(Sqft^N\)</span>) to be considered for polynomial regression. Another example are the number of <span class="math inline">\(k\)</span> Nearest Neighbors.</p></li>
-<li class="fragment"><p>Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overfitting.»</p></li>
+<li><p>Hyper-Parameters are parameters other than the <span class="math inline">\(\beta\)</span> parameters, because they can not be optimized by the optimizer.</p></li>
+<li><p>Hyper-Parameters are like settings for a machine learning model such as the number of polynomials (e.g., <span class="math inline">\(Sqft^N\)</span>) to be considered for polynomial regression. Another example are the number of <span class="math inline">\(k\)</span> Nearest Neighbors.</p></li>
+<li><p>Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overfitting.</p></li>
 </ul>
 </section>
 <section id="problems-of-splitting-validation-data-off-the-training-data" class="slide level2">
@@ -392,14 +527,14 @@
 <li><p>If the training dataset is big enough this is no problem. Otherwise, it is a problem!</p></li>
 </ul>
 </section>
-<section id="cross-validation-4-fold" class="slide level2">
+<section id="cross-validation-4-fold" class="slide level2 scrollable">
 <h2>CROSS VALIDATION (4-FOLD)</h2>
 <p>For each hyper-parameter setting:</p>
 <ol type="1">
-<li class="fragment"><p>Splits off validation data from training data (e.g.&nbsp;last quarter)</p></li>
-<li class="fragment"><p>Runs the model and calculates metrics based on validation data.</p></li>
-<li class="fragment"><p>Splits off validation data from training data (next quarter)</p></li>
-<li class="fragment"><p>Repeats steps 2 – 3 four times.</p></li>
+<li><p>Splits off validation data from training data (e.g.&nbsp;last quarter)</p></li>
+<li><p>Runs the model and calculates metrics based on validation data.</p></li>
+<li><p>Splits off validation data from training data (next quarter)</p></li>
+<li><p>Repeats steps 2 – 3 four times.</p></li>
 </ol>
 <div class="fragment">
 <p>We end up with four results for each hyper-parameter setting. We calculate the average of the four results as an result for that specific hyper parameter.</p>
@@ -424,14 +559,14 @@
 <section id="more-realistic-datasplit-80-training-20-testing" class="slide level2">
 <h2>MORE REALISTIC DATASPLIT: 80% TRAINING, 20% TESTING</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
-<span id="cb7-2"><a href=""></a></span>
-<span id="cb7-3"><a href=""></a>Split80<span class="ot">=</span>DataHousing <span class="sc">|&gt;</span> </span>
-<span id="cb7-4"><a href=""></a>  <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
-<span id="cb7-5"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split80)</span>
-<span id="cb7-6"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split80) </span>
-<span id="cb7-7"><a href=""></a></span>
-<span id="cb7-8"><a href=""></a><span class="fu">print</span>(Split80)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">987</span>)</span>
+<span id="cb4-2"><a href=""></a></span>
+<span id="cb4-3"><a href=""></a>Split80<span class="ot">=</span>DataHousing <span class="sc">|&gt;</span> </span>
+<span id="cb4-4"><a href=""></a>  <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.8</span>, <span class="at">strata =</span> Price, <span class="at">breaks =</span> <span class="dv">5</span>) </span>
+<span id="cb4-5"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split80)</span>
+<span id="cb4-6"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split80) </span>
+<span id="cb4-7"><a href=""></a></span>
+<span id="cb4-8"><a href=""></a><span class="fu">print</span>(Split80)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>&lt;Training/Testing/Total&gt;
 &lt;17289/4324/21613&gt;</code></pre>
@@ -532,20 +667,20 @@
 <p><span class="math display">\[\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +\beta_5 Sqft^5 +\beta_{6}\]</span></p>
 <p><span class="math display">\[MSE_{degree=5}=42,895,400\]</span></p>
 </section>
-<section id="steps-to-create-a-model-tune-it-and-predict" class="slide level2 smaller">
+<section id="steps-to-create-a-model-tune-it-and-predict" class="slide level2 smaller scrollable">
 <h2>10 Steps to Create a Model, Tune it, and Predict</h2>
 <p>The <strong>10 general steps</strong> are:</p>
 <ol type="1">
-<li class="fragment"><p>Generating <strong>training and testing data</strong> with <code>initial_split()</code>, <code>training()</code>, <code>testing()</code></p></li>
-<li class="fragment"><p>Create <strong>recipe</strong> to determine predictor and outcome variables. Optionally add one or more <code>step_X()</code> commands. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
-<li class="fragment"><p>Create <strong>model design</strong>. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
-<li class="fragment"><p>Create <strong>workflow</strong> with <code>workflow()</code>, add_recipe()<code>and</code>add_model()<code>without</code>fit()`</p></li>
-<li class="fragment"><p>Create a <strong>hyper-parameter grid</strong> containing the hyper-parameter combinations to be validated</p></li>
-<li class="fragment"><p>Create <strong>cross validation datasets</strong> (aka <em>resamples</em>) containing the folds (use command <code>vfold()</code>)</p></li>
-<li class="fragment"><p><strong>Tune</strong> the machine learning model with <code>tune_grid()</code> and track specific metrics defined by <code>metric_set()</code>. <strong>Runs all hyper-parameter combinations for all folds.</strong></p></li>
-<li class="fragment"><p><strong>Extract the best hyper-parameter combination</strong> from the tuning results based on selected metrics (use <code>select_best()</code>)</p></li>
-<li class="fragment"><p><strong>Finalize the model</strong> by training it with the full set of training data with the best hyper-parameter combination (see <code>finalize_workflow() |&gt; fit()</code>).</p></li>
-<li class="fragment"><p><strong>Assessing predictive quality</strong> of the final model by using the testing dataset to predict (see <code>augment() |&gt; metrics()</code>).</p></li>
+<li><p>Generating <strong>training and testing data</strong> with <code>initial_split()</code>, <code>training()</code>, <code>testing()</code></p></li>
+<li><p>Create <strong>recipe</strong> to determine predictor and outcome variables. Optionally add one or more <code>step_X()</code> commands. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
+<li><p>Create <strong>model design</strong>. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
+<li><p>Create <strong>workflow</strong> with <code>workflow()</code>, add_recipe()<code>and</code>add_model()<code>without</code>fit()`</p></li>
+<li><p>Create a <strong>hyper-parameter grid</strong> containing the hyper-parameter combinations to be validated</p></li>
+<li><p>Create <strong>cross validation datasets</strong> (aka <em>resamples</em>) containing the folds (use command <code>vfold()</code>)</p></li>
+<li><p><strong>Tune</strong> the machine learning model with <code>tune_grid()</code> and track specific metrics defined by <code>metric_set()</code>. <strong>Runs all hyper-parameter combinations for all folds.</strong></p></li>
+<li><p><strong>Extract the best hyper-parameter combination</strong> from the tuning results based on selected metrics (use <code>select_best()</code>)</p></li>
+<li><p><strong>Finalize the model</strong> by training it with the full set of training data with the best hyper-parameter combination (see <code>finalize_workflow() |&gt; fit()</code>).</p></li>
+<li><p><strong>Assessing predictive quality</strong> of the final model by using the testing dataset to predict (see <code>augment() |&gt; metrics()</code>).</p></li>
 </ol>
 </section>
 <section id="run-all-10-steps-to-tune-the-real-estate-model" class="slide level2">
@@ -570,11 +705,28 @@
 <p>See: <a href="https://econ.lange-analytics.com/RScripts/KNearNeighIndepExerc.R">Research Project</a></p>
 </div>
 
+<script type="webr-data">
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsImRwbHlyIiwicnNhbXBsZSIsImphbml0b3IiLCJyZWNpcGVzIiwicmlvIiwieWFyZHN0aWNrIiwicGFyc25pcCIsIndvcmtmbG93cyIsImdncGxvdDIiXSwicmVwb3MiOltdfSwicmVuZGVyX2RmIjoiZGVmYXVsdCJ9
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xMSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzExID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xMS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xMSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0xMCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMTA7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xMCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzEwID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMTAtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xMC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8xMCA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMTAsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC05IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV85O1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItOSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzkgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItOS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV85ID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl85LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtOCIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfODtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl84ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItOC1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTgtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfOCA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfOCwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzc7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici03IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfNyA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTctY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici03LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzcgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC02IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV82O1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItNiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzYgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV82ID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl82LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtNSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfNTtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfNSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfNSwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzQ7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfNCA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTQtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici00LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzQgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8zO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzMgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8zID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl8zLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMjtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMi1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTItY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfMiA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMiwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6Il93ZWJyX3ZhbHVlXzEgPSB7XG4gIGNvbnN0IHsgaGlnaGxpZ2h0UiwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIC8vIERlZmF1bHQgZXZhbHVhdGlvbiBjb25maWd1cmF0aW9uXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHtcbiAgICBpZDogXCJ3ZWJyLTEtY29udGVudHNcIixcbiAgICBlY2hvOiB0cnVlLFxuICAgIG91dHB1dDogdHJ1ZVxuICB9LCBibG9jay5hdHRyKTtcblxuICAvLyBFdmFsdWF0ZSB0aGUgcHJvdmlkZWQgUiBjb2RlXG4gIGNvbnN0IHJlc3VsdCA9IHdlYlJPanMucHJvY2Vzcyh7Y29kZTogYmxvY2suY29kZSwgb3B0aW9uc30sIHt9KTtcblxuICAvLyBFYXJseSB5aWVsZCB3aGlsZSB3ZSB3YWl0IGZvciB0aGUgZmlyc3QgZXZhbHVhdGlvbiBhbmQgcmVuZGVyXG4gIGlmIChvcHRpb25zLm91dHB1dCAmJiAhKFwiMVwiIGluIHdlYlJPanMucmVuZGVyZWRPanMpKSB7XG4gICAgY29uc3QgY29udGFpbmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgICBjb25zdCBzcGlubmVyID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcblxuICAgIGlmIChvcHRpb25zLmVjaG8pIHtcbiAgICAgIC8vIFNob3cgb3V0cHV0IGFzIGhpZ2hsaWdodGVkIHNvdXJjZVxuICAgICAgY29uc3QgcHJlRWxlbSA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJwcmVcIik7XG4gICAgICBjb250YWluZXIuY2xhc3NOYW1lID0gXCJzb3VyY2VDb2RlXCI7XG4gICAgICBwcmVFbGVtLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZSByXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFIoYmxvY2suY29kZSkpO1xuICAgICAgc3Bpbm5lci5jbGFzc05hbWUgPSBcInNwaW5uZXItZ3JvdyBzcGlubmVyLWdyb3ctc20gbS0yIHBvc2l0aW9uLWFic29sdXRlIHRvcC0wIGVuZC0wXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHByZUVsZW0pO1xuICAgIH0gZWxzZSB7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ib3JkZXIgc3Bpbm5lci1ib3JkZXItc21cIjtcbiAgICAgIGNvbnRhaW5lci5hcHBlbmRDaGlsZChzcGlubmVyKTtcbiAgICB9XG5cbiAgICB5aWVsZCBjb250YWluZXI7XG4gIH1cblxuICB3ZWJST2pzLnJlbmRlcmVkT2pzW1wiMVwiXSA9IHRydWU7XG4gIHlpZWxkIGF3YWl0IHJlc3VsdDtcbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ3ZWJST2pzID0ge1xuICBjb25zdCB7IFdlYlIsIENoYW5uZWxUeXBlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lLldlYlI7XG4gIGNvbnN0IHtcbiAgICBXZWJSRXZhbHVhdG9yLFxuICAgIFdlYlJFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBSLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGhcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIHdlYlIgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgLy8gVXNlIFBvc3RNZXNzYWdlIGNoYW5uZWwgZm9yIGFzeW5jIGNvbW11bmljYXRpb25cbiAgLy8gV2UgZG8gbm90IGV4cGVjdCB0byB0YWtlIG5lc3RlZCBwcm9tcHQgaW5wdXQgaW4gUXVhcnRvIExpdmUgY2VsbHNcbiAgZGF0YS5vcHRpb25zLmNoYW5uZWxUeXBlID0gQ2hhbm5lbFR5cGUuUG9zdE1lc3NhZ2U7XG5cbiAgLy8gSW5pdGlhbGlzZSB3ZWJSIGFuZCBzZXR1cCBmb3IgUiBjb2RlIGV2YWx1YXRpb25cbiAgbGV0IHdlYlJQcm9taXNlID0gKGFzeW5jICh3ZWJSKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyB3ZWJSYDtcbiAgICBhd2FpdCB3ZWJSLmluaXQoKTtcblxuICAgIC8vIEluc3RhbGwgcHJvdmlkZWQgbGlzdCBvZiBwYWNrYWdlc1xuICAgIC8vIEVuc3VyZSB3ZWJSIGRlZmF1bHQgcmVwbyBpcyBpbmNsdWRlZFxuICAgIGRhdGEucGFja2FnZXMucmVwb3MucHVzaChcImh0dHBzOi8vcmVwby5yLXdhc20ub3JnXCIpXG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gd2ViUi5ldmFsUlZvaWQoYFxuICAgICAgICB3ZWJyOjppbnN0YWxsKHBrZywgcmVwb3MgPSByZXBvcylcbiAgICAgICAgbGlicmFyeShwa2csIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSlcbiAgICAgIGAsIHsgZW52OiB7XG4gICAgICAgIHBrZzogcGtnLFxuICAgICAgICByZXBvczogZGF0YS5wYWNrYWdlcy5yZXBvcyxcbiAgICAgIH19KTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICBjb25zdCBhbmFseXNpcyA9IGF3YWl0IHdlYlIuRlMuYW5hbHl6ZVBhdGgocGF0aCk7XG4gICAgICAgIGlmICghYW5hbHlzaXMuZXhpc3RzKSB7XG4gICAgICAgICAgdHJ5IHtcbiAgICAgICAgICAgIGF3YWl0IHdlYlIuRlMubWtkaXIocGF0aCk7XG4gICAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yOiBcIiR7ZS5tZXNzYWdlfVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgcmV0dXJuIGF3YWl0IHdlYlIuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5zdGFsbGluZyB3ZWJSIHNoaW1zYDtcbiAgICBhd2FpdCB3ZWJSLmV2YWxSVm9pZChgd2Vicjo6c2hpbV9pbnN0YWxsKClgKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgV2ViUiBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBSKHdlYlIsIGRhdGEpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHdlYlI7XG4gIH0pKG5ldyBXZWJSKGRhdGEub3B0aW9ucykpO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCB3ZWJSID0gYXdhaXQgd2ViUlByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFdlYlJFdmFsdWF0b3Iod2ViUiwgY29udGV4dClcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBwcm9jZXNzLFxuICAgIHdlYlJQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+<p><a href="https://ai.lange-analytics.com/htmlbook/TrainTest.html" target="_blank">Textbook </a></p>
 </div>
 </div></div>
 
@@ -609,7 +761,7 @@
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
-'smaller': false,
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: true,
@@ -629,7 +781,7 @@
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: 'c/t',
+        slideNumber: false,
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -762,7 +914,7 @@
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -787,6 +939,17 @@
           RevealZoom
         ]
       });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../../..";
+    window._ojs.paths.runtimeToRoot = "../../../..";
+    window._ojs.paths.docToRoot = "..";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
     </script>
     
 
@@ -912,13 +1075,14 @@
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy

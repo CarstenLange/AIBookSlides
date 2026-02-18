@@ -1,16 +1,39 @@
 ---
-title: "Polynomial Regression"
-subtitle: "Overfitting/Tuning Explained"
+title: "Polynomial Regression --- Overfitting/Tuning Explained"
+subtitle: "[These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the  lower right corner of the screen for progress)]{style='color: red;'}"
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
 format: 
-  revealjs:
-    code-fold: true
+  live-revealjs:
+    theme: [moon, CustomCL.scss]
+    smaller: true
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/TrainTest.html' target='_blank'>Textbook </a> "
+   
+webr:
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'rio',
+             'yardstick','parsnip','workflows', 'ggplot2'] # Auto-install packages in the browser
+
+engine: knitr
 ---
+
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
 
 ## Overview
 
 You will learn about:
 
-::: nonincremental
+
 -   Overfitting in detail.
 
 -   Circumstances that make *overfitting* more likely to occur.
@@ -20,51 +43,150 @@ You will learn about:
 -   Hyper-parameter tuning to avoid *overfitting*.
 
     -   Validation
-    -   Cross Validation»
-:::
+    -   Cross Validation
+
 
 ## Overfitting
+<br><br><br>
 
-If a model performs well when approximating the training data but does not perform well when it faces new data to predict outcomes.
+> **Overfitting** occurs when a model performs well approximating the 
+> *training data* but does not perform well when it faces new data to 
+> predict outcomes (e.g., *testing data*).
 
-Overfitting is one of the most pressing and still not fully solved problems in machine learning.»
+*Overfitting* is one of the most pressing and still not fully solved problems in machine learning.
 
 ## Circumstances that Can Lead to Overfitting
 
--   If the training dataset does not have a sufficient number of observations.
+<br><br>
 
--   If the model considers many variables and thus contains many parameters to calibrate.
+::: {.incremental}
+-   If the training dataset does **not have a sufficient number of observations**.
 
--   If the underlying machine learning model is highly non-linear.»
+-   If the model considers **many variables** and thus contains **many parameters** to calibrate.
 
-## The Data {.scrollable}
+-   If the underlying machine learning model is **highly non-linear** leading to a highly flexible prediction function.
+:::
 
-In what follows we use the Kings County Real Estate dataset.
+
+
+## Libraries and Data  {.smaller}
+
+**Libraries Loaded:**
 
 ```{r}
 #| echo: true
-library(tidymodels); library(rio); library(janitor)
-
-DataHousing = import("https://ai.lange-analytics.com/data/HousingData.csv") |> 
-              clean_names("upper_camel")  |> 
-              select(Price, Sqft=SqftLiving)
+library(tidymodels)
+library(rio)
+library(janitor)
 ```
 
-We want to demonstrate *overfitting*. Therefore, we ceate conditions that **likely trigger overfitting**. Consequently, we work only with a very small training dataset (20 observations are 0.1% of total observations). All other observations become testing data:
+**King County Real Estate Dataset:**
 
 ```{r}
 #| echo: true
+DataHousing = import("https://ai.lange-analytics.com/data/HousingData.csv") |>
+              clean_names("upper_camel") |>
+              select(Price, Sqft = SqftLiving)
+head(DataHousing)
+```
+
+```{r}
+#| echo: false
+DataHousing = DataHousing |> 
+              mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
 set.seed(777)
-# initial_split(prop = 0.001, ...) randomly chooses 20 training observations
-Split001=DataHousing |> 
-        initial_split(prop = 0.001, strata = Price, breaks = 5) 
-        DataTrain=training(Split001)
-        DataTest=testing(Split001)
+
+Split001=initial_split(prop=0.001, strata=Price, 
+                       breaks=5, data=DataHousing)
+
+DataTrain = training(Split001)
+DataTest = testing(Split001)
+
+RecipeOLS=recipe(Price~Sqft, data=DataTrain)
+
+ModelDesignOLS= linear_reg() |> 
+  set_engine("lm") |> 
+  set_mode("regression")
+
+WFModelOLS= workflow() |>  
+            add_recipe(RecipeOLS) |> 
+            add_model(ModelDesignOLS) |> 
+            fit(DataTrain)
+
+RecipePoly5=recipe(Price~Sqft+Sqft2+Sqft3+Sqft4+Sqft5, data=DataTrain)
+
+ModelDesignPoly5= linear_reg() |> 
+                  set_engine("lm") |> 
+                  set_mode("regression")
+
+WFModelPoly5= workflow() |>  
+            add_recipe(RecipePoly5) |> 
+            add_model(ModelDesignPoly5) |> 
+            fit(DataTrain)
+
+DataTrainWithPredPoly5=augment(WFModelPoly5, DataTrain)
+
+DataTestWithPredPoly5=augment(WFModelPoly5, DataTest)
+
+# Degree 10 Polynom for ggplot
+DataTrainPoly10=select(DataTrain, Price, Sqft) 
+DataTestPoly10=select(DataTest, Price, Sqft) 
+RecipePoly10=recipe(Price ~ ., data=DataTrainPoly10) |> 
+  step_poly(Sqft, degree = 10, options = list(raw = TRUE)) 
+  
+  
+WFModelPoly10=workflow() |> 
+  add_model(ModelDesignPoly5) |>   #Poly5 is correct all ModelDesigns are the same      
+  add_recipe(RecipePoly10) |> 
+  fit(DataTrainPoly10)
+
+DataTrainWithPredPoly10=augment(WFModelPoly10, DataTrainPoly10)
+DataTestWithPredPoly10=augment(WFModelPoly10, DataTestPoly10)
+
+```
+
+```{webr}
+#| autorun: true
+#| echo: false
+DataHousing = read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
+              clean_names("upper_camel") |>
+              select(Price, Sqft = SqftLiving) |> 
+              mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
+
+set.seed(777)
+
+Split001=initial_split(prop=0.001, strata=Price, 
+                       breaks=5, data=DataHousing)
+
+DataTrain = training(Split001)
+DataTest = testing(Split001)
+
+RecipeOLS=recipe(Price~Sqft, data=DataTrain)
+
+ModelDesignOLS= linear_reg() |> 
+  set_engine("lm") |> 
+  set_mode("regression")
+
+WFModelOLS= workflow() |>  
+            add_recipe(RecipeOLS) |> 
+            add_model(ModelDesignOLS) |> 
+            fit(DataTrain)
+
+RecipePoly5=recipe(Price~Sqft+Sqft2+Sqft3+Sqft4+Sqft5, data=DataTrain)
+
+ModelDesignPoly5= linear_reg() |> 
+                  set_engine("lm") |> 
+                  set_mode("regression")
+
+WFModelPoly5= workflow() |>  
+            add_recipe(RecipePoly5) |> 
+            add_model(ModelDesignPoly5) |> 
+            fit(DataTrain)
 ```
 
 ## Data Visualization
 
-There seems to be a non-liner trend:
+There seems to be a non-linear trend:
 
 ```{r}
 ggplot(aes(y=Price, x=Sqft), data=DataHousing)+
@@ -72,61 +194,202 @@ ggplot(aes(y=Price, x=Sqft), data=DataHousing)+
   geom_smooth(se=FALSE)
 ```
 
-## Training Data Structure
+## Creating Overfitting Environment 
 
-```{r}
-#| echo: true
-print(DataTrain)
+
+
+We want to **demonstrate overfitting**. Therefore, we create conditions that likely **trigger overfitting:** <br><br>
+
+::: {.incremental}
+- Very small training dataset with **20 observations** (equivalent to **0.1% of total observations**). The remaining 21,593 observations become *testing data*. <br><br>
+
+- **Highly non-linear** machine learning model: **Degree-5 Polynomial Regression Model**
+:::
+
+
+
+
+
+
+
+
+
+
+## Creating Training and Testing Data
+
+```{webr}
+set.seed(777)
+
+Split001=initial_split(prop=0.001, strata=Price, 
+                       breaks=5, data=DataHousing)
+
+DataTrain = training(Split001)
+DataTest = testing(Split001)
+Split001
 ```
 
-## Polynomial Regression
+## Polynomial Regressions
 
-Regular univariate prediction equation: $$
+
+
+**Polynomial Univariate Prediction Equation (Degree 1):**
+$$
 \widehat{Price}=\beta_1 Sqft+\beta_2
 $$
 
 . . .
 
+**Polynomial Univariate Prediction Equation (Degree 5):**
+
+$$
+\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3
+   +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+$$
+
+## Simple Regression
+
+Polynomial Univariate Prediction Equation (Degree 1): 
+$$
+\widehat{Price}=\beta_1 Sqft+\beta_2
+$$
+
+```{webr}
+RecipeOLS=recipe(Price~Sqft, data=DataTrain)
+
+ModelDesignOLS= linear_reg() |> 
+  set_engine("lm") |> 
+  set_mode("regression")
+
+WFModelOLS= workflow() |>  
+            add_recipe(RecipeOLS) |> 
+            add_model(ModelDesignOLS) |> 
+            fit(DataTrain)
+print(WFModelOLS)
+```
+
+
+## Fitted Univariate OLS Model
+
+```{webr}
+#| autorun: true
+print(WFModelOLS)
+```
+
+$$
+\widehat{Price}=`r round(tidy(extract_fit_engine(WFModelOLS))[[2,2]])` \cdot Sqft+`r format(round(tidy(extract_fit_engine(WFModelOLS))[[1,2]]), scientific = FALSE)`
+$$
+
+## Polynomial Regression {.smaller}
+
 Polynomial univariate prediction equation (degree 5):
 
-\begin{eqnarray*}
-\widehat{Price}&=&\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 \\
-  && +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
-\end{eqnarray*}
-
-## Polynomial Regression
-
-Polynomial univariate prediction equation (degree 5):
-
-\begin{eqnarray*}
-\widehat{Price}&=&\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3\\
-  && +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
-\end{eqnarray*}
-
-. . .
+$$
+\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3
+   +\beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+$$
 
 We create $Sqft^2$, $Sqft^3$, $Sqft^4$, and $Sqft^5$ as new variables in the data and treat them as they were separate variables in a multivariate regression.
 
-. . .
+```{webr}
+DataHousing= DataHousing |> 
+             mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
+head(DataHousing)
+```
+
 
 This makes the regression **linear in variables** but **non-linear in data**.
 
-. . .
+Consequently, we can use OLS to find the optimal $\beta s$.
 
-Consequently, we can use OLS to find the optimal $\beta s$.»
+## Polynomial Regression Model
 
-## HOW THE DATA WOULD LOOK LIKE
+Degree-5 Polynomial Regression equation: 
+$$
+\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3+
+                \beta_4 Sqft^4+\beta_5 Sqft^5+\beta_6
+$$
 
-```{r}
-#| echo: true
-head(DataHousing |> mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5))
+```{webr}
+RecipePoly5=recipe(Price~Sqft+Sqft2+Sqft3+Sqft4+Sqft5, data=DataTrain)
+
+ModelDesignPoly5= linear_reg() |> 
+                  set_engine("lm") |> 
+                  set_mode("regression")
+
+WFModelPoly5=workflow() |>  
+             add_recipe(RecipePoly5) |> 
+             add_model(ModelDesignPoly5) |> 
+             fit(DataTrain)
+print(WFModelPoly5)
 ```
 
-## Comparing Regular OLS and Polynominal Regression (degree=5) 🤓
+
+## Fitted Polynomial Model (Degree 5) {.smaller}
+
+```{webr}
+#| autorun: true
+print(WFModelPoly5)
+```
+
+$$
+\begin{align}
+\widehat{Price}=&
+  `r format(round(tidy(extract_fit_engine(WFModelPoly5))[[2,2]]), scientific = FALSE)`
+  \cdot Sqft +
+    (`r format(round(tidy(extract_fit_engine(WFModelPoly5))[[3,2]]), scientific = FALSE)`)
+  \cdot Sqft^2 +
+    `r format(round(tidy(extract_fit_engine(WFModelPoly5))[[4,2]],4), scientific = FALSE)`
+  \cdot Sqft^3 + \\
+   & (`r format(round(tidy(extract_fit_engine(WFModelPoly5))[[5,2]],7), scientific = FALSE)`)
+  \cdot Sqft^4 +
+    `r format(round(tidy(extract_fit_engine(WFModelPoly5))[[6,2]],12), scientific = FALSE)`
+  \cdot Sqft^5 +
+  (`r format(round(tidy(extract_fit_engine(WFModelPoly5))[[1,2]]), scientific = FALSE)`)
+\end{align}
+$$
+
+
+## Comparing Predictive Quality Based on Training Data
+
+**Regular OLS:**
+
+```{webr}
+DataTrainWithPredOLS=augment(WFModelOLS, DataTrain)
+metrics(DataTrainWithPredOLS, truth=Price, estimate=.pred)
+```
+
+**Polynomial Regression (Degree=5)**
+
+```{webr}
+DataTrainWithPredPoly5=augment(WFModelPoly5, DataTrain)
+metrics(DataTrainWithPredPoly5, truth=Price, estimate=.pred)
+```
 
 Code to compare is linked in the footer of this slide.
 
-::: footer
+::: {.footer}
+See: [TrainTestScript.R Script100](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
+:::
+
+## Comparing Predictive Quality Based on Testing Data
+
+**Regular OLS:**
+
+```{webr}
+DataTestWithPredOLS=augment(WFModelOLS, DataTest)
+metrics(DataTestWithPredOLS, truth=Price, estimate=.pred)
+```
+
+**Polynomial Regression (Degree=5)**
+
+```{webr}
+DataTestWithPredPoly5=augment(WFModelPoly5, DataTest)
+metrics(DataTestWithPredPoly5, truth=Price, estimate=.pred)
+```
+
+Code to compare is linked in the footer of this slide.
+
+::: {.footer}
 See: [TrainTestScript.R Script100](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
 :::
 
@@ -135,59 +398,10 @@ See: [TrainTestScript.R Script100](https://econ.lange-analytics.com/RScripts/Tra
 ### Aproximation of the Training Data
 
 ```{r}
-ModelDesignLinRegr=linear_reg() |> 
-  set_engine("lm") |> 
-  set_mode("regression")
-
-RecipeHousesBenchmOLS=recipe(Price ~ Sqft, data=DataTrain)
-
-RecipeHousesPolynomOLS=recipe(Price ~ ., data=DataTrain) |> 
-  step_mutate(Sqft2=Sqft^2,Sqft3=Sqft^3,Sqft4=Sqft^4,Sqft5=Sqft^5)
-
-######## Fitted Workflows
-WFModelHousesBenchmOLS=workflow() |> 
-  add_model(ModelDesignLinRegr) |> 
-  add_recipe(RecipeHousesBenchmOLS) |> 
-  fit(DataTrain)
-
-WFModelHousesPolynomOLS=workflow() |> 
-  add_model(ModelDesignLinRegr) |> 
-  add_recipe(RecipeHousesPolynomOLS) |> 
-  fit(DataTrain)
-
-####### Generating Predictions #######
-
-DataTrainWithPredBenchmOLS=augment(WFModelHousesBenchmOLS, DataTrain)
-DataTrainWithPredPolynomOLS=augment(WFModelHousesPolynomOLS, DataTrain)
-
-DataTestWithPredBenchmOLS=augment(WFModelHousesBenchmOLS, DataTest)
-DataTestWithPredPolynomOLS=augment(WFModelHousesPolynomOLS, DataTest)
-
-########## Polynomial degree 10
-
-RecipeHousesPolynom10OLS=recipe(Price ~ ., data=DataTrain) |> 
-  step_poly(Sqft, degree = 10, options = list(raw = TRUE))
-  
-  
-WFModelHousesPolynom10OLS=workflow() |> 
-  add_model(ModelDesignLinRegr) |>            
-  add_recipe(RecipeHousesPolynom10OLS) |> 
-  fit(DataTrain)
-
-DataTrainWithPredPolynom10OLS=augment(WFModelHousesPolynom10OLS, DataTrain)
-DataTestWithPredPolynom10OLS=augment(WFModelHousesPolynom10OLS, DataTest)
-```
-
-## Polynomial Regression (degree=5) vs. Regular OLS
-
-### Aproximation of the Training Data
-
-```{r}
-
-ggplot(aes(x=Sqft,y=Price), data=DataTrainWithPredPolynomOLS)+
+ggplot(aes(x=Sqft,y=Price), data=DataTrainWithPredPoly5)+
   geom_smooth(method = "lm", se=FALSE, size=1)+
-  geom_point(color="red")+
-  geom_line(aes(y=.pred), color="magenta", size=1, data=DataTestWithPredPolynomOLS)+
+  geom_point(color="red", size=2.3)+
+  geom_line(aes(y=.pred), color="magenta", size=1, data=DataTestWithPredPoly5)+
   xlim(c(500,4500))+
   ylim(c(0,1500000))
 ```
@@ -197,11 +411,11 @@ ggplot(aes(x=Sqft,y=Price), data=DataTrainWithPredPolynomOLS)+
 ### Training and Testing Data Performance
 
 ```{r}
-ggplot(aes(x=Sqft,y=Price), data=DataTestWithPredPolynomOLS)+
+ggplot(aes(x=Sqft,y=Price), data=DataTestWithPredPoly5)+
   geom_point(size=0.001)+
-  geom_smooth(method = "lm", se=FALSE, size=1, data=DataTrainWithPredPolynomOLS)+
+  geom_smooth(method = "lm", se=FALSE, size=1, data=DataTrainWithPredPoly5)+
   geom_line(aes(y=.pred), color="magenta", size=1)+
-  geom_point(color="red", size=2, data=DataTrainWithPredPolynomOLS)+
+  geom_point(color="red", size=2.3, data=DataTrainWithPredPoly5)+
   xlim(c(0,4500))+
   ylim(c(0,1500000))
 ```
@@ -213,28 +427,33 @@ $$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 + +\beta_4 Sqft^4 +
 ### Training and Testing Data Performance
 
 ```{r}
-ggplot(aes(x=Sqft,y=Price), data=DataTestWithPredPolynom10OLS)+
+ggplot(aes(x=Sqft,y=Price), data=DataTestWithPredPoly10)+
   geom_point(size=0.001)+
-  geom_smooth(method = "lm", se=FALSE, size=1, data=DataTrainWithPredPolynom10OLS)+
+  geom_smooth(method = "lm", se=FALSE, size=1, data=DataTrainWithPredPoly10)+
   geom_line(aes(y=.pred), color="magenta", size=1.2)+
-  geom_point(color="red", size=2, data=DataTrainWithPredPolynom10OLS)+
+  geom_point(color="red", size=2.3, data=DataTrainWithPredPoly10)+
   xlim(c(0,4300))+
   ylim(c(-150000,2000000))
 ```
 
 $$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{10} Sqft^{10}+\beta_{11}$$
 
-## SUMMARY: POLYNOMIAL REGRESSION
+## SUMMARY: POLYNOMIAL REGRESSION and Overfitting
 
--   If we do not have enough data polynomial regression with a high degree might lead to overfitting
+::: {.incremental}
+-   If we do not have enough data *Polynomial Regression* with a high degree might lead to *overfitting*<br><br>
 
--   What is the right degree?
+-   What is the right degree?<br><br>
 
--   We could try different degrees (e.g., 2, 3, 4, ... 10) and see which model performs best.
+-   We could try different degrees (e.g., 2, 3, 4, ... 10) and see which model performs best.<br><br>
 
--   Which data are we using to measure performance? Training data (overfitting) and testing data (cannot be used for model optimization) are out.
+-   Which data are we using to measure performance? 
+    - Training data? -> overfitting problem
+    - Testing data? -> cannot be used for model optimization
+    - Training and Testing Data are out!<br><br>
 
 -   We could split off data from the training dataset (**validation data**). These *validation data* are not used to calculate the βs. Instead, they are used to find the best setting for the degree of polynomial regression (aka hyper-parameter of polynomial regression).
+:::
 
 ## Hyper-Parameters
 
@@ -242,15 +461,15 @@ $$\widehat{Price}=\beta_1 Sqft+\beta_2 Sqft^2+\beta_3 Sqft^3 +  \cdots +\beta_{1
 
 -   Hyper-Parameters are like settings for a machine learning model such as the number of polynomials (e.g., $Sqft^N$) to be considered for polynomial regression. Another example are the number of $k$ Nearest Neighbors.
 
--   Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overfitting.»
+-   Hyper parameters often make a model more or less complex and thus influence the quality of predicting but also the chance of overfitting.
 
 ## PROBLEMS OF SPLITTING VALIDATION DATA OFF THE TRAINING DATA
 
-::: nonincremental
+
 -   Reduces data left over to train (finding optimal βs).
 
 -   If the training dataset is big enough this is no problem. Otherwise, it is a problem!
-:::
+
 
 ## CROSS VALIDATION (4-FOLD)
 
@@ -459,7 +678,7 @@ The **10 general steps** are:
 
 Code to run all 10 steps is linked in the footer of this slide.
 
-::: footer
+::: {.footer}
 See: [TrainTestScript.R Script200](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
 :::
 
@@ -469,7 +688,7 @@ See: [TrainTestScript.R Script200](https://econ.lange-analytics.com/RScripts/Tra
 
 Click the link in the footer of this slide to start the exercise.
 
-::: footer
+::: {.footer}
 See: [Exercise from AI Book](https://ai.lange-analytics.com/exc/?file=06-TrainTestExerc100.Rmd)
 :::
 
@@ -477,6 +696,6 @@ See: [Exercise from AI Book](https://ai.lange-analytics.com/exc/?file=06-TrainTe
 
 Click the link in the footer of this slide to download a skeleton of the R script for the research project.
 
-::: footer
+::: {.footer}
 See: [Research Project](https://econ.lange-analytics.com/RScripts/KNearNeighIndepExerc.R)
 :::
