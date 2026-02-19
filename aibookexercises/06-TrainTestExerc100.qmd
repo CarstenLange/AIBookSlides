@@ -515,9 +515,9 @@ training data because the "Minimum missclassification" is reported
 Since `WFModelBest` is a fitted model, you can use it for
 predictions. In this last step, you use the `augment()` command to
 predict `WineColor`. The `augment()` command will then add the
-prediction results as column `.pred` to the testing data.
+prediction results as column `.pred_class` to the testing data.
 
-The `conf_mat()` command compares the predictions in column `.pred`
+The `conf_mat()` command compares the predictions in column `.pred_class`
 to the true values to create a *confusion matrix*. But before, you
 have to substitute `______` with the variable name
 (column name) for the outcome variable.

@@ -20,7 +20,6 @@ webr:
     - yardstick
     - parsnip
     - workflows
-    - kknn
 ---
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 {{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
@@ -41,9 +40,9 @@ Thank you for your patience!
 
 
 
-```{r}
+```{webr}
 #| autorun: true
-#| echo: true
+#| echo: false
 DataHousing = read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
               clean_names("upper_camel") |>
               select(Price, Sqft = SqftLiving)
@@ -67,16 +66,17 @@ TuneWFModelPoly= workflow() |>
             add_recipe(RecipePoly) |> 
             add_model(ModelDesignPoly) 
 
-ParGrid=data.frame(degree=c(1:5))
+ParGrid=data.frame(degree=c(1:10))
 
 FoldsForTuning=vfold_cv(DataTrain, v=5, strata=Price)
 
-TuneResults=TuneWFModelPoly |> tune_grid(FoldsForTuning, grid=ParGrid ,  
-                       metrics=metric_set(mse, rsq))
+TuneResults=TuneWFModelPoly |> tune_grid(FoldsForTuning, grid=ParGrid , metrics=metric_set(rmse, mae, rsq))
 
-BestHyperPar=select_best(TuneResultsPoly, metric="mse")
+BestHyperPar=select_best(TuneResults, metric="rsq")
 
-
+WFModelBest=TuneWFModelPoly |> 
+            finalize_workflow(BestHyperPar) |>  
+            fit(DataTrain)
 
 DataTestWithPredBestModel=augment(WFModelBest,DataTest)
 
@@ -98,11 +98,43 @@ As before, you use the housing dataset and split the data into training
 (`DataTrain`) and testing data (`DataTest`). Complete the `______` in the code below to assign 80% of the data to the *training data* and 20% to the *testing data*
 
 ```{webr}
+
+#| exercise: exc_step1
+#| exercise.setup: exc_all
 Split8020=initial_split(prop=______, strata=Price, 
                        breaks=5, data=DataHousing)
+print(Split8020)
 ```
 
+::: {.hint exercise="exc_step1"}
+**Here is a hint:**
 
+The `prop=` argument determines the proportion of *training data* observations. The remaining observations become *testing data*.
+:::
+
+::: {.solution exercise="exc_step1"}
+**Here is the Solution:**
+
+
+```{webr}
+#| exercise: exc_step1
+#| solution: true
+Split8020=initial_split(prop=0.8, #<1>
+                        strata=Price, breaks=5, #<2>
+                        data=DataHousing)
+print(Split8020)
+```
+
+1. `prop=0.8` determines that 80% of the data are assigned to the *training data*. All other observations are assigned to the *testing data*.
+2.  `strata=Price` ensures that the mean price in *training* and *testing data* observations is similar. The `breaks=5` argument ensures that this is true for all quintiles.
+
+:::
+
+```{webr}
+#| exercise: exc_step1
+#| check: true
+gradethis::grade_this_code()
+```
 
 **Step 2 - Create a Recipe:**
 
@@ -125,13 +157,13 @@ background:
 #| exercise.setup: exc_all
 RecipePoly=recipe(Price~Sqft, data=DataTrain) |>
   step_poly(Sqft, degree = ______, options = list(raw = TRUE)) 
-print(RecipeWine)
+print(RecipePoly)
 ```
 
 ::: {.hint exercise="exc_step2"}
 **Here is a hint:**
 
-You have to assign the placeholder `tune()` to the argument `degree=`. Lter, when you tune the workflow, it will be replaced by the values you choose to try out.
+You have to assign the placeholder `tune()` to the argument `degree=`. Later, when you tune the workflow, it will be replaced by the values you choose to try out.
 :::
 
 ::: {.solution exercise="exc_step2"}
@@ -200,7 +232,7 @@ design object `ModelDesignPoly` to a *workflow* model named
 `TuneWFModelPoly`. The *R* code has been executed already.
 
 ```{webr}
-# autorun: true
+#| autorun: true
 #| exercise.setup: exc_all
 TuneWFModelPoly= workflow() |>  
             add_recipe(RecipePoly) |> 
@@ -214,7 +246,7 @@ and error process with different values for `degree`.
 
 **Step 5 - Create a Hyper-Parameter Grid:**
 
-When tuning is executed in Step 7, values reaching from 1 -- 5 for the *hyper-parameter* `neighbors` shall be tried out. You need to provide these values in a data frame column that is named the same as the *hyper-parameter*. Below, replace the `______` to define a column `degree` in the data frame`ParGrid`. The column should contain values from 1 -- 5:
+When tuning is executed in Step 7, values reaching from 1 -- 10 for the *hyper-parameter* `neighbors` shall be tried out. You need to provide these values in a data frame column that is named the same as the *hyper-parameter*. Below, replace the `______` to define a column `degree` in the data frame`ParGrid`. The column should contain values from 1 -- 10:
 
 ```{webr}
 #| exercise: exc_step5
@@ -226,7 +258,7 @@ print(ParGrid)
 ::: {.hint exercise="exc_step5"}
 **Here is a hint:**
 
-Use the `c()` command to create a vector containing the numbers $1 - 5$
+Use the `c()` command to create a vector containing the numbers $1 - 10$
 either separated by a comma, or you can use a colon (*:*) to indicate *from/to*.
 :::
 
@@ -236,7 +268,7 @@ either separated by a comma, or you can use a colon (*:*) to indicate *from/to*.
 ```{webr}
 #| exercise: exc_step5
 #| solution: true
-ParGrid=data.frame(neighbors=c(1,2,3,4,5))
+ParGrid=data.frame(neighbors=c(1,2,3,4,5,6,7,8,9,10))
 ParGrid
 ```
 
@@ -247,7 +279,7 @@ ParGrid
 #| check: true
 grade_this({
   # .result refers to the output of the student's code
-  if (sum(.result)==sum(1:15)) {
+  if (sum(.result)==sum(1:10)) {
     pass()
   } else {
     fail()
@@ -303,19 +335,19 @@ gradethis::grade_this_code()
 
 Now it is time to run the tuning procedure using the `tune_grid()`
 command. Be patient because it will take some time to fully execute.
-Since we have to try out 5 parameters and use five folds for each
-model, the `tune_grid()` command has to fit 75 models
-$(5\cdot 5=25)$.
+Since we have to try out 10 parameters and use five folds for each
+model, the `tune_grid()` command has to fit 50 models
+$(10\cdot 5=50)$.
 
 Please substitute `______` with a list of metrics to be
-calculated. Use the metrics *mse* and *rsq*.
+calculated. Use the metrics `rmse` (*Root Mean Squared Error*), `mae` (*Mean Absolute Error*) and `rsq` (*r Squared* $r^2$).
 
 After the tuning is finished, all results are stored in the *R*
 object `TuneResults`, and they can be evaluated by different
 *metrics* commands.
 
 For example the command `autoplot()` provides a diagrammatic
-overview of the results for the two *metrics*.
+overview of the results for the three *metrics*.
 
 ```{webr}
 #| exercise: exc_step7
@@ -328,10 +360,10 @@ autoplot(TuneResults)
 ::: {.hint exercise="exc_step7"}
 **Here is a hint:**
 
-The command metric_set takes a comma-separated list 
+The command `metric_set()` takes a comma-separated list 
 of metrics to be evaluated.
 
-Consider that you want to evaluate the metrics `mse` and `rsq`.
+Consider that you want to evaluate the metrics `rmse`, `mae`, and `rsq`.
 :::
 
 ::: {.solution exercise="exc_step7"}
@@ -341,7 +373,7 @@ Consider that you want to evaluate the metrics `mse` and `rsq`.
 #| exercise: exc_step7
 #| solution: true
 TuneResults=tune_grid(TuneWFModelPoly, resamples=FoldsForTuning,
-                      grid=ParGrid, metrics=metric_set(mse, rsq))
+                      grid=ParGrid, metrics=metric_set(rmse, mae, rsq))
 autoplot(TuneResults)
 ```
 :::
@@ -352,27 +384,17 @@ autoplot(TuneResults)
 gradethis::grade_this_code()
 ```
 
-The two graphs that you created in the exercise above show the values for
-each *mse* and *rsq* for all tried out *hyper-parameters* (`degree`).
+The three graphs that you created in the exercise above show the values for
+each *rmse*, *mae*, and *rsq* for all tried out *hyper-parameters* (`degree`).
 
 To calculate these values  the five folds that were used for validation are averaged.
 
-You can see that `neighbors` values between 1 and 4 produce the best
-results for *accuracy* (predicting red and white wines (positive and
-negative class) correctly) and *sensitivity* (predicting red wines
-(positive class) correctly). If you look at *specificity*
-(predicting white wines (negative class) correctly), you can see
-that $k=5$ produces the best result. However, $k=5$ also leads to a
-sharp decrease in *sensitivity* and a decrease in *accuracy* as
-well.
-
-It seems reasonable to use the best result for *accuracy*, which
-means choosing a $k$ between 1 and 4.
+It looks like $r^2$ has the clearst fluctutions. It seems reasonable to assume that `degree=6` provides the best results. Let us confirm this in the *Step 8.*
 
 **Step 8 - Extract the Best Hyper-Parameter(s):**
 
 All assessment results for the specified metrics are stored in the
-*tuning* object `TuneResults`. Choose the metric *accuracy* by
+*tuning* object `TuneResults`. Choose the metric *rsq* by
 substituting `______` accordingly. Afterward, when you execute the
 code the `select_best()` command extracts the best *hyper-parameter*
 (value for `degree`) for the metric you specified:
@@ -387,7 +409,7 @@ print(BestHyperPar)
 ::: {.hint exercise="exc_step8"}
 **Here is a hint:**
 
-Substitute `______` with `mse` and make sure to not delete the quotes.
+Substitute `______` with `rsq` and make sure to not delete the quotes.
 :::
 
 ::: {.solution exercise="exc_step8"}
@@ -396,7 +418,7 @@ Substitute `______` with `mse` and make sure to not delete the quotes.
 ```{webr}
 #| exercise: exc_step8
 #| solution: true
-BestHyperPar=select_best(TuneResults, metric="mse") 
+BestHyperPar=select_best(TuneResults, metric="rsq") 
 print(BestHyperPar)
 ```
 :::
@@ -406,9 +428,10 @@ print(BestHyperPar)
 #| check: true
 gradethis::grade_this_code()
 ```
+
 As you will see in the printout after executing the *R* code, the
-best value for the *hyper-parameter* `degree` based on *mse*
-is $degree=$ `r  BestHyperPar[[1,1]]`. It is
+best value for the *hyper-parameter* `degree` based on *rsq*
+is $degree=6$. It is
 saved in the data frame `BestHyperPar`.
 
 You can try other metrics in the code block above and see if the
@@ -419,11 +442,11 @@ result changes.
 The code block below is executed already. The `finalize_workflow()`
 command used the value from `BestHyperPar` to substitute the
 `tune()` placeholder in the *R* object `TuneWFModelKNN` (created in
-Steps 2 -- 4). The *hyper-parameter* is now set to $degree=@@@$ .
+Steps 2 -- 4). The *hyper-parameter* is now set to $degree=6$ .
 
     
 ```{webr}
-# autorun: true
+#| autorun: true
 #| exercise.setup: exc_all
 WFModelBest=TuneWFModelPoly |> 
             finalize_workflow(BestHyperPar) |>  
@@ -432,10 +455,7 @@ WFModelBest=TuneWFModelPoly |>
 print(WFModelBest)
 ```
 
-At the end of the printout above, you can see that `degree` was set to
-`degree=@@@` rather than
-`tune()`. You can also see that `WFModelBest` is fitted to the
-training data because @@@.
+At the end of the printout above, you can see that a Degree 6 Polynominal Regression is used and waht the related coefficients are.
 
 **Step 10: Assess Prediction Quality Based on the Testing Data:**
 
@@ -453,8 +473,7 @@ have to substitute `______` with the variable name
 #| exercise: exc_step10
 #| exercise.setup: exc_all
 DataTestWithPredBestModel=augment(WFModelBest, DataTest)    
-metrics(DataTestWithPredBestModel, truth=______, 
-             estimate=.pred)
+metrics(DataTestWithPredBestModel, truth=______, estimate=.pred)
 ```
 
 ::: {.hint exercise="exc_step10"}
@@ -470,17 +489,8 @@ The (column) name for the outcome variable is `Price` and the predictions are st
 #| exercise: exc_step10
 #| solution: true
 DataTestWithPredBestModel=augment(WFModelBest, DataTest)    
-metrics(DataTestWithPredBestModel, truth=Price, 
-             estimate=.pred)
+metrics(DataTestWithPredBestModel, truth=Price, estimate=.pred)
 ```
 :::
 
-You can see in the *confusion matrix* that based on the testing
-data from the 480 red wines only `r ConFusMat$table["white", "red"]` were misclassified as being *white*. Likewise, from
-the 480 white wines, only `r ConFusMat$table["red", "white"]` were misclassified. Given that the
-classification was only based on the chemical properties of the
-wines, the results are excellent.
 
-Most likely, a true wine expert might have reached a similar
-impressive result, but it would have taken them a long time to
-classify 960 wines.
