@@ -215,8 +215,8 @@ eyJhdHRyIjp7ImF1dG9ydW4iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoi
 </script>
 </div>
 </div>
-<section id="exercise-1" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="exercise-1"><span class="header-section-number">1</span> Exercise 1</h2>
+<section id="exercise-1" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-1">Exercise 1</h2>
 <p>The code block below uses the already loaded wine dataset (<code>DataWine</code>). The variable <span class="math inline">\(WineColor\)</span> was coded as a <code>factor</code> data type as required by the <em>k-Nearest Neighbors</em> algorithm.</p>
 <p><strong>Now it is your turn:</strong> After the random number generator has been initialized. Please complete the two commands that extract training and testing data from the split to assign them to the data frames <code>DataTrain</code> and <code>DataTest</code>.</p>
 <div class="cell" data-exercise="ex_1" data-exercise.setup="ex_all">
@@ -270,8 +270,8 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </script>
 </div>
 </section>
-<section id="exercise-2" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="exercise-2"><span class="header-section-number">2</span> Exercise 2</h2>
+<section id="exercise-2" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-2">Exercise 2</h2>
 <p>This exercise requires some preparation. By <strong>executing</strong> the code block below <strong>without editing</strong>, you will create the <strong>recipe</strong> and the results will be saved into the <em>R</em> object <code>RecipeWine</code>. The command <code>tidy</code> outputs the recipe as a data frame that is easy to read:</p>
 <div class="cell" data-exercise="ex_2prep1" data-exercise.setup="ex_all">
 <div>
@@ -347,8 +347,8 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </script>
 </div>
 </section>
-<section id="exercise-3" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="exercise-3"><span class="header-section-number">3</span> Exercise 3</h2>
+<section id="exercise-3" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-3">Exercise 3</h2>
 <p>Because the workflow model is now fitted to the training data, we can use the <em>fitted workflow model</em> (<code>WFModelWine</code>) for predictions.</p>
 <p>Instead of using the <code>predict()</code> command, we use the more comprehensive <code>augment()</code> command, which predicts <span class="math inline">\(WineColor\)</span> based on the predictor variables from the <em>testing dataset</em> and then adds the predictions as a new variable named <span class="math inline">\(.pred\_class\)</span> to the <em>testing dataset</em> (<code>DataTest</code>). The complete result is saved in the <em>R</em> object <code>DataTestWithPred</code>.</p>
 <p>After the <em>R</em> object <code>DataTestWithPred</code> is created, it contains the predictions (<code>estimate</code>) for the wine color and also the true wine color (<code>truth</code>). The latter is stored in variable <span class="math inline">\(WineColor\)</span>, we can use it as the data argument for metrics commands. An example is the <code>conf_mat()</code> command that generates a confusion matrix.</p>
@@ -397,8 +397,8 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </script>
 </div>
 </section>
-<section id="exercise-4" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="exercise-4"><span class="header-section-number">4</span> Exercise 4</h2>
+<section id="exercise-4" class="level2">
+<h2 class="anchored" data-anchor-id="exercise-4">Exercise 4</h2>
 <p>A first glance at the diagonal elements of the confusion matrix above already indicates a very good result.</p>
 <p>The <code>tidymodels</code> package can help you to calculate metrics such as <em>accuracy</em>, <em>sensitivity</em>, and <em>specificity</em>. Instead of calculating these metrics separately you can streamline the process by creating a <em>metric set</em> first.</p>
 <p>In the code block below, the command <code>metric_set()</code> creates a new command that we name <code>MetricsWine</code> (you can choose a different name if you like).</p>

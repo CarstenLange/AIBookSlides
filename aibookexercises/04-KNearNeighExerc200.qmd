@@ -8,7 +8,7 @@ author:
     affiliation: "Professor of Economics, Cal Poly, Pomona"
 format: 
   live-html:
-    number-sections: true
+    number-sections: false
 
 webr:
   packages: ['dplyr', 'rsample', 'janitor',  'recipes', 
