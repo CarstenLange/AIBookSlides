@@ -660,7 +660,7 @@ The **10 general steps** are:
 
 3.  Create **model design**. If needed, mark parameters to be tuned with `tune()`
 
-4.  Create **workflow** with `workflow()`, add_recipe()` and `add_model()` without `fit()`
+4.  Create **workflow** with `workflow()`, `add_recipe()` and `add_model()` without (!) `fit()`
 
 5.  Create a **hyper-parameter grid** containing the hyper-parameter combinations to be validated
 
@@ -674,28 +674,14 @@ The **10 general steps** are:
 
 10. **Assessing predictive quality** of the final model by using the testing dataset to predict (see `augment() |> metrics()`).
 
-## Run all 10 Steps to Tune the Real Estate Model 🤓
+## Exercises from the Textbook 
 
-Code to run all 10 steps is linked in the footer of this slide.
+**Run the 10 Steps to Tune a Polynomial Model:**
 
-::: {.footer}
-See: [TrainTestScript.R Script200](https://econ.lange-analytics.com/RScripts/TrainTestScript.R)
-:::
+[Here is a link for the exercise to tune a Polynomial Model for real estate price prediction](https://aibookslides.netlify.app/aibookexercises/06-traintestexerc200){target=_blank}
 
-## Exercise from AIBook 🤓
 
-**Use k-Nearest Neighbors to estimate the color of a wine**
+**Other Interactive Exercises from the Textbook**
 
-Click the link in the footer of this slide to start the exercise.
+[Here is a link for for exercises from Practical Machine Learning with R](https://ai.lange-analytics.com/exercises){target=_blank}
 
-::: {.footer}
-See: [Exercise from AI Book](https://ai.lange-analytics.com/exc/?file=06-TrainTestExerc100.Rmd)
-:::
-
-## Research Project 🤓
-
-Click the link in the footer of this slide to download a skeleton of the R script for the research project.
-
-::: {.footer}
-See: [Research Project](https://econ.lange-analytics.com/RScripts/KNearNeighIndepExerc.R)
-:::

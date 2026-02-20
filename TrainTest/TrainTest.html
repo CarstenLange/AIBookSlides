@@ -674,7 +674,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRlc3RXaXRoUHJlZFBv
 <li><p>Generating <strong>training and testing data</strong> with <code>initial_split()</code>, <code>training()</code>, <code>testing()</code></p></li>
 <li><p>Create <strong>recipe</strong> to determine predictor and outcome variables. Optionally add one or more <code>step_X()</code> commands. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
 <li><p>Create <strong>model design</strong>. If needed, mark parameters to be tuned with <code>tune()</code></p></li>
-<li><p>Create <strong>workflow</strong> with <code>workflow()</code>, add_recipe()<code>and</code>add_model()<code>without</code>fit()`</p></li>
+<li><p>Create <strong>workflow</strong> with <code>workflow()</code>, <code>add_recipe()</code> and <code>add_model()</code> without (!) <code>fit()</code></p></li>
 <li><p>Create a <strong>hyper-parameter grid</strong> containing the hyper-parameter combinations to be validated</p></li>
 <li><p>Create <strong>cross validation datasets</strong> (aka <em>resamples</em>) containing the folds (use command <code>vfold()</code>)</p></li>
 <li><p><strong>Tune</strong> the machine learning model with <code>tune_grid()</code> and track specific metrics defined by <code>metric_set()</code>. <strong>Runs all hyper-parameter combinations for all folds.</strong></p></li>
@@ -683,27 +683,12 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRlc3RXaXRoUHJlZFBv
 <li><p><strong>Assessing predictive quality</strong> of the final model by using the testing dataset to predict (see <code>augment() |&gt; metrics()</code>).</p></li>
 </ol>
 </section>
-<section id="run-all-10-steps-to-tune-the-real-estate-model" class="slide level2">
-<h2>Run all 10 Steps to Tune the Real Estate Model 🤓</h2>
-<p>Code to run all 10 steps is linked in the footer of this slide.</p>
-<div class="footer">
-<p>See: <a href="https://econ.lange-analytics.com/RScripts/TrainTestScript.R">TrainTestScript.R Script200</a></p>
-</div>
-</section>
-<section id="exercise-from-aibook" class="slide level2">
-<h2>Exercise from AIBook 🤓</h2>
-<p><strong>Use k-Nearest Neighbors to estimate the color of a wine</strong></p>
-<p>Click the link in the footer of this slide to start the exercise.</p>
-<div class="footer">
-<p>See: <a href="https://ai.lange-analytics.com/exc/?file=06-TrainTestExerc100.Rmd">Exercise from AI Book</a></p>
-</div>
-</section>
-<section id="research-project" class="slide level2">
-<h2>Research Project 🤓</h2>
-<p>Click the link in the footer of this slide to download a skeleton of the R script for the research project.</p>
-<div class="footer">
-<p>See: <a href="https://econ.lange-analytics.com/RScripts/KNearNeighIndepExerc.R">Research Project</a></p>
-</div>
+<section id="exercises-from-the-textbook" class="slide level2">
+<h2>Exercises from the Textbook</h2>
+<p><strong>Run the 10 Steps to Tune a Polynomial Model:</strong></p>
+<p><a href="https://aibookslides.netlify.app/aibookexercises/06-traintestexerc200" target="_blank">Here is a link for the exercise to tune a Polynomial Model for real estate price prediction</a></p>
+<p><strong>Other Interactive Exercises from the Textbook</strong></p>
+<p><a href="https://ai.lange-analytics.com/exercises" target="_blank">Here is a link for for exercises from Practical Machine Learning with R</a></p>
 
 <script type="webr-data">
 eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjQvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsImRwbHlyIiwicnNhbXBsZSIsImphbml0b3IiLCJyZWNpcGVzIiwicmlvIiwieWFyZHN0aWNrIiwicGFyc25pcCIsIndvcmtmbG93cyIsImdncGxvdDIiXSwicmVwb3MiOltdfSwicmVuZGVyX2RmIjoiZGVmYXVsdCJ9
