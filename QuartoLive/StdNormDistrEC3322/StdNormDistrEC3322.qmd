@@ -276,7 +276,7 @@ For women 45 -- 54 years, the mean is 230.5 mg/100 ml cholesterol, and the stand
 ::: {#custom-font-chunk}
 ```{webr}
 library(TeachHist)
-TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000)
+TeachHistRelFreq(Mean=70, Sd=3, SeedValue=777, NOfSimData=10000)
 ```
 
 :::
@@ -301,7 +301,7 @@ TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000)
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=70, Sd=3, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 ## Normal Curve {.smaller}
@@ -345,7 +345,7 @@ cat("Std. Dev.:", sd(DataDieThrows$Points))
 ## Histogram with Relative Frequencies (Men's Height) {.smaller} 
 
 ::: columns
-::: {.column width="50%"}
+::: {.column width="35%"}
 
 Mean of male height in the U.S. is $70$ inches with a Standard Deviation of 3 inches ([click for source](https://tasks.illustrativemathematics.org/content-standards/tasks/1020#:~:text=The%20heights%20of%20adult%20men,standard%20deviation%20of%202.5%20inches):).
 
@@ -358,7 +358,7 @@ Mean of male height in the U.S. is $70$ inches with a Standard Deviation of 3 in
 :::
 
 
-::: {.column width="50%"}
+::: {.column width=65%"}
 ::: {#custom-font-chunk}
 ```{webr}
 #| exercise: ex_2
@@ -413,7 +413,7 @@ To use the table from the Hawkes textbook, you need to know, how many standard d
 source("https://econ.lange-analytics.com/RScripts/ZTable4Digits.R")
 cat("Probability (rounded) for x < 80:")
 
-pnorm4(80, 70, 30)
+pnorm4(80, 70, 3)
 ```
 :::
 
@@ -486,7 +486,7 @@ pnorm4()
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=70, Sd=3, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 `qnorm(p, mean=?, sd=?)` `qnorm4(p, mean=?, sd=?)` calculates the value that is not exceeded by x percent of the men<br> **Try:** What is the value that is not exceeded by 95% of men?
@@ -500,7 +500,7 @@ qnorm4()
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=70, Sd=3, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 `qnorm(p, mean=?, sd=?)` and `qnorm4(p, mean=?, sd=?)` calculates the value that is not exceeded by x percent of the men<br> **Try:** Between which values fall 95% of the women (95% confidence interval)
@@ -509,7 +509,7 @@ TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv =
 ```{webr}
 source("https://econ.lange-analytics.com/RScripts/ZTable4Digits.R")
 
-qnorm4()
+qnorm()
 qnorm()
 ```
 
