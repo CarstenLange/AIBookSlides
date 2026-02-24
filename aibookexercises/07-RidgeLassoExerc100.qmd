@@ -352,7 +352,7 @@ ParGridHouses=expand.grid(mixture=c(0, 0.5, 1),
 print(format(ParGridHouses, scientific = FALSE))
 ```
 
-**Hint:** Leave the values unchanged for the first trial, but use other values for subsequent trials. Beware, if the number of combination increases the execution time increases also in *Step 7 -- Step 10*.
+**Hint:** Leave the values unchanged for the first trial, but then use other values for subsequent trials. Beware, if the number of combination increases the execution time increases also in *Step 7 -- Step 10*.
 
 The *R* `vector` objects assigned to  `penalty=` and `mixture=` are created with  `c()` commands by listing the related values. 
 

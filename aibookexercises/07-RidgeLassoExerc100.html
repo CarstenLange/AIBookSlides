@@ -209,7 +209,6 @@ Price&amp;=&amp;
 &amp;+&amp;\beta_{10} Sqft^2 Bedr+\beta_{11} Sqft Bedr^2+\beta_{12} Sqft^2 Bedr^2\nonumber \\
 &amp;+&amp;\beta_{13} Sqft^2 Year+\beta_{14} Sqft Year^2+\beta_{15} Sqft^2 Year^2\nonumber \\
 &amp;+&amp;\beta_{16} Bedr^2 Year+\beta_{17} Bedr Year^2+\beta_{18} Bedr^2 Year^2
-(\#eq:RidgeLasso-MultiVarPredict)
 \end{eqnarray}\]</span>
 <p>As before, we use a <em>recipe</em> to generate and normalize the additional predictors:</p>
 <div class="cell" data-edit="false" data-run-button="false" data-autorun="true">
@@ -428,7 +427,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiUGFyR3JpZEhvdXNlcz1leHBh
 </script>
 </div>
 </div>
-<p><strong>Hint:</strong> Leave the values unchanged for the first trial, but use other values for subsequent trials. Beware, if the number of combination increases the execution time increases also in <em>Step 7 – Step 10</em>.</p>
+<p><strong>Hint:</strong> Leave the values unchanged for the first trial, but then use other values for subsequent trials. Beware, if the number of combination increases the execution time increases also in <em>Step 7 – Step 10</em>.</p>
 <p>The <em>R</em> <code>vector</code> objects assigned to <code>penalty=</code> and <code>mixture=</code> are created with <code>c()</code> commands by listing the related values.</p>
 <p>You can see in the printout above that <code>expand.grid()</code> generates all possible combinations of the <code>penalty=</code> values and the <code>mixture=</code> values. For the default values each of these 24 combinations will be tried out when you <em>tune</em> the <em>workflow</em> later on in <em>Step 7 – Step 10</em>.</p>
 <p>The <code>expand.grid()</code> command is very helpful when you combine multiple <em>hyper-parameters</em> with several values each. Imagine you want to create a grid with all combinations of five <em>hyper-parameters</em> with ten values each, <code>expand.grid()</code> would create <span class="math inline">\(100{,}000\)</span> parameter combinations (<span class="math inline">\(10\cdot 10\cdot 10\cdot 10\cdot 10=10^5\)</span>) for you. Be advised, tuning <span class="math inline">\(100{,}000\)</span> <em>hyper-parameter</em> combinations would use a lot of computing time.</p>
