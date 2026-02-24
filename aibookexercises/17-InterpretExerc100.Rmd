@@ -1,0 +1,253 @@
+---
+title: "Interactive Section"
+output:
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+description: Exercises
+
+---
+
+<style>
+  div.yellowbox {
+    background-color: #f1dfa6;
+    border: 1px solid black;
+    padding: 21px;
+  }
+
+  strong {
+    color: #d10056
+  }
+
+  .center {
+    text-align: center;
+  }
+</style>
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(rio)
+library(tidyverse)
+library(tidymodels)
+library(janitor)
+library(kableExtra)
+
+knitr::opts_chunk$set(exercise=TRUE, exercise.eval=FALSE, exercise.lines=6, attr.source = ".numberLines")
+```
+
+:::: {.yellowbox data-latex=""}
+
+::: {.center data-latex=""}
+**How to Work with this Interactive Section**
+:::
+
+Here you find the complete interactive section from the book, including book content, and R-code-blocks. Read the content in a browser as you would read it in the textbook. 
+
+With the R-code blocks, you can work in various ways:
+
+* Use the `Run Code` button to execute the R-code and see the result.
+
+* Change the R-code, click the `Run Code` button, and then see the new results.
+
+* To get the original R-code back, click the `Start Over` button at the left-top corner of each R-code block. 
+
+* To reset the R-code for all code blocks, click the `Start Over` in the left menu.
+
+**Make sure you installed all needed packages!** See Section "R Packages Required"  in this Chapter for a list of packages that need to be installed. Section 3.2 explain how to install a packege in *RStudio*.
+
+
+
+**For Troubleshooting:** [Click here](https://blog.lange-analytics.com/2024/01/interactsessions.html)
+::::
+
+
+ 
+ 
+ <clex id="Exc100">
+
+```{r Interpret-Exerc100-LoadDataEtc, echo=FALSE, eval=TRUE, message=FALSE, warning=FALSE, exercise=FALSE, include=FALSE}
+# Make sure to set DraftMode=FALSE at the beginning of the rmd file eval=!DraftMode
+
+library(rio); library(janitor); library(tidymodels)
+library(DALEX); library(DALEXtra)
+DataVaxOrg=import("https://ai.lange-analytics.com/data/DataVax.rds") 
+
+DataCountyInfo=DataVaxOrg |> 
+               mutate(CountyID=row_number()) |> 
+               select(CountyID, Fips, County, State)
+
+DataVax=DataVaxOrg |>   
+        select(PercVacFull,PercRep,
+               PercAsian,PercBlack,PercHisp,
+               PercYoung25,PercOld65, 
+               PercFoodSt,Population) |> 
+               mutate(Population=frequency_weights(Population))
+set.seed(2021)
+Split85=DataVax |> initial_split(prop=0.85,
+                                 strata=PercVacFull,
+                                 breaks=3)
+
+DataTrain=training(Split85)
+DataTest=testing(Split85)
+
+set.seed(777)
+RecipeVax=recipe(PercVacFull~., data=DataTrain)
+  
+ModelDesign=rand_forest() |> 
+    set_engine("ranger") |> 
+    set_mode("regression")
+  
+WfModelVax=workflow() |>
+    add_model(ModelDesign) |>
+    add_recipe(RecipeVax) |> 
+    fit(DataTrain)
+
+DataTrainPredOnly=DataTrain|> 
+          select(-PercVacFull,-Population)
+ExplainerRandForest=explain_tidymodels(WfModelVax, 
+                    data=DataTrainPredOnly,y=DataTrain$PercVacFull, verbose = FALSE) 
+```
+
+To generate a *SHAP* diagram for a continental U.S. county of your choice, you have to proceed in two steps:
+
+-   In *Step 1* you enter a search string for the county of your choice, and you will get a *CountyID* as a result. This *CountyID* is the row in the data frame `DataVax` representing the observation of your county, and you need to enter it in *Step 2*.
+
+-   In *Step 2* you enter the *CountyID* in the second code chunk and execute the code. *R* will run in your browser and generate the *SHAP* diagram for you. This can take a while. So, be a little patient.
+
+**Step 1:**
+
+The code chunk below helps you to find the $CountyID$ for the county you are interested in. You need the $CountyID$ for the next step below to create the *SHAP* diagram.
+
+To find the $CountyID$, substitute the $/dots$ in the code block below with the name or part of the name of the county you are interested in (do not include the word "county"!):
+
+```{r Interpret-Exerc100-FindCounty, eval=FALSE, exercise=TRUE, exercise.lines=5, exercise.setup="Interpret-Exerc100-LoadDataEtc", exercise.timelimit=1800}
+CountySearchStr="..."
+
+######## Do not change code below this line ###################
+VecMatchingCountyNames=grep(CountySearchStr, DataCountyInfo$County, 
+                       ignore.case=TRUE)
+VecMatchingFIPS=grep(CountySearchStr, as.character(DataCountyInfo$Fips), 
+                       ignore.case=TRUE)
+VecMatching=sort(c(VecMatchingCountyNames, VecMatchingFIPS))
+unique(DataCountyInfo[VecMatching,])
+DataMatchingCounties=DataCountyInfo[VecMatching,]
+print(DataMatchingCounties)
+```
+
+```{r Interpret-Exerc100-FindCounty-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=17}
+'To find the CountyID for Los Angeles County, you could use:'
+
+'CountySearchStr="Los Angeles" or CountySearchStr="Angeles"
+
+'Do not include the word "County" in your search string!'
+
+'The next HINT provides the solution for Los Angeles.'
+```
+
+```{r Interpret-Exerc100-FindCounty-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=17}
+CountySearchStr="Los Angeles"
+
+######## Do not change code below this line ###################
+VecMatchingCountyNames=grep(CountySearchStr, DataCountyInfo$County, 
+                       ignore.case=TRUE)
+VecMatchingFIPS=grep(CountySearchStr, as.character(DataCountyInfo$Fips), 
+                ignore.case=TRUE)
+VecMatching=sort(c(VecMatchingCountyNames, VecMatchingFIPS))
+unique(DataCountyInfo[VecMatching,])
+DataMatchingCounties=DataCountyInfo[VecMatching,]
+print(DataMatchingCounties)
+```
+
+**Step 2:**
+
+Here you can create the *SHAP* diagram and the related table with some extra info. All you have to do is substitute the $\dots$ in the code block below with the *CountyID* that you got in *Step 1* (the number only; no quotes).
+
+Executing the code takes a while (depending on your computer between 1 -- 8 minutes). You can change the `B=` argument (the number of scenarios to be calculated) to a lower value to speed things up, but the trade-off is a lower precision.
+
+After you get the results, take a moment to interpret the *Shap* values and decide which *SHAP* values should not be interpreted (hint: take the value of the *SHAP value* and the box plot into account.)
+
+```{r Interpret-Exerc100-GenerateShap, eval=FALSE, exercise=TRUE, exercise.lines=10, exercise.setup="Interpret-Exerc100-LoadDataEtc", exercise.timelimit=1800}
+CountyID= ...
+
+set.seed(2021)
+
+SHAPObject=predict_parts(
+           explainer=ExplainerRandForest, 
+           new_observation=DataVax[CountyID,], 
+           type="shap", B=25)
+
+### Do not change code below this line ##########
+
+CountyPred=round(attr(SHAPObject, "prediction"),3)
+VacRateCoalNone=round(attr(SHAPObject, "intercept"),3)    
+TitleShap=paste(substr(DataCountyInfo[[CountyID,3]],1,15), 
+                "(PredVac=", CountyPred,
+                "Coalition: 'none'=", VacRateCoalNone,")")
+    
+SHAPObject$label=TitleShap
+plot(SHAPObject)
+
+ShapTable=SHAPObject |> 
+          as_tibble() |> 
+          filter(B==0) |> 
+          select(Variable=variable_name, SHAP=contribution,
+                 County=variable_value) |> 
+          mutate(Nation=c(0.063,0.136,0.115,0.191,0.173, 
+                          0.478,0.310)) |> 
+          mutate(County= round(as.numeric(County),3))|> 
+          mutate(SHAP= round(SHAP,3))
+
+kable(ShapTable, caption = TitleShap) |> 
+kable_styling(bootstrap_options=c("striped","hover"), 
+              position="center", full_width = T)
+```
+
+```{r Interpret-Exerc100-GenerateShap-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=5}
+'To generate the SHAP Diagram  and table for Los Angeles, use:'
+
+'CountyID=133'
+
+
+'The next HINT provides the solution for Los Angeles.'
+```
+
+```{r Interpret-Exerc100-GenerateShap-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=10}
+
+CountyID= 133
+
+set.seed(2021)
+
+SHAPObject=predict_parts(
+           explainer=ExplainerRandForest, 
+           new_observation=DataVax[CountyID,], 
+           type="shap", B=25)
+
+### Do not change code below this line ##########
+
+CountyPred=round(attr(SHAPObject, "prediction"),3)
+VacRateCoalNone=round(attr(SHAPObject, "intercept"),3)    
+TitleShap=paste(substr(DataCountyInfo[[CountyID,3]],1,15), 
+                "(PredVac=", CountyPred, 
+                "Coalition: 'none'=", VacRateCoalNone,")")
+    
+SHAPObject$label=TitleShap
+plot(SHAPObject)
+
+ShapTable=SHAPObject |> 
+          as_tibble() |> 
+          filter(B==0) |> 
+          select(Variable=variable_name, SHAP=contribution,
+                 County=variable_value) |> 
+          mutate(Nation=c(0.063,0.136,0.115,0.191,0.173, 
+                          0.478,0.310)) |> 
+          mutate(County= round(as.numeric(County),3))|> 
+          mutate(SHAP= round(SHAP,3))
+
+kable(ShapTable, caption = TitleShap) |> 
+kable_styling(bootstrap_options=c("striped","hover"), 
+              position="center", full_width = T)
+```
+
+</clex>
