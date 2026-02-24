@@ -32,9 +32,6 @@ cat("\033[1;32mReady to roll\033[0m\n")
 ```
 
 ```{webr}
-# Make sure to set DraftMode=FALSE at the beginning of the rmd file eval=!DraftMode
-
-
 DataVaxOrg=readRDS(url("https://ai.lange-analytics.com/data/DataVax.rds"))
 
 DataCountyInfo=DataVaxOrg |> 
