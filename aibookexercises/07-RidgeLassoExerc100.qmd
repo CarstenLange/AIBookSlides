@@ -344,7 +344,7 @@ print(TuneWFModelElastNet)
 
 If you decide to try out all combinations of the values from two or more *hyper-parameters*, you can use the `expand.grid()` command. The arguments of the `expand.grid()` command are the *hyper-parameters* you would like to try out. The assigned values to these arguments are the values you want to try out for each of the *hyper-parameters*. They are assigned to each argument as *R* `vector` objects. The `expand.grid()` command then generates all possible combinations for the values of the *hyper-parameters*.
 
-For example, if you leave the code below unchanged (recommended for the first trial) you combine 8 `penalty` values with three `mixture` values, and you can use the `expand.grid()` command to generate 24 possible combinations ($8 \cdot 3$):
+For  example, if you leave the code below unchanged (recommended for the first trial) you combine 8 `penalty` values with three `mixture` values, and you can use the `expand.grid()` command to generate 24 possible combinations ($8 \cdot 3$):
 
   
 ```{webr}
