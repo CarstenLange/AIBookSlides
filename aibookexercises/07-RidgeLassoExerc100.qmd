@@ -1,11 +1,13 @@
 ---
 title: "Interactive Project: Combine Regularization and Tuning to Optimize Polynomial Regression to Predict House Prices"
-subtitle: Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
+subtitle: "Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com){target='_blank'}"
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
   affiliation: "Cal Poly, Pomona"
-format: live-html
+format:
+  live-html:
+    number-sections: true
 engine: knitr
 webr:
   repos:
@@ -21,6 +23,7 @@ webr:
     - parsnip
     - workflows
     - glmnet
+    - broom
 ---
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 {{< include ../_extensions/r-wasm/live/_gradethis.qmd >}}
@@ -39,64 +42,68 @@ Thank you for your patience!
 :::
 :::
 
-
-
-```{webr}
-#| autorun: true
+```{r}
 #| echo: false
-set.seed(777)
-DataHousing=import("https://ai.lange-analytics.com/data/HousingData.csv") |>
-  clean_names("upper_camel") |> 
-  select(Price,Sqft=SqftLiving, Bedr=Bedrooms, Year=YrBuilt) |> 
-  filter(Price<=1300000, Sqft<4500) 
+#| warning: false
+#| message: false
+library(tidymodels)
+library(janitor)
+DataHousing=
+read.csv("https://ai.lange-analytics.com/data/HousingData.csv")|>
+clean_names("upper_camel") |> 
+select(Price, Sqft=SqftLiving, Bedr=Bedrooms, Year=YrBuilt) |> 
+filter(Price<=1300000, Sqft<4500) 
 
 set.seed(777)
-Split005=DataHousing |> 
-  initial_split(prop=0.005, strata = Price, breaks = 5)
+Split005=initial_split(DataHousing, prop=0.005, strata=Price, breaks=5)
 DataTrain=training(Split005)
 DataTest=testing(Split005)
 
 RecipeHousesMultivar=recipe(Price~., data=DataTrain) |> 
-  step_mutate(Sqft2=Sqft^2, Bedr2=Bedr^2, Year2=Year^2,
-              SqftxBedr=Sqft*Bedr, SqftxYear=Sqft*Year, 
-              BedrxYear=Bedr*Year, Sqft2xBedr=Sqft2*Bedr,
-              SqftxBedr2=Sqft*Bedr2, Sqft2xBedr2=Sqft2*Bedr2,
-              Sqft2xYear=Sqft2*Year, SqftxYear2=Sqft*Year2,
-              Sqft2xYear2=Sqft2*Year2, Bedr2xYear=Bedr2*Year,
-              BedrxYear2=Bedr*Year2,Bedr2xYear2=Bedr2*Year2)|> 
-  step_normalize(all_predictors())
+                     step_mutate(Sqft2=Sqft^2,Bedr2=Bedr^2,Year2=Year^2,
+                                 SqftxBedr=Sqft*Bedr,SqftxYear=Sqft*Year, 
+                                 BedrxYear=Bedr*Year,Sqft2xBedr=Sqft2*Bedr, 
+                                 SqftxBedr2=Sqft*Bedr2,Sqft2xBedr2=Sqft2*Bedr2,
+                                 Sqft2xYear=Sqft2*Year,SqftxYear2=Sqft*Year2,
+                                 Sqft2xYear2=Sqft2*Year2,Bedr2xYear=Bedr2*Year,
+                                 BedrxYear2=Bedr*Year2,Bedr2xYear2=Bedr2*Year2) |> 
+                     step_normalize(all_predictors())
 
 ModelDesignBenchmark=linear_reg() |> 
-                  set_engine("lm") |> 
-                  set_mode("regression")
+                     set_engine("lm") |> 
+                     set_mode("regression") 
 
 WFModelBenchmark=workflow() |> 
-  add_model(ModelDesignBenchmark) |> 
-  add_recipe(RecipeHousesMultivar) |> 
-  fit(DataTrain)
+                 add_model(ModelDesignBenchmark) |> 
+                 add_recipe(RecipeHousesMultivar) |> 
+                 fit(DataTrain)
+                                      
+DataTrainWithPredBenchmark=augment(WFModelBenchmark,DataTrain)
+FirstNumber=metrics(DataTrainWithPredBenchmark, truth=Price, estimate=.pred)[[3,3]]
 
-ModelDesignElastNetTune=linear_reg(penalty=tune(), mixture=tune()) |>
-                        set_engine("glmnet") |> 
-                        set_mode("regression")
-
-WFModelElastNetTune=workflow() |>
-add_model(ModelDesignElastNetTune) |>
-add_recipe(RecipeHousesMultivar)
-
-set.seed(777)
-FoldsForTuning=vfold_cv(DataTrain, v=3, strata=Price, repeats=10)
+DataTestWithPredBenchmark=augment(WFModelBenchmark,DataTest)
+SecondNumber=metrics(DataTestWithPredBenchmark, truth=Price, estimate=.pred)[[3,3]]
 ```
 
-We already worked with a univariate *Polynomial Model* to demonstrate *regularization* and to evaluate *overfitting* scenarios. In the real world, data scientists usually use multivariate models to include more than one variable in their analysis. Therefore, this interactive exercise will teach you how to use a multivariate approach.
+```{webr}
+#| auto-run: true
+#| echo: false
+cat("\033[1;32mReady to roll\033[0m\n")
+```
+
+In Section 7.7.3 of [Practical Machine Learning with R](https://ai.lange-analytics.com){target="_blank"} we already worked with a univariate *Polynomial Model* to demonstrate *regularization* and to evaluate *overfitting* scenarios. In the real world, data scientists usually use multivariate models to include more than one variable in their analysis. Therefore, this interactive exercise will teach you how to use a multivariate approach.
 
 
-### The Data
+## The Data
 
 You \index{Housing Dataset} \index{Datasets!Housing} will again predict house prices using the **King County House Sale** dataset (Kaggle 2015). In the code block below, the dataset is loaded. Instead of selecting only one variable to predict the price of a house $(Price_i)$, we use the `select()` command to choose the number of bedrooms $(Bedr_i)$ and the year a house was built $(Year)$, together with the house's square footage $(Sqft)$. We filter out houses with a price of more than \$1,300,000 and square footage 4,500 sqft or more, which are outliers:
 
 ```{webr}
+#| edit: false
+#| run-button: false
+#| autorun: true
 DataHousing=
-  import("https://ai.lange-analytics.com/data/HousingData.csv")|>
+  read.csv("https://ai.lange-analytics.com/data/HousingData.csv")|>
   clean_names("upper_camel") |> 
   select(Price, Sqft=SqftLiving, Bedr=Bedrooms, Year=YrBuilt) |> 
   filter(Price<=1300000, Sqft<4500) 
@@ -105,11 +112,12 @@ set.seed(777)
 Split005=initial_split(DataHousing, prop=0.005, strata=Price, breaks=5)
 DataTrain=training(Split005)
 DataTest=testing(Split005)
+print(Split005)
 ```
 
-Note when creating the training dataset, we use the argument `prop=0.005`, leading to a training dataset with about 100 observations. This size is small, but in general realistic for a training dataset. However, given a total of `r format(nrow(DataHousing), big.mark=",")` available observations, we could have used the more common `prop=0.7`. In that case, we would end up with `r format(round(nrow(DataHousing)*0.7), big.mark=",")` observations for the training dataset. With such a large training dataset, the unregularized model we use later in this section would likely not lead to *overfitting*, and thus *regularization* would no longer be needed --- which would defeat the purpose of this interactive exercise.
+Note when creating the training dataset, we use the argument `prop=0.005`, leading to a training dataset with about 100 observations. This size is small, but in general realistic for a training dataset. However, given a total of `r format(nrow(DataHousing), big.mark=",")` available observations, we could have used the more common `prop=0.7`. In that case, we would end up with `r  format(round(nrow(DataHousing)*0.7), big.mark=",")` observations for the training dataset. With such a large training dataset, the unregularized model  we use later in this section would likely not lead to *overfitting*, and thus *regularization* would no longer be needed --- which would defeat the purpose of this interactive exercise.
 
-### Unregularized Benchmark Model 
+## Unregularized Benchmark Model 
 
 As a benchmark, we begin with an unregularized model. In this case, a multivariate *Degree-2 Polynomial Model*. It includes the variables $Sqft$, $Bedr$, and $Year$. They are used in their original form, squared, and as various *interaction terms*:
 
@@ -128,20 +136,26 @@ Price&=&
 As before, we use a *recipe* to generate and normalize the additional predictors:
 
 ```{webr}
+#| edit: false
+#| run-button: false
+#| autorun: true
 RecipeHousesMultivar=recipe(Price~., data=DataTrain) |> 
                      step_mutate(Sqft2=Sqft^2,Bedr2=Bedr^2,Year2=Year^2,
-                       SqftxBedr=Sqft*Bedr,SqftxYear=Sqft*Year, 
-                       BedrxYear=Bedr*Year,Sqft2xBedr=Sqft2*Bedr, 
-                       SqftxBedr2=Sqft*Bedr2,Sqft2xBedr2=Sqft2*Bedr2,
-                       Sqft2xYear=Sqft2*Year,SqftxYear2=Sqft*Year2,
-                       Sqft2xYear2=Sqft2*Year2,Bedr2xYear=Bedr2*Year,
-                       BedrxYear2=Bedr*Year2,Bedr2xYear2=Bedr2*Year2) |> 
+                                 SqftxBedr=Sqft*Bedr,SqftxYear=Sqft*Year, 
+                                 BedrxYear=Bedr*Year,Sqft2xBedr=Sqft2*Bedr, 
+                                 SqftxBedr2=Sqft*Bedr2,Sqft2xBedr2=Sqft2*Bedr2,
+                                 Sqft2xYear=Sqft2*Year,SqftxYear2=Sqft*Year2,
+                                 Sqft2xYear2=Sqft2*Year2,Bedr2xYear=Bedr2*Year,
+                                 BedrxYear2=Bedr*Year2,Bedr2xYear2=Bedr2*Year2) |> 
                      step_normalize(all_predictors())
 ```
 
 Afterward, we create the *model design* (`ModelDesignBenchmark`), the *workflow model* (`WFModelBenchmark`), and we calibrate `WFModelBenchmark` to the training data:
 
 ```{webr}
+#| edit: false
+#| run-button: false
+#| autorun: true
 ModelDesignBenchmark=linear_reg() |> 
                      set_engine("lm") |> 
                      set_mode("regression")
@@ -170,20 +184,17 @@ print("Metrics for Testing Data:")
 metrics(DataTestWithPredBenchmark, truth=Price, estimate=.pred)
 ```
 
-```{webr}
-DataTrainWithPredBenchmark=augment(WFModelBenchmark,DataTrain)
-FirstNumber=metrics(DataTrainWithPredBenchmark, truth=Price, estimate=.pred)[[3,3]]
-DataTestWithPredBenchmark=augment(WFModelBenchmark,DataTest)
-SecondNumber=metrics(DataTestWithPredBenchmark, truth = Price, estimate = .pred)[[3,3]]
-```
 
-After executing the code above, you will see that the `mae` for the training data is about \$`r format(round(FirstNumber,-2), big.mark = ",")` and the `mae` for the testing data is about \$`r format(round(SecondNumber,-2), big.mark = ",")`. Such a low training `mae`, when compared to the testing `mae`, strongly indicates *overfitting*.
+
+After executing the code above, you will see that the `mae` for the training data is about 
+`r format(round(FirstNumber,-2), big.mark = ",")` and the `mae` for the testing data is about 
+`r  format(round(SecondNumber,-2), big.mark = ",")`. Such a low training `mae`, when compared to the testing `mae`, strongly indicates *overfitting*.
 
 In the following section, you will use an *Elastic-Net* model to improve the predictive quality.
 
-### Regularized Elastic-Net Polynomial Model {#RidgeLasso-ElastNet}
+## Regularized Elastic-Net Polynomial Model {#RidgeLasso-ElastNet}
 
-When you substitute the $\dots$ after `mixture=` and `penalty=` in the code further below with values of your choice and execute, the model's $\beta$ values will be calibrated and printed. Also, the metrics for the testing data are calculated and printed.
+When you substitute  `______` after `mixture=` and `penalty=` in the code further below with values of your choice and execute, the model's $\beta$ values will be calibrated and printed. Also, the metrics for the testing data are calculated and printed.
 
 Recall, if `mixture=0`, you will run a *Ridge* model; if `mixture=1`, you will run a *Lasso* model. For anything in between, you will run a *mixed* model.
 
@@ -206,35 +217,77 @@ WFModelRegularized=workflow() |>
 print("Beta Values (see Column Estimate:)")
 tidy(WFModelRegularized)
 
-DataTestWithPredRgularized=augment(WFModelRegularized, DataTest)
+DataTestWithPredRegularized=augment(WFModelRegularized, DataTest)
 print("Metrics for Testing Data:")
-metrics(DataTestWithPredRgularized, truth=Price, estimate=.pred)
+metrics(DataTestWithPredRegularized, truth=Price, estimate=.pred)
 ```
 
-**Warning:** In the code block above, you changed *hyper-parameters* and evaluated the effects based on the testing data to better understand *regularization*. **Never use the testing data to find the best hyper-parameters.** Otherwise, you end up with a model that is highly specialized to the testing data, but when used on new data in the production phase, it would likely perform very poorly.
+::: {.callout-note}
+## Warning 
+In the code block above, you changed *hyper-parameters* and evaluated the effects based on the testing data to better understand *regularization*. For educational experiments that is perfectly OK.
 
-Instead, use validation data derived from the training dataset to evaluate the performance of *hyper-parameters*. This is the underlying principle of *tuning*, and in the next section, you will tune the *workflow model* to improve performance.
+However, for real research **never use the testing data to find the best hyper-parameters.** Otherwise, you end up with a model that is highly specialized to the testing data, but when used on new data in the production phase, it would likely perform very poorly --- a form of *overfitting*.
 
-### Tuning the Elastic-Net Polynomial Model {#RidgeLasso-TuneElasticNet}
+**Instead, use validation data derived from the training dataset** to evaluate the performance of *hyper-parameters*. This is the underlying principle of *tuning*, and in the next section, you will tune the *workflow model* to improve performance.
+:::
 
-In this section, you will use the *10-Step Template* to tune the *hyper-parameters* `penalty` and `mixture`.
+## Tuning the Elastic-Net Polynomial Model {#RidgeLasso-TuneElasticNet}
+
+In this section, you will use the *1*0-Step Template** from Section 6.6 of [Practical Machine Learning with R](https://ai.lange-analytics.com){target='_blank'} to tune the *hyper-parameters* `penalty` and `mixture`.
+
+Some of the steps are already setup and executed. Other steps you can adjust and execute. Please note, **before you can execute Step 7 -- Step 10, you need to execute Step 3, Step 4, Step 5, and Step 6. Otherwise you get an error.**
 
 **Step 1 - Generate Training and Testing Data:**
 
-:   The training and testing data have already been generated (see Section \@ref(RidgeLasso-ElastNet) above).
+:   The training and testing data have already been generated above.
 
 **Step 2 - Create a Recipe:**
 
-:   The *recipe* to create the predictors for the multivariate *Degree-2 Polynomial* model (`RecipeHousesMultivar)` was created in connection with the unregularized model and can be reused here. It establishes the predictors with various powers and the interaction terms.
+:   The *recipe* to create the predictors for the multivariate *Degree-2 Polynomial* model (`RecipeHousesMultivar`) was created in connection with the unregularized model and can be reused here. It establishes the predictors with various powers and the interaction terms.
 
 **Step 3 - Create a Model Design:**
 
-:   The *model design* from the previous section needs slight modifications. We have to add the `tune()` placeholder for the *hyper-parameters*:
+:   The *model design* from the previous section needs slight modifications. We have to add the `tune()` placeholder for the *hyper-parameters*. Please substitute `______` in the code block below:
 
 ```{webr}
+#| exercise: exc_1
+ModelDesignElastNetTune =linear_reg(penalty=______, mixture=______) |> 
+                         set_engine("glmnet") |> 
+                         set_mode("regression")
+print(ModelDesignElastNetTune)
+```
+
+::: {.hint exercise="exc_1"}
+**Here is a Hint:**
+
+Will be added by 2/19/26
+:::
+
+::: {.solution exercise="exc_1"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_1
+#| solution: true
 ModelDesignElastNetTune =linear_reg(penalty=tune(), mixture=tune()) |> 
-                          set_engine("glmnet") |> 
-                          set_mode("regression")
+                         set_engine("glmnet") |> 
+                         set_mode("regression")
+print(ModelDesignElastNetTune)
+```
+:::
+
+```{webr}
+#| exercise: exc_1
+#| check: true
+gradethis::grade_this_code()
+```
+
+```{webr}
+#| auto-run: true
+#| echo: false
+ModelDesignElastNetTune =linear_reg(penalty=tune(), mixture=tune()) |> 
+                         set_engine("glmnet") |> 
+                         set_mode("regression")
 ```
 
 **Step 4 - Add the Recipe and the Model Design to a Workflow:**
@@ -242,87 +295,85 @@ ModelDesignElastNetTune =linear_reg(penalty=tune(), mixture=tune()) |>
 :   As before, we add the *recipe* and the (modified) *model design* to the *workflow*:
 
 ```{webr}
-TuneWFModel=workflow() |>
+TuneWFModelElastNet=workflow() |>
             add_recipe(RecipeHousesMultivar) |>     
             add_model(ModelDesignElastNetTune)
+print(TuneWFModelElastNet)
 ```
 
 **Step 5 - Create a Hyper-Parameter Grid:**
 
 :   Previously, when only one *hyper-parameter* was tuned, you added the values to be tried out in a data frame column named with the same name as the *hyper-parameter*. When you have more than one *hyper-parameter*, it gets a little more complicated because you want to try out different combinations of *hyper-parameters*.
 
-If you decide to try out all combinations of the values from two or more *hyper-parameters*, you can use the `crossing()` command. The arguments of the `crossing()` command are the *hyper-parameters* you would like to try out. The assigned values to these arguments are the values you want to try out for each of the *hyper-parameters*. They are assigned to each argument as *R* `vector` objects. The `crossing()` command then generates all possible combinations for the values of the *hyper-parameters*.
+If you decide to try out all combinations of the values from two or more *hyper-parameters*, you can use the `expand.grid()` command. The arguments of the `expand.grid()` command are the *hyper-parameters* you would like to try out. The assigned values to these arguments are the values you want to try out for each of the *hyper-parameters*. They are assigned to each argument as *R* `vector` objects. The `expand.grid()` command then generates all possible combinations for the values of the *hyper-parameters*.
 
-For example, in this project you will later try 66 *penalty* values from 15,000 to 80,000 with an increment of 1,000 and three *mixture* values (0, 0.5, and 1). You can use the crossing() command to generate all possible combinations:
+For example, if you leave the code below unchanged (recommended for the first trial) you combine 8 `penalty` values with three `mixture` values, and you can use the `expand.grid()` command to generate 24 possible combinations ($8 \cdot 3$):
 
   
 ```{webr}
-  ParGridHouses=crossing(mixture=c(0, 0.5, 1),
-                          penalty=seq(15000, 80000, 1000))
-  print(ParGridHouses)
-  ```
+ParGridHouses=expand.grid(mixture=c(0, 0.5, 1),
+                          penalty=c(500, 1000, 2000, 5000, 10000, 20000, 50000, 100000))
+print(format(ParGridHouses, scientific = FALSE))
+```
 
-  The *R* `vector` object assigned to `mixture` is created with the `c()` command by listing the related values. The *R* `vector` object assigned to `penalty` is created with the `seq()` command. The first value in `seq()` determines where the sequence starts ($15{,}000$) and the second where it ends ($80{,}000$). The third argument determines the increment (the step size; $1{,}000$).
+**Hint:** Leave the values unchanged for the first trial, but use other values for subsequent trials. Beware, if the number of combination increases the execution time increases also in *Step 7 -- Step 10*.
 
-    You can see in the printout above that `crossing()` generates all possible combinations of the *penalty* values and the *mixture* values. Each of these 198 combinations will be tried out when you tune the *workflow* later on.
+The *R* `vector` objects assigned to  `penalty=` and `mixture=` are created with  `c()` commands by listing the related values. 
 
-    The `crossing()` command is very helpful when you combine multiple *hyper-parameters* with several values each. Imagine you want to create a grid with all combinations of five *hyper-parameters* with ten values each, `crossing()` would create $100{,}000$ parameter combinations ($10\cdot 10\cdot 10\cdot 10\cdot 10=10^5$) for you. Be advised, tuning $100{,}000$ *hyper-parameter* combinations would use a lot of computing time.
+You can see in the printout above that `expand.grid()` generates all possible combinations of the `penalty=` values and the `mixture=` values. For the default values each of these 24 combinations will be tried out when you *tune* the *workflow* later on in *Step 7 -- Step 10*.
 
-    In general, computing time increases exponentially with the number of *hyper-parameters*, while computing time increases proportionally when the values for each *hyper-parameter* increase. These facts must be considered when deciding how many *hyper-parameters* you want to tune and how many values you like to consider for each *hyper-parameter*.
+The `expand.grid()` command is very helpful when you combine multiple *hyper-parameters* with several values each. Imagine you want to create a grid with all combinations of five *hyper-parameters* with ten values each, `expand.grid()` would create $100{,}000$ parameter combinations ($10\cdot 10\cdot 10\cdot 10\cdot 10=10^5$) for you. Be advised, tuning $100{,}000$ *hyper-parameter* combinations would use a lot of computing time.
+
+In general, computing time increases exponentially with the number of *hyper-parameters*, while computing time increases proportionally when the values for each *hyper-parameter* increase. These facts must be considered when deciding how many *hyper-parameters* you want to tune and how many values you like to consider for each *hyper-parameter*.
 
 **Step 6: - Create Resamples for Cross-Validation:**
 
 :   To create *resamples* for *Cross-Validation*, we use the `vfold()` command. However, although usually recommended, creating ten *Cross-Validation* folds creates a problem. Given that we have only `r nrow(DataTrain)` observations, the validation set of each fold would consist only of about ten observations. Therefore, we will create sets of three folds (`v=3`), which leaves about $30$ observation for each validation dataset. To offset the small number of folds, we repeat the process of creating folds ten times (see the argument `repeats=10`) creating a total of $30$ folds:
 
-    ```{r RidgeLasso-Exerc100-TuneCreateFolds, exercise=FALSE, eval=FALSE}
-    FoldsForTuning=vfold_cv(DataTrain, v=3, strata=Price, repeats=10)
-    ```
+```{webr}
+FoldsForTuning=vfold_cv(DataTrain, v=3, strata=Price, repeats=4)
+print(FoldsForTuning)
+```
 
 **Step 7 -- Step 10:**
 
-Now, you are ready to finalize the tuning process in the interactive project. The training and testing data (from Step 1), the *workflow* including the *recipe* and the *model design* (from Steps 2 -- 4), as well as the *resamples* for validation (from Step 6) have already been loaded in the background.
+Now, you are ready to finalize the tuning process in the interactive project. The training and testing data (from Step 1), the *recipe*  (from Steps 2) have already been loaded in the background.
 
-In the code block below, you only have to define the data frame with the *parameter grid* as explained in Step 5 to try out various combinations for the *hyper-parameters* `penalty=` and `mixture=`.
+You need to execute Steps 3 -- 6 before you can tune the model!
 
-For the first time you run the code, it is recommended to use the values as determined in Step 5 (you can later change them). Note, executing the code can take a while because `penalty=seq(15000,80000,1000)` will create 66 *penalty* values, and `mixture=seq(0,1,0.5)` will create 3 *mixture* values. The `crossing()` command will then create 198 combinations ($66\cdot3$) which will be all tried out and evaluated in the tuning process in Step 7.
+It takes a while until the *tuning* is finished. **For the default settings in Steps 3 and 6 it takes somewhere between 2 and 7 minutes depending on your computer speed** (the maximum allowable cpu time is set to 15 minutes). Enjoy a cup of coffee. For the default model the 24 parameter combinations have to be run for 12 cross validation folds. Meaning the model has to be optimized 288 times. Consider this when changing the parameters in Steps 3 and/or 6.
 
-When *R* outputs the results, look carefully at the $\beta$ parameters, the plot generated by `autoplot()` after Step 7, and the metrics for the testing data. Then change the `c()` and `seq()` commands that generate the *hyper-parameter* values for `penalty=` and `mixture=`. Afterward, execute the code again and see how the results change.
+When *R* outputs the results, look carefully at the $\beta$ parameters, the plot generated by `autoplot()` after Step 7, and the metrics for the testing data. Then change the `c()`  commands that generate the *hyper-parameter* values for `penalty=` and `mixture=`. Afterward, execute the code again and see how the results change.
 
 Please recall, that for this setup *Ridge* *penalty* values between $15{,}000$ and $154{,}000{,}000$ will work and *Lasso* *penalty* values between $15$ and $154{,}000$ will work.[^07-ridgelasso-6]
 
 [^07-ridgelasso-6]: These recommendations are based on the 100 $\lambda$ values that `glmnet` tries by default, depending on the model and the training data. Values outside these ranges might produce surprising results.
 
-```{r RidgeLasso-Exerc100-TuneElstNetExerc, exercise.setup="RidgeLasso-Exerc100-LoadHouseData", exercise=TRUE, eval=FALSE, exercise.lines=37}
-# Step 5 - Create a Hyper-Parameter Grid: 
-#
-# ParGridHouses contains the hyper-parameter combinations to be 
-# tried out.
-# Change the values for the seq() commands to try out different values.
-ParGridHouses=crossing(penalty=seq(15000, 80000, 1000), 
-                       mixture=seq(0, 1, 0.5))
-print("Hyper-Parameter Combinations to be Tried Out:")
-ParGridHouses
-
+```{webr}
+#| context-timeout: 900000
+#| message: false
+#| warning: false
+StartTime=Sys.time()
 # Step 7: Tune the Workflow and Train All Models
 set.seed(777)
-TuneResultsElastNet=tune_grid(WFModelElastNetTune,  
+TuneResultsElastNet=tune_grid(TuneWFModelElastNet,  
                               resamples=FoldsForTuning, 
                               grid=ParGridHouses, 
-                              metrics = metric_set(rmse))
+                              metrics = metric_set(mse))
 
-# The diagram shows how the  *root mean squared error* (`rmse`) 
+# The diagram shows how the  *mean squared error* (`mse`) 
 # changes with increasing regularization:
 autoplot(TuneResultsElastNet)
 
 # Step 8 - Extract the Best Hyper-Parameter(s):
-BestHyperPara=select_best(TuneResultsElastNet, metric="rmse")
+BestHyperPara=select_best(TuneResultsElastNet, metric="mse")
 print("Best values for the Hyper-Parameters")
-BestHyperPara
+print(BestHyperPara)
 
 # Step 9: Finalize and Train the Best Workflow 
-BestWFModel=finalize_workflow(WFModelElastNetTune, BestHyperPara) |> 
+BestWFModel=finalize_workflow(TuneWFModelElastNet, BestHyperPara) |> 
             fit(DataTrain)
-
+TuneWFModelElastNet
 print("Optimal Beta Parameters (see estimate column)")
 tidy(BestWFModel)
 
@@ -330,64 +381,7 @@ tidy(BestWFModel)
 DataTestBestWFModelWithPred=augment(BestWFModel, DataTest)
 print("Metrics for the Testing Data")
 metrics(DataTestBestWFModelWithPred, truth = Price, estimate = .pred)
+cat("Time used for tuning:", Sys.time()-StartTime)
 ```
 
-```{r RidgeLasso-Exerc100-TuneElstNetExerc-hint, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=17}
-For the first trial, leave ParGridHouses in Step 5 as it is and 
-just execute the code.
 
-It takes a while. So be patient and have a coffee.
-
-Next, try different *hyper-parameters* by changing the seq() commands 
-in crossing(). What are the consequences in terms of beta parameters and
-performance?
-
-The next HINT provides a tuning that works faster. 
-
-In the "solution", mixture is changed to:
-mixture=seq(0,1,1)  
-using only values 0 (Ridge) and 1 (Lasso) but no mix.
-
-In the solution penalty is changed to:
-penalty=seq(15000,80000,2000) covering the same range but with 
-a higher increment (2000) and thus fewer values.
-```
-
-```{r RidgeLasso-Exerc100-TuneElstNetExerc-solution, exercise=FALSE,  eval=FALSE, include=FALSE, exercise.lines=34}
-# Step 5 - Create a Hyper-Parameter Grid: 
-#
-# ParGridHouses contains the *hyper-parameter* combinations to be tried out.
-# Change the values for the seq() commands to try out different values.
-ParGridHouses=crossing(penalty=seq(15000,80000,2000), mixture=c(0,1))
-print("Hyper-Parameter Combinations to be Tried Out:")
-ParGridHouses
-
-# Step 7: Tune the Workflow and Train All Models
-set.seed(777)
-TuneResultsElastNet=tune_grid(WFModelElastNetTune,  
-                              resamples=FoldsForTuning, 
-                              grid=ParGridHouses, 
-                              metrics = metric_set(rmse))
-
-# The diagram shows how the rmse changes with increasing regularization:
-autoplot(TuneResultsElastNet)
-
-# Step 8 - Extract the Best Hyper-Parameter(s):
-BestHyperPara=select_best(TuneResultsElastNet, metric="rmse")
-print("Best values for the Hyper-Parameters")
-BestHyperPara
-
-# Step 9: Finalize and Train the Best Workflow 
-BestWFModel=finalize_workflow(WFModelElastNetTune, BestHyperPara) |> 
-            fit(DataTrain)
-
-print("Optimal Beta Parameters (see estimate column)")
-tidy(BestWFModel)
-
-# Step 10: Assess Prediction Quality Based on the Testing Data:
-DataTestBestWFModelWithPred=augment(BestWFModel, DataTest)
-print("Metrics for the Testing Data")
-metrics(DataTestBestWFModelWithPred, truth = Price, estimate = .pred)
-```
-
-</clex>
