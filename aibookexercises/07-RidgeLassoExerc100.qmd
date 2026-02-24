@@ -130,7 +130,6 @@ Price&=&
 &+&\beta_{10} Sqft^2 Bedr+\beta_{11} Sqft Bedr^2+\beta_{12} Sqft^2 Bedr^2\nonumber \\
 &+&\beta_{13} Sqft^2 Year+\beta_{14} Sqft Year^2+\beta_{15} Sqft^2 Year^2\nonumber \\
 &+&\beta_{16} Bedr^2 Year+\beta_{17} Bedr Year^2+\beta_{18} Bedr^2 Year^2
-(\#eq:RidgeLasso-MultiVarPredict)
 \end{eqnarray}
 ```
 As before, we use a *recipe* to generate and normalize the additional predictors:
