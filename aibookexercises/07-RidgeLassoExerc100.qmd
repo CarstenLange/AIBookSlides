@@ -205,6 +205,7 @@ Finding an appropriate value for the argument `penalty=` is more tricky. For the
 Try a few settings and see how the results are changing. For example, use `mixture=1` (*Lasso*) and `penalty=100000`. Afterward, increase and decrease `penalty=` and leave `mixture=1` constant. How are the results changing? Then try `mixture=0` and leave `penalty=100000` to see the different results for a *Ridge* model. You can also set `mixture=0.5` or `mixture=0.7` to try out different *Elastic-Net* models. Playing with different *hyper-parameter* values and observing the resulting $\beta s$ and *metrics* will help you to better understand the $Ridge$, $Lasso$, and *Elastic-Net* approaches.
 
 ```{webr}
+#| exercise: exc_1
 ModelDesignRegularized=linear_reg(penalty=______ , mixture=______) |> 
                        set_engine("glmnet") |> 
                        set_mode("regression")
@@ -221,6 +222,40 @@ DataTestWithPredRegularized=augment(WFModelRegularized, DataTest)
 print("Metrics for Testing Data:")
 metrics(DataTestWithPredRegularized, truth=Price, estimate=.pred)
 ```
+
+::: {.hint exercise="exc_1"}
+**Here is a Hint:**
+
+Choose values for the *hyper-parameters* `penalty=` and `mixture=` to choose the intensity (`penalty=`) and the type of regularization `Ridge` (`mixture=0`), `Lasso` (`mixture=1`), or a mix betwen the two (e.g., `mixture=0.5`).
+:::
+
+::: {.solution exercise="exc_1"}
+**Here is one of many possible  solutions. Try out others:**
+
+```{webr}
+#| exercise: exc_1
+#| solution: true
+ModelDesignRegularized=linear_reg(penalty=100000 , mixture=1) |> 
+                       set_engine("glmnet") |> 
+                       set_mode("regression")
+
+WFModelRegularized=workflow() |> 
+                   add_model(ModelDesignRegularized) |> 
+                   add_recipe(RecipeHousesMultivar) |> 
+                   fit(DataTrain)
+
+print("Beta Values (see Column Estimate:)")
+tidy(WFModelRegularized)
+
+DataTestWithPredRegularized=augment(WFModelRegularized, DataTest)
+print("Metrics for Testing Data:")
+metrics(DataTestWithPredRegularized, truth=Price, estimate=.pred)
+```
+
+:::
+
+
+
 
 ::: {.callout-note}
 ## Warning 
@@ -250,24 +285,26 @@ Some of the steps are already setup and executed. Other steps you can adjust and
 :   The *model design* from the previous section needs slight modifications. We have to add the `tune()` placeholder for the *hyper-parameters*. Please substitute `______` in the code block below:
 
 ```{webr}
-#| exercise: exc_1
+#| exercise: exc_2
 ModelDesignElastNetTune =linear_reg(penalty=______, mixture=______) |> 
                          set_engine("glmnet") |> 
                          set_mode("regression")
 print(ModelDesignElastNetTune)
 ```
 
-::: {.hint exercise="exc_1"}
+::: {.hint exercise="exc_2"}
 **Here is a Hint:**
 
-Will be added by 2/19/26
+Later, in *Step 7 – Step 10,* you will try different values for the *hyper-parameters* `penalty` and `mixture`.
+
+Consequently, you cannot enter values here. In lieu of values, you enter a placeholder `tune()`, which will later be replaced by the values to be tried out.
 :::
 
-::: {.solution exercise="exc_1"}
+::: {.solution exercise="exc_2"}
 **Here is the Solution:**
 
 ```{webr}
-#| exercise: exc_1
+#| exercise: exc_2
 #| solution: true
 ModelDesignElastNetTune =linear_reg(penalty=tune(), mixture=tune()) |> 
                          set_engine("glmnet") |> 
@@ -277,7 +314,7 @@ print(ModelDesignElastNetTune)
 :::
 
 ```{webr}
-#| exercise: exc_1
+#| exercise: exc_2
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -296,8 +333,8 @@ ModelDesignElastNetTune =linear_reg(penalty=tune(), mixture=tune()) |>
 
 ```{webr}
 TuneWFModelElastNet=workflow() |>
-            add_recipe(RecipeHousesMultivar) |>     
-            add_model(ModelDesignElastNetTune)
+                    add_recipe(RecipeHousesMultivar) |>     
+                    add_model(ModelDesignElastNetTune)
 print(TuneWFModelElastNet)
 ```
 
@@ -312,7 +349,7 @@ For example, if you leave the code below unchanged (recommended for the first tr
   
 ```{webr}
 ParGridHouses=expand.grid(mixture=c(0, 0.5, 1),
-                          penalty=c(500, 1000, 2000, 5000, 10000, 20000, 50000, 100000))
+                          penalty=c(500,1000,2000,5000,10000,20000,50000,100000))
 print(format(ParGridHouses, scientific = FALSE))
 ```
 
