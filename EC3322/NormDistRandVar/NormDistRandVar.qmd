@@ -1,0 +1,289 @@
+---
+title: "Continuous Random Variables - Normal Distribution" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon,../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+webr:
+  packages:
+    - tidyverse
+    - rio
+    - TeachHist
+  
+  
+engine: knitr
+---
+
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## What Will You Learn
+
+-   You will use the *Normal Distribution* to predict individual normal distributed variables.
+
+-   You will use the *Normal Distribution* to answer questions like:
+
+    -   What is the probability to get a value smaller than $x$?
+    -   What is the probability to get a value greater than $x$?
+    -   What is the probability to get a value between $x_1$ and $x_2$?
+
+## Frequentist Approach
+
+::: callout-note
+## **Goal:**
+
+**Understand probabilities based on data for topics, <br>where we do not know the theory well enough.**
+:::
+
+<br>
+**Example Body Temperature:**
+
+-   We can estimate the **mean** from data
+-   We can estimate the **standard deviation** from data
+-   We can reasonably assume that temperature is **normal distributed**
+
+## Normal Distributed Data {.smaller}
+
+-   Most values are close to the mean
+-   Some are larger or smaller than the mean
+-   Few are a lot larger or smaller than the mean
+-   Very few are extremely large or extremely small
+-   The distribution is symmetric around the mean
+
+A **bell curve** with useful properties is the **Gaussian Curve**:
+
+$$
+Density = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+$$
+
+## Gaussian Curve/Normal Curve {.smaller}
+
+A bell curve with useful properties is the Gaussian Curve:
+
+$$
+Density = \frac{1}{\sqrt{2\pi\sigma^2}} e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+$$
+
+where: 
+
+- $\pi=3.1415$ and $e=2.7183$ are constants 
+- $\mu$ is the mean and $\sigma$ is the standard deviation
+
+**Consequently**, when we can estimate the **mean** and **standard deviation**, we can assign a $Density$ to each value of interest $x$ and draw the curve.<br><br>
+
+> **The area left of $x$ shows the probability of a value smaller (or equal) than $x$**
+
+## Example: Body Temperature  Smaller 100F for Healthy Adults {.smaller}
+
+**Est. Mean:** $98.2$
+
+**Est. Standard Deviation:** $0.7$
+
+:::: columns
+
+::: {.column width="20%"}
+
+:::
+
+::: {.column width="60%"}
+
+```{webr}
+#| auto-run: true
+#| echo: false
+#| message: false
+#| warning: false
+
+source("https://econ.lange-analytics.com/RScripts/ZTable4Digits.R")
+
+
+P=pnorm4(100, 98.2, 0.7)
+cat("Probability (rounded) for a body temperature smaller than 100F:", P)
+```
+
+:::
+
+::: {.column width="20%"}
+
+:::
+
+::::
+
+## Example: Body Temperature Smaller 100F for Healthy Adults {.smaller}
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Temperature Axis**
+
+```{webr}
+#| message: false
+#| warning: false
+P=pnorm4(100, 98.2, 0.7)
+cat("Probability (rounded) for a body temperature smaller than 100F:", P)
+```
+
+![](Images/NormDistrXSmaller.png)
+:::
+
+::: {.column width="50%" .smaller}
+**Standard Deviation Axis** 
+
+$z:=\mbox{How Many Std. Deviations from Mean}$ <br>
+$$z=\frac{x-Mean}{StdDev}$$
+
+$$z=\frac{100-98.2}{0.7}=2.57$$
+
+![](Images/ZTableNeg.jpeg)
+
+![](Images/ZTablePos.jpeg)
+
+:::
+
+::::
+
+## Example: Body Temperature Greater 100F for Healthy Adults {.smaller}
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Temperature Axis**
+
+```{webr}
+#| message: false
+#| warning: false
+P=1-pnorm4(100, 98.2, 0.7)
+cat("Probability (rounded) for a body temperature greater than 100F:", P)
+```
+
+![](Images/NormDistrXGreater.png)
+
+:::
+
+::: {.column width="50%" .smaller}
+**Standard Deviation Axis** 
+
+$z:=\mbox{How Many Std. Deviations from Mean}$ <br>
+$$z=\frac{x-Mean}{StdDev}$$
+
+$$z=\frac{100-98.2}{0.7}=2.57$$
+
+![](Images/ZTableNeg.jpeg)
+
+![](Images/ZTablePos.jpeg)
+
+$P(X>100)= 1.00 - 0.9949 = 0.0051$
+
+:::
+
+::::
+
+## Body Temp. between 98.0F and 98.4F for Healthy Adults {.smaller}
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Temperature Axis**
+
+```{webr}
+#| message: false
+#| warning: false
+P2=pnorm4(98.4, 98.2, 0.7)
+cat("Probability (rounded) for a body temperature smaller than 98.4F 100:", P2)
+P1=pnorm4(98, 98.2, 0.7)
+cat("Probability (rounded) for a body temperature smaller than 98F:", P1)
+cat("--------------------------------------------")
+cat("P2 - P1:", P2 - P1)
+```
+
+![](Images/NormDistrXBetween.png)
+
+:::
+
+::: {.column width="50%" .smaller}
+
+**Standard Deviation Axis** 
+
+$z2:=\mbox{How Many Std. Dev. from Mean}$ 
+$$z2=\frac{x-Mean}{StdDev}$$
+
+$$z2=\frac{98.4-98.2}{0.7}=0.29$$
+
+<hr>
+
+$z1:=\mbox{How Many Std. Dev. from Mean}$ <br>
+$$z1=\frac{x-Mean}{StdDev}$$
+
+$$z1=\frac{98-98.2}{0.7}=-0.29$$
+
+<hr>
+
+$$P2-P1 = 0.6141 - 0.3859 = 0.2282$$
+
+
+![](Images/ZTableNeg.jpeg)
+
+![](Images/ZTablePos.jpeg)
+
+:::
+
+::::
+
+## Example: Body Temperature Not Exceeded by 95 of Healthy Adults {.smaller}
+
+:::: columns
+
+::: {.column width="50%"}
+
+**Temperature Axis**
+
+
+```{webr}
+#| message: false
+#| warning: false
+Q=qnorm4(0.95, 98.2, 0.7)
+cat('Body Temperature (rounded) not exceeded by 95% of healthy adults:', Q)
+```
+
+![](Images/NormDistrXSmaller.png)
+
+:::
+
+::: {.column width="50%" .smaller}
+
+**Standard Deviation Axis** 
+
+1. Find probability closest to $0.95$ inside the z-table.
+2. Find the related $z$-value ($z_{123}=xxx$)
+3. $z:=\mbox{How Many Std. Deviations from Mean}$ 
+$z=\frac{x-Mean}{StdDev} \Longleftrightarrow x= z \cdot StdDev + Mean$
+$P=0.95$ is xxx Std. Deviations from the Mean
+4. $xxx \cdot 0.7 = xxx$ is xxx F from the Mean
+5. $xxx + Mean= xxx + 98.2 = xxx$
+
+
+$$z=\frac{100-98.2}{0.7}=2.57$$
+
+![](Images/ZTableNeg.jpeg)
+
+![](Images/ZTablePos.jpeg)
+
+:::
+
+::::
