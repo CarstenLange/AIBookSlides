@@ -21,8 +21,7 @@ format:
     scrollable: true
 webr:
   packages:
-    - tidyverse
-    - rio
+    - dplyr
     - TeachHist
   
   
@@ -89,7 +88,7 @@ where:
 
 > **The area left of $x$ shows the probability of a value smaller (or equal) than $x$**
 
-## Example: Body Temperature  Smaller 100F for Healthy Adults {.smaller}
+## Body Temperature  Smaller 100F for Healthy Adults {.smaller}
 
 **Est. Mean:** $98.2$
 
@@ -113,7 +112,8 @@ source("https://econ.lange-analytics.com/RScripts/ZTable4Digits.R")
 
 
 P=pnorm4(100, 98.2, 0.7)
-cat("Probability (rounded) for a body temperature smaller than 100F:", P)
+cat("Probability (rounded) for a body temperature smaller than 100F:")
+cat("P =",P)
 ```
 
 :::
@@ -124,7 +124,7 @@ cat("Probability (rounded) for a body temperature smaller than 100F:", P)
 
 ::::
 
-## Example: Body Temperature Smaller 100F for Healthy Adults {.smaller}
+## Body Temperature Smaller 100F for Healthy Adults {.smaller}
 
 :::: columns
 
@@ -136,7 +136,8 @@ cat("Probability (rounded) for a body temperature smaller than 100F:", P)
 #| message: false
 #| warning: false
 P=pnorm4(100, 98.2, 0.7)
-cat("Probability (rounded) for a body temperature smaller than 100F:", P)
+cat("Probability (rounded) for a body temperature smaller than 100F:")
+cat("P =",P)
 ```
 
 ![](Images/NormDistrXSmaller.png)
@@ -161,7 +162,7 @@ $$P_{X<100F}=0.9949$$
 
 ::::
 
-## Example: Body Temperature Greater 100F for Healthy Adults {.smaller}
+## Body Temperature Greater 100F for Healthy Adults {.smaller}
 
 :::: columns
 
@@ -173,7 +174,8 @@ $$P_{X<100F}=0.9949$$
 #| message: false
 #| warning: false
 P=1-pnorm4(100, 98.2, 0.7)
-cat("Probability (rounded) for a body temperature greater than 100F:", P)
+cat("Probability (rounded) for a body temperature greater than 100F:")
+cat("P =",P)
 ```
 
 ![](Images/NormDistrXGreater.png)
@@ -214,9 +216,11 @@ $$P_{X>100F}=1-0.9949=0.0051$$
 #| message: false
 #| warning: false
 P2=pnorm4(98.4, 98.2, 0.7)
-cat("Probability (rounded) for a body temperature smaller than 98.4F 100:", P2)
+cat("Probability (rounded) for a body temperature smaller than 98.4F:")
+cat("P2 =",P2)
 P1=pnorm4(98, 98.2, 0.7)
-cat("Probability (rounded) for a body temperature smaller than 98F:", P1)
+cat("Probability (rounded) for a body temperature smaller than 98F:")
+cat("P1 =",P1)
 cat("--------------------------------------------")
 cat("P2 - P1:", P2 - P1)
 ```
@@ -256,7 +260,7 @@ $$P_2-P_1 = 0.6141 - 0.3859 = 0.2282$$
 
 ::::
 
-## Example: Body Temp. "Not Exceeded" by 95% of Healthy Adults {.smaller}
+## Body Temp. "Not Exceeded" by 95% of Healthy Adults {.smaller}
 
 :::: columns
 
@@ -309,7 +313,7 @@ A more logical way:
 
 ::::
 
-## Example: Body Temperature "Exceeded" by 1% of Healthy Adults {.smaller}
+## Body Temperature "Exceeded" by 1% of Healthy Adults {.smaller}
 
 ::: callout-note
 
