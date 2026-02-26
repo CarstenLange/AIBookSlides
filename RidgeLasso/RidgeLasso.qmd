@@ -17,7 +17,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/LinRegr.html' target='_blank'>Textbook </a> "
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RidgeLasso.html' target='_blank'>Textbook </a> "
    
 webr:
   packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom',
@@ -378,3 +378,34 @@ metrics(DataTestWithPredLasso, truth=Price, estimate=.pred)
 ![Conversion of Parameters $\beta$s for Increasing Penalty ($\lambda$)](images/paste-1.png)
 :::
 :::::
+
+## Elastic Net
+
+$$
+T^{arget}_{Elastic}=\underbrace{\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2}_{MSE}
++ 
+\lambda\biggl(\overbrace{
+\alpha P^{enalty}_{Lasso}
++
+(1-\alpha)P^{enalty}_{Ridge}}^{P^{enalty}_{Elastic}}\biggr)$$
+
+$$\mbox{with: } \widehat{Price}_i=\beta_1 Sqft_i+\beta_2 Sqft_i^2+\beta_3  Sqft_i^3+\beta_4 Sqft_i^4+\beta_5 Sqft_i^5+\beta_6$$
+
+. . .
+
+<hr>
+
+$$
+T^{arget}_{Elastic}=\underbrace{\frac{1}{20}\sum_{i=1}^{20} \left ( \widehat{Price}_i-Price_i\right)^2}_{MSE}
++ 
+\lambda\biggl(\overbrace{
+\alpha\underbrace{ \sum_{i=j}^{5} \rvert \beta_j \rvert}_{P^{enalty}_{Ridge}}
++
+(1-\alpha)\underbrace{\sum_{i=j}^{5}  \beta_j^2}_{P^{enalty}_{Lasso}}}^{P^{enalty}_{Elastic}}\biggr)
+$$
+
+. . .
+
+<hr>
+
+[Exercise Project: Create a Multivariate Polynomial Regression with ElasticNet](https://aibookslides.netlify.app/aibookexercises/07-ridgelassoexerc100){target="_blank"}

@@ -276,7 +276,7 @@ For women 45 -- 54 years, the mean is 230.5 mg/100 ml cholesterol, and the stand
 ::: {#custom-font-chunk}
 ```{webr}
 library(TeachHist)
-TeachHistRelFreq(Mean=70, Sd=3, SeedValue=777, NOfSimData=10000)
+TeachHistRelFreq(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000)
 ```
 
 :::
@@ -301,7 +301,7 @@ TeachHistRelFreq(Mean=70, Sd=3, SeedValue=777, NOfSimData=10000)
 
 ```{r}
 #| echo: false
-TeachHistDens(Mean=70, Sd=3, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
+TeachHistDens(Mean=230.5, Sd=50, SeedValue=777, NOfSimData=10000, PlotNormCurv = TRUE)
 ```
 
 ## Normal Curve {.smaller}
