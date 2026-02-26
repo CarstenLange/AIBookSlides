@@ -1,0 +1,204 @@
+---
+title: "EC 3322 Midterm"
+
+
+author:
+  - name: "Carsten Lange"
+    email: "clange@cpp.edu"
+    affiliation: "Professor of Economics, Cal Poly, Pomona"
+
+
+format: live-html
+
+webr:
+  packages: ['dplyr', 'ggplot2', 'TeachHist']
+  resources:
+    - data/DataIceCream.csv
+
+engine: knitr
+---
+
+
+```{ojs}
+//| echo: false
+startTime = {
+  const now = new Date();
+  // Formats to: "Month/Day/Year, Hour:Minute:Second"
+  return now.toLocaleString();
+}
+```
+
+```{ojs}
+//| echo: false
+userIP = {
+  try {
+    const response = await fetch("https://api.ipify.org");
+    const text = await response.text();
+    return text.trim();
+  } catch (e) {
+    return "Detection Blocked (Check Ad-blocker)";
+  }
+}
+```
+
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include ../../_extensions/r-wasm/live/_gradethis.qmd >}}
+
+::: {.content-visible when-runtime="loading"}
+::: {.callout-note}
+## Please be Patient: Loading R Environment
+The interactive R environment and the required packages must be loaded in your browser. This typically takes 1 -- 2 minutes. You can monitor the progress in the bottom-right corner. 
+
+When everything is loaded, you get a **"Ready to roll"** message below.
+Thank you for your patience!
+:::
+:::
+
+```{webr}
+#| auto-run: true
+#| echo: false
+cat("\033[1;32mReady to roll\033[0m\n")
+```
+
+
+
+**Libraries** already loaded in the background (${userIP} ${startTime}):
+
+- `tidyverse`
+- `janitor`
+- `ggplot2`
+- `TeachHist`
+
+You are analyzing daily ice cream sales.
+
+The code below loaded the *Ice Cream*  dataset already into the data frame `DataIceCreamOrg`. Below the code you find the first ten observations.
+
+
+```{webr}
+#| label: exc_all
+#| echo: false
+#| warning: false
+DataIceCreamOrg = read.csv("data/DataIceCream.csv") |>
+                  mutate(Flavor = case_match(Flavor,
+                            1 ~ "Chocolate",
+                            2 ~ "Strawberry",
+                            3 ~ "Vanilla",
+                            4 ~ "Other",
+                            .default = NA)) 
+
+DataIceCream=DataIceCreamOrg |>
+                  select(Sales, Temperature=TempInFahr, Flavor) |> 
+                  filter(Sales<10000) |> 
+                  mutate(SalesPlusTax=Sales*1.08)
+
+head(DataIceCreamOrg, n=10)
+```
+
+
+
+
+## Exercise 1
+
+Complete the pipe below for the following tasks and save it into the new data frame 'DataIceCream':
+
+1. Select the variables:
+    - `Sales`
+    - `TempInFahr` (rename it to `Temperature`)
+    - `Flavor`
+
+2. Filter the data to only include Sales smaller than 10000.
+
+3. Create a new variable `SalesPlusTax` by multiplying `Sales` by `1.08` to include sales tax.
+
+4. Calculate the mean of the sales (including tax).
+
+
+```{webr}
+#| exercise: exc_1
+#| exercise.setup: exc_all
+DataIceCream=DataIceCreamOrg |>
+                  select(______, ______, ______) |> 
+                  filter(______) |> 
+                  mutate(SalesPlusTax=______)
+head(DataIceCream)
+
+MeanSalesWithTax=mean(______)
+cat("Avg. Sales (incl. tax):", MeanSalesWithTax)
+```
+
+## Exercise 2
+
+Use the data frame `DataIceCream` and create a ggplot point graph with `Temperature` at the horizontal axis, `SalesPlusTax` at the vertical axis, and color code the points according to the `Flavor` of the ice cream. 
+
+Also add a linear trend line without a standard error band (`se=FALSE`).
+
+Finally, add the following labels: 
+
+**Title:** `"Diagram Ice Cream Sales"`<br>
+**x Axis Label:** `"Temperature in F"`<br>
+**y Axis Label:** `"Sales incl. Tax"` 
+
+Complete the code below for these tasks:
+
+```{webr}
+#| exercise: exc_2
+#| exercise.setup: exc_all
+#| message: false
+#| warning: false
+PlotIceCreamSales=ggplot(aes(x=______, y=______),  
+                         data=______)+
+                  ______(aes(______))+
+                  geom_smooth(se=FALSE, method="______")+
+                  labs(______ = "Diagram Ice Cream Sales",
+                       ______ = "Temperature in F",
+                       ______ = "Sales incl. Tax")
+
+plot(PlotIceCreamSales)
+```
+
+
+## Exercise 3
+
+The mean high temperature  in Los Angeles in July is $83$ degrees F with a standard deviation of $5$ degrees F.^[Source: weatherspark.com/m/1705/7/Average-Weather-in-July-in-Los-Angeles-California-United-States]
+
+What is the probability of a random day in July having a high temperature between 81 F and 85 F. Complete  the R ode below to get your answer.
+
+```{webr}
+#| auto-run: true
+#| echo: false
+#| warning: false
+#| message: false
+TeachHistDens(83,5, VLine1=81, VLine2=85)
+```
+
+```{webr}
+#| exercise: exc_3
+P2=pnorm(______, 83, 5)
+P1=pnorm(______, 83, 5)
+Answer=______
+cat("The probability for having a heigh temperature between 81F anf 85F is:", Answer)
+```
+
+
+
+## Exercise 4
+
+The mean high temperature  in Los Angeles in July is $83$ degrees F with a standard deviation of $5$ degrees F.^[Source: weatherspark.com/m/1705/7/Average-Weather-in-July-in-Los-Angeles-California-United-States]
+
+What is the high temperature not exceeded in 95% of the days?.
+
+```{webr}
+#| auto-run: true
+#| echo: false
+#| warning: false
+#| message: false
+TeachHistDens(83,5, VLine1=91.2)
+```
+
+```{webr}
+#| exercise: exc_4
+QTemp95=qnorm(______, 83, 5)
+cat("The high temperature not exceeded in 95% of the days is", QTemp95, "F")
+```
+

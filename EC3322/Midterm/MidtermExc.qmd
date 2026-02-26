@@ -66,7 +66,7 @@ head(DataTitanic)
 
 ## Exercise 1
 
-Completet the pipe below for the following tasks and save it into the new data frame 'DataTitanicAdults':
+Complete the pipe below for the following tasks and save it into the new data frame 'DataTitanicAdults':
 
 1. Select the variables:
     - Survived
@@ -129,7 +129,7 @@ gradethis::grade_this_code()
 
 ## Exercise 2
 
-Use the data frame `DataTitanicAdults` and create a ggplot point graph with `Age` at the horizontal axis, `FareInCurrenDollars` at the vertical axis and color code the points according to if a passenger `Survived`. 
+Use the data frame `DataTitanicAdults` and create a ggplot point graph with `Age` at the horizontal axis, `FareInCurrentDollars` at the vertical axis and color code the points according to if a passenger `Survived`. 
 
 Also add a linear trend line without a standard error band.
 
@@ -193,7 +193,7 @@ gradethis::grade_this_code()
 
 The mean height of men is $70$ inches with a standard deviation of $3$ inches.
 
-What is the probabitity of a random man to have a height between 69 inches and 71 inches. Complete  the R ode below to get your answer.
+What is the probability of a random man to have a height between 69 inches and 71 inches. Complete  the R ode below to get your answer.
 
 ```{webr}
 #| auto-run: true
@@ -208,7 +208,7 @@ TeachHistDens(70,3, VLine1=69, VLine2=71)
 P2=pnorm(______, ______, ______)
 P1=pnorm(______, ______, ______)
 Answer=______
-cat("The probability for a man beeing between 69 and 71 inches is:", Answer)
+cat("The probability for a man being between 69 and 71 inches is:", Answer)
 ```
 
 ::: {.hint exercise="exc_3"}
@@ -229,7 +229,7 @@ cat("The probability for a man beeing between 69 and 71 inches is:", Answer)
 P2=pnorm(71, 70, 3)
 P1=pnorm(69, 70, 3)
 Answer=P2-P1
-cat("The probability for a man beeing between 69 and 71 inches is:", Answer)
+cat("The probability for a man being between 69 and 71 inches is:", Answer)
 ```
 
 :::
@@ -244,7 +244,7 @@ gradethis::grade_this_code()
 
 The mean height of men is $70$ inches with a standard deviation of $3$ inches.
 
-What is the height excceeded by only 1% of all men.
+What is the height exceeded by only 1% of all men.
 
 ```{webr}
 #| auto-run: true
