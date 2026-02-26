@@ -1,0 +1,288 @@
+---
+title: "Interactive Project: Midterm Exercise"
+
+
+author:
+  - name: "Carsten Lange"
+    email: "clange@cpp.edu"
+    affiliation: "Professor of Economics, Cal Poly, Pomona"
+
+
+format: live-html
+
+webr:
+  packages: ['dplyr', 'ggplot2', 'janitor', 'TeachHist'] #Auto-install packages
+
+engine: knitr
+---
+
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+{{< include ../../_extensions/r-wasm/live/_gradethis.qmd >}}
+
+::: {.content-visible when-runtime="loading"}
+::: {.callout-note}
+## Please be Patient: Loading R Environment
+The interactive R environment and the required packages must be loaded in your browser. This typically takes 1–2 minutes. You can monitor the progress in the bottom-right corner. 
+
+When everything is loaded, you get a **"Ready to roll"** message below.
+Thank you for your patience!
+:::
+:::
+
+```{webr}
+#| auto-run: true
+#| echo: false
+cat("\033[1;32mReady to roll\033[0m\n")
+```
+
+
+
+**Libraries** already loaded in the background:
+
+- `tidyverse`
+- `janitor`
+- `ggplot2`
+- `TeachHist`
+
+
+
+The code below loaded the Titanic dataset already into the data frame `DataTitanic`. Below the code you find the first six observations.
+```{webr}
+#| label: exc_all
+#| echo: false
+#| warning: false
+DataTitanic = read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |>
+                 clean_names("upper_camel") |>
+                 mutate(Survived=as.factor(Survived) )
+
+DataTitanicAdults=DataTitanic |>
+                  select(Survived, PasClass=Pclass, Age, FareInPounds) |> 
+                  filter(Age>18) |> 
+                  mutate(FareInCurrentDollars=110*FareInPounds)
+
+head(DataTitanic)
+```
+
+## Exercise 1
+
+Completet the pipe below for the following tasks and save it into the new data frame 'DataTitanicAdults':
+
+1. Select the variables:
+    - Survived
+    - Pclass (rename it to PasClass)
+    - Age
+    - FareInPounds
+
+2. Filter the data to only include passengers older than 18 years
+
+3. Create a new variable `FareInCurrentDollars` by multiplying `FareInPounds` by 110
+
+4. Calculate the mean fare passengers older than 18 paid (in current US dollars) 
+
+
+```{webr}
+#| exercise: exc_1
+#| exercise.setup: exc_all
+DataTitanicAdults=DataTitanic |>
+                  ______(______, ______, ______, ______) |> 
+                  ______(______) |> 
+                  ______(______)
+head(DataTitanicAdults)
+
+MeanDollarFareAdults=mean(______)
+cat("Avg. Fare in Current Dollars (Adults):", MeanDollarFareAdults)
+```
+
+::: {.hint exercise="exc_1"}
+**Here is a Hint:**
+
+**Do not look at the solution.** Instead read:
+
+[Section tidyverse in the Textbook](https://ai.lange-analytics.com/htmlbook/RAndRStudio.html#RAndRStudio-Tidyverse){target="_blank"}
+
+:::
+
+::: {.solution exercise="exc_1"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_1
+#| solution: true
+DataTitanicAdults=DataTitanic |>
+                  select(Survived, PasClass=Pclass, Age, FareInPounds) |> 
+                  filter(Age>18) |> 
+                  mutate(FareInCurrentDollars=110*FareInPounds)
+head(DataTitanicAdults)
+
+MeanDollarFareAdults=mean(DataTitanicAdults$FareInCurrentDollars)
+cat("Avg. Fare in Current Dollars (Adults):", MeanDollarFareAdults)
+```
+
+:::
+
+```{webr}
+#| exercise: exc_1
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Exercise 2
+
+Use the data frame `DataTitanicAdults` and create a ggplot point graph with `Age` at the horizontal axis, `FareInCurrenDollars` at the vertical axis and color code the points according to if a passenger `Survived`. 
+
+Also add a linear trend line without a standard error band.
+
+Finally, add the following labels: 
+
+**Title:** `"Diagram Age and Fare"`<br>
+**x Axis Label:** `"Age in Years"`<br>
+**y Axis Label:** `"Fare in Current U.S. Dollars"` 
+
+Complete the code below for these tasks:
+
+```{webr}
+#| exercise: exc_2
+#| exercise.setup: exc_all
+PlotTitanic=ggplot(aes(x=______, y=______),  
+                   data=______)+
+            geom_point(aes(______=______))+
+            geom_smooth(se=FALSE, method="______")+
+            labs(______,
+                 ______,
+                 ______)
+
+plot(PlotTitanic)
+```
+
+::: {.hint exercise="exc_2"}
+**Here is a Hint:**
+
+**Do not look at the solution. Instead:**
+
+[Review the Slides from Class](https://aibookslides.netlify.app/ibm5910/ggplotqlive/ggplotqlive#/title-slide){target="_blank"}
+:::
+
+::: {.solution exercise="exc_2"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_2
+#| solution: true
+PlotTitanic=ggplot(aes(x=Age, y=FareInCurrentDollars),  
+                   data=DataTitanicAdults)+
+            geom_point(aes(color=Survived))+
+            geom_smooth(se=FALSE, method="lm")+
+            labs(title = "Diagram Age and Fare",
+                 x = "Age in Years",
+                 y = "Fare in Current U.S. Dollars")
+
+plot(PlotTitanic)
+```
+
+:::
+
+```{webr}
+#| exercise: exc_2
+#| check: true
+gradethis::grade_this_code()
+```
+
+
+## Exercise 3
+
+The mean height of men is $70$ inches with a standard deviation of $3$ inches.
+
+What is the probabitity of a random man to have a height between 69 inches and 71 inches. Complete  the R ode below to get your answer.
+
+```{webr}
+#| auto-run: true
+#| echo: false
+#| warning: false
+#| message: false
+TeachHistDens(70,3, VLine1=69, VLine2=71)
+```
+
+```{webr}
+#| exercise: exc_3
+P2=pnorm(______, ______, ______)
+P1=pnorm(______, ______, ______)
+Answer=______
+cat("The probability for a man beeing between 69 and 71 inches is:", Answer)
+```
+
+::: {.hint exercise="exc_3"}
+**Here is a Hint:**
+
+**Do not look at the solution. Instead:**
+
+[Review the Slides from Class](https://aibookslides.netlify.app/ec3322/normdistrandvar/normdistrandvar#/title-slide){target="_blank"}
+
+:::
+
+::: {.solution exercise="exc_3"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_3
+#| solution: true
+P2=pnorm(71, 70, 3)
+P1=pnorm(69, 70, 3)
+Answer=P2-P1
+cat("The probability for a man beeing between 69 and 71 inches is:", Answer)
+```
+
+:::
+
+```{webr}
+#| exercise: exc_3
+#| check: true
+gradethis::grade_this_code()
+```
+
+## Exercise 4
+
+The mean height of men is $70$ inches with a standard deviation of $3$ inches.
+
+What is the height excceeded by only 1% of all men.
+
+```{webr}
+#| auto-run: true
+#| echo: false
+#| warning: false
+#| message: false
+TeachHistDens(70,3, VLine1=77)
+```
+
+```{webr}
+#| exercise: exc_4
+QHeight=qnorm(______, ______, ______)
+cat("The height exceeded by only 1% of all men is:", QHeight, "Inches")
+```
+
+::: {.hint exercise="exc_4"}
+**Here is a Hint:**
+
+**Do not look at the solution.** Instead
+
+[Review the Slides from Class](https://aibookslides.netlify.app/ec3322/normdistrandvar/normdistrandvar#/title-slide){target="_blank"}
+
+:::
+
+::: {.solution exercise="exc_4"}
+**Here is the Solution:**
+
+```{webr}
+#| exercise: exc_4
+#| solution: true
+QHeight=qnorm(0.99, 70, 3)
+cat("The height exceeded by only 1% of all men is:", QHeight, "Inches")
+```
+
+:::
+
+```{webr}
+#| exercise: exc_4
+#| check: true
+gradethis::grade_this_code()
+```
