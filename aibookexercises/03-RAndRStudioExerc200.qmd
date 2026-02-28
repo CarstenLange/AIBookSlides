@@ -1,6 +1,6 @@
 ---
-title: "Interactive Project: WORKING TITLE: R Studio Exercises"
-subtitle: Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
+title: Basic Exercises for R"
+subtitle: Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com){target="_blank"}
 
 author:
   - name: "Carsten Lange"
@@ -47,7 +47,7 @@ library(broom)
 ```
 
 ```{webr}
-#| label: ex_all
+#| label: exc_all
 #| echo: false
 #| warning: false
 DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv")
@@ -121,22 +121,22 @@ As mentioned before, an alternative to using the "="-symbol is the "\<-"-symbol.
 Below you find an example of how to assign a value of $23$ to a variable called $A$, and then add $100$ to this value:
 
 ```{webr}
-#| exercise: ex_4
-#| exercise.setup: ex_all
+#| exercise: exc_4
+#| exercise.setup: exc_all
 A=23
 A=A+100
 cat("R object A contains the numeric value:", A)
 ```
 
-::: {.hint exercise="ex_4"}
+::: {.hint exercise="exc_4"}
 First, you assign 33 to A in Line 1 of the code. Next, in Line 2, you multiply the value of the variable A by 2 and assign it to itself (to A).
 
 The next HINT provides the solution. So, keep trying before you peek.
 :::
 
-::: {.solution exercise="ex_4"}
+::: {.solution exercise="exc_4"}
 ```{webr}
-#| exercise: ex_4
+#| exercise: exc_4
 #| solution: true
 A=33
 A=A*2
@@ -145,7 +145,7 @@ cat("R object A contains the numeric value:", A)
 :::
 
 ```{webr}
-#| exercise: ex_4
+#| exercise: exc_4
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -167,8 +167,8 @@ The correct way to interpret Line 2 is as an assignment. We assign a new value t
 We can perform algebraic calculations with numbers or numerical *R* objects. Below is an example:
 
 ```{webr}
-#| exercise: ex_5
-#| exercise.setup: ex_all
+#| exercise: exc_5
+#| exercise.setup: exc_all
 A=2
 B=4
 A=500*A/10
@@ -178,7 +178,7 @@ D=sqrt(A)
 cat("The square root of ",  A, " is:", D)
 ```
 
-::: {.hint exercise="ex_5"}
+::: {.hint exercise="exc_5"}
 In Line 6 of the code, D is calculated as the square root of A. 
 Therefore, A must be the square of 20 before Line 6 is executed.
 
@@ -187,11 +187,11 @@ This means that the value assigned to A in Line 3 must be 400.
 The next HINT provides the solution. So, keep trying before you peek.
 :::
 
-::: {.solution exercise="ex_5"}
+::: {.solution exercise="exc_5"}
 **Here is the Solution:**
   
 ```{webr}
-#| exercise: ex_5
+#| exercise: exc_5
 #| solution: true
 A=8
 B=4
@@ -205,7 +205,7 @@ cat("The square root of ",  A, " is:", D)
 :::
 
 ```{webr}
-#| exercise: ex_5
+#| exercise: exc_5
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -227,15 +227,15 @@ In the code block below, you are tasked to calculate the area of a rectangle bas
 
 
 ```{webr}
-#| exercise: ex_6
-#| exercise.setup: ex_all
+#| exercise: exc_6
+#| exercise.setup: exc_all
 Length=______
 Width=______
 AreaRect=______
 cat("The area of the rectangle is:", AreaRect)
 ```
 
-::: {.hint exercise="ex_6"}
+::: {.hint exercise="exc_6"}
 First, you assign values (e.g., 4 and 3) to the Length and Width variables.
 
 Next, considering the area of a rectangle is the product of its length and width, 
@@ -244,11 +244,11 @@ you multiply the two variables and assign the result to AreaRect.
 The next HINT provides the solution. So, keep trying before you peek.
 :::
 
-::: {.solution exercise="ex_1"}
+::: {.solution exercise="exc_1"}
 **Here is the Solution:**
 
 ```{webr}
-#| exercise: ex_6
+#| exercise: exc_6
 #| solution: true
 Length=4
 Width=3
@@ -260,7 +260,7 @@ cat("The area of the rectangle is:", AreaRect)
 :::
 
 ```{webr}
-#| exercise: ex_6
+#| exercise: exc_6
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -279,15 +279,15 @@ The following exercises cover `logic` *R* objects. We will assign `TRUE` and `FA
 Below `TRUE` is assigned to two `logical` *R* objects. These two *R* objects are combined with an AND (`&`), saved into another `logical` *R* object, and then printed to the console with the `cat()` command:
 
 ```{webr}
-#| exercise: ex_7
-#| exercise.setup: ex_all
+#| exercise: exc_7
+#| exercise.setup: exc_all
 IsLifeGood=TRUE
 IsMoodGood=TRUE
 IsHappy=IsLifeGood & IsMoodGood
 cat("Happiness:", IsHappy)
 ```
 
-::: {.hint exercise="ex_7"}
+::: {.hint exercise="exc_7"}
 **Here is a Hint:**
 
 If the mood is not good, the logical variable IsMoodGood
@@ -307,8 +307,8 @@ Run the code above, and you will see that the result for `IsHappy` is `TRUE`. Th
 Here is an example for OR (`|`):
 
 ```{webr}
-#| exercise: ex_8
-#| exercise.setup: ex_all
+#| exercise: exc_8
+#| exercise.setup: exc_all
 IsWeatherDry=TRUE
 IsIndoor=FALSE
 IsStayingDry=IsWeatherDry | IsIndoor
@@ -330,8 +330,8 @@ If the weather provides sunshine or a person is indoors, the person will not get
 Below is a more complex example of a person that can be exposed to dry weather (or not) and is indoors (or not) with an intact roof (or not).
 
 ```{webr}
-#|exercise: ex_9
-#|exercise.setup: ex_all
+#|exercise: exc_9
+#|exercise.setup: exc_all
 IsWeatherDry=FALSE
 IsIndoor=TRUE
 IsRoofIntact=FALSE
@@ -339,7 +339,7 @@ IsStayingDry=IsWeatherDry | (IsIndoor & IsRoofIntact)
 cat("Person stays dry:", IsStayingDry)
 ```
 
-::: {.hint exercise="ex_9"}
+::: {.hint exercise="exc_9"}
 *** Explanation of the code ***
 The logical expression ISWeatherIDry OR the expression in the () 
 have to be TRUE to ensure that IsStayingDry evaluates to 
@@ -360,11 +360,11 @@ Change the value for IsRoofIntact
 The next HINT provides the solution. So, keep trying before you peek.
 :::
 
-::: {.solution exercise="ex_9"}
+::: {.solution exercise="exc_9"}
 **Here is the Solution:**
   
 ```{webr}
-#|exercise: ex_9
+#|exercise: exc_9
 #|solution: true
 IsWeatherDry=FALSE
 IsIndoor=TRUE
@@ -376,7 +376,7 @@ cat("Person stays dry:", IsStayingDry)
 :::
 
 ```{webr}
-#| exercise: ex_9
+#| exercise: exc_9
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -439,8 +439,8 @@ In this exercise, you will calculate some crucial statistics from our vectors.
 Note that the vector-objects `VecFirstNames`, `VecAges`, `VecIsFemale`, and `VecNumKids` have already been loaded in the background.
 
 ```{webr"}
-#| exercise: ex_10
-#| exercise.setup: ex_all
+#| exercise: exc_10
+#| exercise.setup: exc_all
 AvgAge=mean(VecAges)
 NumOfPersons=length(______)
 NumOfWomen=______(______)
@@ -455,7 +455,7 @@ cat(round(PropWomen,2)*100, "% are female and",
     round(PropMen, 2)*100, "% are male.")
 ```
 
-::: {.hint exercise="ex_10"}
+::: {.hint exercise="exc_10"}
 **Here is a Hint:**
 The number of elements (the length) of a vector determines the number
 of persons in the dataset. 
@@ -471,10 +471,10 @@ The next HINT provides the solution. So, keep trying before you peek.
 
 :::
 
-::: {.solution exercise="ex_10"}
+::: {.solution exercise="exc_10"}
 **Here is the Solution:**
 ```{webr}
-#| exercise: ex_10
+#| exercise: exc_10
 #| solution: true
 AvgAge=mean(VecAges)
 NumOfPersons=length(VecFirstNames)
@@ -493,7 +493,7 @@ cat(round(PropWomen,2)*100, "% are female and",
 :::
 
 ```{webr}
-#| exercise: ex_10
+#| exercise: exc_10
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -506,8 +506,8 @@ gradethis::grade_this_code()
 In this exercise, you will perform numerical calculations on a vector. For the sake of this exercise, assume the current year is 2024. Of course, you can change this in the interactive exercise if you wish.
 
 ```{webr}
-#| exercise: ex_11
-#| exercise.setup: ex_all
+#| exercise: exc_11
+#| exercise.setup: exc_all
 CurrentYear=2024
 VecFirstNames=c("Carsten", "Jose", "Jane")
 VecAges=c(45,54,23)
@@ -544,8 +544,8 @@ Regardless of whether the file is on your computer or the Internet, tabular data
 When you run the code of the exercise below, the *Titanic* dataset will be imported to the data frame `DataFromInternet`, and with `select(Survived, Name, Sex)`, you will create a data frame that only includes the variables *Survived*, *Name*, and *Sex* from the imported *Titanic* dataset:
 
 ```{webr}
-#|exercise: ex_12
-#|exercise.setup: ex_all
+#|exercise: exc_12
+#|exercise.setup: exc_all
 library(rio)
 library(tidyverse)
 DataFromInternet=
@@ -564,7 +564,7 @@ head(DataFromInternet)
 
 :   -   Execute the modified code.
 
-::: {.hint exercise="ex_12"}
+::: {.hint exercise="exc_12"}
 **Here is a hint**
 
 Make sure the new URL in the import() command is in quotes.
@@ -577,10 +577,10 @@ The next HINT provides the solution. So, keep trying before you peek.
 
 :::
 
-::: {.solution exercise="ex_12"}
+::: {.solution exercise="exc_12"}
 **Here is the solution**
 ```{webr}
-#|exercise: ex_12
+#|exercise: exc_12
 #|solution: true
 library(rio)
 library(tidyverse)
@@ -593,7 +593,7 @@ head(DataFromInternet)
 :::
 
 ```{webr}
-#| exercise: ex_12
+#| exercise: exc_12
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -603,8 +603,8 @@ gradethis::grade_this_code()
 When you run the code below, you will create a data frame `DataThreeFriends` by manually using the `data.frame()` command. Since variables (columns) of a data frame are very similar to vector-objects, you can use the `c()` command to create vector-objects that populate the variables for the data frame.
 
 ```{webr}
-#|exercise: ex_13
-#|exercise.setup: ex_all
+#|exercise: exc_13
+#|exercise.setup: exc_all
 library(tidyverse)
 CurrentYear=2024
 DataThreeFriends=data.frame(FirstName=c("Carsten", "Jose", "Jane"),
@@ -614,7 +614,7 @@ DataThreeFriends=data.frame(FirstName=c("Carsten", "Jose", "Jane"),
 print(DataThreeFriends)
 ```
 
-:::{.hint exercise="ex_13"}
+:::{.hint exercise="exc_13"}
 **Here is a hint**
 
 The birth year can be calculated when you subtract a person's Age 
@@ -625,9 +625,9 @@ The next HINT provides the solution. So, keep trying before you peek.
 :::
 
 
-:::{.solution exercise="ex_13"}
+:::{.solution exercise="exc_13"}
 ```{webr}
-#|exercise: ex_13
+#|exercise: exc_13
 #|solution: true
 library(tidyverse)
 CurrentYear=2024
@@ -642,7 +642,7 @@ print(DataThreeFriends)
 :::
 
 ```{webr}
-#|exercise: ex_13
+#|exercise: exc_13
 #|check: true
 gradethis::grade_this_code()
 ```
@@ -675,8 +675,8 @@ In the code block below, we used `DataTitanic$Survived` to extract the variable 
 [^1]: This procedure would also work if survivors were coded as `TRUE` and non-survivors as `FALSE` in a logic object because `TRUE` is internally coded as $1$ and `FALSE` as $0$.
 
 ```{webr}
-#|exercise: ex_14
-#|exercise.setup: ex_all
+#|exercise: exc_14
+#|exercise.setup: exc_all
 NumOfSurv=sum(DataTitanic$Survived)
 AvgAgeOfPas=______)
 cat(NumOfSurv, "passengers survived.")
@@ -684,7 +684,7 @@ cat("The average age of the passengers was", AvgAgeOfPas, ".")
 ```
 
 
-:::{.hint exercise= "ex_14"}
+:::{.hint exercise= "exc_14"}
 **Here is a hint**
 
 To extract the variable Age as a vector-object, you can use DataTitanic$Age.
@@ -693,11 +693,11 @@ To calculate the average, you can use the mean() command.
 
 :::
 
-::: {.solution exercise="ex_14"}
+::: {.solution exercise="exc_14"}
 **Here is the Solution:**
 
 ```{webr}
-#| exercise: ex_14
+#| exercise: exc_14
 #| solution: true
 NumOfSurv=sum(DataTitanic$Survived)
 AvgAgeOfPas=mean(DataTitanic$Age)
@@ -708,7 +708,7 @@ cat("The average age of the passengers was", AvgAgeOfPas, ".")
 :::
 
 ```{webr}
-#| exercise: ex_14
+#| exercise: exc_14
 #| check: true
 gradethis::grade_this_code()
 ```
@@ -720,4 +720,4 @@ gradethis::grade_this_code()
 
 :   -   Run the code to see the results.
 
-</clex>
+
