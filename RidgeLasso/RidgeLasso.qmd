@@ -1,5 +1,5 @@
 ---
-title: "Key Machine Learning Concepts --- Explained with Linear Regression"
+title: "Regularization --- Ridge, Lasso, and Elastic Net Penalties"
 subtitle: "[These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the  lower right corner of the screen for progress)]{style='color: red;'}"
 
 author:
