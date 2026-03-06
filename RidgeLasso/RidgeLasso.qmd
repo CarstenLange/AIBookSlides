@@ -286,7 +286,7 @@ $T^{arget}$ value still only depends on data anf $\beta$'s!<br><br>
 
 ```{webr}
 set.seed(777)
-ModelDesignLasso=linear_reg(penalty=500, mixture=1) |>  # 0 for Ridge, 1 for Lasso
+ModelDesignLasso=linear_reg(penalty=500, mixture=1) |>  # 0 for Ridge, 1 for Lasso. The argument penalty is the "penalty factor (lambda)"
                  set_engine("glmnet") |> 
                  set_engine("glmnet") |> 
                  set_mode("regression")
@@ -369,13 +369,13 @@ metrics(DataTestWithPredLasso, truth=Price, estimate=.pred)
 ::: {.column width="50%"}
 **Ridge:**
 
-![Conversion of Parameters $\beta$s for Increasing Penalty ($\lambda$)](images/paste-2.png)
+![Conversion of Parameters $\beta$s for Increasing Penalty Factors($\lambda$)](images/paste-2.png)
 :::
 
 ::: {.column width="50%"}
 **Lasso:**
 
-![Conversion of Parameters $\beta$s for Increasing Penalty ($\lambda$)](images/paste-1.png)
+![Conversion of Parameters $\beta$s for Increasing Penalty Factors($\lambda$)](images/paste-1.png)
 :::
 :::::
 
