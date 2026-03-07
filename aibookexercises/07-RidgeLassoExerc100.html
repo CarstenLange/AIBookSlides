@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -67,7 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="07-RidgeLassoExerc100_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="07-RidgeLassoExerc100_files/libs/quarto-html/anchor.min.js"></script>
 <link href="07-RidgeLassoExerc100_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="07-RidgeLassoExerc100_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="07-RidgeLassoExerc100_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="07-RidgeLassoExerc100_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="07-RidgeLassoExerc100_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="07-RidgeLassoExerc100_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -260,8 +260,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRyYWluV2l0aFByZWRC
 <section id="RidgeLasso-ElastNet" class="level2" data-number="3">
 <h2 data-number="3" class="anchored" data-anchor-id="RidgeLasso-ElastNet"><span class="header-section-number">3</span> Regularized Elastic-Net Polynomial Model</h2>
 <p>When you substitute <code>______</code> after <code>mixture=</code> and <code>penalty=</code> in the code further below with values of your choice and execute, the model’s <span class="math inline">\(\beta\)</span> values will be calibrated and printed. Also, the metrics for the testing data are calculated and printed.</p>
-<p>Recall, if <code>mixture=0</code>, you will run a <em>Ridge</em> model; if <code>mixture=1</code>, you will run a <em>Lasso</em> model. For anything in between, you will run a <em>mixed</em> model.</p>
-<p>Finding an appropriate value for the argument <code>penalty=</code> is more tricky. For the <em>Ridge</em> <em>penalty</em>, values between <span class="math inline">\(15{,}000\)</span> and <span class="math inline">\(154{,}000{,}000\)</span> will work. For the <em>Lasso</em> <em>penalty</em>, values between <span class="math inline">\(15\)</span> and <span class="math inline">\(154{,}000\)</span> will work.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Recall, if <code>mixture=0</code>, you will run a <em>Ridge</em> model; if <code>mixture=1</code>, you will run a <em>Lasso</em> model. For anything in between, you will run a <em>mixed</em> model. Also note, that the argument <code>penalty=</code> represents the penalty factor (<span class="math inline">\(\lambda\)</span>).</p>
+<p>Finding an appropriate value for <em>penalty factor</em> (<span class="math inline">\(\lambda\)</span>) — the argument <code>penalty=</code> is more tricky. For the <em>Ridge</em> <em>penalty factor</em>, values between <span class="math inline">\(15{,}000\)</span> and <span class="math inline">\(154{,}000{,}000\)</span> will work. For the <em>Lasso</em> <em>penalty factor</em>, values between <span class="math inline">\(15\)</span> and <span class="math inline">\(154{,}000\)</span> will work.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <p>Try a few settings and see how the results are changing. For example, use <code>mixture=1</code> (<em>Lasso</em>) and <code>penalty=100000</code>. Afterward, increase and decrease <code>penalty=</code> and leave <code>mixture=1</code> constant. How are the results changing? Then try <code>mixture=0</code> and leave <code>penalty=100000</code> to see the different results for a <em>Ridge</em> model. You can also set <code>mixture=0.5</code> or <code>mixture=0.7</code> to try out different <em>Elastic-Net</em> models. Playing with different <em>hyper-parameter</em> values and observing the resulting <span class="math inline">\(\beta s\)</span> and <em>metrics</em> will help you to better understand the <span class="math inline">\(Ridge\)</span>, <span class="math inline">\(Lasso\)</span>, and <em>Elastic-Net</em> approaches.</p>
 <div class="cell" data-exercise="exc_1">
 <div>
@@ -453,7 +453,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRm9sZHNGb3JUdW5pbmc9dmZv
 <p>You need to execute Steps 3 – 6 before you can tune the model!</p>
 <p>It takes a while until the <em>tuning</em> is finished. <strong>For the default settings in Steps 3 and 6 it takes somewhere between 2 and 7 minutes depending on your computer speed</strong> (the maximum allowable cpu time is set to 15 minutes). Enjoy a cup of coffee. For the default model the 24 parameter combinations have to be run for 12 cross validation folds. Meaning the model has to be optimized 288 times. Consider this when changing the parameters in Steps 3 and/or 6.</p>
 <p>When <em>R</em> outputs the results, look carefully at the <span class="math inline">\(\beta\)</span> parameters, the plot generated by <code>autoplot()</code> after Step 7, and the metrics for the testing data. Then change the <code>c()</code> commands that generate the <em>hyper-parameter</em> values for <code>penalty=</code> and <code>mixture=</code>. Afterward, execute the code again and see how the results change.</p>
-<p>Please recall, that for this setup <em>Ridge</em> <em>penalty</em> values between <span class="math inline">\(15{,}000\)</span> and <span class="math inline">\(154{,}000{,}000\)</span> will work and <em>Lasso</em> <em>penalty</em> values between <span class="math inline">\(15\)</span> and <span class="math inline">\(154{,}000\)</span> will work.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>Please recall, that for this setup <em>Ridge</em> <em>penalty factors</em> between <span class="math inline">\(15{,}000\)</span> and <span class="math inline">\(154{,}000{,}000\)</span> will work and <em>Lasso</em> <em>penalty factors</em> between <span class="math inline">\(15\)</span> and <span class="math inline">\(154{,}000\)</span> will work.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="cell" data-context-timeout="900000">
 <div>
 <div id="webr-21" class="exercise-cell">
