@@ -11,7 +11,7 @@ author:
 format: live-html
 
 webr:
-  packages: ['dplyr', 'rsample', 'janitor', 'recipes', 'yardstick', 'parsnip', 'workflows', 'broom'] #Auto-install packages
+  packages: ['dplyr'] #Auto-install packages
 
 engine: knitr
 ---
@@ -110,9 +110,9 @@ cat("My name is", FirstName, "and I am learning R.")
 
 In the following exercises, you will assign numerical values to *R* objects and work with numerical objects and values.
 
-We can assign a value to an *R* object using the "="-sign. Remembering to interpret the "="-sign as *"assigned to"* rather than an *"equal to"* sign like in algebra is important.
+We can assign a value to an *R* object using the `=`-sign. Remembering to interpret the  `=`-sign as *"assigned to"* rather than an *"equal to"* sign like in algebra is important.
 
-As mentioned before, an alternative to using the "="-symbol is the "\<-"-symbol. The latter emphasizes an assignment rather than an equality. However, throughout this book, we will use the "="-symbol for simplicity, keeping in mind that it stands for *assigned to*.
+As mentioned before, an alternative to using the  `=`-symbol is the `<-`-symbol. The latter emphasizes an assignment rather than an equality. However, throughout this book, we will use the `=`-symbol for simplicity, keeping in mind that it stands for *"assigned to"*.
 
 ------------------------------------------------------------------------
 
@@ -121,10 +121,24 @@ As mentioned before, an alternative to using the "="-symbol is the "\<-"-symbol.
 Below you find an example of how to assign a value of $23$ to a variable called $A$, and then add $100$ to this value:
 
 ```{webr}
-#| exercise: exc_4
-#| exercise.setup: exc_all
 A=23
 A=A+100
+cat("R object A contains the numeric value:", A)
+```
+
+
+Execute the code above and  carefully look  at Line 2 of the exercise. Given that `A=23` from the Line 1, Line 2 does not mean that `A` *equals* `A+100`. Otherwise, considering Line 1: `23=23+100` --- which is clearly not the case.
+
+The correct way to interpret Line 2 is as an assignment. We assign a new value to `A`, which is 100 greater than the old value of 23.
+
+**Your turn:**
+
+Assign a value 33 to `A` in Line 1 of the code and then use Line 2 to double the value.
+
+```{webr}
+#| exercise: exc_4
+A=______
+A=______
 cat("R object A contains the numeric value:", A)
 ```
 
@@ -135,6 +149,7 @@ The next HINT provides the solution. So, keep trying before you peek.
 :::
 
 ::: {.solution exercise="exc_4"}
+
 ```{webr}
 #| exercise: exc_4
 #| solution: true
@@ -142,34 +157,54 @@ A=33
 A=A*2
 cat("R object A contains the numeric value:", A)
 ```
+
+
 :::
 
 ```{webr}
 #| exercise: exc_4
 #| check: true
-gradethis::grade_this_code()
+gradethis::grade_this({
+  if (.envir_result$A == 66) {
+    gradethis::pass("Nice work! R object A contains 66.")
+  }
+  
+  gradethis::fail("That's incorrect. Did you assign 33 to A and then multiply A by 2?")
+})
 ```
 
-Look carefully at Line 2 of the exercise. Given that `A=23` from the Line 1, Line 2 does not mean that `A` *equals* `A+100`. Otherwise, considering Line 1: `23=23+100` --- which is clearly not the case.
-
-The correct way to interpret Line 2 is as an assignment. We assign a new value to `A`, which is 100 greater than the old value of 23.
-
-**Your turn:**
-
-:   -   Execute the code as is and explain it.
-
-:   -   Assign a value 33 to `A` in Line 1 of the code and then use Line 2 to double the value.
 
 ------------------------------------------------------------------------
 
 **Exercise 5:**
 
-We can perform algebraic calculations with numbers or numerical *R* objects. Below is an example:
+We can perform algebraic calculations with numbers or numerical *R* objects. Below is an example. 
+
+- Execute the code and see what happens
+
+- Explain why the value of C is $400$ and not $8$
+
+```{webr}
+A=2
+B=4
+A=500*A/10
+C=A*B
+cat("R object C contains the product of A and B. Therefore, C is:", C)
+D=sqrt(A)
+cat("The square root of ",  A, " is:", D)
+```
+
+
+
+
+**Your turn:**
+
+Change the value that is assigned to `A` in Line 1. The goal is to create an output from the `cat()` command in Line 7 that reads: `The square root of  400  is: 20`
 
 ```{webr}
 #| exercise: exc_5
 #| exercise.setup: exc_all
-A=2
+A=______
 B=4
 A=500*A/10
 C=A*B
@@ -180,7 +215,7 @@ cat("The square root of ",  A, " is:", D)
 
 ::: {.hint exercise="exc_5"}
 In Line 6 of the code, D is calculated as the square root of A. 
-Therefore, A must be the square of 20 before Line 6 is executed.
+Therefore, A must be the square of 20, which is 400, before Line 6 is executed. 
 
 This means that the value assigned to A in Line 3 must be 400.
 
@@ -211,14 +246,6 @@ gradethis::grade_this_code()
 ```
 
 
-**Your turn:**
-
-:   -   Run the code and then carefully check the calculations above.
-
-:   -   Explain why the value of C is $400$ and not $8$.
-
-:   -   Finally, change the value that is assigned to `A` in Line 1. The goal is to create an output from the `cat()` command in Line 7 that reads: `The square root of  400  is: 20`
-
 ------------------------------------------------------------------------
 
 **Exercise 6:**
@@ -231,12 +258,12 @@ In the code block below, you are tasked to calculate the area of a rectangle bas
 #| exercise.setup: exc_all
 Length=______
 Width=______
-AreaRect=______
+AreaRect=Length ______ ______
 cat("The area of the rectangle is:", AreaRect)
 ```
 
 ::: {.hint exercise="exc_6"}
-First, you assign values (e.g., 4 and 3) to the Length and Width variables.
+First, you assign values (4 and 3) to the `Length` and `Width` variables.
 
 Next, considering the area of a rectangle is the product of its length and width, 
 you multiply the two variables and assign the result to AreaRect. 
@@ -244,7 +271,7 @@ you multiply the two variables and assign the result to AreaRect.
 The next HINT provides the solution. So, keep trying before you peek.
 :::
 
-::: {.solution exercise="exc_1"}
+::: {.solution exercise="exc_6"}
 **Here is the Solution:**
 
 ```{webr}
@@ -254,7 +281,6 @@ Length=4
 Width=3
 AreaRect=Length*Width
 cat("The area of the rectangle is:", AreaRect)
-
 ```
 
 :::
@@ -268,7 +294,7 @@ gradethis::grade_this_code()
 
 **Your turn:**
 
-:   Use the two *R* objects `Length` and `Width`, assign values to these objects (e.g., 4 and 3), and then calculate the area of the related rectangle. The code is partially provided already. You just need to replace the `______` with your code additions.
+:   Use the two *R* objects `Length` and `Width`, assign values  4 and 3 to these objects, respectively. Afterward, calculate the area of the related rectangle. The code is partially provided already. You just need to replace the `______` with your code additions.
 
 ### Logical Data Type {.unlisted .unnumbered}
 
@@ -277,6 +303,7 @@ The following exercises cover `logic` *R* objects. We will assign `TRUE` and `FA
 **Exercise 7:**
 
 Below `TRUE` is assigned to two `logical` *R* objects. These two *R* objects are combined with an AND (`&`), saved into another `logical` *R* object, and then printed to the console with the `cat()` command:
+
 
 ```{webr}
 #| exercise: exc_7
@@ -290,8 +317,7 @@ cat("Happiness:", IsHappy)
 ::: {.hint exercise="exc_7"}
 **Here is a Hint:**
 
-If the mood is not good, the logical variable IsMoodGood
-needs to be changed from TRUE to FALSE.
+If live is still good (`IsLifeGood=TRUE`), but the mood is not good (`IsMoodGood=FALSE`), the logical variable `IsHappy` changes to `FALSE` because it requires that `IsLifeGood=TRUE` **and**  `IsMoodGood=TRUE`.
 :::
 
 Run the code above, and you will see that the result for `IsHappy` is `TRUE`. This is because we require for happiness (`IsHappy`) that life is good **and** that the person is in a good mood. **Both** were the case; therefore, the result was `TRUE` for `IsHappy`.
@@ -426,19 +452,19 @@ In this exercise, you will calculate some crucial statistics from our vectors.
 
 :   Substitute the `_______` in the code below and run the code:
 
-:   -   Calculate the number of persons in the dataset and store the result in `NumOfPersons`.
+:   -   Use `VecFirstNames`to calculate the number of persons in the dataset and store the result in `NumOfPersons`.
 
 :   -   Calculate the number of women in the dataset and store the result in `NumOfWomen`.
 
-:   -   Calculate the number of men in the dataset and store the result in `NumOfMen`.
+:   -   Use `NumOfPersons` and `NumOfWomen` to calculate the number of men in the dataset and store the result in `NumOfMen`.
 
-:   -   Calculate the proportion of women in the dataset and store the result in `PropWomen` in digital format.
+:   -   Use `VecIsFemale` to calculate the proportion of women in the dataset and store the result in `PropWomen` in digital format.
 
-:   -   Calculate the proportion of men in the dataset and store the result in `PropMen` in digital format.
+:   -   `PropWomen` to calculate the proportion of men in the dataset and store the result in `PropMen` in digital format.
 
-Note that the vector-objects `VecFirstNames`, `VecAges`, `VecIsFemale`, and `VecNumKids` have already been loaded in the background.
+Note that the vector-objects `VecFirstNames`, `VecAges`, and `VecIsFemale` have already been loaded in the background.
 
-```{webr"}
+```{webr}
 #| exercise: exc_10
 #| exercise.setup: exc_all
 AvgAge=mean(VecAges)
@@ -457,6 +483,7 @@ cat(round(PropWomen,2)*100, "% are female and",
 
 ::: {.hint exercise="exc_10"}
 **Here is a Hint:**
+
 The number of elements (the length) of a vector determines the number
 of persons in the dataset. 
 
@@ -487,7 +514,7 @@ cat("We have", NumOfPersons, "persons in the dataset",
     "with an average age of", AvgAge, ".")
 cat("We have", NumOfWomen, "female(s) and", NumOfMen, "male(s).")
 cat(round(PropWomen,2)*100, "% are female and", 
-    round(PropMen, 2)*100, "% are male")
+    round(PropMen, 2)*100, "% are male.")
 ```
 
 :::
@@ -503,12 +530,12 @@ gradethis::grade_this_code()
 
 **Exercise 11:**
 
-In this exercise, you will perform numerical calculations on a vector. For the sake of this exercise, assume the current year is 2024. Of course, you can change this in the interactive exercise if you wish.
+In this exercise, you will perform numerical calculations on a vector. For the sake of this exercise, assume the current year is 2026. Of course, you can change this in the interactive exercise if you wish.
 
 ```{webr}
 #| exercise: exc_11
 #| exercise.setup: exc_all
-CurrentYear=2024
+CurrentYear=2026
 VecFirstNames=c("Carsten", "Jose", "Jane")
 VecAges=c(45,54,23)
 VecBirthYears=CurrentYear-VecAges
@@ -535,57 +562,62 @@ You can think of a data frame as a table with variables in the columns, variable
 
 The variables in the columns of a data frame are very similar to vector-objects --- except that they are part of the data frame. In fact, we will show in the following exercises that the columns of a data frame can be populated with vector-objects and that columns of a data frame can be extracted as vector-objects.
 
-After a data frame object is defined, you can use commands from the `tidyverse` package to process the data. Throughout this book, we will almost exclusively work with data frames and use the `tidyverse` for data engineering.
+After a data frame object is defined, you can use commands from the `tidyverse` package to process the data. Throughout this book, we will almost exclusively work with data frames and use the `tidyverse` for data engineering. Note, for the following commands `library(tidyverse)` has been run in the background already.
+
+------------------------------------------------------------------------
 
 **Exercise 12:**
 
-Regardless of whether the file is on your computer or the Internet, tabular data in a file can be imported into a data frame with the `import()` command from the `rio` package.
+Regardless of whether the file is on your computer or the Internet, **C**omma **S**eparated **V**alues files (CSV files) can be imported into a data frame with the `read.csv()` command.
 
-When you run the code of the exercise below, the *Titanic* dataset will be imported to the data frame `DataFromInternet`, and with `select(Survived, Name, Sex)`, you will create a data frame that only includes the variables *Survived*, *Name*, and *Sex* from the imported *Titanic* dataset:
+When you run the code of the exercise below, the *Titanic* dataset will be imported to the data frame `DataFromInternet`, and with `select(Survived, Name, Sex)`, you will create a data frame that only includes the variables *Survived*, *Name*, and *Sex* from the imported *Titanic* dataset (note, `library(tidyverse)` has been executed in the background already):
 
 ```{webr}
-#|exercise: exc_12
-#|exercise.setup: exc_all
-library(rio)
-library(tidyverse)
 DataFromInternet=
-  import("https://ai.lange-analytics.com/data/Titanic.csv") |>
-select(Survived, Name, Sex)  
+  read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |>
+  select(Survived, Name, Sex)  
 head(DataFromInternet)
 ```
 
 **Your turn:**
 
-:   Another tabular dataset containing wine observations can be imported from the *Internet*. The dataset contains 3,198 observations about different wines and was initially developed by @Cortez2009. It includes variables about wine color, several chemical properties, and an indicator for quality. The dataset is available as a tabular file at `https://ai.lange-analytics.com/data/WineData.rds`.
+:   Another tabular dataset containing wine observations can be imported from the *Internet*. The dataset contains 3,198 observations about different wines and was initially developed by Cortez 2009. It includes variables about wine color, several chemical properties, and an indicator for quality. The dataset is available as a tabular file at: 
+`https://ai.lange-analytics.com/data/WineData.csv`
 
-:   -   Adjust the `import()` command to assign the wine dataset to the data frame `DataFromInternet`.
+:   -   Adjust the `read.csv()` command to assign the wine dataset to the data frame `DataFromInternet`.
 
-:   -   Change the `select()` command to select only the variables $wineColor$ (renamed to $WineColor$), $acidity$ (renamed to $Acidity$), and $alcohol$ (renamed to $Alcohol$).
+:   -   Change the `select()` command to select only the variables `wineColor` , `acidity` , and `alcohol`.
 
 :   -   Execute the modified code.
+
+```{webr}
+#| exercise: exc_12
+DataFromInternet=
+  read.csv("______") |>
+  select(______, ______, ______)  
+head(DataFromInternet)
+```
+
 
 ::: {.hint exercise="exc_12"}
 **Here is a hint**
 
-Make sure the new URL in the import() command is in quotes.
+Make sure the new URL in the `read.csv()` command is in quotes.
 
-Use the select() command and list the variables you like to select. 
-I,e., wineColor, acidity, and alcohol. Rename accordingly (e.g., Acidity=acidity)
-Note original variables are in lower rather than UpperCamel notification.
+Use the `select()` command and list the variables you like to select: 
+`wineColor`, `acidity`, and `alcohol`.
 
 The next HINT provides the solution. So, keep trying before you peek.
-
 :::
 
 ::: {.solution exercise="exc_12"}
+
 **Here is the solution**
 ```{webr}
-#|exercise: exc_12
-#|solution: true
-library(rio)
-library(tidyverse)
-DataFromInternet=import("https://ai.lange-analytics.com/data/WineData.rds") |>
-                 select(WineColor=wineColor, Acidity=acidity, Alcohol=alcohol)
+#| exercise: exc_12
+#| solution: true
+DataFromInternet=read.csv("https://ai.lange-analytics.com/data/WineData.csv") |>
+                 select(wineColor, acidity, alcohol)
 head(DataFromInternet)
 
 ```
@@ -598,27 +630,39 @@ head(DataFromInternet)
 gradethis::grade_this_code()
 ```
 
+------------------------------------------------------------------------
+
 **Exercise 13:**
 
-When you run the code below, you will create a data frame `DataThreeFriends` by manually using the `data.frame()` command. Since variables (columns) of a data frame are very similar to vector-objects, you can use the `c()` command to create vector-objects that populate the variables for the data frame.
+In the code below,  a data frame `DataThreeFriends` is manually created by  using the `data.frame()` command. Since variables (columns) of a data frame are very similar to vector-objects, you can use the `c()` command to create vector-objects that populate the variables for the data frame.
+
+**Your turn:**
+
+:   In the code block below:
+
+:   - Assume the `CurrentYear` is 2026.
+
+:   - Complete the `mutate()` command to calculate the `BirthYear` of the friends.
+
 
 ```{webr}
-#|exercise: exc_13
-#|exercise.setup: exc_all
-library(tidyverse)
-CurrentYear=2024
+#| exercise: exc_13
+CurrentYear=2026
 DataThreeFriends=data.frame(FirstName=c("Carsten", "Jose", "Jane"),
                         LastName=c("Lange","Hernandez","Doe"),
                         Age=c(45,54,23),
-                        IsFemale= c(FALSE,FALSE,TRUE))
+                        IsFemale= c(FALSE,FALSE,TRUE)) |> 
+                 mutate(BirthYear=______ - ______)  
+
 print(DataThreeFriends)
 ```
+
 
 :::{.hint exercise="exc_13"}
 **Here is a hint**
 
-The birth year can be calculated when you subtract a person's Age 
-from the R object CurrentYear. You can use the mutate command for this task.
+The birth year can be calculated when you subtract a person's `Age` 
+from the R object `CurrentYear`. You can use the mutate command for this task.
 
 The next HINT provides the solution. So, keep trying before you peek.
 
@@ -627,10 +671,9 @@ The next HINT provides the solution. So, keep trying before you peek.
 
 :::{.solution exercise="exc_13"}
 ```{webr}
-#|exercise: exc_13
-#|solution: true
-library(tidyverse)
-CurrentYear=2024
+#| exercise: exc_13
+#| solution: true
+CurrentYear=2026
 DataThreeFriends=data.frame(FirstName=c("Carsten", "Jose", "Jane"),
                         LastName=c("Lange","Hernandez","Doe"),
                         Age=c(45,54,23),
@@ -642,62 +685,79 @@ print(DataThreeFriends)
 :::
 
 ```{webr}
-#|exercise: exc_13
-#|check: true
+#| exercise: exc_13
+#| check: true
 gradethis::grade_this_code()
 ```
-
-
-**Your turn:**
-
-:   In the exercise above:
-
-:   -   Change the value for `CurrentYear`, if needed.
-
-:   -   Enter the data of three of your friends (two male and one female).
-
-:   -   Use a pipe to add a `mutate()` and command to the `data.frame()` command. Then use the `mutate()` command to add a variable $BirthYear$ that shows the birth years for the three persons in the data frame.
-
-:   -   Run the code to see the results.
 
 ------------------------------------------------------------------------
 
 **Exercise 14:**
 
+```{webr}
+CurrentYear=2026
+DataThreeFriends=data.frame(FirstName=c("______", "______", "______"),
+                        LastName=c("______", "______", "______"),
+                        Age=c(______, ______, ______),
+                        IsFemale=c(______, ______, ______)) |> 
+                 mutate(BirthYear=______ - ______) 
+
+print(DataThreeFriends)
+```
+
+**Your turn:**
+
+:   In the code block above:
+
+:   -   Change the value for `CurrentYear`, if needed.
+
+:   -   Enter the data of three of your friends (two female and one male).
+
+:   -   Use the pipe `|>` to add the `mutate()` command to the `data.frame()` command. Then  complete the `mutate()` command to add a variable $BirthYear$ that shows the birth years for the three persons in the data frame.
+
+------------------------------------------------------------------------
+
+**Exercise 15:**
+
 Commands like `sum()` or `mean()` that we used before to analyze vectors take only `vector`-objects as input. You cannot use variables from data frames directly. Therefore, to analyze variables in a data frame with commands such as `mean()` or `sum()`, you must first extract the data frame variables as vectors before these commands can process them.
 
 Fortunately, this procedure is simple. To extract a variable from a data frame as a vector, you just need to provide the data frame's name and the variable's name, separated by a "\$"-sign.
 
-The exercise below provides an example of extracting the variables $Survived$ and $Age$ from the data frame `DataTitanic` as a vector-object for further processing.
+The exercise below provides an example of extracting the variables `Survived` and `Age` from the data frame `DataTitanic` as a vector-object for further processing.
 
 In the code block below, we used `DataTitanic$Survived` to extract the variable $Survived$ as a vector and then used this vector-object to calculate the vector's `sum()`. This sum coincides with the number of survivors in the dataset because a survivor is coded as $1$ and a non-survivor is coded with $0$ (note, the data frame `DataTitanic` has been loaded already in the background):[^1]
 
 [^1]: This procedure would also work if survivors were coded as `TRUE` and non-survivors as `FALSE` in a logic object because `TRUE` is internally coded as $1$ and `FALSE` as $0$.
 
+**Your turn:**
+
+:   -   Substitute the `______` in the code block below to extract the variable $Age$ as a vector-object  
+:   -  Calculate the average age of the passengers.
+
 ```{webr}
-#|exercise: exc_14
-#|exercise.setup: exc_all
+#| exercise: exc_15
+#| exercise.setup: exc_all
 NumOfSurv=sum(DataTitanic$Survived)
-AvgAgeOfPas=______)
+AvgAgeOfPas=______(______)
 cat(NumOfSurv, "passengers survived.")
 cat("The average age of the passengers was", AvgAgeOfPas, ".")
 ```
 
 
-:::{.hint exercise= "exc_14"}
+:::{.hint exercise= "exc_15"}
 **Here is a hint**
 
-To extract the variable Age as a vector-object, you can use DataTitanic$Age.
+To extract the variable Age as a vector-object, you can use the `DataTitanic$Age` vector.
 
-To calculate the average, you can use the mean() command.
+To calculate the average, you can use the `mean()` command.
 
 :::
 
-::: {.solution exercise="exc_14"}
+::: {.solution exercise="exc_15"}
 **Here is the Solution:**
 
 ```{webr}
-#| exercise: exc_14
+#| exercise: exc_15
 #| solution: true
 NumOfSurv=sum(DataTitanic$Survived)
 AvgAgeOfPas=mean(DataTitanic$Age)
@@ -708,16 +768,8 @@ cat("The average age of the passengers was", AvgAgeOfPas, ".")
 :::
 
 ```{webr}
-#| exercise: exc_14
+#| exercise: exc_15
 #| check: true
 gradethis::grade_this_code()
 ```
-
-
-**Your turn:**
-
-:   -   Substitute the `______` in the code block to extract the variable $Age$ as a vector-object and then calculate the average age of the passengers.
-
-:   -   Run the code to see the results.
-
 
