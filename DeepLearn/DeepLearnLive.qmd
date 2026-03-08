@@ -1,0 +1,168 @@
+---
+title: "Deep Learning --- Neural Networks Explained"
+subtitle: "[These slides are interactive and must load a full version of R plus some packages. Please wait until complete (see the  lower right corner of the screen for progress)]{style='color: red;'}"
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+format: 
+  live-revealjs:
+    theme: [moon, ../CustomCL.scss]
+    smaller: true
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    
+
+    
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/DeepLearn.html' target='_blank'>Textbook </a> "
+   
+webr:
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom',
+             'yardstick','parsnip','workflows', 'NeuralNetTools',
+             'ggplot2'] # Auto-install packages in the browser
+
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+
+
+## Data
+
+```{webr}
+#| echo: false
+#| auto-run: true
+set.seed(888)
+DataDiamonds=diamonds%>% 
+  sample_n(1000) %>%
+  clean_names("upper_camel") %>%
+  select(Price,Cut,Color,Clarity,Carat) %>% 
+  mutate(Cut=as.integer(Cut),Color=as.integer(Color),
+         Clarity=as.integer(Clarity))
+
+
+set.seed(888)
+Split70=DataDiamonds %>%
+  initial_split(prop = 0.7, strata = Price, breaks = 5)
+DataTrain=training(Split70)
+DataTest=testing(Split70)
+
+RecipeDiamonds=recipe(Price ~ ., data = DataTrain) %>%
+  step_normalize(all_predictors())
+
+ModelDesignNN= mlp(hidden_units = 3,epochs = 100) %>% 
+  set_engine("nnet") %>%
+  set_mode("regression")
+
+WFModelNN=workflow() %>% 
+  add_model(ModelDesignNN) %>% 
+  add_recipe(RecipeDiamonds) %>%
+  fit(DataTrain)
+```
+
+```{webr}
+set.seed(888)
+DataDiamonds=diamonds%>% 
+  sample_n(1000) %>%
+  clean_names("upper_camel") %>%
+  select(Price,Cut,Color,Clarity,Carat) %>% 
+  mutate(Cut=as.integer(Cut),Color=as.integer(Color),
+         Clarity=as.integer(Clarity))
+
+
+set.seed(888)
+Split70=DataDiamonds %>%
+  initial_split(prop = 0.7, strata = Price, breaks = 5)
+DataTrain=training(Split70)
+DataTest=testing(Split70)
+head(DataTrain)
+```
+
+## Diamond Prices and Carat {.smaller}
+
+
+
+```{webr}
+#| warning: false
+#| message: false
+#| auto-run: true
+ggplot(aes(x=Carat, y=Price), data=DataDiamonds)+
+geom_point(size=0.2)+
+geom_smooth(method="loess", se=FALSE)
+```
+
+## Diamond Prices and Clarity {.smaller}
+
+
+
+```{webr}
+#| warning: false
+#| message: false
+#| auto-run: true
+ggplot(aes(x=Clarity, y=Price), data=DataDiamonds)+
+geom_point(size=0.2)+
+geom_smooth(method="loess", se=FALSE)
+```
+
+## Diamond Prices and Cut  {.smaller}
+
+
+```{webr}
+#| warning: false
+#| message: false
+ggplot(aes(x=Cut, y=Price), data=DataDiamonds)+
+geom_point(size=0.2)+
+geom_smooth(method="loess", se=FALSE)
+```
+
+## Diamond Prices and Color  {.smaller}
+
+
+
+```{webr}
+#| warning: false
+#| message: false
+ggplot(aes(x=Color, y=Price), data=DataDiamonds)+
+geom_point(size=0.2)+
+geom_smooth(method="loess", se=FALSE)
+```
+
+## Neural Network Workflow
+
+```{webr}
+RecipeDiamonds=recipe(Price ~ ., data = DataTrain) %>%
+  step_normalize(all_predictors())
+
+ModelDesignNN= mlp(hidden_units = 2,epochs = 100) %>% 
+  set_engine("nnet") %>%
+  set_mode("regression")
+
+WFModelNN=workflow() %>% 
+  add_model(ModelDesignNN) %>% 
+  add_recipe(RecipeDiamonds) %>%
+  fit(DataTrain)
+print(WFModelNN)
+```
+
+## Fitted Model: $\beta$-Parameters (Weights) 
+
+```{webr}
+NeuralNetTools::plotnet(extract_fit_engine(WFModelNN), pos_col = 'blue', neg_col = 'red')
+NeuralNetTools::neuralweights(extract_fit_engine(WFModelNN)) 
+```
+
+## Predictive Quality on the Test Data
+
+
+```{webr}
+DataTestWithPred=augment(WFModelNN, new_data=DataTest)
+metrics(DataTestWithPred, truth = Price, estimate = .pred)
+```
