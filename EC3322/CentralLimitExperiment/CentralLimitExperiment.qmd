@@ -31,7 +31,7 @@ engine: knitr
 
 ## Estimating Diamond Prices
 
-```{r}
+```{webr}
 library(ggplot2)
 set.seed(______)
 
