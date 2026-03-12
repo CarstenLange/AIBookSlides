@@ -1,0 +1,42 @@
+---
+title: "Samplig Distribution" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon, ../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+webr:
+  packages:
+    - dplyr
+    - ggplot2
+  
+engine: knitr    
+---
+
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Estimating Diamond Prices
+
+```{r}
+library(ggplot2)
+set.seed(______)
+
+DataDiamondsSample=diamonds |> 
+                   sample_n(50)
+cat("Sample Mean is:", mean(DataDiamondsSample$price))
+```
+
