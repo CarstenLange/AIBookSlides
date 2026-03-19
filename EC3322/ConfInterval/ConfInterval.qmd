@@ -63,14 +63,14 @@ DataHeightSample <- tribble(
 print(DataHeightSample)
 ```
 
-## Mean
+## Intro Confidence Interval
 
 Change `Sex=="m"` to `Sex=="f"!` What happens?
 ```{webr}
 #| message: false
 #| warning: false
 SDHeight=3 # known!
-DataHeight=DataHeightSample0 |>
+DataHeight=DataHeightSample |>
          filter(Sex=="m")
 N=nrow(DataHeight)
 MeanHeight=mean(DataHeight$Height)
@@ -96,7 +96,7 @@ cat("Margin of Error ($E$):", abs(CILow-MeanHeight))
 ```
 
 ## Terminology
-### Confidence Interval & Margin of Error
+### Confidence Level, Alpha & Margin of Error
 
 
 ```{webr}
@@ -117,6 +117,8 @@ $$\mbox{Note: } z_c=:z_{\alpha /2}$$
 
 ![](Images/ShortZTable.png){.nostretch width=50%}
 
+# Constructing a Confidence Interval
+
 ## Example: Constructing a Confidence Interval
 A college student researching study time collects data from a random sample of 250 college students on her campus and calculates that the sample mean is  $\bar x= 15.7$ hours per week. 
 
@@ -130,8 +132,12 @@ If the margin of error ($E$) for her data using a 95% level of confidence is $E 
     $$CI_{Upper}=\bar x + E = 15.7 + 0.6 = 16.3$$ 
 - Confidence Interval
   $$CI=[15.7,16.3]$$
-- Interpretation
+- Interpretation: 
     The true mean study time is with a probability of 95% between $15.1$ and $16.3$
+
+
+# Confidence Interval --- Standard Deviation Known
+
 
 ## Example: Calculating Mean, Margin of Error, and CI
 ### Suicide Hotline
@@ -278,7 +284,7 @@ $\mbox{Note: } z_c=:z_{\alpha /2}$
 
 ![](Images/ShortZTable.png){.nostretch width=50%}
 
-# What if Standard Devaition Is Not Known But Estimated?
+# What if Standard Deviation Is Not Known But Estimated?
 
 ## Standard Deviation Estimated from The Sample
 

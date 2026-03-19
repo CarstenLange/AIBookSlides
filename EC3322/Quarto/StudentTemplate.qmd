@@ -1,0 +1,117 @@
+---
+title: "Flight Data Analysis: NYC 2013"
+author: "Your Name"
+date: last-modified
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+---
+
+# Introduction {#sec-intro}
+
+In this lab, we explore the `nycflights13` dataset to understand departure patterns and delays. We will practice data cleaning, joining tables, and visualizing results.
+
+# Methodology {#sec-method}
+
+To analyze the delays, we will calculate the arithmetic mean ($\bar{x}$) of departure delays. The formula for the mean is defined in @eq-mean:
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+$$ {#eq-mean}
+
+We will also use a mutating join to combine flight data with airport metadata.
+
+# Data Import {#sec-data-prep}
+
+We use the `rio` package to import the CSV files and `tidyverse` for data manipulation.
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(rio)
+library(tidyverse)
+
+# Import local data files
+flights  <- import("data/Flights.csv")
+airports <- import("data/Airports.csv")
+```
+
+# Data Merging and Cleaning {#sec-join}
+
+To see the full names of the destination airports, we perform an `inner_join()`. We match the `dest` column in the flights data to the `faa` code in the airports data.
+
+```{r}
+#| label: tbl-joined
+#| tbl-cap: "First 6 rows of the joined flight and airport data."
+
+flights_joined <- flights %>%
+  inner_join(airports, by = c("dest" = "faa"))
+
+# Display a preview
+head(flights_joined) %>% 
+  select(year, month, day, carrier, dest, name)
+```
+
+As shown in @tbl-joined, we now have the full name of each airport associated with every flight record.
+
+# Analysis and Visualization {#sec-viz}
+
+## Descriptive Statistics
+
+We calculate the average departure delay for the three NYC origin airports: JFK, LGA, and EWR.
+
+```{r}
+#| label: tbl-stats
+#| tbl-cap: "Mean and Median Departure Delays by Origin Airport"
+
+flights_joined %>%
+  group_by(origin) %>%
+  summarize(
+    mean_delay = mean(dep_delay, na.rm = TRUE),
+    median_delay = median(dep_delay, na.rm = TRUE)
+  )
+```
+
+## Visualizing Delays by Destination
+
+The following figure illustrates the average delay for the destinations with the most traffic.
+
+```{r}
+#| label: fig-delays
+#| fig-cap: "Average Departure Delay for Top 10 Destinations"
+
+flights_joined %>%
+  group_by(name) %>%
+  summarize(
+    avg_dep_delay = mean(dep_delay, na.rm = TRUE),
+    n = n()
+  ) %>%
+  filter(n > 1000) %>%
+  slice_max(avg_dep_delay, n = 10) %>%
+  ggplot(aes(x = reorder(name, avg_dep_delay), y = avg_dep_delay)) +
+  geom_col(fill = "midnightblue") +
+  coord_flip() +
+  labs(
+    x = "Airport Name",
+    y = "Average Delay (Minutes)"
+  ) +
+  theme_minimal()
+```
+
+# Conclusion
+
+Based on the analysis in @sec-viz, specifically the data visualized in @fig-delays, we can identify which destination airports experience the highest average departure delays from NYC.
+```
+
+---
+
+### Key Features Included:
+* **YAML Header:** Configured for a numbered TOC.
+* **Math:** Includes both inline ($\bar{x}$) and a labeled display equation (@eq-mean).
+* **Cross-References:** Uses `@sec-`, `@tbl-`, and `@fig-` syntax throughout the narrative.
+* **Tidyverse/Rio:** Uses `import()` and `inner_join()` as requested.

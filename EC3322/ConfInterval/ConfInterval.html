@@ -175,8 +175,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUhlaWdodFNhbXBsZSA8
 </div>
 </div>
 </section>
-<section id="mean" class="slide level2">
-<h2>Mean</h2>
+<section id="intro-confidence-interval" class="slide level2">
+<h2>Intro Confidence Interval</h2>
 <p>Change <code>Sex=="m"</code> to <code>Sex=="f"!</code> What happens?</p>
 <div class="cell">
 <div>
@@ -184,7 +184,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YUhlaWdodFNhbXBsZSA8
 
 </div>
 <script type="webr-3-contents">
-eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1lc3NhZ2UiOmZhbHNlLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJTREhlaWdodD0zICMga25vd24hXG5EYXRhSGVpZ2h0PURhdGFIZWlnaHRTYW1wbGUwIHw+XG4gICAgICAgICBmaWx0ZXIoU2V4PT1cIm1cIilcbk49bnJvdyhEYXRhSGVpZ2h0KVxuTWVhbkhlaWdodD1tZWFuKERhdGFIZWlnaHQkSGVpZ2h0KVxuU0VIZWlnaHQ9U0RIZWlnaHQvc3FydChOKVxuQ29uZkxldmVsPTAuOTVcblRlYWNoSGlzdENvbmZJbnRlcnYoTWVhbkhlaWdodCxTRUhlaWdodCwgQ29uZmlkZW5jZT1Db25mTGV2ZWwsIEJpbldpZHRoPTEsIFNlZWQ9MTIzKVxuY2F0KFwiTjpcIiwgTiwgXCJcXG5TdGFuZC4gRGV2LlwiLCBTREhlaWdodCwgXCJcXG5TRTpcIiwgU0VIZWlnaHQpIn0=
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsIm1lc3NhZ2UiOmZhbHNlLCJ3YXJuaW5nIjpmYWxzZX0sImNvZGUiOiJTREhlaWdodD0zICMga25vd24hXG5EYXRhSGVpZ2h0PURhdGFIZWlnaHRTYW1wbGUgfD5cbiAgICAgICAgIGZpbHRlcihTZXg9PVwibVwiKVxuTj1ucm93KERhdGFIZWlnaHQpXG5NZWFuSGVpZ2h0PW1lYW4oRGF0YUhlaWdodCRIZWlnaHQpXG5TRUhlaWdodD1TREhlaWdodC9zcXJ0KE4pXG5Db25mTGV2ZWw9MC45NVxuVGVhY2hIaXN0Q29uZkludGVydihNZWFuSGVpZ2h0LFNFSGVpZ2h0LCBDb25maWRlbmNlPUNvbmZMZXZlbCwgQmluV2lkdGg9MSwgU2VlZD0xMjMpXG5jYXQoXCJOOlwiLCBOLCBcIlxcblN0YW5kLiBEZXYuXCIsIFNESGVpZ2h0LCBcIlxcblNFOlwiLCBTRUhlaWdodCkifQ==
 </script>
 </div>
 </div>
@@ -205,7 +205,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVGVhY2hIaXN0Q29uZkludGVy
 </section>
 <section id="terminology-1" class="slide level2">
 <h2>Terminology</h2>
-<h3 id="confidence-interval-margin-of-error-1">Confidence Interval &amp; Margin of Error</h3>
+<h3 id="confidence-level-alpha-margin-of-error">Confidence Level, Alpha &amp; Margin of Error</h3>
 <div class="cell">
 <div>
 <div id="webr-5" class="exercise-cell">
@@ -221,6 +221,11 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVGVhY2hIaXN0Q29uZkludGVy
 <p><strong>Confidence z-Table(use this for Hawkes and exams)</strong> <span class="math display">\[\mbox{Note: } z_c=:z_{\alpha /2}\]</span></p>
 <p><img data-src="Images/ShortZTable.png" class="nostretch" style="width:50.0%"></p>
 </section>
+<section>
+<section id="constructing-a-confidence-interval" class="title-slide slide level1 center">
+<h1>Constructing a Confidence Interval</h1>
+
+</section>
 <section id="example-constructing-a-confidence-interval" class="slide level2">
 <h2>Example: Constructing a Confidence Interval</h2>
 <p>A college student researching study time collects data from a random sample of 250 college students on her campus and calculates that the sample mean is <span class="math inline">\(\bar x= 15.7\)</span> hours per week.</p>
@@ -232,8 +237,13 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVGVhY2hIaXN0Q29uZkludGVy
 <li><p>CI Lower Bound: <span class="math display">\[CI_{Lower}=\bar x - E = 15.7 - 0.6 = 15.1\]</span></p></li>
 <li><p>CI Upper Bound: <span class="math display">\[CI_{Upper}=\bar x + E = 15.7 + 0.6 = 16.3\]</span></p></li>
 <li><p>Confidence Interval <span class="math display">\[CI=[15.7,16.3]\]</span></p></li>
-<li><p>Interpretation The true mean study time is with a probability of 95% between <span class="math inline">\(15.1\)</span> and <span class="math inline">\(16.3\)</span></p></li>
+<li><p>Interpretation: The true mean study time is with a probability of 95% between <span class="math inline">\(15.1\)</span> and <span class="math inline">\(16.3\)</span></p></li>
 </ul>
+</section></section>
+<section>
+<section id="confidence-interval-standard-deviation-known" class="title-slide slide level1 center">
+<h1>Confidence Interval — Standard Deviation Known</h1>
+
 </section>
 <section id="example-calculating-mean-margin-of-error-and-ci" class="slide level2">
 <h2>Example: Calculating Mean, Margin of Error, and CI</h2>
@@ -288,7 +298,7 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVGVhY2hIaXN0Q29uZkludGVy
 <p><span class="math display">\[N=\left (\frac{2.575\cdot 6.5}{1} \right )^2= 280\]</span></p>
 <p><strong>Confidence z-Table</strong> <span class="math inline">\(\mbox{Note: } z_c=:z_{\alpha /2}\)</span></p>
 <p><img data-src="Images/ShortZTable.png" class="" style="width:50.0%"></p>
-</section>
+</section></section>
 <section>
 <section id="proportions" class="title-slide slide level1 center">
 <h1>Proportions</h1>
@@ -352,8 +362,8 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiVGVhY2hIaXN0Q29uZkludGVy
 <p><img data-src="Images/ShortZTable.png" class="" style="width:50.0%"></p>
 </section></section>
 <section>
-<section id="what-if-standard-devaition-is-not-known-but-estimated" class="title-slide slide level1 center">
-<h1>What if Standard Devaition Is Not Known But Estimated?</h1>
+<section id="what-if-standard-deviation-is-not-known-but-estimated" class="title-slide slide level1 center">
+<h1>What if Standard Deviation Is Not Known But Estimated?</h1>
 
 </section>
 <section id="standard-deviation-estimated-from-the-sample" class="slide level2">

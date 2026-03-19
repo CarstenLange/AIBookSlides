@@ -1,0 +1,117 @@
+---
+title: "Lab: NYC Flight Analysis with R & Quarto"
+author: "Carsten Lange (based on a Gemini draft)"
+date: last-modified
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: show
+    embed-resources: true
+---
+
+# Overview {#sec-overview}
+
+In this lab, you will explore the `nycflights13` dataset using the **Positron IDE**. Your goal is to move beyond simple coding and produce a **reproducible research report**. You will practice data loading with `rio`, relational joins with the `tidyverse`, and professional typesetting with LaTeX.
+
+# Technical Setup {#sec-setup}
+
+Before you begin, ensure you have the following installed in your environment:
+
+* **Required Packages:** `install.packages(c("rio", "tidyverse"))`
+* **Data Files:** Place `flights.csv` and `airports.csv` in the same folder as this `.qmd` file.
+
+# Quarto Document Requirements {#sec-reqs}
+
+Your submission must utilize Quarto's advanced formatting features:
+1.  **YAML Header:** Configured for a Table of Contents and numbered sections.
+2.  **Cross-References:** You must reference at least one Section, Table, and Figure using the `@` syntax.
+3.  **Code Chunks:** Use `#| label:` and `#| tbl-cap:` or `#| fig-cap:` for all outputs.
+
+# Methodology & Math {#sec-math}
+
+In your analysis, you must define your variables. Use **inline math** for variables like the sample mean $\bar{x}$ or the standard deviation $\sigma$. 
+
+We will calculate the average delay using the arithmetic mean formula defined in @eq-mean:
+
+$$
+\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+$$ {#eq-mean}
+
+# Task 1: Data Import {#sec-import}
+
+We use the `rio` package to load our data. This package simplifies the process by automatically handling the CSV format.
+
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
+
+library(rio)
+library(tidyverse)
+
+# INSTRUCTIONS: Load your CSV files here
+# flights  <- import("flights.csv")
+# airports <- import("airports.csv")
+```
+
+# Task 2: Relational Joins {#sec-join}
+
+The `flights` dataset contains airport codes (e.g., "EWR"). To display full names (e.g., "Newark Liberty Intl"), you must perform an `inner_join()` with the `airports` table. 
+
+**Note:** You must match the `dest` column from flights to the `faa` column in airports.
+
+```{r}
+#| label: tbl-joined
+#| tbl-cap: "Sample of Flights Joined with Airport Metadata"
+
+# INSTRUCTIONS: Perform the inner_join here
+# flights_joined <- flights %>% 
+#   inner_join(airports, by = c("dest" = "faa"))
+
+# head(flights_joined)
+```
+
+# Task 3: Descriptive Statistics {#sec-stats}
+
+Using the joined data, calculate the mean and median `dep_delay` for each origin airport (EWR, JFK, LGA). Refer to @eq-mean for the calculation logic.
+
+```{r}
+#| label: tbl-delays
+#| tbl-cap: "Summary Statistics for Departure Delays"
+
+# INSTRUCTIONS: Use group_by() and summarize()
+# Remember to use na.rm = TRUE
+```
+
+# Task 4: Visualization {#sec-viz}
+
+Create a bar chart showing the average departure delay for the top 10 most frequent destinations. 
+
+```{r}
+#| label: fig-delays
+#| fig-cap: "Average Departure Delay for Top 10 Destinations"
+
+# INSTRUCTIONS: Create a ggplot showing average delay by airport name
+```
+
+# Troubleshooting & FAQ {#sec-faq}
+
+* **Reference shows as ??**: Check that your labels start with the correct prefix (e.g., `fig-` for figures, `tbl-` for tables).
+* **Mean is NA**: Data often contains missing values. Ensure you use `na.rm = TRUE` inside your `mean()` or `median()` functions.
+* **Join results in 0 rows**: Ensure you mapped the keys correctly: `by = c("dest" = "faa")`.
+* **YAML Error**: Ensure there are no tabs in the YAML header; use spaces only.
+
+# Pre-Submission Checklist {#sec-checklist}
+
+* [ ] Does the document render to HTML without errors?
+* [ ] Is the Table of Contents visible and correctly numbered?
+* [ ] Does the text include at least one reference to @eq-mean?
+* [ ] Are all figures and tables properly captioned and referenced (e.g., "As seen in @fig-delays...")?
+* [ ] Have you removed any "empty" code chunks or experimental code?
+
+# Conclusion {#sec-conclusion}
+
+*Write a brief summary of your findings here, referencing the table in @sec-stats and the figure in @sec-viz.*
+```
