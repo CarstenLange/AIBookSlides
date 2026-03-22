@@ -19,14 +19,15 @@ In this lab, you will explore the `nycflights13` dataset using the **Positron ID
 
 Before you begin, ensure you have the following installed in your environment:
 
-* **Required Packages:** `install.packages(c("rio", "tidyverse", "janitor", "kableExtra"))`
-* **Data Files:** Place `flights.csv` and `airports.csv` in the same folder as this `.qmd` file.
+* **Required Packages:** `install.packages(c("rio", "tidyverse", "janitor"))`
+* **Working Directory:** Create a folder in *Positron* 
+* **Data Files:** Download and place `Flights.csv` and `Airports.csv` in the same folder as this `.qmd` file (in your working directory).
 
 # Quarto Document Requirements {#sec-reqs}
 
 Your submission must utilize Quarto's advanced formatting features:
 1.  **YAML Header:** Configured for a Table of Contents and numbered sections.
-2.  **Cross-References:** You must reference at least one Section, Table, and Figure using the `@` syntax.
+2.  **Cross-References:** You must reference at least one Section, one Table, one Equation and one Figure using the `@` syntax.
 3.  **Code Chunks:** Use `#| label:` and `#| tbl-cap:` or `#| fig-cap:` for all outputs.
 
 # Methodology & Math {#sec-math}
@@ -42,7 +43,7 @@ $$ {#eq-mean}
 # Task 1: Data Import and Data Engineering {#sec-import}
 ## Task 1a: Data Import
 
-We use the `rio` package to load our data. This package simplifies the process by automatically handling the CSV format. The `kable()` command from the `kableExtra` package formats a data frame as a table.
+We use the `rio` package to load our data. This package simplifies the process by automatically handling the CSV format. The `knitr::kable()` command from the `knitr` package formats a data frame as a table.
 
 ```{r}
 #| label: tbl-OrgFlights
@@ -62,13 +63,13 @@ Flights  = import("Flights.csv") |>
 Airports = import("Airports.csv") |> 
            clean_names("upper_camel")
 
-kable(head(Flights))
+knitr::kable(head(Flights))
 ```
 
 ```{r}
 #| label: tbl-OrgAirports
 #| tbl-cap: "Original Airports Data Frame"
-kable(head(Airports))
+knitr::kable(head(Airports))
 ```
 
 ## Task 1b:  Data Engineering
@@ -84,7 +85,7 @@ Flights=Flights |>
         select(Origin, SchedDepTime, DepTime, DepDelay) |>
         drop_na() |> 
         filter(DepDelay>=0)
-kable(head(Flights))
+knitr::kable(head(Flights))
 ```
 
 ```{r}
@@ -93,7 +94,7 @@ kable(head(Flights))
 Airports=Airports |> 
          select(Faa, Name) |> 
          drop_na()
-kable(head(Airports))
+knitr::kable(head(Airports))
 ```
 
 Explain here how the variable `DepDelay` was calculated and comment on the variable types.
@@ -113,7 +114,7 @@ The `flights` dataset contains airport codes (e.g., "EWR"). To display full name
 FlightsJoined <- inner_join(Flights, Airports, by = c("Origin" = "Faa")) |> 
   rename(NameOrigin=Name)
 
-kable(head(FlightsJoined))
+knitr::kable(head(FlightsJoined))
 ```
 
 # Task 3: Descriptive Statistics {#sec-stats}

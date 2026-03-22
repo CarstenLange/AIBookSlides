@@ -2407,13 +2407,14 @@ window.Quarto = {
 <h1 data-number="2"><span class="header-section-number">2</span> Technical Setup</h1>
 <p>Before you begin, ensure you have the following installed in your environment:</p>
 <ul>
-<li><strong>Required Packages:</strong> <code>install.packages(c(&quot;rio&quot;, &quot;tidyverse&quot;, &quot;janitor&quot;, &quot;kableExtra&quot;))</code></li>
-<li><strong>Data Files:</strong> Place <code>flights.csv</code> and <code>airports.csv</code> in the same folder as this <code>.qmd</code> file.</li>
+<li><strong>Required Packages:</strong> <code>install.packages(c(&quot;rio&quot;, &quot;tidyverse&quot;, &quot;janitor&quot;))</code></li>
+<li><strong>Working Directory:</strong> Create a folder in <em>Positron</em></li>
+<li><strong>Data Files:</strong> Download and place <code>Flights.csv</code> and <code>Airports.csv</code> in the same folder as this <code>.qmd</code> file (in your working directory).</li>
 </ul>
 </section>
 <section id="sec-reqs" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Quarto Document Requirements</h1>
-<p>Your submission must utilize Quarto’s advanced formatting features: 1. <strong>YAML Header:</strong> Configured for a Table of Contents and numbered sections. 2. <strong>Cross-References:</strong> You must reference at least one Section, Table, and Figure using the <code>@</code> syntax. 3. <strong>Code Chunks:</strong> Use <code>#| label:</code> and <code>#| tbl-cap:</code> or <code>#| fig-cap:</code> for all outputs.</p>
+<p>Your submission must utilize Quarto’s advanced formatting features: 1. <strong>YAML Header:</strong> Configured for a Table of Contents and numbered sections. 2. <strong>Cross-References:</strong> You must reference at least one Section, one Table, one Equation and one Figure using the <code>@</code> syntax. 3. <strong>Code Chunks:</strong> Use <code>#| label:</code> and <code>#| tbl-cap:</code> or <code>#| fig-cap:</code> for all outputs.</p>
 </section>
 <section id="sec-math" class="level1" data-number="4">
 <h1 data-number="4"><span class="header-section-number">4</span> Methodology &amp; Math</h1>
@@ -2427,7 +2428,7 @@ window.Quarto = {
 <h1 data-number="5"><span class="header-section-number">5</span> Task 1: Data Import and Data Engineering</h1>
 <section id="task-1a-data-import" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="task-1a-data-import"><span class="header-section-number">5.1</span> Task 1a: Data Import</h2>
-<p>We use the <code>rio</code> package to load our data. This package simplifies the process by automatically handling the CSV format. The <code>kable()</code> command from the <code>kableExtra</code> package formats a data frame as a table.</p>
+<p>We use the <code>rio</code> package to load our data. This package simplifies the process by automatically handling the CSV format. The <code>knitr::kable()</code> command from the <code>knitr</code> package formats a data frame as a table.</p>
 <div class="cell">
 <details open class="code-fold">
 <summary>Code</summary>
@@ -2442,7 +2443,7 @@ window.Quarto = {
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>Airports <span class="ot">=</span> <span class="fu">import</span>(<span class="st">&quot;Airports.csv&quot;</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>           <span class="fu">clean_names</span>(<span class="st">&quot;upper_camel&quot;</span>)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Flights))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(Flights))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-OrgFlights" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2633,7 +2634,7 @@ Table 1: Original Flight Data Frame
 <div class="cell">
 <details open class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Airports))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(Airports))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-OrgAirports" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2745,7 +2746,7 @@ Table 2: Original Airports Data Frame
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(Origin, SchedDepTime, DepTime, DepDelay) <span class="sc">|&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">drop_na</span>() <span class="sc">|&gt;</span> </span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(DepDelay<span class="sc">&gt;=</span><span class="dv">0</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Flights))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(Flights))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-Flights" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2813,7 +2814,7 @@ Table 3: Selected Variables from Flight Data Frame
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>Airports<span class="ot">=</span>Airports <span class="sc">|&gt;</span> </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">select</span>(Faa, Name) <span class="sc">|&gt;</span> </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>         <span class="fu">drop_na</span>()</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(Airports))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(Airports))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-Airports" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -2875,7 +2876,7 @@ Table 4: Selected Variables from Airports Data Frame
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>FlightsJoined <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(Flights, Airports, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;Origin&quot;</span> <span class="ot">=</span> <span class="st">&quot;Faa&quot;</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">NameOrigin=</span>Name)</span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(<span class="fu">head</span>(FlightsJoined))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">head</span>(FlightsJoined))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 <div id="tbl-joined" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">

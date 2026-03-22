@@ -1,0 +1,139 @@
+---
+title: "Lab: NYC Flight Analysis with R & Quarto (Worksheet)"
+author: "all names of your group"
+date: last-modified
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: show
+    embed-resources: true
+---
+
+# Overview {#sec-overview}
+
+In this lab, you will explore the `nycflights13` dataset using the **Positron IDE**. Your goal is to move beyond simple coding and produce a **reproducible research report**. You will practice data loading with `rio`, relational joins with the `tidyverse`, and professional formula typesetting with LaTeX.
+
+# Technical Setup {#sec-setup}
+
+Before you begin, ensure you have the following installed in your environment:
+
+* **Required Packages:** `install.packages(c("rio", "tidyverse", "janitor"))`
+* **Working Directory:** Create a folder in *Positron* 
+* **Data Files:** Download and place `Flights.csv` and `Airports.csv` in the same folder as this `.qmd` file (in your working directory).
+
+# Quarto Document Requirements {#sec-reqs}
+
+Your submission must utilize Quarto's advanced formatting features:
+1.  **YAML Header:** Configured for a Table of Contents and numbered sections.
+2.  **Cross-References:** You must reference at least one Section, one Table, one Equation and one Figure using the `@` syntax.
+3.  **Code Chunks:** Use `#| label:` and `#| tbl-cap:` or `#| fig-cap:` for all outputs.
+
+# Methodology & Math 
+
+In your analysis, you must define your variables. Use **inline math** for variables like the sample mean $\bar{x}$ or the standard deviation $\sigma$. 
+
+We will calculate the average delay using the arithmetic mean formula:
+
+here goes the formula
+
+# Task 1: Data Import and Data Engineering {#sec-import}
+## Task 1a: Data Import
+
+We use the `rio` package to load our data. This package simplifies the process by automatically handling the CSV format. The `knitr::kable()` command from the `knitr` package formats a data frame as a table.
+
+```{r}
+#| message: false
+#| warning: false
+
+
+library(rio)
+library(tidyverse)
+library(janitor)
+
+# INSTRUCTIONS: Load your CSV files here
+Flights  = import("Flights.csv") |> 
+           clean_names("upper_camel")
+Airports = import("Airports.csv") |> 
+           clean_names("upper_camel")
+
+knitr::kable(head(Flights))
+```
+
+```{r}
+#| label: tbl-OrgAirports
+#| tbl-cap: "Original Airports Data Frame"
+knitr::kable(head(Airports))
+```
+
+## Task 1b:  Data Engineering
+
+For both data frames reduce the variables only to the one needed with `select()`! 
+
+For `Flights` you need four variables including `Origin`, `SchedDepTime`, `DepTime`, and `DepDelay`. For the flights data frame you need the airport code `Faa` and the `Name` of the airport.
+
+```{r}
+Flights=
+knitr::kable(head(Flights))
+```
+
+```{r}
+Airports=Airports
+```
+
+**Explain here** how the variable `DepDelay` was calculated and comment on the variable types.
+
+
+# Task 2: Relational Joins 
+
+The `flights` dataset contains airport codes (e.g., "EWR"). To display full names (e.g., "Newark Liberty Intl"), you must perform an `inner_join()` with the `airports` table. Then rename the variable `Name` to `OriginName`
+
+**Note:** You must match the `origin` column from flights to the `faa` column in airports.
+
+```{r}
+
+FlightsJoined=
+
+knitr::kable(head(FlightsJoined))
+```
+
+# Task 3: Descriptive Statistics
+
+Using the joined data, calculate the *mean* and *median* `dep_delay` for each origin airport (EWR, JFK, LGA). Refer to @eq-mean for the calculation logic.
+
+```{r}
+
+# INSTRUCTIONS: Use group_by() and summarize()
+
+```
+
+If you get `NA` values and/or negative values for `MedianDelay` check your data!
+
+# Task 4: Visualization
+
+Create a bar chart showing the average departure delay for the top three New York airports. 
+
+```{r}
+
+```
+
+# Troubleshooting & FAQ {#sec-faq}
+
+* **Reference shows as ??**: Check that your labels start with the correct prefix (e.g., `fig-` for figures, `tbl-` for tables).
+* **Mean is NA**: Data often contains missing values. Ensure you use `na.rm = TRUE` inside your `mean()` or `median()` functions.
+* **Join results in 0 rows**: Ensure you mapped the keys correctly: `by = c("dest" = "faa")`.
+* **YAML Error**: Ensure there are no tabs in the YAML header; use spaces only.
+
+# Pre-Submission Checklist {#sec-checklist}
+
+* [ ] Does the document render to HTML without errors?
+* [ ] Is the Table of Contents visible and correctly numbered?
+* [ ] Does the text include at least one reference to @eq-mean?
+* [ ] Are all figures and tables properly captioned and referenced (e.g., "As seen in @fig-delays...")?
+* [ ] Have you removed any "empty" code chunks or experimental code?
+
+# Conclusion {#sec-conclusion}
+
+*Write a brief summary of your findings here, referencing the table in @sec-stats and the figure in @sec-viz.*
+```
