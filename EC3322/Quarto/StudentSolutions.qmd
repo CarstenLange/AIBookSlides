@@ -1,5 +1,5 @@
 ---
-title: "Lab: NYC Flight Analysis with R & Quarto"
+title: "Lab: NYC Flight Analysis with R & Quarto (Solutions)"
 author: "Carsten Lange (based on a Gemini draft)"
 date: last-modified
 format: 
@@ -13,13 +13,13 @@ format:
 
 # Overview {#sec-overview}
 
-In this lab, you will explore the `nycflights13` dataset using the **Positron IDE**. Your goal is to move beyond simple coding and produce a **reproducible research report**. You will practice data loading with `rio`, relational joins with the `tidyverse`, and professional typesetting with LaTeX.
+In this lab, you will explore the `nycflights13` dataset using the **Positron IDE**. Your goal is to move beyond simple coding and produce a **reproducible research report**. You will practice data loading with `rio`, relational joins with the `tidyverse`, and professional formula typesetting with LaTeX.
 
 # Technical Setup {#sec-setup}
 
 Before you begin, ensure you have the following installed in your environment:
 
-* **Required Packages:** `install.packages(c("rio", "tidyverse"))`
+* **Required Packages:** `install.packages(c("rio", "tidyverse", "janitor", "kableExtra"))`
 * **Data Files:** Place `flights.csv` and `airports.csv` in the same folder as this `.qmd` file.
 
 # Quarto Document Requirements {#sec-reqs}
@@ -39,38 +39,81 @@ $$
 \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
 $$ {#eq-mean}
 
-# Task 1: Data Import {#sec-import}
+# Task 1: Data Import and Data Engineering {#sec-import}
+## Task 1a: Data Import
 
-We use the `rio` package to load our data. This package simplifies the process by automatically handling the CSV format.
+We use the `rio` package to load our data. This package simplifies the process by automatically handling the CSV format. The `kable()` command from the `kableExtra` package formats a data frame as a table.
 
 ```{r}
-#| label: setup
+#| label: tbl-OrgFlights
+#| tbl-cap: "Original Flight Data Frame"
 #| message: false
 #| warning: false
 
+
 library(rio)
 library(tidyverse)
+library(janitor)
+library(kableExtra)
 
 # INSTRUCTIONS: Load your CSV files here
-# flights  <- import("flights.csv")
-# airports <- import("airports.csv")
+Flights  = import("Flights.csv") |> 
+           clean_names("upper_camel")
+Airports = import("Airports.csv") |> 
+           clean_names("upper_camel")
+
+kable(head(Flights))
 ```
+
+```{r}
+#| label: tbl-OrgAirports
+#| tbl-cap: "Original Airports Data Frame"
+kable(head(Airports))
+```
+
+## Task 1b:  Data Engineering
+
+For both data frames reduce the variables only to the one needed with `select()`! 
+
+For `Flights` you need four variables including `Origin`, `SchedDepTime`, `DepTime`, and `DepDelay`. For the flights data frame you need the airport code `Faa` and the `Name` of the airport.
+
+```{r}
+#| label: tbl-Flights
+#| tbl-cap: "Selected Variables from Flight Data Frame"
+Flights=Flights |> 
+        select(Origin, SchedDepTime, DepTime, DepDelay) |>
+        drop_na() |> 
+        filter(DepDelay>=0)
+kable(head(Flights))
+```
+
+```{r}
+#| label: tbl-Airports
+#| tbl-cap: "Selected Variables from Airports Data Frame"
+Airports=Airports |> 
+         select(Faa, Name) |> 
+         drop_na()
+kable(head(Airports))
+```
+
+Explain here how the variable `DepDelay` was calculated and comment on the variable types.
+
 
 # Task 2: Relational Joins {#sec-join}
 
-The `flights` dataset contains airport codes (e.g., "EWR"). To display full names (e.g., "Newark Liberty Intl"), you must perform an `inner_join()` with the `airports` table. 
+The `flights` dataset contains airport codes (e.g., "EWR"). To display full names (e.g., "Newark Liberty Intl"), you must perform an `inner_join()` with the `airports` table. Then rename the variable `Name` to `OriginName`
 
-**Note:** You must match the `dest` column from flights to the `faa` column in airports.
+**Note:** You must match the `origin` column from flights to the `faa` column in airports.
 
 ```{r}
 #| label: tbl-joined
 #| tbl-cap: "Sample of Flights Joined with Airport Metadata"
 
 # INSTRUCTIONS: Perform the inner_join here
-# flights_joined <- flights %>% 
-#   inner_join(airports, by = c("dest" = "faa"))
+FlightsJoined <- inner_join(Flights, Airports, by = c("Origin" = "Faa")) |> 
+  rename(NameOrigin=Name)
 
-# head(flights_joined)
+kable(head(FlightsJoined))
 ```
 
 # Task 3: Descriptive Statistics {#sec-stats}
@@ -82,18 +125,22 @@ Using the joined data, calculate the mean and median `dep_delay` for each origin
 #| tbl-cap: "Summary Statistics for Departure Delays"
 
 # INSTRUCTIONS: Use group_by() and summarize()
-# Remember to use na.rm = TRUE
+group_by(FlightsJoined, NameOrigin) |> 
+  summarize(AvgDelay=mean(DepDelay), 
+            MedianDelay=median(DepDelay)) 
 ```
+
+If you get `NA` values and/or negative values for `MedianDelay` check your data!
 
 # Task 4: Visualization {#sec-viz}
 
-Create a bar chart showing the average departure delay for the top 10 most frequent destinations. 
+Create a bar chart showing the average departure delay for the top three New York airports. 
 
 ```{r}
 #| label: fig-delays
 #| fig-cap: "Average Departure Delay for Top 10 Destinations"
-
-# INSTRUCTIONS: Create a ggplot showing average delay by airport name
+ggplot(aes(x=NameOrigin, fill=NameOrigin), data=FlightsJoined) + 
+  geom_bar()
 ```
 
 # Troubleshooting & FAQ {#sec-faq}

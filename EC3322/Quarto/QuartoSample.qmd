@@ -1,0 +1,155 @@
+---
+title: "Quarto Technical Writing and Data Template"
+subtitle: "A Guide to References, Math, and Data Manipulation"
+author: "Carsten Lange (vibe-coded with Gemini)"
+date: last-modified
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: show
+    embed-resources: true
+---
+
+
+## Introduction {#sec-intro}
+
+This document serves as a template for your assignments. It demonstrates how to handle technical elements like cross-referencing, mathematical notation, and basic data manipulation using `tidyverse`. 
+
+You can refer back to the introduction using a label such as `{#sec--intro}` directly behind the section title and the reference that label in your text with  `@sec-intro`. Like here: @sec-intro
+
+## Tables and Figures
+
+### Figures
+To make a figure referenceable and print a caption, you must provide a label starting with `fig-` at the beginning of the code chunk options. E.g.:
+
+` ```{r}`<br>
+`#| label: fig-plot`<br>
+`#| fig-cap: "A scatterplot of displacement vs. highway mileage using the mpg dataset."`
+
+```{r}
+#| label: fig-plot
+#| fig-cap: "A scatterplot of displacement vs. highway mileage using the mpg dataset."
+#| message: false
+#| code-fold: true
+
+library(tidyverse)
+ggplot(mpg, aes(displ, hwy)) + 
+  geom_point(aes(color = class)) +
+  theme_minimal()
+```
+
+As shown in @fig-plot, there is a clear relationship between engine size and fuel efficiency.
+
+### Tables
+
+Similarly, tables require a label starting with tbl-. We use `knitr::kable()` to format the raw data frames into clean tables for the report.
+
+**Code Snippet:**
+
+
+
+```{r}
+#| label: tbl-data
+#| tbl-cap: "The first six rows of the mpg dataset."
+set.seed(123)
+knitr::kable(slice_sample(mpg, n=6))
+```
+
+The raw data values are detailed in @tbl-data.
+
+## Mathematical Notation
+
+### Inline Math
+
+To include math within a sentence, wrap the LaTeX code in single dollar signs $. For example, the sample mean is defined as $\bar{x} = \frac{\sum x_i}{n}$.
+
+Note: Do not leave spaces between the $ and your math code (e.g., use $x$, not $ x $).
+
+### Display Math
+
+For equations on their own line, use double dollar signs \$\$. 
+
+$$f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}$$
+
+
+To number and reference an equation, add a label starting with `#eq-` in curly braces immediately after the closing \$\$. Start a new line for each \$\$. E.g.:
+
+`$$`<br>
+`E = mc^2 `<br>
+`$$ {#eq-einstein}`
+
+$$
+E = mc^2 
+$$ {#eq-einstein}
+
+We can see the **relationship** between *energy* and *mass* in @eq-einstein.
+
+## Data Manipulation with tidyverse
+
+### Grouping and Summarizing
+
+Use `group_by()` to categorize data and `summarize()` to calculate aggregate statistics (like mean, sum, or count) for those categories.
+
+```{r}
+#| label: tbl-summary
+#| tbl-cap: "Average Highway Mileage and Count by Vehicle Class."
+#| message: false
+
+library(tidyverse)
+
+AggregatedMPG=mpg |> 
+  group_by(class) |>
+  summarize(miles_per_gallon_hwy = mean(hwy),
+    observations = n()
+  ) 
+  knitr::kable(AggregatedMPG)
+```
+
+The summary statistics in @tbl-summary show how mileage varies by vehicle type.
+
+### Left Join
+A `left_join()` merges two tables. It keeps every row from the "left" (first) table and adds columns from the "right" (second) table where the keys match.
+
+```{r}
+#| label: tbl-lefttable
+#| tbl-cap: "Student Data (left table)"
+
+# Create example data frames
+students <- data.frame(
+  student_id = c(101, 102, 103),
+  name = c("Alice", "Bob", "Charlie")
+)
+knitr::kable(students)
+```
+
+
+```{r}
+#| label: tbl-righttable
+#| tbl-cap: "Grades Data (right table)"
+
+grades <- data.frame(
+  student_id = c(101, 102),
+  grade = c("A", "B")
+)
+knitr::kable(grades)
+```
+
+```{r}
+#| label: tbl-joinedtable
+#| tbl-cap: "Students with their grades (joined table)"
+
+# Perform the join
+students_with_grades =  left_join(students, grades, by = c("student_id" = "student_id")) 
+knitr::kable(students_with_grades)
+```
+
+As seen in @tbl-join, "Charlie" remains in the dataset, but his grade is `NA` because there was no matching ID in the grades table.
+
+
+### Important Reminders for Students:
+
+
+* **Labels:** Labels for references (e.g., `#fig-`, `#tbl-`) **must** be inside the code chunk options (the lines starting with `#|`).
+* **Indentation:** In the YAML header at the top, indentation is strictly enforced. Ensure there are two spaces for each level.

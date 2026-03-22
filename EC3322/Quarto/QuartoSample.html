@@ -6,10 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Professor [Your Name]">
-<meta name="dcterms.date" content="2026-03-18">
+<meta name="author" content="Carsten Lange (vibe-coded with Gemini)">
+<meta name="dcterms.date" content="2026-03-21">
 
-<title>Lab: NYC Flight Analysis with R &amp; Quarto</title>
+<title>Quarto Technical Writing and Data Template</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -2348,17 +2348,23 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-overview" id="toc-sec-overview" class="nav-link active" data-scroll-target="#sec-overview"><span class="header-section-number">1</span> Overview</a></li>
-  <li><a href="#sec-setup" id="toc-sec-setup" class="nav-link" data-scroll-target="#sec-setup"><span class="header-section-number">2</span> Technical Setup</a></li>
-  <li><a href="#sec-reqs" id="toc-sec-reqs" class="nav-link" data-scroll-target="#sec-reqs"><span class="header-section-number">3</span> Quarto Document Requirements</a></li>
-  <li><a href="#sec-math" id="toc-sec-math" class="nav-link" data-scroll-target="#sec-math"><span class="header-section-number">4</span> Methodology &amp; Math</a></li>
-  <li><a href="#sec-import" id="toc-sec-import" class="nav-link" data-scroll-target="#sec-import"><span class="header-section-number">5</span> Task 1: Data Import</a></li>
-  <li><a href="#sec-join" id="toc-sec-join" class="nav-link" data-scroll-target="#sec-join"><span class="header-section-number">6</span> Task 2: Relational Joins</a></li>
-  <li><a href="#sec-stats" id="toc-sec-stats" class="nav-link" data-scroll-target="#sec-stats"><span class="header-section-number">7</span> Task 3: Descriptive Statistics</a></li>
-  <li><a href="#sec-viz" id="toc-sec-viz" class="nav-link" data-scroll-target="#sec-viz"><span class="header-section-number">8</span> Task 4: Visualization</a></li>
-  <li><a href="#sec-faq" id="toc-sec-faq" class="nav-link" data-scroll-target="#sec-faq"><span class="header-section-number">9</span> Troubleshooting &amp; FAQ</a></li>
-  <li><a href="#sec-checklist" id="toc-sec-checklist" class="nav-link" data-scroll-target="#sec-checklist"><span class="header-section-number">10</span> Pre-Submission Checklist</a></li>
-  <li><a href="#sec-conclusion" id="toc-sec-conclusion" class="nav-link" data-scroll-target="#sec-conclusion"><span class="header-section-number">11</span> Conclusion</a></li>
+  <li><a href="#sec-intro" id="toc-sec-intro" class="nav-link active" data-scroll-target="#sec-intro"><span class="header-section-number">1</span> Introduction</a></li>
+  <li><a href="#tables-and-figures" id="toc-tables-and-figures" class="nav-link" data-scroll-target="#tables-and-figures"><span class="header-section-number">2</span> Tables and Figures</a>
+  <ul class="collapse">
+  <li><a href="#figures" id="toc-figures" class="nav-link" data-scroll-target="#figures"><span class="header-section-number">2.1</span> Figures</a></li>
+  <li><a href="#tables" id="toc-tables" class="nav-link" data-scroll-target="#tables"><span class="header-section-number">2.2</span> Tables</a></li>
+  </ul></li>
+  <li><a href="#mathematical-notation" id="toc-mathematical-notation" class="nav-link" data-scroll-target="#mathematical-notation"><span class="header-section-number">3</span> Mathematical Notation</a>
+  <ul class="collapse">
+  <li><a href="#inline-math" id="toc-inline-math" class="nav-link" data-scroll-target="#inline-math"><span class="header-section-number">3.1</span> Inline Math</a></li>
+  <li><a href="#display-math" id="toc-display-math" class="nav-link" data-scroll-target="#display-math"><span class="header-section-number">3.2</span> Display Math</a></li>
+  </ul></li>
+  <li><a href="#data-manipulation-with-tidyverse" id="toc-data-manipulation-with-tidyverse" class="nav-link" data-scroll-target="#data-manipulation-with-tidyverse"><span class="header-section-number">4</span> Data Manipulation with tidyverse</a>
+  <ul class="collapse">
+  <li><a href="#grouping-and-summarizing" id="toc-grouping-and-summarizing" class="nav-link" data-scroll-target="#grouping-and-summarizing"><span class="header-section-number">4.1</span> Grouping and Summarizing</a></li>
+  <li><a href="#left-join" id="toc-left-join" class="nav-link" data-scroll-target="#left-join"><span class="header-section-number">4.2</span> Left Join</a></li>
+  <li><a href="#important-reminders-for-students" id="toc-important-reminders-for-students" class="nav-link" data-scroll-target="#important-reminders-for-students"><span class="header-section-number">4.3</span> Important Reminders for Students:</a></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -2366,7 +2372,8 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lab: NYC Flight Analysis with R &amp; Quarto</h1>
+<h1 class="title">Quarto Technical Writing and Data Template</h1>
+<p class="subtitle lead">A Guide to References, Math, and Data Manipulation</p>
 </div>
 
 
@@ -2376,14 +2383,14 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Professor [Your Name] </p>
+             <p>Carsten Lange (vibe-coded with Gemini) </p>
           </div>
   </div>
     
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">March 18, 2026</p>
+      <p class="date">March 21, 2026</p>
     </div>
   </div>
   
@@ -2395,117 +2402,411 @@ window.Quarto = {
 </header>
 
 
-<section id="sec-overview" class="level1" data-number="1">
-<h1 data-number="1"><span class="header-section-number">1</span> Overview</h1>
-<p>In this lab, you will explore the <code>nycflights13</code> dataset using the <strong>Positron IDE</strong>. Your goal is to move beyond simple coding and produce a <strong>reproducible research report</strong>. You will practice data loading with <code>rio</code>, relational joins with the <code>tidyverse</code>, and professional typesetting with LaTeX.</p>
+<section id="sec-intro" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="sec-intro"><span class="header-section-number">1</span> Introduction</h2>
+<p>This document serves as a template for your assignments. It demonstrates how to handle technical elements like cross-referencing, mathematical notation, and basic data manipulation using <code>tidyverse</code>.</p>
+<p>You can refer back to the introduction using a label such as <code>{#sec--intro}</code> directly behind the section title and the reference that label in your text with <code>@sec-intro</code>. Like here: <a href="#sec-intro" class="quarto-xref">Section 1</a></p>
 </section>
-<section id="sec-setup" class="level1" data-number="2">
-<h1 data-number="2"><span class="header-section-number">2</span> Technical Setup</h1>
-<p>Before you begin, ensure you have the following installed in your environment:</p>
-<ul>
-<li><strong>Required Packages:</strong> <code>install.packages(c(&quot;rio&quot;, &quot;tidyverse&quot;))</code></li>
-<li><strong>Data Files:</strong> Place <code>flights.csv</code> and <code>airports.csv</code> in the same folder as this <code>.qmd</code> file.</li>
-</ul>
+<section id="tables-and-figures" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="tables-and-figures"><span class="header-section-number">2</span> Tables and Figures</h2>
+<section id="figures" class="level3" data-number="2.1">
+<h3 data-number="2.1" class="anchored" data-anchor-id="figures"><span class="header-section-number">2.1</span> Figures</h3>
+<p>To make a figure referenceable and print a caption, you must provide a label starting with <code>fig-</code> at the beginning of the code chunk options. E.g.:</p>
+<p><code>```{r}</code><br> <code>#| label: fig-plot</code><br> <code>#| fig-cap: &quot;A scatterplot of displacement vs. highway mileage using the mpg dataset.&quot;</code></p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(mpg, <span class="fu">aes</span>(displ, hwy)) <span class="sc">+</span> </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> class)) <span class="sc">+</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-plot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img role="img" src="data:image/png;base64,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" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure 1: A scatterplot of displacement vs. highway mileage using the mpg dataset.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As shown in <a href="#fig-plot" class="quarto-xref">Figure 1</a>, there is a clear relationship between engine size and fuel efficiency.</p>
 </section>
-<section id="sec-reqs" class="level1" data-number="3">
-<h1 data-number="3"><span class="header-section-number">3</span> Quarto Document Requirements</h1>
-<p>Your submission must utilize Quarto’s advanced formatting features: 1. <strong>YAML Header:</strong> Configured for a Table of Contents and numbered sections. 2. <strong>Cross-References:</strong> You must reference at least one Section, Table, and Figure using the <code>@</code> syntax. 3. <strong>Code Chunks:</strong> Use <code>#| label:</code> and <code>#| tbl-cap:</code> or <code>#| fig-cap:</code> for all outputs.</p>
+<section id="tables" class="level3" data-number="2.2">
+<h3 data-number="2.2" class="anchored" data-anchor-id="tables"><span class="header-section-number">2.2</span> Tables</h3>
+<p>Similarly, tables require a label starting with tbl-. We use <code>knitr::kable()</code> to format the raw data frames into clean tables for the report.</p>
+<p><strong>Code Snippet:</strong></p>
+<div class="cell">
+<details open class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(<span class="fu">slice_sample</span>(mpg, <span class="at">n=</span><span class="dv">6</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-data" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 1: The first six rows of the mpg dataset.
+</figcaption>
+<div aria-describedby="tbl-data-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 23%">
+<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 11%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 3%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">manufacturer</th>
+<th style="text-align: left;">model</th>
+<th style="text-align: right;">displ</th>
+<th style="text-align: right;">year</th>
+<th style="text-align: right;">cyl</th>
+<th style="text-align: left;">trans</th>
+<th style="text-align: left;">drv</th>
+<th style="text-align: right;">cty</th>
+<th style="text-align: right;">hwy</th>
+<th style="text-align: left;">fl</th>
+<th style="text-align: left;">class</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">pontiac</td>
+<td style="text-align: left;">grand prix</td>
+<td style="text-align: right;">5.3</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">auto(s4)</td>
+<td style="text-align: left;">f</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">p</td>
+<td style="text-align: left;">midsize</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">toyota</td>
+<td style="text-align: left;">toyota tacoma 4wd</td>
+<td style="text-align: right;">4.0</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">auto(l5)</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: left;">r</td>
+<td style="text-align: left;">pickup</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">toyota</td>
+<td style="text-align: left;">4runner 4wd</td>
+<td style="text-align: right;">4.7</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">auto(l5)</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: left;">r</td>
+<td style="text-align: left;">suv</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">audi</td>
+<td style="text-align: left;">a4 quattro</td>
+<td style="text-align: right;">3.1</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">auto(s6)</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">p</td>
+<td style="text-align: left;">compact</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">toyota</td>
+<td style="text-align: left;">corolla</td>
+<td style="text-align: right;">1.8</td>
+<td style="text-align: right;">1999</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">auto(l4)</td>
+<td style="text-align: left;">f</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">r</td>
+<td style="text-align: left;">compact</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">subaru</td>
+<td style="text-align: left;">impreza awd</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">2008</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: left;">auto(s4)</td>
+<td style="text-align: left;">4</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">25</td>
+<td style="text-align: left;">p</td>
+<td style="text-align: left;">compact</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>The raw data values are detailed in <a href="#tbl-data" class="quarto-xref">Table 1</a>.</p>
 </section>
-<section id="sec-math" class="level1" data-number="4">
-<h1 data-number="4"><span class="header-section-number">4</span> Methodology &amp; Math</h1>
-<p>In your analysis, you must define your variables. Use <strong>inline math</strong> for variables like the sample mean <span class="math inline">\(\bar{x}\)</span> or the standard deviation <span class="math inline">\(\sigma\)</span>.</p>
-<p>We will calculate the average delay using the arithmetic mean formula defined in <a href="#eq-mean" class="quarto-xref">Equation 1</a>:</p>
-<p><span id="eq-mean"><span class="math display">\[
-\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i
+</section>
+<section id="mathematical-notation" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="mathematical-notation"><span class="header-section-number">3</span> Mathematical Notation</h2>
+<section id="inline-math" class="level3" data-number="3.1">
+<h3 data-number="3.1" class="anchored" data-anchor-id="inline-math"><span class="header-section-number">3.1</span> Inline Math</h3>
+<p>To include math within a sentence, wrap the LaTeX code in single dollar signs $. For example, the sample mean is defined as <span class="math inline">\(\bar{x} = \frac{\sum x_i}{n}\)</span>.</p>
+<p>Note: Do not leave spaces between the $ and your math code (e.g., use <span class="math inline">\(x\)</span>, not $ x $).</p>
+</section>
+<section id="display-math" class="level3" data-number="3.2">
+<h3 data-number="3.2" class="anchored" data-anchor-id="display-math"><span class="header-section-number">3.2</span> Display Math</h3>
+<p>For equations on their own line, use double dollar signs $$.</p>
+<p><span class="math display">\[f(x) = \frac{1}{\sigma\sqrt{2\pi}} e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}\]</span></p>
+<p>To number and reference an equation, add a label starting with <code>#eq-</code> in curly braces immediately after the closing $$. Start a new line for each $$. E.g.:</p>
+<p><code>$$</code><br> <code>E = mc^2</code><br> <code>$$ {#eq-einstein}</code></p>
+<p><span id="eq-einstein"><span class="math display">\[
+E = mc^2
 \tag{1}\]</span></span></p>
+<p>We can see the <strong>relationship</strong> between <em>energy</em> and <em>mass</em> in <a href="#eq-einstein" class="quarto-xref">Equation 1</a>.</p>
 </section>
-<section id="sec-import" class="level1" data-number="5">
-<h1 data-number="5"><span class="header-section-number">5</span> Task 1: Data Import</h1>
-<p>We use the <code>rio</code> package to load our data. This package simplifies the process by automatically handling the CSV format.</p>
+</section>
+<section id="data-manipulation-with-tidyverse" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="data-manipulation-with-tidyverse"><span class="header-section-number">4</span> Data Manipulation with tidyverse</h2>
+<section id="grouping-and-summarizing" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="grouping-and-summarizing"><span class="header-section-number">4.1</span> Grouping and Summarizing</h3>
+<p>Use <code>group_by()</code> to categorize data and <code>summarize()</code> to calculate aggregate statistics (like mean, sum, or count) for those categories.</p>
 <div class="cell">
 <details open class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rio)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># INSTRUCTIONS: Load your CSV files here</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># flights  &lt;- import(&quot;flights.csv&quot;)</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># airports &lt;- import(&quot;airports.csv&quot;)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>AggregatedMPG<span class="ot">=</span>mpg <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(class) <span class="sc">|&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">miles_per_gallon_hwy =</span> <span class="fu">mean</span>(hwy),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">observations =</span> <span class="fu">n</span>()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  knitr<span class="sc">::</span><span class="fu">kable</span>(AggregatedMPG)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
-</div>
-</section>
-<section id="sec-join" class="level1" data-number="6">
-<h1 data-number="6"><span class="header-section-number">6</span> Task 2: Relational Joins</h1>
-<p>The <code>flights</code> dataset contains airport codes (e.g., “EWR”). To display full names (e.g., “Newark Liberty Intl”), you must perform an <code>inner_join()</code> with the <code>airports</code> table.</p>
-<p><strong>Note:</strong> You must match the <code>dest</code> column from flights to the <code>faa</code> column in airports.</p>
-<div id="tbl-joined" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<div id="tbl-summary" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-joined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table 1: Sample of Flights Joined with Airport Metadata
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 2: Average Highway Mileage and Count by Vehicle Class.
 </figcaption>
-<div aria-describedby="tbl-joined-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<details open class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSTRUCTIONS: Perform the inner_join here</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># flights_joined &lt;- flights %&gt;% </span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   inner_join(airports, by = c(&quot;dest&quot; = &quot;faa&quot;))</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># head(flights_joined)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div aria-describedby="tbl-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">class</th>
+<th style="text-align: right;">miles_per_gallon_hwy</th>
+<th style="text-align: right;">observations</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2seater</td>
+<td style="text-align: right;">24.80000</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">compact</td>
+<td style="text-align: right;">28.29787</td>
+<td style="text-align: right;">47</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">midsize</td>
+<td style="text-align: right;">27.29268</td>
+<td style="text-align: right;">41</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">minivan</td>
+<td style="text-align: right;">22.36364</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">pickup</td>
+<td style="text-align: right;">16.87879</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">subcompact</td>
+<td style="text-align: right;">28.14286</td>
+<td style="text-align: right;">35</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">suv</td>
+<td style="text-align: right;">18.12903</td>
+<td style="text-align: right;">62</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </figure>
 </div>
-</section>
-<section id="sec-stats" class="level1" data-number="7">
-<h1 data-number="7"><span class="header-section-number">7</span> Task 3: Descriptive Statistics</h1>
-<p>Using the joined data, calculate the mean and median <code>dep_delay</code> for each origin airport (EWR, JFK, LGA). Refer to <a href="#eq-mean" class="quarto-xref">Equation 1</a> for the calculation logic.</p>
-<div id="tbl-delays" class="cell quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-tbl figure">
-<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-delays-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table 2: Summary Statistics for Departure Delays
-</figcaption>
-<div aria-describedby="tbl-delays-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<details open class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSTRUCTIONS: Use group_by() and summarize()</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Remember to use na.rm = TRUE</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
 </div>
-</figure>
-</div>
+<p>The summary statistics in <a href="#tbl-summary" class="quarto-xref">Table 2</a> show how mileage varies by vehicle type.</p>
 </section>
-<section id="sec-viz" class="level1" data-number="8">
-<h1 data-number="8"><span class="header-section-number">8</span> Task 4: Visualization</h1>
-<p>Create a bar chart showing the average departure delay for the top 10 most frequent destinations.</p>
+<section id="left-join" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="left-join"><span class="header-section-number">4.2</span> Left Join</h3>
+<p>A <code>left_join()</code> merges two tables. It keeps every row from the “left” (first) table and adds columns from the “right” (second) table where the keys match.</p>
 <div class="cell">
 <details open class="code-fold">
 <summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># INSTRUCTIONS: Create a ggplot showing average delay by airport name</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create example data frames</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>students <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">student_id =</span> <span class="fu">c</span>(<span class="dv">101</span>, <span class="dv">102</span>, <span class="dv">103</span>),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Alice&quot;</span>, <span class="st">&quot;Bob&quot;</span>, <span class="st">&quot;Charlie&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(students)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
+<div id="tbl-lefttable" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-lefttable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 3: Student Data (left table)
+</figcaption>
+<div aria-describedby="tbl-lefttable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">student_id</th>
+<th style="text-align: left;">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">101</td>
+<td style="text-align: left;">Alice</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">102</td>
+<td style="text-align: left;">Bob</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">103</td>
+<td style="text-align: left;">Charlie</td>
+</tr>
+</tbody>
+</table>
 </div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<details open class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>grades <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">student_id =</span> <span class="fu">c</span>(<span class="dv">101</span>, <span class="dv">102</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">grade =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(grades)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-righttable" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-righttable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 4: Grades Data (right table)
+</figcaption>
+<div aria-describedby="tbl-righttable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">student_id</th>
+<th style="text-align: left;">grade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">101</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">102</td>
+<td style="text-align: left;">B</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<details open class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Perform the join</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>students_with_grades <span class="ot">=</span>  <span class="fu">left_join</span>(students, grades, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">&quot;student_id&quot;</span> <span class="ot">=</span> <span class="st">&quot;student_id&quot;</span>)) </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(students_with_grades)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div id="tbl-joinedtable" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-joinedtable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 5: Students with their grades (joined table)
+</figcaption>
+<div aria-describedby="tbl-joinedtable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">student_id</th>
+<th style="text-align: left;">name</th>
+<th style="text-align: left;">grade</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">101</td>
+<td style="text-align: left;">Alice</td>
+<td style="text-align: left;">A</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">102</td>
+<td style="text-align: left;">Bob</td>
+<td style="text-align: left;">B</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">103</td>
+<td style="text-align: left;">Charlie</td>
+<td style="text-align: left;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>As seen in <strong>?@tbl-join</strong>, “Charlie” remains in the dataset, but his grade is <code>NA</code> because there was no matching ID in the grades table.</p>
 </section>
-<section id="sec-faq" class="level1" data-number="9">
-<h1 data-number="9"><span class="header-section-number">9</span> Troubleshooting &amp; FAQ</h1>
+<section id="important-reminders-for-students" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="important-reminders-for-students"><span class="header-section-number">4.3</span> Important Reminders for Students:</h3>
 <ul>
-<li><strong>Reference shows as ??</strong>: Check that your labels start with the correct prefix (e.g., <code>fig-</code> for figures, <code>tbl-</code> for tables).</li>
-<li><strong>Mean is NA</strong>: Data often contains missing values. Ensure you use <code>na.rm = TRUE</code> inside your <code>mean()</code> or <code>median()</code> functions.</li>
-<li><strong>Join results in 0 rows</strong>: Ensure you mapped the keys correctly: <code>by = c(&quot;dest&quot; = &quot;faa&quot;)</code>.</li>
-<li><strong>YAML Error</strong>: Ensure there are no tabs in the YAML header; use spaces only.</li>
+<li><strong>Labels:</strong> Labels for references (e.g., <code>#fig-</code>, <code>#tbl-</code>) <strong>must</strong> be inside the code chunk options (the lines starting with <code>#|</code>).</li>
+<li><strong>Indentation:</strong> In the YAML header at the top, indentation is strictly enforced. Ensure there are two spaces for each level.</li>
 </ul>
 </section>
-<section id="sec-checklist" class="level1" data-number="10">
-<h1 data-number="10"><span class="header-section-number">10</span> Pre-Submission Checklist</h1>
-<ul class="task-list">
-<li><label><input type="checkbox">Does the document render to HTML without errors?</label></li>
-<li><label><input type="checkbox">Is the Table of Contents visible and correctly numbered?</label></li>
-<li><label><input type="checkbox">Does the text include at least one reference to <a href="#eq-mean" class="quarto-xref">Equation 1</a>?</label></li>
-<li><label><input type="checkbox">Are all figures and tables properly captioned and referenced (e.g., “As seen in <strong>?@fig-delays</strong>…”)?</label></li>
-<li><label><input type="checkbox">Have you removed any “empty” code chunks or experimental code?</label></li>
-</ul>
-</section>
-<section id="sec-conclusion" class="level1" data-number="11">
-<h1 data-number="11"><span class="header-section-number">11</span> Conclusion</h1>
-<p><em>Write a brief summary of your findings here, referencing the table in <a href="#sec-stats" class="quarto-xref">Section 7</a> and the figure in <a href="#sec-viz" class="quarto-xref">Section 8</a>.</em> ```</p>
 </section>
 
 </main>
