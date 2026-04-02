@@ -1,12 +1,10 @@
 ---
-title: "Digital Humanities Consortium "
-subtitle: "Understand Generative AI"
+title: "Understanding Generative AI "
 
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
-  affiliation: "California State Polytechnic University, Pomona<br><br>
-  **Follow along:** https://ai.lange-analytics.com/dhc.html"
+  affiliation: "California State Polytechnic University, Pomona"
 
 format: 
   revealjs:
@@ -103,7 +101,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 ![Source: Medium: https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1934318519.png) 
 
-## History of Genarative AI
+## History of Generative AI {.smaller}
 
 **2003:** Bengio, Y., Neural Probabilistic Language Models (very basic)
 
@@ -114,6 +112,8 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 **2017:** Google Team, "Attention is All you Need", Transformer Model (powerful, fast, and can be parallelized; with  modifications still used in 2025)
 
 [Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E]{style="font-size:70%"}
+
+**2017 -- Now:** Many advancements in the core model, fine tuning, and interaction capabilities. However, most *GenAI* models are still based on *Transformer Models*
 
 ## Computer Cannot Process Words Only Numbers
 
@@ -139,7 +139,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 *ASCII* code was introduced in 1963 to code letters and special characters as (binary) numbers.
 
-Today we use *Unicode* which includes several fonts and emojiis but is similar to *ASCII*
+Today we use *Unicode* which includes several fonts and emojis but is similar to *ASCII*
 
 
 :::
@@ -173,7 +173,9 @@ Machine learning models have been trained on that problem with Internet content:
 
 -   "Untrained horses eat apples, but apples do not eat untrained horses"
 
--   "DHC is unimaginable good" (token IDs sort tokens according to their frequency in the English language)
+-   "Cal Poly Pomona is sometimes called CPP" 
+
+Note, token IDs sort tokens according to their frequency in the English language (most frequent first) but they are not used to code words.
 
 ::: footer
 [OpenAI Tokenizer for GPT-4o & GPT-4o mini](https://platform.openai.com/tokenizer){target="_blank"}
@@ -183,15 +185,15 @@ Machine learning models have been trained on that problem with Internet content:
 
 **<br><br>Using their ID is not a good idea!**<br><br>
 
-**Simplification:**
+**Simplification for Teaching:**
 
 -   each word in the English language (200,000) becomes a token <BR>
 (no sub-tokens)
 -   words are sorted alphabetically not by their ID
 
-## We have Tokens, but how do we convert them to numbers?
+## We have Tokens, but how do we convert them to numbers? {.smaller}
 
-::: {.column width="80%"}
+::: {.column width="65%"}
 **One Hot Encoding**
 
 A vector (a list) with the length of the tokens for the language is created (e.g., for English, about 200,000 words/tokens)
@@ -199,8 +201,12 @@ A vector (a list) with the length of the tokens for the language is created (e.g
 The value for all words/tokens is zero with the exception of the word/token of interest (One-Hot)
 :::
 
-::: {.column width="20%"}
-**Neural Network**
+::: {.column width="5%"}
+
+:::
+
+::: {.column width="30%"}
+**"Neural Network"**
 
 ![](images/clipboard-1984520822.png)
 :::
@@ -232,7 +238,7 @@ The value for all words/tokens is zero with the exception of the word/token of i
 
 
 1.  *One-Hot Encoding* is wasteful (e.g., the word "neural": A list with 200,000 numbers all 0 except the position for "neural" being 1)
-1.  One-Hot Vectors have **no semantics**. E.g., `neural` and `network` are not similary encoded.<br> **Solution to 1) and 2):** `Word Embedding`. 
+1.  One-Hot Vectors have **no semantics**. E.g., `neural` and `network` are not similarly encoded.<br> **Solution to 1) and 2):** `Word Embedding`. 
 2.  The prompt has only one word. A prompt with more words needs information about the order of words.<br> **Solution:** `Positional Encoding`
 3.  When the prompt has more words, we also need **Attention.** <br>E.g.: <br> `The animal didn't cross the street because it is too tired`<br> or <br> `The animal didn't cross the street because it is too wide`<br> **Solution:** `Attention` (stores for each word which words from the prompt are important and which are not)
 :::
@@ -258,13 +264,13 @@ Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5
 
 
 
-## Word Embedding to Provide Meaning/Sementic
+## Word Embedding to Provide Meaning/Semantic
 
-`King - Male + Female = ???`
+`King - Man + Women = ???`
 
 . . .
 
-`King - Male + Female = Queen`
+`King - Man + Women = Queen`
 
 . . .
 
@@ -300,6 +306,8 @@ Below are possible *Word Embeddings* for `apple`, `tomato`, `queen`, `king`, `am
 #### Covid Twitter Feed
 
 [https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz](https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz){target="_blank"}
+
+The file `Corona_NLP_train.csv` needs to be uploaded first (see folder symbol left panel)
 
 ●● ●● ●●  XXX
 
@@ -337,14 +345,29 @@ Word positions are also stored in a vector (list of numbers) with the same lengt
 
 
 ## Generate Position-Aware Embedding 
-### Add Posion 2 to the Embeding of `bit` {.smaller}
+### Add Posion 2 to the Embedding of `bit` {.smaller}
 
 Add a *Position-Vector* (512 x 1) to each word embedding (512 x 1).
 
-The *Position-Vector* reflects the word position of the word `bit` in the prompt<br>
-<small>(prompt size = 32,000 in GPT-4; Gemini 1.5 Pro, Google's most advanced model, has 1 million tokens)</small>
+The *Position-Vector* reflects the word position of the word `bit` in the prompt
+
 
 ![](images/clipboard-1514739384.png)
+
+## Prompt Sizes (Positions to Encode) in LLM {.smaller}
+
+| Era | Model Name | Context Window (Tokens) | Approx. Pages  |
+|:---|:---|:---:|:---:|
+| **Current** | Gemini 3 Pro | 1M  | 1000 |
+| **Current** | Llama 4 Scout | 10M | 10,000 |
+| **Current** | Claude 4.6  | 200K | 200 |
+| **Current** | GPT-5  |  400K | 400 |
+| **Current** | DeepSeek-R1 | 128K | 128 |
+| **Legacy** | GPT-4 Turbo | 128K | 128 |
+| **Legacy** | Claude 1  | 100K | 100 |
+| **Legacy** | GPT-2 | 1024 | 1 |
+
+: Comparison of LLM Prompt Sizes (2020-2026) {#tbl-llm-sizes}
 
 
 ## Adding Attention XXX
@@ -459,7 +482,7 @@ The course is not free, but a free trial exist. The 4 hour course is **strongly 
 
 
 
-## Demo 1: Prompt Engeneering (Human Writer)
+## Demo 1: Prompt Engineering (Human Writer)
 
 Left upper corner: Edit GPT
 Goto Configure

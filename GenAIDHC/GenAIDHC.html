@@ -6,11 +6,11 @@
 <script src="GenAIDHC_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="GenAIDHC_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="GenAIDHC_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="GenAIDHC_files/libs/quarto-html/quarto-syntax-highlighting-dark-8ef56b68f8fa1e9d2ba328e99e439f80.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.7.31">
+<link href="GenAIDHC_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Carsten Lange">
-  <title>Digital Humanities Consortium</title>
+  <title>Understanding Generative AI</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -29,7 +29,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="GenAIDHC_files/libs/revealjs/dist/theme/quarto-4b8217244be6dee95f534ad2017c9ddb.css">
+  <link rel="stylesheet" href="GenAIDHC_files/libs/revealjs/dist/theme/quarto-92f953f199ed25aab29d366ec0d00847.css">
   <link href="GenAIDHC_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="GenAIDHC_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="GenAIDHC_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -130,8 +130,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Digital Humanities Consortium</h1>
-  <p class="subtitle">Understand Generative AI</p>
+  <h1 class="title">Understanding Generative AI</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -142,7 +141,7 @@ Carsten Lange
 <a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
 </div>
         <p class="quarto-title-affiliation">
-            California State Polytechnic University, Pomona<br><br> <strong>Follow along:</strong> https://ai.lange-analytics.com/dhc.html
+            California State Polytechnic University, Pomona
           </p>
     </div>
 </div>
@@ -229,13 +228,14 @@ Carsten Lange
 <h2><em>AI</em> vs.&nbsp;<em>Machine Learning</em> vs.&nbsp;<em>genAI/LLMs</em></h2>
 
 <img data-src="images/clipboard-1934318519.png" class="r-stretch quarto-figure-center"><p class="caption">Source: Medium: https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f</p></section>
-<section id="history-of-genarative-ai" class="slide level2">
-<h2>History of Genarative AI</h2>
+<section id="history-of-generative-ai" class="slide level2 smaller">
+<h2>History of Generative AI</h2>
 <p><strong>2003:</strong> Bengio, Y., Neural Probabilistic Language Models (very basic)</p>
 <p><strong>2014:</strong> Sutskever, I.: Recurrent Neural Networks - LSTM (mainly used for translation; slow and not easy to parallelize)</p>
 <p><strong>2014:</strong> Bahdanu, D.: Still Recurrent Neural Networks but with Attention - LSTM (still slow and not easy to parallelize, but more powerful)</p>
 <p><strong>2017:</strong> Google Team, “Attention is All you Need”, Transformer Model (powerful, fast, and can be parallelized; with modifications still used in 2025)</p>
 <p><span style="font-size:70%">Source: Andre Karpathy, http://youtube.com/watch?v=XfpMkf4rD6E</span></p>
+<p><strong>2017 – Now:</strong> Many advancements in the core model, fine tuning, and interaction capabilities. However, most <em>GenAI</em> models are still based on <em>Transformer Models</em></p>
 </section>
 <section id="computer-cannot-process-words-only-numbers" class="slide level2">
 <h2>Computer Cannot Process Words Only Numbers</h2>
@@ -256,7 +256,7 @@ Carsten Lange
 <div class="column" style="width:50%;">
 <h4 id="ascii">ASCII</h4>
 <p><em>ASCII</em> code was introduced in 1963 to code letters and special characters as (binary) numbers.</p>
-<p>Today we use <em>Unicode</em> which includes several fonts and emojiis but is similar to <em>ASCII</em></p>
+<p>Today we use <em>Unicode</em> which includes several fonts and emojis but is similar to <em>ASCII</em></p>
 </div><div class="column" style="width:42%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -287,8 +287,9 @@ Carsten Lange
 <p><strong>Two sentences to be tokenized (see link in footer)</strong>:</p>
 <ul>
 <li><p>“Untrained horses eat apples, but apples do not eat untrained horses”</p></li>
-<li><p>“DHC is unimaginable good” (token IDs sort tokens according to their frequency in the English language)</p></li>
+<li><p>“Cal Poly Pomona is sometimes called CPP”</p></li>
 </ul>
+<p>Note, token IDs sort tokens according to their frequency in the English language (most frequent first) but they are not used to code words.</p>
 <div class="footer">
 <p><a href="https://platform.openai.com/tokenizer" target="_blank">OpenAI Tokenizer for GPT-4o &amp; GPT-4o mini</a></p>
 </div>
@@ -296,20 +297,22 @@ Carsten Lange
 <section id="we-have-tokens-but-how-do-we-convert-them-to-numbers" class="slide level2">
 <h2>We have Tokens, but how do we convert them to numbers?</h2>
 <p><strong><br><br>Using their ID is not a good idea!</strong><br><br></p>
-<p><strong>Simplification:</strong></p>
+<p><strong>Simplification for Teaching:</strong></p>
 <ul>
 <li>each word in the English language (200,000) becomes a token <br> (no sub-tokens)</li>
 <li>words are sorted alphabetically not by their ID</li>
 </ul>
 </section>
-<section id="we-have-tokens-but-how-do-we-convert-them-to-numbers-1" class="slide level2">
+<section id="we-have-tokens-but-how-do-we-convert-them-to-numbers-1" class="slide level2 smaller">
 <h2>We have Tokens, but how do we convert them to numbers?</h2>
-<div class="column" style="width:80%;">
+<div class="column" style="width:65%;">
 <p><strong>One Hot Encoding</strong></p>
 <p>A vector (a list) with the length of the tokens for the language is created (e.g., for English, about 200,000 words/tokens)</p>
 <p>The value for all words/tokens is zero with the exception of the word/token of interest (One-Hot)</p>
-</div><div class="column" style="width:20%;">
-<p><strong>Neural Network</strong></p>
+</div><div class="column" style="width:5%;">
+
+</div><div class="column" style="width:30%;">
+<p><strong>“Neural Network”</strong></p>
 <p><img data-src="images/clipboard-1984520822.png"></p>
 </div></section>
 <section id="ridiculous-simple-example---untrained-guess-the-next-word" class="slide level2" data-auto-animate="true">
@@ -331,7 +334,7 @@ Carsten Lange
 <h3 id="problems-and-solutions-xx">Problems and Solutions ●● ●●XX</h3>
 <ol type="1">
 <li><em>One-Hot Encoding</em> is wasteful (e.g., the word “neural”: A list with 200,000 numbers all 0 except the position for “neural” being 1)</li>
-<li>One-Hot Vectors have <strong>no semantics</strong>. E.g., <code>neural</code> and <code>network</code> are not similary encoded.<br> <strong>Solution to 1) and 2):</strong> <code>Word Embedding</code>.</li>
+<li>One-Hot Vectors have <strong>no semantics</strong>. E.g., <code>neural</code> and <code>network</code> are not similarly encoded.<br> <strong>Solution to 1) and 2):</strong> <code>Word Embedding</code>.</li>
 <li>The prompt has only one word. A prompt with more words needs information about the order of words.<br> <strong>Solution:</strong> <code>Positional Encoding</code></li>
 <li>When the prompt has more words, we also need <strong>Attention.</strong> <br>E.g.: <br> <code>The animal didn't cross the street because it is too tired</code><br> or <br> <code>The animal didn't cross the street because it is too wide</code><br> <strong>Solution:</strong> <code>Attention</code> (stores for each word which words from the prompt are important and which are not)</li>
 </ol>
@@ -345,11 +348,11 @@ Carsten Lange
 
 <img data-src="images/clipboard-340487702.png" class="r-stretch"><p>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=12" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=12</a></p>
 </section>
-<section id="word-embedding-to-provide-meaningsementic" class="slide level2">
-<h2>Word Embedding to Provide Meaning/Sementic</h2>
-<p><code>King - Male + Female = ???</code></p>
+<section id="word-embedding-to-provide-meaningsemantic" class="slide level2">
+<h2>Word Embedding to Provide Meaning/Semantic</h2>
+<p><code>King - Man + Women = ???</code></p>
 <div class="fragment">
-<p><code>King - Male + Female = Queen</code></p>
+<p><code>King - Man + Women = Queen</code></p>
 </div>
 <div class="fragment">
 <p><small>Similar words should have similar encoding vectors:<br><br> <code>great</code> should be similar to <code>amazing</code>. The input vector for <code>tomato</code> should be similar to the one for <code>apple</code>, and the input vectors for <code>queen</code> and <code>king</code> should also be similar.</small></p>
@@ -378,6 +381,7 @@ Carsten Lange
 <h2>Word Embedding Real World Example</h2>
 <h4 id="covid-twitter-feed">Covid Twitter Feed</h4>
 <p><a href="https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz" target="_blank">https://colab.research.google.com/drive/10AiswVTzzgr7dlJJEe_t3Pgm3evbGtzP#scrollTo=-chXmtjNVNbz</a></p>
+<p>The file <code>Corona_NLP_train.csv</code> needs to be uploaded first (see folder symbol left panel)</p>
 <p>●● ●● ●● XXX</p>
 </section>
 <section id="storing-the-position-of-words-in-the-prompt" class="slide level2">
@@ -402,11 +406,83 @@ Carsten Lange
 </section>
 <section id="generate-position-aware-embedding-1" class="slide level2">
 <h2>Generate Position-Aware Embedding</h2>
-<h3 class="smaller" id="add-posion-2-to-the-embeding-of-bit">Add Posion 2 to the Embeding of <code>bit</code></h3>
+<h3 class="smaller" id="add-posion-2-to-the-embedding-of-bit">Add Posion 2 to the Embedding of <code>bit</code></h3>
 <p>Add a <em>Position-Vector</em> (512 x 1) to each word embedding (512 x 1).</p>
-<p>The <em>Position-Vector</em> reflects the word position of the word <code>bit</code> in the prompt<br> <small>(prompt size = 32,000 in GPT-4; Gemini 1.5 Pro, Google’s most advanced model, has 1 million tokens)</small></p>
+<p>The <em>Position-Vector</em> reflects the word position of the word <code>bit</code> in the prompt</p>
 
 <img data-src="images/clipboard-1514739384.png" class="r-stretch"></section>
+<section id="prompt-sizes-positions-to-encode-in-llm" class="slide level2 smaller">
+<h2>Prompt Sizes (Positions to Encode) in LLM</h2>
+<div id="tbl-llm-sizes" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-llm-sizes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Comparison of LLM Prompt Sizes (2020-2026)
+</figcaption>
+<div aria-describedby="tbl-llm-sizes-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Era</th>
+<th style="text-align: left;">Model Name</th>
+<th style="text-align: center;">Context Window (Tokens)</th>
+<th style="text-align: center;">Approx. Pages</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Current</strong></td>
+<td style="text-align: left;">Gemini 3 Pro</td>
+<td style="text-align: center;">1M</td>
+<td style="text-align: center;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Current</strong></td>
+<td style="text-align: left;">Llama 4 Scout</td>
+<td style="text-align: center;">10M</td>
+<td style="text-align: center;">10,000</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Current</strong></td>
+<td style="text-align: left;">Claude 4.6</td>
+<td style="text-align: center;">200K</td>
+<td style="text-align: center;">200</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Current</strong></td>
+<td style="text-align: left;">GPT-5</td>
+<td style="text-align: center;">400K</td>
+<td style="text-align: center;">400</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Current</strong></td>
+<td style="text-align: left;">DeepSeek-R1</td>
+<td style="text-align: center;">128K</td>
+<td style="text-align: center;">128</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Legacy</strong></td>
+<td style="text-align: left;">GPT-4 Turbo</td>
+<td style="text-align: center;">128K</td>
+<td style="text-align: center;">128</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong>Legacy</strong></td>
+<td style="text-align: left;">Claude 1</td>
+<td style="text-align: center;">100K</td>
+<td style="text-align: center;">100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Legacy</strong></td>
+<td style="text-align: left;">GPT-2</td>
+<td style="text-align: center;">1024</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
 <section id="adding-attention-xxx" class="slide level2">
 <h2>Adding Attention XXX</h2>
 <p><strong>Example 1:</strong><br>The <strong>animal</strong> didn’t cross the street because <strong>it</strong> was too <strong>tired</strong>.<br></p>
@@ -511,8 +587,8 @@ Carsten Lange
 </ul>
 <p>The course is not free, but a free trial exist. The 4 hour course is <strong>strongly recommended</strong> to dive deeper.</p>
 </section>
-<section id="demo-1-prompt-engeneering-human-writer" class="slide level2">
-<h2>Demo 1: Prompt Engeneering (Human Writer)</h2>
+<section id="demo-1-prompt-engineering-human-writer" class="slide level2">
+<h2>Demo 1: Prompt Engineering (Human Writer)</h2>
 <p>Left upper corner: Edit GPT Goto Configure</p>
 </section>
 <section id="demo-2-machine-learning-book-analyzer" class="slide level2">
@@ -565,7 +641,7 @@ Carsten Lange
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
+'chalkboard': {"buttons":true},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -719,7 +795,7 @@ Carsten Lange
         margin: 0.1,
 
         math: {
-          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/MathJax.js',
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
           config: 'TeX-AMS_HTML-full',
           tex2jax: {
             inlineMath: [['\\(','\\)']],
@@ -793,13 +869,14 @@ Carsten Lange
           e.clearSelection();
         }
         const getTextToCopy = function(trigger) {
-            const codeEl = trigger.previousElementSibling.cloneNode(true);
-            for (const childEl of codeEl.children) {
-              if (isCodeAnnotation(childEl)) {
-                childEl.remove();
-              }
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
             }
-            return codeEl.innerText;
+          }
+          return codeEl.innerText;
         }
         const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
           text: getTextToCopy
