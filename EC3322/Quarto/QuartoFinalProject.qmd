@@ -1,0 +1,108 @@
+---
+title: "Assignment: Quantitative Financial Analysis with Quarto"
+subtitle: "EC 3322: Economic Statistics"
+author: "Insert Group Members Here (only active members)"
+date: last-modified
+format: 
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: show
+    embed-resources: true
+---
+
+# Introduction {#sec-intro}
+
+In this assignment, you will apply statistical methods to real-world financial data. You are required to use **Quarto** within the **Positron** IDE to create a professional, reproducible report. Your analysis will cover descriptive statistics, inferential statistics, and basic regression.
+
+# Data Acquisition
+
+Select two stocks and use the Excel Macro provided in the video for the Quarto Project to download the most recent two months of daily data. Save these files as `.csv` or `.xlsx` in your Positron working folder.
+
+```{r}
+#| label: load-data
+#| warning: false
+#| message: false
+
+# Load necessary libraries
+library(tidyverse)
+library(readxl)
+
+# Load your data here
+# stock_a <- read_csv("your_stock_a.csv")
+# stock_b <- read_csv("your_stock_b.csv")
+```
+
+# Descriptive Statistics {#sec-stats}
+
+## Methodology and Formulas
+
+Explain how you proceed with the analysis. Provide the formulas for the mean and standard deviation.
+
+The arithmetic mean is calculated as $\bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i$. The sample standard deviation is defined by the following formula:
+
+$$SD = \sqrt{\frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n - 1}}$$
+
+## Results and Interpretation
+
+Calculate the mean, median, and standard deviation for your primary stock. 
+
+
+
+**Task:** Interpret your results. Specifically, discuss the difference between the mean and the median and what it suggests about the distribution of your stock's returns.
+
+# Inferential Statistics
+
+## Confidence Interval
+
+Calculate a 95% confidence interval for the mean price or return of your primary stock.
+
+
+
+**Task:** Interpret the confidence interval. As mentioned in @sec-intro, ensure your explanation is framed for a professional audience.
+
+# Data Visualization
+
+Generate a plot using `ggplot2` to visualize your data.
+
+
+
+**Task:** Interpret  your plot. Discuss any visible trends, volatility, or outliers observed in the data.
+
+# Regression Analysis
+
+Download a second stock for the same time frame and run a simple linear regression.
+
+
+
+**Task:** Interpret the regression output. Discuss the slope coefficient and the R-squared value. What does this suggest about the relationship between these two stocks?
+
+# Short Videos
+
+Here you can find short videos (including how to get stock data into Excel) that help you with the project:
+
+[https://www.lange-analytics.com/tmp/VideoFlow.html](https://www.lange-analytics.com/tmp/VideoFlow.html){target="_blank"}
+
+
+# Conclusion
+
+Summarize your findings and reflect on the utility of Quarto for professional economic reporting.
+
+# Grading and Submission Policy
+
+This assignment is worth a total of **100 points**, split across two submission windows to allow for iterative improvement.
+
+## Submission Timeline
+
+| Milestone | Due Date | Points | Description |
+|-----------|----------|--------|-------------|
+| **Initial Submission** | [TBD] (2 weeks before Final) | 50 | Full report draft. Focus on structure and initial analysis. |
+| **Final Submission** | [TBD] (3 days after Final) | 50 | Final polished report with all requirements met. |
+
+## Scoring and Revision
+* **Initial Phase (50 Points):** Your first submission will be graded based on the completeness of the requirements listed above.
+* **Improvement Option:** After receiving feedback on your initial report, you have the opportunity to refine your code, improve your interpretations, and fix formatting issues.
+* **Final Phase (50 Points):** The final submission should represent your best professional work. Points in this phase are awarded for technical accuracy, the quality of your regression interpretation, and the professional appearance of the Quarto HTML output.
+
+**Note:** Ensure your file is named correctly and all code runs without errors before submitting the HTML file to Canvas.
