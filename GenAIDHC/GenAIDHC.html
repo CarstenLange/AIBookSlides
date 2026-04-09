@@ -406,11 +406,16 @@ Carsten Lange
 </section>
 <section id="generate-position-aware-embedding-1" class="slide level2">
 <h2>Generate Position-Aware Embedding</h2>
-<h3 class="smaller" id="add-posion-2-to-the-embedding-of-bit">Add Posion 2 to the Embedding of <code>bit</code></h3>
+<h3 class="smaller" id="add-position-2-to-the-embedding-of-bit">Add Position 2 to the Embedding of <code>bit</code></h3>
 <p>Add a <em>Position-Vector</em> (512 x 1) to each word embedding (512 x 1).</p>
 <p>The <em>Position-Vector</em> reflects the word position of the word <code>bit</code> in the prompt</p>
 
 <img data-src="images/clipboard-1514739384.png" class="r-stretch"></section>
+<section id="how-positional-encoding-works" class="slide level2">
+<h2>How Positional Encoding Works</h2>
+<p><a href="Counting.xlsx" target="_blank">Excel: How we count</a></p>
+<p><a href="https://medium.com/thedeephub/positional-encoding-explained-a-deep-dive-into-transformer-pe-65cfe8cfe10b" target="_blank">Details: Positional Encoding Explained</a></p>
+</section>
 <section id="prompt-sizes-positions-to-encode-in-llm" class="slide level2 smaller">
 <h2>Prompt Sizes (Positions to Encode) in LLM</h2>
 <div id="tbl-llm-sizes" class="quarto-float quarto-figure quarto-figure-center">
@@ -483,38 +488,66 @@ Table&nbsp;1: Comparison of LLM Prompt Sizes (2020-2026)
 </figure>
 </div>
 </section>
-<section id="adding-attention-xxx" class="slide level2">
-<h2>Adding Attention XXX</h2>
-<p><strong>Example 1:</strong><br>The <strong>animal</strong> didn’t cross the street because <strong>it</strong> was too <strong>tired</strong>.<br></p>
-<p><strong>Example 2:</strong><br>The animal didn’t cross the <strong>street</strong> because <strong>it</strong> was too <strong>wide</strong>.<br></p>
-<div class="fragment">
-<p><strong>Attention</strong> identifies for each word in the prompt how relevant other words are.<br><br></p>
-</div>
-<div class="fragment">
-<p><strong>Simplified:</strong></p>
-<p><strong>Example 1:</strong> the word <strong>it</strong> points to <strong>animal</strong>.</p>
-<p><strong>Example 2:</strong> the word <strong>it</strong> points to <strong>street</strong>.</p>
-</div>
+<section id="step-3-adding-attention" class="slide level2">
+<h2>Step 3: Adding Attention</h2>
+<p><strong>Example 1:</strong><br>The <strong>animal</strong> didn’t cross the road because <strong>it</strong> was too <strong>tired</strong>.</p>
+<p><strong>Example 2:</strong><br>The animal didn’t cross the <strong>road</strong> because <strong>it</strong> was too <strong>wide</strong>.</p>
+<p>Step 3 identifies for each word in the prompt other words in the prompt that are relevant (<strong>Attention</strong>)</p>
+<p>Simplified:</p>
+<p><strong>In Example 1</strong> the word <strong>it</strong> points to <strong>animal</strong>.</p>
+<p><strong>In Example 2</strong> the word <strong>it</strong> points to <strong>road</strong>.</p>
 </section>
-<section id="adding-attention-to-the-word-it" class="slide level2">
-<h2>Adding Attention to the Word <code class="smaller">it</code></h2>
-<p>The <strong>animal</strong> didn’t cross the street because <strong>it</strong> was too <strong>tired</strong>.</p>
-<p>The final <em>Position</em> and <em>Attention-Aware</em> <code>Vector A</code> for the word of interest (<code>it</code>) is created as a weighted sum from all <code>V-Vectors</code> in the prompt.</p>
-<p><strong>The procedure described above is applied to all words in the prompt.</strong></p>
+<section id="step-3-adding-attention-1" class="slide level2 smaller">
+<h2>Step 3: Adding Attention</h2>
+<p>Using <code>Position-Aware</code> <code>Vector X</code> and a <em>linear Neural Network</em> (<span class="math inline">\(Act_i=Inp^{eff}_i\)</span>) to create new vectors <code>Q-Vector</code> (what the word searches for), <code>K-Vector</code> (what the word has to offer),<code>V-Vector</code> (content of Vector X slightly modified).</p>
+
+<img data-src="images/clipboard-2021075770.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=72" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=72</a></small></p>
+</section>
+<section id="step-3-adding-attention-2" class="slide level2 smaller">
+<h2>Step 3: Adding Attention</h2>
+<p>Comparing a words <code>Q-Vector</code> (what it wants) with all other words <code>K-Vectors</code>, including its own, using the <strong>Dot Product</strong>. The results are processed via <em>SoftMax</em> for all words and are written in an <em>importance vector</em> (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (<code>it</code>).</p>
 
 <img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=73" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=73</a></small></p>
 </section>
-<section id="multi-head-processing" class="slide level2 smaller">
-<h2>Multi Head Processing</h2>
+<section id="step-3-adding-attention-3" class="slide level2 smaller">
+<h2>Step 3: Adding Attention</h2>
+<p>The final <em>Position</em> and <em>Attention-Aware</em> <code>Vector A</code> for the word of interest (<code>it</code>) is created as a weighted sum from all <code>V-Vectors</code> in the prompt.</p>
+<p>The procedure described above is applied to all words in the prompt.</p>
+
+<img data-src="images/clipboard-3133032979.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=73" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=73</a></small></p>
+</section>
+<section id="step-4-multi-head-processing" class="slide level2 smaller">
+<h2>Step 4: Multi Head Processing</h2>
 <p><strong>Multi Head Processing:</strong> When creating <code>Q</code>, <code>K</code> and <code>V</code> vectors, they are created with a smaller dimensionality. Here 8 vectors with dimension 64 each.</p>
 <p>This allows <em>Self-Attention</em> to use different focus for each section.</p>
 
 <img data-src="images/clipboard-3812760553.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=75" target="_Blank">https://online.fliphtml5.com/grdgl/qhfw/#p=75</a></small></p>
 </section>
-<section id="multi-head-processing-visualization-from-google" class="slide level2">
-<h2>Multi Head Processing (Visualization from Google)</h2>
-<p>Use layer 1 (attention head 2 (orange) <a href="https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC" target="&quot;Blank_">https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC</a></p>
-<p>●● ●● ●● ●●XX XX</p>
+<section id="step-4-multi-head-processing-visualization-from-google" class="slide level2">
+<h2>Step 4: Multi Head Processing (Visualization from Google)</h2>
+<p><a href="https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC" target="&quot;Blank_">https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC</a></p>
+</section>
+<section id="steps-5a-5b-5c-5d" class="slide level2 columns smaller">
+<h2>Steps 5a, 5b, 5c, 5d</h2>
+<div class="column" style="width:60%;">
+<p><strong>Residual Connection:</strong> Add information from previous steps (again) to the system. In case it got lost during training.</p>
+<p><strong>Normalization</strong> of <em>attention-aware</em> vector</p>
+<p><strong>Feed Forward Neural Network (MLP)</strong> to add non-linearity</p>
+<p><strong>Multiple Layers with Self Attention</strong> (96 in <em>GPT3</em>)</p>
+</div><div class="column" style="width:40%;">
+<p><img data-src="images/clipboard-2833345460.png"></p>
+<p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=12" target="Blank_">https://online.fliphtml5.com/grdgl/qhfw/#p=12</a></small></p>
+</div></section>
+<section id="step-6-training" class="slide level2 smaller">
+<h2>Step 6: Training</h2>
+<p>All words (<em>position</em> and <em>attention-aware vectors</em>) - <code>A-Vectors</code> - from the prompt are simultaneously moved through a non-linear model, and the next word for each word in the prompt is predicted.</p>
+
+<img data-src="images/clipboard-480391752.png" class="r-stretch"><p><small>Source: <a href="https://online.fliphtml5.com/grdgl/qhfw/#p=130" target="_blank">https://online.fliphtml5.com/grdgl/qhfw/#p=130</a></small></p>
+</section>
+<section id="parallelization" class="slide level2">
+<h2>Parallelization</h2>
+<p>Most tasks such as <em>Content-Awareness</em> and <em>Position Awareness</em> are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of <strong>Parallelization</strong></p>
+<p>Not only the next word of a prompt is predicted but also the next words for all other words in the prompts. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word’s following word), the GPT can learn the next word for the complete <em>Context Window</em>. <strong>A Transformer can learn 32,000 words in one run</strong>.</p>
 </section>
 <section id="what-we-wanted-from-an-llm-we-are-here" class="slide level2 smaller">
 <h2>What we wanted from an LLM: We are here</h2>
@@ -524,22 +557,6 @@ Table&nbsp;1: Comparison of LLM Prompt Sizes (2020-2026)
 <section id="llm-fine-tuning" class="slide level2 smaller scrollable">
 <h2>LLM (Fine) Tuning</h2>
 <p>After a model is trained with <em>language</em> (i.e., the complete Internet), it needs to be <em>fine-tuned</em> to perform specific tasks:</p>
-<div title="This is the only topic we cover" style="background-color:white; color:black; border-left:4px solid black;">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>This is the only topic we cover</strong></p>
-</div>
-<div class="callout-content">
-<p><strong style="color: black;">Supervised Learning</strong></p>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
 <p><strong>Self-supervised:</strong> Train on the desired data from the beginning (extremely expensive)</p>
 <p><strong>Reinforcement Learning from Human Feedback (RLHF):</strong></p>
 <ol type="1">
@@ -547,61 +564,66 @@ Table&nbsp;1: Comparison of LLM Prompt Sizes (2020-2026)
 <li>Create reward model</li>
 <li>Adjust original model</li>
 </ol>
-</div>
+<p><strong>Supervised Learning</strong></p>
 </section>
 <section id="supervised-learning" class="slide level2 smaller scrollable">
 <h2>Supervised Learning</h2>
-<div title="This is the only topic we cover" style="background-color:white; color:black; border-left:4px solid black;">
-<div class="callout callout-note callout-titled callout-style-default">
-<div class="callout-body">
-<div class="callout-title">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<p><strong>This is the only topic we cover</strong></p>
-</div>
-<div class="callout-content">
-<p><strong style="color: black;">Transfer Learning</strong></p>
+<p><strong>Transfer Learning:</strong></p>
 <ul>
 <li>Freeze all parameters except the last one or two layers (could also be different layers)</li>
 <li>retrain last one or two layers with new data</li>
 </ul>
-</div>
-</div>
-</div>
-</div>
-<div class="fragment">
 <p><strong>Parameter Efficient Fine Tuning (PEFT) Methods</strong></p>
 <ol type="1">
 <li><p><strong>Adapters:</strong> Freeze parameters. Then add adapters to the model, and train the parameters of the <em>adapters</em> with the new data</p></li>
 <li><p><strong>Low-Rank Adaptation:</strong> Generate for each parameter matrix in the model, two matrices that when multiplied give the values of the matrix (<em>decomposing</em> <span class="math inline">\(A\)</span>). E.g., <span class="math inline">\(A\)</span> has the dimension <span class="math inline">\(512\times 512\)</span> and <span class="math inline">\(B\)</span> has <span class="math inline">\(512\times2\)</span> and <span class="math inline">\(C\)</span> has <span class="math inline">\(2\times512\)</span>. So that <span class="math inline">\(B\cdot C=A\)</span>. Freeze <span class="math inline">\(A\)</span> and train <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> with new data (these are 2048 elements rather than 262144 elements). Multiply <span class="math inline">\(B\)</span> and <span class="math inline">\(C\)</span> and add it to <span class="math inline">\(A\)</span>. This gives the <em>fine-tuned</em> weights.</p></li>
 <li><p><strong>Prompt Tuning:</strong> E.g. <em>RAGs</em></p></li>
 </ol>
-</div>
 </section>
-<section id="source" class="slide level2">
-<h2>Source</h2>
-<p>The following is based on:</p>
-<ul>
-<li><a href="https://community.superdatascience.com/c/llm-gpt">Super Data Science Course: GenAI &amp; LLMs A-Z</a><br></li>
-</ul>
-<p>The course is not free, but a free trial exist. The 4 hour course is <strong>strongly recommended</strong> to dive deeper.</p>
+<section id="where-to-learn-more-about-transformers-and-llm" class="slide level2">
+<h2>Where to Learn More About Transformers and LLM</h2>
+<p><strong>GenAI &amp; LLMs A-Z (Advanced Technical Course)</strong> <br> A Super Data Science course. The course is not free but a free trial of Super DataScience is available.</p>
+<p><a href="https://community.superdatascience.com/c/llm-gpt" target="blank_">https://community.superdatascience.com/c/llm-gpt</a></p>
+</section>
+<section id="rags---prompt-engineering-in-combination-with-search-engine" class="slide level2">
+<h2>RAGs - Prompt Engineering in Combination with Search Engine</h2>
+
+<img data-src="images/clipboard-1202208612.png" class="r-stretch quarto-figure-center"><p class="caption">Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f</p></section>
+<section id="prompt-engineering-example" class="slide level2 scrollable">
+<h2>Prompt Engineering (Example)</h2>
+<p>Use to <em>ChatGPT</em> Windows with these propmpts:</p>
+<p><strong>1. Window</strong></p>
+<ol type="1">
+<li>“Tell me about Monserat”</li>
+</ol>
+<p><strong>2. Window</strong></p>
+<ol type="1">
+<li>“Tell me about Times Roman”</li>
+<li>“Tell me about Monserat”</li>
+</ol>
+</section>
+<section id="prompt-engineering-example-gift-recommender" class="slide level2">
+<h2>Prompt Engineering (Example: Gift Recommender)</h2>
+<p><a href="https://ai.centillionware.com/gift/" target="blank_">https://ai.centillionware.com/gift/</a></p>
+</section>
+<section id="prompt-engineering-example-gift-recommender-1" class="slide level2">
+<h2>Prompt Engineering (Example: Gift Recommender)</h2>
+<pre><code>$prompt = "</code></pre>
+<pre><code>&nbsp;&nbsp;&nbsp; Find a birthday gift that cost between $budget_min dollars and $budget_max for a $sex person who is $age years old. </code></pre>
+<pre><code>&nbsp;&nbsp;&nbsp;&nbsp;The person's hobbies are $hobbies.</code></pre>
+<pre><code>&nbsp;&nbsp;&nbsp; Sport is $sport_scale. $sport</code></pre>
+<pre><code>&nbsp;&nbsp;&nbsp; Movies are $movie_genre_scale. $movie_genre</code></pre>
+<pre><code>&nbsp;&nbsp;&nbsp; Books are $author_scale. $author</code></pre>
+<pre><code>&nbsp;&nbsp;&nbsp; Food is $food_scale. $food</code></pre>
+<pre><code>&nbsp; ";</code></pre>
 </section>
 <section id="demo-1-prompt-engineering-human-writer" class="slide level2">
 <h2>Demo 1: Prompt Engineering (Human Writer)</h2>
-<p>Left upper corner: Edit GPT Goto Configure</p>
 </section>
-<section id="demo-2-machine-learning-book-analyzer" class="slide level2">
-<h2>Demo 2: Machine Learning Book Analyzer</h2>
-<p><a href="https://ai.lange-analytics.com">https://ai.lange-analytics.com</a></p>
-</section>
-<section id="demo-3-machine-learning-book" class="slide level2">
-<h2>Demo 3: Machine Learning Book</h2>
-<p>CANVAS Course: Advising and content help</p>
-</section>
-<section id="demo-4-googles-homework-cheater" class="slide level2">
-<h2>Demo 4: Googles Homework Cheater</h2>
-<p>quiz is at c:/calpoly/ec322/HomeworkQLive</p>
+<section id="demo-2-ai-book-in" class="slide level2">
+<h2>Demo 2: AI Book in</h2>
+<p><a href="ai.lange-analytics.com">ai.lange-analytics.com</a>{target+“_blank”}</p>
+<p>Also try in ChatGPT</p>
 
 </section>
     </div>

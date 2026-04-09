@@ -345,7 +345,7 @@ Word positions are also stored in a vector (list of numbers) with the same lengt
 
 
 ## Generate Position-Aware Embedding 
-### Add Posion 2 to the Embedding of `bit` {.smaller}
+### Add Position 2 to the Embedding of `bit` {.smaller}
 
 Add a *Position-Vector* (512 x 1) to each word embedding (512 x 1).
 
@@ -353,6 +353,12 @@ The *Position-Vector* reflects the word position of the word `bit` in the prompt
 
 
 ![](images/clipboard-1514739384.png)
+
+## How Positional Encoding Works
+
+[Excel: How we count](Counting.xlsx){target="_blank"}
+
+[Details: Positional Encoding Explained](https://medium.com/thedeephub/positional-encoding-explained-a-deep-dive-into-transformer-pe-65cfe8cfe10b){target="_blank"}
 
 ## Prompt Sizes (Positions to Encode) in LLM {.smaller}
 
@@ -370,41 +376,51 @@ The *Position-Vector* reflects the word position of the word `bit` in the prompt
 : Comparison of LLM Prompt Sizes (2020-2026) {#tbl-llm-sizes}
 
 
-## Adding Attention XXX
-
-**Example 1:**<br>The **animal** didn’t cross the street because **it** was too **tired**.<br>
-
-**Example 2:**<br>The animal didn’t cross the **street** because **it** was too **wide**.<br>
-
-. . .
-
-**Attention** identifies for each word in the prompt how relevant other words are.<br><br>
-
-. . .
-
-**Simplified:**
-
-**Example 1:** the word **it** points to **animal**.
-
-**Example 2:** the word **it** points to **street**.
 
 
 
 
+## Step 3: Adding Attention
 
-##  Adding Attention to the Word `it`{.smaller}
+**Example 1:**<br>The **animal** didn’t cross the road because **it** was too **tired**.
 
-The **animal** didn’t cross the street because **it** was too **tired**.
+**Example 2:**<br>The animal didn’t cross the **road** because **it** was too **wide**.
 
-The final *Position* and *Attention-Aware* `Vector A` for the word of interest (`it`) is created as a weighted sum from all `V-Vectors` in the prompt.
+Step 3 identifies for each word in the prompt other words in the prompt that are relevant (**Attention**)
 
-**The procedure described above is applied to all words in the prompt.**
+Simplified:
+
+**In Example 1** the word **it** points to **animal**.
+
+**In Example 2** the word **it** points to **road**.
+
+## Step 3: Adding Attention {.smaller}
+
+Using `Position-Aware` `Vector X` and a  *linear Neural Network* ($Act_i=Inp^{eff}_i$) to create new vectors `Q-Vector` (what the word searches for), `K-Vector` (what the word has to offer),`V-Vector` (content of Vector X slightly modified).
+
+![](images/clipboard-2021075770.png)
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=72](https://online.fliphtml5.com/grdgl/qhfw/#p=72){target="_blank"}</small>
+
+## Step 3: Adding Attention {.smaller}
+
+Comparing a words `Q-Vector` (what it wants) with all other words `K-Vectors`, including its own, using the **Dot Product**. The results are processed via *SoftMax* for all words and are written in an *importance vector* (see the yellow framed vector). It shows the importance of each other word in the prompt for the analyzed word (`it`).
 
 ![](images/clipboard-3133032979.png)
 
 <small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=73](https://online.fliphtml5.com/grdgl/qhfw/#p=73){target="Blank_"}</small>
 
-## Multi Head Processing {.smaller}
+## Step 3: Adding Attention {.smaller}
+
+The final *Position* and *Attention-Aware* `Vector A` for the word of interest (`it`) is created as a weighted sum from all `V-Vectors` in the prompt.
+
+The procedure described above is applied to all words in the prompt.
+
+![](images/clipboard-3133032979.png)
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=73](https://online.fliphtml5.com/grdgl/qhfw/#p=73){target="Blank_"}</small>
+
+## Step 4: Multi Head Processing {.smaller}
 
 **Multi Head Processing:** When creating `Q`, `K` and `V` vectors, they are created with a smaller dimensionality. Here 8 vectors with dimension 64 each.
 
@@ -414,12 +430,43 @@ This allows *Self-Attention* to use different focus for each section.
 
 <small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=75](https://online.fliphtml5.com/grdgl/qhfw/#p=75){target="_Blank"}</small>
 
-## Multi Head Processing (Visualization from Google)
+## Step 4: Multi Head Processing (Visualization from Google)
 
-Use layer 1 (attention head 2 (orange) 
 [https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC](https://colab.research.google.com/github/tensorflow/tensor2tensor/blob/master/tensor2tensor/notebooks/hello_t2t.ipynb#scrollTo=OJKU36QAfqOC){target="\"Blank_"}
 
-●● ●●  ●●   ●●XX XX
+## Steps 5a, 5b, 5c, 5d {.columns .smaller}
+
+::: {.column width="60%"}
+**Residual Connection:** Add information from previous steps (again) to the system. In case it got lost during training.
+
+**Normalization** of *attention-aware* vector
+
+**Feed Forward Neural Network (MLP)** to add non-linearity
+
+**Multiple Layers with Self Attention** (96 in *GPT3*)
+:::
+
+::: {.column width="40%"}
+
+![](images/clipboard-2833345460.png) 
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}</small>
+
+:::
+
+## Step 6: Training {.smaller}
+
+All words (*position* and *attention-aware vectors*) - `A-Vectors` - from the prompt are simultaneously moved through a non-linear model, and the next word for each word in the prompt is predicted.
+
+![](images/clipboard-480391752.png)
+
+<small>Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=130](https://online.fliphtml5.com/grdgl/qhfw/#p=130){target="_blank"}</small>
+
+## Parallelization
+
+Most tasks such as *Content-Awareness* and *Position Awareness* are processed for individual words/tokens. This means they can be assigned to different cores and computer clusters. Making training very fast as a result of **Parallelization**
+
+Not only the next word of a prompt is predicted but also the next words for all other words in the prompts. That seems like a waste as we do know the words. It is a waste in the production state of the transformer, but in the training state (by masking each word's following word), the GPT can learn the next word for the complete *Context Window*. **A Transformer can learn 32,000 words in one run**.
 
 ## What we wanted from an LLM: We are here  {.smaller}
 
@@ -428,73 +475,107 @@ Use layer 1 (attention head 2 (orange)
 Source: [https://online.fliphtml5.com/grdgl/qhfw/#p=12](https://online.fliphtml5.com/grdgl/qhfw/#p=12){target="Blank_"}
 
 
-## LLM (Fine) Tuning   {.smaller}
+## LLM (Fine) Tuning {.smaller}
 
 After a model is trained with *language* (i.e., the complete Internet), it needs to be *fine-tuned* to perform specific tasks:
 
-::: {.callout-note title="This is the only topic we cover" style="background-color:white; color:black; border-left:4px solid black;" }
-<strong style="color: black;">Supervised Learning</strong>
-:::
-
-. . .
-
-
 **Self-supervised:** Train on the desired data from the beginning (extremely expensive)
-
 
 **Reinforcement Learning from Human Feedback (RLHF):**
 
-1)  Work with labeled data from humans
-2)  Create reward model
-3)  Adjust original model
+1) Work with labeled data from humans
+2) Create reward model
+3) Adjust original model
 
-
+**Supervised Learning**
 
 ## Supervised Learning {.smaller}
 
-::: {.callout-note title="This is the only topic we cover" style="background-color:white; color:black; border-left:4px solid black;" }
+**Transfer Learning:** 
 
-<strong style="color: black;">Transfer Learning</strong>
-
--   Freeze all parameters except the last one or two layers (could also be different layers)
--   retrain last one or two layers with new data
-::: 
-
-. . .
+- Freeze all parameters except the last one or two layers (could also be different layers)
+- retrain last  one or two layers with new data
 
 **Parameter Efficient Fine Tuning (PEFT) Methods**
 
-1)  **Adapters:** Freeze parameters. Then add adapters to the model, and train the parameters of the *adapters* with the new data
+1) **Adapters:** Freeze parameters. Then add adapters to the model, and train the parameters of the *adapters* with the new data
+2) **Low-Rank Adaptation:** Generate for each parameter matrix in the model, two matrices that when multiplied give the values of the matrix (*decomposing* $A$). E.g., $A$ has the dimension $512\times 512$ and $B$ has $512\times2$ and $C$ has $2\times512$. So that $B\cdot C=A$. Freeze $A$ and train $B$ and $C$ with new data (these are 2048 elements rather than 262144 elements). Multiply $B$ and $C$ and add it to $A$. This gives the *fine-tuned* weights.
 
-2)  **Low-Rank Adaptation:** Generate for each parameter matrix in the model, two matrices that when multiplied give the values of the matrix (*decomposing* $A$). E.g., $A$ has the dimension $512\times 512$ and $B$ has $512\times2$ and $C$ has $2\times512$. So that $B\cdot C=A$. Freeze $A$ and train $B$ and $C$ with new data (these are 2048 elements rather than 262144 elements). Multiply $B$ and $C$ and add it to $A$. This gives the *fine-tuned* weights.
 
-3)  **Prompt Tuning:** E.g. *RAGs*
 
-## Source
-
-The following is based on:
-
--   [Super Data Science Course: GenAI & LLMs A-Z](https://community.superdatascience.com/c/llm-gpt)<br>
-
-The course is not free, but a free trial exist. The 4 hour course is **strongly recommended** to dive deeper.
+3) **Prompt Tuning:** E.g. *RAGs*
 
 
 
 
+
+
+## Where to Learn More About Transformers and LLM
+
+**GenAI & LLMs A-Z (Advanced Technical Course)** <br> A Super Data Science course. The course is not free but a free trial of Super DataScience is available.
+
+[https://community.superdatascience.com/c/llm-gpt](https://community.superdatascience.com/c/llm-gpt){target="blank_"}
+
+## RAGs - Prompt Engineering in Combination with Search Engine
+
+![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1202208612.png)
+
+## Prompt Engineering (Example)
+
+
+
+Use to *ChatGPT* Windows with these propmpts:
+
+**1. Window**
+
+1. "Tell me about Monserat"
+
+**2. Window**
+
+1. "Tell me about Times Roman"
+2. "Tell me about Monserat"
+
+## Prompt Engineering (Example: Gift Recommender)
+
+[https://ai.centillionware.com/gift/](https://ai.centillionware.com/gift/){target="blank_"}
+
+## Prompt Engineering (Example: Gift Recommender)
+
+```         
+$prompt = "
+```
+
+```         
+    Find a birthday gift that cost between $budget_min dollars and $budget_max for a $sex person who is $age years old. 
+```
+
+```         
+    The person's hobbies are $hobbies.
+```
+
+```         
+    Sport is $sport_scale. $sport
+```
+
+```         
+    Movies are $movie_genre_scale. $movie_genre
+```
+
+```         
+    Books are $author_scale. $author
+```
+
+```         
+    Food is $food_scale. $food
+```
+
+```         
+  ";
+```
 
 ## Demo 1: Prompt Engineering (Human Writer)
 
-Left upper corner: Edit GPT
-Goto Configure
+## Demo 2: AI Book in 
+[ai.lange-analytics.com](ai.lange-analytics.com){target+"_blank"}
 
-## Demo 2: Machine Learning Book Analyzer
-
-[https://ai.lange-analytics.com](https://ai.lange-analytics.com)
-
-## Demo 3: Machine Learning Book
-
-CANVAS Course: Advising and content help
-
-## Demo 4: Googles Homework Cheater
-
-quiz is at c:/calpoly/ec322/HomeworkQLive
+Also try in ChatGPT
