@@ -1,5 +1,5 @@
 ---
-title: "Understanding Generative AI "
+title: "Understanding Generative AI"
 
 author:
   name: "Carsten Lange"
@@ -85,7 +85,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 -   Word encoding **Tokenization and Embedding** of the English language
 
-- What is a **Neural Network**
+- What is th connection between **Neural Networks** and **GenAI**
 
 -   How the words position in a prompt can be coded (**Positional Encoding**)<br> `Dog bites child` but `Child bites dog`
 
@@ -516,6 +516,8 @@ After a model is trained with *language* (i.e., the complete Internet), it needs
 
 [https://community.superdatascience.com/c/llm-gpt](https://community.superdatascience.com/c/llm-gpt){target="blank_"}
 
+# Applications Of GenAI
+
 ## RAGs - Prompt Engineering in Combination with Search Engine
 
 ![Source: Medium https://medium.com/data-science-at-microsoft/how-large-language-models-work-91c362f5b78f](images/clipboard-1202208612.png)
@@ -576,6 +578,6 @@ $prompt = "
 ## Demo 1: Prompt Engineering (Human Writer)
 
 ## Demo 2: AI Book in 
-[ai.lange-analytics.com](ai.lange-analytics.com){target+"_blank"}
+[https://ai.lange-analytics.com](https://ai.lange-analytics.com){target="_blank"}
 
 Also try in ChatGPT
