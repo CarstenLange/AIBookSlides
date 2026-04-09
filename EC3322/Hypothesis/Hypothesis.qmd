@@ -33,7 +33,7 @@ engine: knitr
 
 ::: {.incremental}
 1. We use a **hypothesis that we do not believe in**, and we **pretend it is true**.
-2. Then we **use data** to show that **it is very unlikely that hypothesis is true**.
+2. Then we **use data** to show that **it is very unlikely that the hypothesis is true**.
 :::
 
 ## Searching for a Contradiction
@@ -47,7 +47,7 @@ engine: knitr
 : We act as if that claim is true.<br><br>
 
 **The Reality Check:**
-: We look at our **data** and hope to deduct that the **assumption (Null Hypothesis is unlikely to be true**.
+: We look at our **data** and hope to deduct that the **assumption (Null Hypothesis) is unlikely to be true**.
 
 ## Example: We believe a Scale is not measuring Precisely 
 
@@ -67,7 +67,7 @@ Assume that the weights are normally distributed.
 
 $$\mu=2$$
 
-### Alternative (Research Hypothesis) from the Data:
+### Alternative (Research) Hypothesis:
 
 $$\mu \neq 2$$
 
@@ -83,7 +83,7 @@ library(TeachHist)
 MyPlot=TeachHist::TeachHistConfInterv(SampleMean=2, StandardError = 0.07, DegreeFreedom=19, IsSdEstimated=TRUE)
 ```
 
-If the Null Hypothesis ($\mu=2$) is true and we assume 0.95% confidence the sample mean should fall somewhere in the $0.95$ confidence interval in 95% of all cases (it would be outside of the confidence interval in only 5% of the cases which is considered unlikely)
+**If the Null Hypothesis ($\mu=2$) is true** and we assume 0.95% confidence the sample mean should fall somewhere in the $0.95$ confidence interval in 95% of all cases. It would be outside of the confidence interval in only 5% of the cases which is considered unlikely.
 
 ## Hypothesis Test {.smaller}
 
@@ -112,7 +112,7 @@ If our sample mean is between $-2.093$ and $+2.093$ Standard Errors away from th
 :::
 :::::
 
-## Is our Sample mean between +/- 2.093 Standard Errors Away from the Mean? {.smaller}
+## Is our Sample mean is between +/- 2.093 Standard Errors Away from the Mean? {.smaller}
 
 **Does our sample t-value lie outside the non-rejection zone?**
 
@@ -144,11 +144,11 @@ Test the administrators’ claim for a confidence level of 95% and assume that t
 
 $$\mu>=8$$
 
-#### Alternative (Research Hypothesis) from the Data:
+#### Alternative (Research) Hypothesis:
 
 $$\mu < 8$$
 
-#### Data
+#### Data:
 
 $$\alpha=1-0.95=0.05$$
 
@@ -181,7 +181,7 @@ $$d.f=19-1=18$$
 
 $$t_\alpha=-1.734$$
 
-If our sample mean less than $-1.734$ Standard Errors away from the (assumed) mean, then it could have happened by chance and we cannot reject the hypothesis that the mean is $\mu=8$.
+If our sample mean is less than $-1.734$ Standard Errors away from the (assumed) mean, then it could have happened by chance and we cannot reject the hypothesis that the mean is $\mu=8$.
 :::
 
 ::: {.column width="50%"}
@@ -192,15 +192,162 @@ If our sample mean less than $-1.734$ Standard Errors away from the (assumed) me
 :::
 :::::
 
-## Is our Sample mean less than -1.734 Standard Errors Away from the Mean? {.smaller}
+## Is our Sample mean more than -1.734 Standard Errors Away from the Mean? {.smaller}
 
 **Does our sample t-value lie outside the non-rejection zone?**
 
 ```{r}
 #| echo: false
-TeachHistHypTest(NullHyp=2, StandardError = 0.07, SampleMean =2.1,  DegreeFreedom = 19, IsSdEstimated = TRUE)
+TeachHistHypTest(NullHyp=8, StandardError = 0.25, SampleMean =7.5,  DegreeFreedom = 18, IsSdEstimated = TRUE, TestType="LeftTail")
 ```
 
-$$t_{Sample}=\frac{7.5-8}{\frac{1.1}{\sqrt{19}}}=\frac{-0.5}{0.25} = -1.36$$
+$$t_{Sample}=\frac{7.5-8}{\frac{1.1}{\sqrt{19}}}=\frac{-0.5}{0.25} = -2$$
 
-We cannot reject the Null Hypothesis. The deviation from 2 might be accidental.
+We can reject the Null Hypothesis. The deviation from 8 is so big that it is not likely (5%) to happen just by accident.
+
+## One Tailed Hypothesis Tests  for Proportions {.smaller}
+
+It is believed that less than 50% of voters favor a tax increase to pay for new schools. 
+
+The school board believes that more than 50% of the voters favor a tax increase. To test their claim, they asked 50 voters whether they favor the tax increase and 30 said that they would vote in favor of the tax increase. 
+
+If the school board  wishes to be 90% confident with their conclusion, is the deviation high enough to reject the claim a majority of voters are not willing to support new schools with taxes?
+
+## One Tailed Hypothesis Test for Proportions {.smaller}
+
+#### The Assumption that the researcher doubts (Null Hypothesis):
+
+$$p<0.5$$
+
+#### Alternative (Research) Hypothesis:
+
+$$p \ge 0.5$$
+
+#### Data:
+
+
+
+$$\widehat{p}=\frac{30}{50}=0.6$$
+
+$$SE=\sqrt{\frac{\widehat{p}(1-\widehat{p})}{N}}=\sqrt{\frac{0.6\cdot (1-0.6)}{50}}=0.07$$
+
+Normal Distributed (enough observations)?
+
+$$50\cdot 0.6=30>5 \mbox{ and } 50\cdot (1-0.6)=20>5$$
+
+
+
+## One Tailed Hypothesis Test Proportions {.smaller}
+### Result Graph
+
+```{r}
+#| echo: false
+#| warning: false
+library(TeachHist)
+TeachHistHypTest(NullHyp=0.5, StandardError = sqrt(0.6*0.4/50), SampleMean =0.6, TestType="RightTail", RandVarName="Proportions", Confidence=0.9)
+```
+
+## Hypothesis Test {.smaller}
+
+::::: columns
+::: {.column width="50%"}
+### Critical z-Value
+
+
+
+
+$$z_{0.9}=1.28$$
+
+If our sample proportion is less than $1.28$ Standard Errors above the (assumed) proportion, then it could have happened by chance and we cannot reject the hypothesis that the true proportion is $p<0.5$.
+:::
+
+::: {.column width="50%"}
+### z-Table
+
+![](Images/ZTablePos.jpeg)
+
+:::
+:::::
+
+## Is our Sample proportion less than 1.28 Standard Errors Away from the Mean? {.smaller}
+
+**Does our sample z-value lie outside the non-rejection zone?**
+
+```{r}
+#| echo: false
+#| warning: false
+library(TeachHist)
+TeachHistHypTest(NullHyp=0.5, StandardError = sqrt(0.6*0.4/50), SampleMean =0.6, TestType="RightTail", RandVarName="Proportions", Confidence=0.9)
+```
+
+$$z_{Sample}=\frac{0.6-0.5}{0.07}=\frac{0.1}{0.07} = 1.43$$
+
+We can reject the Null Hypothesis. The deviation from 0.5 is so big that it is not likely (10%) to happen just by accident.
+
+## What is the highest Confidence Level where we still can Reject {.smaller}
+
+:::: columns
+::: {.column width="50%"}
+
+### Confidence=0.9
+
+```{r}
+#| echo: false
+#| warning: false
+library(TeachHist)
+TeachHistHypTest(NullHyp=0.5, StandardError = sqrt(0.6*0.4/50), SampleMean =0.6, TestType="RightTail", RandVarName="Proportions", Confidence=0.9)
+```
+
+**Remember:**
+
+$$z_{Sample}=\frac{0.1}{0.07} = 1.43$$
+
+
+### Confidence=0.9236
+
+```{r}
+#| echo: false
+#| warning: false
+library(TeachHist)
+TeachHistHypTest(NullHyp=0.5, StandardError = sqrt(0.6*0.4/50), SampleMean =0.6, TestType="RightTail", RandVarName="Proportions", Confidence=0.9236)
+```
+
+:::
+
+::: {.column width="50%"}
+### z-Table
+
+![](Images/ZTablePos.jpeg)
+:::
+::::
+
+## The Error Matrix
+
+
+
+| | $H_0$ is True | $H_0$ is False |
+| :--- | :---: | :---: |
+| **Fail to Reject $H_0$** | Correct Decision | **Type II Error ($\beta$)** <br> "False Negative" |
+| **Reject $H_0$** | **Type I Error ($\alpha$)** <br> "False Positive" | **Power ($1 - \beta$)** <br> Correct Decision |
+
+## Type I Error ($\alpha$)
+**"The False Positive"**
+
+This error occurs when the Null Hypothesis ($H_0$) is true, but we incorrectly reject it.
+
+* **Mechanism:** We conclude there is an effect or difference when none actually exists.
+* **Probability:** Defined by the significance level $\alpha$ (e.g., 0.05 or 0.10).
+* **Example:** In our $p < 0.5$ test, a *Type I* error would be concluding the proportion is NOT <0.5 when it actually is.
+
+## The Decision Matrix
+
+**Balancing $\alpha$ and $\beta$**
+
+| | $H_0$ is True | $H_0$ is False |
+| :--- | :---: | :---: |
+| **Fail to Reject $H_0$** | Correct Decision | **Type II Error ($\beta$)** <br> "False Negative" |
+| **Reject $H_0$** | **Type I Error ($\alpha$)** <br> "False Positive" | **Power ($1 - \beta$)** <br> Correct Decision |
+
+::: {.fragment .fade-up}
+> **The Trade-off:** Lowering $\alpha$ (to avoid Type I errors) typically increases $\beta$ (making Type II errors more likely), unless you increase the sample size $n$.
+:::

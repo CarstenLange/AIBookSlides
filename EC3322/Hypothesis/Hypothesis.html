@@ -155,7 +155,7 @@ Carsten Lange
 <h2>The Idea of a Hypothesis Test</h2>
 <ol type="1">
 <li class="fragment">We use a <strong>hypothesis that we do not believe in</strong>, and we <strong>pretend it is true</strong>.</li>
-<li class="fragment">Then we <strong>use data</strong> to show that <strong>it is very unlikely that hypothesis is true</strong>.</li>
+<li class="fragment">Then we <strong>use data</strong> to show that <strong>it is very unlikely that the hypothesis is true</strong>.</li>
 </ol>
 </section>
 <section id="searching-for-a-contradiction" class="slide level2">
@@ -172,7 +172,7 @@ We act as if that claim is true.<br><br>
 </dd>
 <dt><strong>The Reality Check:</strong></dt>
 <dd>
-We look at our <strong>data</strong> and hope to deduct that the <strong>assumption (Null Hypothesis is unlikely to be true</strong>.
+We look at our <strong>data</strong> and hope to deduct that the <strong>assumption (Null Hypothesis) is unlikely to be true</strong>.
 </dd>
 </dl>
 </section>
@@ -188,7 +188,7 @@ We look at our <strong>data</strong> and hope to deduct that the <strong>assumpt
 <h2>Example: We believe a Scale is not measuring Precisely</h2>
 <h3 id="the-assumption-that-we-doubt-null-hypothesis">The Assumption that we doubt (Null Hypothesis):</h3>
 <p><span class="math display">\[\mu=2\]</span></p>
-<h3 id="alternative-research-hypothesis-from-the-data">Alternative (Research Hypothesis) from the Data:</h3>
+<h3 id="alternative-research-hypothesis">Alternative (Research) Hypothesis:</h3>
 <p><span class="math display">\[\mu \neq 2\]</span></p>
 </section>
 <section id="the-pretend-phase" class="slide level2 smaller">
@@ -196,7 +196,7 @@ We look at our <strong>data</strong> and hope to deduct that the <strong>assumpt
 <p>We act as if the <strong>Null Hypothesis claim is true</strong> and use the <em>Standard Error</em> from the data sample as an estimate for the true <em>Standard Error</em>:</p>
 <p><span class="math display">\[SE=\frac{0.33}{\sqrt{20}}=0.07\]</span></p>
 
-<img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"><p>If the Null Hypothesis (<span class="math inline">\(\mu=2\)</span>) is true and we assume 0.95% confidence the sample mean should fall somewhere in the <span class="math inline">\(0.95\)</span> confidence interval in 95% of all cases (it would be outside of the confidence interval in only 5% of the cases which is considered unlikely)</p>
+<img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-2-1.png" width="960" class="r-stretch"><p><strong>If the Null Hypothesis (<span class="math inline">\(\mu=2\)</span>) is true</strong> and we assume 0.95% confidence the sample mean should fall somewhere in the <span class="math inline">\(0.95\)</span> confidence interval in 95% of all cases. It would be outside of the confidence interval in only 5% of the cases which is considered unlikely.</p>
 </section>
 <section id="hypothesis-test" class="slide level2 smaller">
 <h2>Hypothesis Test</h2>
@@ -214,8 +214,8 @@ We look at our <strong>data</strong> and hope to deduct that the <strong>assumpt
 <p><img data-src="Images/tTable.png"></p>
 </div></div>
 </section>
-<section id="is-our-sample-mean-between---2.093-standard-errors-away-from-the-mean" class="slide level2 smaller">
-<h2>Is our Sample mean between +/- 2.093 Standard Errors Away from the Mean?</h2>
+<section id="is-our-sample-mean-is-between---2.093-standard-errors-away-from-the-mean" class="slide level2 smaller">
+<h2>Is our Sample mean is between +/- 2.093 Standard Errors Away from the Mean?</h2>
 <p><strong>Does our sample t-value lie outside the non-rejection zone?</strong></p>
 
 <img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-3-1.png" width="960" class="r-stretch"><p><span class="math display">\[t_{Sample}=\frac{2.1-2}{\frac{0.33}{\sqrt{20}}} = 1.36\]</span></p>
@@ -234,9 +234,9 @@ We look at our <strong>data</strong> and hope to deduct that the <strong>assumpt
 <h3 id="null-hypothesis-research-hypothesis-sample-statistics">Null Hypothesis, Research Hypothesis, Sample Statistics</h3>
 <h4 id="the-assumption-that-the-researcher-doubts-null-hypothesis">The Assumption that the researcher doubts (Null Hypothesis):</h4>
 <p><span class="math display">\[\mu&gt;=8\]</span></p>
-<h4 id="alternative-research-hypothesis-from-the-data-1">Alternative (Research Hypothesis) from the Data:</h4>
+<h4 id="alternative-research-hypothesis-1">Alternative (Research) Hypothesis:</h4>
 <p><span class="math display">\[\mu &lt; 8\]</span></p>
-<h4 id="data">Data</h4>
+<h4 id="data">Data:</h4>
 <p><span class="math display">\[\alpha=1-0.95=0.05\]</span></p>
 <p><span class="math display">\[SE=\frac{1.1}{\sqrt{19}}=0.25\]</span></p>
 <p><span class="math display">\[d.f.=19-1=18\]</span></p>
@@ -255,18 +255,165 @@ We look at our <strong>data</strong> and hope to deduct that the <strong>assumpt
 <p><span class="math display">\[\alpha=1-0.95=0.05\]</span></p>
 <p><span class="math display">\[d.f=19-1=18\]</span></p>
 <p><span class="math display">\[t_\alpha=-1.734\]</span></p>
-<p>If our sample mean less than <span class="math inline">\(-1.734\)</span> Standard Errors away from the (assumed) mean, then it could have happened by chance and we cannot reject the hypothesis that the mean is <span class="math inline">\(\mu=8\)</span>.</p>
+<p>If our sample mean is less than <span class="math inline">\(-1.734\)</span> Standard Errors away from the (assumed) mean, then it could have happened by chance and we cannot reject the hypothesis that the mean is <span class="math inline">\(\mu=8\)</span>.</p>
 </div><div class="column" style="width:50%;">
 <h3 id="t-table-1">t-Table</h3>
 <p><img data-src="Images/tTable.png"></p>
 </div></div>
 </section>
-<section id="is-our-sample-mean-less-than--1.734-standard-errors-away-from-the-mean" class="slide level2 smaller">
-<h2>Is our Sample mean less than -1.734 Standard Errors Away from the Mean?</h2>
+<section id="is-our-sample-mean-more-than--1.734-standard-errors-away-from-the-mean" class="slide level2 smaller">
+<h2>Is our Sample mean more than -1.734 Standard Errors Away from the Mean?</h2>
 <p><strong>Does our sample t-value lie outside the non-rejection zone?</strong></p>
 
-<img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><p><span class="math display">\[t_{Sample}=\frac{7.5-8}{\frac{1.1}{\sqrt{19}}}=\frac{-0.5}{0.25} = -1.36\]</span></p>
-<p>We cannot reject the Null Hypothesis. The deviation from 2 might be accidental.</p>
+<img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><p><span class="math display">\[t_{Sample}=\frac{7.5-8}{\frac{1.1}{\sqrt{19}}}=\frac{-0.5}{0.25} = -2\]</span></p>
+<p>We can reject the Null Hypothesis. The deviation from 8 is so big that it is not likely (5%) to happen just by accident.</p>
+</section>
+<section id="one-tailed-hypothesis-tests-for-proportions" class="slide level2 smaller">
+<h2>One Tailed Hypothesis Tests for Proportions</h2>
+<p>It is believed that less than 50% of voters favor a tax increase to pay for new schools.</p>
+<p>The school board believes that more than 50% of the voters favor a tax increase. To test their claim, they asked 50 voters whether they favor the tax increase and 30 said that they would vote in favor of the tax increase.</p>
+<p>If the school board wishes to be 90% confident with their conclusion, is the deviation high enough to reject the claim a majority of voters are not willing to support new schools with taxes?</p>
+</section>
+<section id="one-tailed-hypothesis-test-for-proportions" class="slide level2 smaller">
+<h2>One Tailed Hypothesis Test for Proportions</h2>
+<h4 id="the-assumption-that-the-researcher-doubts-null-hypothesis-1">The Assumption that the researcher doubts (Null Hypothesis):</h4>
+<p><span class="math display">\[p&lt;0.5\]</span></p>
+<h4 id="alternative-research-hypothesis-2">Alternative (Research) Hypothesis:</h4>
+<p><span class="math display">\[p \ge 0.5\]</span></p>
+<h4 id="data-1">Data:</h4>
+<p><span class="math display">\[\widehat{p}=\frac{30}{50}=0.6\]</span></p>
+<p><span class="math display">\[SE=\sqrt{\frac{\widehat{p}(1-\widehat{p})}{N}}=\sqrt{\frac{0.6\cdot (1-0.6)}{50}}=0.07\]</span></p>
+<p>Normal Distributed (enough observations)?</p>
+<p><span class="math display">\[50\cdot 0.6=30&gt;5 \mbox{ and } 50\cdot (1-0.6)=20&gt;5\]</span></p>
+</section>
+<section id="one-tailed-hypothesis-test-proportions" class="slide level2 smaller">
+<h2>One Tailed Hypothesis Test Proportions</h2>
+<h3 id="result-graph-1">Result Graph</h3>
+
+<img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-6-1.png" width="960" class="r-stretch"></section>
+<section id="hypothesis-test-2" class="slide level2 smaller">
+<h2>Hypothesis Test</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="critical-z-value">Critical z-Value</h3>
+<p><span class="math display">\[z_{0.9}=1.28\]</span></p>
+<p>If our sample proportion is less than <span class="math inline">\(1.28\)</span> Standard Errors above the (assumed) proportion, then it could have happened by chance and we cannot reject the hypothesis that the true proportion is <span class="math inline">\(p&lt;0.5\)</span>.</p>
+</div><div class="column" style="width:50%;">
+<h3 id="z-table">z-Table</h3>
+<p><img data-src="Images/ZTablePos.jpeg"></p>
+</div></div>
+</section>
+<section id="is-our-sample-proportion-less-than-1.28-standard-errors-away-from-the-mean" class="slide level2 smaller">
+<h2>Is our Sample proportion less than 1.28 Standard Errors Away from the Mean?</h2>
+<p><strong>Does our sample z-value lie outside the non-rejection zone?</strong></p>
+
+<img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"><p><span class="math display">\[z_{Sample}=\frac{0.6-0.5}{0.07}=\frac{0.1}{0.07} = 1.43\]</span></p>
+<p>We can reject the Null Hypothesis. The deviation from 0.5 is so big that it is not likely (10%) to happen just by accident.</p>
+</section>
+<section id="what-is-the-highest-confidence-level-where-we-still-can-reject" class="slide level2 smaller">
+<h2>What is the highest Confidence Level where we still can Reject</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="confidence0.9">Confidence=0.9</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Remember:</strong></p>
+<p><span class="math display">\[z_{Sample}=\frac{0.1}{0.07} = 1.43\]</span></p>
+<h3 id="confidence0.9236">Confidence=0.9236</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="Hypothesis_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<h3 id="z-table-1">z-Table</h3>
+<p><img data-src="Images/ZTablePos.jpeg"></p>
+</div></div>
+</section>
+<section id="the-error-matrix" class="slide level2">
+<h2>The Error Matrix</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 35%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;"><span class="math inline">\(H_0\)</span> is True</th>
+<th style="text-align: center;"><span class="math inline">\(H_0\)</span> is False</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Fail to Reject <span class="math inline">\(H_0\)</span></strong></td>
+<td style="text-align: center;">Correct Decision</td>
+<td style="text-align: center;"><strong>Type II Error (<span class="math inline">\(\beta\)</span>)</strong> <br> “False Negative”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Reject <span class="math inline">\(H_0\)</span></strong></td>
+<td style="text-align: center;"><strong>Type I Error (<span class="math inline">\(\alpha\)</span>)</strong> <br> “False Positive”</td>
+<td style="text-align: center;"><strong>Power (<span class="math inline">\(1 - \beta\)</span>)</strong> <br> Correct Decision</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="type-i-error-alpha" class="slide level2">
+<h2>Type I Error (<span class="math inline">\(\alpha\)</span>)</h2>
+<p><strong>“The False Positive”</strong></p>
+<p>This error occurs when the Null Hypothesis (<span class="math inline">\(H_0\)</span>) is true, but we incorrectly reject it.</p>
+<ul>
+<li><strong>Mechanism:</strong> We conclude there is an effect or difference when none actually exists.</li>
+<li><strong>Probability:</strong> Defined by the significance level <span class="math inline">\(\alpha\)</span> (e.g., 0.05 or 0.10).</li>
+<li><strong>Example:</strong> In our <span class="math inline">\(p &lt; 0.5\)</span> test, a <em>Type I</em> error would be concluding the proportion is NOT &lt;0.5 when it actually is.</li>
+</ul>
+</section>
+<section id="the-decision-matrix" class="slide level2">
+<h2>The Decision Matrix</h2>
+<p><strong>Balancing <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span></strong></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 35%">
+<col style="width: 35%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"></th>
+<th style="text-align: center;"><span class="math inline">\(H_0\)</span> is True</th>
+<th style="text-align: center;"><span class="math inline">\(H_0\)</span> is False</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Fail to Reject <span class="math inline">\(H_0\)</span></strong></td>
+<td style="text-align: center;">Correct Decision</td>
+<td style="text-align: center;"><strong>Type II Error (<span class="math inline">\(\beta\)</span>)</strong> <br> “False Negative”</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong>Reject <span class="math inline">\(H_0\)</span></strong></td>
+<td style="text-align: center;"><strong>Type I Error (<span class="math inline">\(\alpha\)</span>)</strong> <br> “False Positive”</td>
+<td style="text-align: center;"><strong>Power (<span class="math inline">\(1 - \beta\)</span>)</strong> <br> Correct Decision</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment fade-up">
+<blockquote>
+<p><strong>The Trade-off:</strong> Lowering <span class="math inline">\(\alpha\)</span> (to avoid Type I errors) typically increases <span class="math inline">\(\beta\)</span> (making Type II errors more likely), unless you increase the sample size <span class="math inline">\(n\)</span>.</p>
+</blockquote>
+</div>
 
 <script type="ojs-module-contents">
 eyJjb250ZW50cyI6W119
