@@ -1,0 +1,675 @@
+---
+title: "Regression" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-revealjs:
+    theme: [moon, ../../CustomCL.scss]
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+webr:
+  packages:
+    - dplyr
+    - janitor
+  
+engine: knitr    
+---
+
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+```{webr}
+#| warning: false
+#| message: false
+#| auto-run: true
+#| echo: false
+library(tidyverse)
+library(janitor)
+DataHouses=
+  read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+set.seed(7771)
+Data100Houses=sample_n(DataHouses,size=100)
+```
+
+## What Will You Learn {.scrollable .smaller}
+-   The basic idea behind linear regression
+
+-   Distinguish between unfitted and fitted models
+
+-   Understanding the role of parameters in a linear regression model (applies also to other models)
+
+-   Finding optimal regression parameters with `lm` 
+
+-   Learning how how to measure predictive quality with Mean Square Error ($MSE$)
+
+
+
+-   Using `lm`  to analyze the correlation between square footage and housing prices.
+
+
+## Jumping Right Into It with Real World Data
+
+Univariate OLS (simple OLS) with a real estate dataset
+
+**Data Description:**
+
+King County House Sale dataset (Kaggle 2015). House sales prices from May 2014 to May 2015 for King County in Washington State.
+
+**Simplification:**
+
+- Several predictor variables, but for now we use only $Sqft$
+
+- We will only use 100 randomly chosen observations from the total of 21,613 observations.
+
+
+
+
+
+## Loading the Libraries and the Data 
+
+```{r}
+library(tidyverse)
+library(rio)
+library(janitor)
+library(plotly)
+DataHouses=
+  read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+set.seed(7771)
+Data100Houses=sample_n(DataHouses,100)
+```
+
+```{webr}
+#| warning: false
+#| message: false
+#| auto-run: true
+library(tidyverse)
+library(janitor)
+library(plotly)
+DataHouses=
+  read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+set.seed(7771)
+Data100Houses=sample_n(DataHouses,100)
+head(Data100Houses)
+```
+
+
+
+
+
+## Finding a Regression Line/Regression Function {.smaller}
+
+```{r}
+#| echo: false
+library(plotly)
+
+Plot2Means=ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+           geom_point(color="red")+
+           scale_y_continuous(limits=c(0,900000),  
+                              breaks = seq(0,900000,100000), 
+                              labels = scales::comma)+
+           scale_x_continuous(limits=c(0,5000),  
+                              breaks = seq(0,5000,500), 
+                              labels = scales::comma)
+ggplotly(Plot2Means, height=350, width=700)
+```
+
+We need a (linear regression) that produces predictions ($\widehat{Price_i}$)that fit the true prices ($Price_i$) as good as possible.
+
+In other words, find a linear function:
+$$
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+$$
+
+## Finding a Regression Line/Regression Function {.smaller}
+
+```{r}
+#| echo: false
+
+library(plotly)
+
+Plot2Means=ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+           geom_point(color="red")+
+           geom_smooth(method="lm", se=FALSE)+
+           scale_y_continuous(limits=c(0,900000),  
+                              breaks = seq(0,900000,100000), 
+                              labels = scales::comma)+
+           scale_x_continuous(limits=c(0,5000),  
+                              breaks = seq(0,5000,500), 
+                              labels = scales::comma)
+ggplotly(Plot2Means, height=350, width=700)
+```
+
+We need a (linear regression) line that produces predictions ($\widehat{Price_i}$) that fit the true prices $(Price_i)$ as good as possible.
+
+In other words, find a linear function:
+$$
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+$$
+
+## How much is a House Worth in King County?
+
+A house with average properties should be predicted with an average price!
+
+```{webr}
+MeanSqft=mean(Data100Houses$Sqft)
+cat("The mean square footage of a house in King county is:", MeanSqft)
+
+MeanPrice=mean(Data100Houses$Price)
+cat("The mean price of a house in King county is:", MeanPrice)
+```
+
+## Predicting Price of an Average-Size House as Average of Prices {.smaller}
+
+```{r}
+library(plotly)
+
+Plot2Means=ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+           geom_point(color="red")+
+           geom_hline(yintercept=mean(Data100Houses$Price))+
+           geom_vline(xintercept=mean(Data100Houses$Sqft))+
+           scale_y_continuous(limits=c(0,900000),  
+                              breaks = seq(0,900000,100000), 
+                              labels = scales::comma)+
+           scale_x_continuous(limits=c(0,5000),  
+                              breaks = seq(0,5000,500), 
+                              labels = scales::comma)
+ggplotly(Plot2Means, height=350, width=700)
+```
+
+## Regression Line Always Goes Through the Data Centroid {.smaller}
+
+```{r}
+library(plotly)
+
+Plot2Means=ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+           geom_point(color="red")+
+           geom_hline(yintercept=mean(Data100Houses$Price))+
+           geom_vline(xintercept=mean(Data100Houses$Sqft))+
+           geom_smooth(method="lm", se=FALSE)+
+           scale_y_continuous(breaks = seq(0,900000,100000), 
+                              labels = scales::comma)+
+           scale_x_continuous(breaks = seq(0,5000,500), 
+                              labels = scales::comma)
+ggplotly(Plot2Means, height=350, width=700)
+```
+
+
+
+## An Interactive 3D Game That Explains it All
+
+[https://horizon.meta.com/world/647544861765620/?locale=en_US](https://horizon.meta.com/world/647544861765620/?locale=en_US){target="_blank"}
+
+
+
+
+## From Unfitted to Fitted Model
+
+
+How does the Unfitted Model Looks Like?
+
+$$
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+$$
+
+Fitting the Model with lm()
+
+```{r}
+ModelOLS=lm(Price~Sqft, data=Data100Houses)
+```
+
+```{webr}
+ModelOLS=lm(Price~Sqft, data=Data100Houses)
+print(ModelOLS)
+```
+
+
+## Unfitted Model vs Fitted Workflow Model {.smaller}
+
+Unfitted Model: $$
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+$$
+
+
+```{webr}
+print(ModelOLS)
+```
+
+
+Fitted Model: $$
+\underbrace{\widehat{Price_i}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft_i}_x + \underbrace{52509}_b
+$$
+
+## Interpretation of Regression Coefficients
+
+
+```{r}
+#| echo: false
+print(ModelOLS)
+```
+
+
+$$
+\begin{align}
+\widehat{Price}&=240 \cdot Sqft +  52509\\
+ (+240)&=240\cdot (+1) +  (+0)\\
+ (+480)&=240\cdot (+2) +  (+0)\\
+ (+720)&=240\cdot (+3) +  (+0)
+\end{align}
+$$ 
+For each extra $Sqft$ the predicted price increases by $240.
+
+Do not interpret $b$ as it makes no sense in most cases!!!
+
+## Run Your Own Simple Regression to Estimate House Price
+
+```{webr}
+#| message: false
+#| warning: false
+library(tidyverse)
+library(janitor)
+set.seed(7771)
+Data100Houses= sample_n(DataHouses, size=100)
+head(Data100Houses)
+
+ModelLMExerc=lm(Price~Sqft, data=Data100Houses)
+summary(ModelLMExerc)
+
+ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+  geom_point(color="red")+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_vline(xintercept = mean(Data100Houses$Sqft))+
+  geom_hline(yintercept = mean(Data100Houses$Price))
+```
+
+
+## How Are Coefficients Calculated in R {.smaller}
+
+::: columns
+
+::: {.column width="60%"}
+**The Data Table**
+
+```{r}
+library(kableExtra)
+DataMockup=import("https://ai.lange-analytics.com/data/DataStudyTimeMockup.rds")
+kbl(DataMockup |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset")|>
+  add_header_above(c(" ", "y", "x"), escape=F) |> 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+:::
+
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{0}
+$$
+
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{0}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_0$ that minimize the prediction errors $$(\widehat{y}_{i}-y_i)^2$$
+$$(\widehat{Grade}_{i}-Grade_i)^2$$
+:::
+
+
+:::
+
+
+## How Are Coefficients Calculated in R {.smaller}
+
+::: columns
+::: {.column width="40%"}
+**The Regression:**
+
+$$
+\widehat{y}_{i} = \beta_{1}x_{i}+\beta_{0}
+$$
+$$
+\widehat{Grade}_{i} = \beta_{1}StudyTime_{i}+\beta_{0}
+$$
+
+**The Goal**
+
+Find values for $\beta_1$ and $\beta_0$ that minimize the individual (squared) prediction errors: 
+$$(\widehat{y}_{i}-y_i)^2$$
+$$(\widehat{Grade}_{i}-Grade_i)^2$$
+:::
+
+::: {.column width="60%"}
+**The Data Diagram**
+
+```{r}
+Model123=lm(Grade~StudyTime, data=DataMockup)
+PredGrade=predict(Model123, DataMockup)
+ggplot(DataMockup, aes(x=StudyTime,y=Grade)) +
+  geom_line(aes(y=PredGrade), color="red", size=2.7)+
+  geom_point(size=5, color="blue")+
+  geom_point(aes(y=PredGrade), color="black", size=2.7)+
+  geom_segment(aes(x = StudyTime, y = PredGrade,
+                   xend = StudyTime, yend = Grade),size=1.2)+
+  scale_x_continuous("Study Time", breaks=seq(1,8))+
+  scale_y_continuous(limits=c(65,110), breaks=seq(60,100,5))
+```
+
+
+
+:::
+:::
+
+## How to Measure Prediction Quality with the Mean Squared Error (MSE) {.smaller}
+
+```{=tex}
+\begin{eqnarray*}
+MSE & = & \frac{1}{N} \sum_{i=1}^{N}(\widehat{y}_{i}-y_{i})^{2} \\
+ & \Longleftrightarrow& \\
+MSE & =  & \frac{1}{N} \sum_{i=1}^{N}(\underbrace{\overbrace{\beta_{1}x_{i}+\beta_0}^{\mbox{Prediction $i$}}-y_i}_{\mbox{Error $i$}})^2
+\end{eqnarray*}
+```
+**Note, when the data are given (i.e.,** $x_i$ and $y_i$ are given), the $MSE$ depends only on the choice of $\beta_1$ and $\beta_0$ »
+
+## How to Measure Prediction Quality with the MSE {.smaller .scrollable}
+
+```{=tex}
+\begin{eqnarray}
+MSE & = & \frac{(\beta_1x_{1}+\beta_0-y_1)^2
+       +(\beta_1x_{2}+\beta_0-y_2)^2 +  \cdots+
+       (\beta_1x_{5}+\beta_0-y_{5})^2}{5} \nonumber \\
+       & \Longleftrightarrow& \nonumber \\
+MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_0}^{\mbox{Prediction $1$}}-65}_{\mbox{Error $1$}})^2
+       +(\underbrace{\overbrace{\beta_1\cdot 3+\beta_0}^{\mbox{Prediction $2$}}-82}_{\mbox{Error $2$}})^2\right.\nonumber \\
+   &   &\nonumber \\
+       && +
+    (\underbrace{\overbrace{\beta_1\cdot 7+\beta_0}^{\mbox{Prediction $3$}}-93}_{\mbox{Error $3$}})^2 
++(\underbrace{\overbrace{\beta_1\cdot 8+\beta_0}^{\mbox{Prediction $4$}}-93}_{\mbox{Error $4$}})^2\nonumber \\
+   &   &\nonumber \\
+       && +\left. (\underbrace{\overbrace{\beta_1\cdot 4+\beta_0}^{\mbox{Prediction $5$}}-83}_{\mbox{Error $6$}})^2\right]
+\end{eqnarray}
+```
+
+## Calculate Optimal Parameters for OLS{.smaller}
+
+```{=tex}
+\begin{eqnarray*} 
+\beta_{1,opt}&=& \frac
+{N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
+&& \nonumber \\
+\beta_{0,opt.}&=& \frac{\sum_{i=1}^N y_i}{N}  - 
+         \beta_{1,opt}  \frac{\sum_{i=1}^N x_i}{N} 
+         = 64.18
+\end{eqnarray*}
+```
+
+```{r}
+#| echo: false
+DataTable=DataMockup |>
+  mutate(GradeXStudyTime=Grade*StudyTime) |>
+  mutate(StudyTimeSquared=StudyTime^2) 
+
+
+kbl(DataTable |> mutate(i=1:5) |> select(i,everything()), 
+    caption="Mockup Training Dataset ")|>
+  add_header_above(c(" ", "y", "x", "y x","x x"), escape=F) |> 
+  kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+```
+
+```{r}
+#| echo: false
+kbl(data.frame(as.list(colSums(DataTable))), 
+    caption="Column Sums")|>
+    kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
+
+
+```
+
+## Real Estate Model Revisited
+
+Change the seed and `set.seed()` and see the coefficient for $SQFT$ change:
+
+```{webr}
+set.seed(7771)
+Data100HousesSqft=import("Data/DataHouses.csv")|> 
+           clean_names("upper_camel") |> 
+           select(Price,Sqft=SqftLiving) |>     
+                  sample_n(100)
+head(Data100HousesSqft)
+
+ModelLMSqft=lm(Price~Sqft, data=Data100HousesSqft)
+print(ModelLMSqft)
+
+```
+
+
+## Significance of Coefficients {.smaller}
+
+**Null Hypothesis:**
+
+$$\beta_1=0$$
+$$\widehat{Price}=0 \cdot Sqft + \beta_0$$
+
+**Alternative (Research) Hypothesis:**
+
+$$\beta_1\neq 0$$
+```{webr}
+summary(ModelLMSqft)
+```
+
+$P$ value shows the probability for $\beta_1=0$, meaning the coefficient from the sample was just accidentally observed and $Sqft$ has no influence on $Price$.
+
+## Summary - Steps for a Linear Regression {.smaller}
+
+
+1. Draw a DAG (with R or by hand)
+
+2. Mark if the effects in the DAG are expected to be positive or negative
+
+3. Write down the formula for the unfitted model. Such as:
+$$\widehat{Price}=\beta_1 Sqft + \beta_0$$
+
+3. Run the regression
+
+4. Substitute the $\beta s$ in the formula with the values you got from the regression.
+
+5. Sanity test: Are the signs (positive/negative) what you expected. If not,  the related variable does not belong in your model
+
+6. Interpret the $\beta (s)$. E.g., if predictor variable increases by one unit outcome increases by $\beta$ units. Note, the intercept coefficient cannot be interpreted in almost all cases!
+
+7. Check if P value is low enough (e.g., smaller than 0.05=5%). This is the probability for the related coefficient to be 0 and thus irrelevant. You want a low probability for that event. If P value is too high the related variable does not belong in your model. Note, no need to interpret the P for the intercept. 
+
+
+
+## Learning Outcomes
+
+- Combine two *Simple Equations* (one predictor) into one multivariate OLS regression (only possible if predictors are uncorrelated)
+
+- See what happens if two *Simple Equations* (one predictor) are combined into one multivariate OLS regression, when predictors are perfectly correlated
+
+- Use Virtual Reality to perform the same tasks named in the learning outcomes above with 3D-diagrams
+
+## Frisch-Waugh-Lovell Theorem {.smaller}
+
+**Frisch-Waugh-Lovell (FWL) Theorem in a Nutshell:**
+
+When the predictor variables in an *OLS* regression are not correlated,
+we can run $j$ (e.g., two) Simple Regressions (regressions with only one
+predictor variable) and use the resulting $\beta$-coefficients for a
+joint multivariate regression.
+
+**Example:** ($Sft$ and $Cond$ are not correlated:)
+
+$$\widehat{Price}_i= \beta_{Sqft} \cdot Sqft_i + \beta_{01}$$
+$$\widehat{Price}_i= \beta_{Cond} \cdot Cond_i + \beta_{02}$$
+$$\widehat{Price}_i= \beta_{Sqft} \cdot Sqft_i+\beta_{Cond} \cdot Cond_i + \beta_0$$
+The resulting $\beta_0$ can be calculated based on the average of Price,
+Square Feet, and Condition, <br> <br> $\overline{Price}$,
+$\overline{Sqft}$ and $\overline{Cond}$, respectively.
+
+$$\beta_0=\overline{Price}-\beta_{Sqft} \cdot \overline{Sqft} - \beta_{Cond} \overline{Cond}$$
+
+## FWL Theorem with a Synthetic Dataset
+
+We have a dataset for house prices ($Price_i$) together with predictor
+variables for the houses' condition ($Cond_i$; 1 -- 20) and their square
+footage ($Sqft_i$).
+
+$Cond_i$ and $Sqft_i$ are not correlated:
+
+```{r}
+library(rio)
+library(tidyverse)
+DataHouseSqftCond=import(
+  "https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/Data/DataDiagram.csv") |>   rename(Cond=Grade)
+cat("Correlation between Sqft and Cond =",cor(DataHouseSqftCond$Sqft, DataHouseSqftCond$Cond))
+
+```
+
+## How much is a House Worth?
+
+**This works for all OLS regressions:**
+
+A house with average properties should be predicted with an average
+price!
+
+```{r}
+MeanSqft=mean(DataHouseSqftCond$Sqft)
+cat("The mean square footage in the dataset is:", MeanSqft)
+
+MeanCond=mean(DataHouseSqftCond$Cond)
+cat("The mean house condition in the dataset is:", MeanCond)
+
+MeanPrice=mean(DataHouseSqftCond$Price)
+cat("The mean house price in the dataset is:", MeanPrice)
+```
+
+## Running the Two Simple Regressions Visually
+
+**Price on Square Feet:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly){target="Blank_"}<br>
+<small>210</small> <br><br> **Price on Condition:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/CondOnly](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/CondOnly){target="Blank_"}<br>
+<small>15,000</small>
+
+## Confirming the results with a Multivariate Regression {.smaller}
+
+From the visual Simple Regressions we got:
+
+$\beta_{Sqft}=210$ and $\beta_{Cond}=15,000$
+
+From the multivariate regression we get:
+
+```{r}
+ModelSqftCond=lm(Price~Sqft+Cond, data = DataHouseSqftCond)
+summary(ModelSqftCond)
+```
+
+$$\widehat{Price}_i= 212 \cdot Sqft + 15,001 \cdot Cond_i + 298,100$$
+
+## FWL Theorem with a Another Synthetic Dataset
+
+We have another dataset for house prices ($Price_i$) together with
+predictor variables for the houses' condition ($Rooms_i$; 1 -- 20) and
+square footage ($Sqft_i$).
+
+$Rooms_i$ and $Sqft_i$ are correlated. Each room has always 400 Sqft:
+
+$$Sqft_i=400\cdot Rooms + 0$$
+
+```{r}
+library(rio)
+library(tidyverse)
+DataHouseSqftRooms100Cor=import(
+  "https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/Data/DataDiagram100Cor.csv") 
+cat("Correlation between Sqft and Cond =",cor(DataHouseSqftRooms100Cor$Sqft, DataHouseSqftRooms100Cor$Rooms))
+
+```
+
+**Note**, because of predictor correlation $\neq$ 0. *FWL* Theorem is
+not applicable.
+
+## How much is a House Worth?
+
+**This works for all OLS regressions:**
+
+A house with average properties should be predicted with an average
+price!
+
+```{r}
+MeanSqft=mean(DataHouseSqftRooms100Cor$Sqft)
+cat("The mean square footage in the new dataset is:", MeanSqft)
+
+MeanRooms=mean(DataHouseSqftRooms100Cor$Rooms)
+cat("The mean number of rooms in the new dataset is:", MeanRooms)
+
+MeanPrice=mean(DataHouseSqftRooms100Cor$Price)
+cat("The mean house price in the dataset is:", MeanPrice)
+```
+
+## Running the Two Simple Regressions Visually
+
+**Price on Square Feet:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly100Cor](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly100Cor){target="Blank_"}<br>
+<small>200</small> <br><br>
+
+**Price on Rooms:**<br>
+[https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/RoomsOnly100Cor](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/RoomsOnly100Cor){target="Blank_"}<br>
+<small>78,000</small>
+
+## Confirming the results with a Multivariate Regression {.smaller}
+
+From the visual Simple Regressions we got:
+
+$\beta_{Sqft}=200$ and $\beta_{Rooms}=78000$
+
+From the multivariate regression we get:
+
+```{r}
+ModelSqftCond100Cor=lm(Price~Sqft+Rooms, data = DataHouseSqftRooms100Cor)
+summary(ModelSqftCond100Cor)
+```
+
+$$\widehat{Price}_i= 196 \cdot Sqft + NA \cdot Rooms_i + 304,917$$
+
+## Confirming the results with a Multivariate Regression {.smaller}
+
+From the visual Simple Regressions we got:
+
+$\beta_{Rooms}=78000$ and $\beta_{Sqft}=200$
+
+From the multivariate regression we get:
+
+```{r}
+ModelSqftCond100Cor=lm(Price~Rooms+Sqft, data = DataHouseSqftRooms100Cor)
+summary(ModelSqftCond100Cor)
+```
+
+$$\widehat{Price}_i= NA \cdot Sqft + 78,289 \cdot Rooms_i + 304,917$$
+
+## Now the Same in 3D/Virtual Reality
+
+![![](images/clipboard-1227717430.png)](Diagram3DAppScreenShot.jpg)
+
+
