@@ -6,9 +6,12 @@
 <script src="TreeBasedDecTrees_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="TreeBasedDecTrees_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="TreeBasedDecTrees_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="TreeBasedDecTrees_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="TreeBasedDecTrees_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="TreeBasedDecTrees_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="TreeBasedDecTrees_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
+  <meta name="author" content="Carsten Lange">
   <title>Tree Based Models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -112,6 +115,7 @@
     }
     .reveal .slide:not(.center) {
       height: 100%;
+      overflow-y: auto;
     }
     .reveal .slide.scrollable {
       overflow-y: auto;
@@ -188,6 +192,8 @@
       margin-right: 0; 
     }
   </style>
+  <script type="module" src="TreeBasedDecTrees_files/libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+  <link href="TreeBasedDecTrees_files/libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
   <script src="TreeBasedDecTrees_files/libs/kePrint-0.0.1/kePrint.js"></script>
 
   <link href="TreeBasedDecTrees_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
@@ -202,94 +208,46 @@
   <p class="subtitle">Decision Trees</p>
 
 <div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Carsten Lange 
+</div>
+<div class="quarto-title-author-email">
+<a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
+</div>
+        <p class="quarto-title-affiliation">
+            Cal Poly, Pomona
+          </p>
+    </div>
 </div>
 
 </section>
 <section id="introduction" class="slide level2">
 <h2>Introduction</h2>
 <ul>
-<li class="fragment"><p>Decision Trees can be used for</p>
+<li><p>Decision Trees can be used for</p>
 <ul>
-<li class="fragment">Classification</li>
-<li class="fragment">Regression</li>
+<li>Classification</li>
+<li>Regression</li>
 </ul></li>
-<li class="fragment"><p>Decision Trees can be used as standalone algorithms (this is what we do here)</p></li>
-<li class="fragment"><p>Decision Trees can be used as components for other models such as:</p>
+<li><p>Decision Trees can be used as standalone algorithms (this is what we do here)</p></li>
+<li><p>Decision Trees can be used as components for other models such as:</p>
 <ul>
-<li class="fragment">Random Forest Models</li>
-<li class="fragment">Boosted Tree Models</li>
+<li>Random Forest Models</li>
+<li>Boosted Tree Models</li>
 </ul></li>
 </ul>
 </section>
 <section id="introducing-the-idea-of-decision-trees-with-the-titanic-dataset" class="slide level2">
 <h2>Introducing the Idea of Decision Trees with the Titanic Dataset</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(rio); <span class="fu">library</span>(tidymodels); <span class="fu">library</span>(janitor)</span>
-<span id="cb1-2"><a href=""></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-3"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/Titanic.csv"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb1-4"><a href=""></a>            <span class="fu">clean_names</span>(<span class="st">"upper_camel"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb1-5"><a href=""></a>             <span class="fu">select</span>(Survived, Sex, <span class="at">Class=</span>Pclass, Sex, Age, <span class="at">Fare=</span>FareInPounds) <span class="sc">%&gt;%</span></span>
-<span id="cb1-6"><a href=""></a>             <span class="fu">mutate</span>(<span class="at">Survived=</span><span class="fu">as.factor</span>(Survived))</span>
-<span id="cb1-7"><a href=""></a></span>
-<span id="cb1-8"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb1-9"><a href=""></a>Split7525<span class="ot">=</span><span class="fu">initial_split</span>(DataTitanic, <span class="at">strata =</span> Survived)</span>
-<span id="cb1-10"><a href=""></a></span>
-<span id="cb1-11"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split7525)</span>
-<span id="cb1-12"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split7525)</span>
-<span id="cb1-13"><a href=""></a></span>
-<span id="cb1-14"><a href=""></a><span class="fu">kbl</span>(DataTrain[<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>,])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output-display">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">Survived</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">Sex</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Class</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Age</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">Fare</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">35</td>
-<td style="text-align: right;">8.0500</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: right;">54</td>
-<td style="text-align: right;">51.8625</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">2</td>
-<td style="text-align: right;">21.0750</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">20</td>
-<td style="text-align: right;">8.0500</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">0</td>
-<td style="text-align: left;">male</td>
-<td style="text-align: right;">3</td>
-<td style="text-align: right;">39</td>
-<td style="text-align: right;">31.2750</td>
-</tr>
-</tbody>
-</table>
+<div>
+<div id="webr-1" class="exercise-cell">
+
+</div>
+<script type="webr-1-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRpdGFuaWM9cmVhZC5jc3YoXCJodHRwczovL2FpLmxhbmdlLWFuYWx5dGljcy5jb20vZGF0YS9UaXRhbmljLmNzdlwiKSAlPiUgXG4gICAgICAgICAgICBjbGVhbl9uYW1lcyhcInVwcGVyX2NhbWVsXCIpICU+JVxuICAgICAgICAgICAgIHNlbGVjdChTdXJ2aXZlZCwgU2V4LCBDbGFzcz1QY2xhc3MsIFNleCwgQWdlLCBGYXJlPUZhcmVJblBvdW5kcykgJT4lXG4gICAgICAgICAgICAgbXV0YXRlKFN1cnZpdmVkPWFzLmZhY3RvcihTdXJ2aXZlZCkpXG5cbnNldC5zZWVkKDc3NylcblNwbGl0NzUyNT1pbml0aWFsX3NwbGl0KERhdGFUaXRhbmljLCBzdHJhdGEgPSBTdXJ2aXZlZClcblxuRGF0YVRyYWluPXRyYWluaW5nKFNwbGl0NzUyNSlcbkRhdGFUZXN0PXRlc3RpbmcoU3BsaXQ3NTI1KVxuXG5rYWJsZShEYXRhVHJhaW5bMTo1LF0pIn0=
+</script>
 </div>
 </div>
 </section>
@@ -297,46 +255,13 @@
 <h2>Generating a Decision Tree with <code>tidymodels</code></h2>
 <p>Note, <code>rpart</code> package needs to be installed. <code>tidymodels</code> loads the <code>rpart</code> package automatically. Therefore <code>library(rpart)</code> is not needed.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>ModelDesignDecTree<span class="ot">=</span><span class="fu">decision_tree</span>(<span class="at">tree_depth=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-2"><a href=""></a>                    <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-3"><a href=""></a>                    <span class="fu">set_mode</span>(<span class="st">"classification"</span>)</span>
-<span id="cb2-4"><a href=""></a>  </span>
-<span id="cb2-5"><a href=""></a>RecipeTitanic<span class="ot">=</span><span class="fu">recipe</span>(Survived<span class="sc">~</span>., <span class="at">data=</span>DataTrain)</span>
-<span id="cb2-6"><a href=""></a></span>
-<span id="cb2-7"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb2-8"><a href=""></a>WfModelTitanic<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb2-9"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignDecTree) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-10"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeTitanic) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-11"><a href=""></a>               <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb2-12"><a href=""></a><span class="fu">print</span>(WfModelTitanic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════
-Preprocessor: Recipe
-Model: decision_tree()
+<div>
+<div id="webr-2" class="exercise-cell">
 
-── Preprocessor ────────────────────────────────────────────────────────────────
-0 Recipe Steps
-
-── Model ───────────────────────────────────────────────────────────────────────
-n= 664 
-
-node), split, n, loss, yval, (yprob)
-      * denotes terminal node
-
- 1) root 664 256 0 (0.61445783 0.38554217)  
-   2) Sex=male 428  84 0 (0.80373832 0.19626168)  
-     4) Age&gt;=13 400  68 0 (0.83000000 0.17000000) *
-     5) Age&lt; 13 28  12 1 (0.42857143 0.57142857)  
-      10) Class&gt;=2.5 20   8 0 (0.60000000 0.40000000) *
-      11) Class&lt; 2.5 8   0 1 (0.00000000 1.00000000) *
-   3) Sex=female 236  64 1 (0.27118644 0.72881356)  
-     6) Class&gt;=2.5 114  56 0 (0.50877193 0.49122807)  
-      12) Fare&gt;=23.35 22   1 0 (0.95454545 0.04545455) *
-      13) Fare&lt; 23.35 92  37 1 (0.40217391 0.59782609) *
-     7) Class&lt; 2.5 122   6 1 (0.04918033 0.95081967) *</code></pre>
+</div>
+<script type="webr-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiTW9kZWxEZXNpZ25EZWNUcmVlPWRlY2lzaW9uX3RyZWUodHJlZV9kZXB0aD0zKSAlPiUgXG4gICAgICAgICAgICAgICAgICAgIHNldF9lbmdpbmUoXCJycGFydFwiKSAlPiUgXG4gICAgICAgICAgICAgICAgICAgIHNldF9tb2RlKFwiY2xhc3NpZmljYXRpb25cIilcbiAgXG5SZWNpcGVUaXRhbmljPXJlY2lwZShTdXJ2aXZlZH4uLCBkYXRhPURhdGFUcmFpbilcblxuc2V0LnNlZWQoNzc3KVxuV2ZNb2RlbFRpdGFuaWM9d29ya2Zsb3coKSAlPiUgXG4gICAgICAgICAgICAgICBhZGRfbW9kZWwoTW9kZWxEZXNpZ25EZWNUcmVlKSAlPiUgXG4gICAgICAgICAgICAgICBhZGRfcmVjaXBlKFJlY2lwZVRpdGFuaWMpICU+JSBcbiAgICAgICAgICAgICAgIGZpdChEYXRhVHJhaW4pXG5wcmludChXZk1vZGVsVGl0YW5pYykifQ==
+</script>
 </div>
 </div>
 </section>
@@ -344,24 +269,26 @@ node), split, n, loss, yval, (yprob)
 <h2>Displaying the Decision Tree with <code>rpart.plot</code></h2>
 <p>Note, <code>rpart.plot</code> package needs to be installed and loaded with <code>library(rpart.plot)</code>.</p>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(rpart.plot)</span>
-<span id="cb4-2"><a href=""></a><span class="fu">rpart.plot</span>(<span class="fu">extract_fit_engine</span>(WfModelTitanic),<span class="at">roundint=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div>
+<div id="webr-3" class="exercise-cell">
 
 </div>
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-4-1.png" width="960" class="r-stretch"></section>
+<script type="webr-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibGlicmFyeShycGFydC5wbG90KVxucnBhcnQucGxvdChleHRyYWN0X2ZpdF9lbmdpbmUoV2ZNb2RlbFRpdGFuaWMpLHJvdW5kaW50PUZBTFNFKSJ9
+</script>
+</div>
+</div>
+</section>
 <section id="nodes-in-the-decision-tree-ignore-decision-rules-for-now" class="slide level2 smaller">
 <h2>Nodes in the Decision Tree (ignore decision rules for now)</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-5-1.png" width="960" class="r-stretch"><ul>
-<li class="fragment">Nodes are like containers holding all or some of the training data
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"><ul>
+<li>Nodes are like containers holding all or some of the training data
 <ul>
-<li class="fragment"><em>root</em> node holds all training observations.</li>
-<li class="fragment">moving down the tree <em>parent nodes</em> get split into <em>child nodes</em></li>
+<li><em>root</em> node holds all training observations.</li>
+<li>moving down the tree <em>parent nodes</em> get split into <em>child nodes</em></li>
 </ul></li>
-<li class="fragment"><code>RPart</code> nodes show three types of information.»</li>
+<li><code>RPart</code> nodes show three types of information.»</li>
 </ul>
 </section>
 <section id="nodes-in-the-decision-tree-the-optimizer-created-decision-rules" class="slide level2 smaller">
@@ -394,30 +321,30 @@ node), split, n, loss, yval, (yprob)
 </div>
 </div>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-7-1.png" width="960" class="r-stretch"></section>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"></section>
 <section id="nodes-in-the-decision-tree-interpreting-terminal-nodes" class="slide level2">
 <h2>Nodes in the Decision Tree — Interpreting Terminal Nodes</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-8-1.png" width="960" class="r-stretch"></section>
-<section id="nodes-in-the-decision-tree-stylized-facts" class="slide level2 smaller">
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-11-1.png" width="960" class="r-stretch"></section>
+<section id="nodes-in-the-decision-tree-stylized-facts" class="slide level2 smaller scrollable">
 <h2>Nodes in the Decision Tree — Stylized Facts</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-9-1.png" width="960" class="r-stretch"><ol type="1">
-<li class="fragment"><p>Adult male passengers, regardless of the class and fare, had only a survival rate of 17%.</p></li>
-<li class="fragment"><p>Female passengers, regardless of age and not considering the class or the fare, had a survival chance of 73%.</p></li>
-<li class="fragment"><p>Considering the class female passengers traveled in (regardless of age), the survival rate was 95% for First or Second Class.</p></li>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-12-1.png" width="960" class="r-stretch"><ol type="1">
+<li><p>Adult male passengers, regardless of the class and fare, had only a survival rate of 17%.</p></li>
+<li><p>Female passengers, regardless of age and not considering the class or the fare, had a survival chance of 73%.</p></li>
+<li><p>Considering the class female passengers traveled in (regardless of age), the survival rate was 95% for First or Second Class.</p></li>
 </ol>
 </section>
 <section id="nodes-in-the-decision-tree-not-all-decision-rules-make-sense" class="slide level2 smaller">
 <h2>Nodes in the Decision Tree — Not all Decision Rules Make Sense</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-10-1.png" width="960" class="r-stretch"><p>For example:</p>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"><p>For example:</p>
 <ul>
-<li class="fragment"><p>Females traveling in Third Class have a survival rate of 49% (<strong>this makes sense</strong>)</p></li>
-<li class="fragment"><p>Next split <strong>does not make much sense:</strong></p>
+<li><p>Females traveling in Third Class have a survival rate of 49% (<strong>this makes sense</strong>)</p></li>
+<li><p>Next split <strong>does not make much sense:</strong></p>
 <ul>
-<li class="fragment">Fare greater or equal to 23 British Pounds survival rate only 5%.</li>
-<li class="fragment">In contrast, lower fare had a survival rate of 60%.»</li>
+<li>Fare greater or equal to 23 British Pounds survival rate only 5%.</li>
+<li>In contrast, lower fare had a survival rate of 60%.»</li>
 </ul></li>
 </ul>
 </section>
@@ -429,7 +356,7 @@ node), split, n, loss, yval, (yprob)
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-11-1.png" width="960"></p>
+<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-14-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -467,59 +394,50 @@ node), split, n, loss, yval, (yprob)
 <section id="predicting-all-testing-data-with-a-decision-tree-prediction" class="slide level2 smaller">
 <h2>Predicting all Testing Data with a Decision Tree — Prediction</h2>
 
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-13-1.png" width="960" class="r-stretch"><div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelTitanic, <span class="at">new_data =</span>  DataTest)</span>
-<span id="cb5-2"><a href=""></a><span class="fu">head</span>(DataTestWithPred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 6 × 8
-  .pred_class .pred_0 .pred_1 Survived Sex    Class   Age  Fare
-  &lt;fct&gt;         &lt;dbl&gt;   &lt;dbl&gt; &lt;fct&gt;    &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
-1 0            0.83     0.17  0        male       3    22  7.25
-2 1            0.0492   0.951 1        female     1    35 53.1 
-3 0            0.83     0.17  0        male       3    27  8.46
-4 1            0.402    0.598 1        female     3    27 11.1 
-5 1            0.402    0.598 0        female     3    31 18   
-6 0            0.83     0.17  0        male       2    35 26   </code></pre>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-16-1.png" width="960" class="r-stretch"><div class="cell">
+<div>
+<div id="webr-4" class="exercise-cell">
+
+</div>
+<script type="webr-4-contents">
+eyJhdHRyIjp7ImVjaG8iOnRydWUsImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiRGF0YVRlc3RXaXRoUHJlZD1hdWdtZW50KFdmTW9kZWxUaXRhbmljLCBuZXdfZGF0YSA9ICBEYXRhVGVzdClcbmhlYWQoRGF0YVRlc3RXaXRoUHJlZCkifQ==
+</script>
 </div>
 </div>
 </section>
 <section id="predicting-all-testing-data-with-a-decision-tree-metrics" class="slide level2">
 <h2>Predicting all Testing Data with a Decision Tree — Metrics</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelTitanic, <span class="at">new_data =</span>  DataTest)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelTitanic, <span class="at">new_data =</span>  DataTest)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><br></p>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">conf_mat</span>(DataTestWithPred, <span class="at">truth =</span> Survived, <span class="at">estimate =</span> .pred_class)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>          Truth
-Prediction   0   1
-         0 123  23
-         1  14  63</code></pre>
+<div>
+<div id="webr-5" class="exercise-cell">
+
+</div>
+<script type="webr-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiY29uZl9tYXQoRGF0YVRlc3RXaXRoUHJlZCwgdHJ1dGggPSBTdXJ2aXZlZCwgZXN0aW1hdGUgPSAucHJlZF9jbGFzcykifQ==
+</script>
 </div>
 </div>
 <p><br></p>
 </div>
 <div class="fragment">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>metricSetTitanic<span class="ot">=</span><span class="fu">metric_set</span>(accuracy, sensitivity, specificity)</span>
-<span id="cb10-2"><a href=""></a><span class="fu">metricSetTitanic</span>(DataTestWithPred, <span class="at">truth =</span> Survived, <span class="at">estimate =</span> .pred_class)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 3
-  .metric     .estimator .estimate
-  &lt;chr&gt;       &lt;chr&gt;          &lt;dbl&gt;
-1 accuracy    binary         0.834
-2 sensitivity binary         0.898
-3 specificity binary         0.733</code></pre>
+<div>
+<div id="webr-6" class="exercise-cell">
+
+</div>
+<script type="webr-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoibWV0cmljU2V0VGl0YW5pYz1tZXRyaWNfc2V0KGFjY3VyYWN5LCBzZW5zaXRpdml0eSwgc3BlY2lmaWNpdHkpXG5tZXRyaWNTZXRUaXRhbmljKERhdGFUZXN0V2l0aFByZWQsIHRydXRoID0gU3Vydml2ZWQsIGVzdGltYXRlID0gLnByZWRfY2xhc3MpIn0=
+</script>
 </div>
 </div>
 </div>
 </section>
-<section id="how-are-the-decision-rules-determined" class="slide level2 smaller">
+<section id="how-are-the-decision-rules-determined" class="slide level2 smaller scrollable">
 <h2>How are the Decision Rules Determined?</h2>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -527,7 +445,7 @@ Prediction   0   1
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
+<p><img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-21-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -535,16 +453,16 @@ Prediction   0   1
 </div><div class="column" style="width:40%;">
 <p>The short answer: <strong>by the <em>Optimizer</em>.</strong></p>
 <ul>
-<li class="fragment"><p>Decision rules are determined from the top down to the bottom.</p></li>
-<li class="fragment"><p>Regardless of decision rule on next level.</p>
+<li><p>Decision rules are determined from the top down to the bottom.</p></li>
+<li><p>Regardless of decision rule on next level.</p>
 <ul>
-<li class="fragment">No turning back reversing decision rule on higher level.</li>
-<li class="fragment"><em>greedy algorithm</em></li>
+<li>No turning back reversing decision rule on higher level.</li>
+<li><em>greedy algorithm</em></li>
 </ul></li>
-<li class="fragment"><p>Decision rules consists of two components:</p>
+<li><p>Decision rules consists of two components:</p>
 <ol type="i">
-<li class="fragment"><p>the <strong>splitting variable</strong>,</p></li>
-<li class="fragment"><p>the <strong>splitting value</strong> (e.g., <code>Age</code> for splitting (here: <code>Age&gt;=13</code> for <code>yes</code>)</p></li>
+<li><p>the <strong>splitting variable</strong>,</p></li>
+<li><p>the <strong>splitting value</strong> (e.g., <code>Age</code> for splitting (here: <code>Age&gt;=13</code> for <code>yes</code>)</p></li>
 </ol></li>
 </ul>
 </div></div>
@@ -560,9 +478,9 @@ Prediction   0   1
 <p><strong>How can we determine if a decision rule is good?</strong></p>
 <p>Common criteria for categorical outcomes:</p>
 <ul>
-<li class="fragment"><p><em>Information Gain</em></p></li>
-<li class="fragment"><p><em>Chi-Square</em></p></li>
-<li class="fragment"><p><strong>Gini Impurity</strong> used by <code>RPart</code> »</p></li>
+<li><p><em>Information Gain</em></p></li>
+<li><p><em>Chi-Square</em></p></li>
+<li><p><strong>Gini Impurity</strong> used by <code>RPart</code> »</p></li>
 </ul>
 </section>
 <section id="how-are-the-decision-rules-determined-gini-impurity-criterium" class="slide level2">
@@ -593,10 +511,10 @@ G^{Imp}&amp;= 2 P_{Surv.} (1-P_{Surv.})
 \end{align}\]</span>
 <p><strong>Purest Possible Node:</strong></p>
 <ul>
-<li class="fragment">Only <em>Survived</em> observations: <span class="math inline">\(P_{Surv.}=1\)</span> and <span class="math inline">\((1-P_{Surv.})=0\)</span></li>
-<li class="fragment"><em>or</em></li>
-<li class="fragment">only <em>Not Survived</em> observations: <span class="math inline">\(P_{Surv.}=0\)</span> and <span class="math inline">\((1-P_{Surv.})=1\)</span></li>
-<li class="fragment"><strong>In any case:</strong> <span class="math inline">\(G^{Imp}=0\)</span><br>
+<li>Only <em>Survived</em> observations: <span class="math inline">\(P_{Surv.}=1\)</span> and <span class="math inline">\((1-P_{Surv.})=0\)</span></li>
+<li><em>or</em></li>
+<li>only <em>Not Survived</em> observations: <span class="math inline">\(P_{Surv.}=0\)</span> and <span class="math inline">\((1-P_{Surv.})=1\)</span></li>
+<li><strong>In any case:</strong> <span class="math inline">\(G^{Imp}=0\)</span><br>
 (probability of drawing two different outcomes = 0)</li>
 </ul>
 </section>
@@ -607,9 +525,9 @@ G^{Imp}&amp;= 2 P_{Surv.} (1-P_{Surv.})
 \end{align}\]</span>
 <p><strong>Impurest Possible Node:</strong></p>
 <ul>
-<li class="fragment"><p>Equal amount of <em>Survived</em> and <em>Not Survived</em> observations:<br>
+<li><p>Equal amount of <em>Survived</em> and <em>Not Survived</em> observations:<br>
 <span class="math inline">\(P_{Surv.}=0.5\)</span> and <span class="math inline">\((1-P_{Surv.})=0.5\)</span></p></li>
-<li class="fragment"><p><span class="math inline">\(G^{Imp}=2 \cdot 0.25 \cdot 0.25=0.5\)</span><br>
+<li><p><span class="math inline">\(G^{Imp}=2 \cdot 0.25 \cdot 0.25=0.5\)</span><br>
 (Note, <span class="math inline">\(G^{Imp}=0.5\)</span> is maximum for Gini Impurity for 2 categories)</p></li>
 </ul>
 <div class="fragment">
@@ -639,53 +557,50 @@ G^{Imp}_{AvgChild}&amp;= 0.64 \cdot  0.32 + 0.36 \cdot 0.39\\
 <h2>Real World Data with a Decision Tree</h2>
 <p>Predicting vaccination rates in the U.S. based on data from September 2021:</p>
 <ul>
-<li class="fragment"><p>Outcome variable: Percentage of fully vaccinated (two shots) people (<span class="math inline">\(PercVacFull\)</span>).</p></li>
-<li class="fragment"><p>Data from 2,630 continental U.S. counties.»</p></li>
+<li><p>Outcome variable: Percentage of fully vaccinated (two shots) people (<span class="math inline">\(PercVacFull\)</span>).</p></li>
+<li><p>Data from 2,630 continental U.S. counties.»</p></li>
 </ul>
 </section>
 <section id="real-world-data-with-a-decision-tree-predictor-variables" class="slide level2 smaller">
 <h2>Real World Data with a Decision Tree — Predictor Variables</h2>
 <ul>
-<li class="fragment"><p>Race/Ethnicity:</p>
+<li><p>Race/Ethnicity:</p>
 <ul>
-<li class="fragment">Counties’ proportion African Americans (<span class="math inline">\(PercBlack\)</span>),</li>
-<li class="fragment">Counties’ proportion Asian Americans (<span class="math inline">\(PercAsian\)</span>), and</li>
-<li class="fragment">Counties’ proportion Hispanics (<span class="math inline">\(PercHisp\)</span>)</li>
+<li>Counties’ proportion African Americans (<span class="math inline">\(PercBlack\)</span>),</li>
+<li>Counties’ proportion Asian Americans (<span class="math inline">\(PercAsian\)</span>), and</li>
+<li>Counties’ proportion Hispanics (<span class="math inline">\(PercHisp\)</span>)</li>
 </ul></li>
-<li class="fragment"><p>Political Affiliation (Presidential election 2020):</p>
+<li><p>Political Affiliation (Presidential election 2020):</p>
 <ul>
-<li class="fragment">Counties’ proportion Republican votes (<span class="math inline">\(PercRep\)</span>)</li>
+<li>Counties’ proportion Republican votes (<span class="math inline">\(PercRep\)</span>)</li>
 </ul></li>
-<li class="fragment"><p>Age Groups in Counties:</p>
+<li><p>Age Groups in Counties:</p>
 <ul>
-<li class="fragment"><p>Counties’ proportion young adults (20-25 years); <span class="math inline">\(PercYoung25\)</span></p></li>
-<li class="fragment"><p>Counties’ proportion older adults (65 years and older); <span class="math inline">\(PercOld65\)</span></p></li>
+<li><p>Counties’ proportion young adults (20-25 years); <span class="math inline">\(PercYoung25\)</span></p></li>
+<li><p>Counties’ proportion older adults (65 years and older); <span class="math inline">\(PercOld65\)</span></p></li>
 </ul></li>
-<li class="fragment"><p>Income related:</p>
+<li><p>Income related:</p>
 <ul>
-<li class="fragment">Proportion of households receiving food stamps (<span class="math inline">\(PercFoodSt\)</span>)»</li>
+<li>Proportion of households receiving food stamps (<span class="math inline">\(PercFoodSt\)</span>)»</li>
 </ul></li>
 </ul>
 </section>
 <section id="loading-the-data-and-assigning-training-and-testing-data" class="slide level2 smaller">
 <h2>Loading the Data and Assigning Training and Testing Data</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>DataVax<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataVax.rds"</span>) <span class="sc">%&gt;%</span>   </span>
-<span id="cb12-2"><a href=""></a>        <span class="fu">select</span>(County, State, PercVacFull, PercRep,</span>
-<span id="cb12-3"><a href=""></a>              PercAsian, PercBlack, PercHisp,</span>
-<span id="cb12-4"><a href=""></a>              PercYoung25, PercOld65, PercFoodSt)</span>
-<span id="cb12-5"><a href=""></a></span>
-<span id="cb12-6"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">2021</span>)</span>
-<span id="cb12-7"><a href=""></a>Split85<span class="ot">=</span>DataVax <span class="sc">%&gt;%</span> <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.85</span>,</span>
-<span id="cb12-8"><a href=""></a>                                 <span class="at">strata =</span> PercVacFull,</span>
-<span id="cb12-9"><a href=""></a>                                 <span class="at">breaks =</span> <span class="dv">3</span>)</span>
-<span id="cb12-10"><a href=""></a></span>
-<span id="cb12-11"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
-<span id="cb12-12"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
-<span id="cb12-13"><a href=""></a><span class="fu">kbl</span>(<span class="fu">head</span>(DataVax))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a>DataVax<span class="ot">=</span><span class="fu">import</span>(<span class="st">"https://ai.lange-analytics.com/data/DataVax.rds"</span>) <span class="sc">%&gt;%</span>   </span>
+<span id="cb2-2"><a href=""></a>        <span class="fu">select</span>(County, State, PercVacFull, PercRep,</span>
+<span id="cb2-3"><a href=""></a>              PercAsian, PercBlack, PercHisp,</span>
+<span id="cb2-4"><a href=""></a>              PercYoung25, PercOld65, PercFoodSt)</span>
+<span id="cb2-5"><a href=""></a></span>
+<span id="cb2-6"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">2021</span>)</span>
+<span id="cb2-7"><a href=""></a>Split85<span class="ot">=</span>DataVax <span class="sc">%&gt;%</span> <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.85</span>,</span>
+<span id="cb2-8"><a href=""></a>                                 <span class="at">strata =</span> PercVacFull,</span>
+<span id="cb2-9"><a href=""></a>                                 <span class="at">breaks =</span> <span class="dv">3</span>)</span>
+<span id="cb2-10"><a href=""></a></span>
+<span id="cb2-11"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
+<span id="cb2-12"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
+<span id="cb2-13"><a href=""></a><span class="fu">kbl</span>(<span class="fu">head</span>(DataVax))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top">
 <thead>
@@ -783,20 +698,17 @@ G^{Imp}_{AvgChild}&amp;= 0.64 \cdot  0.32 + 0.36 \cdot 0.39\\
 <section id="creating-model-design-recipe-and-fitted-workflow" class="slide level2">
 <h2>Creating Model Design, Recipe, and Fitted Workflow</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>ModelDesignDecTree<span class="ot">=</span><span class="fu">decision_tree</span>(<span class="at">tree_depth=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href=""></a>                    <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb13-3"><a href=""></a>                    <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb13-4"><a href=""></a>  </span>
-<span id="cb13-5"><a href=""></a>RecipeVax<span class="ot">=</span><span class="fu">recipe</span>(PercVacFull<span class="sc">~</span>., <span class="at">data=</span>DataTrain)</span>
-<span id="cb13-6"><a href=""></a></span>
-<span id="cb13-7"><a href=""></a>WfModelVax<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb13-8"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignDecTree) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-9"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeVax) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-10"><a href=""></a>               <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb13-11"><a href=""></a><span class="fu">print</span>(WfModelVax)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>ModelDesignDecTree<span class="ot">=</span><span class="fu">decision_tree</span>(<span class="at">tree_depth=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href=""></a>                    <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb3-3"><a href=""></a>                    <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb3-4"><a href=""></a>  </span>
+<span id="cb3-5"><a href=""></a>RecipeVax<span class="ot">=</span><span class="fu">recipe</span>(PercVacFull<span class="sc">~</span>., <span class="at">data=</span>DataTrain)</span>
+<span id="cb3-6"><a href=""></a></span>
+<span id="cb3-7"><a href=""></a>WfModelVax<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignDecTree) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeVax) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-10"><a href=""></a>               <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb3-11"><a href=""></a><span class="fu">print</span>(WfModelVax)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>══ Workflow [trained] ══════════════════════════════════════════════════════════
 Preprocessor: Recipe
@@ -828,58 +740,44 @@ node), split, n, deviance, yval
 <section id="decision-tree-for-the-vacciantion-model" class="slide level2">
 <h2>Decision Tree for the Vacciantion Model</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">rpart.plot</span>(<span class="fu">extract_fit_engine</span>(WfModelVax),<span class="at">roundint=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">rpart.plot</span>(<span class="fu">extract_fit_engine</span>(WfModelVax),<span class="at">roundint=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-21-1.png" width="960" class="r-stretch"><p>What is difference compared to a classification model?</p>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"><p>What is difference compared to a classification model?</p>
 <ul>
-<li class="fragment">Terminal node estimates now continous variable.</li>
-<li class="fragment">Variance instead of Gini Impurity</li>
+<li>Terminal node estimates now continous variable.</li>
+<li>Variance instead of Gini Impurity</li>
 </ul>
 </section>
 <section id="variance-reduction-explained" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-22-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="variance-reduction-explained-percrep0.68" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained (PercRep&lt;0.68)</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-23-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="variance-reduction-explained-percrep0.68-1" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained (PercRep&lt;0.68)</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-24-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="variance-reduction-explained-percrep0.68-2" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained (PercRep&lt;0.68)</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-25-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="variance-reduction-explained-1" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-26-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="variance-reduction-explained-percrep0.5" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained (PercRep&lt;0.5)</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-27-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="variance-reduction-explained-percrep0.5-1" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained (PercRep&lt;0.5)</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-28-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="variance-reduction-explained-percrep0.5-2" class="slide level2" data-transition="fade-in fade-out">
 <h2>Variance Reduction Explained (PercRep&lt;0.5)</h2>
-
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-29-1.png" width="960" class="r-stretch"></section>
+</section>
 <section id="metrics-for-the-decision-tree-vaccination-model" class="slide level2">
 <h2>Metrics for the Decision Tree Vaccination Model</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelVax, <span class="at">new_data=</span>DataTest)</span>
-<span id="cb16-2"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>PercVacFull, <span class="at">estimate=</span>.pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelVax, <span class="at">new_data=</span>DataTest)</span>
+<span id="cb6-2"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>PercVacFull, <span class="at">estimate=</span>.pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   .metric .estimator .estimate
@@ -893,40 +791,34 @@ node), split, n, deviance, yval
 <section id="instability-of-decision-trees" class="slide level2">
 <h2>Instability of Decision Trees</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
-<span id="cb18-2"><a href=""></a>Split85<span class="ot">=</span>DataVax <span class="sc">%&gt;%</span> <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.85</span>,</span>
-<span id="cb18-3"><a href=""></a>                                 <span class="at">strata =</span> PercVacFull,</span>
-<span id="cb18-4"><a href=""></a>                                 <span class="at">breaks =</span> <span class="dv">3</span>)</span>
-<span id="cb18-5"><a href=""></a></span>
-<span id="cb18-6"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
-<span id="cb18-7"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
-<span id="cb18-8"><a href=""></a></span>
-<span id="cb18-9"><a href=""></a></span>
-<span id="cb18-10"><a href=""></a>ModelDesignDecTree<span class="ot">=</span><span class="fu">decision_tree</span>(<span class="at">tree_depth=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-11"><a href=""></a>                    <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb18-12"><a href=""></a>                    <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
-<span id="cb18-13"><a href=""></a>  </span>
-<span id="cb18-14"><a href=""></a>RecipeVax<span class="ot">=</span><span class="fu">recipe</span>(PercVacFull<span class="sc">~</span>., <span class="at">data=</span>DataTrain)</span>
-<span id="cb18-15"><a href=""></a></span>
-<span id="cb18-16"><a href=""></a>WfModelVax<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb18-17"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignDecTree) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-18"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeVax) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-19"><a href=""></a>               <span class="fu">fit</span>(DataTrain)</span>
-<span id="cb18-20"><a href=""></a><span class="fu">rpart.plot</span>(<span class="fu">extract_fit_engine</span>(WfModelVax),<span class="at">roundint=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a><span class="fu">set.seed</span>(<span class="dv">777</span>)</span>
+<span id="cb8-2"><a href=""></a>Split85<span class="ot">=</span>DataVax <span class="sc">%&gt;%</span> <span class="fu">initial_split</span>(<span class="at">prop =</span> <span class="fl">0.85</span>,</span>
+<span id="cb8-3"><a href=""></a>                                 <span class="at">strata =</span> PercVacFull,</span>
+<span id="cb8-4"><a href=""></a>                                 <span class="at">breaks =</span> <span class="dv">3</span>)</span>
+<span id="cb8-5"><a href=""></a></span>
+<span id="cb8-6"><a href=""></a>DataTrain<span class="ot">=</span><span class="fu">training</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
+<span id="cb8-7"><a href=""></a>DataTest<span class="ot">=</span><span class="fu">testing</span>(Split85) <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>County, <span class="sc">-</span>State)</span>
+<span id="cb8-8"><a href=""></a></span>
+<span id="cb8-9"><a href=""></a></span>
+<span id="cb8-10"><a href=""></a>ModelDesignDecTree<span class="ot">=</span><span class="fu">decision_tree</span>(<span class="at">tree_depth=</span><span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-11"><a href=""></a>                    <span class="fu">set_engine</span>(<span class="st">"rpart"</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb8-12"><a href=""></a>                    <span class="fu">set_mode</span>(<span class="st">"regression"</span>)</span>
+<span id="cb8-13"><a href=""></a>  </span>
+<span id="cb8-14"><a href=""></a>RecipeVax<span class="ot">=</span><span class="fu">recipe</span>(PercVacFull<span class="sc">~</span>., <span class="at">data=</span>DataTrain)</span>
+<span id="cb8-15"><a href=""></a></span>
+<span id="cb8-16"><a href=""></a>WfModelVax<span class="ot">=</span><span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-17"><a href=""></a>               <span class="fu">add_model</span>(ModelDesignDecTree) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-18"><a href=""></a>               <span class="fu">add_recipe</span>(RecipeVax) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-19"><a href=""></a>               <span class="fu">fit</span>(DataTrain)</span>
+<span id="cb8-20"><a href=""></a><span class="fu">rpart.plot</span>(<span class="fu">extract_fit_engine</span>(WfModelVax),<span class="at">roundint=</span><span class="cn">FALSE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
-<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-31-1.png" width="960" class="r-stretch"></section>
+<img data-src="TreeBasedDecTrees_files/figure-revealjs/unnamed-chunk-34-1.png" width="960" class="r-stretch"></section>
 <section id="metrics-for-the-slightly-changed-decision-tree-vaccination-model" class="slide level2">
 <h2>Metrics for the (slightly) Changed Decision Tree Vaccination Model</h2>
 <div class="cell">
-<details class="code-fold">
-<summary>Code</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelVax, <span class="at">new_data=</span>DataTest)</span>
-<span id="cb19-2"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>PercVacFull, <span class="at">estimate=</span>.pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a>DataTestWithPred<span class="ot">=</span><span class="fu">augment</span>(WfModelVax, <span class="at">new_data=</span>DataTest)</span>
+<span id="cb9-2"><a href=""></a><span class="fu">metrics</span>(DataTestWithPred, <span class="at">truth=</span>PercVacFull, <span class="at">estimate=</span>.pred)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   .metric .estimator .estimate
@@ -940,20 +832,37 @@ node), split, n, deviance, yval
 <section id="when-and-when-not-to-use-decision-trees" class="slide level2 smaller">
 <h2>When and When Not to Use Decision Trees</h2>
 <ul>
-<li class="fragment"><p>As a standalone model <em>Decision Trees</em> should not be used for predictions. Here is why:</p>
+<li><p>As a standalone model <em>Decision Trees</em> should not be used for predictions. Here is why:</p>
 <ul>
-<li class="fragment"><em>Decision Trees</em> respond very sensitively to a change in hyperparameters such as the tree depth. Therefore, the tree’s structure can change, which may also change the predictions.</li>
-<li class="fragment"><em>Decision Trees</em> respond very sensitively to a change in the training data. Therefore, when choosing different training data (e.g., by changing the <code>set.seed()</code>), the tree’s structure can change, which may also change the predictions.</li>
+<li><em>Decision Trees</em> respond very sensitively to a change in hyperparameters such as the tree depth. Therefore, the tree’s structure can change, which may also change the predictions.</li>
+<li><em>Decision Trees</em> respond very sensitively to a change in the training data. Therefore, when choosing different training data (e.g., by changing the <code>set.seed()</code>), the tree’s structure can change, which may also change the predictions.</li>
 </ul></li>
-<li class="fragment"><p>Decision Trees have an educational value because the graphical representation provides an easy way to see which variables influenced the predictions.</p></li>
-<li class="fragment"><p>Using Decision Trees as components of more advanced models like <em>Random Forest</em> and <em>Boosted Trees</em> often leads to excellent predictive results.»</p></li>
+<li><p>Decision Trees have an educational value because the graphical representation provides an easy way to see which variables influenced the predictions.</p></li>
+<li><p>Using Decision Trees as components of more advanced models like <em>Random Forest</em> and <em>Boosted Trees</em> often leads to excellent predictive results.»</p></li>
 </ul>
 
+<script type="webr-data">
+eyJvcHRpb25zIjp7ImJhc2VVcmwiOiJodHRwczovL3dlYnIuci13YXNtLm9yZy92MC41LjgvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsiZXZhbHVhdGUiLCJrbml0ciIsImh0bWx0b29scyIsImRwbHlyIiwicnNhbXBsZSIsImphbml0b3IiLCJyZWNpcGVzIiwiYnJvb20iLCJ5YXJkc3RpY2siLCJwYXJzbmlwIiwid29ya2Zsb3dzIiwicnBhcnQiLCJycGFydC5wbG90Il0sInJlcG9zIjpbXX0sInJlbmRlcl9kZiI6ImRlZmF1bHQifQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC02IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV82O1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItNiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzYgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV82ID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl82LCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtNSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfNTtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItNS1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTUtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfNSA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfNSwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzQ7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici00IiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfNCA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTQtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici00LWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzQgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXdpZGdldC0zIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoie1xuICAvLyBXYWl0IGZvciBvdXRwdXQgdG8gYmUgd3JpdHRlbiB0byB0aGUgRE9NLCB0aGVuIHRyaWdnZXIgd2lkZ2V0IHJlbmRlcmluZ1xuICBhd2FpdCBfd2Vicl92YWx1ZV8zO1xuICBpZiAod2luZG93LkhUTUxXaWRnZXRzKSB7XG4gICAgd2luZG93LkhUTUxXaWRnZXRzLnN0YXRpY1JlbmRlcigpO1xuICB9XG4gIGlmICh3aW5kb3cuUGFnZWRUYWJsZURvYykge1xuICAgIHdpbmRvdy5QYWdlZFRhYmxlRG9jLmluaXRBbGwoKTtcbiAgfVxufVxuIn0seyJjZWxsTmFtZSI6IndlYnItMyIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJzb3VyY2UiOiJ2aWV3b2YgX3dlYnJfZWRpdG9yXzMgPSB7XG4gIGNvbnN0IHsgV2ViUkV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHdlYnItMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBXZWJSRXhlcmNpc2VFZGl0b3Iod2ViUk9qcy53ZWJSUHJvbWlzZSwgYmxvY2suY29kZSwgb3B0aW9ucyk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fd2Vicl92YWx1ZV8zID0gd2ViUk9qcy5wcm9jZXNzKF93ZWJyX2VkaXRvcl8zLCB7fSk7XG4ifSx7ImNlbGxOYW1lIjoid2Vici13aWRnZXQtMiIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6IntcbiAgLy8gV2FpdCBmb3Igb3V0cHV0IHRvIGJlIHdyaXR0ZW4gdG8gdGhlIERPTSwgdGhlbiB0cmlnZ2VyIHdpZGdldCByZW5kZXJpbmdcbiAgYXdhaXQgX3dlYnJfdmFsdWVfMjtcbiAgaWYgKHdpbmRvdy5IVE1MV2lkZ2V0cykge1xuICAgIHdpbmRvdy5IVE1MV2lkZ2V0cy5zdGF0aWNSZW5kZXIoKTtcbiAgfVxuICBpZiAod2luZG93LlBhZ2VkVGFibGVEb2MpIHtcbiAgICB3aW5kb3cuUGFnZWRUYWJsZURvYy5pbml0QWxsKCk7XG4gIH1cbn1cbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF93ZWJyX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFdlYlJFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuICBjb25zdCBzY3JpcHRDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcIndlYnItMi1jb250ZW50c1xcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGJsb2NrID0gSlNPTi5wYXJzZShiNjREZWNvZGUoc2NyaXB0Q29udGVudCkpO1xuXG4gIGNvbnN0IG9wdGlvbnMgPSBPYmplY3QuYXNzaWduKHsgaWQ6IGB3ZWJyLTItY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgV2ViUkV4ZXJjaXNlRWRpdG9yKHdlYlJPanMud2ViUlByb21pc2UsIGJsb2NrLmNvZGUsIG9wdGlvbnMpO1xuXG4gIHJldHVybiBlZGl0b3IuY29udGFpbmVyO1xufVxuX3dlYnJfdmFsdWVfMiA9IHdlYlJPanMucHJvY2Vzcyhfd2Vicl9lZGl0b3JfMiwge30pO1xuIn0seyJjZWxsTmFtZSI6IndlYnItd2lkZ2V0LTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ7XG4gIC8vIFdhaXQgZm9yIG91dHB1dCB0byBiZSB3cml0dGVuIHRvIHRoZSBET00sIHRoZW4gdHJpZ2dlciB3aWRnZXQgcmVuZGVyaW5nXG4gIGF3YWl0IF93ZWJyX3ZhbHVlXzE7XG4gIGlmICh3aW5kb3cuSFRNTFdpZGdldHMpIHtcbiAgICB3aW5kb3cuSFRNTFdpZGdldHMuc3RhdGljUmVuZGVyKCk7XG4gIH1cbiAgaWYgKHdpbmRvdy5QYWdlZFRhYmxlRG9jKSB7XG4gICAgd2luZG93LlBhZ2VkVGFibGVEb2MuaW5pdEFsbCgpO1xuICB9XG59XG4ifSx7ImNlbGxOYW1lIjoid2Vici0xIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfd2Vicl9lZGl0b3JfMSA9IHtcbiAgY29uc3QgeyBXZWJSRXhlcmNpc2VFZGl0b3IsIGI2NERlY29kZSB9ID0gd2luZG93Ll9leGVyY2lzZV9vanNfcnVudGltZTtcbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ3ZWJyLTEtY29udGVudHNcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBibG9jayA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKHNjcmlwdENvbnRlbnQpKTtcblxuICBjb25zdCBvcHRpb25zID0gT2JqZWN0LmFzc2lnbih7IGlkOiBgd2Vici0xLWNvbnRlbnRzYCB9LCBibG9jay5hdHRyKTtcbiAgY29uc3QgZWRpdG9yID0gbmV3IFdlYlJFeGVyY2lzZUVkaXRvcih3ZWJST2pzLndlYlJQcm9taXNlLCBibG9jay5jb2RlLCBvcHRpb25zKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl93ZWJyX3ZhbHVlXzEgPSB3ZWJST2pzLnByb2Nlc3MoX3dlYnJfZWRpdG9yXzEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJ3ZWJyLXByZWx1ZGUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJ3ZWJST2pzID0ge1xuICBjb25zdCB7IFdlYlIsIENoYW5uZWxUeXBlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lLldlYlI7XG4gIGNvbnN0IHtcbiAgICBXZWJSRXZhbHVhdG9yLFxuICAgIFdlYlJFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBSLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGhcbiAgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc3RhdHVzQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLXN0YXR1c1wiKTtcbiAgY29uc3QgaW5kaWNhdG9yQ29udGFpbmVyID0gZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoXCJleGVyY2lzZS1sb2FkaW5nLWluZGljYXRvclwiKTtcbiAgaW5kaWNhdG9yQ29udGFpbmVyLmNsYXNzTGlzdC5yZW1vdmUoXCJkLW5vbmVcIik7XG5cbiAgbGV0IHN0YXR1c1RleHQgPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwiZGl2XCIpXG4gIHN0YXR1c1RleHQuY2xhc3NMaXN0ID0gXCJleGVyY2lzZS1sb2FkaW5nLWRldGFpbHNcIjtcbiAgc3RhdHVzVGV4dCA9IHN0YXR1c0NvbnRhaW5lci5hcHBlbmRDaGlsZChzdGF0dXNUZXh0KTtcbiAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBJbml0aWFsaXNlYDtcblxuICAvLyBIb2lzdCBpbmRpY2F0b3Igb3V0IGZyb20gZmluYWwgc2xpZGUgd2hlbiBydW5uaW5nIHVuZGVyIHJldmVhbFxuICBjb25zdCByZXZlYWxTdGF0dXMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKFwiLnJldmVhbCAuZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGlmIChyZXZlYWxTdGF0dXMpIHtcbiAgICByZXZlYWxTdGF0dXMucmVtb3ZlKCk7XG4gICAgZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgPiAuc2xpZGVzXCIpLmFwcGVuZENoaWxkKHJldmVhbFN0YXR1cyk7XG4gIH1cblxuICAvLyBNYWtlIGFueSByZXZlYWwgc2xpZGVzIHdpdGggbGl2ZSBjZWxscyBzY3JvbGxhYmxlXG4gIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoXCIucmV2ZWFsIC5leGVyY2lzZS1jZWxsXCIpLmZvckVhY2goKGVsKSA9PiB7XG4gICAgZWwuY2xvc2VzdCgnc2VjdGlvbi5zbGlkZScpLmNsYXNzTGlzdC5hZGQoXCJzY3JvbGxhYmxlXCIpO1xuICB9KVxuXG4gIC8vIHdlYlIgc3VwcGxlbWVudGFsIGRhdGEgYW5kIG9wdGlvbnNcbiAgY29uc3QgZGF0YUNvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwid2Vici1kYXRhXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgZGF0YSA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGRhdGFDb250ZW50KSk7XG5cbiAgLy8gR3JhYiBsaXN0IG9mIHJlc291cmNlcyB0byBiZSBkb3dubG9hZGVkXG4gIGNvbnN0IGZpbGVzQ29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJ2ZnMtZmlsZVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGZpbGVzID0gSlNPTi5wYXJzZShiNjREZWNvZGUoZmlsZXNDb250ZW50KSk7XG5cbiAgLy8gSW5pdGlhbGlzZSB3ZWJSIGFuZCBzZXR1cCBmb3IgUiBjb2RlIGV2YWx1YXRpb25cbiAgbGV0IHdlYlJQcm9taXNlID0gKGFzeW5jICh3ZWJSKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyB3ZWJSYDtcbiAgICBhd2FpdCB3ZWJSLmluaXQoKTtcblxuICAgIC8vIEluc3RhbGwgcHJvdmlkZWQgbGlzdCBvZiBwYWNrYWdlc1xuICAgIC8vIEVuc3VyZSB3ZWJSIGRlZmF1bHQgcmVwbyBpcyBpbmNsdWRlZFxuICAgIGRhdGEucGFja2FnZXMucmVwb3MucHVzaChcImh0dHBzOi8vcmVwby5yLXdhc20ub3JnXCIpXG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gd2ViUi5ldmFsUlZvaWQoYFxuICAgICAgICB3ZWJyOjppbnN0YWxsKHBrZywgcmVwb3MgPSByZXBvcylcbiAgICAgICAgbGlicmFyeShwa2csIGNoYXJhY3Rlci5vbmx5ID0gVFJVRSlcbiAgICAgIGAsIHsgZW52OiB7XG4gICAgICAgIHBrZzogcGtnLFxuICAgICAgICByZXBvczogZGF0YS5wYWNrYWdlcy5yZXBvcyxcbiAgICAgIH19KTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICBjb25zdCBhbmFseXNpcyA9IGF3YWl0IHdlYlIuRlMuYW5hbHl6ZVBhdGgocGF0aCk7XG4gICAgICAgIGlmICghYW5hbHlzaXMuZXhpc3RzKSB7XG4gICAgICAgICAgdHJ5IHtcbiAgICAgICAgICAgIGF3YWl0IHdlYlIuRlMubWtkaXIocGF0aCk7XG4gICAgICAgICAgfSBjYXRjaCAoZSkge1xuICAgICAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yOiBcIiR7ZS5tZXNzYWdlfVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgcmV0dXJuIGF3YWl0IHdlYlIuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5zdGFsbGluZyB3ZWJSIHNoaW1zYDtcbiAgICBhd2FpdCB3ZWJSLmV2YWxSVm9pZChgd2Vicjo6c2hpbV9pbnN0YWxsKClgKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgV2ViUiBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBSKHdlYlIsIGRhdGEpO1xuXG4gICAgc3RhdHVzVGV4dC5yZW1vdmUoKTtcbiAgICBpZiAoc3RhdHVzQ29udGFpbmVyLmNoaWxkcmVuLmxlbmd0aCA9PSAwKSB7XG4gICAgICBzdGF0dXNDb250YWluZXIucGFyZW50Tm9kZS5yZW1vdmUoKTtcbiAgICB9XG4gICAgcmV0dXJuIHdlYlI7XG4gIH0pKG5ldyBXZWJSKGRhdGEub3B0aW9ucykpO1xuXG4gIC8vIEtlZXAgdHJhY2sgb2YgaW5pdGlhbCBPSlMgYmxvY2sgcmVuZGVyXG4gIGNvbnN0IHJlbmRlcmVkT2pzID0ge307XG5cbiAgY29uc3QgcHJvY2VzcyA9IGFzeW5jIChjb250ZXh0LCBpbnB1dHMpID0+IHtcbiAgICBjb25zdCB3ZWJSID0gYXdhaXQgd2ViUlByb21pc2U7XG4gICAgY29uc3QgZXZhbHVhdG9yID0gbmV3IFdlYlJFdmFsdWF0b3Iod2ViUiwgY29udGV4dClcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBwcm9jZXNzLFxuICAgIHdlYlJQcm9taXNlLFxuICAgIHJlbmRlcmVkT2pzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
 </section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p><a href="https://ai.lange-analytics.com" target="_blank">https://ai.lange-analytics.com/</a></p>
+<p><a href="https://ai.lange-analytics.com/htmlbook/RidgeLasso.html" target="_blank">Textbook </a></p>
 </div>
 </div></div>
 
@@ -987,8 +896,8 @@ node), split, n, deviance, yval
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
-'chalkboard': {"buttons":true},
-'smaller': false,
+'chalkboard': {"buttons":true,"theme":"whiteboard","boardmarkerWidth":2.7},
+'smaller': true,
  
         // Display controls in the bottom right corner
         controls: true,
@@ -1008,7 +917,7 @@ node), split, n, deviance, yval
         progress: true,
 
         // Display the page number of the current slide
-        slideNumber: 'c/t',
+        slideNumber: false,
 
         // 'all', 'print', or 'speaker'
         showSlideNumber: 'all',
@@ -1166,6 +1075,17 @@ node), split, n, deviance, yval
           RevealZoom
         ]
       });
+    </script>
+    <script type="ojs-module-contents">
+    eyJjb250ZW50cyI6W119
+    </script>
+    <script type="module">
+    if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+    window._ojs.paths.runtimeToDoc = "../../..";
+    window._ojs.paths.runtimeToRoot = "../../../..";
+    window._ojs.paths.docToRoot = "..";
+    window._ojs.selfContained = false;
+    window._ojs.runtime.interpretFromScriptTags();
     </script>
     
 

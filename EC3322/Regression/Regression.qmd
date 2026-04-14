@@ -557,7 +557,7 @@ $$
 
 
 # Multivariate Regression <br>
-(Two or or Predictor Variables)
+(Two or more Predictor Variables)
 
 
 

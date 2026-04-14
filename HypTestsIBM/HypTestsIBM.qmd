@@ -1,6 +1,6 @@
 ---
 title: "Hypothesis Tests"
-subtitle: "Inference, Sigificance, Coefficient of Determination ($R^2$)"
+subtitle: "Inference, Significance, Coefficient of Determination ($R^2$)"
 format: 
   revealjs
 multiplex: true

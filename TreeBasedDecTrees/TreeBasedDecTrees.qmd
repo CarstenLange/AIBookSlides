@@ -1,15 +1,35 @@
 ---
 title: "Tree Based Models"
 subtitle: "Decision Trees"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
 format: 
-  revealjs:
-    code-fold: true
-editor: 
-  markdown: 
-    wrap: 72
+  live-revealjs:
+    theme: [moon, CustomCL.scss]
+    smaller: true
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RidgeLasso.html' target='_blank'>Textbook </a> "
+   
+webr:
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom',
+             'yardstick','parsnip','workflows',rpart, rpart.plot] # Auto-install packages in the browser
+
+engine: knitr
 ---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
 ```{r}
-DraftModeCL=FALSE # jitter plot takes a long time. DraftMode=TRUE skips it. 
+DraftModeCL=TRUE # jitter plot takes a long time. DraftMode=TRUE skips it. 
 ```
 
 ## Introduction
@@ -30,10 +50,23 @@ DraftModeCL=FALSE # jitter plot takes a long time. DraftMode=TRUE skips it.
 ## Introducing the Idea of Decision Trees with the Titanic Dataset
 
 ```{r}
-#| echo: true
+#| echo: false
 library(rio); library(tidymodels); library(janitor)
-library(kableExtra)
-DataTitanic=import("https://ai.lange-analytics.com/data/Titanic.csv") %>% 
+library(kableExtra); library(rpart.plot)
+DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") %>% 
+            clean_names("upper_camel") %>%
+             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) %>%
+             mutate(Survived=as.factor(Survived))
+
+set.seed(777)
+Split7525=initial_split(DataTitanic, strata = Survived)
+
+DataTrain=training(Split7525)
+DataTest=testing(Split7525)
+```
+
+```{webr}
+DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") %>% 
             clean_names("upper_camel") %>%
              select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) %>%
              mutate(Survived=as.factor(Survived))
@@ -44,8 +77,9 @@ Split7525=initial_split(DataTitanic, strata = Survived)
 DataTrain=training(Split7525)
 DataTest=testing(Split7525)
 
-kbl(DataTrain[1:5,])
+kable(DataTrain[1:5,])
 ```
+
 
 ## Generating a Decision Tree with `tidymodels`
 
@@ -53,7 +87,21 @@ Note, `rpart` package needs to be installed. `tidymodels` loads the
 `rpart` package automatically. Therefore `library(rpart)` is not needed.
 
 ```{r}
-#| echo: true
+#| echo: false
+ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
+                    set_engine("rpart") %>% 
+                    set_mode("classification")
+  
+RecipeTitanic=recipe(Survived~., data=DataTrain)
+
+set.seed(777)
+WfModelTitanic=workflow() %>% 
+               add_model(ModelDesignDecTree) %>% 
+               add_recipe(RecipeTitanic) %>% 
+               fit(DataTrain)
+```
+
+```{webr}
 ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
                     set_engine("rpart") %>% 
                     set_mode("classification")
@@ -68,13 +116,13 @@ WfModelTitanic=workflow() %>%
 print(WfModelTitanic)
 ```
 
+
 ## Displaying the Decision Tree with `rpart.plot`
 
 Note, `rpart.plot` package needs to be installed and loaded with
 `library(rpart.plot)`.
 
-```{r}
-#| echo: true
+```{webr}
 library(rpart.plot)
 rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
 ```
@@ -166,7 +214,7 @@ Observation is a `false positive` (0=:positive class)»
 rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
 ```
 
-```{r}
+```{webr}
 #| echo: true
 DataTestWithPred=augment(WfModelTitanic, new_data =  DataTest)
 head(DataTestWithPred)
@@ -184,9 +232,7 @@ DataTestWithPred=augment(WfModelTitanic, new_data =  DataTest)
 
 . . .
 
-```{r}
-#| echo: true
-#| code-fold: false
+```{webr}
 conf_mat(DataTestWithPred, truth = Survived, estimate = .pred_class)
 ```
 
@@ -194,9 +240,7 @@ conf_mat(DataTestWithPred, truth = Survived, estimate = .pred_class)
 
 . . .
 
-```{r}
-#| echo: true
-#| code-fold: false
+```{webr}
 metricSetTitanic=metric_set(accuracy, sensitivity, specificity)
 metricSetTitanic(DataTestWithPred, truth = Survived, estimate = .pred_class)
 ```
