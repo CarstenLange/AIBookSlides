@@ -28,6 +28,11 @@ engine: knitr
 ---
 
 {{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+
+## What Will You Learn {.scrollable .smaller}
+
 ```{webr}
 #| warning: false
 #| message: false
@@ -44,7 +49,6 @@ set.seed(7771)
 Data100Houses=sample_n(DataHouses,size=100)
 ```
 
-## What Will You Learn {.scrollable .smaller}
 -   The basic idea behind linear regression
 
 -   Distinguish between unfitted and fitted models
@@ -54,6 +58,12 @@ Data100Houses=sample_n(DataHouses,size=100)
 -   Finding optimal regression parameters with `lm` 
 
 -   Learning how how to measure predictive quality with Mean Square Error ($MSE$)
+
+- Combine two *Simple Equations* (one predictor each) into one multivariate OLS regression (two predictor variables)<br>**Only possible if predictors are uncorrelated**
+
+- See what happens if two *Simple Equations* (one predictor each) are combined into one multivariate OLS regression, when predictors are perfectly correlated
+
+- Use Virtual Reality to perform the same tasks named in the learning outcomes above with 3D-diagrams
 
 
 
@@ -244,7 +254,8 @@ print(ModelOLS)
 
 ## Unfitted Model vs Fitted Workflow Model {.smaller}
 
-Unfitted Model: $$
+Unfitted Model: 
+$$
 \underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
 $$
 
@@ -254,7 +265,8 @@ print(ModelOLS)
 ```
 
 
-Fitted Model: $$
+Fitted Model: 
+$$
 \underbrace{\widehat{Price_i}}_\widehat{y}=\underbrace{240}_m \cdot\underbrace{Sqft_i}_x + \underbrace{52509}_b
 $$
 
@@ -266,7 +278,6 @@ $$
 print(ModelOLS)
 ```
 
-
 $$
 \begin{align}
 \widehat{Price}&=240 \cdot Sqft +  52509\\
@@ -274,7 +285,8 @@ $$
  (+480)&=240\cdot (+2) +  (+0)\\
  (+720)&=240\cdot (+3) +  (+0)
 \end{align}
-$$ 
+$$
+
 For each extra $Sqft$ the predicted price increases by $240.
 
 Do not interpret $b$ as it makes no sense in most cases!!!
@@ -291,7 +303,7 @@ Data100Houses= sample_n(DataHouses, size=100)
 head(Data100Houses)
 
 ModelLMExerc=lm(Price~Sqft, data=Data100Houses)
-summary(ModelLMExerc)
+print(ModelLMExerc)
 
 ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
   geom_point(color="red")+
@@ -300,8 +312,107 @@ ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
   geom_hline(yintercept = mean(Data100Houses$Price))
 ```
 
+## Results from Regression Experiment
 
-## How Are Coefficients Calculated in R {.smaller}
+
+| Student # | `set.seed()`       | $\beta_1$ Value |
+|:---------:|:------------------:|:---------------:|
+|     1     |         &nbsp;     |       &nbsp;    |
+|     2     |         &nbsp;     |       &nbsp;    |
+|     3     |         &nbsp;     |       &nbsp;    |
+|     4     |         &nbsp;     |       &nbsp;    |
+|     5     |         &nbsp;     |       &nbsp;    |
+|     6    |         &nbsp;     |       &nbsp;    |
+|     ...     |         ...        |       ...       |
+|     N     |         &nbsp;     |       &nbsp;    |
+ 
+
+
+## Coefficients are Normal Distributed Statistics {.smaller}
+
+For different `set.seed()` values you got different samples.
+
+**Each sample resulted in a different $\beta_1$ value**
+<br><br>
+**Properties of $\beta_1$ values:**
+
+- Normal distributed
+- Standard Error can be calculated 
+- Hypothesis Tests can be performed (!!!)
+
+## Performing a Hypothesis Test on $\beta_1$ {.smaller}
+
+:::: columns
+::: {.column width="70%"}
+$$
+\underbrace{\widehat{Price_i}}_y=\underbrace{\beta_1}_m \underbrace{Sqft_i}_x + \underbrace{\beta_0}_b
+$$
+
+
+$H_0:$ $Sqft$ is meaningless for house price
+$$
+ \beta_1 =0 
+$$
+
+$H_{alt}:$ $Sqft$ influences  house price
+$$
+H_{alt}: \beta_1 \ne 0
+$$
+
+```{r}
+#| eval: false
+#| echo: true
+summary(ModelLMExerc)
+```
+
+```{r}
+summary(ModelOLS)
+```
+
+$$
+d.f.=99 \qquad SE_{\beta_1}=31
+$$
+
+$$
+t_{conf=0.99}=2.364
+$$
+
+$$t_{sample}=\frac{239.58-0}{30.57}=7.84$$
+
+
+
+**Reject the hypothesis $\beta_1=0$ at the 99% confidence level**
+
+**In fact:** <br>
+The probability of $\beta_1=0$ is extremely small ($Pr=\frac{5.67}{1,000,000,000,000}$)**
+:::
+
+::: {.column width="30%"}
+![](Images/tTable.png)
+:::
+
+::::
+
+## Summary - Steps for a Linear Regression {.smaller}
+
+
+
+1. Write down the formula for the unfitted model. Such as:
+$$\widehat{Price}=\beta_1 Sqft + \beta_0$$
+
+3. Run the regression
+
+4. Substitute the $\beta s$ in the formula with the values you got from the regression.
+
+5. Sanity test: Are the signs (positive/negative) what you expected. If not,  the related variable does not belong in your model
+
+6. Interpret the $\beta (s)$. E.g., if predictor variable increases by one unit outcome increases by $\beta$ units. Note, the intercept coefficient cannot be interpreted in almost all cases!
+
+7. Check if P value is low enough (e.g., smaller than 0.05=5%). This is the probability for the related coefficient to be 0 and thus irrelevant. You want a low probability for that event. If P value is too high the related variable does not belong in your model. Note, no need to interpret the P for the intercept. 
+
+# How Are the Coefficients Calculated
+
+## Simple Regression Example  {.smaller}
 
 ::: columns
 
@@ -412,17 +523,11 @@ MSE & = & \frac{1}{5}\left[ (\underbrace{\overbrace{\beta_1\cdot 2+\beta_0}^{\mb
 
 ## Calculate Optimal Parameters for OLS{.smaller}
 
-```{=tex}
-\begin{eqnarray*} 
-\beta_{1,opt}&=& \frac
+$$
+\beta_{1,opt}= \frac
 {N \sum_{i=1}^N y_i x_i- \sum_{i=1}^N y_i \sum_{i=1}^N x_i} 
-{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96\\
-&& \nonumber \\
-\beta_{0,opt.}&=& \frac{\sum_{i=1}^N y_i}{N}  - 
-         \beta_{1,opt}  \frac{\sum_{i=1}^N x_i}{N} 
-         = 64.18
-\end{eqnarray*}
-```
+{N \sum_{i=1}^N x_i^2 - \left (\sum_{i=1}^N x_i \right )^2}=3.96
+$$
 
 ```{r}
 #| echo: false
@@ -442,72 +547,25 @@ kbl(DataTable |> mutate(i=1:5) |> select(i,everything()),
 kbl(data.frame(as.list(colSums(DataTable))), 
     caption="Column Sums")|>
     kable_styling(bootstrap_options=c("striped","hover"), full_width = F, position="center")
-
-
 ```
 
-## Real Estate Model Revisited
-
-Change the seed and `set.seed()` and see the coefficient for $SQFT$ change:
-
-```{webr}
-set.seed(7771)
-Data100HousesSqft=import("Data/DataHouses.csv")|> 
-           clean_names("upper_camel") |> 
-           select(Price,Sqft=SqftLiving) |>     
-                  sample_n(100)
-head(Data100HousesSqft)
-
-ModelLMSqft=lm(Price~Sqft, data=Data100HousesSqft)
-print(ModelLMSqft)
-
-```
+$$
+\beta_{0,opt.}= \frac{\sum_{i=1}^N y_i}{N}  - 
+         \beta_{1,opt}  \frac{\sum_{i=1}^N x_i}{N} 
+         = 64.18
+$$
 
 
-## Significance of Coefficients {.smaller}
-
-**Null Hypothesis:**
-
-$$\beta_1=0$$
-$$\widehat{Price}=0 \cdot Sqft + \beta_0$$
-
-**Alternative (Research) Hypothesis:**
-
-$$\beta_1\neq 0$$
-```{webr}
-summary(ModelLMSqft)
-```
-
-$P$ value shows the probability for $\beta_1=0$, meaning the coefficient from the sample was just accidentally observed and $Sqft$ has no influence on $Price$.
-
-## Summary - Steps for a Linear Regression {.smaller}
-
-
-1. Draw a DAG (with R or by hand)
-
-2. Mark if the effects in the DAG are expected to be positive or negative
-
-3. Write down the formula for the unfitted model. Such as:
-$$\widehat{Price}=\beta_1 Sqft + \beta_0$$
-
-3. Run the regression
-
-4. Substitute the $\beta s$ in the formula with the values you got from the regression.
-
-5. Sanity test: Are the signs (positive/negative) what you expected. If not,  the related variable does not belong in your model
-
-6. Interpret the $\beta (s)$. E.g., if predictor variable increases by one unit outcome increases by $\beta$ units. Note, the intercept coefficient cannot be interpreted in almost all cases!
-
-7. Check if P value is low enough (e.g., smaller than 0.05=5%). This is the probability for the related coefficient to be 0 and thus irrelevant. You want a low probability for that event. If P value is too high the related variable does not belong in your model. Note, no need to interpret the P for the intercept. 
+# Multivariate Regression <br>
+(Two or or Predictor Variables)
 
 
 
-## Learning Outcomes
+## Remaining Learning Outcomes
 
-- Combine two *Simple Equations* (one predictor) into one multivariate OLS regression (only possible if predictors are uncorrelated)
-
-- See what happens if two *Simple Equations* (one predictor) are combined into one multivariate OLS regression, when predictors are perfectly correlated
-
+- Combine two *Simple Regressions* (one predictor each) into one multivariate OLS regression (two predictor variables)<br>
+**Only possible if predictors are uncorrelated**
+- See what happens if two *Simple Regressions* (one predictor each) are combined into one multivariate OLS regression, when predictors are perfectly correlated
 - Use Virtual Reality to perform the same tasks named in the learning outcomes above with 3D-diagrams
 
 ## Frisch-Waugh-Lovell Theorem {.smaller}
@@ -519,11 +577,14 @@ we can run $j$ (e.g., two) Simple Regressions (regressions with only one
 predictor variable) and use the resulting $\beta$-coefficients for a
 joint multivariate regression.
 
-**Example:** ($Sft$ and $Cond$ are not correlated:)
+**Example:** Predicting house $Price$ based on $Sft$ and $Cond$ (condition of a house with 0 (worst) -- 20 (best)):
 
 $$\widehat{Price}_i= \beta_{Sqft} \cdot Sqft_i + \beta_{01}$$
-$$\widehat{Price}_i= \beta_{Cond} \cdot Cond_i + \beta_{02}$$
-$$\widehat{Price}_i= \beta_{Sqft} \cdot Sqft_i+\beta_{Cond} \cdot Cond_i + \beta_0$$
+$$\widehat{Price}_i= \beta_{Cond} \cdot Cond_i + \beta_{02}
+$$
+$$\widehat{Price}_i= \beta_{Sqft} \cdot Sqft_i+\beta_{Cond} \cdot Cond_i + \beta_0
+$$
+
 The resulting $\beta_0$ can be calculated based on the average of Price,
 Square Feet, and Condition, <br> <br> $\overline{Price}$,
 $\overline{Sqft}$ and $\overline{Cond}$, respectively.
@@ -588,7 +649,7 @@ summary(ModelSqftCond)
 
 $$\widehat{Price}_i= 212 \cdot Sqft + 15,001 \cdot Cond_i + 298,100$$
 
-## FWL Theorem with a Another Synthetic Dataset
+## FWL Theorem with Another Synthetic Dataset
 
 We have another dataset for house prices ($Price_i$) together with
 predictor variables for the houses' condition ($Rooms_i$; 1 -- 20) and
@@ -670,6 +731,6 @@ $$\widehat{Price}_i= NA \cdot Sqft + 78,289 \cdot Rooms_i + 304,917$$
 
 ## Now the Same in 3D/Virtual Reality
 
-![![](images/clipboard-1227717430.png)](Diagram3DAppScreenShot.jpg)
+
 
 
