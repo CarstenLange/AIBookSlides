@@ -53,9 +53,9 @@ DraftModeCL=TRUE # jitter plot takes a long time. DraftMode=TRUE skips it.
 #| echo: false
 library(rio); library(tidymodels); library(janitor)
 library(kableExtra); library(rpart.plot)
-DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") %>% 
-            clean_names("upper_camel") %>%
-             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) %>%
+DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |> 
+            clean_names("upper_camel") |>
+             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) |>
              mutate(Survived=as.factor(Survived))
 
 set.seed(777)
@@ -66,9 +66,9 @@ DataTest=testing(Split7525)
 ```
 
 ```{webr}
-DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") %>% 
-            clean_names("upper_camel") %>%
-             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) %>%
+DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |> 
+            clean_names("upper_camel") |>
+             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) |>
              mutate(Survived=as.factor(Survived))
 
 set.seed(777)
@@ -88,30 +88,30 @@ Note, `rpart` package needs to be installed. `tidymodels` loads the
 
 ```{r}
 #| echo: false
-ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
-                    set_engine("rpart") %>% 
+ModelDesignDecTree=decision_tree(tree_depth=3) |> 
+                    set_engine("rpart") |> 
                     set_mode("classification")
   
 RecipeTitanic=recipe(Survived~., data=DataTrain)
 
 set.seed(777)
-WfModelTitanic=workflow() %>% 
-               add_model(ModelDesignDecTree) %>% 
-               add_recipe(RecipeTitanic) %>% 
+WfModelTitanic=workflow() |> 
+               add_model(ModelDesignDecTree) |> 
+               add_recipe(RecipeTitanic) |> 
                fit(DataTrain)
 ```
 
 ```{webr}
-ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
-                    set_engine("rpart") %>% 
+ModelDesignDecTree=decision_tree(tree_depth=3) |> 
+                    set_engine("rpart") |> 
                     set_mode("classification")
   
 RecipeTitanic=recipe(Survived~., data=DataTrain)
 
 set.seed(777)
-WfModelTitanic=workflow() %>% 
-               add_model(ModelDesignDecTree) %>% 
-               add_recipe(RecipeTitanic) %>% 
+WfModelTitanic=workflow() |> 
+               add_model(ModelDesignDecTree) |> 
+               add_recipe(RecipeTitanic) |> 
                fit(DataTrain)
 print(WfModelTitanic)
 ```
@@ -123,6 +123,9 @@ Note, `rpart.plot` package needs to be installed and loaded with
 `library(rpart.plot)`.
 
 ```{webr}
+#| fig-width: 9
+#| fig-height: 7
+#| out-width: "120%"
 library(rpart.plot)
 rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
 ```
@@ -199,7 +202,7 @@ rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
 
 ::: {.column width="43%"}
 ```{r }
-kbl(DataTest %>% filter(Sex=="male", Age==9, Class==3, Survived==1), caption="Predicting Survival (9-year Old Boy in Third Class)")
+kbl(DataTest |> filter(Sex=="male", Age==9, Class==3, Survived==1), caption="Predicting Survival (9-year Old Boy in Third Class)")
 ```
 :::
 :::
@@ -215,22 +218,13 @@ rpart.plot(extract_fit_engine(WfModelTitanic),roundint=FALSE)
 ```
 
 ```{webr}
-#| echo: true
 DataTestWithPred=augment(WfModelTitanic, new_data =  DataTest)
-head(DataTestWithPred)
+kable(DataTestWithPred)
 ```
 
 ## Predicting all Testing Data with a Decision Tree --- Metrics
 
-```{r}
-#| echo: true
-#| code-fold: false
-DataTestWithPred=augment(WfModelTitanic, new_data =  DataTest)
-```
 
-<br>
-
-. . .
 
 ```{webr}
 conf_mat(DataTestWithPred, truth = Survived, estimate = .pred_class)
@@ -238,7 +232,6 @@ conf_mat(DataTestWithPred, truth = Survived, estimate = .pred_class)
 
 <br>
 
-. . .
 
 ```{webr}
 metricSetTitanic=metric_set(accuracy, sensitivity, specificity)
@@ -413,18 +406,18 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
 
 ```{r }
 #| echo: true
-DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") %>%   
+DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") |>   
         select(County, State, PercVacFull, PercRep,
               PercAsian, PercBlack, PercHisp,
               PercYoung25, PercOld65, PercFoodSt)
 
 set.seed(2021)
-Split85=DataVax %>% initial_split(prop = 0.85,
+Split85=DataVax |> initial_split(prop = 0.85,
                                  strata = PercVacFull,
                                  breaks = 3)
 
-DataTrain=training(Split85) %>% select(-County, -State)
-DataTest=testing(Split85) %>% select(-County, -State)
+DataTrain=training(Split85) |> select(-County, -State)
+DataTest=testing(Split85) |> select(-County, -State)
 kbl(head(DataVax))
 ```
 
@@ -432,15 +425,15 @@ kbl(head(DataVax))
 
 ```{r }
 #| echo: true
-ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
-                    set_engine("rpart") %>%  
+ModelDesignDecTree=decision_tree(tree_depth=3) |> 
+                    set_engine("rpart") |>  
                     set_mode("regression")
   
 RecipeVax=recipe(PercVacFull~., data=DataTrain)
 
-WfModelVax=workflow() %>% 
-               add_model(ModelDesignDecTree) %>% 
-               add_recipe(RecipeVax) %>% 
+WfModelVax=workflow() |> 
+               add_model(ModelDesignDecTree) |> 
+               add_recipe(RecipeVax) |> 
                fit(DataTrain)
 print(WfModelVax)
 ```
@@ -457,9 +450,10 @@ What is difference compared to a classification model?
 - Terminal node estimates now continous variable.
 - Variance instead of Gini Impurity
 
-## Variance Reduction Explained {transition="fade-in fade-out"}
+## Variance Reduction Explained 
+
 ```{r}
-DataPlot=DataTrain %>% filter(PercVacFull<=1)
+DataPlot=DataTrain |> filter(PercVacFull<=1)
 SplitVal=0.68
 MeanAll=mean(DataPlot$PercVacFull)
 StdAll=sd(DataPlot$PercVacFull)
@@ -487,7 +481,7 @@ PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)
 if(!DraftModeCL) {PlotVar}
 ```
 
-## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+## Variance Reduction Explained (PercRep<`r SplitVal`)
 
 ```{r}
 PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)+
@@ -506,7 +500,7 @@ if(!DraftModeCL) {PlotVar}
 ```
 
 
-## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+## Variance Reduction Explained (PercRep<`r SplitVal`)
 
 ```{r}
 PlotVar=PlotVar+
@@ -531,7 +525,7 @@ PlotVar=PlotVar+
 if(!DraftModeCL) {PlotVar}
 ```
 
-## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+## Variance Reduction Explained (PercRep<`r SplitVal`)
 
 ```{r}
 PlotVar=PlotVar+
@@ -552,7 +546,8 @@ PlotVar=PlotVar+
 if(!DraftModeCL) {PlotVar}
 ```
 
-## Variance Reduction Explained {transition="fade-in fade-out"}
+## Variance Reduction Explained 
+
 ```{r}
 SplitVal=0.5
 DataRep=filter(DataPlot, PercRep>=SplitVal)
@@ -580,7 +575,7 @@ PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)
 if(!DraftModeCL) {PlotVar}
 ```
 
-## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+## Variance Reduction Explained (PercRep<`r SplitVal`)
 
 ```{r}
 PlotVar=ggplot(aes(x=PercVacFull, y="", color=PercRep>=SplitVal), data=DataPlot)+
@@ -600,7 +595,7 @@ if(!DraftModeCL) {PlotVar}
 ```
 
 
-## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+## Variance Reduction Explained (PercRep<`r SplitVal`)
 
 ```{r}
 PlotVar=PlotVar+
@@ -625,7 +620,7 @@ PlotVar=PlotVar+
 if(!DraftModeCL) {PlotVar}
 ```
 
-## Variance Reduction Explained (PercRep<`r SplitVal`){transition="fade-in fade-out"}
+## Variance Reduction Explained (PercRep<`r SplitVal`)
 
 ```{r}
 PlotVar=PlotVar+
@@ -659,23 +654,23 @@ metrics(DataTestWithPred, truth=PercVacFull, estimate=.pred)
 ```{r }
 #| echo: true
 set.seed(777)
-Split85=DataVax %>% initial_split(prop = 0.85,
+Split85=DataVax |> initial_split(prop = 0.85,
                                  strata = PercVacFull,
                                  breaks = 3)
 
-DataTrain=training(Split85) %>% select(-County, -State)
-DataTest=testing(Split85) %>% select(-County, -State)
+DataTrain=training(Split85) |> select(-County, -State)
+DataTest=testing(Split85) |> select(-County, -State)
 
 
-ModelDesignDecTree=decision_tree(tree_depth=3) %>% 
-                    set_engine("rpart") %>%  
+ModelDesignDecTree=decision_tree(tree_depth=3) |> 
+                    set_engine("rpart") |>  
                     set_mode("regression")
   
 RecipeVax=recipe(PercVacFull~., data=DataTrain)
 
-WfModelVax=workflow() %>% 
-               add_model(ModelDesignDecTree) %>% 
-               add_recipe(RecipeVax) %>% 
+WfModelVax=workflow() |> 
+               add_model(ModelDesignDecTree) |> 
+               add_recipe(RecipeVax) |> 
                fit(DataTrain)
 rpart.plot(extract_fit_engine(WfModelVax),roundint=FALSE)
 ```
