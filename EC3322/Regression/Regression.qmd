@@ -23,6 +23,7 @@ webr:
   packages:
     - dplyr
     - janitor
+    - ggplot2
   
 engine: knitr    
 ---
@@ -33,8 +34,9 @@ engine: knitr
 
 ## What Will You Learn {.scrollable .smaller}
 
-```{webr WebRDataHousesLoad}
-
+```{webr WebRDataHousesLoadHidden}
+#| echo: false
+#| autorun: true
 DataHouses=
   read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
   clean_names("upper_camel") |>
@@ -56,9 +58,9 @@ Data100Houses=sample_n(DataHouses,size=100)
 
 - Combine two *Simple Equations* (one predictor each) into one multivariate OLS regression (two predictor variables)<br>**Only possible if predictors are uncorrelated**
 
-- See what happens if two *Simple Equations* (one predictor each) are combined into one multivariate OLS regression, when predictors are perfectly correlated
+- See what happens if two *Simple Equations* (one predictor each) are combined into one multivariate OLS regression, when predictors are correlated<br>
 
-- Use Virtual Reality to perform the same tasks named in the learning outcomes above with 3D-diagrams
+- Use Virtual Reality to perform the same tasks named in the learning outcomes above with 3D-diagrams<br>
 
 
 
@@ -98,6 +100,20 @@ DataHouses=
 set.seed(7771)
 Data100Houses=sample_n(DataHouses,100)
 ```
+
+```{webr WebRDataHousesLoadShow}
+# library(tidyverse) and library(janitor) have been  loaded already
+
+DataHouses=
+  read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
+  clean_names("upper_camel") |>
+  select(Price, Sqft=SqftLiving) 
+
+set.seed(7771)
+Data100Houses=sample_n(DataHouses,size=100)
+head(Data100Houses)
+```
+
 
 
 
@@ -159,7 +175,7 @@ $$
 
 A house with average properties should be predicted with an average price!
 
-```{r}#webr
+```{webr}
 MeanSqft=mean(Data100Houses$Sqft)
 cat("The mean square footage of a house in King county is:", MeanSqft)
 
@@ -206,7 +222,8 @@ ggplotly(Plot2Means, height=350, width=700)
 
 ## An Interactive 3D Game That Explains it All
 
-[https://horizon.meta.com/world/647544861765620/?locale=en_US](https://horizon.meta.com/world/647544861765620/?locale=en_US){target="_blank"}
+[![**Click Image to play**](Images/hwsimpleregression.png){width="70%"}](https://horizon.meta.com/world/647544861765620/?locale=en_US){target="_blank"}
+
 
 
 
@@ -223,10 +240,11 @@ $$
 Fitting the Model with lm()
 
 ```{r}
+#| echo: false
 ModelOLS=lm(Price~Sqft, data=Data100Houses)
 ```
 
-```{r}#webr
+```{webr}
 ModelOLS=lm(Price~Sqft, data=Data100Houses)
 print(ModelOLS)
 ```
@@ -240,7 +258,8 @@ $$
 $$
 
 
-```{r}#webr
+```{r}
+#| echo: false
 print(ModelOLS)
 ```
 
@@ -273,11 +292,9 @@ Do not interpret $b$ as it makes no sense in most cases!!!
 
 ## Run Your Own Simple Regression to Estimate House Price
 
-```{r}#webr
+```{webr}
 #| message: false
 #| warning: false
-library(tidyverse)
-library(janitor)
 set.seed(7771)
 Data100Houses= sample_n(DataHouses, size=100)
 head(Data100Houses)
@@ -307,6 +324,15 @@ ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
 |     N     |         &nbsp;     |       &nbsp;    |
  
 
+
+
+
+## Distribution of Coefficients
+### Example with R
+
+**Different Sample =\> Different Coefficient**
+
+[SamplingDistributionCoeff.R](SamplingDistributionCoeff.R){target="_blank"}
 
 ## Coefficients are Normal Distributed Statistics {.smaller}
 
@@ -364,7 +390,7 @@ $$t_{sample}=\frac{239.58-0}{30.57}=7.84$$
 **Reject the hypothesis $\beta_1=0$ at the 99% confidence level**
 
 **In fact:** <br>
-The probability of $\beta_1=0$ is extremely small ($Pr=\frac{5.67}{1,000,000,000,000}$)**
+The probability of $\beta_1=0$ is extremely small ($Pr=\frac{5.67}{1,000,000,000,000}$)
 :::
 
 ::: {.column width="30%"}
@@ -552,7 +578,7 @@ $$
 
 **Frisch-Waugh-Lovell (FWL) Theorem in a Nutshell:**
 
-When the predictor variables in an *OLS* regression are not correlated,
+When the predictor variables in an *OLS* regression are **not correlated**,
 we can run $j$ (e.g., two) Simple Regressions (regressions with only one
 predictor variable) and use the resulting $\beta$-coefficients for a
 joint multivariate regression.
@@ -575,17 +601,16 @@ $$\beta_0=\overline{Price}-\beta_{Sqft} \cdot \overline{Sqft} - \beta_{Cond} \ov
 
 We have a dataset for house prices ($Price_i$) together with predictor
 variables for the houses' condition ($Cond_i$; 1 -- 20) and their square
-footage ($Sqft_i$).
+footage ($Sqft_i$; 1000 -- 3100).
 
 $Cond_i$ and $Sqft_i$ are not correlated:
 
-```{r}
-library(rio)
-library(tidyverse)
-DataHouseSqftCond=import(
+```{webr}
+DataHouseSqftCond=read.csv(
   "https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/Data/DataDiagram.csv") |>   rename(Cond=Grade)
-cat("Correlation between Sqft and Cond =",cor(DataHouseSqftCond$Sqft, DataHouseSqftCond$Cond))
 
+cat("Correlation between Sqft and Cond =",
+    cor(DataHouseSqftCond$Sqft, DataHouseSqftCond$Cond))
 ```
 
 ## How much is a House Worth?
@@ -595,7 +620,7 @@ cat("Correlation between Sqft and Cond =",cor(DataHouseSqftCond$Sqft, DataHouseS
 A house with average properties should be predicted with an average
 price!
 
-```{r}
+```{webr MeansSqftCondUncor}
 MeanSqft=mean(DataHouseSqftCond$Sqft)
 cat("The mean square footage in the dataset is:", MeanSqft)
 
@@ -610,42 +635,63 @@ cat("The mean house price in the dataset is:", MeanPrice)
 
 **Price on Square Feet:**<br>
 [https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/SqftOnly){target="Blank_"}<br>
-<small>212</small> <br><br> **Price on Condition:**<br>
+<small>200</small> <br><br> **Price on Condition:**<br>
 [https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/CondOnly](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/CondOnly){target="Blank_"}<br>
 <small>15,000</small>
 
+## Running the Two Simple Regressions in R
+
+$$\widehat{Price_i}=\beta_1 \widehat{Sqft}+\beta_0$$
+
+```{webr PartRegressionUncorSqft}
+ModelPriceSqft=lm(Price~Sqft,data=DataHouseSqftCond)
+print(ModelPriceSqft)
+```
+
+$$\widehat{Price_i}=\beta_1 \widehat{Cond}+\beta_0$$
+
+```{webr PartRegressionUncorCond}
+ModelPriceCond=lm(Price~Cond,data=DataHouseSqftCond)
+print(ModelPriceCond)
+```
+
 ## Confirming the results with a Multivariate Regression {.smaller}
 
-From the visual Simple Regressions we got:
+From the Simple Regressions we got:
 
-$\beta_{Sqft}=210$ and $\beta_{Cond}=15,000$
+$\beta_{Sqft}=213$ and $\beta_{Cond}=15,018$
 
 From the multivariate regression we get:
 
-```{r}
+```{webr ModelSqftCond}
 ModelSqftCond=lm(Price~Sqft+Cond, data = DataHouseSqftCond)
 summary(ModelSqftCond)
 ```
 
-$$\widehat{Price}_i= 212 \cdot Sqft + 15,001 \cdot Cond_i + 298,100$$
+$$\widehat{Price}_i= 213 \cdot Sqft + 15,018 \cdot Cond_i + 298,100$$
 
-## FWL Theorem with Another Synthetic Dataset
+# Correlated Predictor Variables <br>
+(FWL Theorem does not work!)
+
+## FWL Theorem with Another Synthetic Dataset {.smaller}
 
 We have another dataset for house prices ($Price_i$) together with
-predictor variables for the houses' condition ($Rooms_i$; 1 -- 20) and
-square footage ($Sqft_i$).
+predictor variables for the houses' condition ($Rooms_i$; 1 -- 8) and
+square footage ($Sqft_i$; 1000 -- 3000).
 
-$Rooms_i$ and $Sqft_i$ are correlated. Each room has about 400 Sqft:
+**$Rooms_i$ and $Sqft_i$ are correlated. Each room has about 400 Sqft:**
 
 $$Sqft_i\approx 400\cdot Rooms + 0$$
 
-```{r}
-library(rio)
-library(tidyverse)
-DataHouseSqftRooms97Cor=import(
+```{webr LoadingDataHouseSqftRooms97CorNotHidden}
+DataHouseSqftRooms97Cor=read.csv(
   "https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/Data/DataDiagram97Cor.csv") 
-cat("Correlation between Sqft and Cond =",cor(DataHouseSqftRooms97Cor$Sqft, DataHouseSqftRooms97Cor$Rooms))
 
+cat("Correlation between Sqft and Cond =",
+    cor(DataHouseSqftRooms97Cor$Sqft, DataHouseSqftRooms97Cor$Rooms))
+
+ggplot(aes(x=Rooms, y=Sqft), data=DataHouseSqftRooms97Cor)+
+geom_point()
 ```
 
 **Note**, because of predictor correlation $\neq$ 0. *FWL* Theorem is
@@ -658,7 +704,7 @@ not applicable.
 A house with average properties should be predicted with an average
 price!
 
-```{r}
+```{webr}
 MeanSqft=mean(DataHouseSqftRooms97Cor$Sqft)
 cat("The mean square footage in the new dataset is:", MeanSqft)
 
@@ -679,16 +725,6 @@ cat("The mean house price in the dataset is:", MeanPrice)
 [https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/RoomsOnly100Cor](https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/RoomsOnly100Cor){target="Blank_"}<br>
 <small>84,471</small>
 
-## Comparing  the Results between two simple regressions and Multivariate Regression {.smaller}
-
-### Correlation between `Sqft` and `Rooms`:
-
-```{r}#webr
-DataHouseSqftRooms97Cor=read.csv("https://econ.lange-analytics.com/calcat/FrischWaughLovellRegr/Data/DataDiagram97Cor.csv")
-#cat("Pearson Correlation Coefficient:",cor(DataHouseSqftRooms97Cor$Sqft, DataHouseSqftRooms97Cor$Rooms))
-ggplot(aes(x=Rooms, y=Sqft), data=DataHouseSqftRooms97Cor)+
-geom_point()  
-```
 
 ## Comparing  the Results between two simple regressions and Multivariate Regression {.smaller}
 
@@ -696,8 +732,9 @@ geom_point()
 
 $\beta_{Sqft}=216$ and $\beta_{01}=291,181$
 
-```{r}#webr
-lm(Price~Sqft, data=DataHouseSqftRooms97Cor)
+```{webr ModelPriceSqft97Cor}
+ModelPriceSqft97Cor=lm(Price~Sqft, data=DataHouseSqftRooms97Cor)
+summary(ModelPriceSqft97Cor)
 ```
 
 ## Comparing  the Results between two simple regressions and Multivariate Regression {.smaller}
@@ -706,19 +743,21 @@ lm(Price~Sqft, data=DataHouseSqftRooms97Cor)
 
 $\beta_{Rooms}=84,471$ and $\beta_{02}=297,937$
 
-```{r}#webr
-lm(Price~Rooms, data=DataHouseSqftRooms97Cor)
+```{webr ModelPriceRooms97Cor}
+ModelPriceRooms97Cor=lm(Price~Rooms, data=DataHouseSqftRooms97Cor)
+summary(ModelPriceRooms97Cor)
 ```
 
 ## Comparing  the Results between two simple regressions and Multivariate Regression {.smaller}
 
 ### Multiple Regression between `Sqft`, `Rooms` and `Price`:
 
-$\beta_{Sqft}=107$, $\beta_{Rooms}=43,722$ and $\beta_{0}=289,224$
+**From the Two Simple Regressions we got:**
+$\beta_{Sqft}=216$ and  $\beta_{Rooms}=84,471$
 
 **From the Multivariate Regression we get:**
 
-```{r}#webr
+```{webr ModelSqftCond97Cor}
 ModelSqftCond97Cor=lm(Price~Sqft+Rooms, data = DataHouseSqftRooms97Cor)
 summary(ModelSqftCond97Cor)
 ```
@@ -726,6 +765,8 @@ summary(ModelSqftCond97Cor)
 
 
 ## Now the Same in 3D/Virtual Reality
+
+[![**Click on image to play on Meta-Quest VR headset**](Images/diagramwithplane.png)](https://vr.lange-analytics.com/diagramexh.html){target="_blank"}
 
 
 
