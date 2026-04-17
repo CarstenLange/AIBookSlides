@@ -35,8 +35,8 @@ engine: knitr
 ## What Will You Learn {.scrollable .smaller}
 
 ```{webr WebRDataHousesLoadHidden}
+#| context: setup
 #| echo: false
-#| autorun: true
 DataHouses=
   read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
   clean_names("upper_camel") |>
@@ -176,12 +176,28 @@ $$
 A house with average properties should be predicted with an average price!
 
 ```{webr}
+#| exercise: exc1
+MeanSqft=______(______)
+cat("The mean square footage of a house in King county is:", ______)
+
+MeanPrice=______(______)
+cat("The mean price of a house in King county is:", ______)
+```
+
+::: {.solution exercise="exc1"}
+::: { .callout-tip collapse="false"}
+
+## Solution: you can copy and paste
+
+```r
 MeanSqft=mean(Data100Houses$Sqft)
 cat("The mean square footage of a house in King county is:", MeanSqft)
 
 MeanPrice=mean(Data100Houses$Price)
 cat("The mean price of a house in King county is:", MeanPrice)
 ```
+:::
+:::
 
 ## Predicting Price of an Average-Size House as Average of Prices {.smaller}
 
@@ -245,10 +261,22 @@ ModelOLS=lm(Price~Sqft, data=Data100Houses)
 ```
 
 ```{webr}
-ModelOLS=lm(Price~Sqft, data=Data100Houses)
+#| exercise: exc2
+ModelOLS=______(______~______, ______=______)
 print(ModelOLS)
 ```
 
+::: {.solution exercise="exc2"}
+::: { .callout-tip collapse="false"}
+
+## Solution: you can copy and paste
+
+```r
+ModelOLS=lm(Price~Sqft, data=Data100Houses)
+print(ModelOLS)
+```
+:::
+:::
 
 ## Unfitted Model vs Fitted Workflow Model {.smaller}
 
@@ -293,6 +321,29 @@ Do not interpret $b$ as it makes no sense in most cases!!!
 ## Run Your Own Simple Regression to Estimate House Price
 
 ```{webr}
+#| exercise: exc3
+#| message: false
+#| warning: false
+set.seed(7771)
+Data100Houses= sample_n(DataHouses, size=100)
+head(Data100Houses)
+
+ModelLMExerc=______(______~______, ______=______)
+print(______)
+
+ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
+  geom_point(color="red")+
+  geom_smooth(method="lm", se=FALSE)+
+  geom_vline(xintercept = mean(Data100Houses$Sqft))+
+  geom_hline(yintercept = mean(Data100Houses$Price))
+```
+
+::: {.solution exercise="exc3"}
+::: { .callout-tip collapse="false"}
+
+## Solution: you can copy and paste
+
+```r
 #| message: false
 #| warning: false
 set.seed(7771)
@@ -308,6 +359,9 @@ ggplot(aes(x=Sqft, y=Price), data=Data100Houses)+
   geom_vline(xintercept = mean(Data100Houses$Sqft))+
   geom_hline(yintercept = mean(Data100Houses$Price))
 ```
+
+:::
+:::
 
 ## Results from Regression Experiment
 
