@@ -29,7 +29,7 @@ engine: knitr
 
 
 ```{r}
-DraftModeCL=FALSE # jitter plots in the last slides take a long time. DraftMode=TRUE skips it. 
+DraftModeCL=TRUE # jitter plots in the last slides take a long time. DraftMode=TRUE skips it. 
 ```
 
 ## Introduction
