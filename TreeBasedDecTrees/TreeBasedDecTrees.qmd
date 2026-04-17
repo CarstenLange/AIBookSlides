@@ -29,7 +29,7 @@ engine: knitr
 
 
 ```{r}
-DraftModeCL=TRUE # jitter plot takes a long time. DraftMode=TRUE skips it. 
+DraftModeCL=FALSE # jitter plots in the last slides take a long time. DraftMode=TRUE skips it. 
 ```
 
 ## Introduction
@@ -55,31 +55,81 @@ library(rio); library(tidymodels); library(janitor)
 library(kableExtra); library(rpart.plot)
 DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |> 
             clean_names("upper_camel") |>
-             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) |>
+             select(Survived, Sex, Class=Pclass, Age, Fare=FareInPounds) |>
              mutate(Survived=as.factor(Survived))
 
 set.seed(777)
-Split7525=initial_split(DataTitanic, strata = Survived)
+Split7525=initial_split(DataTitanic, prop=0.75, strata=Survived)
 
 DataTrain=training(Split7525)
 DataTest=testing(Split7525)
 ```
 
 ```{webr}
+#| context: setup
+#| echo: false
 DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |> 
             clean_names("upper_camel") |>
-             select(Survived, Sex, Class=Pclass, Sex, Age, Fare=FareInPounds) |>
+             select(Survived, Sex, Class=Pclass,Age, Fare=FareInPounds) |>
+             mutate(Survived=as.factor(Survived))
+set.seed(777)
+Split7525=initial_split(DataTitanic, prop=0.75, strata=Survived)
+
+DataTrain=training(Split7525)
+DataTest=testing(Split7525)
+ModelDesignDecTree=decision_tree(tree_depth=3) |> 
+                    set_engine("rpart") |> 
+                    set_mode("classification")
+  
+RecipeTitanic=recipe(Survived~., data=DataTrain)
+
+set.seed(777)
+WfModelTitanic=workflow() |> 
+               add_model(ModelDesignDecTree) |> 
+               add_recipe(RecipeTitanic) |> 
+               fit(DataTrain)
+DataTestWithPred=augment(WfModelTitanic, new_data =  DataTest)
+```
+
+```{webr}
+#| exercise: ex1
+DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |> 
+            clean_names(______) |>
+            select(Survived, Sex, Class=Pclass,
+            Age, Fare=FareInPounds) |>
              mutate(Survived=as.factor(Survived))
 
 set.seed(777)
-Split7525=initial_split(DataTitanic, strata = Survived)
+Split7525=initial_split(______, prop=______, strata =______)
+
+DataTrain=______(______)
+DataTest=______(______)
+
+kable(DataTrain[1:5,])
+```
+
+::: {.solution exercise="ex1"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
+DataTitanic=read.csv("https://ai.lange-analytics.com/data/Titanic.csv") |> 
+            clean_names("upper_camel") |>
+            select(Survived, Sex, Class=Pclass,   
+                   Age, Fare=FareInPounds) |>
+            mutate(Survived=as.factor(Survived))
+
+set.seed(777)
+Split7525=initial_split(DataTitanic, prop=0.75, strata=Survived)
 
 DataTrain=training(Split7525)
 DataTest=testing(Split7525)
 
 kable(DataTrain[1:5,])
 ```
-
+:::
+:::
 
 ## Generating a Decision Tree with `tidymodels`
 
@@ -102,6 +152,27 @@ WfModelTitanic=workflow() |>
 ```
 
 ```{webr}
+#| exercise: ex2
+ModelDesignDecTree=decision_tree(tree_depth=3) |> 
+                  ______(______) |> 
+                  ______(______)
+  
+RecipeTitanic=recipe(______~______, ______=______)
+
+set.seed(777)
+WfModelTitanic=workflow() |> 
+               ______(______) |> 
+               ______(______) |> 
+               ______(______)
+print(WfModelTitanic)
+```
+
+::: {.solution exercise="ex2"}
+::: { .callout-tip collapse="false"}
+
+## Fully Worked Solution
+
+```r
 ModelDesignDecTree=decision_tree(tree_depth=3) |> 
                     set_engine("rpart") |> 
                     set_mode("classification")
@@ -116,6 +187,8 @@ WfModelTitanic=workflow() |>
 print(WfModelTitanic)
 ```
 
+:::
+:::
 
 ## Displaying the Decision Tree with `rpart.plot`
 
@@ -123,6 +196,7 @@ Note, `rpart.plot` package needs to be installed and loaded with
 `library(rpart.plot)`.
 
 ```{webr}
+#| exercise: ex3
 #| fig-width: 9
 #| fig-height: 7
 #| out-width: "120%"
