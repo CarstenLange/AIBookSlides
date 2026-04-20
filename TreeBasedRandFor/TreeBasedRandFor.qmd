@@ -1,10 +1,33 @@
 ---
 title: "Tree Based Models"
 subtitle: "Random Forest"
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
 format: 
-  revealjs:
-    code-fold: true
+  live-revealjs:
+    theme: [moon, CustomCL.scss]
+    smaller: true
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RidgeLasso.html' target='_blank'>Textbook </a> "
+   
+webr:
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom',
+             'yardstick','parsnip','workflows',ranger] # Auto-install packages in the browser
+
+engine: knitr
 ---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
 
 ## Introduction
 
@@ -20,20 +43,32 @@ library(tidymodels);library(rio);library(janitor);library(kableExtra)
     -   Classification
     -   Regression
 
--   A *Random Forest* model is an ensamble model consisting of many (hundreds or thousands) of slightly different *Decision Trees*.
+-   A *Random Forest* model is an ensample model consisting of many (hundreds or thousands) of slightly different *Decision Trees*.
 
 - The majority predictions (majority vote) from all *Decision Trees* becomes the prediction of the *Random Forest* for classification» 
 
 - The average predictions from all *Decision Trees* becomes the prediction of the *Random Forest* for regression» 
 
 ## The Idea Behind Random Forest
+### The Wisdom of the Crowd
 
 The idea that a combination of weak predictors can lead to a strong prediction is analogous to the wisdom of crowds
 phenomenon described in Galton 1907:
 
 *Visitors at a stock and poultry exhibition in England submitted
 guesses about the weight of an ox. Although most of the visitors were off with their predictions, surprisingly
-the mean of all predictions was very close to the real weight of the ox.*»
+the mean of all predictions was very close to the real weight of the ox.*
+
+## The Idea Behind Random Forest
+### Using Many (Slightly) Different Decision Trees
+
+1. Train many (hundreds or even more) different Decision Trees
+
+2. To predict an outcome for an observation use all Desicion Trees, which results in hundrets (or more predictions)
+
+3. Aggregate the predictions<br><br>
+  **Regression:** Calculate the average prediction<br><br>
+  **Classification:** Treat each prediction as a vote for a class --- the class with most of the votes is the predicted class
 
 ## How to ensure that Decision Trees are (slightly) Different {.smaller}
 
@@ -45,66 +80,295 @@ the mean of all predictions was very close to the real weight of the ox.*»
      - The new training dataset has the same size as the original dataset.
      - Generate a bootstrap dataset for every decision tree. 
      
-## Example for Bagging with Bootstapping {.scrollable .smaller}
+## Example for Bagging with Bootstrapping {.scrollable .smaller}
 
-Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
-
-**Original Training Data:**
-
-```{r}
-#| echo: true
+```{webr}
+#| context: setup
+#| echo: false
 DataTrain= tibble(ID=seq(1:7),
                   name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
-kbl(DataTrain)
 ```
 
-. . .
+Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
+
+::::: columns
+:::: {.column width="49%"}
+
+**Original Training Data:**
+
+
+```{webr}
+DataTrain= data.frame(ID=seq(1:7),
+                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Sex=c("male","female","male","female","male","female","male"),
+                  Age=c(22,54,32,21,32,87,18),
+                  Weight=c(145,180,167,197,221,146,230))
+kable(DataTrain)
+```
+
+::::
+
+:::: {.column width="1%"}
+.
+::::
+
+:::: {.column width="49%"}
 
 **1st Bootstrap Sample:**
 
-```{r}
-#| echo: true
-set.seed(777)
+```{webr}
+#| exercise: exc1
+set.seed(771)
+DataTrain1=sample_n(______, ______, replace = ______)
+kable(DataTrain1)
+```
+
+::: {.solution exercise="exc1"}
+::: { .callout-tip collapse="false"}
+
+## Solution: you can copy and paste
+
+```r
+set.seed(771)
 DataTrain1=sample_n(DataTrain, 7, replace = TRUE)
-kbl(DataTrain1)
+kable(DataTrain1)
+```
+:::
+:::
+
+::::
+:::::
+
+## Example for Bagging with Bootstrapping {.scrollable .smaller}
+
+Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
+
+::::: columns
+:::: {.column width="40%"}
+
+**Original Training Data:**
+
+
+```{webr}
+#| autorun: true
+#| echo: false
+DataTrain= data.frame(ID=seq(1:7),
+                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Sex=c("male","female","male","female","male","female","male"),
+                  Age=c(22,54,32,21,32,87,18),
+                  Weight=c(145,180,167,197,221,146,230))
+kable(DataTrain)
 ```
 
-**2nd Bootstrap sample:**
+::::
 
-```{r}
-#| echo: true
+
+
+:::: {.column width="60%"}
+
+**2nd Bootstrap Sample:**
+
+```{webr}
+set.seed(772)
 DataTrain2=sample_n(DataTrain, 7, replace = TRUE)
-kbl(DataTrain2)
+kable(DataTrain2)
 ```
 
-**3rd Bootstrap sample:**
 
-```{r}
-#| echo: true
+
+::::
+:::::
+
+## Example for Bagging with Bootstrapping {.scrollable .smaller}
+
+Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
+
+::::: columns
+:::: {.column width="40%"}
+
+**Original Training Data:**
+
+
+```{webr}
+#| autorun: true
+#| echo: false
+DataTrain= data.frame(ID=seq(1:7),
+                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Sex=c("male","female","male","female","male","female","male"),
+                  Age=c(22,54,32,21,32,87,18),
+                  Weight=c(145,180,167,197,221,146,230))
+kable(DataTrain)
+```
+
+::::
+
+
+
+:::: {.column width="60%"}
+
+**3rd Bootstrap Sample:**
+
+```{webr}
+set.seed(773)
 DataTrain3=sample_n(DataTrain, 7, replace = TRUE)
-kbl(DataTrain3)
+kable(DataTrain3)
 ```
 
-**4th Bootstrap sample:**
+::::
+:::::
 
-```{r}
-#| echo: true
+## Example for Bagging with Bootstrapping {.scrollable .smaller}
+
+Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
+
+::::: columns
+:::: {.column width="40%"}
+
+**Original Training Data:**
+
+
+```{webr}
+#| autorun: true
+#| echo: false
+DataTrain= data.frame(ID=seq(1:7),
+                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Sex=c("male","female","male","female","male","female","male"),
+                  Age=c(22,54,32,21,32,87,18),
+                  Weight=c(145,180,167,197,221,146,230))
+kable(DataTrain)
+```
+
+::::
+
+
+
+:::: {.column width="60%"}
+
+**4th Bootstrap Sample:**
+
+```{webr}
+set.seed(774)
 DataTrain4=sample_n(DataTrain, 7, replace = TRUE)
-kbl(DataTrain4)
+kable(DataTrain4)
 ```
 
-**5th Bootstrap sample:**
 
-```{r}
-#| echo: true
+
+::::
+:::::
+
+## Example for Bagging with Bootstrapping {.scrollable .smaller}
+
+Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
+
+::::: columns
+:::: {.column width="40%"}
+
+**Original Training Data:**
+
+
+```{webr}
+#| autorun: true
+#| echo: false
+DataTrain= data.frame(ID=seq(1:7),
+                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Sex=c("male","female","male","female","male","female","male"),
+                  Age=c(22,54,32,21,32,87,18),
+                  Weight=c(145,180,167,197,221,146,230))
+kable(DataTrain)
+```
+
+::::
+
+
+
+:::: {.column width="60%"}
+
+**5th Bootstrap Sample:**
+
+```{webr}
+set.seed(775)
 DataTrain5=sample_n(DataTrain, 7, replace = TRUE)
-kbl(DataTrain5)
+kable(DataTrain5)
 ```
 
 
+
+::::
+:::::
+
+## Example for Bagging with Bootstrapping {.scrollable .smaller}
+### Summary
+
+:::: columns
+::: {.column width="50%"}
+
+**Data Train**
+```{webr}
+#| autorun: true
+#| echo: false
+DataTrain= data.frame(ID=seq(1:7),
+                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Sex=c("male","female","male","female","male","female","male"),
+                  Age=c(22,54,32,21,32,87,18),
+                  Weight=c(145,180,167,197,221,146,230))
+kable(DataTrain)
+```
+
+**2nd Bootstrap Sample**
+```{webr}
+#| autorun: true
+#| echo: false
+set.seed(772)
+DataTrain2=sample_n(DataTrain, 7, replace = TRUE)
+kable(DataTrain2)
+```
+
+**4th Bootstrap Sample**
+```{webr}
+#| autorun: true
+#| echo: false
+set.seed(774)
+DataTrain4=sample_n(DataTrain, 7, replace = TRUE)
+kable(DataTrain4)
+```
+:::
+
+::: {.column width="50%"}
+**1st Bootstrap Sample**
+```{webr}
+#| autorun: true
+#| echo: false
+set.seed(771)
+DataTrain1=sample_n(DataTrain, 7, replace = TRUE)
+kable(DataTrain1)
+```
+
+**3rd Bootstrap Sample**
+```{webr}
+#| autorun: true
+#| echo: false
+set.seed(773)
+DataTrain3=sample_n(DataTrain, 7, replace = TRUE)
+kable(DataTrain3)
+```
+
+**5th Bootstrap Sample**
+```{webr}
+#| autorun: true
+#| echo: false
+set.seed(775)
+DataTrain5=sample_n(DataTrain, 7, replace = TRUE)
+kable(DataTrain5)
+```
+
+:::
+::::
+
+ 
 
 ## Real World Data with a Decision Tree
 
@@ -136,22 +400,21 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
   - Proportion of households receiving food stamps ($PercFoodSt$)»
 
 ## Loading the Data and Assigning Training and Testing Data{.smaller}
-
+kable|>
 ```{r}
-#| echo: true
-DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") %>%   
+DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") |>   
         select(County, State, PercVacFull, PercRep,
               PercAsian, PercBlack, PercHisp,
               PercYoung25, PercOld65, PercFoodSt)
 
 set.seed(2021)
-Split85=DataVax %>% initial_split(prop = 0.85,
+Split85=DataVax |> initial_split(prop = 0.85,
                                  strata = PercVacFull,
                                  breaks = 3)
 
-DataTrain=training(Split85) %>% select(-County, -State)
-DataTest=testing(Split85) %>% select(-County, -State)
-kbl(head(DataVax))
+DataTrain=training(Split85) |> select(-County, -State)
+DataTest=testing(Split85) |> select(-County, -State)
+kable(head(DataVax))
 ```
 
 ## Creating Model Design, Recipe, and Fitted Workflow (default hyper-parameters)
@@ -161,15 +424,15 @@ kbl(head(DataVax))
 
 DefaultMtry=floor(sqrt(7)) # floor() rounds down
 
-ModelDesignRandFor=rand_forest(trees=500, min_n=5, mtry = DefaultMtry) %>% 
-                    set_engine("ranger") %>% 
+ModelDesignRandFor=rand_forest(trees=500, min_n=5, mtry = DefaultMtry) |> 
+                    set_engine("ranger") |> 
                     set_mode("regression")
   
 RecipeVax=recipe(PercVacFull~., data=DataTrain)
 
-WfModelVax=workflow() %>% 
-               add_model(ModelDesignRandFor) %>% 
-               add_recipe(RecipeVax) %>% 
+WfModelVax=workflow() |> 
+               add_model(ModelDesignRandFor) |> 
+               add_recipe(RecipeVax) |> 
                fit(DataTrain)
 ```
 ```{r}
@@ -196,8 +459,8 @@ Try to beat the predictive quality of the *default* model we used here.
 ```{r}
 #| echo: true
 #| code-fold: false
-ModelDesignRandForTree=rand_forest(trees=500, min_n=tune(), mtry = tune()) %>% 
-                    set_engine("ranger") %>% 
+ModelDesignRandForTree=rand_forest(trees=500, min_n=tune(), mtry = tune()) |> 
+                    set_engine("ranger") |> 
                     set_mode("regression")
 ```
 
