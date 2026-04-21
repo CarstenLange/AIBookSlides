@@ -19,8 +19,9 @@ format:
     footer: "<a href='https://ai.lange-analytics.com/htmlbook/RidgeLasso.html' target='_blank'>Textbook </a> "
    
 webr:
-  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom',
-             'yardstick','parsnip','workflows',ranger] # Auto-install packages in the browser
+  packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom', 'yardstick', 'parsnip', 'workflows', 'randomForest'] 
+  resources:
+    - Data/DataVax.rds
 
 engine: knitr
 ---
@@ -31,9 +32,7 @@ engine: knitr
 
 ## Introduction
 
-```{r}
-library(tidymodels);library(rio);library(janitor);library(kableExtra)
-```
+
 
 
 
@@ -64,7 +63,7 @@ the mean of all predictions was very close to the real weight of the ox.*
 
 1. Train many (hundreds or even more) different Decision Trees
 
-2. To predict an outcome for an observation use all Desicion Trees, which results in hundrets (or more predictions)
+2. To predict an outcome for an observation use all Decision Trees, which results in hundreds (or more predictions)
 
 3. Aggregate the predictions<br><br>
   **Regression:** Calculate the average prediction<br><br>
@@ -82,27 +81,57 @@ the mean of all predictions was very close to the real weight of the ox.*
      
 ## Example for Bagging with Bootstrapping {.scrollable .smaller}
 
-```{webr}
+```{webr ContextSetup}
 #| context: setup
 #| echo: false
 DataTrain= tibble(ID=seq(1:7),
-                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
+
+DataVax=readRDS("Data/DataVax.rds") |>   
+        select(County, State, PercVacFull, PercRep,
+              PercAsian, PercBlack, PercHisp,
+              PercYoung25, PercOld65, PercFoodSt)
+
+set.seed(2021)
+Split85=DataVax |> initial_split(prop = 0.85,
+                                 strata = PercVacFull,
+                                 breaks = 3)
+
+DataTrainVax=training(Split85) |> select(-County, -State)
+DataTestVaxVax=testing(Split85) |> select(-County, -State)
+
+
+DefaultMtry=floor(sqrt(7)) # floor() rounds down
+
+ModelDesignRandFor=rand_forest(trees=50, min_n=5, mtry = 2) |> 
+                   set_engine("randomForest") |> 
+                   set_mode("regression")
+  
+RecipeVax=recipe(PercVacFull~., data=DataTrainVax)
+
+WfModelVax=workflow() |> 
+           add_model(ModelDesignRandFor) |> 
+           add_recipe(RecipeVax) |> 
+           fit(DataTrainVax)
 ```
+
 
 Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
 
 ::::: columns
 :::: {.column width="49%"}
 
-**Original Training Data:**
+**Original Training Data (`DataTrain`):**
 
 
 ```{webr}
+#| autorun: true
+#| echo: false
 DataTrain= data.frame(ID=seq(1:7),
-                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
@@ -149,14 +178,14 @@ Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`,
 ::::: columns
 :::: {.column width="40%"}
 
-**Original Training Data:**
+**Original Training Data (`DataTrain`):**
 
 
 ```{webr}
 #| autorun: true
 #| echo: false
 DataTrain= data.frame(ID=seq(1:7),
-                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
@@ -189,14 +218,14 @@ Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`,
 ::::: columns
 :::: {.column width="40%"}
 
-**Original Training Data:**
+**Original Training Data (`DataTrain`):**
 
 
 ```{webr}
 #| autorun: true
 #| echo: false
 DataTrain= data.frame(ID=seq(1:7),
-                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
@@ -227,14 +256,14 @@ Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`,
 ::::: columns
 :::: {.column width="40%"}
 
-**Original Training Data:**
+**Original Training Data (`DataTrain`):**
 
 
 ```{webr}
 #| autorun: true
 #| echo: false
 DataTrain= data.frame(ID=seq(1:7),
-                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
@@ -267,14 +296,14 @@ Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`,
 ::::: columns
 :::: {.column width="40%"}
 
-**Original Training Data:**
+**Original Training Data (`DataTrain`):**
 
 
 ```{webr}
 #| autorun: true
 #| echo: false
 DataTrain= data.frame(ID=seq(1:7),
-                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
@@ -311,7 +340,7 @@ kable(DataTrain5)
 #| autorun: true
 #| echo: false
 DataTrain= data.frame(ID=seq(1:7),
-                  name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
+                  Name=c("Adam","Berta","Carlos","Dora","Ernst","Fiola","Gert"),
                   Sex=c("male","female","male","female","male","female","male"),
                   Age=c(22,54,32,21,32,87,18),
                   Weight=c(145,180,167,197,221,146,230))
@@ -374,7 +403,7 @@ kable(DataTrain5)
 
 Predicting vaccination rates in the U.S. based on data from September 2021:
 
-- Outcome variable: Percentage of fully vaccinated (two shots) people ($PercVacFull$).
+- Outcome variable: Percentage of fully vaccinated (two shots) people ($PercVacFull$).  
 
 - Data from 2,630 continental U.S. counties.»
 
@@ -400,9 +429,9 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
   - Proportion of households receiving food stamps ($PercFoodSt$)»
 
 ## Loading the Data and Assigning Training and Testing Data{.smaller}
-kable|>
-```{r}
-DataVax=import("https://ai.lange-analytics.com/data/DataVax.rds") |>   
+
+```{webr}
+DataVax=readRDS("Data/DataVax.rds") |>   
         select(County, State, PercVacFull, PercRep,
               PercAsian, PercBlack, PercHisp,
               PercYoung25, PercOld65, PercFoodSt)
@@ -412,40 +441,36 @@ Split85=DataVax |> initial_split(prop = 0.85,
                                  strata = PercVacFull,
                                  breaks = 3)
 
-DataTrain=training(Split85) |> select(-County, -State)
-DataTest=testing(Split85) |> select(-County, -State)
+DataTrainVax=training(Split85) |> select(-County, -State)
+DataTestVax=testing(Split85) |> select(-County, -State)
 kable(head(DataVax))
 ```
 
 ## Creating Model Design, Recipe, and Fitted Workflow (default hyper-parameters)
 
-```{r }
-#| echo: true
+```{webr UserEntersModelVax}
 
 DefaultMtry=floor(sqrt(7)) # floor() rounds down
 
-ModelDesignRandFor=rand_forest(trees=500, min_n=5, mtry = DefaultMtry) |> 
-                    set_engine("ranger") |> 
-                    set_mode("regression")
+ModelDesignRandFor=rand_forest(trees=50, min_n=5, mtry = 2) |> 
+                   set_engine("randomForest") |> 
+                   set_mode("regression")
   
-RecipeVax=recipe(PercVacFull~., data=DataTrain)
+RecipeVax=recipe(PercVacFull~., data=DataTrainVax)
 
 WfModelVax=workflow() |> 
-               add_model(ModelDesignRandFor) |> 
-               add_recipe(RecipeVax) |> 
-               fit(DataTrain)
-```
-```{r}
-cat("Default value for mtry is:", DefaultMtry)
+           add_model(ModelDesignRandFor) |> 
+           add_recipe(RecipeVax) |> 
+           fit(DataTrainVax)
 print(WfModelVax)
 ```
 
+
 ## Metrics for Default Random Forest Model
 
-```{r}
-#| echo: true
-DataTestWithPred=augment(WfModelVax, new_data=DataTest)
-metrics(DataTestWithPred, truth=PercVacFull, estimate=.pred)
+```{webr}
+DataTestVaxWithPred=augment(WfModelVax, new_data=DataTestVax)
+metrics(DataTestVaxWithPred, truth=PercVacFull, estimate=.pred)
 ```
 
 ## Tuning the Random Forest Model
@@ -456,12 +481,12 @@ Try to beat the predictive quality of the *default* model we used here.
 
 ## Tuning the Random Forest Model {.smaller}
 
-```{r}
+```{r TuningEvalFalse}
+#| eval: false
 #| echo: true
-#| code-fold: false
 ModelDesignRandForTree=rand_forest(trees=500, min_n=tune(), mtry = tune()) |> 
-                    set_engine("ranger") |> 
-                    set_mode("regression")
+                       set_engine("ranger") |> 
+                       set_mode("regression")
 ```
 
 What to consider for the tuning grid?
