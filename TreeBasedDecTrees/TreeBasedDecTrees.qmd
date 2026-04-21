@@ -16,7 +16,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RidgeLasso.html' target='_blank'>Textbook </a> "
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/TreeBased.html#TreeBased-DecTrees' target='_blank'>Textbook </a> "
    
 webr:
   packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom',

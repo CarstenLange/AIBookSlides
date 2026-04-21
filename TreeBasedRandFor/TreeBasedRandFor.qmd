@@ -16,7 +16,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/RidgeLasso.html' target='_blank'>Textbook </a> "
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/TreeBased.html#TreeBased-RandForest' target='_blank'>Textbook </a> "
    
 webr:
   packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom', 'yardstick', 'parsnip', 'workflows', 'randomForest'] 
@@ -31,55 +31,6 @@ engine: knitr
 
 
 ## Introduction
-
-
-
-
-
-
--   *Random Forest* can be used for
-
-    -   Classification
-    -   Regression
-
--   A *Random Forest* model is an ensample model consisting of many (hundreds or thousands) of slightly different *Decision Trees*.
-
-- The majority predictions (majority vote) from all *Decision Trees* becomes the prediction of the *Random Forest* for classification» 
-
-- The average predictions from all *Decision Trees* becomes the prediction of the *Random Forest* for regression» 
-
-## The Idea Behind Random Forest
-### The Wisdom of the Crowd
-
-The idea that a combination of weak predictors can lead to a strong prediction is analogous to the wisdom of crowds
-phenomenon described in Galton 1907:
-
-*Visitors at a stock and poultry exhibition in England submitted
-guesses about the weight of an ox. Although most of the visitors were off with their predictions, surprisingly
-the mean of all predictions was very close to the real weight of the ox.*
-
-## The Idea Behind Random Forest
-### Using Many (Slightly) Different Decision Trees
-
-1. Train many (hundreds or even more) different Decision Trees
-
-2. To predict an outcome for an observation use all Decision Trees, which results in hundreds (or more predictions)
-
-3. Aggregate the predictions<br><br>
-  **Regression:** Calculate the average prediction<br><br>
-  **Classification:** Treat each prediction as a vote for a class --- the class with most of the votes is the predicted class
-
-## How to ensure that Decision Trees are (slightly) Different {.smaller}
-
-- **Random Subspace Method:** Each decision tree uses only a random selection of the predictors.
-     - As a rule of thumb: If we have $m$ predictors, each decision tree uses only $\sqrt(M)$ predictors (rounded down if needed).
-     - In the case here, where we have $7$ predictors, each decision tree uses only $2$ randomly chosen predictors ($\sqrt(7)=2.65$ rounded down to $2$)<br> <br>  
-
-- **Bagging:** Each decision tree is presented with slightly different training data: We draw from the original training data with replacement to step-wise generate a new training dataset (**Bootstrapping**).
-     - The new training dataset has the same size as the original dataset.
-     - Generate a bootstrap dataset for every decision tree. 
-     
-## Example for Bagging with Bootstrapping {.scrollable .smaller}
 
 ```{webr ContextSetup}
 #| context: setup
@@ -101,12 +52,9 @@ Split85=DataVax |> initial_split(prop = 0.85,
                                  breaks = 3)
 
 DataTrainVax=training(Split85) |> select(-County, -State)
-DataTestVaxVax=testing(Split85) |> select(-County, -State)
+DataTestVax=testing(Split85) |> select(-County, -State)
 
-
-DefaultMtry=floor(sqrt(7)) # floor() rounds down
-
-ModelDesignRandFor=rand_forest(trees=50, min_n=5, mtry = 2) |> 
+ModelDesignRandFor=rand_forest(trees=500, min_n=5, mtry = 2) |> 
                    set_engine("randomForest") |> 
                    set_mode("regression")
   
@@ -116,8 +64,85 @@ WfModelVax=workflow() |>
            add_model(ModelDesignRandFor) |> 
            add_recipe(RecipeVax) |> 
            fit(DataTrainVax)
+
+DataTestVaxWithPred=augment(WfModelVax, new_data=DataTestVax)
 ```
 
+-   *Random Forest* can be used for
+
+    -   Classification
+    -   Regression
+
+-   A *Random Forest* model is an ensample model consisting of many (hundreds or thousands) of slightly different *Decision Trees*.
+
+- The majority predictions (majority vote) from all *Decision Trees* becomes the prediction of the *Random Forest* for classification 
+
+- The average predictions from all *Decision Trees* becomes the prediction of the *Random Forest* for regression 
+
+## The Idea Behind Random Forest
+### The Wisdom of the Crowd
+
+The idea that a combination of weak predictors can lead to a strong prediction is analogous to the wisdom of crowds
+phenomenon described in Galton 1907:
+
+| *Visitors at a stock and poultry exhibition in England submitted guesses about the weight of an ox. Although most of the visitors were off with their predictions, surprisingly the mean of all predictions was very close to the real weight of the ox.*
+
+## The Idea Behind Random Forest
+### Using Many (Slightly) Different Decision Trees
+
+::: {.incremental}
+1. Train many (hundreds or even more) different Decision Trees
+
+2. To predict an outcome for an observation use all Decision Trees, which results in hundreds (or more) predictions
+
+3. Aggregate the predictions<br><br>
+  **Regression:** Calculate the average prediction<br><br>
+  **Classification:** Treat each prediction as a vote for a class --- the class with most of the votes is the predicted class
+
+:::
+
+## How to ensure that Decision Trees are (slightly) Different {.smaller}
+
+<br>
+**Random Subspace Method:** 
+
+Each decision tree uses only a few (randomly chosen) of all predictor variables.<br><br>
+
+. . .
+
+**Bagging:** 
+
+Each decision tree is presented with a slightly different training dataset
+
+## How to ensure that Decision Trees are (slightly) Different {.smaller}
+### Random Subspace Method
+
+**Each decision tree uses only a few of the predictor variables. This subset of predictor variables is randomly selected for each Decision Tree**<br>
+
+**Rule of Thumb:**
+
+If we have $m$, e.g. 7, predictors, each decision tree uses only $\sqrt(m)$ (rounded down if needed) randomly selected predictors:
+
+$$mtry=floor(\sqrt{m})$$
+
+$$mtry=floor(\underbrace{\sqrt{7}}_{2.65})=2$$
+
+**In the case here, where we have $7$ predictors, each decision tree uses only $2$ randomly chosen predictors.**
+
+## How to ensure that Decision Trees are (slightly) Different {.smaller} 
+### Bagging 
+
+**Each decision tree is presented with slightly different training data:** 
+
+We draw from the original training data *with replacement* to step-wise generate a new training dataset (**Bootstrapping**).
+
+- The new training dataset has the same size as the original dataset.
+
+- We generate a bootstrap dataset for every decision tree.
+
+**I need 4 volunteers to demonstrate how sampling *with and without replacement* works** 
+     
+## Example for Bagging with Bootstrapping {.scrollable .smaller}
 
 Creating 5 Bootstrap Training Datasets `DataTrain1`, `DataTrain2`, `DataTrain3`, `DataTrain4`, `DataTrain5` from original dataset `DataTrain`.
 
@@ -399,13 +424,24 @@ kable(DataTrain5)
 
  
 
-## Real World Data with a Decision Tree
+## Real World Research Using Random Forest
 
 Predicting vaccination rates in the U.S. based on data from September 2021:
 
 - Outcome variable: Percentage of fully vaccinated (two shots) people ($PercVacFull$).  
 
-- Data from 2,630 continental U.S. counties.»
+- Data from 2,630 continental U.S. counties.
+
+**The example is based on:**
+
+*Lange, C., Lange, J., Applying Machine Learning and AI Explanations to Analyze Vaccine Hesitancy*, [https://arxiv.org/abs/2201.05070](https://arxiv.org/abs/2201.05070){target=_blank}
+
+**The following example differs slightly from the article:**
+
+- The article uses the  *R* `ranger` package while the example uses the *R* `randomForest` package (`ranger` is not supported in interactive *Web Assemply* (*Wasm*) slides)
+
+- The article weighs the observation by population while the example does not use weighting (not supported by the *R* `randomForest` package)
+
 
 ## Real World Data with a Decision Tree --- Predictor Variables {.smaller}
 
@@ -417,7 +453,7 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
 
 - Political Affiliation (Presidential election 2020): 
   
-  - Counties' proportion Republican votes ($PercRep$)
+  - Counties' proportion Republican votes ($PercRep$; calculated as $PercRep=\frac{RepVotes}{RepVotes+DemVotes}$)
 
 - Age Groups in Counties: 
   
@@ -426,11 +462,36 @@ Predicting vaccination rates in the U.S. based on data from September 2021:
   - Counties' proportion older adults (65 years and older); $PercOld65$
 
 - Income related: 
-  - Proportion of households receiving food stamps ($PercFoodSt$)»
+  - Proportion of households receiving food stamps ($PercFoodSt$)
 
 ## Loading the Data and Assigning Training and Testing Data{.smaller}
 
-```{webr}
+```{webr UserLoadsData}
+#| exercise: exc2
+DataVax=readRDS("Data/DataVax.rds") |>   
+        select(County, State, PercVacFull, PercRep,
+              PercAsian, PercBlack, PercHisp,
+              PercYoung25, PercOld65, PercFoodSt)
+
+set.seed(2021)
+Split85=DataVax |> initial_split(prop = 0.85,
+                                 strata = PercVacFull,
+                                 breaks = 3)
+
+DataTrainVax=______(______) |> select(-County, -State)
+DataTestVax=______(______) |> select(-County, -State)
+
+cat("mtry(the number of variables used for each Decision Tree is:)", floor(sqrt(7)))
+cat("----------------------")
+kable(head(DataTrainVax))
+```
+
+:::: {.solution exercise="exc2"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
 DataVax=readRDS("Data/DataVax.rds") |>   
         select(County, State, PercVacFull, PercRep,
               PercAsian, PercBlack, PercHisp,
@@ -443,16 +504,39 @@ Split85=DataVax |> initial_split(prop = 0.85,
 
 DataTrainVax=training(Split85) |> select(-County, -State)
 DataTestVax=testing(Split85) |> select(-County, -State)
+
+cat("mtry(the number of variables used for each Decision Tree is:)", floor(sqrt(7)))
+cat("----------------------")
 kable(head(DataVax))
 ```
+
+:::
+::::
 
 ## Creating Model Design, Recipe, and Fitted Workflow (default hyper-parameters)
 
 ```{webr UserEntersModelVax}
+#| exercise: exc3
+ModelDesignRandFor=rand_forest(trees=500, min_n=5, mtry = ______) |> 
+                   set_engine("randomForest") |> 
+                   set_mode("______")
+  
+RecipeVax=______(______~., data=______)
 
-DefaultMtry=floor(sqrt(7)) # floor() rounds down
+WfModelVax=______() |> 
+           ______(______) |> 
+           ______(______) |> 
+           ______(______)
+print(WfModelVax)
+```
 
-ModelDesignRandFor=rand_forest(trees=50, min_n=5, mtry = 2) |> 
+:::: {.solution exercise="exc3"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
+ModelDesignRandFor=rand_forest(trees=500, min_n=5, mtry = 2) |> 
                    set_engine("randomForest") |> 
                    set_mode("regression")
   
@@ -465,13 +549,57 @@ WfModelVax=workflow() |>
 print(WfModelVax)
 ```
 
+:::
+::::
 
 ## Metrics for Default Random Forest Model
+### Augmenting the Testing Dataset with the Predictions
+
+1. Predict using  the testing dataset
+2. Augment the testing dataset with the predictions
 
 ```{webr}
+#| exercise: exc4
+DataTestVaxWithPred=______(______, new_data=______)
+
+kable(head(DataTestVaxWithPred))
+```
+
+:::: {.solution exercise="exc4"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
 DataTestVaxWithPred=augment(WfModelVax, new_data=DataTestVax)
+
+kable(head(DataTestVaxWithPred))
+```
+
+:::
+::::
+
+## Metrics for Default Random Forest Model
+### Comparing Predictions to the Truth and calcualting metrics
+
+```{webr}
+#| exercise: exc5
+metrics(______, truth=______, estimate=______)
+```
+
+:::: {.solution exercise="exc5"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
 metrics(DataTestVaxWithPred, truth=PercVacFull, estimate=.pred)
 ```
+
+:::
+::::
+
+
 
 ## Tuning the Random Forest Model
 
@@ -484,26 +612,24 @@ Try to beat the predictive quality of the *default* model we used here.
 ```{r TuningEvalFalse}
 #| eval: false
 #| echo: true
-ModelDesignRandForTree=rand_forest(trees=500, min_n=tune(), mtry = tune()) |> 
+ModelDesignRandForTree=rand_forest(trees=1000, min_n=tune(), mtry = tune()) |> 
                        set_engine("ranger") |> 
                        set_mode("regression")
 ```
 
 What to consider for the tuning grid?
 
-- `trees=500`: No need to tune because a high number of trees cannot lead to overlearning. This is because the Random Forest prediction is calculated from the average of the trees. However, a high number of trees slows the training (`trees=500' was set; feel free to change it).
+- `trees=1000`: No need to tune because a high number of trees cannot lead to overlearning. This is because the Random Forest prediction is calculated from the average of the trees. However, a high number of trees slows the training (`trees=500' was set; feel free to change it).
 
 - `mtry=tune()` is a hyper-parameter that should be tuned. It determines the number of predictors randomly considered for each decision tree. Recommended is $\sqrt(7)=2.65$. Maybe you try 2, 3, 5.
 
 - `min_n=tune()` is a hyper-parameter that should be tuned. It determines the minimum  number of observations inside a node required for a split into child nodes. If this number is not reached the node becomes a terminal node. Therefore, `min_n=tune()` indirectly determines the tree depth.  Default is $5$. Maybe you try 3, 5, 10, 30.
 
-. . .
 
-Below is a link for an R script that you can use to tune the *Random Forest* model.
 
-::: footer
-See: [Script to tune the Random Forest Model](https://econ.lange-analytics.com/RScripts/TreeBasedRandForTuningScript.R) 
-:::
+**Below is a link for an R script that you can use to tune the *Random Forest* model.**
+
+[Script to tune the Random Forest Model](https://econ.lange-analytics.com/RScripts/TreeBasedRandForTuningScript.R)
 
 
 
