@@ -97,12 +97,12 @@ This assignment is worth a total of **100 points**, split across two submission 
 
 | Milestone | Due Date | Points | Description |
 |-----------|----------|--------|-------------|
-| **Initial Submission** | [TBD] (2 weeks before Final) | 50 | Full report draft. Focus on structure and initial analysis. |
-| **Final Submission** | [TBD] (3 days after Final) | 50 | Final polished report with all requirements met. |
+| **Initial Submission** | 5/3/2026 | 100/20% Overall Grade | Full report draft. Focus on structure and initial analysis. |
+| **Final Submission** | 5/10/2026 |  100/35% Overall Grade | Final polished report with all requirements met. |
 
 ## Scoring and Revision
-* **Initial Phase (50 Points):** Your first submission will be graded based on the completeness of the requirements listed above.
+* **Initial Phase (100 Points):** Your first submission will be graded based on the completeness of the requirements listed above.
 * **Improvement Option:** After receiving feedback on your initial report, you have the opportunity to refine your code, improve your interpretations, and fix formatting issues.
-* **Final Phase (50 Points):** The final submission should represent your best professional work. Points in this phase are awarded for technical accuracy, the quality of your regression interpretation, and the professional appearance of the Quarto HTML output.
+* **Final Phase (100 Points):** The final submission should represent your best professional work. Points in this phase are awarded for technical accuracy, the quality of your regression interpretation, and the professional appearance of the Quarto HTML output.
 
 **Note:** Ensure your file is named correctly and all code runs without errors before submitting the HTML file to Canvas.
