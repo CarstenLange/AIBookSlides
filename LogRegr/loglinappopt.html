@@ -1,0 +1,29 @@
+<!-- https://www.w3schools.com/js/js_graphics_plotly.asp -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear vs. Logistic Regression</title>
+    
+</head>
+<body style="background-color: white;">
+    <div id="plot-area" style="width: 65vw; max-width: 1000px;"></div>
+    <label for="beta1-entry-field">beta1:</label>
+    <input type="number" id="beta1-entry-field" onchange="UpdatePage()" value="0.02448346" step="0.01">
+    
+    <label for="beta2-entry-field">beta2:</label>
+    <input type="number" id="beta2-entry-field" onchange="UpdatePage()" value="-2.6866" step="1">
+    <br>
+    <p>
+        The MSE Linear Regression is: <span id="mselin"></span>
+        <br>
+         Current MSE Logistic Regression is <span id="mselog"></span>. 
+    </p>
+    
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    <script src="plotloglinappopt.js"></script> <!-- Should be last in body. CL -->
+</body>
+</html>

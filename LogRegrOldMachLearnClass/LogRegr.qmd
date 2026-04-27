@@ -1,0 +1,446 @@
+---
+title: "Logistic Regression"
+subtitle: "A Powerful Tool for Classification"
+format: 
+  revealjs:
+    multiplex: true
+    code-fold: false
+    scrollable: true
+    echo: true
+    incremental: false
+    smaller: false
+---
+
+
+## Basics of Logistic Regression
+
+Classification Algorithm:
+
+- **Two categories for the outcome variable (analysed in what follows):**  e.g. Unemployed true or false <br><br>
+- Multiple categories for the outcome variable (not covered here)
+  - unordered logistic regression 
+  - ordered logistic regression »
+
+## A Mock-Up Example to Introduce the Idea {.smaller}
+
+```{r}
+#| echo: true
+library(tidymodels); library(kableExtra); library(janitor); library(rio)
+DataYachts=import("https://ai.lange-analytics.com/data/DataYachts.csv")%>% 
+  mutate(YachtNum=Yacht, Yacht=as.factor(Yacht)) 
+kbl(DataYachts %>% select(-YachtNum), caption="Income and Yacht Ownership") %>% 
+  kable_styling(bootstrap_options=c("striped","hover"), position="center", full_width = F)
+```
+
+## Using OLS is a Tempting (but bad) Idea
+
+```{r}
+#| echo: true
+library(plotly)
+ggplotly(ggplot(aes(x=Income,y=YachtNum),data=DataYachts)+
+  geom_point(size=2.7, color="magenta")+
+  scale_x_continuous(limits = c(-50,500), breaks = seq(0,500,50))+ 
+  scale_y_continuous(breaks = seq(0,1.25,0.25))+ 
+  labs(y="Probability of Yacht Ownership", x="Income in $1,000"))
+```
+## Using OLS is a Tempting (but bad) Idea
+
+```{r}
+#| echo: true
+library(plotly)
+ggplotly(ggplot(aes(x=Income,y=YachtNum),data=DataYachts)+
+  geom_hline(yintercept = 0.5)+
+  geom_point(size=2.7, color=ifelse(DataYachts$Income==45,"red","cyan"))+
+  geom_smooth(method="lm",se=FALSE, size=1.7)+
+  scale_x_continuous(limits = c(-50,500), breaks = seq(0,500,50))+ 
+  scale_y_continuous(breaks = seq(0,1.25,0.25))+ 
+  labs(y="Probability of Yacht Ownership", x="Income in $1,000"))
+```
+
+## Quick Way to Find a Decision Boundary {.smaller}
+
+::: columns
+::: {.column width="50%"}
+```{r}
+ggplot(aes(x=Income,y=YachtNum),data=DataYachts)+
+  geom_hline(yintercept = 0.5)+
+  geom_vline(xintercept = 158, linetype="dashed", color="blue")+
+  geom_point(size=2.7, color=ifelse(DataYachts$Income==45,"red","cyan"))+
+  geom_smooth(method="lm",se=FALSE, size=1.7)+
+  scale_x_continuous(limits = c(-50,500), breaks = seq(0,500,50))+ 
+  scale_y_continuous(breaks = seq(0,1.25,0.25))+ 
+  labs(y="Probability of Yacht Ownership", x="Income in $1,000")
+```
+:::
+
+::: {.column width="50%"}
+1.  Find the intersection point between the prediction line and the horizontal 0.5 probability line.
+
+2.  Draw a vertical line through the intersection point. This line is called a **decision boundary**.
+
+3.  All incomes left of the *decision boundary* (income smaller than 158) are predicted as "no". All incomes right of the *decision boundary* (income greater than 158) are predicted as "yes".»
+:::
+:::
+
+## Why OLS for Classification is a Bad Idea {.smaller}
+
+```{r}
+library(plotly)
+ggplotly(ggplot(aes(x=Income,y=YachtNum),data=DataYachts)+
+  geom_hline(yintercept = 0.5)+
+  geom_vline(xintercept = 158, linetype="dashed", color="blue")+
+  geom_point(size=2.7, color=ifelse(DataYachts$Income==45,"red","cyan"))+
+  geom_smooth(method="lm",se=FALSE, size=1.7)+
+  scale_x_continuous(limits = c(-50,500), breaks = seq(0,500,50))+ 
+  scale_y_continuous(breaks = seq(0,1.25,0.25))+ 
+  labs(y="Probability of Yacht Ownership", x="Income in $1,000"))
+```
+
+Note, incomes \> \$370,000 are predicted with a probability \> 100% to be yacht owners(?)<br> 
+E.g. probability of owning a yacht for an income of \$500,000 is 125% (?)
+
+A similar problem can occur with negative probabilities!
+
+## A Step-Function as an Alternative to OLS
+
+```{r}
+ModelDesignLogRegr=logistic_reg() %>%
+  set_engine("glm") %>%
+  set_mode("classification")
+
+RecipeYachts=recipe(Yacht~Income, data = DataYachts)
+
+set.seed(123)
+WFYachts=workflow() %>% 
+  add_model(ModelDesignLogRegr) %>% 
+  add_recipe(RecipeYachts) %>% 
+  fit(DataYachts)
+
+b1=tidy(WFYachts)[[2,2]]
+b2=tidy(WFYachts)[[1,2]]
+ggplot(aes(x=Income,y=YachtNum),data=DataYachts)+
+  geom_hline(yintercept = 0.5)+
+  geom_vline(xintercept = 158, linetype="dashed", color="blue")+
+  geom_vline(xintercept = 110, linetype="dashed", color="magenta")+
+  geom_point(size=2.7, color=ifelse(DataYachts$Income==45,"red","cyan"))+
+  geom_function(fun=function(x) 1/(1+exp(-b1*x-b2)), color="magenta", size=1.7)+
+  geom_smooth(method="lm",se=FALSE, size=1.7)+
+  scale_x_continuous(limits = c(-50,500), breaks = seq(0,500,50))+
+  scale_y_continuous(breaks = seq(0,1.25,0.25))+
+  labs(y="Probability of Yacht Ownership", x="Income in $1,000")
+```
+
+## Popular Step-Functions (Sigmoid Function)
+
+
+- The **Hyperbolic Tangent function**.
+
+- The **Arc Tangent function**.
+
+- The **Logistic function** (confusingly sometimes also called the *sigmoid function*). 
+
+. . .
+
+$$
+y_i=\frac{1}{1+e^{-x_i}}
+$$ »
+
+## The Logistic Function
+
+::: nonincremental
+- The **Logistic function** (confusingly sometimes also called the *sigmoid function*):
+
+:::
+
+$$
+y_i=\frac{1}{1+e^{-x_i}}
+$$
+
+. . .
+
+
+We use: $y_i=P^{rob}_{yes,i}$ and $x_i=\beta_1 Inc_i+\beta_2$ which gives us:
+
+. . .
+
+$$
+P^{rob}_{yes,i}=\frac{1}{1+e^{-(\beta_1 Inc_i+\beta_2)}}
+$$
+**$\beta_1$ and $\beta_2$ change slope and position <br />
+$\beta_1=1$ and $\beta_2=0$ gives the org. logistic function.**
+🤓
+
+::: footer
+See: [Try it yourself](https://econ.lange-analytics.com/calcat/logisticregr)
+:::
+
+## What Makes the Logistic Function so Special? {.scrollable}
+### --- compared to other sigmoid (step) functions ---
+
+**Time for some mathematical magic:**
+
+Logistic function $P^{rob}_{yes,i}$ := probability for  positive event (e.g.  yacht ownership: yes):
+
+$$P^{rob}_{yes,i}=\frac{1}{1+e^{-(\beta_1\cdot x_i+\beta_2)}} $$
+
+. . . 
+
+
+
+Take the inverse on both sides of the equation:
+
+$$\frac{1}{P^{rob}_{yes,i}}=1+e^{-(\beta_1\cdot x_i+\beta_2)}$$
+
+. . .
+
+Subtract 1 on both sides: 
+
+$$\frac{1}{P^{rob}_{yes,i}}-1=e^{-(\beta_1\cdot x_i+\beta_2)}$$
+ 
+. . .
+
+Consider that $-1=-\frac{P^{rob}_{yes,i}}{P^{rob}_{yes,i}}$ and substitute $-1$  accordingly, we get after simplification:
+
+$$\frac{1-P^{rob}_{yes,i}}{P^{rob}_{yes,i}}=e^{-(\beta_1\cdot x_i+\beta_2)}$$
+
+. . .
+
+$1-P^{rob}_{yes,i}$ equals by definition $P^{rob}_{no,i}$:
+
+$$\frac{P^{rob}_{no,i}}{P^{rob}_{yes,i}}=e^{-(\beta_1\cdot x_i+\beta_2)}$$
+
+. . .
+
+Take again the inverse on both sides:
+
+$$\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}=e^{\beta_1\cdot x_i+\beta_2}$$
+
+. . .
+
+Take the logarithm on both sides:
+
+$$\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=\beta_1\cdot x_i+\beta_2$$
+
+
+## One More Step --- Odds vs Probabilties 
+
+- The fraction of the yes/no probabilities can be interpreted as 
+  $Odds$ as they are often used in betting. 
+
+- Example: The probability of getting two heads when flipping two coins is  is $P^{rob}_{yes,i}=0.25$. 
+
+- Consequently, the probability of **not** getting two heads when flipping two coins is  $P^{rob}_{no,i}=0.75$.
+
+- $Odds$ for 2 Heads compared to **not** 2 heads is 1 to 3 or 33%: 
+
+. . .
+
+$$O^{dds}=\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}=\frac{0.25}{0.75}=\frac{1}{3}=0.33$$
+
+
+
+
+## Interpretation of the $\beta s$: Yacht Ownership
+
+$$\ln(O^{dds})=\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=0.02\cdot Inc_i+(-2.7)$$
+
+Model results after running and printing the workflow():
+
+```{r}
+#| echo: true
+
+# The workflow WFYachts had been created before and
+# DataTest were fitted to the workflow.
+print(WFYachts)
+```
+
+## Interpretation of the $\beta s$: Yacht Ownership
+
+$$\ln(O^{dds})=\ln\left (\frac{P^{rob}_{yes,i}}{P^{rob}_{no,i}}\right )=0.02\cdot Inc_i+(-2.7)$$
+
+- If income increases by 1 ($1,000) the logarithm of the odds increases by 0.02.
+
+- Since change of a logarithm is a relative change (**percentage**):
+
+. . .
+
+  If income increases by 1 ($1,000) the odds increases by 2% (0.02). (careful with the results because data were made up and N is too small!)
+
+
+## Confusion Matrix
+
+Note, in the mockup we did not create training and testing data. Therefore, we use DataYachts (the data we used to fit/train the workflow) here. This is not a proper methodology but good enough for the mock-up: 
+```{r}
+#| echo: true
+DataYachtsWithPred=augment(WFYachts, new_data=DataYachts)
+conf_mat(DataYachtsWithPred, truth=Yacht, estimate=.pred_class)
+```
+
+## Real World Churn Analysis with Logistic Regression --- the Data  
+
+
+We use data (7,043 customers) of the  fictional telecommunication  company *TELCO*, generated by *IBM* for training purposes:
+
+- The outcome variable $Churn$ indicates, if a customer departed within the last month ($Churn=Yes$) or not ($Churn=No$). 
+- Predictor variables contain:  
+  - Customers' $Gender$ ($Female$ or $Male$), 
+  - Customers' $SeniorCitizen$ status ($0$ for no or $1$ for yes), 
+  - Customers' $Tenure$ with *TELCO* (month of membership), as well as 
+  - Customers' $MonthlyCharges$ (in US-\$). 
+
+## Real World Churn Analysis with Logistic Regression --- the Data
+
+```{r}
+#| echo: true
+DataChurn=import("https://ai.lange-analytics.com/data/TelcoChurnData.csv") %>%
+  clean_names("upper_camel") %>%
+  select(Churn,Gender,SeniorCitizen,Tenure,MonthlyCharges) %>%
+  mutate(Churn=factor(Churn, levels=c("Yes","No"))) 
+head(DataChurn)
+```
+
+
+## Real World Churn Analysis with Logistic Regression
+### --- Do it yourself ---
+
+Create the Churn analysis with logistic regression. Click on the link in the footer to get an R-script with a skeleton for the analysis.🤓
+
+::: footer
+See: [LogRegrChurnScript.R](https://econ.lange-analytics.com/RScripts/LogRegrChurnScript.R)
+:::
+
+
+## Results from Churn Analysis with Logistic Regression{.smaller}
+
+```{r}
+set.seed(789)
+Split3070=initial_split(DataChurn, prop=0.7,strata =Churn)
+
+DataTrain=training(Split3070)
+DataTest=testing(Split3070)
+
+set.seed(789)
+RecipeChurn=recipe(Churn ~ ., data=DataTrain) %>% 
+  step_naomit() %>% 
+  step_dummy(Gender)
+
+ModelDesignLogisticRegr= logistic_reg() %>% 
+  set_engine("glm") %>% 
+  set_mode("classification")
+
+WFModelChurn=workflow() %>% 
+  add_recipe(RecipeChurn) %>% 
+  add_model(ModelDesignLogisticRegr) %>% 
+  fit(DataTrain)
+
+DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
+```
+
+Confusion Matrix:
+
+```{r}
+kbl(conf_mat(DataTestWithPred, truth = Churn, estimate = .pred_class)$table)
+```
+
+Accuracy:
+
+```{r}
+kbl(accuracy(DataTestWithPred, truth = Churn, estimate = .pred_class))
+```
+
+Sensitivity:
+
+```{r}
+kbl(sensitivity(DataTestWithPred, truth = Churn, estimate = .pred_class))
+```
+
+Specificity:
+
+```{r}
+kbl(specificity(DataTestWithPred, truth = Churn, estimate = .pred_class))
+```
+
+**Hint:** What do the column sums of the confusion matrix tell you?
+
+## Problem: Unballanced Training Data
+
+
+```{r}
+kbl(count(DataTrain, Churn))
+```
+
+**Majority Class:** $Churn=No$ has 3621  observations in the training dataset.
+
+**Minority class** $Churn=Yes$ has 1308 observations in the training dataset. 
+
+## What can we do?
+
+```{r}
+kbl(count(DataTrain, Churn))
+```
+
+- **Downsampling:** Randomly **delete observations from majority class** until ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).
+
+- **Upsampling:** In simplest version, **creates new observations for the minority class** by copying randomly chosen observations from the minority class until the ratio of the observations from the majority and the minority class reaches the desired ratio (e.g., 1:1).
+
+- Often, a combination of *downsampling* and *upsampling* is performed.
+
+## Performing Down-Sampling with `step_downsample()`
+
+You need to add the R package `themis`. Then in your script, you can add `step_downsample(Churn)` to the recipe (don't forget to execute the following command lines again). As a reminder our original DataTrain had 4,929 observations, $Churn_{Yes}=1308$, $Churn_{No}=3621$:
+
+```{r}
+#| echo: true
+library(themis)
+RecipeChurn=recipe(Churn ~ ., data=DataTrain) %>% 
+  step_naomit() %>% 
+  step_dummy(Gender) %>% 
+  step_downsample(Churn)
+
+ # you do not need to do the following steps.
+# They just allow to display the count() for the training data
+ExtractedDataTrain=juice(RecipeChurn %>% prep())
+kbl(count(ExtractedDataTrain, Churn))
+```
+
+Note, the number of observations has decreased by 2313. This is an information loss!
+
+## Performing Up-Sampling with `step_upsample()`
+
+You need to add the R package `themis`. Then in your script, you can add `step_upsample(Churn)` to the recipe (don't forget to execute the following command lines again). As a reminder our original DataTrain had 4,929 observations, $Churn_{Yes}=1308$, $Churn_{No}=3621$:
+
+```{r}
+#| echo: true
+library(themis)
+RecipeChurn=recipe(Churn ~ ., data=DataTrain) %>% 
+  step_naomit() %>% 
+  step_dummy(Gender) %>% 
+  step_upsample(Churn)
+
+ # you do not need to do the following steps.
+# They just allow to display the count() for the training data
+ExtractedDataTrain=juice(RecipeChurn %>% prep())
+kbl(count(ExtractedDataTrain, Churn))
+```
+
+Note, the number of observations has increased by 2313. The information in the dataset has not increased!
+
+## Performing Up-Sampling with `step_smote()`. What is the advantage
+
+As a reminder our original DataTrain had 4,929 observations, $Churn_{Yes}=1308$, $Churn_{No}=3621$:
+
+```{r}
+#| echo: true
+library(themis)
+RecipeChurn=recipe(Churn ~ ., data=DataTrain) %>% 
+  step_naomit() %>% 
+  step_dummy(Gender) %>% 
+  step_upsample(Churn)
+
+ # you do not need to do the following steps.
+# They just allow to display the count() for the training data
+ExtractedDataTrain=juice(RecipeChurn %>% prep())
+kbl(count(ExtractedDataTrain, Churn))
+```
+
+Instead of copying a record from the training dataset, `step_smote()` finds the Nearest Neighbor to that record and creates a new record that has features generated as a weighted average between the Nearest Neighbor and the original record.
