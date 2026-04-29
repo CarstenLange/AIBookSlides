@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.8.27">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -67,7 +67,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="05-LinRegrExerc100_files/libs/quarto-html/tippy.umd.min.js"></script>
 <script src="05-LinRegrExerc100_files/libs/quarto-html/anchor.min.js"></script>
 <link href="05-LinRegrExerc100_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="05-LinRegrExerc100_files/libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="05-LinRegrExerc100_files/libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="05-LinRegrExerc100_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="05-LinRegrExerc100_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="05-LinRegrExerc100_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
@@ -234,7 +234,7 @@ eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwibGFiZWwiOiJleF9h
 \widehat{Price}=\beta_1 Sqft+\beta_2 Grade+\beta_3 Waterfront\_yes +\beta_4
 \end{equation}\]</span></p>
 <p><em>OLS</em> assumes that all predictor variables have an <strong>additive and independent impact</strong> on the outcome variable. The related <span class="math inline">\(\beta s\)</span> scale the strength of these impacts.</p>
-<p>Before using <em>OLS</em> to find the optimal numerical values for the <span class="math inline">\(\beta s\)</span>, we have to solve one more problem: The <span class="math inline">\(Waterfront\)</span> variable in the data frame <code>DataTrain</code> is not numerical. Instead, it contains the values “yes” and “no”. To tackle this problem, we can turn <span class="math inline">\(Waterfront\)</span> into a <em>dummy variable</em> using <code>step_dummy()</code> in the <em>recipe</em>. The command <code>step_dummy()</code> assigns a value of <span class="math inline">\(1\)</span> when the value of the <span class="math inline">\(Waterfront\)</span> variable is “yes” and a value of <span class="math inline">\(0\)</span> when it is “no”. There is no definite rule about which value <span class="math inline">\(1\)</span> or <span class="math inline">\(0\)</span> is assigned to “yes” or “no”, but it is common practise to assign <span class="math inline">\(1\)</span> to “yes” and <span class="math inline">\(0\)</span> to “no”.</p>
+<p>Before using <em>OLS</em> to find the optimal numerical values for the <span class="math inline">\(\beta s\)</span>, we have to solve one more problem: The <span class="math inline">\(Waterfront\)</span> variable in the data frame <code>DataTrain</code> is not numerical. Instead, it contains the values “yes” and “no”. To tackle this problem, we can turn <span class="math inline">\(Waterfront\)</span> into a <em>dummy variable</em> using <code>step_dummy()</code> in the <em>recipe</em>. The command <code>step_dummy()</code> assigns a value of <span class="math inline">\(1\)</span> when the value of the <span class="math inline">\(Waterfront\)</span> variable is “yes” and a value of <span class="math inline">\(0\)</span> when it is “no”. There is no definite rule about which value <span class="math inline">\(1\)</span> or <span class="math inline">\(0\)</span> is assigned to “yes” or “no”, but it is common practice to assign <span class="math inline">\(1\)</span> to “yes” and <span class="math inline">\(0\)</span> to “no”.</p>
 <p>The <em>recipe</em> in the code block below determines the variables used for the analysis and converts <span class="math inline">\(Waterfront\)</span> into a dummy variable:</p>
 <ol type="1">
 <li><span class="math inline">\(Price\)</span> is defined as the outcome variable, and all other variables (<span class="math inline">\(Sqft\)</span>, <span class="math inline">\(Grade\)</span>, and <span class="math inline">\(Waterfront\)</span>) are defined as predictor variables using the <code>.</code>-notation.</li>

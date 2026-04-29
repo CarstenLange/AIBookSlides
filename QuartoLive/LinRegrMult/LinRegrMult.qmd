@@ -130,7 +130,7 @@ ModelOLSMult=lm(Price~Sqft+Cond, data = DataHouses)
 summary(ModelOLSMult)
 ```
 
-## Real World Example: Sex Discrimination {.samller}
+## Real World Example: Sex Discrimination {.smaller}
 ### Data
 
 Use `? wage1` to learn more about the data:
