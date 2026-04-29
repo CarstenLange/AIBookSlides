@@ -29,8 +29,9 @@ engine: knitr
 
 ## What Will You Learn {.smaller}
 
-```{webr}
+```{webr setup}
 #| context: setup
+#| echo: false
 DataChurn=read.csv("https://ai.lange-analytics.com/data/TelcoData.csv") |>
 clean_names("upper_camel") |> 
           select(Churn,Gender,SeniorYes=SeniorCitizen,
@@ -40,9 +41,9 @@ clean_names("upper_camel") |>
           mutate(ChurnYes=as.factor(ChurnYes)) |> 
           na.omit(TotalCharges)
 set.seed(123)
-Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
-DataTrain=training(Split3070)
-DataTest=testing(Split3070)
+Split7030=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
 
 RecipeChurn=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=DataTrain)
 
@@ -74,7 +75,7 @@ DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
 
 ## A Mock Up Example {.smaller}
 
-```{r}
+```{r rSetUpYachts}
 #| echo: false
 library(rio)
 library(janitor)
@@ -157,19 +158,10 @@ From a marketing standpoint, should we pay more attention to women vs. men, seni
 
 <!-- ## Churn at the Telco Company --- Digital Acylical Graph -->
 
-<!-- ```{r} -->
-<!-- #| output-location: slide -->
-<!-- #| code-line-numbers: "2|3" -->
-<!-- #| eval: false -->
-<!-- library(ggdag) -->
-<!-- dagify(Churn~SexMale+SeniorYes+MonChar+TotChar+Tenure, -->
-<!--        TotChar~MonChar+Tenure) |>  -->
-<!-- ggdag(node_size = 22) + theme_void() -->
-<!-- ``` -->
 
 ## Churn at the Telco Company
 
-```{r}
+```{r rSetupChurn}
 #| code-line-numbers: "1-4|5|6"
 #| echo: true
 library(rio)
@@ -177,7 +169,7 @@ library(janitor)
 library(tidymodels)
 library(SmartEDA)
 DataChurnOrg=import("https://ai.lange-analytics.com/data/TelcoData.csv") |>
-clean_names("upper_camel") 
+             clean_names("upper_camel") 
 ```
 
 ```{r}
@@ -185,48 +177,95 @@ clean_names("upper_camel")
 # ExpReport(DataChurnOrg, op_file="EDAChurnData.html")
 ```
 
-[EDAChurnData.html](EDAChurnData.html)
+[EDAChurnData.html](EDAChurnData.html){target="_blank"}
 
 ## Data Engineering
 
 ```{r}
-|# echo: true
-library(corrplot)
+#| code-line-numbers: "1|2-3|4|5|6"
+#| echo: true
 DataChurn=DataChurnOrg |>
           select(Churn,Gender,SeniorYes=SeniorCitizen,
                  Tenure,MonthlyCharges, TotalCharges) |>
           mutate(ChurnYes=ifelse(Churn=="Yes",1,0), Churn=NULL) |>
           mutate(MaleYes=ifelse(Gender=="Male",1,0), Gender=NULL) |>
           na.omit(TotalCharges)
-corrplot(cor(DataChurn))
-DataChurn=DataChurn |> 
-          mutate(ChurnYes=as.factor(ChurnYes)) 
 ```
+
+. . .
+
+```{r}
+#| echo: true
+#| code-line-numbers: "1|2"
+library(corrplot)
+corrplot(cor(DataChurn))
+```
+
 
 ## Splitting into Training and Testing Data
 
-```{r}
+```{r SplitForR}
+DataChurn=DataChurn |> 
+          mutate(ChurnYes=as.factor(ChurnYes)) 
 set.seed(123)
-Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
-DataTrain=training(Split3070)
-DataTest=testing(Split3070)
+Split7030=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
 ```
 
-```{webr}
-#| output-location: fragment
-#| code-line-numbers: "1,2|4,5|6-8"
-#| echo: true
+```{webr SplitForWebR}
+#| exercise: exc1
 set.seed(789)
-Split3070=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
-DataTrain=training(Split3070)
-DataTest=testing(Split3070)
+Split7030=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(______)
+DataTest=testing(______)
+
+print(Split7030)
 head(DataTrain)
 ```
 
+::: {.solution exercise="exc1"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
+set.seed(789)
+Split7030=initial_split(DataChurn, prop=0.7,strata=ChurnYes)
+DataTrain=training(Split7030)
+DataTest=testing(Split7030)
+
+print(Split7030)
+head(DataTrain)
+```
+:::
+:::
+
 ## Analysis --- Creating Fitted Workflow
 
-```{webr}
-#| code-line-numbers: "1|3-5|7-10"
+```{webr RecipeAndModelOrg}
+#| exercise: exc2
+RecipeChurn=______(______~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=______)
+
+ModelDesignLogistic=logistic_reg() |>
+                    set_engine("glm") |> 
+                    set_mode("______")
+
+WFModelChurn=workflow() |>
+             add_recipe(______) |>
+             add_model(______) |>
+             fit(______)
+
+#Printing Parameters
+tidy(WFModelChurn)
+```
+
+::: {.solution exercise="exc2"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
 RecipeChurn=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=DataTrain)
 
 ModelDesignLogistic=logistic_reg() |>
@@ -237,37 +276,75 @@ WFModelChurn=workflow() |>
              add_recipe(RecipeChurn) |>
              add_model(ModelDesignLogistic) |>
              fit(DataTrain)
-```
 
-## Analysis Results
-
-```{webr}
+#Printing Parameters
 tidy(WFModelChurn)
 ```
+:::
+:::
 
-. . .
+## Preparing Result Analysis
+
 
 ```{webr}
-DataTestWithPred=augment(WFModelChurn, new_data = DataTest)
-head(DataTestWithPred[-7])
+#| exercise: exc3
+DataTestWithPred=______(______, new_data = DataTest)
+head(DataTestWithPred)
 ```
+
+::: {.solution exercise="exc3"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
+DataTestWithPred=augment(WFModelChurn , new_data = DataTest)
+head(DataTestWithPred)
+```
+:::
+:::
 
 ## Analysis --- Summary Result
 
 **Confusion Matrix:**
 
-```{webr}
+```{webr ConfusionMatrixOrg}
+#| exercise: exc4
+conf_mat(DataTestWithPred, truth=______, estimate= .______)
+```
+
+::: {.solution exercise="exc4"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
 conf_mat(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
 ```
+:::
+:::
 
 . . .
 
 **Selected Metrics:**
 
 ```{webr}
+#| exercise: exc5
+FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
+FctMetricsCL(______, truth=______, estimate=______)
+```
+
+::: {.solution exercise="exc5"}
+::: { .callout-tip collapse="false"}
+
+## Fully worked solution:
+
+```r
 FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
 FctMetricsCL(DataTestWithPred, truth=ChurnYes, estimate= .pred_class)
 ```
+:::
+:::
 
 ## **Warning: Be careful with the Accuracy Rate** {.smaller}
 
@@ -337,15 +414,21 @@ However, when we look at the correct positive and the correct negative rate sepa
 
 -   The correct positive rate (**sensitivity**) is zero (out of the 27 winners, all were falsely predicted as "You will lose").
 
-. . .
+
 
 **This example shows: When interpreting the confusion matrix, you must look at accuracy, sensitivity, and specificity simultaneously**
 
 ## Fixing the Problem of Unbalanced Data {.smaller}
+### The Problem
 
-```{webr}
+```{r}
 count(DataTrain, ChurnYes)
 ```
+
+::: {.callout-note}
+## Imbalanced Response Variable
+We had **3614 customers not-churning** and only **1308 customers churning**
+:::
 
 ::: incremental
 1.  `step_downsample()`: Delete observations from the majority class. \
@@ -358,83 +441,89 @@ count(DataTrain, ChurnYes)
     *SMOTE* uses *k-Nearest-Neighbor* to find the most similar observation to a randomly selected observation and th,e generates a mix out of these two observations until the chosen `over_ratio=` ratio is reached (default is `over_ratio=1`)
 :::
 
-## Up-, Downsampling and SMOTE in `tidymodels` Workflow
+## Fixing the Problem of Unbalanced Data {.smaller}
+### Up-, Downsampling and SMOTE in `tidymodels` Workflow
 
-To implement `step_upsample()`, `step_downsample()`, and/or  `step_smote()` only the `recipe()` needs to be changed and the workflow with the updated *recipe* needs to be executed again.
+To implement `step_upsample()`, `step_downsample()`, or  `step_smote()` only the `recipe()` needs to be changed and updated in the workflow.
 
-Note, `step_upsample()`, `step_downsample()`, and `step_smote()` are not included in `tidymodels`. They are part of the `themis` package, which needs to be loaded first and installed. 
+::: {.callout-note}
+## `library(themis)`
 
+**Note**, `step_upsample()`, `step_downsample()`, and `step_smote()` are not included in `tidymodels`. They are part of the `themis` package, which needs to be installed ones and loaded (`library(themis)`). 
+:::
 
 ## Using Downsampling to Balance the Training Data
 
-```{r}
-ModelDesignLogistic=logistic_reg() |>
-                    set_engine("glm") |> 
-                    set_mode("classification")
-```
+`library(themis)` is needed for `step_downsample()` and has been loaded already in the background.
 
-```{r}
-library(themis)
+```{webr}
 RecipeChurnDown=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=DataTrain) |>
             step_downsample(ChurnYes, under_ratio=1.2)
+
+# Showing count of ChurnYes
+count(RecipeChurnDown |>prep() |>juice(),ChurnYes)  
 ```
 
-```{r}
-#| echo: false
-count(RecipeChurnDown |>prep()|>juice(),ChurnYes)  
+. . .
 
-```
-
-```{r}
+```{webr}
 WFModelChurnDown=workflow() |>
              add_recipe(RecipeChurnDown) |>
              add_model(ModelDesignLogistic) |>
              fit(DataTrain)
+
+tidy(WFModelChurnDown)
 ```
 
 ## Analyzing the Results for Downsampling
 
-```{r}
+```{webr}
 DataTestWithPredDown=augment(WFModelChurnDown, new_data = DataTest)
 
 conf_mat(DataTestWithPredDown, truth=ChurnYes, estimate= .pred_class)
 ```
 
-```{r}
+. . .
+
+```{webr}
 FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
 FctMetricsCL(DataTestWithPredDown, truth=ChurnYes, estimate= .pred_class)
 ```
 
 ## Using SMOTE to Balance the Training Data
 
-```{r}
-library(themis)
-RecipeChurnSmote=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, data=DataTrain) |>
+`library(themis)` is needed for `step_smote()` and has been loaded already in the background.
+
+```{webr}
+RecipeChurnSmote=recipe(ChurnYes~MaleYes+SeniorYes+MonthlyCharges+Tenure, 
+                        data=DataTrain) |>
             step_smote(ChurnYes, over_ratio=0.8)
+
+# Showing count of ChurnYes
+count(RecipeChurnSmote|>prep()|>juice(),ChurnYes)
 ```
 
-```{r}
-#| echo: false
-count(RecipeChurnSmote|>prep()|>juice(),ChurnYes)  
+. . .
 
-```
-
-```{r}
+```{webr}
 WFModelChurnSmote=workflow() |>
              add_recipe(RecipeChurnSmote) |>
              add_model(ModelDesignLogistic) |>
              fit(DataTrain)
+tidy(WFModelChurnSmote)
 ```
 
 ## Analyzing the Results for SMOTE
 
-```{r}
+```{webr}
 DataTestWithPredSmote=augment(WFModelChurnSmote, new_data = DataTest)
 
 conf_mat(DataTestWithPredSmote, truth=ChurnYes, estimate= .pred_class)
 ```
 
-```{r}
+. . .
+
+```{webr}
 FctMetricsCL=metric_set(accuracy, sensitivity, specificity)
 FctMetricsCL(DataTestWithPredSmote, truth=ChurnYes, estimate= .pred_class)
 ```
