@@ -187,10 +187,18 @@ summary(Model3)
 $$
 \underbrace{MPG}_{\substack{\text{Absolute Change:}\\
 \text{`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`} 
-\\ \text{(in MPG)}}}=
+\\ \text{(in MPG)}\\
+\text{---------------------------}\\
+\text{`r format(summary(Model3)$coefficients[2,1]/100, scientific = FALSE)`} 
+\\ \text{(in MPG)}
+}}=
 `r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`
 \underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
-\text{+1} \\ \text{(=100% (doubles)}}} +`r summary(Model3)$coefficients[1,1]`
+\text{+1} \\ \text{(=100% (doubles)}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(=1%)}
+}} +`r summary(Model3)$coefficients[1,1]`
 $$
 
 ## Regression Model4: log(MPG) \~ log(Weight) (Predictor and Outcome Variables Logarithmized){.smaller}
@@ -244,15 +252,23 @@ $$
 \text{+1} \\ \text{(weight in pounds)}}} +`r summary(Model2)$coefficients[1,1]`
 $$
 
-**Model 3: only predictor Weight logarithmic ($r^2= `r summary(Model3)$r.squared`$)**
+**Model 3: outcome MPG logarithmic and predictor Weight logarithmic ($r^2= `r summary(Model3)$r.squared`$)**
 
 $$
 \underbrace{MPG}_{\substack{\text{Absolute Change:}\\
 \text{`r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`} 
-\\ \text{(in MPG)}}}=
+\\ \text{(in MPG)}\\
+\text{---------------------------}\\
+\text{`r format(summary(Model3)$coefficients[2,1]/100, scientific = FALSE)`} 
+\\ \text{(in MPG)}
+}}=
 `r format(summary(Model3)$coefficients[2,1], scientific = FALSE)`
 \underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
-\text{+1} \\ \text{(=100% (doubles)}}} +`r summary(Model3)$coefficients[1,1]`
+\text{+1} \\ \text{(=100% (doubles)}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(=1%)}
+}} +`r summary(Model3)$coefficients[1,1]`
 $$
 
 **Model 4: only predictor Weight logarithmic ($r^2= `r summary(Model4)$r.squared`$)**

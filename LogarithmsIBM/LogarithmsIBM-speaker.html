@@ -6,8 +6,8 @@
 <script src="LogarithmsIBM_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="LogarithmsIBM_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="LogarithmsIBM_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="LogarithmsIBM_files/libs/quarto-html/quarto-syntax-highlighting-dark-b758ccaa5987ceb1b75504551e579abf.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.26">
+<link href="LogarithmsIBM_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.8.27">
 
   <title>Expressing Percentage Change with Logarithms</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -412,10 +412,18 @@ F-statistic: 980.4 on 1 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><span class="math display">\[
 \underbrace{MPG}_{\substack{\text{Absolute Change:}\\
 \text{-23.50321}
-\\ \text{(in MPG)}}}=
+\\ \text{(in MPG)}\\
+\text{---------------------------}\\
+\text{-0.2350321}
+\\ \text{(in MPG)}
+}}=
 -23.50321
 \underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
-\text{+1} \\ \text{(=100% (doubles)}}} +210.527029
+\text{+1} \\ \text{(=100% (doubles)}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(=1%)}
+}} +210.527029
 \]</span></p>
 </section>
 <section id="regression-model4-logmpg-logweight-predictor-and-outcome-variables-logarithmized" class="slide level2 smaller">
@@ -486,14 +494,22 @@ F-statistic:  1287 on 1 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
 \underbrace{Weight}_{\substack{\text{Absolute  Change:}\\
 \text{+1} \\ \text{(weight in pounds)}}} +4.144531
 \]</span></p>
-<p><strong>Model 3: only predictor Weight logarithmic (<span class="math inline">\(r^2= 0.7123007\)</span>)</strong></p>
+<p><strong>Model 3: outcome MPG logarithmic and predictor Weight logarithmic (<span class="math inline">\(r^2= 0.7123007\)</span>)</strong></p>
 <p><span class="math display">\[
 \underbrace{MPG}_{\substack{\text{Absolute Change:}\\
 \text{-23.50321}
-\\ \text{(in MPG)}}}=
+\\ \text{(in MPG)}\\
+\text{---------------------------}\\
+\text{-0.2350321}
+\\ \text{(in MPG)}
+}}=
 -23.50321
 \underbrace{log(Weight)}_{\substack{\text{Relative Change:}\\
-\text{+1} \\ \text{(=100% (doubles)}}} +210.527029
+\text{+1} \\ \text{(=100% (doubles)}\\
+\text{---------------------------}\\
+\text{+0.01}\\
+\text{(=1%)}
+}} +210.527029
 \]</span></p>
 <p><strong>Model 4: only predictor Weight logarithmic (<span class="math inline">\(r^2= 0.7646953\)</span>)</strong></p>
 <p><span class="math display">\[
@@ -557,7 +573,7 @@ F-statistic:  1287 on 1 and 396 DF,  p-value: &lt; 2.2e-16</code></pre>
 'jumpToSlide': true,
 'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
 'chalkboard': {"buttons":true},
-'multiplex': {"secret":"16992371198458833092","id":"ca6504e443f8a0d1","url":"https://reveal-multiplex.glitch.me/"},
+'multiplex': {"secret":"b6447d09a61cf6aa177174f1d23d276c","id":"b7535c9057c3182f0058810830d645c3ba4bd2fc1169d8224affdc18ee1b2f09","url":"https://multiplex.up.railway.app/"},
 'smaller': false,
  
         // Display controls in the bottom right corner
