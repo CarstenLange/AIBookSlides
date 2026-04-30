@@ -25,6 +25,7 @@ webr:
     - janitor
     - ggplot2
     - wooldridge
+    - corrplot
   
 engine: knitr    
 ---
@@ -313,16 +314,14 @@ head(DataWage)
 
 
 
-##  Exploratory Data Analysis with SmartEDA and Correlation Matrix
+##  Exploratory Data Analysis with a Correlation Matrix
 
 
 **Correlation Matrix**
 
-```{r}
+```{webr}
 library(corrplot)
-CorMatrix=cor(DataWage)
-corrplot(CorMatrix, method = 'shade', type = 'full', 
-         addCoef.col ='black', number.cex = 0.7, order = 'original', diag=FALSE)
+corrplot(cor(DataWage))
 ```
 
 
@@ -335,7 +334,7 @@ corrplot(CorMatrix, method = 'shade', type = 'full',
 **Experiment with the Wage Analysis:**
 
 ```{webr}
-ModelSexDisc=lm(Wage~SexFem+Educ+Tenure+SglPar+MSA+Exper, data = DataWage)
+ModelSexDisc=lm(Wage~SexFem+Educ+Tenure+SglPar+MSA+Exper+NonWhite, data = DataWage)
 summary(ModelSexDisc)
 ```
 
