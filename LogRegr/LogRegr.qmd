@@ -16,7 +16,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
-    footer: "<a href='https://ai.lange-analytics.com/htmlbook/TreeBased.html#TreeBased-RandForest' target='_blank'>Textbook </a> "
+    footer: "<a href='https://ai.lange-analytics.com/htmlbook/' target='_blank'>Textbook </a> "
    
 webr:
   packages: ['dplyr', 'rsample', 'janitor',  'recipes', 'broom', 'yardstick', 'parsnip', 'workflows',  'themis'] 
@@ -156,7 +156,7 @@ $$P=\frac{1}{1+e^{-(\beta_1* Inc + \beta_2)}}$$
 
 From a marketing standpoint, should we pay more attention to women vs. men, seniors vs. non seniors, customers with high monthly charges or high tenure to more effectively prevent churn?
 
-<!-- ## Churn at the Telco Company --- Digital Acylical Graph -->
+<!-- ## Churn at the Telco Company --- Digital Acyclic Graph -->
 
 
 ## Churn at the Telco Company
