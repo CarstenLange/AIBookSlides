@@ -1,0 +1,126 @@
+---
+title: "Final Exam Exercise" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-html:
+    warning: false
+    controls: true
+
+webr:
+  packages:
+    - dplyr
+
+
+engine: knitr    
+---
+
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| context: setup
+#| echo: false
+set.seed(999)
+DataHouses=read.csv("https://ai.lange-analytics.com/data/HousingData.csv") |>
+select(Price=price, Sqft=sqft_living15,  YearBuilt=yr_built, ZIPCode=zipcode, Floors=floors, waterfront) |>
+mutate(Bathrooms=sample(1:7, size = n(), replace = TRUE), WaterfrontYes=ifelse(waterfront=="yes",1,0), waterfront=NULL)
+ModelOLSCL=lm(Price~Bathrooms+Sqft+YearBuilt+WaterfrontYes+Floors,
+            data=DataHouses)
+```
+
+## Goal
+
+The goal is to predict house prices (`Price`) choosing **reasonable** predictor variables from variables provided by a dataset.
+
+## Data
+
+The data frame `DataHouses` (see first records below)contains the following variables
+
+- `Price`: The price of a house.
+- `Sqft`: The square footage of a house
+- `YearBuilt`: The year the house was built
+- `ZIPCode`: The ZIP code for the house
+- `Floors`: How many floors the house has
+- `WaterfrontYes`: A dummy variable indicating if the house is at the waterfront (`1` for yess, `0` otherwise) 
+
+```{webr}
+head(DataHouses)
+```
+
+## Regression
+
+Complete the command below and run a regression that predicts the house prices:
+
+```{webr}
+______=lm(______, data=______)
+summary(______)
+```
+
+## Interpret Coefficient Values
+
+Below are the coefficients from a regression:
+
+```{webr}
+#| echo: false
+ModelOLSCL$coefficients
+```
+
+Interpret all coefficient values( except `Intercept`). 
+
+Hint: you can use text for each variable similar to:
+
+If ______ increases by ______ then ______.
+
+```{ojs}
+//| echo: false
+viewof studentAnswer1 = Inputs.textarea({
+  label: "Student Answer1", 
+  placeholder: "Write your explanation here...",
+  width: "100%",
+  rows: 15
+})
+```
+
+## Sanity Test for Coefficient Values' Signs
+
+Use the coefficient output from above and check for each variable if the sign (+ or -) is as expected or if it is unexpected.
+
+Hint: you can use text for each variable similar to:
+
+The sign for variable  ______ is as expected/unexpected because ______.
+
+```{ojs}
+//| echo: false
+viewof studentAnswer2 = Inputs.textarea({
+  label: "Student Answer2", 
+  placeholder: "Write your explanation here...",
+  width: "100%",
+  rows: 15
+})
+```
+
+## Hypothesis Tests
+
+Use the table below to state for each variable's coefficient (except the `Intercept`) the probability for the hypothesis that the true value is 0.
+
+```{webr}
+#| echo: false
+summary(ModelOLSCL)$coefficients
+```
+
+```{ojs}
+//| echo: false
+viewof studentAnswer3 = Inputs.textarea({
+  label: "Student Answer3", 
+  placeholder: "Write your explanation here...",
+  width: "100%",
+  rows: 15})
+```

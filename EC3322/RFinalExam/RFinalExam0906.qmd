@@ -1,0 +1,122 @@
+---
+title: "Final Exam Exercise" 
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  live-html:
+    warning: false
+    controls: true
+
+resources:
+  - Data/ProjectDataRestNew.csv
+
+engine: knitr    
+---
+
+{{< include ../../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+```{webr}
+#| context: setup
+#| echo: false
+DataRestaur=read.csv("Data/ProjectDataRestNew.csv")
+ModelOLSCL=lm(RestExp~Age+SexMale+UrbanYes+YearsAfterHighschool,
+            data=DataRestaur)
+```
+
+## Goal
+
+The goal is to predict a persons restaurant expenditures per month (`RestExp`) by choosing **reasonable** predictor variables from variables provided by a dataset.
+
+## Data
+
+The data frame `DataRestaur` (see first records below)contains the following variables
+
+- `RestExp`: a persons expenditures for restaurant food and service
+- `Age`: a persons age
+- `SexMale`: a dummy coded 1 for male and 0 for female
+- `ZIP`: a persons ZIP code
+- `UrbanYes`: a dummy coded 1 for living in an urban area and 0 otherwise
+- `YearsAfterHighschool`: How many years have passed since the person left highschool
+
+```{webr}
+head(DataRestaur)
+```
+
+## Regression
+
+Complete the command below and run a regression that predicts the expenditures for restaurant food and services:
+
+```{webr}
+______=lm(______, data=______)
+summary(______)
+```
+
+## Interpret Coefficient Values
+
+Below are the coefficients from a regression:
+
+```{webr}
+#| echo: false
+ModelOLSCL=lm(RestExp~Age+SexMale+ZIP+UrbanYes+YearsAfterHighschool, data=DataRestaur)
+ModelOLSCL$coefficients
+```
+
+Interpret all coefficient values( except `Intercept`). 
+
+Hint: you can use text for each variable similar to:
+
+If ______ increases by ______ then ______.
+
+```{ojs}
+//| echo: false
+viewof studentAnswer1 = Inputs.textarea({
+  label: "Student Answer1", 
+  placeholder: "Write your explanation here...",
+  width: "100%",
+  rows: 15
+})
+```
+
+## Sanity Test for Coefficient Values' Signs
+
+Use the coefficient output from above and check for each variable if the sign (+ or -) is as expected or if it is unexpected.
+
+Hint: you can use text for each variable similar to:
+
+The sign for variable  ______ is as expected/unexpected because ______.
+
+```{ojs}
+//| echo: false
+viewof studentAnswer2 = Inputs.textarea({
+  label: "Student Answer2", 
+  placeholder: "Write your explanation here...",
+  width: "100%",
+  rows: 15
+})
+```
+
+## Hypothesis Tests
+
+Use the table below to state for each variable's coefficient (except the `Intercept`) the probability for the hypothesis that the true value is 0.
+
+```{webr}
+#| echo: false
+summary(ModelOLSCL)
+```
+
+```{ojs}
+//| echo: false
+viewof studentAnswer3 = Inputs.textarea({
+  label: "Student Answer3", 
+  placeholder: "Write your explanation here...",
+  width: "100%",
+  rows: 15})
+```
