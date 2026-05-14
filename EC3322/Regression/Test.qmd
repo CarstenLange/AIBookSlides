@@ -19,6 +19,7 @@ format:
       boardmarker-width: 2.7
     incremental: false
     scrollable: true
+    embed-resources: true
 webr:
   packages:
     - dplyr

@@ -65,7 +65,7 @@ Below are the coefficients from a regression:
 
 ```{webr}
 #| echo: false
-ModelOLSCL=lm(RestExp~Age+SexMale+ZIP+UrbanYes+YearsAfterHighschool, data=DataRestaur)
+ModelOLSCL=lm(RestExp~Age+SexMale+UrbanYes+YearsAfterHighschool, data=DataRestaur)
 ModelOLSCL$coefficients
 ```
 
