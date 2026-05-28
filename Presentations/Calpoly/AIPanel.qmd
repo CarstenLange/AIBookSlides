@@ -1,0 +1,87 @@
+---
+title: "AI Panel"
+subtitle: "Generative AI in Education --- Problems and Opportunities"
+date: 5/29/2026
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  revealjs:
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href=https://ai.lange-analytics.com</a> "
+
+
+---
+
+## Problems & Opportunities
+
+- Dealing with Cheating
++ Using *genAI* for Assisted Homeworks
++ Teaching *genAI* Design
++ genAI Learning (teach me how to ...)
+
+## Cheating in Homeworks and Quizzes
+
+**Cheating is not new in academia, but the ease it can be done with genAI is new**
+
+**Examples:**
+
+- `Write a paper about the civil war`
+- cheating with take home and online quizzes
+
+We need to be creative and we need to fight technology with technology. Restrictions and threats do not help. 
+
+**A few ideas:**
+
+**Small Weights:** assign small weights to take home assignments and online quizzes
+
+**Strict University Policies for midterm and final proctoring:**
+ - Phone drop, big classrooms, etc.
+ - Screen share for online work
+ - Log-Down Browser like 'Respondus'
+ - Proctoring Centers for a limited amount of homeworks and online quizzes
+
+ ##  Using *genAI* for Assisted Homeworks
+
+**Cheating Allowed: Students prepare assignments at home and finalize them in a proctored environment in class:**
+
+**Examples:**
+
+- **Paper about Civil War**
+  - students prepare the papers at home with the use of genAI and report about the process
+  - instructor reads papers before class but does not provide the feedback before the class session
+  - students finish the paper without AI in a proctored environment 
+
+- **Statistics and Econometrics**
+  - students analyze data with statistical tools like *R* at home with the use of genAI and report about the process
+   - instructor reviews the research before class but does not provide the feedback before the class session
+   - during a proctored class session students are asked to improve or extend the research determined by the instructor
+
+## Teaching *genAI* Design
+
+- Support or Critics Philosophy questions
+- (your annoying always debating friend)
+- A guide through Cal Poly
+
+## genAI Learning (teach me how to ...)
+
+- Flipped Classroom (this is an old concept)
+  - fact and skills learning at home
+    - use genAI: please teach me about ... (example follows)
+    - students use textbooks or videos to verify what the learned from *Gemini*
+  - higher skills and questions are covered in the classroom
+
+  **genAI will not substitute instructors. genAI will allow us to focus on higher skills, something we always wanted!
