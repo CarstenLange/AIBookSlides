@@ -182,5 +182,5 @@ format:
 
 The slides are available at:
 
-[https://tinyurl.com/CAFESummerInstitute2026](https://tinyurl.com/CAFESummerInstitute2026){target="_blank"}
+[https://aibookslides.netlify.app/presentations/calpoly/aipanel.html](https://aibookslides.netlify.app/presentations/calpoly/aipanel.html){target="_blank"}
 
