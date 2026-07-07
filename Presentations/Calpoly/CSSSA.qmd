@@ -1,0 +1,413 @@
+---
+title: "California Summer School for the Arts"
+subtitle: "Generative AI in Arts Education --- Problems & Opportunities"
+date: 7/14/2026
+
+author:
+  name: "Carsten Lange"
+  email: "clange@cpp.edu"
+  affiliation: "Department of Economics, Cal Poly, Pomona"
+
+execute:
+  message: false
+  warning: false
+
+format: 
+  revealjs:
+    background-transition: fade
+    audio:
+      loop: false
+    warning: false
+    controls: true
+    chalkboard:
+      theme: whiteboard
+      boardmarker-width: 2.7
+    incremental: false
+    scrollable: true
+    footer: "<a href=https://ai.lange-analytics.com</a> "
+---
+
+## Stylized Example: Time travel with a TV to the year 1885 {.smaller}
+
+::: {.column width="40%"}
+**Perception**
+
+-   Excitement
+
+-   Little artificial people inside the box are staging a play
+:::
+
+::: {.column width="58%"}
+![Generated with ChatGPT](WesternFlat2D.png){fig-alt="A TV displaying a western"}
+:::
+
+## Stylized Example: Time travel with a TV to the year 1885 {.smaller}
+
+::: {.column width="40%"}
+**Dangers without Technology Background**
+
+-   What if something gets out of the TV box
+
+-   ~~People watch to much TV and do not socialize enough~~
+:::
+
+::: {.column width="50%"}
+![Generated with ChatGPT](WesternFlyingBullets.png){fig-alt="A TV displaying a western with bullets flying out of it"}
+:::
+
+## Stylized Example: Time travel with a TV to the year 1885 {.smaller}
+
+::: {.column width="42%"}
+**Dangers with Technology Background**
+
+TVs are just an arrangement of millions of colored pixels and our eye/brain processes them to a picture
+
+-   ~~What if something gets out of the TV box~~
+
+-   **People watch to much TV and do not socialize enough**
+:::
+
+::: {.column width="55%"}
+![Generated with ChatGPT](WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
+:::
+
+## How Generative AI (GenAI) Works in 3 Minutes
+
+### Coding Words with Meaning - Embedding
+
+![](ComputerCantDoNumbers.png){width="230"}
+
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+## How Generative AI (GenAI) Works in 3 Minutes
+
+### Coding Words with Meaning - Embedding
+
+![](ComputerCantDoNumbers.png){width="230"}
+
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+## How Generative AI (GenAI) Works in 3 Minutes
+
+### Coding Words with Meaning - Embedding
+
+![](ComputerCantDoNumbers.png){width="230"}
+
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>0.1</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+## How Generative AI (GenAI) Works in 3 Minutes
+
+### Coding Words with Meaning - Embedding
+
+![](ComputerCantDoNumbers.png){width="230"}
+
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>0.1</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>0.9</td>
+      <td>0.8</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+## How Generative AI (GenAI) Works in 3 Minutes
+
+### Coding Words with Meaning - Embedding with AI Categories
+
+![](ComputerCantDoNumbers.png){width="230"}
+
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Category #1</strong></td>
+      <td>3876</td>
+      <td>925</td>
+    </tr>
+    <tr>
+      <td><strong>Category #2</strong></td>
+      <td>7189</td>
+      <td>2636</td>
+    </tr>
+    <tr>
+      <td><strong>. . .</strong></td>
+      <td>. . .</td>
+      <td>. . .</td>
+    </tr>
+    <tr>
+      <td><strong>Category #10124</strong></td>
+      <td>34234</td>
+      <td>8567</td>
+    </tr>
+  </tbody>
+</table>
+```
+## Problems & Opportunities
+
+-   Dealing with Cheating
+-   Using *genAI* to Support Teaching
+-   Teaching *genAI* Design
+-   Learning with standalone *genAI* (teach me how to ...)
+
+## Cheating in Homeworks and Quizzes
+
+`Cheating is not new in academia, but the ease it can be done with genAI is new!`
+
+**Examples:**
+
+-   Write a paper about the civil war
+-   [Cheating related to take-home and online quizzes](https://econ.lange-analytics.com/HomeworkQLive/HW6061/HW6061.html){target="_blank"} <br> (Google Lens is in "Hamburger Menu" -\> Search with Lens)
+
+## Cheating in Homeworks and Quizzes {.smaller}
+
+`We need to be creative! We need to fight technology with technology!`<br> `Restrictions are not helping!`<br><br>
+
+**A few ideas:**<br>
+
+**Small Grade Weights:** Assign small weights to take-home assignments and online quizzes
+
+**Strict University Policies for midterm and final proctoring:**
+
+-   Phone drops etc.
+-   `Screen monitoring` for online work in our labs
+-   `Lock-Down` browser like 'Respondus'
+-   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
+
+## Using `genAI` to Support Teaching {.smaller}
+
+`Cheating Allowed:` Students prepare assignments at home with *genAI* and finalize them in a proctored environment in class without *genAI*
+
+**Examples:**
+
+-   **Paper about Civil War**
+    -   students prepare the papers at home with the use of genAI and they report about the process
+    -   instructor reads papers before class but does not provide the feedback before the class session
+    -   students finish the paper without AI in a proctored environment
+
+. . .
+
+-   **Statistics and Econometrics**
+
+    -   students analyze data with statistical tools like *R* at home with the use of *genAI* and report about the process
+    -   instructor reviews the research before class but does not provide the feedback before the class session
+    -   during a proctored class session students are asked to improve or extend the research determined by the instructor
+
+. . .
+
+**Course Assistants**<br> (You login to your `Cal Poly ChatGPT` account and then email [clange\@cpp.edu](mailto:clange@cpp.edu) )
+
+E.g., [EC 4447/5558 - Artificial Intelligence and Machine Learning for Economic Research](https://chatgpt.com/g/g-6827f51eb67c819183c5a25885e226a3-machlearn-course-exp-possibly-wrong-answers){target="_blank"}
+
+## Teaching `genAI` Design
+
+<br> (**X** To use the GPTs you must first login to your `Cal Poly ChatGPT` account and then email [clange\@cpp.edu](mailto:clange@cpp.edu))
+
+-   [The Art of Thinking --- challenge, answer or expanded Philosophy topics](https://chatgpt.com/g/g-69e1a37155e48191bc3590359b82c066-the-art-of-thinking){target="_blank"}
+-   [Bronco Broject Advisor](https://chatgpt.com/g/g-6a02b1c041e481918eb84471103b0e55-broncoproject-advisor){target="_blank"}
+-   [The Last Word --- I never lost an argument](https://chatgpt.com/g/g-69e19d1be73c819193e1ca63d74f0548-the-last-word){target="_blank"} **XX**
+
+## `genAI` Learning (teach me how to ...)
+
+`Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom`
+
+-   fact and skills learning at home
+    -   use *genAI*: please teach me about ... (example follows)
+    -   students use textbooks or videos to verify what they learned from *Gemini*
+-   higher skills and questions are covered in the classroom
+
+## `genAI` Learning (Teach me about Mean and Median)
+
+::::: columns
+::: {.column width="33%"}
+![](GeminiScreen.PNG){width="222"}
+:::
+
+::: {.column width="67%"}
+-   The following is based on a *Gemini Learning* conversation
+-   To be visually more appealing two avatars were added with *genAI*.
+    -   a cartoon character asking the questions
+    -   a *wise man* (a *desert hermit brewer* from *HeyGen*)
+
+**Note: The Gemini phone app was used entirely audio-based (2:30).**
+:::
+:::::
+
+## `genAI` Learning (Teach me about Mean and Median)
+
+![](ClangePicCarton.png){width="371"}
+
+<audio controls data-autoplay src="1IntroQuestion.wav">
+
+</audio>
+
+## `genAI` Learning (teach me about Mean and Median)
+
+![](2Welcome.mp4){width="1111" controls="true" data-autoplay="true"}
+
+## `genAI` Learning (Teach me about Mean and Median)
+
+![](ClangePicCarton.png){width="371"}
+
+<audio controls data-autoplay src="3PleaseStartMean.wav">
+
+</audio>
+
+## `genAI` Learning (teach me about Mean and Median)
+
+![](4ExampleMean.mp4){width="1111" controls="true" data-autoplay="true"}
+
+## `genAI` Learning (Teach me about Mean and Median)
+
+![](ClangePicCarton.png){width="371"}
+
+<audio controls data-autoplay src="5StartMedian.wav">
+
+</audio>
+
+## `genAI` Learning (teach me about Mean and Median)
+
+![](6MedianExplained.mp4){width="1111" controls="true" data-autoplay="true"}
+
+## `genAI` Learning (Teach me about Mean and Median)
+
+![](ClangePicCarton.png){width="371"}
+
+<audio controls data-autoplay src="7AskToRepaetMedian.wav">
+
+</audio>
+
+## `genAI` Learning (teach me about Mean and Median)
+
+![](8MedianAgainWithExample.mp4){width="1111" controls="true" data-autoplay="true"}
+
+## `genAI` Learning (Teach me about Mean and Median)
+
+![](ClangePicCarton.png){width="371"}
+
+<audio controls data-autoplay src="9ConfirmMedian.wav">
+
+</audio>
+
+## `genAI` Learning (teach me about Mean and Median)
+
+![](10ConfirmMedianOK.mp4){width="1111" controls="true" data-autoplay="true"}
+
+## `genAI` Learning (teach me about Mean and Median)
+
+<br> **genAI will not substitute instructors!**
+
+**genAI will allow us to focus on higher skills, something we always wanted!**
+
+## Thank You All
+
+The slides are available at:
+
+[https://tinyurl.com/CAFESummerInstitute2026](https://tinyurl.com/CAFESummerInstitute2026){target="_blank"}
