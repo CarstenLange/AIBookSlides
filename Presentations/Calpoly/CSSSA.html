@@ -6,8 +6,8 @@
 <script src="CSSSA_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="CSSSA_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="CSSSA_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="CSSSA_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+<link href="CSSSA_files/libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.37">
 
   <meta name="author" content="Carsten Lange">
   <meta name="dcterms.date" content="2026-07-14">
@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="CSSSA_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="CSSSA_files/libs/revealjs/dist/reveal.css">
   <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
     div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -30,7 +33,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="CSSSA_files/libs/revealjs/dist/theme/quarto-92f953f199ed25aab29d366ec0d00847.css">
+  <link rel="stylesheet" href="CSSSA_files/libs/revealjs/dist/theme/quarto-188c847311b4ccaf1d527e31c5a8eacb.css">
   <link href="CSSSA_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="CSSSA_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="CSSSA_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -295,8 +298,8 @@ Carsten Lange
 <section id="how-generative-ai-genai-works-in-3-minutes-3" class="slide level2">
 <h2>How Generative AI (GenAI) Works in 3 Minutes</h2>
 <h3 id="coding-words-with-meaning---embedding-3">Coding Words with Meaning - Embedding</h3>
-<p><img data-src="ComputerCantDoNumbers.png" width="230"></p>
-<table class="caption-top" data-border="1">
+
+<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -322,9 +325,12 @@ Carsten Lange
 </tr>
 </tbody>
 </table>
+</section>
+<section id="how-generative-ai-genai-works-in-3-minutes-4" class="slide level2">
+<h2>How Generative AI (GenAI) Works in 3 Minutes</h2>
 <h3 id="coding-words-with-meaning---embedding-with-ai-categories">Coding Words with Meaning - Embedding with AI Categories</h3>
-<p><img data-src="ComputerCantDoNumbers.png" width="230"></p>
-<table class="caption-top" data-border="1">
+
+<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
 <thead>
 <tr class="header">
 <th data-quarto-table-cell-role="th"></th>
@@ -387,7 +393,7 @@ Carsten Lange
 <li><code>Proctoring Centers</code> for (a limited amount of) homeworks and online quizzes. Computers can be very basic.</li>
 </ul>
 </section>
-<section id="using-genai-to-support-teaching" class="slide level2 smaller">
+<section id="using-genai-to-support-teaching" class="slide level2 smaller scrollable">
 <h2>Using <code>genAI</code> to Support Teaching</h2>
 <p><code>Cheating Allowed:</code> Students prepare assignments at home with <em>genAI</em> and finalize them in a proctored environment in class without <em>genAI</em></p>
 <p><strong>Examples:</strong></p>
@@ -410,8 +416,14 @@ Carsten Lange
 </ul>
 </div>
 <div class="fragment">
-<p><strong>Course Assistants</strong><br> (You login to your <code>Cal Poly ChatGPT</code> account and then email <a href="mailto:clange@cpp.edu">clange@cpp.edu</a> )</p>
-<p>E.g., <a href="https://chatgpt.com/g/g-6827f51eb67c819183c5a25885e226a3-machlearn-course-exp-possibly-wrong-answers" target="_blank">EC 4447/5558 - Artificial Intelligence and Machine Learning for Economic Research</a></p>
+<p><strong>Course Assistants</strong></p>
+<p>1.<strong>Access the Platform:</strong> Requires a Google Account. Navigate to <a href="https://notebooklm.google.com" target="blank_"><strong>https://notebooklm.google.com</strong></a> in your browser. If prompted, log in using your standard Google credentials.</p>
+<ol start="2" type="1">
+<li><p><strong>Create a New Notebook:</strong> Instant setup.On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.</p></li>
+<li><p><strong>Upload Your PDFs:</strong> Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)</p></li>
+<li><p><strong>Add Your Context Note:</strong> Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read the housing file versus the SHAP/PCA file).</p></li>
+</ol>
+<p><a href="https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview" target="_blank"><strong>Click here to test (you need a Google account)</strong></a></p>
 </div>
 </section>
 <section id="teaching-genai-design" class="slide level2">
@@ -506,6 +518,10 @@ Carsten Lange
 <h2><code>genAI</code> Learning (teach me about Mean and Median)</h2>
 <p><br> <strong>genAI will not substitute instructors!</strong></p>
 <p><strong>genAI will allow us to focus on higher skills, something we always wanted!</strong></p>
+</section>
+<section id="turning-learning-outcomes-into-genai-learning-questions" class="slide level2">
+<h2>Turning Learning Outcomes Into GenAI Learning Questions</h2>
+<p><a href="https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&amp;Name=Carsten+Lange#RIntroAh" target="_blank">Example</a></p>
 </section>
 <section id="thank-you-all" class="slide level2">
 <h2>Thank You All</h2>

@@ -302,9 +302,17 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 . . .
 
-**Course Assistants**<br> (You login to your `Cal Poly ChatGPT` account and then email [clange\@cpp.edu](mailto:clange@cpp.edu) )
+**Course Assistants**
 
-E.g., [EC 4447/5558 - Artificial Intelligence and Machine Learning for Economic Research](https://chatgpt.com/g/g-6827f51eb67c819183c5a25885e226a3-machlearn-course-exp-possibly-wrong-answers){target="_blank"}
+1.**Access the Platform:** Requires a Google Account. Navigate to [**https://notebooklm.google.com**](https://notebooklm.google.com){target="blank_"} in your browser. If prompted, log in using your standard Google credentials.
+
+2. **Create a New Notebook:** Instant setup.On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
+
+3. **Upload Your  PDFs:** Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)
+
+4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read the housing file versus the SHAP/PCA file).
+
+[**Click here to test (you need a Google account)**](https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target=_blank}
 
 ## Teaching `genAI` Design
 
@@ -405,6 +413,11 @@ E.g., [EC 4447/5558 - Artificial Intelligence and Machine Learning for Economic 
 <br> **genAI will not substitute instructors!**
 
 **genAI will allow us to focus on higher skills, something we always wanted!**
+
+## Turning Learning Outcomes Into GenAI Learning Questions
+
+[Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#RIntroAh){target="_blank"}
+
 
 ## Thank You All
 
