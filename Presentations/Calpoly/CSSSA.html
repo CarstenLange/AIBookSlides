@@ -6,8 +6,8 @@
 <script src="CSSSA_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="CSSSA_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="CSSSA_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="CSSSA_files/libs/quarto-html/quarto-syntax-highlighting-dark-d0ae9245876894da5ac7e18953ecc5cc.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.37">
+<link href="CSSSA_files/libs/quarto-html/quarto-syntax-highlighting-dark-0a6b7249c26820e032cb0bd839ff02b1.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="Carsten Lange">
   <meta name="dcterms.date" content="2026-07-14">
@@ -153,6 +153,75 @@ Carsten Lange
 
   <p class="date">2026-07-14</p>
 </section>
+<section id="workshop-overview" class="slide level2 scrollable">
+<h2>Workshop Overview</h2>
+<ul>
+<li><strong>Introduction</strong> (3 minutes)</li>
+<li><details>
+<summary>
+<strong>Cheating with AI and Mitigation Strategies</strong> (7 minutes)
+</summary>
+<ul>
+<li>My Quiz/ Google Lens</li>
+<li>Strategies to mitigate cheating
+<ul>
+<li>Supervision</li>
+<li>Low weights for take-home assignments</li>
+<li>Flipped Classroom</li>
+<li>Two-stage writing assignments (AI and in Classroom)</li>
+<li>Evaluating and verifying AI presentations in class by co-students</li>
+</ul></li>
+</ul>
+</details></li>
+<li><details>
+<summary>
+<strong>How genAI works</strong> (5 minutes)
+</summary>
+<ul>
+<li>AI is just a search engine on steroids</li>
+<li>Embedding / Meaning of words</li>
+<li>Sentence and prompt order (<em>“Dog bit child”</em> vs.&nbsp;<em>“Child bit dog”</em>)</li>
+<li>Attention mechanism</li>
+<li>Training with the complete internet (including bad sources)</li>
+<li>Fine-tuning
+<ul>
+<li>Information filtering (weight deletion)</li>
+<li>Supervised learning</li>
+</ul></li>
+<li>AI talking process: AI always guesses the next word
+<ul>
+<li>The critical importance of chat history</li>
+</ul></li>
+<li>RAGS and Agents</li>
+</ul>
+</details></li>
+<li><details>
+<summary>
+<strong>AI Teaching Strategies</strong> (30 minutes)
+</summary>
+<ul>
+<li>Demo: Learn with AI conversation (3 minutes)</li>
+<li>Exercise: Learn with AI conversation via phone or computer (10 minutes)
+<ul>
+<li>Examples of more technical topics:
+<ul>
+<li>Complementary colors</li>
+<li>How does a stage work?</li>
+<li>How to start building an animation</li>
+<li>What are the different types of voices in opera?</li>
+</ul></li>
+</ul></li>
+<li>Transform learning outcomes into AI conversation starters with ChatGPT (5 minutes)</li>
+<li>Demo: Expert system for course related and topic related questions (3 minutes)</li>
+<li>Build expert systems for your students (5 minutes)
+<ul>
+<li>How to build a RAG (Retrieval-Augmented Generation) system with NotebookLM</li>
+</ul></li>
+</ul>
+</details></li>
+<li><strong>Discussion</strong> (10 minutes)</li>
+</ul>
+</section>
 <section id="stylized-example-time-travel-with-a-tv-to-the-year-1885" class="slide level2 smaller">
 <h2>Stylized Example: Time travel with a TV to the year 1885</h2>
 <div class="column" style="width:40%;">
@@ -192,7 +261,15 @@ Carsten Lange
 <p>TVs are just an arrangement of millions of colored pixels and our eye/brain processes them to a picture</p>
 <ul>
 <li><p><del>What if something gets out of the TV box</del></p></li>
-<li><p><strong>People watch to much TV and do not socialize enough</strong></p></li>
+<li><p><strong>Real Dangers</strong></p></li>
+<li><p>People watch to much TV and do not socialize enough</p></li>
+<li><p>Misinformation, etc</p></li>
+<li><p><strong>Opportunities</strong></p>
+<ul>
+<li>Entertainment</li>
+<li>Mass education</li>
+<li>YouTube educational videos</li>
+</ul></li>
 </ul>
 </div><div class="column" style="width:55%;">
 <div class="quarto-figure quarto-figure-center">
@@ -202,8 +279,8 @@ Carsten Lange
 </figure>
 </div>
 </div></section>
-<section id="how-generative-ai-genai-works-in-3-minutes" class="slide level2">
-<h2>How Generative AI (GenAI) Works in 3 Minutes</h2>
+<section id="how-generative-ai-genai-works-in-5-minutes" class="slide level2">
+<h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
 <h3 id="coding-words-with-meaning---embedding">Coding Words with Meaning - Embedding</h3>
 
 <img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
@@ -230,12 +307,17 @@ Carsten Lange
 <td>---</td>
 <td>---</td>
 </tr>
+<tr class="even">
+<td><strong>---</strong></td>
+<td>---</td>
+<td>---</td>
+</tr>
 </tbody>
 </table>
 </section>
-<section id="how-generative-ai-genai-works-in-3-minutes-1" class="slide level2">
-<h2>How Generative AI (GenAI) Works in 3 Minutes</h2>
-<h3 id="coding-words-with-meaning---embedding-1">Coding Words with Meaning - Embedding</h3>
+<section id="how-generative-ai-genai-works-in-5-minutes-1" class="slide level2">
+<h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
+<h3 id="coding-words-with-meaning---embeddingtokenization">Coding Words with Meaning - Embedding/Tokenization</h3>
 
 <img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
 <thead>
@@ -261,12 +343,17 @@ Carsten Lange
 <td>---</td>
 <td>---</td>
 </tr>
+<tr class="even">
+<td><strong>---</strong></td>
+<td>---</td>
+<td>---</td>
+</tr>
 </tbody>
 </table>
 </section>
-<section id="how-generative-ai-genai-works-in-3-minutes-2" class="slide level2">
-<h2>How Generative AI (GenAI) Works in 3 Minutes</h2>
-<h3 id="coding-words-with-meaning---embedding-2">Coding Words with Meaning - Embedding</h3>
+<section id="how-generative-ai-genai-works-in-5-minutes-2" class="slide level2">
+<h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
+<h3 id="coding-words-with-meaning---embedding-1">Coding Words with Meaning - Embedding</h3>
 
 <img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
 <thead>
@@ -292,12 +379,17 @@ Carsten Lange
 <td>---</td>
 <td>---</td>
 </tr>
+<tr class="even">
+<td><strong>---</strong></td>
+<td>---</td>
+<td>---</td>
+</tr>
 </tbody>
 </table>
 </section>
-<section id="how-generative-ai-genai-works-in-3-minutes-3" class="slide level2">
-<h2>How Generative AI (GenAI) Works in 3 Minutes</h2>
-<h3 id="coding-words-with-meaning---embedding-3">Coding Words with Meaning - Embedding</h3>
+<section id="how-generative-ai-genai-works-in-5-minutes-3" class="slide level2">
+<h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
+<h3 id="coding-words-with-meaning---embedding-2">Coding Words with Meaning - Embedding</h3>
 
 <img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
 <thead>
@@ -323,43 +415,52 @@ Carsten Lange
 <td>0.9</td>
 <td>0.8</td>
 </tr>
+<tr class="even">
+<td><strong>---</strong></td>
+<td>---</td>
+<td>---</td>
+</tr>
 </tbody>
 </table>
 </section>
-<section id="how-generative-ai-genai-works-in-3-minutes-4" class="slide level2">
-<h2>How Generative AI (GenAI) Works in 3 Minutes</h2>
+<section id="how-generative-ai-genai-works-in-5-minutes-4" class="slide level2">
+<h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
 <h3 id="coding-words-with-meaning---embedding-with-ai-categories">Coding Words with Meaning - Embedding with AI Categories</h3>
 
-<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"><strong>King</strong></th>
-<th data-quarto-table-cell-role="th"><strong>Queen</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Category #1</strong></td>
-<td>3876</td>
-<td>925</td>
-</tr>
-<tr class="even">
-<td><strong>Category #2</strong></td>
-<td>7189</td>
-<td>2636</td>
-</tr>
-<tr class="odd">
-<td><strong>. . .</strong></td>
-<td>. . .</td>
-<td>. . .</td>
-</tr>
-<tr class="even">
-<td><strong>Category #10124</strong></td>
-<td>34234</td>
-<td>8567</td>
-</tr>
-</tbody>
+<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Category #1</strong></td>
+      <td>3876</td>
+      <td>925</td>
+    </tr>
+    <tr>
+      <td><strong>Category #2</strong></td>
+      <td>7189</td>
+      <td>2636</td>
+    </tr><tr>
+      <td><strong>Category #3</strong></td>
+      <td>232</td>
+      <td>7652</td>
+    </tr>
+    <tr>
+      <td><strong>. . .</strong></td>
+      <td>. . .</td>
+      <td>. . .</td>
+    </tr>
+    <tr>
+      <td><strong>Category #1024</strong></td>
+      <td>3423</td>
+      <td>8567</td>
+    </tr>
+  </tbody>
 </table>
 </section>
 <section id="problems-opportunities" class="slide level2">
@@ -385,7 +486,7 @@ Carsten Lange
 <p><code>We need to be creative! We need to fight technology with technology!</code><br> <code>Restrictions are not helping!</code><br><br></p>
 <p><strong>A few ideas:</strong><br></p>
 <p><strong>Small Grade Weights:</strong> Assign small weights to take-home assignments and online quizzes</p>
-<p><strong>Strict University Policies for midterm and final proctoring:</strong></p>
+<p><strong>Strict Administrative Policies for midterm and final proctoring:</strong></p>
 <ul>
 <li>Phone drops etc.</li>
 <li><code>Screen monitoring</code> for online work in our labs</li>
@@ -405,17 +506,6 @@ Carsten Lange
 <li>students finish the paper without AI in a proctored environment</li>
 </ul></li>
 </ul>
-<div class="fragment">
-<ul>
-<li><p><strong>Statistics and Econometrics</strong></p>
-<ul>
-<li>students analyze data with statistical tools like <em>R</em> at home with the use of <em>genAI</em> and report about the process</li>
-<li>instructor reviews the research before class but does not provide the feedback before the class session</li>
-<li>during a proctored class session students are asked to improve or extend the research determined by the instructor</li>
-</ul></li>
-</ul>
-</div>
-<div class="fragment">
 <p><strong>Course Assistants</strong></p>
 <p>1.<strong>Access the Platform:</strong> Requires a Google Account. Navigate to <a href="https://notebooklm.google.com" target="blank_"><strong>https://notebooklm.google.com</strong></a> in your browser. If prompted, log in using your standard Google credentials.</p>
 <ol start="2" type="1">
@@ -424,7 +514,6 @@ Carsten Lange
 <li><p><strong>Add Your Context Note:</strong> Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read the housing file versus the SHAP/PCA file).</p></li>
 </ol>
 <p><a href="https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview" target="_blank"><strong>Click here to test (you need a Google account)</strong></a></p>
-</div>
 </section>
 <section id="teaching-genai-design" class="slide level2">
 <h2>Teaching <code>genAI</code> Design</h2>
@@ -522,6 +611,8 @@ Carsten Lange
 <section id="turning-learning-outcomes-into-genai-learning-questions" class="slide level2">
 <h2>Turning Learning Outcomes Into GenAI Learning Questions</h2>
 <p><a href="https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&amp;Name=Carsten+Lange#RIntroAh" target="_blank">Example</a></p>
+<p><a href="GenerateChatGPTLink.html" target="_blank">Tool</a></p>
+<p><a href="AIPromptLinkGeneratorWebpageGoogleGemini.pdf" target="_blank">How the tool was programed</a></p>
 </section>
 <section id="thank-you-all" class="slide level2">
 <h2>Thank You All</h2>
