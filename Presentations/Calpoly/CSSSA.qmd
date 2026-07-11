@@ -27,6 +27,46 @@ format:
     footer: "<a href=https://ai.lange-analytics.com</a> "
 ---
 
+## Workshop Overview {.scrollable}
+
+- **Introduction** (3 minutes)
+- <details><summary>**Cheating with AI and Mitigation Strategies** (7 minutes)</summary>
+  - My Quiz/ Google Lens
+  - Strategies to mitigate cheating
+    - Supervision
+    - Low weights for take-home assignments
+    - Flipped Classroom
+    - Two-stage writing assignments (AI and in Classroom)
+    - Evaluating and verifying AI presentations in class by co-students
+  </details>
+- <details><summary>**How genAI works** (5 minutes)</summary>
+  - AI is just a search engine on steroids
+  - Embedding / Meaning of words
+  - Sentence and prompt order (*"Dog bit child"* vs. *"Child bit dog"*)
+  - Attention mechanism
+  - Training with the complete internet (including bad sources)
+  - Fine-tuning
+    - Information filtering (weight deletion)
+    - Supervised learning
+  - AI talking process: AI always guesses the next word
+    - The critical importance of chat history
+  - RAGS and Agents
+  </details>
+- <details><summary>**AI Teaching Strategies** (30 minutes)</summary>
+  - Demo: Learn with AI conversation (3 minutes)
+  - Exercise: Learn with AI conversation via phone or computer (10 minutes)
+    - Examples of more technical topics:
+      - Complementary colors
+      - How does a stage work?
+      - How to start building an animation
+      - What are the different types of voices in opera?
+  - Transform learning outcomes into AI conversation starters with ChatGPT (5 minutes)
+  - Demo: Expert system for course related and topic related questions (3 minutes) 
+  - Build expert systems for your students (5 minutes)
+    - How to build a RAG (Retrieval-Augmented Generation) system with NotebookLM
+  </details>
+- **Discussion** (10 minutes)
+
 ## Stylized Example: Time travel with a TV to the year 1885 {.smaller}
 
 ::: {.column width="40%"}
@@ -64,14 +104,21 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 -   ~~What if something gets out of the TV box~~
 
--   **People watch to much TV and do not socialize enough**
+-  **Real Dangers**
+  -  People watch to much TV and do not socialize enough
+  -  Misinformation, etc
+
+- **Opportunities**
+  - Entertainment
+  - Mass education
+  - YouTube educational videos
 :::
 
 ::: {.column width="55%"}
 ![Generated with ChatGPT](WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
 :::
 
-## How Generative AI (GenAI) Works in 3 Minutes
+## How Generative AI (GenAI) Works in 5 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -102,13 +149,18 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
       <td>---</td>
       <td>---</td>
     </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
   </tbody>
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 3 Minutes
+## How Generative AI (GenAI) Works in 5 Minutes
 
-### Coding Words with Meaning - Embedding
+### Coding Words with Meaning - Embedding/Tokenization
 
 ![](ComputerCantDoNumbers.png){width="230"}
 
@@ -137,11 +189,16 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
       <td>---</td>
       <td>---</td>
     </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
   </tbody>
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 3 Minutes
+## How Generative AI (GenAI) Works in 5 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -172,11 +229,16 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
       <td>---</td>
       <td>---</td>
     </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
   </tbody>
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 3 Minutes
+## How Generative AI (GenAI) Works in 5 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -207,11 +269,16 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
       <td>0.9</td>
       <td>0.8</td>
     </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
   </tbody>
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 3 Minutes
+## How Generative AI (GenAI) Works in 5 Minutes
 
 ### Coding Words with Meaning - Embedding with AI Categories
 
@@ -236,6 +303,10 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
       <td><strong>Category #2</strong></td>
       <td>7189</td>
       <td>2636</td>
+    <tr>
+      <td><strong>Category #3</strong></td>
+      <td>232</td>
+      <td>7652</td>
     </tr>
     <tr>
       <td><strong>. . .</strong></td>
@@ -243,8 +314,8 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
       <td>. . .</td>
     </tr>
     <tr>
-      <td><strong>Category #10124</strong></td>
-      <td>34234</td>
+      <td><strong>Category #1024</strong></td>
+      <td>3423</td>
       <td>8567</td>
     </tr>
   </tbody>
@@ -274,7 +345,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 **Small Grade Weights:** Assign small weights to take-home assignments and online quizzes
 
-**Strict University Policies for midterm and final proctoring:**
+**Strict Administrative Policies for midterm and final proctoring:**
 
 -   Phone drops etc.
 -   `Screen monitoring` for online work in our labs
@@ -292,19 +363,18 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
     -   instructor reads papers before class but does not provide the feedback before the class session
     -   students finish the paper without AI in a proctored environment
 
-. . .
 
--   **Statistics and Econometrics**
+**Course Assistants**
 
-    -   students analyze data with statistical tools like *R* at home with the use of *genAI* and report about the process
-    -   instructor reviews the research before class but does not provide the feedback before the class session
-    -   during a proctored class session students are asked to improve or extend the research determined by the instructor
+1.**Access the Platform:** Requires a Google Account. Navigate to [**https://notebooklm.google.com**](https://notebooklm.google.com){target="blank_"} in your browser. If prompted, log in using your standard Google credentials.
 
-. . .
+2. **Create a New Notebook:** Instant setup.On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
 
-**Course Assistants**<br> (You login to your `Cal Poly ChatGPT` account and then email [clange\@cpp.edu](mailto:clange@cpp.edu) )
+3. **Upload Your  PDFs:** Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)
 
-E.g., [EC 4447/5558 - Artificial Intelligence and Machine Learning for Economic Research](https://chatgpt.com/g/g-6827f51eb67c819183c5a25885e226a3-machlearn-course-exp-possibly-wrong-answers){target="_blank"}
+4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read the housing file versus the SHAP/PCA file).
+
+[**Click here to test (you need a Google account)**](https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target=_blank}
 
 ## Teaching `genAI` Design
 
@@ -405,6 +475,14 @@ E.g., [EC 4447/5558 - Artificial Intelligence and Machine Learning for Economic 
 <br> **genAI will not substitute instructors!**
 
 **genAI will allow us to focus on higher skills, something we always wanted!**
+
+## Turning Learning Outcomes Into GenAI Learning Questions
+
+[Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#RIntroAh){target="_blank"}
+
+[Tool](GenerateChatGPTLink.html){target="_blank"}
+
+[How the tool was programed](AIPromptLinkGeneratorWebpageGoogleGemini.pdf){target="_blank"}
 
 ## Thank You All
 
