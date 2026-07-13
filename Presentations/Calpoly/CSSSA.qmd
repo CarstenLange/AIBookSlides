@@ -106,7 +106,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 -  **Real Dangers**
   -  People watch to much TV and do not socialize enough
-  -  Misinformation, etc
+  -  Misinformation, etc.
 
 - **Opportunities**
   - Entertainment
@@ -117,6 +117,37 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 ::: {.column width="55%"}
 ![Generated with ChatGPT](WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
 :::
+
+## Problems & Opportunities
+
+-   Dealing with Cheating
+-   Using *genAI* to Support Teaching
+-   Teaching *genAI* Design
+-   Learning with standalone *genAI* (teach me how to ...)
+
+## Cheating in Homeworks and Quizzes
+
+`Cheating is not new in academia, but the ease it can be done with genAI is new!`
+
+**Examples:**
+
+-   Write a paper about the civil war
+-   [Cheating related to take-home and online quizzes](https://econ.lange-analytics.com/HomeworkQLive/HW6061/HW6061.html){target="_blank"} <br> (Google Lens is in "Hamburger Menu" -\> Search with Lens)
+
+## Cheating in Homeworks and Quizzes {.smaller}
+
+`We need to be creative! We need to fight technology with technology!`<br> `Restrictions are not helping!`<br><br>
+
+**A few ideas:**<br>
+
+**Small Grade Weights:** Assign small weights to take-home assignments and online quizzes
+
+**Strict Administrative Policies for midterm and final proctoring:**
+
+-   Phone drops etc.
+-   `Screen monitoring` for online work in our labs
+-   `Lock-Down` browser like 'Respondus'
+-   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
 
 ## How Generative AI (GenAI) Works in 5 Minutes
 
@@ -321,36 +352,210 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
   </tbody>
 </table>
 ```
-## Problems & Opportunities
+## How Generative AI (GenAI) Works in 5 Minutes
 
--   Dealing with Cheating
--   Using *genAI* to Support Teaching
--   Teaching *genAI* Design
--   Learning with standalone *genAI* (teach me how to ...)
+### Coding Words with Meaning - Embedding
 
-## Cheating in Homeworks and Quizzes
+![](ComputerCantDoNumbers.png){width="230"}
 
-`Cheating is not new in academia, but the ease it can be done with genAI is new!`
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+  </tbody>
+</table>
+```
 
-**Examples:**
+## How Generative AI (GenAI) Works in 5 Minutes
 
--   Write a paper about the civil war
--   [Cheating related to take-home and online quizzes](https://econ.lange-analytics.com/HomeworkQLive/HW6061/HW6061.html){target="_blank"} <br> (Google Lens is in "Hamburger Menu" -\> Search with Lens)
+### Coding Words with Meaning - Embedding/Tokenization
 
-## Cheating in Homeworks and Quizzes {.smaller}
+![](ComputerCantDoNumbers.png){width="230"}
 
-`We need to be creative! We need to fight technology with technology!`<br> `Restrictions are not helping!`<br><br>
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+  </tbody>
+</table>
+```
 
-**A few ideas:**<br>
+## How Generative AI (GenAI) Works in 5 Minutes
 
-**Small Grade Weights:** Assign small weights to take-home assignments and online quizzes
+### Coding Words with Meaning - Embedding
 
-**Strict Administrative Policies for midterm and final proctoring:**
+![](ComputerCantDoNumbers.png){width="230"}
 
--   Phone drops etc.
--   `Screen monitoring` for online work in our labs
--   `Lock-Down` browser like 'Respondus'
--   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>0.1</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+## How Generative AI (GenAI) Works in 5 Minutes
+
+### Coding Words with Meaning - Embedding
+
+![](ComputerCantDoNumbers.png){width="230"}
+
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Noun</strong></td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <td><strong>Female</strong></td>
+      <td>0.1</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <td><strong>Royal</strong></td>
+      <td>0.9</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <td><strong>---</strong></td>
+      <td>---</td>
+      <td>---</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+## How Generative AI (GenAI) Works in 5 Minutes
+
+### Coding Words with Meaning - Embedding with AI Categories
+
+![](ComputerCantDoNumbers.png){width="230"}
+
+```{=html}
+<table border="1">
+  <thead>
+    <tr>
+      <th></th>
+      <th><strong>King</strong></th>
+      <th><strong>Queen</strong></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Category #1</strong></td>
+      <td>3876</td>
+      <td>925</td>
+    </tr>
+    <tr>
+      <td><strong>Category #2</strong></td>
+      <td>7189</td>
+      <td>2636</td>
+    <tr>
+      <td><strong>Category #3</strong></td>
+      <td>232</td>
+      <td>7652</td>
+    </tr>
+    <tr>
+      <td><strong>. . .</strong></td>
+      <td>. . .</td>
+      <td>. . .</td>
+    </tr>
+    <tr>
+      <td><strong>Category #1024</strong></td>
+      <td>3423</td>
+      <td>8567</td>
+    </tr>
+  </tbody>
+</table>
+```
+
 
 ## Using `genAI` to Support Teaching {.smaller}
 
