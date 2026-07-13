@@ -361,8 +361,13 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 -   **Paper about Civil War**
     -   students prepare the papers at home with the use of genAI and they report about the process
     -   instructor reads papers before class but does not provide the feedback before the class session
-    -   students finish the paper without AI in a proctored environment
 
+---
+
+    - students get feedback from instructor  
+    - students finish the paper without AI in a proctored environment
+
+## Building a Course Assistant for your class
 
 **Course Assistants**
 
@@ -376,13 +381,10 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 [**Click here to test (you need a Google account)**](https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target=_blank}
 
-## Teaching `genAI` Design
 
-<br> (**X** To use the GPTs you must first login to your `Cal Poly ChatGPT` account and then email [clange\@cpp.edu](mailto:clange@cpp.edu))
 
--   [The Art of Thinking --- challenge, answer or expanded Philosophy topics](https://chatgpt.com/g/g-69e1a37155e48191bc3590359b82c066-the-art-of-thinking){target="_blank"}
--   [Bronco Broject Advisor](https://chatgpt.com/g/g-6a02b1c041e481918eb84471103b0e55-broncoproject-advisor){target="_blank"}
--   [The Last Word --- I never lost an argument](https://chatgpt.com/g/g-69e19d1be73c819193e1ca63d74f0548-the-last-word){target="_blank"} **XX**
+
+
 
 ## `genAI` Learning (teach me how to ...)
 

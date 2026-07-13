@@ -1,0 +1,11 @@
+
+
+
+## Teaching `genAI` Design
+
+<br> (**X** To use the GPTs you must first login to your `Cal Poly ChatGPT` account and then email [clange\@cpp.edu](mailto:clange@cpp.edu))
+
+-   [The Art of Thinking --- challenge, answer or expanded Philosophy topics](https://chatgpt.com/g/g-69e1a37155e48191bc3590359b82c066-the-art-of-thinking){target="_blank"}
+-   [Bronco Broject Advisor](https://chatgpt.com/g/g-6a02b1c041e481918eb84471103b0e55-broncoproject-advisor){target="_blank"}
+-   [The Last Word --- I never lost an argument](https://chatgpt.com/g/g-69e19d1be73c819193e1ca63d74f0548-the-last-word){target="_blank"} **XX**
+
