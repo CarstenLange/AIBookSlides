@@ -27,7 +27,7 @@ format:
     footer: "<a href=https://ai.lange-analytics.com</a> "
 ---
 
-## Workshop Overview {.scrollable}
+## Workshop Overview {.scrollable .hidden}
 
 - **Introduction** (3 minutes)
 - <details><summary>**Cheating with AI and Mitigation Strategies** (7 minutes)</summary>
@@ -38,19 +38,6 @@ format:
     - Flipped Classroom
     - Two-stage writing assignments (AI and in Classroom)
     - Evaluating and verifying AI presentations in class by co-students
-  </details>
-- <details><summary>**How genAI works** (5 minutes)</summary>
-  - AI is just a search engine on steroids
-  - Embedding / Meaning of words
-  - Sentence and prompt order (*"Dog bit child"* vs. *"Child bit dog"*)
-  - Attention mechanism
-  - Training with the complete internet (including bad sources)
-  - Fine-tuning
-    - Information filtering (weight deletion)
-    - Supervised learning
-  - AI talking process: AI always guesses the next word
-    - The critical importance of chat history
-  - RAGS and Agents
   </details>
 - <details><summary>**AI Teaching Strategies** (30 minutes)</summary>
   - Demo: Learn with AI conversation (3 minutes)
@@ -106,7 +93,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 -  **Real Dangers**
   -  People watch to much TV and do not socialize enough
-  -  Misinformation, etc
+  -  Misinformation, etc.
 
 - **Opportunities**
   - Entertainment
@@ -117,6 +104,50 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 ::: {.column width="55%"}
 ![Generated with ChatGPT](WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
 :::
+
+##  Overview
+
+**Problems:**
+
+-   Dealing with Cheating 
+<br>
+**Technology:**
+
+-   How *GenAI* works
+<br>
+**Opportunities:**
+
+-   Adding a*genAI* Assistant to your class (demo and "how to")
+-   Break out: Learning with standalone *genAI* (teach me how to ...)
+-   Converting AI Prompts into Learning Outcome
+-   Flipped classroom with AI support
+
+
+## Cheating in Homeworks and Quizzes
+
+`Cheating is not new in academia, but the ease it can be done with genAI is new!`
+
+**Examples:**
+
+-   Write a paper about the civil war
+-   [Cheating related to take-home and online quizzes](https://econ.lange-analytics.com/HomeworkQLive/HW6061/HW6061.html){target="_blank"} <br> (Google Lens is in "Hamburger Menu" -\> Search with Lens)
+
+## Cheating in Homeworks and Quizzes {.smaller}
+
+`We need to be creative! We need to fight technology with technology!`<br> `Restrictions are not helping!`<br><br>
+
+**A few ideas:**<br>
+
+**Small Grade Weights:** Assign small weights to take-home assignments and online quizzes
+
+**Strict Administrative Policies for midterm and final proctoring:**
+
+-   Phone drops etc.
+-   `Screen monitoring` for online work in our labs
+-   `Lock-Down` browser like 'Respondus'
+-   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
+
+# How Generative AI (GenAI) Works in 5 Minutes ..
 
 ## How Generative AI (GenAI) Works in 5 Minutes
 
@@ -282,6 +313,8 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 ### Coding Words with Meaning - Embedding with AI Categories
 
+**Generating  tokens with Bag of Words method**
+
 ![](ComputerCantDoNumbers.png){width="230"}
 
 ```{=html}
@@ -321,65 +354,89 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
   </tbody>
 </table>
 ```
-## Problems & Opportunities
 
--   Dealing with Cheating
--   Using *genAI* to Support Teaching
--   Teaching *genAI* Design
--   Learning with standalone *genAI* (teach me how to ...)
+## How Generative AI (GenAI) Works in 5 Minutes
 
-## Cheating in Homeworks and Quizzes
+### Ordering Words in a Prompt
 
-`Cheating is not new in academia, but the ease it can be done with genAI is new!`
+**<span style="color:red;">Dog bit boy</span>**
 
-**Examples:**
+vs.
 
--   Write a paper about the civil war
--   [Cheating related to take-home and online quizzes](https://econ.lange-analytics.com/HomeworkQLive/HW6061/HW6061.html){target="_blank"} <br> (Google Lens is in "Hamburger Menu" -\> Search with Lens)
+**<span style="color:red;">Boy bit dog</span>**
 
-## Cheating in Homeworks and Quizzes {.smaller}
+- Gemini can process a prompt with a maximum of 2 million tokens (about 1.5 million word)
+- Words/Tokens are processed successively through a neural network
+- The position of a word coded in 1024 numbers is simply added to its token 
 
-`We need to be creative! We need to fight technology with technology!`<br> `Restrictions are not helping!`<br><br>
+## How Generative AI (GenAI) Works in 5 Minutes
 
-**A few ideas:**<br>
+### Attention
 
-**Small Grade Weights:** Assign small weights to take-home assignments and online quizzes
+**The <span style="color:red;">dog</span> did not cross the road because it was to <span style="color:red;">tired</span>**
 
-**Strict Administrative Policies for midterm and final proctoring:**
+**The dog did not cross the <span style="color:red;">road</span> because it was to <span style="color:red;">wide</span>**
 
--   Phone drops etc.
--   `Screen monitoring` for online work in our labs
--   `Lock-Down` browser like 'Respondus'
--   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
+<br>
+Attention mechanism is mathematically complex, but at the end, <br>
+a list of numbers that indicates which of the other words matters for attention <br>
+is added to the token of each of the words.
+
+## How Generative AI (GenAI) Works in 5 Minutes
+
+### Guessing the next word
+
+The word with the highest probability among all 30,00 words of the English language is added to the prompt.
+
+Then the next word, the next, . . ., until *end of sentence* is reached.
+
+## How Generative AI (GenAI) Works in 5 Minutes
+
+### Fine Tuning
+
+- Supervised learning
+- Include extra information in the prompt
+- delete some parameters and relearn with specialized data
+
+# Using `genAI` to Support Teaching
 
 ## Using `genAI` to Support Teaching {.smaller}
 
 `Cheating Allowed:` Students prepare assignments at home with *genAI* and finalize them in a proctored environment in class without *genAI*
 
-**Examples:**
+**Example:**
 
--   **Paper about Civil War**
-    -   students prepare the papers at home with the use of genAI and they report about the process
-    -   instructor reads papers before class but does not provide the feedback before the class session
+**Paper about Civil War**
 
----
+**At home:**
 
-    - students get feedback from instructor  
-    - students finish the paper without AI in a proctored environment
+- students prepare the papers with the use of *genAI* and they report about the process
+- instructor reads papers before class but does not provide the feedback before the class session
 
-## Building a Course Assistant for your class
+<hr>
+
+**In class:**
+
+- students get feedback from instructor  
+- students finish the paper without AI in a proctored environment
+
+## Building a Course Assistant for Your Class {.smaller}
 
 **Course Assistants**
 
+[Click for an example (you need a Google account)](https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target="_blank" style="color: lightblue !important; font-weight: bold;"}
+
+
+
 1.**Access the Platform:** Requires a Google Account. Navigate to [**https://notebooklm.google.com**](https://notebooklm.google.com){target="blank_"} in your browser. If prompted, log in using your standard Google credentials.
 
-2. **Create a New Notebook:** Instant setup.On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
+2. **Create a New Notebook:** On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
 
 3. **Upload Your  PDFs:** Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)
 
-4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read the housing file versus the SHAP/PCA file).
+4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read Syllabus file versus the Textbook file).
 
-[**Click here to test (you need a Google account)**](https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target=_blank}
+
 
 
 
