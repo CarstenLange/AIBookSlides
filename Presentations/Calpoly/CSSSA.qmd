@@ -437,21 +437,6 @@ Then the next word, the next, . . ., until *end of sentence* is reached.
 4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read Syllabus file versus the Textbook file).
 
 
-
-
-
-
-
-
-## `genAI` Learning (teach me how to ...)
-
-`Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom`
-
--   fact and skills learning at home
-    -   use *genAI*: please teach me about ... (example follows)
-    -   students use textbooks or videos to verify what they learned from *Gemini*
--   higher skills and questions are covered in the classroom
-
 ## `genAI` Learning (Teach me about Mean and Median)
 
 ::::: columns
@@ -534,6 +519,43 @@ Then the next word, the next, . . ., until *end of sentence* is reached.
 <br> **genAI will not substitute instructors!**
 
 **genAI will allow us to focus on higher skills, something we always wanted!**
+
+## `genAI` Learning (Teach Me How to ...)
+
+`Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom`
+
+-   fact and skills learning at home
+    -   use *genAI*: please teach me about ... (example follows)
+    -   students use textbooks or videos to verify what they learned from *Gemini*
+-   higher skills and questions are covered in the classroom
+
+## Experience Gemini Talk on your Phone {.smaller}
+
+Example prompts (please find better ones):
+
+- **Animation:** Teach me the very basics about to make an animation film . Be short to keep it conversational.
+
+- **Architecture:** Teach me about the difference between Gothic and Renaissance styles. Be short to keep it conversational.
+
+- **Dance:** Teach me about ballet shoes . Be short to keep it conversational.
+
+- **Film:** Teach me about the schema of romantic films. Be short to keep it conversational.
+
+- **Music:** Teach me about major and minor scales and the 12 halftones. Be short to keep it conversational.
+
+- **Theater:** Teach me about the main components of a stage. Be short to keep it conversational.
+
+- **Visual Arts:** Teach me about the colors in painting. Be short to keep it conversational.
+
+- **Writing:** Teach me about verbs in writing. Be short to keep it conversational.
+
+**In your conversations use potentially:**
+- I do not get this topis ...
+- I like you to focus more on (theory, application for ..., etc)
+- Be short because I cannot read while diving 
+- No, I meant, . . .
+- Can we talk on a more basic level. I am just a beginner
+
 
 ## Turning Learning Outcomes Into GenAI Learning Questions
 

@@ -153,7 +153,7 @@ Carsten Lange
 
   <p class="date">2026-07-14</p>
 </section>
-<section id="workshop-overview" class="slide level2 scrollable">
+<section id="workshop-overview" class="slide level2 scrollable hidden">
 <h2>Workshop Overview</h2>
 <ul>
 <li><strong>Introduction</strong> (3 minutes)</li>
@@ -171,28 +171,6 @@ Carsten Lange
 <li>Two-stage writing assignments (AI and in Classroom)</li>
 <li>Evaluating and verifying AI presentations in class by co-students</li>
 </ul></li>
-</ul>
-</details></li>
-<li><details>
-<summary>
-<strong>How genAI works</strong> (5 minutes)
-</summary>
-<ul>
-<li>AI is just a search engine on steroids</li>
-<li>Embedding / Meaning of words</li>
-<li>Sentence and prompt order (<em>“Dog bit child”</em> vs.&nbsp;<em>“Child bit dog”</em>)</li>
-<li>Attention mechanism</li>
-<li>Training with the complete internet (including bad sources)</li>
-<li>Fine-tuning
-<ul>
-<li>Information filtering (weight deletion)</li>
-<li>Supervised learning</li>
-</ul></li>
-<li>AI talking process: AI always guesses the next word
-<ul>
-<li>The critical importance of chat history</li>
-</ul></li>
-<li>RAGS and Agents</li>
 </ul>
 </details></li>
 <li><details>
@@ -279,13 +257,16 @@ Carsten Lange
 </figure>
 </div>
 </div></section>
-<section id="problems-opportunities" class="slide level2">
-<h2>Problems &amp; Opportunities</h2>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
+<p><strong>Problems:</strong></p>
 <ul>
-<li>Dealing with Cheating</li>
-<li>Using <em>genAI</em> to Support Teaching</li>
-<li>Teaching <em>genAI</em> Design</li>
-<li>Learning with standalone <em>genAI</em> (teach me how to …)</li>
+<li><p>Dealing with Cheating <br> <strong>Technology:</strong></p></li>
+<li><p>How <em>GenAI</em> works <br> <strong>Opportunities:</strong></p></li>
+<li><p>Adding a<em>genAI</em> Assistant to your class (demo and “how to”)</p></li>
+<li><p>Break out: Learning with standalone <em>genAI</em> (teach me how to …)</p></li>
+<li><p>Converting AI Prompts into Learning Outcome</p></li>
+<li><p>Flipped classroom with AI support</p></li>
 </ul>
 </section>
 <section id="cheating-in-homeworks-and-quizzes" class="slide level2">
@@ -309,6 +290,11 @@ Carsten Lange
 <li><code>Lock-Down</code> browser like ‘Respondus’</li>
 <li><code>Proctoring Centers</code> for (a limited amount of) homeworks and online quizzes. Computers can be very basic.</li>
 </ul>
+</section>
+<section>
+<section id="how-generative-ai-genai-works-in-5-minutes-.." class="title-slide slide level1 center">
+<h1>How Generative AI (GenAI) Works in 5 Minutes ..</h1>
+
 </section>
 <section id="how-generative-ai-genai-works-in-5-minutes" class="slide level2">
 <h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
@@ -457,6 +443,7 @@ Carsten Lange
 <section id="how-generative-ai-genai-works-in-5-minutes-4" class="slide level2">
 <h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
 <h3 id="coding-words-with-meaning---embedding-with-ai-categories">Coding Words with Meaning - Embedding with AI Categories</h3>
+<p><strong>Generating tokens with Bag of Words method</strong></p>
 
 <img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table border="1">
   <thead>
@@ -496,227 +483,71 @@ Carsten Lange
 </section>
 <section id="how-generative-ai-genai-works-in-5-minutes-5" class="slide level2">
 <h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
-<h3 id="coding-words-with-meaning---embedding-3">Coding Words with Meaning - Embedding</h3>
-
-<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"><strong>King</strong></th>
-<th data-quarto-table-cell-role="th"><strong>Queen</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Noun</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-<tr class="even">
-<td><strong>Female</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-<tr class="odd">
-<td><strong>Royal</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-<tr class="even">
-<td><strong>---</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-</tbody>
-</table>
+<h3 id="ordering-words-in-a-prompt">Ordering Words in a Prompt</h3>
+<p><strong><span style="color:red;">Dog bit boy</span></strong></p>
+<p>vs.</p>
+<p><strong><span style="color:red;">Boy bit dog</span></strong></p>
+<ul>
+<li>Gemini can process a prompt with a maximum of 2 million tokens (about 1.5 million word)</li>
+<li>Words/Tokens are processed successively through a neural network</li>
+<li>The position of a word coded in 1024 numbers is simply added to its token</li>
+</ul>
 </section>
 <section id="how-generative-ai-genai-works-in-5-minutes-6" class="slide level2">
 <h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
-<h3 id="coding-words-with-meaning---embeddingtokenization-1">Coding Words with Meaning - Embedding/Tokenization</h3>
-
-<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"><strong>King</strong></th>
-<th data-quarto-table-cell-role="th"><strong>Queen</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Noun</strong></td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td><strong>Female</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-<tr class="odd">
-<td><strong>Royal</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-<tr class="even">
-<td><strong>---</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-</tbody>
-</table>
+<h3 id="attention">Attention</h3>
+<p><strong>The <span style="color:red;">dog</span> did not cross the road because it was to <span style="color:red;">tired</span></strong></p>
+<p><strong>The dog did not cross the <span style="color:red;">road</span> because it was to <span style="color:red;">wide</span></strong></p>
+<p><br> Attention mechanism is mathematically complex, but at the end, <br> a list of numbers that indicates which of the other words matters for attention <br> is added to the token of each of the words.</p>
 </section>
 <section id="how-generative-ai-genai-works-in-5-minutes-7" class="slide level2">
 <h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
-<h3 id="coding-words-with-meaning---embedding-4">Coding Words with Meaning - Embedding</h3>
-
-<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"><strong>King</strong></th>
-<th data-quarto-table-cell-role="th"><strong>Queen</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Noun</strong></td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td><strong>Female</strong></td>
-<td>0.1</td>
-<td>0.9</td>
-</tr>
-<tr class="odd">
-<td><strong>Royal</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-<tr class="even">
-<td><strong>---</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-</tbody>
-</table>
+<h3 id="guessing-the-next-word">Guessing the next word</h3>
+<p>The word with the highest probability among all 30,00 words of the English language is added to the prompt.</p>
+<p>Then the next word, the next, . . ., until <em>end of sentence</em> is reached.</p>
 </section>
 <section id="how-generative-ai-genai-works-in-5-minutes-8" class="slide level2">
 <h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
-<h3 id="coding-words-with-meaning---embedding-5">Coding Words with Meaning - Embedding</h3>
+<h3 id="fine-tuning">Fine Tuning</h3>
+<ul>
+<li>Supervised learning</li>
+<li>Include extra information in the prompt</li>
+<li>delete some parameters and relearn with specialized data</li>
+</ul>
+</section></section>
+<section>
+<section id="using-genai-to-support-teaching" class="title-slide slide level1 center">
+<h1>Using <code>genAI</code> to Support Teaching</h1>
 
-<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table class="caption-top" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th"><strong>King</strong></th>
-<th data-quarto-table-cell-role="th"><strong>Queen</strong></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Noun</strong></td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr class="even">
-<td><strong>Female</strong></td>
-<td>0.1</td>
-<td>0.9</td>
-</tr>
-<tr class="odd">
-<td><strong>Royal</strong></td>
-<td>0.9</td>
-<td>0.8</td>
-</tr>
-<tr class="even">
-<td><strong>---</strong></td>
-<td>---</td>
-<td>---</td>
-</tr>
-</tbody>
-</table>
 </section>
-<section id="how-generative-ai-genai-works-in-5-minutes-9" class="slide level2">
-<h2>How Generative AI (GenAI) Works in 5 Minutes</h2>
-<h3 id="coding-words-with-meaning---embedding-with-ai-categories-1">Coding Words with Meaning - Embedding with AI Categories</h3>
-
-<img data-src="ComputerCantDoNumbers.png" width="230" class="r-stretch"><table border="1">
-  <thead>
-    <tr>
-      <th></th>
-      <th><strong>King</strong></th>
-      <th><strong>Queen</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Category #1</strong></td>
-      <td>3876</td>
-      <td>925</td>
-    </tr>
-    <tr>
-      <td><strong>Category #2</strong></td>
-      <td>7189</td>
-      <td>2636</td>
-    </tr><tr>
-      <td><strong>Category #3</strong></td>
-      <td>232</td>
-      <td>7652</td>
-    </tr>
-    <tr>
-      <td><strong>. . .</strong></td>
-      <td>. . .</td>
-      <td>. . .</td>
-    </tr>
-    <tr>
-      <td><strong>Category #1024</strong></td>
-      <td>3423</td>
-      <td>8567</td>
-    </tr>
-  </tbody>
-</table>
-</section>
-<section id="using-genai-to-support-teaching" class="slide level2 smaller">
+<section id="using-genai-to-support-teaching-1" class="slide level2 smaller">
 <h2>Using <code>genAI</code> to Support Teaching</h2>
 <p><code>Cheating Allowed:</code> Students prepare assignments at home with <em>genAI</em> and finalize them in a proctored environment in class without <em>genAI</em></p>
-<p><strong>Examples:</strong></p>
+<p><strong>Example:</strong></p>
+<p><strong>Paper about Civil War</strong></p>
+<p><strong>At home:</strong></p>
 <ul>
-<li><strong>Paper about Civil War</strong>
-<ul>
-<li>students prepare the papers at home with the use of genAI and they report about the process</li>
+<li>students prepare the papers with the use of <em>genAI</em> and they report about the process</li>
 <li>instructor reads papers before class but does not provide the feedback before the class session</li>
-</ul></li>
+</ul>
+<hr>
+<p><strong>In class:</strong></p>
+<ul>
+<li>students get feedback from instructor<br>
+</li>
+<li>students finish the paper without AI in a proctored environment</li>
 </ul>
 </section>
-<section class="slide level2">
-
-<pre><code>- students get feedback from instructor  
-- students finish the paper without AI in a proctored environment</code></pre>
-</section>
-<section id="building-a-course-assistant-for-your-class" class="slide level2 scrollable">
-<h2>Building a Course Assistant for your class</h2>
+<section id="building-a-course-assistant-for-your-class" class="slide level2 smaller scrollable">
+<h2>Building a Course Assistant for Your Class</h2>
 <p><strong>Course Assistants</strong></p>
+<p><a href="https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview" target="_blank" style="color: lightblue !important; font-weight: bold;">Click for an example (you need a Google account)</a></p>
 <p>1.<strong>Access the Platform:</strong> Requires a Google Account. Navigate to <a href="https://notebooklm.google.com" target="blank_"><strong>https://notebooklm.google.com</strong></a> in your browser. If prompted, log in using your standard Google credentials.</p>
 <ol start="2" type="1">
-<li><p><strong>Create a New Notebook:</strong> Instant setup.On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.</p></li>
+<li><p><strong>Create a New Notebook:</strong> On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.</p></li>
 <li><p><strong>Upload Your PDFs:</strong> Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)</p></li>
-<li><p><strong>Add Your Context Note:</strong> Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read the housing file versus the SHAP/PCA file).</p></li>
+<li><p><strong>Add Your Context Note:</strong> Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read Syllabus file versus the Textbook file).</p></li>
 </ol>
-<p><a href="https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview" target="_blank"><strong>Click here to test (you need a Google account)</strong></a></p>
-</section>
-<section id="genai-learning-teach-me-how-to" class="slide level2">
-<h2><code>genAI</code> Learning (teach me how to …)</h2>
-<p><code>Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom</code></p>
-<ul>
-<li>fact and skills learning at home
-<ul>
-<li>use <em>genAI</em>: please teach me about … (example follows)</li>
-<li>students use textbooks or videos to verify what they learned from <em>Gemini</em></li>
-</ul></li>
-<li>higher skills and questions are covered in the classroom</li>
-</ul>
 </section>
 <section id="genai-learning-teach-me-about-mean-and-median" class="slide level2">
 <h2><code>genAI</code> Learning (Teach me about Mean and Median)</h2>
@@ -790,6 +621,33 @@ Carsten Lange
 <p><br> <strong>genAI will not substitute instructors!</strong></p>
 <p><strong>genAI will allow us to focus on higher skills, something we always wanted!</strong></p>
 </section>
+<section id="genai-learning-teach-me-how-to" class="slide level2">
+<h2><code>genAI</code> Learning (Teach Me How to …)</h2>
+<p><code>Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom</code></p>
+<ul>
+<li>fact and skills learning at home
+<ul>
+<li>use <em>genAI</em>: please teach me about … (example follows)</li>
+<li>students use textbooks or videos to verify what they learned from <em>Gemini</em></li>
+</ul></li>
+<li>higher skills and questions are covered in the classroom</li>
+</ul>
+</section>
+<section id="experience-gemini-talk-on-your-phone" class="slide level2 smaller">
+<h2>Experience Gemini Talk on your Phone</h2>
+<p>Example prompts (please find better ones):</p>
+<ul>
+<li><p><strong>Animation:</strong> Teach me the very basics about to make an animation film . Be short to keep it conversational.</p></li>
+<li><p><strong>Architecture:</strong> Teach me about the difference between Gothic and Renaissance styles. Be short to keep it conversational.</p></li>
+<li><p><strong>Dance:</strong> Teach me about ballet shoes . Be short to keep it conversational.</p></li>
+<li><p><strong>Film:</strong> Teach me about the schema of romantic films. Be short to keep it conversational.</p></li>
+<li><p><strong>Music:</strong> Teach me about major and minor scales and the 12 halftones. Be short to keep it conversational.</p></li>
+<li><p><strong>Theater:</strong> Teach me about the main components of a stage. Be short to keep it conversational.</p></li>
+<li><p><strong>Visual Arts:</strong> Teach me about the colors in painting. Be short to keep it conversational.</p></li>
+<li><p><strong>Writing:</strong> Teach me about verbs in writing. Be short to keep it conversational.</p></li>
+</ul>
+<p><strong>In your conversations use potentially:</strong> - I do not get this topis … - I like you to focus more on (theory, application for …, etc) - Be short because I cannot read while diving - No, I meant, . . . - Can we talk on a more basic level. I am just a beginner</p>
+</section>
 <section id="turning-learning-outcomes-into-genai-learning-questions" class="slide level2">
 <h2>Turning Learning Outcomes Into GenAI Learning Questions</h2>
 <p><a href="https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&amp;Name=Carsten+Lange#RIntroAh" target="_blank">Example</a></p>
@@ -801,7 +659,7 @@ Carsten Lange
 <p>The slides are available at:</p>
 <p><a href="https://tinyurl.com/CAFESummerInstitute2026" target="_blank">https://tinyurl.com/CAFESummerInstitute2026</a></p>
 <a href="https://ai.lange-analytics.com</a">
-</a></section><a href="https://ai.lange-analytics.com</a">
+</a></section></section><a href="https://ai.lange-analytics.com</a">
     </a></div><a href="https://ai.lange-analytics.com</a">
   </a><div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
