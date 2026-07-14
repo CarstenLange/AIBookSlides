@@ -1,6 +1,7 @@
 ---
 title: "California Summer School for the Arts"
-subtitle: "Generative AI in Arts Education --- Problems & Opportunities"
+subtitle: "Generative AI in Arts Education --- Problems & Opportunities
+<br><br> <span style='font-size: 1em; font-weight: normal; color: red;'>Please install Gemini on your phone if you can</span>"
 date: 7/14/2026
 
 author:
@@ -27,32 +28,6 @@ format:
     footer: "<a href=https://ai.lange-analytics.com</a> "
 ---
 
-## Workshop Overview {.scrollable .hidden}
-
-- **Introduction** (3 minutes)
-- <details><summary>**Cheating with AI and Mitigation Strategies** (7 minutes)</summary>
-  - My Quiz/ Google Lens
-  - Strategies to mitigate cheating
-    - Supervision
-    - Low weights for take-home assignments
-    - Flipped Classroom
-    - Two-stage writing assignments (AI and in Classroom)
-    - Evaluating and verifying AI presentations in class by co-students
-  </details>
-- <details><summary>**AI Teaching Strategies** (30 minutes)</summary>
-  - Demo: Learn with AI conversation (3 minutes)
-  - Exercise: Learn with AI conversation via phone or computer (10 minutes)
-    - Examples of more technical topics:
-      - Complementary colors
-      - How does a stage work?
-      - How to start building an animation
-      - What are the different types of voices in opera?
-  - Transform learning outcomes into AI conversation starters with ChatGPT (5 minutes)
-  - Demo: Expert system for course related and topic related questions (3 minutes) 
-  - Build expert systems for your students (5 minutes)
-    - How to build a RAG (Retrieval-Augmented Generation) system with NotebookLM
-  </details>
-- **Discussion** (10 minutes)
 
 ## Stylized Example: Time travel with a TV to the year 1885 {.smaller}
 
@@ -105,22 +80,28 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 ![Generated with ChatGPT](WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
 :::
 
-##  Overview
+##  Overview {.smaller}
 
 **Problems:**
 
--   Dealing with Cheating 
+- Dealing with Cheating 
 <br>
+
 **Technology:**
 
--   How *GenAI* works
+- How *genAI* works
 <br>
+
 **Opportunities:**
 
--   Adding a*genAI* Assistant to your class (demo and "how to")
--   Break out: Learning with standalone *genAI* (teach me how to ...)
--   Converting AI Prompts into Learning Outcome
+-   Adding a *genAI* Assistant to your class (demo and "how to")
+-   Teach me about . . . with Gemini
 -   Flipped classroom with AI support
+-   Break out: Learning with standalone *genAI* (teach me about ...)
+-   Converting AI Prompts into Learning Outcome
+
+**Discussion**
+
 
 
 ## Cheating in Homeworks and Quizzes
@@ -147,9 +128,9 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 -   `Lock-Down` browser like 'Respondus'
 -   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
 
-# How Generative AI (GenAI) Works in 5 Minutes ..
+# How Generative AI (GenAI) Works in 8 Minutes ..
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -189,7 +170,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding/Tokenization
 
@@ -229,7 +210,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -269,7 +250,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -309,7 +290,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding with AI Categories
 
@@ -355,7 +336,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Ordering Words in a Prompt
 
@@ -369,7 +350,7 @@ vs.
 - Words/Tokens are processed successively through a neural network
 - The position of a word coded in 1024 numbers is simply added to its token 
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Attention
 
@@ -382,7 +363,7 @@ Attention mechanism is mathematically complex, but at the end, <br>
 a list of numbers that indicates which of the other words matters for attention <br>
 is added to the token of each of the words.
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Guessing the next word
 
@@ -390,7 +371,7 @@ The word with the highest probability among all 30,00 words of the English langu
 
 Then the next word, the next, . . ., until *end of sentence* is reached.
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Fine Tuning
 
@@ -398,7 +379,7 @@ Then the next word, the next, . . ., until *end of sentence* is reached.
 - Include extra information in the prompt
 - delete some parameters and relearn with specialized data
 
-# Using `genAI` to Support Teaching
+# Using `genAI` to Support Teaching **
 
 ## Using `genAI` to Support Teaching {.smaller}
 
@@ -514,7 +495,7 @@ Then the next word, the next, . . ., until *end of sentence* is reached.
 
 ![](10ConfirmMedianOK.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning (teach me about Mean and Median)
+## `genAI` Learning 
 
 <br> **genAI will not substitute instructors!**
 
@@ -529,11 +510,11 @@ Then the next word, the next, . . ., until *end of sentence* is reached.
     -   students use textbooks or videos to verify what they learned from *Gemini*
 -   higher skills and questions are covered in the classroom
 
-## Experience Gemini Talk on your Phone {.smaller}
+## Experience Gemini Talk on your Phone ****{.smaller}
 
 Example prompts (please find better ones):
 
-- **Animation:** Teach me the very basics about to make an animation film . Be short to keep it conversational.
+- **Animation:** Teach me the very basics about how to make an animation film. Be short to keep it conversational.
 
 - **Architecture:** Teach me about the difference between Gothic and Renaissance styles. Be short to keep it conversational.
 
@@ -550,9 +531,10 @@ Example prompts (please find better ones):
 - **Writing:** Teach me about verbs in writing. Be short to keep it conversational.
 
 **In your conversations use potentially:**
+
 - I do not get this topis ...
 - I like you to focus more on (theory, application for ..., etc)
-- Be short because I cannot read while diving 
+- Be short because I cannot read while driving 
 - No, I meant, . . .
 - Can we talk on a more basic level. I am just a beginner
 
@@ -569,4 +551,4 @@ Example prompts (please find better ones):
 
 The slides are available at:
 
-[https://tinyurl.com/CAFESummerInstitute2026](https://tinyurl.com/CAFESummerInstitute2026){target="_blank"}
+[https://ai.lange-analytics.com/CSSSA](https://ai.lange-analytics.com/CSSSA){target="_blank"}
