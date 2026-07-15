@@ -551,4 +551,4 @@ Example prompts (please find better ones):
 
 The slides are available at:
 
-[https://ai.lange-analytics.com/CSSSA](https://ai.lange-analytics.com/CSSSA){target="_blank"}
+[https://ai.lange-analytics.com/short/csssa.html](https://ai.lange-analytics.com/short/csssa.html){target="_blank"}
