@@ -1,6 +1,7 @@
 ---
 title: "California Summer School for the Arts"
-subtitle: "Generative AI in Arts Education --- Problems & Opportunities"
+subtitle: "Generative AI in Arts Education --- Problems & Opportunities
+<br><br> <span style='font-size: 1em; font-weight: normal; color: red;'>Please install Gemini on your phone if you can</span>"
 date: 7/14/2026
 
 author:
@@ -27,45 +28,6 @@ format:
     footer: "<a href=https://ai.lange-analytics.com</a> "
 ---
 
-## Workshop Overview {.scrollable}
-
-- **Introduction** (3 minutes)
-- <details><summary>**Cheating with AI and Mitigation Strategies** (7 minutes)</summary>
-  - My Quiz/ Google Lens
-  - Strategies to mitigate cheating
-    - Supervision
-    - Low weights for take-home assignments
-    - Flipped Classroom
-    - Two-stage writing assignments (AI and in Classroom)
-    - Evaluating and verifying AI presentations in class by co-students
-  </details>
-- <details><summary>**How genAI works** (5 minutes)</summary>
-  - AI is just a search engine on steroids
-  - Embedding / Meaning of words
-  - Sentence and prompt order (*"Dog bit child"* vs. *"Child bit dog"*)
-  - Attention mechanism
-  - Training with the complete internet (including bad sources)
-  - Fine-tuning
-    - Information filtering (weight deletion)
-    - Supervised learning
-  - AI talking process: AI always guesses the next word
-    - The critical importance of chat history
-  - RAGS and Agents
-  </details>
-- <details><summary>**AI Teaching Strategies** (30 minutes)</summary>
-  - Demo: Learn with AI conversation (3 minutes)
-  - Exercise: Learn with AI conversation via phone or computer (10 minutes)
-    - Examples of more technical topics:
-      - Complementary colors
-      - How does a stage work?
-      - How to start building an animation
-      - What are the different types of voices in opera?
-  - Transform learning outcomes into AI conversation starters with ChatGPT (5 minutes)
-  - Demo: Expert system for course related and topic related questions (3 minutes) 
-  - Build expert systems for your students (5 minutes)
-    - How to build a RAG (Retrieval-Augmented Generation) system with NotebookLM
-  </details>
-- **Discussion** (10 minutes)
 
 ## Stylized Example: Time travel with a TV to the year 1885 {.smaller}
 
@@ -118,12 +80,29 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 ![Generated with ChatGPT](WesternPixels.png){fig-alt="A TV displaying a western with bullets flying out of it"}
 :::
 
-## Problems & Opportunities
+##  Overview {.smaller}
 
--   Dealing with Cheating
--   Using *genAI* to Support Teaching
--   Teaching *genAI* Design
--   Learning with standalone *genAI* (teach me how to ...)
+**Problems:**
+
+- Dealing with Cheating 
+<br>
+
+**Technology:**
+
+- How *genAI* works
+<br>
+
+**Opportunities:**
+
+-   Adding a *genAI* Assistant to your class (demo and "how to")
+-   Teach me about . . . with Gemini
+-   Flipped classroom with AI support
+-   Break out: Learning with standalone *genAI* (teach me about ...)
+-   Converting AI Prompts into Learning Outcome
+
+**Discussion**
+
+
 
 ## Cheating in Homeworks and Quizzes
 
@@ -149,7 +128,9 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 -   `Lock-Down` browser like 'Respondus'
 -   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
 
-## How Generative AI (GenAI) Works in 5 Minutes
+# How Generative AI (GenAI) Works in 8 Minutes ..
+
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -189,7 +170,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding/Tokenization
 
@@ -229,7 +210,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -269,210 +250,7 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
-
-### Coding Words with Meaning - Embedding
-
-![](ComputerCantDoNumbers.png){width="230"}
-
-```{=html}
-<table border="1">
-  <thead>
-    <tr>
-      <th></th>
-      <th><strong>King</strong></th>
-      <th><strong>Queen</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Noun</strong></td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td><strong>Female</strong></td>
-      <td>0.1</td>
-      <td>0.9</td>
-    </tr>
-    <tr>
-      <td><strong>Royal</strong></td>
-      <td>0.9</td>
-      <td>0.8</td>
-    </tr>
-    <tr>
-      <td><strong>---</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-## How Generative AI (GenAI) Works in 5 Minutes
-
-### Coding Words with Meaning - Embedding with AI Categories
-
-![](ComputerCantDoNumbers.png){width="230"}
-
-```{=html}
-<table border="1">
-  <thead>
-    <tr>
-      <th></th>
-      <th><strong>King</strong></th>
-      <th><strong>Queen</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Category #1</strong></td>
-      <td>3876</td>
-      <td>925</td>
-    </tr>
-    <tr>
-      <td><strong>Category #2</strong></td>
-      <td>7189</td>
-      <td>2636</td>
-    <tr>
-      <td><strong>Category #3</strong></td>
-      <td>232</td>
-      <td>7652</td>
-    </tr>
-    <tr>
-      <td><strong>. . .</strong></td>
-      <td>. . .</td>
-      <td>. . .</td>
-    </tr>
-    <tr>
-      <td><strong>Category #1024</strong></td>
-      <td>3423</td>
-      <td>8567</td>
-    </tr>
-  </tbody>
-</table>
-```
-## How Generative AI (GenAI) Works in 5 Minutes
-
-### Coding Words with Meaning - Embedding
-
-![](ComputerCantDoNumbers.png){width="230"}
-
-```{=html}
-<table border="1">
-  <thead>
-    <tr>
-      <th></th>
-      <th><strong>King</strong></th>
-      <th><strong>Queen</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Noun</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-    <tr>
-      <td><strong>Female</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-    <tr>
-      <td><strong>Royal</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-    <tr>
-      <td><strong>---</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-## How Generative AI (GenAI) Works in 5 Minutes
-
-### Coding Words with Meaning - Embedding/Tokenization
-
-![](ComputerCantDoNumbers.png){width="230"}
-
-```{=html}
-<table border="1">
-  <thead>
-    <tr>
-      <th></th>
-      <th><strong>King</strong></th>
-      <th><strong>Queen</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Noun</strong></td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td><strong>Female</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-    <tr>
-      <td><strong>Royal</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-    <tr>
-      <td><strong>---</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-## How Generative AI (GenAI) Works in 5 Minutes
-
-### Coding Words with Meaning - Embedding
-
-![](ComputerCantDoNumbers.png){width="230"}
-
-```{=html}
-<table border="1">
-  <thead>
-    <tr>
-      <th></th>
-      <th><strong>King</strong></th>
-      <th><strong>Queen</strong></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>Noun</strong></td>
-      <td>1</td>
-      <td>1</td>
-    </tr>
-    <tr>
-      <td><strong>Female</strong></td>
-      <td>0.1</td>
-      <td>0.9</td>
-    </tr>
-    <tr>
-      <td><strong>Royal</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-    <tr>
-      <td><strong>---</strong></td>
-      <td>---</td>
-      <td>---</td>
-    </tr>
-  </tbody>
-</table>
-```
-
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding
 
@@ -512,9 +290,11 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
-## How Generative AI (GenAI) Works in 5 Minutes
+## How Generative AI (GenAI) Works in 8 Minutes
 
 ### Coding Words with Meaning - Embedding with AI Categories
+
+**Generating  tokens with Bag of Words method**
 
 ![](ComputerCantDoNumbers.png){width="230"}
 
@@ -556,47 +336,87 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 </table>
 ```
 
+## How Generative AI (GenAI) Works in 8 Minutes
+
+### Ordering Words in a Prompt
+
+**<span style="color:red;">Dog bit boy</span>**
+
+vs.
+
+**<span style="color:red;">Boy bit dog</span>**
+
+- Gemini can process a prompt with a maximum of 2 million tokens (about 1.5 million word)
+- Words/Tokens are processed successively through a neural network
+- The position of a word coded in 1024 numbers is simply added to its token 
+
+## How Generative AI (GenAI) Works in 8 Minutes
+
+### Attention
+
+**The <span style="color:red;">dog</span> did not cross the road because it was to <span style="color:red;">tired</span>**
+
+**The dog did not cross the <span style="color:red;">road</span> because it was to <span style="color:red;">wide</span>**
+
+<br>
+Attention mechanism is mathematically complex, but at the end, <br>
+a list of numbers that indicates which of the other words matters for attention <br>
+is added to the token of each of the words.
+
+## How Generative AI (GenAI) Works in 8 Minutes
+
+### Guessing the next word
+
+The word with the highest probability among all 30,00 words of the English language is added to the prompt.
+
+Then the next word, the next, . . ., until *end of sentence* is reached.
+
+## How Generative AI (GenAI) Works in 8 Minutes
+
+### Fine Tuning
+
+- Supervised learning
+- Include extra information in the prompt
+- delete some parameters and relearn with specialized data
+
+# Using `genAI` to Support Teaching **
 
 ## Using `genAI` to Support Teaching {.smaller}
 
 `Cheating Allowed:` Students prepare assignments at home with *genAI* and finalize them in a proctored environment in class without *genAI*
 
-**Examples:**
+**Example:**
 
--   **Paper about Civil War**
-    -   students prepare the papers at home with the use of genAI and they report about the process
-    -   instructor reads papers before class but does not provide the feedback before the class session
-    -   students finish the paper without AI in a proctored environment
+**Paper about Civil War**
 
+**At home:**
+
+- students prepare the papers with the use of *genAI* and they report about the process
+- instructor reads papers before class but does not provide the feedback before the class session
+
+<hr>
+
+**In class:**
+
+- students get feedback from instructor  
+- students finish the paper without AI in a proctored environment
+
+## Building a Course Assistant for Your Class {.smaller}
 
 **Course Assistants**
 
+[Click for an example (you need a Google account)](https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target="_blank" style="color: lightblue !important; font-weight: bold;"}
+
+
+
 1.**Access the Platform:** Requires a Google Account. Navigate to [**https://notebooklm.google.com**](https://notebooklm.google.com){target="blank_"} in your browser. If prompted, log in using your standard Google credentials.
 
-2. **Create a New Notebook:** Instant setup.On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
+2. **Create a New Notebook:** On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
 
 3. **Upload Your  PDFs:** Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)
 
-4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read the housing file versus the SHAP/PCA file).
+4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read Syllabus file versus the Textbook file).
 
-[**Click here to test (you need a Google account)**](https://notebooklm.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target=_blank}
-
-## Teaching `genAI` Design
-
-<br> (**X** To use the GPTs you must first login to your `Cal Poly ChatGPT` account and then email [clange\@cpp.edu](mailto:clange@cpp.edu))
-
--   [The Art of Thinking --- challenge, answer or expanded Philosophy topics](https://chatgpt.com/g/g-69e1a37155e48191bc3590359b82c066-the-art-of-thinking){target="_blank"}
--   [Bronco Broject Advisor](https://chatgpt.com/g/g-6a02b1c041e481918eb84471103b0e55-broncoproject-advisor){target="_blank"}
--   [The Last Word --- I never lost an argument](https://chatgpt.com/g/g-69e19d1be73c819193e1ca63d74f0548-the-last-word){target="_blank"} **XX**
-
-## `genAI` Learning (teach me how to ...)
-
-`Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom`
-
--   fact and skills learning at home
-    -   use *genAI*: please teach me about ... (example follows)
-    -   students use textbooks or videos to verify what they learned from *Gemini*
--   higher skills and questions are covered in the classroom
 
 ## `genAI` Learning (Teach me about Mean and Median)
 
@@ -675,11 +495,49 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 ![](10ConfirmMedianOK.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning (teach me about Mean and Median)
+## `genAI` Learning 
 
 <br> **genAI will not substitute instructors!**
 
 **genAI will allow us to focus on higher skills, something we always wanted!**
+
+## `genAI` Learning (Teach Me How to ...)
+
+`Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom`
+
+-   fact and skills learning at home
+    -   use *genAI*: please teach me about ... (example follows)
+    -   students use textbooks or videos to verify what they learned from *Gemini*
+-   higher skills and questions are covered in the classroom
+
+## Experience Gemini Talk on your Phone ****{.smaller}
+
+Example prompts (please find better ones):
+
+- **Animation:** Teach me the very basics about how to make an animation film. Be short to keep it conversational.
+
+- **Architecture:** Teach me about the difference between Gothic and Renaissance styles. Be short to keep it conversational.
+
+- **Dance:** Teach me about ballet shoes . Be short to keep it conversational.
+
+- **Film:** Teach me about the schema of romantic films. Be short to keep it conversational.
+
+- **Music:** Teach me about major and minor scales and the 12 halftones. Be short to keep it conversational.
+
+- **Theater:** Teach me about the main components of a stage. Be short to keep it conversational.
+
+- **Visual Arts:** Teach me about the colors in painting. Be short to keep it conversational.
+
+- **Writing:** Teach me about verbs in writing. Be short to keep it conversational.
+
+**In your conversations use potentially:**
+
+- I do not get this topis ...
+- I like you to focus more on (theory, application for ..., etc)
+- Be short because I cannot read while driving 
+- No, I meant, . . .
+- Can we talk on a more basic level. I am just a beginner
+
 
 ## Turning Learning Outcomes Into GenAI Learning Questions
 
@@ -693,4 +551,4 @@ TVs are just an arrangement of millions of colored pixels and our eye/brain proc
 
 The slides are available at:
 
-[https://tinyurl.com/CAFESummerInstitute2026](https://tinyurl.com/CAFESummerInstitute2026){target="_blank"}
+[https://ai.lange-analytics.com/short/csssa.html](https://ai.lange-analytics.com/short/csssa.html){target="_blank"}
