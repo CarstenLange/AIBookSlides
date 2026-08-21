@@ -1,9 +1,11 @@
 ---
-title: "Regression" 
+title: "Fall 2026 Innovative Educators Summit"
+subtitle: "R, VR, and AI in Action: Use Cases for Interactive and Immersive Teaching" 
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
   affiliation: "Cal Poly, Pomona"
+date: "10/22/2026"
 
 execute:
   message: false
@@ -27,30 +29,27 @@ webr:
 engine: knitr    
 ---
 
-{{< include _extensions/r-wasm/live/_knitr.qmd >}}
-{{< include _extensions/r-wasm/live/_gradethis.qmd >}}
+{{< include _extensions/r-wasm/live/_knitr.qmd >}} {{< include _extensions/r-wasm/live/_gradethis.qmd >}}
 
+## Overview
 
+-   Interactivity Using Quarto from *Posit*
 
+    -   Slides with interactive *R* and *Python* code
+    -   Tutorials with interactive *R* and *Python* code
+    -   Quizzes with interactive *R* and *Python* code
 
-##  Overview 
+-   Demo: Virtual Reality for 3D Regressions
 
-- Interactivity Using Quarto from *Posit* 
-  - Slides with interactive *R* and *Python* code
-  - Tutorials with interactive *R* and *Python* code
-  - Quizzes with interactive *R* and *Python* code
+-   *genAI* use in Education
 
-- Demo: Virtual Reality for 3D Regressions
-
-- *genAI* use in Education
-  - *genAI* interacts with students about Learning Outcome
-  - *genAI* asses course success
-  - *genAI* without hallucinations in a clearly defined environment 
-
+    -   *genAI* interacts with students about Learning Outcome
+    -   *genAI* asses course success
+    -   *genAI* without hallucinations in a clearly defined environment
 
 ## Running R and Python in a Browser
 
-### The Old  Static Way
+### The Old Static Way
 
 Calculate the mean passenger age of *Titanic* passengers:
 
@@ -64,7 +63,6 @@ cat("Mean Age of Passengers:", mean(DataTitanic$Age))
 
 ### The New Interactive Way with Web Assembly (WASM)
 
-
 Calculate the mean passenger age of *Titanic* passengers:
 
 ```{webr}
@@ -74,16 +72,18 @@ head(DataTitanic)
 cat("Mean Age of Passengers:", ______(______$______))
 ```
 
-::: { .hint exercise="ex_1"}
-::: { .callout-note collapse="false"}
+:::: {.hint exercise="ex_1"}
+::: {.callout-note collapse="false"}
 ## Hint for calculating a mean
+
 The command for calculating a mean is `mean()`, the data frame is named `DataTitanic`, and the column for age is `Age`.
 :::
-:::
+::::
 
-::: { .solution exercise="ex_1" }
-::: { .callout-tip collapse="false"}
+:::: {.solution exercise="ex_1"}
+::: {.callout-tip collapse="false"}
 ## Fully Worked Solution:
+
 ```{webr}
 #| exercise: ex_1
 #| solution: true
@@ -91,9 +91,10 @@ DataTitanic=read.csv("https:///econ.lange-analytics.com/RData/Datasets/TitanicDa
 head(DataTitanic)
 cat("Mean Age of Passengers:", mean(DataTitanic$Age)) #<1>
 ```
-1. the command `mean()` calculates the mean age from the column `DataTitanic$Age`
+
+1.  the command `mean()` calculates the mean age from the column `DataTitanic$Age`
 :::
-:::
+::::
 
 ```{webr}
 #| exercise: ex_1
@@ -101,16 +102,16 @@ cat("Mean Age of Passengers:", mean(DataTitanic$Age)) #<1>
 gradethis::grade_this_code()
 ```
 
-[Docs about WASM with *R* and *Python*](https://r-wasm.github.io/quarto-live/){target=blank_}
+[Docs about WASM with *R* and *Python*](https://r-wasm.github.io/quarto-live/){target="blank_"}
 
 ## Creating R Quizzes
 
-- All students get the same question
-- Each student gets different numbers
-- Everything runs in a browser
-- Quizzes are automatically graded
+-   All students get the same question
+-   Each student gets different numbers
+-   Everything runs in a browser
+-   Quizzes are automatically graded
 
-[Example Quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html){target=blank_}
+[Example Quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html){target="blank_"}
 
 ## Cheating in Homeworks and Quizzes
 
@@ -136,37 +137,35 @@ gradethis::grade_this_code()
 -   `Lock-Down` browser like 'Respondus'
 -   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
 
-# Using VRto Explain Multivariate Regression
+# Using VR to Explain Multivariate Regression {.smaller}
 
-- Simple Regression is 2-dimensional Leading to paper
-- Simplest Multivariate Regression is 3D
-  - Understanding 3 dimnesions on a 2-dimensional paper or screen is challenging
-  - This leads to VR with 3 dimnsions
+-   Simple Regression is 2-dimensional Leading to paper
+-   Simplest Multivariate Regression is 3D
+    -   Understanding 3 dimensions on a 2-dimensional paper or screen is challenging
+    -   This leads to VR with 3 dimensions
 
 **Diagram Exhibition**
 
-- Various Data  are dispalyed
-  - Narrated by an instructor by  the classroom session
-  - narrated by an avatar in the self-learning edition
-- Data and Regression planes can be changed and adjusted
-  - New scenes (new data with or with or without regression planes are chosen by the self-learner)
-  - New scenes (new data with or with or without regression planes are chosen by the instructor)
+-   Various Data are displayed
 
-  Sef Learer version explained in a video
+    -   Narrated by an instructor by the classroom session
+    -   narrated by an avatar in the self-learning edition
 
-# Using `genAI` to Support Teaching **
+-   Data and Regression planes can be changed and adjusted
+
+    -   New scenes (new data with or with or without regression planes are chosen by the self-learner)
+    -   New scenes (new data with or with or without regression planes are chosen by the instructor)
+
+    Sef-Learner version explained in a video
+
+# Using `genAI` to Support Teaching \*\*
 
 ## genAI Educational Innovation
 
-- books, videos, and even Google searches are one way learning tools:\
-  Proving information but not convesations
+-   books, videos, and even Google searches are one way learning tools:\
+    Proving information but not convesations
 
-- genAI, when used correctly can be a real conversation like between a student and their tutor
-
-
-
-
-
+-   genAI, when used correctly can be a real conversation like between a student and their tutor
 
 ## `genAI` Learning (Teach me about Mean and Median)
 
@@ -245,7 +244,7 @@ gradethis::grade_this_code()
 
 ![](10ConfirmMedianOK.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning 
+## `genAI` Learning
 
 <br> **genAI will not substitute instructors!**
 
@@ -260,44 +259,70 @@ gradethis::grade_this_code()
     -   students use textbooks or videos to verify what they learned from *Gemini*
 -   higher skills and questions are covered in the classroom
 
-## Experience Gemini Talk on your Phone ****{.smaller}
-
-Example prompts (please find better ones):
-
-- **Animation:** Teach me the very basics about how to make an animation film. Be short to keep it conversational.
-
-- **Architecture:** Teach me about the difference between Gothic and Renaissance styles. Be short to keep it conversational.
-
-- **Dance:** Teach me about ballet shoes . Be short to keep it conversational.
-
-- **Film:** Teach me about the schema of romantic films. Be short to keep it conversational.
-
-- **Music:** Teach me about major and minor scales and the 12 halftones. Be short to keep it conversational.
-
-- **Theater:** Teach me about the main components of a stage. Be short to keep it conversational.
-
-- **Visual Arts:** Teach me about the colors in painting. Be short to keep it conversational.
-
-- **Writing:** Teach me about verbs in writing. Be short to keep it conversational.
-
-**In your conversations use potentially:**
-
-- I do not get this topis ...
-- I like you to focus more on (theory, application for ..., etc)
-- Be short because I cannot read while driving 
-- No, I meant, . . .
-- Can we talk on a more basic level. I am just a beginner
-
-
 ## Turning Learning Outcomes Into GenAI Learning Questions
 
-[Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#RIntroAh){target="_blank"}
+[Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#DescriptiveAh){target="_blank"}
 
 [Tool](GenerateChatGPTLink.html){target="_blank"}
 
-[How the tool was programed](AIPromptLinkGeneratorWebpageGoogleGemini.pdf){target="_blank"}
+[Source Code for the Tool](AIPromptLinkGeneratorWebpageGoogleGemini.pdf){target="_blank"}
 
 ## Evaluating Learning Outcomes
+
+### Google Form for *Quartiles and Percentiles*
+
+In class Google Forms is used to get student feedback for each learning outcome:
+
+![](images/paste-1.png)
+
+## Evaluating Learning Outcomes {.smaller}
+
+### *Quantiles and Percentiles*/Question 1 Results: 
+
+```{r}
+#| echo: false
+library(knitr)
+
+# 1. Define your parameter
+sheet_id <- "1ldmsWL7A78341Ht7w_XROnX6ESUo7vKWUC5t_UmD_to"
+
+# 2. Build the CSV URL with a single %s placeholder
+csv_url <- sprintf(
+  "https://docs.google.com/spreadsheets/d/%s/export?format=csv",
+  sheet_id
+)
+
+# 3. Read data
+DataGoogleSheet <- read.csv(csv_url)
+kable(DataGoogleSheet[,3])
+```
+
+## Evaluating Learning Outcomes {.smaller}
+
+### *Quantiles and Percentiles*/Question 2 Results: 
+
+```{r}
+#| echo: false
+kable(DataGoogleSheet[,3])
+```
+
+## Evaluating Learning Outcomes {.smaller}
+
+### *Quantiles and Percentiles*/Question 3 Results: 
+
+```{r}
+#| echo: false
+kable(DataGoogleSheet[,3])
+```
+
+## Evaluating Learning Outcomes {.smaller}
+
+### *Quantiles and Percentiles*/Question 4 Results: 
+
+```{r}
+#| echo: false
+kable(DataGoogleSheet[,4])
+```
 
 
 ## Building a Course Assistant for Your Class {.smaller}
@@ -306,19 +331,14 @@ Example prompts (please find better ones):
 
 [Click for an example (you need a Google account)](https://notebook.google.com/notebook/29e5ca47-19e1-4cbd-961a-129378412f2d/preview){target="_blank" style="color: lightblue !important; font-weight: bold;"}
 
-
-
 1.**Access the Platform:** Requires a Google Account. Navigate to [**https://notebooklm.google.com**](https://notebooklm.google.com){target="blank_"} in your browser. If prompted, log in using your standard Google credentials.
 
-2. **Create a New Notebook:** On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
+2.  **Create a New Notebook:** On the main dashboard, click the large card that says New Notebook (or the + icon). This opens up a completely fresh, empty workspace.
 
-3. **Upload Your  PDFs:** Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)
+3.  **Upload Your PDFs:** Max 200 MB per file. An Add sources window will automatically pop up. Select Upload files (or drag and drop)
 
-4. **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read Syllabus file versus the Textbook file).
-
-
+4.  **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read Syllabus file versus the Textbook file).
 
 ## Thank You All
 
 The slides are available at:
-
