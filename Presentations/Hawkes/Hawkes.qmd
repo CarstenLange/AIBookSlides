@@ -113,31 +113,12 @@ gradethis::grade_this_code()
 
 [Example Quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html){target="blank_"}
 
-## Cheating in Homeworks and Quizzes
 
-`Cheating is not new in academia, but the ease it can be done with genAI is new!`
-
-**Examples:**
-
--   Write a paper about the civil war
--   [Cheating related to take-home and online quizzes](https://econ.lange-analytics.com/HomeworkQLive/HW6061/HW6061.html){target="_blank"} <br> (Google Lens is in "Hamburger Menu" -\> Search with Lens)
-
-## Cheating in Homeworks and Quizzes {.smaller}
-
-`We need to be creative! We need to fight technology with technology!`<br> `Restrictions are not helping!`<br><br>
-
-**A few ideas:**<br>
-
-**Small Grade Weights:** Assign small weights to take-home assignments and online quizzes
-
-**Strict Administrative Policies for midterm and final proctoring:**
-
--   Phone drops etc.
--   `Screen monitoring` for online work in our labs
--   `Lock-Down` browser like 'Respondus'
--   `Proctoring Centers` for (a limited amount of) homeworks and online quizzes. Computers can be very basic.
 
 # Using VR to Explain Multivariate Regression {.smaller}
+
+## Meta Quest App
+### Diagram Exhibition
 
 -   Simple Regression is 2-dimensional Leading to paper
 -   Simplest Multivariate Regression is 3D
@@ -158,12 +139,12 @@ gradethis::grade_this_code()
 
     Sef-Learner version explained in a video
 
-# Using `genAI` to Support Teaching \*\*
+# Using `genAI` to Support Teaching 
 
 ## genAI Educational Innovation
 
 -   books, videos, and even Google searches are one way learning tools:\
-    Proving information but not convesations
+    Proving information but not conversations
 
 -   genAI, when used correctly can be a real conversation like between a student and their tutor
 
@@ -261,13 +242,13 @@ gradethis::grade_this_code()
 
 ## Turning Learning Outcomes Into GenAI Learning Questions
 
-[Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#DescriptiveAh){target="_blank"}
+[Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#DescriptiveIc){target="_blank"}
 
 [Tool](GenerateChatGPTLink.html){target="_blank"}
 
 [Source Code for the Tool](AIPromptLinkGeneratorWebpageGoogleGemini.pdf){target="_blank"}
 
-## Evaluating Learning Outcomes
+## Evaluating Learning Outcomes: *Quartiles and Percentiles*
 
 ### Google Form for *Quartiles and Percentiles*
 
@@ -275,9 +256,9 @@ In class Google Forms is used to get student feedback for each learning outcome:
 
 ![](images/paste-1.png)
 
-## Evaluating Learning Outcomes {.smaller}
+## Evaluating Learning Outcomes: *Quartiles and Percentiles* {.smaller}
 
-### *Quantiles and Percentiles*/Question 1 Results: 
+### Question: Calculate Values
 
 ```{r}
 #| echo: false
@@ -297,31 +278,31 @@ DataGoogleSheet <- read.csv(csv_url)
 kable(DataGoogleSheet[,3])
 ```
 
-## Evaluating Learning Outcomes {.smaller}
+## Evaluating Learning Outcomes: *Quartiles and Percentiles* {.smaller}
 
-### *Quantiles and Percentiles*/Question 2 Results: 
-
-```{r}
-#| echo: false
-kable(DataGoogleSheet[,3])
-```
-
-## Evaluating Learning Outcomes {.smaller}
-
-### *Quantiles and Percentiles*/Question 3 Results: 
-
-```{r}
-#| echo: false
-kable(DataGoogleSheet[,3])
-```
-
-## Evaluating Learning Outcomes {.smaller}
-
-### *Quantiles and Percentiles*/Question 4 Results: 
+### Question: Understanding the Calculation
 
 ```{r}
 #| echo: false
 kable(DataGoogleSheet[,4])
+```
+
+## Evaluating Learning Outcomes: *Quartiles and Percentiles* {.smaller}
+
+### Question: Interpreting the Results
+
+```{r}
+#| echo: false
+kable(DataGoogleSheet[,5])
+```
+
+## Evaluating Learning Outcomes: *Quartiles and Percentiles* {.smaller}
+
+### Question: Other Comments
+
+```{r}
+#| echo: false
+kable(DataGoogleSheet[,6])
 ```
 
 

@@ -6,10 +6,10 @@
 <script src="Hawkes_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="Hawkes_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="Hawkes_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Hawkes_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="Hawkes_files/libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="Hawkes_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="Hawkes_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.8.27">
+  <meta name="generator" content="quarto-1.10.18">
 
   <meta name="author" content="Carsten Lange">
   <meta name="dcterms.date" content="2026-10-22">
@@ -20,10 +20,16 @@
   <link rel="stylesheet" href="Hawkes_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="Hawkes_files/libs/revealjs/dist/reveal.css">
   <style>
-    code{white-space: pre-wrap;}
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: min(4vw, 1.5em);}
-    div.column{flex: auto; overflow-x: auto;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -98,7 +104,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="Hawkes_files/libs/revealjs/dist/theme/quarto-92f953f199ed25aab29d366ec0d00847.css">
+  <link rel="stylesheet" href="Hawkes_files/libs/revealjs/dist/theme/quarto-188c847311b4ccaf1d527e31c5a8eacb.css">
   <link href="Hawkes_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Hawkes_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Hawkes_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -207,7 +213,7 @@
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Carsten Lange 
+Carsten Lange
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
@@ -243,8 +249,8 @@ Carsten Lange
 <h3 id="the-old-static-way">The Old Static Way</h3>
 <p>Calculate the mean passenger age of <em>Titanic</em> passengers:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https:///econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
-<span id="cb1-2"><a href=""></a><span class="fu">head</span>(DataTitanic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https:///econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
+<span id="cb1-2"><a href="" aria-label="2"></a><span class="fu">head</span>(DataTitanic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Survived Pclass    Sex Age SiblingsSpousesAboard ParentsChildrenAboard
 1        0      3   male  22                     1                     0
@@ -254,7 +260,7 @@ Carsten Lange
 5        0      3   male  35                     0                     0
 6        0      3   male  27                     0                     0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Age of Passengers: 29.47144</code></pre>
 </div>
@@ -304,9 +310,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMSJ9LCJjb2RlIjoi
 <code id="interpolate-3" class="solution-code d-none">DataTitanic=read.csv("https:///econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv")
 head(DataTitanic)
 cat("Mean Age of Passengers:", mean(DataTitanic$Age)) #&lt;1&gt;</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-4"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="interpolate-4-1"><a href="#interpolate-4-1"></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https:///econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
-<span id="interpolate-4-2"><a href="#interpolate-4-2"></a><span class="fu">head</span>(DataTitanic)</span>
-<a class="code-annotation-anchor" data-target-cell="interpolate-4" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-4-3" class="code-annotation-target"><a href="#interpolate-4-3"></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-4"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="interpolate-4-1"><a href="#interpolate-4-1" aria-label="1"></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https:///econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
+<span id="interpolate-4-2"><a href="#interpolate-4-2" aria-label="2"></a><span class="fu">head</span>(DataTitanic)</span>
+<a class="code-annotation-anchor" data-target-cell="interpolate-4" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-4-3" class="code-annotation-target"><a href="#interpolate-4-3" aria-label="3"></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
@@ -338,30 +344,14 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </ul>
 <p><a href="https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html" target="blank_">Example Quiz</a></p>
 </section>
-<section id="cheating-in-homeworks-and-quizzes" class="slide level2">
-<h2>Cheating in Homeworks and Quizzes</h2>
-<p><code>Cheating is not new in academia, but the ease it can be done with genAI is new!</code></p>
-<p><strong>Examples:</strong></p>
-<ul>
-<li>Write a paper about the civil war</li>
-<li><a href="https://econ.lange-analytics.com/HomeworkQLive/HW6061/HW6061.html" target="_blank">Cheating related to take-home and online quizzes</a> <br> (Google Lens is in “Hamburger Menu” -&gt; Search with Lens)</li>
-</ul>
-</section>
-<section id="cheating-in-homeworks-and-quizzes-1" class="slide level2 smaller">
-<h2>Cheating in Homeworks and Quizzes</h2>
-<p><code>We need to be creative! We need to fight technology with technology!</code><br> <code>Restrictions are not helping!</code><br><br></p>
-<p><strong>A few ideas:</strong><br></p>
-<p><strong>Small Grade Weights:</strong> Assign small weights to take-home assignments and online quizzes</p>
-<p><strong>Strict Administrative Policies for midterm and final proctoring:</strong></p>
-<ul>
-<li>Phone drops etc.</li>
-<li><code>Screen monitoring</code> for online work in our labs</li>
-<li><code>Lock-Down</code> browser like ‘Respondus’</li>
-<li><code>Proctoring Centers</code> for (a limited amount of) homeworks and online quizzes. Computers can be very basic.</li>
-</ul>
-</section>
+<section>
 <section id="using-vr-to-explain-multivariate-regression" class="title-slide slide level1 smaller center">
 <h1>Using VR to Explain Multivariate Regression</h1>
+
+</section>
+<section id="meta-quest-app" class="slide level2">
+<h2>Meta Quest App</h2>
+<h3 id="diagram-exhibition">Diagram Exhibition</h3>
 <ul>
 <li>Simple Regression is 2-dimensional Leading to paper</li>
 <li>Simplest Multivariate Regression is 3D
@@ -384,18 +374,17 @@ eyJhdHRyIjp7ImNoZWNrIjp0cnVlLCJlZGl0Ijp0cnVlLCJldmFsIjp0cnVlLCJleGVyY2lzZSI6ImV4
 </ul>
 <p>Sef-Learner version explained in a video</p></li>
 </ul>
-</section>
-
+</section></section>
 <section>
 <section id="using-genai-to-support-teaching" class="title-slide slide level1 center">
-<h1>Using <code>genAI</code> to Support Teaching **</h1>
+<h1>Using <code>genAI</code> to Support Teaching</h1>
 
 </section>
 <section id="genai-educational-innovation" class="slide level2">
 <h2>genAI Educational Innovation</h2>
 <ul>
 <li><p>books, videos, and even Google searches are one way learning tools:<br>
-Proving information but not convesations</p></li>
+Proving information but not conversations</p></li>
 <li><p>genAI, when used correctly can be a real conversation like between a student and their tutor</p></li>
 </ul>
 </section>
@@ -485,19 +474,19 @@ Proving information but not convesations</p></li>
 </section>
 <section id="turning-learning-outcomes-into-genai-learning-questions" class="slide level2">
 <h2>Turning Learning Outcomes Into GenAI Learning Questions</h2>
-<p><a href="https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&amp;Name=Carsten+Lange#DescriptiveAh" target="_blank">Example</a></p>
+<p><a href="https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&amp;Name=Carsten+Lange#DescriptiveIc" target="_blank">Example</a></p>
 <p><a href="GenerateChatGPTLink.html" target="_blank">Tool</a></p>
 <p><a href="AIPromptLinkGeneratorWebpageGoogleGemini.pdf" target="_blank">Source Code for the Tool</a></p>
 </section>
-<section id="evaluating-learning-outcomes" class="slide level2">
-<h2>Evaluating Learning Outcomes</h2>
+<section id="evaluating-learning-outcomes-quartiles-and-percentiles" class="slide level2">
+<h2>Evaluating Learning Outcomes: <em>Quartiles and Percentiles</em></h2>
 <h3 id="google-form-for-quartiles-and-percentiles">Google Form for <em>Quartiles and Percentiles</em></h3>
 <p>In class Google Forms is used to get student feedback for each learning outcome:</p>
 
 <img data-src="images/paste-1.png" class="r-stretch"></section>
-<section id="evaluating-learning-outcomes-1" class="slide level2 smaller">
-<h2>Evaluating Learning Outcomes</h2>
-<h3 id="quantiles-and-percentilesquestion-1-results"><em>Quantiles and Percentiles</em>/Question 1 Results:</h3>
+<section id="evaluating-learning-outcomes-quartiles-and-percentiles-1" class="slide level2 smaller">
+<h2>Evaluating Learning Outcomes: <em>Quartiles and Percentiles</em></h2>
+<h3 id="question-calculate-values">Question: Calculate Values</h3>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
@@ -551,121 +540,9 @@ Proving information but not convesations</p></li>
 </div>
 </div>
 </section>
-<section id="evaluating-learning-outcomes-2" class="slide level2 smaller">
-<h2>Evaluating Learning Outcomes</h2>
-<h3 id="quantiles-and-percentilesquestion-2-results"><em>Quantiles and Percentiles</em>/Question 2 Results:</h3>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">I can calculate quartiles but I struggle with the percentiles.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Yes, I can</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Yes. R is a little easier.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Yes, very easy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Neither</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yes but especially with the calculator I make mistakes. R is easy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Yes</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">With R no problem, by hand it is complicated because there are many rules to follow when it comes to rounding</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Not at all</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="evaluating-learning-outcomes-3" class="slide level2 smaller">
-<h2>Evaluating Learning Outcomes</h2>
-<h3 id="quantiles-and-percentilesquestion-3-results"><em>Quantiles and Percentiles</em>/Question 3 Results:</h3>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<colgroup>
-<col style="width: 100%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">x</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"></td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">I can calculate quartiles but I struggle with the percentiles.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Yes, I can</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Yes. R is a little easier.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Yes, very easy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Neither</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yes but especially with the calculator I make mistakes. R is easy</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Yes</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">With R no problem, by hand it is complicated because there are many rules to follow when it comes to rounding</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">yes</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Not at all</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="evaluating-learning-outcomes-4" class="slide level2 smaller">
-<h2>Evaluating Learning Outcomes</h2>
-<h3 id="quantiles-and-percentilesquestion-4-results"><em>Quantiles and Percentiles</em>/Question 4 Results:</h3>
+<section id="evaluating-learning-outcomes-quartiles-and-percentiles-2" class="slide level2 smaller">
+<h2>Evaluating Learning Outcomes: <em>Quartiles and Percentiles</em></h2>
+<h3 id="question-understanding-the-calculation">Question: Understanding the Calculation</h3>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top">
@@ -710,6 +587,112 @@ Proving information but not convesations</p></li>
 </tr>
 <tr class="even">
 <td style="text-align: left;">no idea</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="evaluating-learning-outcomes-quartiles-and-percentiles-3" class="slide level2 smaller">
+<h2>Evaluating Learning Outcomes: <em>Quartiles and Percentiles</em></h2>
+<h3 id="question-interpreting-the-results">Question: Interpreting the Results</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Quartiles yes but percentiles I struggle</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">no</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Somehow.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">no</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">The interpretation is not intuitive to me</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">no idea</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section id="evaluating-learning-outcomes-quartiles-and-percentiles-4" class="slide level2 smaller">
+<h2>Evaluating Learning Outcomes: <em>Quartiles and Percentiles</em></h2>
+<h3 id="question-other-comments">Question: Other Comments</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Can we review percentiles.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">I like how powerful the concept of percentiles is</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Can we review percentiles again especially the rounding rules</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">move faster in the class</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Statistics sucks</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Are these concepts relevant in real life?</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"></td>
 </tr>
 </tbody>
 </table>
