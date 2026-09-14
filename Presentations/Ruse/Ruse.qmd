@@ -1,6 +1,6 @@
 ---
 title: '"Angel Kanchev" University of Ruse'
-subtitle: "How R, VR, and AI Can Support Teaching and Learning" 
+subtitle: "How R, VR, and AI Can Support Teaching and Learning (https://tinyurl.com/ruse2026)" 
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
@@ -29,19 +29,20 @@ webr:
 engine: knitr    
 ---
 
-{{< include _extensions/r-wasm/live/_knitr.qmd >}} {{< include _extensions/r-wasm/live/_gradethis.qmd >}}
+{{< include _extensions/r-wasm/live/_knitr.qmd >}} 
+{{< include _extensions/r-wasm/live/_gradethis.qmd >}}
 
 ## Overview
 
--   **R and Python: Interactivity in a Browser Using Quarto from *Posit***
+1.   **R and Python: Interactivity in a Browser Using Quarto from *Posit***
 
     -   Slides with interactive *R* and *Python* code
     -   Tutorials with interactive *R* and *Python* code
     -   Quizzes with interactive *R* and *Python* code
 
--   **Demo: Virtual Reality for 3D Regressions**
+2.   **Demo: Virtual Reality for 3D Regressions**
 
--   ***genAI*** **use in Education**
+3.   ***genAI*** **use in Education**
 
     -   *genAI* interacts with students about Learning Outcome
     -   *genAI* assess course success
@@ -114,13 +115,15 @@ cat("Mean Age of Passengers:", mean(DataTitanic$Age)) #<1>
 gradethis::grade_this_code()
 ```
 
-## Documentation: Interactive html files for R and Python
 
-[Docs about WASM with *R* and *Python*](https://r-wasm.github.io/quarto-live/){target="blank_"}
 
 ## Quarto Code
 
 ![](images/paste-3.png)
+
+## Documentation: Interactive html files for R and Python
+
+[Docs about WASM with *R* and *Python*](https://r-wasm.github.io/quarto-live/){target="blank_"}
 
 ## Creating R Quizzes
 
@@ -135,17 +138,16 @@ gradethis::grade_this_code()
 
 ![](VRStudents.png){fig-align="center" width="808"}
 
-## Meta Quest App
-
-### Diagram Exhibition
+## Problems with Multivariate Regression
 
 -   Simple Regression is 2-dimensional perfect for paper
 -   Simplest Multivariate Regression is 3D
     -   Understanding 3 dimensions on a 2-dimensional paper or screen is challenging
     -   This leads to VR with 3 dimensions
+ 
 
-**Diagram Exhibition**
-
+## How the Diagram Exhibition App Works {.smaller}
+ 
 -   Various Data are displayed
 
     -   Narrated by an instructor by the classroom session
@@ -158,9 +160,9 @@ gradethis::grade_this_code()
 
 ## Self-Learner VersionExplained in a (shortened) Video
 
-- [Walkthrough Video I took when I used the app with a Meta Quest headset](VideoForSepOct26Presentation.mp4)
+- [Walkthrough Video I took when I used the app with a Meta Quest headset](VideoForSepOct26Presentation.mp4){target=_blank}
 
-- [More VR Videos in my YouTube Channel:](https://www.youtube.com/@PracticalMachineLearningWithR)
+- [More VR Videos in my YouTube Channel](https://www.youtube.com/@PracticalMachineLearningWithR){target=_blank}
 
 # 2) Using `genAI` to Support Teaching
 
@@ -265,11 +267,11 @@ gradethis::grade_this_code()
 
 ## Turning Learning Outcomes Into GenAI Learning Questions
 
-[Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#DescriptiveIc){target="_blank"}
+1. [Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#DescriptiveIc){target="_blank"}
 
-[Tool](GenerateChatGPTLink.html){target="_blank"}
+2. [Tool to generate link](GenerateChatGPTLink.html){target="_blank"}
 
-[Source Code for the Tool](AIPromptLinkGeneratorWebpageGoogleGemini.pdf){target="_blank"}
+
 
 ## Evaluating Learning Outcomes: *Quartiles and Percentiles*
 
@@ -328,6 +330,14 @@ kable(DataGoogleSheet[,5])
 kable(DataGoogleSheet[,6])
 ```
 
+## Gemini Notebook
+
+I created a *Gemini Notebook* and connected it to the Google Form (login: econcarsten@gmail.com)
+
+Now I can ask questions about the evaluation.
+
+
+
 ## Building a Course Assistant for Your Class {.smaller}
 
 **Course Assistants**
@@ -342,6 +352,6 @@ kable(DataGoogleSheet[,6])
 
 4.  **Add Your Context Note:** Once the PDFs finish loading, click the + (Add source) button in the left panel again, select Note, and paste your routing instructions (telling it when to read Syllabus file versus the Textbook file).
 
-## Thank You All
+## Thank You All - Your Questions Please
 
-The slides are available at:
+The slides are available at: https://tinyurl.com/ruse2026
