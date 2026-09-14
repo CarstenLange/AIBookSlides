@@ -236,18 +236,20 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6Indl
 <section id="overview" class="slide level2 scrollable">
 <h2>Overview</h2>
 <ol type="1">
-<li><strong>R and Python: Interactivity in a Browser Using Quarto from <em>Posit</em></strong></li>
-</ol>
-<pre><code>-   Slides with interactive *R* and *Python* code
--   Tutorials with interactive *R* and *Python* code
--   Quizzes with interactive *R* and *Python* code</code></pre>
-<ol start="2" type="1">
+<li><p><strong>R and Python: Interactivity in a Browser Using Quarto from Posit</strong></p>
+<ul>
+<li>Slides with interactive <em>R</em> and <em>Python</em> code</li>
+<li>Tutorials with interactive <em>R</em> and <em>Python</em> code</li>
+<li>Quizzes with interactive <em>R</em> and <em>Python</em> code</li>
+</ul></li>
 <li><p><strong>Demo: Virtual Reality for 3D Regressions</strong></p></li>
-<li><p><strong><em>genAI</em></strong> <strong>use in Education</strong></p></li>
+<li><p><strong>genAI use in Education</strong></p>
+<ul>
+<li><em>genAI</em> interacts with students about Learning Outcome</li>
+<li><em>genAI</em> assess course success</li>
+<li><em>genAI</em> without hallucinations in a clearly defined environment (textbook and syllabus)</li>
+</ul></li>
 </ol>
-<pre><code>-   *genAI* interacts with students about Learning Outcome
--   *genAI* assess course success
--   *genAI* without hallucinations in a clearly defined environment (textbook and syllabus)</code></pre>
 </section>
 <section>
 <section id="running-r-and-python-in-a-browser" class="title-slide slide level1 center">
@@ -264,8 +266,8 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6Indl
 <h2>The Old Static Way to Include R in an html Document</h2>
 <p>Calculate the mean passenger age of <em>Titanic</em> passengers:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
-<span id="cb3-2"><a href=""></a><span class="fu">head</span>(DataTitanic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">head</span>(DataTitanic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Survived Pclass    Sex Age SiblingsSpousesAboard ParentsChildrenAboard
 1        0      3   male  22                     1                     0
@@ -275,7 +277,7 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6Indl
 5        0      3   male  35                     0                     0
 6        0      3   male  27                     0                     0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Age of Passengers: 29.47144</code></pre>
 </div>

@@ -29,20 +29,21 @@ webr:
 engine: knitr    
 ---
 
-{{< include _extensions/r-wasm/live/_knitr.qmd >}} 
+{{< include _extensions/r-wasm/live/_knitr.qmd >}}
+
 {{< include _extensions/r-wasm/live/_gradethis.qmd >}}
 
 ## Overview
 
-1.   **R and Python: Interactivity in a Browser Using Quarto from *Posit***
+1. **R and Python: Interactivity in a Browser Using Quarto from Posit**
 
     -   Slides with interactive *R* and *Python* code
     -   Tutorials with interactive *R* and *Python* code
     -   Quizzes with interactive *R* and *Python* code
 
-2.   **Demo: Virtual Reality for 3D Regressions**
+2. **Demo: Virtual Reality for 3D Regressions**
 
-3.   ***genAI*** **use in Education**
+3. **genAI use in Education**
 
     -   *genAI* interacts with students about Learning Outcome
     -   *genAI* assess course success
