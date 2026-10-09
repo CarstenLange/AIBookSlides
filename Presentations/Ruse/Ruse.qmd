@@ -1,11 +1,15 @@
 ---
-title: '"Angel Kanchev" University of Ruse'
-subtitle: "How R, VR, and AI Can Support Teaching and Learning (https://tinyurl.com/ruse2026)" 
+title: "R, VR, and AI in Action"
+subtitle: |
+  Use Cases for Interactive and Immersive Teaching (tinyurl.com/hawkes2026)
+  <br><br>
+  <strong>Fall 2026 Innovative Educators Summit</strong>
+  <br><br>
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
   affiliation: "California State Polytechnic University, Pomona"
-date: "15. Sept. 2026"
+date: "10/22/2026"
 
 execute:
   message: false
