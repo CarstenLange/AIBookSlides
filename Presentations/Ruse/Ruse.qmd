@@ -1,7 +1,7 @@
 ---
 title: "R, VR, and AI in Action"
 subtitle: |
-  Use Cases for Interactive and Immersive Teaching (tinyurl.com/hawkes2026)
+  Use Cases for Interactive and Immersive Teaching (tinyurl.com/langehawkes2026)
   <br><br>
   <strong>Fall 2026 Innovative Educators Summit</strong>
   <br><br>
@@ -359,4 +359,4 @@ Now I can ask questions about the evaluation.
 
 ## Thank You All - Your Questions Please
 
-The slides are available at: https://tinyurl.com/ruse2026
+The slides are available at: https://tinyurl.com/langehawkes2026
