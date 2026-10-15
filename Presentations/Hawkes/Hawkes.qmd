@@ -33,19 +33,21 @@ engine: knitr
 
 ## Overview
 
--   Interactivity Using Quarto from *Posit*
+- Interactivity Using Quarto from *Posit*
 
-    -   Slides with interactive *R* and *Python* code
-    -   Tutorials with interactive *R* and *Python* code
-    -   Quizzes with interactive *R* and *Python* code
+  - Slides with interactive *R* and *Python* code
+  - Tutorials with interactive *R* and *Python* code
+  - Quizzes with interactive *R* and *Python* code
 
--   Demo: Virtual Reality for 3D Regressions
+- Demo: Virtual Reality for 3D Regressions
 
--   *genAI* use in Education
+- *genAI* use in Education
 
-    -   *genAI* interacts with students about Learning Outcome
-    -   *genAI* asses course success
-    -   *genAI* without hallucinations in a clearly defined environment
+  - *genAI* interacts with students about Learning Outcome
+  - *genAI* asses course success
+  - *genAI* without hallucinations in a clearly defined environment
+
+  *GIS (Geographic Information Systems)* in Economics
 
 ## Running R and Python in a Browser
 
@@ -106,47 +108,52 @@ gradethis::grade_this_code()
 
 ## Creating R Quizzes
 
--   All students get the same question
--   Each student gets different numbers
--   Everything runs in a browser
--   Quizzes are automatically graded
+- All students get the same question
+- Each student gets different numbers
+- Everything runs in a browser
+- Quizzes are automatically graded
 
 [Example Quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html){target="blank_"}
 
+## Using Virtual Reality (VR) in Education
 
+![](studentsinlab.png){fig-align="center"}
 
-# Using VR to Explain Multivariate Regression {.smaller}
+## Explain Multivariate Regression {.smaller}
 
 ## Meta Quest App
+
 ### Diagram Exhibition
 
--   Simple Regression is 2-dimensional Leading to paper
--   Simplest Multivariate Regression is 3D
-    -   Understanding 3 dimensions on a 2-dimensional paper or screen is challenging
-    -   This leads to VR with 3 dimensions
+- Simple Regression is 2-dimensional Leading to paper
+- Simplest Multivariate Regression is 3D
+  - Understanding 3 dimensions on a 2-dimensional paper or screen is challenging
+  - This leads to VR with 3 dimensions
 
 **Diagram Exhibition**
 
--   Various Data are displayed
+- Various Data are displayed
 
-    -   Narrated by an instructor by the classroom session
-    -   narrated by an avatar in the self-learning edition
+  - Narrated by an instructor by the classroom session
+  - narrated by an avatar in the self-learning edition
 
--   Data and Regression planes can be changed and adjusted
+- Data and Regression planes can be changed and adjusted
 
-    -   New scenes (new data with or with or without regression planes are chosen by the self-learner)
-    -   New scenes (new data with or with or without regression planes are chosen by the instructor)
+  - New scenes (new data with or with or without regression planes are chosen by the self-learner)
+  - New scenes (new data with or with or without regression planes are chosen by the instructor)
 
-    Sef-Learner version explained in a video
+## Sef-Learner videos
 
-# Using `genAI` to Support Teaching 
+- Multivariate Regression (video): https://youtu.be/As2PfU-yMGg
+
+# Using `genAI` to Support Teaching
 
 ## genAI Educational Innovation
 
--   books, videos, and even Google searches are one way learning tools:\
-    Proving information but not conversations
+- books, videos, and even Google searches are one way learning tools:\
+  Proving information but not conversations
 
--   genAI, when used correctly can be a real conversation like between a student and their tutor
+- genAI, when used correctly can be a real conversation like between a student and their tutor
 
 ## `genAI` Learning (Teach me about Mean and Median)
 
@@ -156,10 +163,10 @@ gradethis::grade_this_code()
 :::
 
 ::: {.column width="67%"}
--   The following is based on a *Gemini Learning* conversation
--   To be visually more appealing two avatars were added with *genAI*.
-    -   a cartoon character asking the questions
-    -   a *wise man* (a *desert hermit brewer* from *HeyGen*)
+- The following is based on a *Gemini Learning* conversation
+- To be visually more appealing two avatars were added with *genAI*.
+  - a cartoon character asking the questions
+  - a *wise man* (a *desert hermit brewer* from *HeyGen*)
 
 **Note: The Gemini phone app was used entirely audio-based (2:30).**
 :::
@@ -235,10 +242,10 @@ gradethis::grade_this_code()
 
 `Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom`
 
--   fact and skills learning at home
-    -   use *genAI*: please teach me about ... (example follows)
-    -   students use textbooks or videos to verify what they learned from *Gemini*
--   higher skills and questions are covered in the classroom
+- fact and skills learning at home
+  - use *genAI*: please teach me about ... (example follows)
+  - students use textbooks or videos to verify what they learned from *Gemini*
+- higher skills and questions are covered in the classroom
 
 ## Turning Learning Outcomes Into GenAI Learning Questions
 
@@ -304,7 +311,6 @@ kable(DataGoogleSheet[,5])
 #| echo: false
 kable(DataGoogleSheet[,6])
 ```
-
 
 ## Building a Course Assistant for Your Class {.smaller}
 
