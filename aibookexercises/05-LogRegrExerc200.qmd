@@ -1,0 +1,30 @@
+---
+title: "Exercises: Logistic Regression — Handling Imbalanced Data"
+subtitle: Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
+
+author:
+  - name: "Carsten Lange"
+    email: "clange@cpp.edu"
+    affiliation: "Professor of Economics, Cal Poly, Pomona"
+
+
+format: html
+
+
+
+engine: knitr
+---
+
+:::: {.content-visible when-runtime="loading"}
+::: callout-note
+## Sorry, this exercise is not available to be executed in a browser with WebAssembly
+
+The interactive exercises for this chapter does not support *WebAssembly* because it requires *C* based *R* packages that cannot be translated to *WebAssembly*
+
+However, you can work with the exercises from this chapter in *RStudio* or *Positron* instead.
+
+[**Click Here**](https://ai.lange-analytics.com/htmlbook/LogRegr.html#LogRegr-RepeatWithBalData)
+::::
+
+
+
