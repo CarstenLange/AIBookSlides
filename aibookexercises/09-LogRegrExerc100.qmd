@@ -24,6 +24,7 @@ The interactive exercises for this chapter does not support *WebAssembly* becaus
 However, you can work with the exercises from this chapter in *RStudio* or *Positron* instead.
 
 [**Click Here**](https://ai.lange-analytics.com/htmlbook/LogRegr.html#LogRegr-AnalyzeChurn)
+:::
 ::::
 
 
