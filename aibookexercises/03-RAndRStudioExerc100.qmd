@@ -1,6 +1,6 @@
 ---
 title: "Interactive Exercises for R and tidyverse: Was Chivalry Dead on the Titanic?"
-subtitle: "Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com)"
+subtitle: 'Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com){target="_blank"}'
 
 author:
   - name: "Carsten Lange"

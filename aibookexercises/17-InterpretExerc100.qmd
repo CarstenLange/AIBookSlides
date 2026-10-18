@@ -1,5 +1,6 @@
 ---
 title: "Project: SHAP"
+subtitle: 'Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com){target="_blank"}'
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"

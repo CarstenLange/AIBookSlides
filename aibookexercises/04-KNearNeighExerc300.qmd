@@ -1,5 +1,6 @@
 ---
 title: "Project: Read Handwritten Digits with k-Nearest Neighbors"
+subtitle: 'Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com){target="_blank"}'
 author:
   name: "Carsten Lange"
   email: "clange@cpp.edu"
