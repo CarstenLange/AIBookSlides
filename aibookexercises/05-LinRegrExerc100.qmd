@@ -3,7 +3,7 @@ title: "Interactive Project: Predict House Prices with Multivariate Regression"
 subtitle: 'Companion Exercises for [Practical Machine Learning with R](https://ai.lange-analytics.com){target="_blank"}'
 
 author:
-  - name: "Carsten Lange"
+  - name: "Carsten Lange"[label](https://ai.lange-analytics.com/)
     email: "clange@cpp.edu"
     affiliation: "Professor of Economics, Cal Poly, Pomona"
 
