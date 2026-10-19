@@ -89,7 +89,7 @@ To find the $CountyID$, substitute the $/dots$ in the code block below with the 
 ```{webr}
 #| exercise: ex_1
 #| exercise.setup: ex_all
-CountySearchStr="..."
+CountySearchStr="______"
 
 ######## Do not change code below this line ###################
 VecMatchingCountyNames=grep(CountySearchStr, DataCountyInfo$County, 
@@ -146,7 +146,7 @@ After you get the results, take a moment to interpret the *Shap* values and deci
 ```{webr}
 #| exercise: ex_2
 #| exercise.setup: ex_all
-CountyID= ...
+CountyID= ______
 
 set.seed(2021)
 
