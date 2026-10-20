@@ -39,23 +39,19 @@ engine: knitr
 
 ## Overview
 
-1. **R and Python: Interactivity in a Browser Using Quarto from Posit**
+1.  **R and Python: Interactivity in a Browser Using Quarto from Posit**
 
-  - Slides with interactive *R* and *Python* code
-  - Tutorials with interactive *R* and *Python* code
-  - Quizzes with interactive *R* and *Python* code
+2.  **Demo: Virtual Reality for 3D Regressions**
 
-2. **Demo: Virtual Reality for 3D Regressions**
+3.  **genAI use in Education**
 
-3. **genAI use in Education**
+4.  **GIS (Geographic Information Systems) in Economics**
 
-    -   *genAI* interacts with students about Learning Outcome
-    -   *genAI* assess course success
-    -   *genAI* without hallucinations in a clearly defined environment (textbook and syllabus)
+# Running R and Python in a Browser
 
-4. **GIS (Geographic Information Systems) in Economics**
-
-# 1) Running R and Python in a Browser
+- Slides with interactive *R* and *Python* code
+- Tutorials with interactive *R* and *Python* code
+- Quizzes with interactive *R* and *Python* code
 
 ## Running R in a Browser
 
@@ -78,7 +74,9 @@ cat("Mean Age of Passengers:", mean(DataTitanic$Age))
 
 ## Quarto Code
 
-![](images/paste-2.png)
+**Similar to a Jupyter Notebook (everythin is text if note marked as code)**
+
+![](images/paste-3.png)
 
 ## The New Interactive Way to Include R in an html Document with Web Assembly (WASM)
 
@@ -107,7 +105,7 @@ The command for calculating a mean is `mean()`, the data frame is named `DataTit
 ```{webr}
 #| exercise: ex_1
 #| solution: true
-DataTitanic=read.csv("https:///econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv")
+DataTitanic=read.csv("https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv")
 head(DataTitanic)
 cat("Mean Age of Passengers:", mean(DataTitanic$Age)) #<1>
 ```
@@ -122,11 +120,9 @@ cat("Mean Age of Passengers:", mean(DataTitanic$Age)) #<1>
 gradethis::grade_this_code()
 ```
 
-
-
 ## Quarto Code
 
-![](images/paste-3.png)
+![](images/paste-5.png)
 
 ## Documentation: Interactive html files for R and Python
 
@@ -134,48 +130,51 @@ gradethis::grade_this_code()
 
 ## Creating R Quizzes
 
+[Click Here to start quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html) user: hawkes2026
+
 # 2) Using VR to Explain Multivariate Regression {.smaller}
 
 ![](VRStudents.png){fig-align="center" width="808"}
 
-## Problems with Multivariate Regression
+## Educational Problem with Multivariate Regression
 
--   Simple Regression is 2-dimensional perfect for paper
--   Simplest Multivariate Regression is 3D
-    -   Understanding 3 dimensions on a 2-dimensional paper or screen is challenging
-    -   This leads to VR with 3 dimensions
+- Simple Regression is 2-dimensional perfect for paper
+- Simplest Multivariate Regression is 3D
+  - Understanding 3 dimensions on a 2-dimensional paper or screen is challenging
+  - This leads to VR with 3 dimensions
 
 ## Meta Quest App
 
 ### Diagram Exhibition
 
--   Various Data are displayed
+- **Freely Available:** [https://vr.lange-analytics.com/diagramexh.html](https://vr.lange-analytics.com/diagramexh.html){target="_blank"}
+- Various Data are displayed
 
-    -   Narrated by an instructor during the classroom session
-    -   Narrated by an avatar in the self-learning edition
+- Two Versions for each Data Scenario
 
--   Data and Regression planes can be changed and adjusted
-
+  - Narrated by an avatar in the self-learning edition
+  - Narrated by an instructor during the classroom session
+  
 - Data and Regression planes can be changed and adjusted
 
 ## Self-Learner VersionExplained in a (shortened) Video
 
-- [Walkthrough Video I took when I used the app with a Meta Quest headset](VideoForSepOct26Presentation.mp4){target=_blank}
+- [Walkthrough Video I took when I used the app with a Meta Quest headset](VideoForSepOct26Presentation.mp4){target="_blank"}
 
-- [More VR Videos in my YouTube Channel](https://www.youtube.com/@PracticalMachineLearningWithR){target=_blank}
 
-## Sef-Learner videos
-
-- Multivariate Regression (video): https://youtu.be/As2PfU-yMGg
 
 # Using `genAI` to Support Teaching
 
+1) *genAI* interacts with students about Learning Outcome
+2) *genAI* assess course success
+3) *genAI* without hallucinations in a clearly defined environment (textbook and syllabus)
+
 ## genAI Educational Innovation
 
--   books, videos, and even Google searches are one way learning tools:\
-    Providing information but no conversations
+- books, videos, and even Google searches are one way learning tools:\
+  Providing information but no conversations
 
--   genAI, when used correctly can support a real conversation like between a student and their tutor
+- genAI, when used correctly can support a real conversation like between a student and their tutor
 
 ## `genAI` Learning (Teach me about Mean and Median)
 
@@ -271,11 +270,11 @@ gradethis::grade_this_code()
 
 ## Turning Learning Outcomes Into GenAI Learning Questions
 
-1. [Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten+Lange#DescriptiveIc){target="_blank"}
+1.  [Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten Lange#DescriptiveIc){target="_blank"}
 
-2. [Tool to generate link](GenerateChatGPTLink.html){target="_blank"}
+2.  [Tool to generate link](GenerateChatGPTLink.html){target="_blank"} E.g.: 
 
-
+Explain the concept of Quartiles and Percentiles briefly and encourage students to follow up with more questions about how to calculate the concepts with a calculator or with R. Also offer follow-ups in regards of interpretation and relevance.
 
 ## Evaluating Learning Outcomes: *Quartiles and Percentiles*
 
@@ -334,11 +333,21 @@ kable(DataGoogleSheet[,5])
 kable(DataGoogleSheet[,6])
 ```
 
+
+## Evaluation in Class (no preparation required)
+
+
+[Example for the data collected:](https://gemini.google.com/notebook/92b831a0-c9ad-42ae-8859-b8ecfdd9af61){target="_blank"}
+
 ## Gemini Notebook
 
-I created a *Gemini Notebook* and connected it to the Google Form (login: econcarsten@gmail.com)
+I created a *Gemini Notebook* and connected it to the Google Form (login: econcarsten\@gmail.com)
 
-Now I can ask questions about the evaluation.
+Now I can ask questions about the evaluation. 
+
+
+
+
 ## Building a Course Assistant for Your Class {.smaller}
 
 **Course Assistants**
