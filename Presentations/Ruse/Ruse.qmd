@@ -43,11 +43,10 @@ engine: knitr
 
 2.  **Demo: Virtual Reality for 3D Regressions**
 
-3.  **genAI use in Education**
+3.  **GenAI use in Education**
 
-4.  **GIS (Geographic Information Systems) in Economics**
-
-# Running R and Python in a Browser
+## Running R and Python in a Browser
+### No User Setup Required
 
 - Slides with interactive *R* and *Python* code
 - Tutorials with interactive *R* and *Python* code
@@ -59,7 +58,7 @@ engine: knitr
 
 Most commonly *R* is installed together with an IDE (i.e., advanced editor) on a faculty or student's PC
 
-[Introduction to R and RStudio](https://ai.lange-analytics.com/htmlbook/RAndRStudio.html){target="_blank"}
+**Link:** [Introduction to R and RStudio](https://ai.lange-analytics.com/htmlbook/RAndRStudio.html){target="_blank"}
 
 ## The Old Static Way to Include R in an html Document
 
@@ -74,7 +73,7 @@ cat("Mean Age of Passengers:", mean(DataTitanic$Age))
 
 ## Quarto Code
 
-**Similar to a Jupyter Notebook (everythin is text if note marked as code)**
+**Similar to a Jupyter Notebook (everything is text if note marked as code)**
 
 ![](images/paste-3.png)
 
@@ -126,11 +125,11 @@ gradethis::grade_this_code()
 
 ## Documentation: Interactive html files for R and Python
 
-[Docs about WASM with *R* and *Python*](https://r-wasm.github.io/quarto-live/){target="blank_"}
+**Link:** [Docs about WASM with *R* and *Python*](https://r-wasm.github.io/quarto-live/){target="blank_"}
 
 ## Creating R Quizzes
 
-[Click Here to start quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html) user: hawkes2026
+**Link:** [Click Here to start quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html){target="_blank"} user: hawkes2026
 
 # 2) Using VR to Explain Multivariate Regression {.smaller}
 
@@ -148,35 +147,35 @@ gradethis::grade_this_code()
 ### Diagram Exhibition
 
 - **Freely Available:** [https://vr.lange-analytics.com/diagramexh.html](https://vr.lange-analytics.com/diagramexh.html){target="_blank"}
-- Various Data are displayed
+- Various Data Scenario can be displayed (based on an entry code)
 
 - Two Versions for each Data Scenario
 
   - Narrated by an avatar in the self-learning edition
   - Narrated by an instructor during the classroom session
   
-- Data and Regression planes can be changed and adjusted
+- Data displayed and Regression planes can be changed and adjusted by the student or instructor
 
-## Self-Learner VersionExplained in a (shortened) Video
+## Self-Learner Version Explained in a (shortened) Video
 
-- [Walkthrough Video I took when I used the app with a Meta Quest headset](VideoForSepOct26Presentation.mp4){target="_blank"}
+**Link** [Walkthrough Video: I used the app in Self-Learner mode with a Meta Quest VR headset](VideoForSepOct26Presentation.mp4){target="_blank"}
 
 
 
-# Using `genAI` to Support Teaching
+# Using `GenAI` to Support Teaching
 
-1) *genAI* interacts with students about Learning Outcome
-2) *genAI* assess course success
-3) *genAI* without hallucinations in a clearly defined environment (textbook and syllabus)
+1) *GenAI* interacts with students (available for each *Learning Outcome*)
+2) *GenAI* assesses course success (on the *Learning Outcome* level)
+3) *GenAI* without hallucinations in a clearly defined environment (textbook and syllabus)
 
-## genAI Educational Innovation
+## GenAI Educational Innovation Is Interactivity!!!
 
 - books, videos, and even Google searches are one way learning tools:\
   Providing information but no conversations
 
-- genAI, when used correctly can support a real conversation like between a student and their tutor
+- GenAI, when used correctly can support a real conversation like between a student and their tutor
 
-## `genAI` Learning (Teach me about Mean and Median)
+## `GenAI` Learning (Teach me about Mean and Median)
 
 ::::: columns
 ::: {.column width="33%"}
@@ -185,7 +184,7 @@ gradethis::grade_this_code()
 
 ::: {.column width="67%"}
 - The following is based on a *Gemini Learning* conversation
-- To be visually more appealing two avatars were added with *genAI*.
+- To be visually more appealing two avatars were added with *GenAI*.
   - a cartoon character asking the questions
   - a *wise man* (a *desert hermit brewer* from *HeyGen*)
 
@@ -193,7 +192,7 @@ gradethis::grade_this_code()
 :::
 :::::
 
-## `genAI` Learning (Teach me about Mean and Median)
+## `GenAI` Learning (Teach me about Mean and Median)
 
 ![](ClangePicCarton.png){width="371"}
 
@@ -201,11 +200,11 @@ gradethis::grade_this_code()
 
 </audio>
 
-## `genAI` Learning (teach me about Mean and Median)
+## `GenAI` Learning (teach me about Mean and Median)
 
 ![](2Welcome.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning (Teach me about Mean and Median)
+## `GenAI` Learning (Teach me about Mean and Median)
 
 ![](ClangePicCarton.png){width="371"}
 
@@ -213,11 +212,11 @@ gradethis::grade_this_code()
 
 </audio>
 
-## `genAI` Learning (teach me about Mean and Median)
+## `GenAI` Learning (teach me about Mean and Median)
 
 ![](4ExampleMean.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning (Teach me about Mean and Median)
+## `GenAI` Learning (Teach me about Mean and Median)
 
 ![](ClangePicCarton.png){width="371"}
 
@@ -225,11 +224,11 @@ gradethis::grade_this_code()
 
 </audio>
 
-## `genAI` Learning (teach me about Mean and Median)
+## `GenAI` Learning (teach me about Mean and Median)
 
 ![](6MedianExplained.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning (Teach me about Mean and Median)
+## `GenAI` Learning (Teach me about Mean and Median)
 
 ![](ClangePicCarton.png){width="371"}
 
@@ -237,11 +236,11 @@ gradethis::grade_this_code()
 
 </audio>
 
-## `genAI` Learning (teach me about Mean and Median)
+## `GenAI` Learning (teach me about Mean and Median)
 
 ![](8MedianAgainWithExample.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning (Teach me about Mean and Median)
+## `GenAI` Learning (Teach me about Mean and Median)
 
 ![](ClangePicCarton.png){width="371"}
 
@@ -249,26 +248,27 @@ gradethis::grade_this_code()
 
 </audio>
 
-## `genAI` Learning (teach me about Mean and Median)
+## `GenAI` Learning (teach me about Mean and Median)
 
 ![](10ConfirmMedianOK.mp4){width="1111" controls="true" data-autoplay="true"}
 
-## `genAI` Learning
+## `GenAI` Learning
 
-<br> **genAI will not substitute instructors!**
+<br> **`GenAI` will not substitute instructors!**
 
-**genAI will allow us to focus on higher skills, something we always wanted!**
+**`GenAI` will allow us to focus on higher skills, something we always wanted!**
 
-## `genAI` Learning (Teach Me How to ...)
+## `GenAI` Learning (Teach Me How to ...)
 
-`Use Flipped Classroom (this is an old concept) where genAI, textbooks, and videos teach the basics and the instructor focusses on higher skills in the classroom`
+A `GenAI` tutor is currently used in a Flipped Classroom environment (Intro to Statistics). 
 
-- fact and skills learning at home
-  - use *genAI*: please teach me about ... (example follows)
-  - students use textbooks or videos to verify what they learned from *Gemini*
-- higher skills and questions are covered in the classroom
+`GenAI` combined with a textbook, videos, and quizzes helps students learn the basics of the course at home.
 
-## Turning Learning Outcomes Into GenAI Learning Questions
+Later, in the classroom the instructor reviews topics and focusses on higher skills.
+
+**How to start a conversation with the `GenAI` tutor???** 
+
+## Turning Learning Outcomes Into `GenAI` Learning Prompts
 
 1.  [Example](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten Lange#DescriptiveIc){target="_blank"}
 
@@ -276,11 +276,13 @@ gradethis::grade_this_code()
 
 Explain the concept of Quartiles and Percentiles briefly and encourage students to follow up with more questions about how to calculate the concepts with a calculator or with R. Also offer follow-ups in regards of interpretation and relevance.
 
+# `GenAI` assesses course Learning Outcomes
+
 ## Evaluating Learning Outcomes: *Quartiles and Percentiles*
 
 ### Google Form for *Quartiles and Percentiles*
 
-In class Google Forms is used to get student feedback for each learning outcome:
+In class Google Forms is used to get student feedback for each learning outcome ([Click Here](https://learnguide.pythonanywhere.com/learnoutapp/makeguidev2/?SelectedCourseId=clange!cpp.edu!ec3322&Name=Carsten%20Lange#DescriptiveIc){target="_blank"}):
 
 ![](images/paste-1.png)
 
@@ -334,16 +336,19 @@ kable(DataGoogleSheet[,6])
 ```
 
 
+
+
 ## Evaluation in Class (no preparation required)
 
-
-[Example for the data collected:](https://gemini.google.com/notebook/92b831a0-c9ad-42ae-8859-b8ecfdd9af61){target="_blank"}
-
-## Gemini Notebook
-
-I created a *Gemini Notebook* and connected it to the Google Form (login: econcarsten\@gmail.com)
+I created a *Gemini Notebook* and connected it to the Google Form. 
 
 Now I can ask questions about the evaluation. 
+
+**Link:** [Analyzing the data collected with Google Forms](https://gemini.google.com/notebook/92b831a0-c9ad-42ae-8859-b8ecfdd9af61){target="_blank"}
+
+# `GenAI` without Hallucinations in a Clearly Defined Environment
+
+(textbook and syllabus in *Gemini Notebook*)
 
 
 
