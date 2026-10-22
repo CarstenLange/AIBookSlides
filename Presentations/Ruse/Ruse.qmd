@@ -129,7 +129,9 @@ gradethis::grade_this_code()
 
 ## Creating R Quizzes
 
-**Link:** [Click Here to start quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html){target="_blank"} user: hawkes2026
+**Link:** [Click Here to start quiz](https://econ.lange-analytics.com/HomeworkQLive/auth/login.php?next=../HW9091/HW9091.html){target="_blank"} user: `hawkes2026` pw: `password`
+
+**XX**
 
 # 2) Using VR to Explain Multivariate Regression {.smaller}
 
@@ -160,7 +162,7 @@ gradethis::grade_this_code()
 
 **Link** [Walkthrough Video: I used the app in Self-Learner mode with a Meta Quest VR headset](VideoForSepOct26Presentation.mp4){target="_blank"}
 
-
+**XXX**
 
 # Using `GenAI` to Support Teaching
 
@@ -251,6 +253,8 @@ gradethis::grade_this_code()
 ## `GenAI` Learning (teach me about Mean and Median)
 
 ![](10ConfirmMedianOK.mp4){width="1111" controls="true" data-autoplay="true"}
+
+**XX XX**
 
 ## `GenAI` Learning
 
