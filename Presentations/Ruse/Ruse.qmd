@@ -71,7 +71,7 @@ head(DataTitanic)
 cat("Mean Age of Passengers:", mean(DataTitanic$Age))
 ```
 
-## Quarto Code
+## Quarto Code {visibility="hidden"}
 
 **Similar to a Jupyter Notebook (everything is text if note marked as code)**
 
