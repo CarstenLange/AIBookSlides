@@ -87,8 +87,8 @@
     <h2>ChatGPT Link Generator</h2>
     
     <label for="promptInput">Type your AI prompt:</label>
-    <textarea id="promptInput" placeholder="e.g., Explain quantum physics like I am five years old"></textarea>
-
+    <textarea id="promptInput">Teach me the following topic: XXX. Guidelines: Keep it simple, concise, and easy to understand. Use clear, relatable examples. Conclude with a quick check-in to confirm if I understood the material. If I didn't, ask me which specific parts were confusing. Provide 2-3 suggested follow-up questions as a numbered list so I can easily choose one by replying with its number.</textarea>
+    
     <div class="result-box">
         <strong>Your Link:</strong>
         <div class="link-row">
@@ -102,51 +102,41 @@
     const promptInput = document.getElementById('promptInput');
     const linkContainer = document.getElementById('linkContainer');
     const copyBtn = document.getElementById('copyBtn');
-    let generatedUrl = '';
 
-    promptInput.addEventListener('input', function() {
+    function updateLink() {
         const text = promptInput.value.trim();
-
         if (text === '') {
-            linkContainer.innerHTML = 'Your generated link will appear here...';
-            linkContainer.className = 'placeholder';
+            linkContainer.innerHTML = '<span class="placeholder">Your generated link will appear here...</span>';
             copyBtn.disabled = true;
-            generatedUrl = '';
             return;
         }
 
-        // Replace spaces with '+'
-        const formattedPrompt = text.replace(/\s+/g, '+');
-        generatedUrl = `https://chatgpt.com?prompt=${formattedPrompt}`;
+        // URL encode the text using '+' for spaces
+        const encodedText = encodeURIComponent(text).replace(/%20/g, '+');
+        const generatedUrl = `https://chatgpt.com/?q=${encodedText}`;
 
-        // Update UI
-        linkContainer.className = '';
-        linkContainer.innerHTML = `<a href="${generatedUrl}" target="_blank">${generatedUrl}</a>`;
+        // Display clickable link
+        linkContainer.innerHTML = `<a href="${generatedUrl}" target="_blank" id="generatedLink">${generatedUrl}</a>`;
         copyBtn.disabled = false;
-    });
+    }
 
-    copyBtn.addEventListener('click', async function() {
-        if (!generatedUrl) return;
-
-        try {
-            // Modern Clipboard API
-            await navigator.clipboard.writeText(generatedUrl);
-            
-            // Visual feedback loop
-            const originalText = copyBtn.innerText;
-            copyBtn.innerText = 'Copied!';
-            copyBtn.style.backgroundColor = '#2e7d32'; // Green success color
-            
-            setTimeout(() => {
-                copyBtn.innerText = originalText;
-                copyBtn.style.backgroundColor = ''; // Revert back to CSS default
-            }, 2000);
-            
-        } catch (err) {
-            console.error('Failed to copy text: ', err);
-            alert('Oops, unable to copy automatically. Please copy the link manually.');
+    // Event listener to copy link
+    copyBtn.addEventListener('click', () => {
+        const linkElement = document.getElementById('generatedLink');
+        if (linkElement) {
+            navigator.clipboard.writeText(linkElement.href).then(() => {
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = 'Copied!';
+                setTimeout(() => copyBtn.innerText = originalText, 2000);
+            });
         }
     });
+
+    // Listen for changes in the text box
+    promptInput.addEventListener('input', updateLink);
+
+    // Run immediately when page loads so the link shows up right away
+    updateLink();
 </script>
 
 </body>
