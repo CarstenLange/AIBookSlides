@@ -6,10 +6,10 @@
 <script src="Ruse_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="Ruse_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="Ruse_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="Ruse_files/libs/quarto-html/quarto-syntax-highlighting-dark-b85bc7c33db8c58e0ec93c3465666fed.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="Ruse_files/libs/quarto-html/quarto-syntax-highlighting-dark-4d9afe2b8d18ee9fa5d0d57b5ed4214d.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="Ruse_files/libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
 <link href="Ruse_files/libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.10.18">
+  <meta name="generator" content="quarto-1.8.27">
 
   <meta name="author" content="Carsten Lange">
   <meta name="dcterms.date" content="2026-10-22">
@@ -20,16 +20,10 @@
   <link rel="stylesheet" href="Ruse_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="Ruse_files/libs/revealjs/dist/reveal.css">
   <style>
-    /* Default styles provided by pandoc.
-    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
-    */
+    code{white-space: pre-wrap;}
     span.smallcaps{font-variant: small-caps;}
-    div.columns{display: flex; gap: 1.5em;}
-    div.column{flex: auto;}
-    @media screen {
-    div.columns{gap: min(4vw, 1.5em);}
-    div.column{overflow-x: auto;}
-    }
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
     ul.task-list li input[type="checkbox"] {
@@ -104,7 +98,7 @@
     code span.vs { color: #abe338; } /* VerbatimString */
     code span.wa { color: #dcc6e0; } /* Warning */
   </style>
-  <link rel="stylesheet" href="Ruse_files/libs/revealjs/dist/theme/quarto-188c847311b4ccaf1d527e31c5a8eacb.css">
+  <link rel="stylesheet" href="Ruse_files/libs/revealjs/dist/theme/quarto-92f953f199ed25aab29d366ec0d00847.css">
   <link href="Ruse_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="Ruse_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="Ruse_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -208,12 +202,12 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">R, VR, and AI in Action</h1>
-  <p class="subtitle">Use Cases for Interactive and Immersive Teaching (tinyurl.com/langehawkes2026) <br><br> <strong>Fall 2026 Innovative Educators Summit</strong> <br><br></p>
+  <p class="subtitle"></p><p>Use Cases for Interactive and Immersive Teaching (tinyurl.com/langehawkes2026) <br><br> <strong>Fall 2026 Innovative Educators Summit</strong> <br><br></p><p></p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Carsten Lange
+Carsten Lange 
 </div>
 <div class="quarto-title-author-email">
 <a href="mailto:clange@cpp.edu">clange@cpp.edu</a>
@@ -266,8 +260,8 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6Indl
 <h2>The Old Static Way to Include R in an html Document</h2>
 <p>Calculate the mean passenger age of <em>Titanic</em> passengers:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="" aria-label="1"></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
-<span id="cb1-2"><a href="" aria-label="2"></a><span class="fu">head</span>(DataTitanic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
+<span id="cb1-2"><a href=""></a><span class="fu">head</span>(DataTitanic)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Survived Pclass    Sex Age SiblingsSpousesAboard ParentsChildrenAboard
 1        0      3   male  22                     1                     0
@@ -277,7 +271,7 @@ eyJhdHRyIjp7ImVkaXQiOmZhbHNlLCJldmFsIjp0cnVlLCJvdXRwdXQiOmZhbHNlfSwiY29kZSI6Indl
 5        0      3   male  35                     0                     0
 6        0      3   male  27                     0                     0</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="" aria-label="1"></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Mean Age of Passengers: 29.47144</code></pre>
 </div>
@@ -331,9 +325,9 @@ eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWUsImV4ZXJjaXNlIjoiZXhfMSJ9LCJjb2RlIjoi
 <code id="interpolate-4" class="solution-code d-none">DataTitanic=read.csv("https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv")
 head(DataTitanic)
 cat("Mean Age of Passengers:", mean(DataTitanic$Age)) #&lt;1&gt;</code>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-5"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="interpolate-5-1"><a href="#interpolate-5-1" aria-label="1"></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
-<span id="interpolate-5-2"><a href="#interpolate-5-2" aria-label="2"></a><span class="fu">head</span>(DataTitanic)</span>
-<a class="code-annotation-anchor" data-target-cell="interpolate-5" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-5-3" class="code-annotation-target"><a href="#interpolate-5-3" aria-label="3"></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="interpolate-5"><pre class="sourceCode numberSource r code-annotation-code number-lines code-with-copy code-annotated"><code class="sourceCode r"><span id="interpolate-5-1"><a href="#interpolate-5-1"></a>DataTitanic<span class="ot">=</span><span class="fu">read.csv</span>(<span class="st">"https://econ.lange-analytics.com/RData/Datasets/TitanicDataDecTree.csv"</span>)</span>
+<span id="interpolate-5-2"><a href="#interpolate-5-2"></a><span class="fu">head</span>(DataTitanic)</span>
+<a class="code-annotation-anchor" data-target-cell="interpolate-5" data-target-annotation="1" onclick="event.preventDefault();" href="">1</a><span id="interpolate-5-3" class="code-annotation-target"><a href="#interpolate-5-3"></a><span class="fu">cat</span>(<span class="st">"Mean Age of Passengers:"</span>, <span class="fu">mean</span>(DataTitanic<span class="sc">$</span>Age))</span><div class="code-annotation-gutter-bg"></div><div class="code-annotation-gutter"></div></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell-annotation">
 <dl class="code-annotation-container-grid">
